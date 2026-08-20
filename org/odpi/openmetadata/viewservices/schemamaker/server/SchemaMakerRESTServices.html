@@ -155,6 +155,96 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Delete a schema type.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachAttributeForSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachAttributeForSchema</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSchemaAttributeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a schema attribute from the schema type that it belongs to.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachExternalSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachExternalSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach an external schema type from the schema element that uses it.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachForeignKey(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachForeignKey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyColumnGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;foreignKeyColumnGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a foreign key column from the primary key column that it refers to.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachGraphEdge(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachGraphEdge</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;graphEdgeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;graphVertexGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a graph edge from one of the graph vertices that it connects.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachMapFromSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachMapFromSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach the schema type that describes the domain (from) element of a map.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachMapToSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachMapToSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach the schema type that describes the range (to) element of a map.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachNestedSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachNestedSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSchemaAttributeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a nested schema attribute from its parent schema attribute.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachQueryTarget(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachQueryTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;queryTargetSchemaElementGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a query target from the derived schema element that queries it.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachRelationalDBSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachRelationalDBSchema</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseSchemaTypeListGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationalDBSchemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a relational database schema type from the list that contained it.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachSchema</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a schema type from the element that it describes.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findSchemaAttributes(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findSchemaAttributes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
@@ -198,6 +288,96 @@ loadScripts(document, 'script');</script>
  <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of schema type metadata elements that contain the search string.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkAttributeForSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkAttributeForSchema</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSchemaAttributeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach a schema attribute to the schema type that it belongs to.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkExternalSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkExternalSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach an external schema type to the schema element that uses it.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkForeignKey(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkForeignKey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyColumnGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;foreignKeyColumnGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach a foreign key column to the primary key column that it refers to.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkGraphEdge(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkGraphEdge</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;graphEdgeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;graphVertexGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach a graph edge to one of the graph vertices that it connects.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkMapFromSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkMapFromSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach the schema type that describes the domain (from) element of a map.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkMapToSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkMapToSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach the schema type that describes the range (to) element of a map.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkNestedSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkNestedSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSchemaAttributeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach a nested schema attribute to its parent schema attribute.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkQueryTarget(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkQueryTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;queryTargetSchemaElementGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach a query target to the derived schema element that queries it.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkRelationalDBSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkRelationalDBSchema</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseSchemaTypeListGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationalDBSchemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach a relational database schema type to the list that contains it.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkSchema</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach a schema type to the element that it describes.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/BooleanResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">BooleanResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)" class="member-name-link">updateSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -541,6 +721,486 @@ loadScripts(document, 'script');</script>
   InvalidParameterException  one of the parameters is invalid
   UserNotAuthorizedException the user is not authorized to issue this request
   PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkNestedSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
+<h3>linkNestedSchemaAttribute</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkNestedSchemaAttribute</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSchemaAttributeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Attach a nested schema attribute to its parent schema attribute.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>schemaAttributeGUID</code> - unique identifier of the parent schema attribute</dd>
+<dd><code>nestedSchemaAttributeGUID</code> - unique identifier of the nested schema attribute</dd>
+<dd><code>requestBody</code> - properties for the relationship</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachNestedSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<h3>detachNestedSchemaAttribute</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachNestedSchemaAttribute</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSchemaAttributeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Detach a nested schema attribute from its parent schema attribute.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>schemaAttributeGUID</code> - unique identifier of the parent schema attribute</dd>
+<dd><code>nestedSchemaAttributeGUID</code> - unique identifier of the nested schema attribute</dd>
+<dd><code>requestBody</code> - delete options</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkAttributeForSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
+<h3>linkAttributeForSchema</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkAttributeForSchema</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSchemaAttributeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Attach a schema attribute to the schema type that it belongs to.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>schemaTypeGUID</code> - unique identifier of the schema type</dd>
+<dd><code>nestedSchemaAttributeGUID</code> - unique identifier of the schema attribute</dd>
+<dd><code>requestBody</code> - properties for the relationship</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachAttributeForSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<h3>detachAttributeForSchema</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachAttributeForSchema</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedSchemaAttributeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Detach a schema attribute from the schema type that it belongs to.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>schemaTypeGUID</code> - unique identifier of the schema type</dd>
+<dd><code>nestedSchemaAttributeGUID</code> - unique identifier of the schema attribute</dd>
+<dd><code>requestBody</code> - delete options</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkForeignKey(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
+<h3>linkForeignKey</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkForeignKey</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyColumnGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;foreignKeyColumnGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Attach a foreign key column to the primary key column that it refers to.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>primaryKeyColumnGUID</code> - unique identifier of the primary key column</dd>
+<dd><code>foreignKeyColumnGUID</code> - unique identifier of the foreign key column</dd>
+<dd><code>requestBody</code> - properties for the relationship</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachForeignKey(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<h3>detachForeignKey</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachForeignKey</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyColumnGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;foreignKeyColumnGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Detach a foreign key column from the primary key column that it refers to.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>primaryKeyColumnGUID</code> - unique identifier of the primary key column</dd>
+<dd><code>foreignKeyColumnGUID</code> - unique identifier of the foreign key column</dd>
+<dd><code>requestBody</code> - delete options</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkExternalSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
+<h3>linkExternalSchemaType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkExternalSchemaType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Attach an external schema type to the schema element that uses it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>schemaElementGUID</code> - unique identifier of the schema element</dd>
+<dd><code>schemaTypeGUID</code> - unique identifier of the external schema type</dd>
+<dd><code>requestBody</code> - properties for the relationship</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachExternalSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<h3>detachExternalSchemaType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachExternalSchemaType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Detach an external schema type from the schema element that uses it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>schemaElementGUID</code> - unique identifier of the schema element</dd>
+<dd><code>schemaTypeGUID</code> - unique identifier of the external schema type</dd>
+<dd><code>requestBody</code> - delete options</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkMapFromSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
+<h3>linkMapFromSchemaType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkMapFromSchemaType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Attach the schema type that describes the domain (from) element of a map.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>schemaElementGUID</code> - unique identifier of the map schema element</dd>
+<dd><code>schemaTypeGUID</code> - unique identifier of the schema type describing the domain of the map</dd>
+<dd><code>requestBody</code> - properties for the relationship</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachMapFromSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<h3>detachMapFromSchemaType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachMapFromSchemaType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Detach the schema type that describes the domain (from) element of a map.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>schemaElementGUID</code> - unique identifier of the map schema element</dd>
+<dd><code>schemaTypeGUID</code> - unique identifier of the schema type describing the domain of the map</dd>
+<dd><code>requestBody</code> - delete options</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkMapToSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
+<h3>linkMapToSchemaType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkMapToSchemaType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Attach the schema type that describes the range (to) element of a map.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>schemaElementGUID</code> - unique identifier of the map schema element</dd>
+<dd><code>schemaTypeGUID</code> - unique identifier of the schema type describing the range of the map</dd>
+<dd><code>requestBody</code> - properties for the relationship</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachMapToSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<h3>detachMapToSchemaType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachMapToSchemaType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Detach the schema type that describes the range (to) element of a map.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>schemaElementGUID</code> - unique identifier of the map schema element</dd>
+<dd><code>schemaTypeGUID</code> - unique identifier of the schema type describing the range of the map</dd>
+<dd><code>requestBody</code> - delete options</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkGraphEdge(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
+<h3>linkGraphEdge</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkGraphEdge</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;graphEdgeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;graphVertexGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Attach a graph edge to one of the graph vertices that it connects.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>graphEdgeGUID</code> - unique identifier of the graph edge</dd>
+<dd><code>graphVertexGUID</code> - unique identifier of the graph vertex</dd>
+<dd><code>requestBody</code> - properties for the relationship</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachGraphEdge(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<h3>detachGraphEdge</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachGraphEdge</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;graphEdgeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;graphVertexGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Detach a graph edge from one of the graph vertices that it connects.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>graphEdgeGUID</code> - unique identifier of the graph edge</dd>
+<dd><code>graphVertexGUID</code> - unique identifier of the graph vertex</dd>
+<dd><code>requestBody</code> - delete options</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkQueryTarget(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
+<h3>linkQueryTarget</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkQueryTarget</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;queryTargetSchemaElementGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Attach a query target to the derived schema element that queries it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>schemaElementGUID</code> - unique identifier of the derived schema element</dd>
+<dd><code>queryTargetSchemaElementGUID</code> - unique identifier of the schema element supplying the query target</dd>
+<dd><code>requestBody</code> - properties for the relationship</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachQueryTarget(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<h3>detachQueryTarget</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachQueryTarget</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;queryTargetSchemaElementGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Detach a query target from the derived schema element that queries it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>schemaElementGUID</code> - unique identifier of the derived schema element</dd>
+<dd><code>queryTargetSchemaElementGUID</code> - unique identifier of the schema element supplying the query target</dd>
+<dd><code>requestBody</code> - delete options</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
+<h3>linkSchema</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkSchema</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Attach a schema type to the element that it describes.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>elementGUID</code> - unique identifier of the element that is described by the schema type</dd>
+<dd><code>schemaTypeGUID</code> - unique identifier of the schema type</dd>
+<dd><code>requestBody</code> - properties for the relationship</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<h3>detachSchema</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachSchema</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Detach a schema type from the element that it describes.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>elementGUID</code> - unique identifier of the element that is described by the schema type</dd>
+<dd><code>schemaTypeGUID</code> - unique identifier of the schema type</dd>
+<dd><code>requestBody</code> - delete options</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkRelationalDBSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
+<h3>linkRelationalDBSchema</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkRelationalDBSchema</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseSchemaTypeListGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationalDBSchemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Attach a relational database schema type to the list that contains it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>databaseSchemaTypeListGUID</code> - unique identifier of the relational database schema type list</dd>
+<dd><code>relationalDBSchemaTypeGUID</code> - unique identifier of the relational database schema type</dd>
+<dd><code>requestBody</code> - properties for the relationship</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachRelationalDBSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<h3>detachRelationalDBSchema</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachRelationalDBSchema</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;databaseSchemaTypeListGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationalDBSchemaTypeGUID,
+ <a href="../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Detach a relational database schema type from the list that contained it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>databaseSchemaTypeListGUID</code> - unique identifier of the relational database schema type list</dd>
+<dd><code>relationalDBSchemaTypeGUID</code> - unique identifier of the relational database schema type</dd>
+<dd><code>requestBody</code> - delete options</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
 </dl>
 </section>
 </li>

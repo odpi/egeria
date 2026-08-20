@@ -159,31 +159,46 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Detach a data field from a data structure.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findDataStructures(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findDataStructures</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- <a href="../search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachSchemaTypeDefinition(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachSchemaTypeDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a data structure from the schema type that implemented it.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findDataStructures(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findDataStructures</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ <a href="../search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of dataStructures metadata elements that contain the search string and show which solution components (if any) are attached to it.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataStructureByGUID(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions)" class="member-name-link">getDataStructureByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataStructureByGUID(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions)" class="member-name-link">getDataStructureByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
  <a href="../search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a>&nbsp;getOptions)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the properties of a specific dataStructure.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataStructuresByName(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getDataStructuresByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataStructuresByName(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getDataStructuresByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of dataStructures with a particular name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkMemberDataField(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties)" class="member-name-link">linkMemberDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkMemberDataField(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties)" class="member-name-link">linkMemberDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
  <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/datadictionaries/MemberDataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">MemberDataFieldProperties</a>&nbsp;relationshipProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach a data field to a data structure.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSchemaTypeDefinition(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.SchemaTypeDefinitionProperties)" class="member-name-link">linkSchemaTypeDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
+ <a href="../properties/datadictionaries/SchemaTypeDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">SchemaTypeDefinitionProperties</a>&nbsp;relationshipProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach a data structure to the schema type that implements it.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDataStructure(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties)" class="member-name-link">updateDataStructure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
@@ -461,6 +476,52 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkSchemaTypeDefinition(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.SchemaTypeDefinitionProperties)">
+<h3>linkSchemaTypeDefinition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkSchemaTypeDefinition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
+ <a href="../properties/datadictionaries/SchemaTypeDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">SchemaTypeDefinitionProperties</a>&nbsp;relationshipProperties)</span>
+                              throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Attach a data structure to the schema type that implements it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataStructureGUID</code> - unique identifier of the data structure</dd>
+<dd><code>schemaTypeGUID</code> - unique identifier of the equivalent schema type</dd>
+<dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
+<dd><code>relationshipProperties</code> - description of the relationship.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachSchemaTypeDefinition(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
+<h3>detachSchemaTypeDefinition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachSchemaTypeDefinition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</span>
+                                throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Detach a data structure from the schema type that implemented it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataStructureGUID</code> - unique identifier of the data structure</dd>
+<dd><code>schemaTypeGUID</code> - unique identifier of the equivalent schema type</dd>
+<dd><code>deleteOptions</code> - options to control access to open metadata</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </section>
 </li>

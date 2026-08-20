@@ -120,28 +120,42 @@ loadScripts(document, 'script');</script>
 <div class="block">Unlink dependent digital products.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachProductManager(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachProductManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachDigitalProductDependency(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachDigitalProductDependency</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductDependencyRelationshipGUID,
+ <a href="../../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove a digital product dependency relationship.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachProductManager(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachProductManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductManagerRoleGUID,
  <a href="../../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Detach a product manager from a digital product.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkDigitalProductDependency(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkDigitalProductDependency</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkDigitalProductDependency(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkDigitalProductDependency</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumerDigitalProductGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumedDigitalProductGUID,
  <a href="../../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link two dependent digital products.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkProductManager(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkProductManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkProductManager(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkProductManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductManagerRoleGUID,
  <a href="../../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach a product manager to a digital product.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDigitalProductDependency(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateRelationshipRequestBody)" class="member-name-link">updateDigitalProductDependency</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductDependencyRelationshipGUID,
+ <a href="../../../../commonservices/ffdc/rest/UpdateRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the properties of a digital product dependency relationship.</div>
 </div>
 </div>
 </div>
@@ -179,7 +193,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="linkDigitalProductDependency(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
 <h3>linkDigitalProductDependency</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/digital-products/{consumerDigitalProductGUID}/product-dependencies/{consumedDigitalProductGUID}/attach")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkDigitalProductDependency</span><wbr><span class="parameters">(@PathVariable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">linkDigitalProductDependency</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumerDigitalProductGUID,
@@ -203,29 +217,50 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="detachDigitalProductDependency(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<section class="detail" id="updateDigitalProductDependency(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateRelationshipRequestBody)">
+<h3>updateDigitalProductDependency</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/digital-product-dependencies/{digitalProductDependencyRelationshipGUID}/update")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateDigitalProductDependency</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductDependencyRelationshipGUID,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/UpdateRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Update the properties of a digital product dependency relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>digitalProductDependencyRelationshipGUID</code> - unique identifier of the relationship</dd>
+<dd><code>requestBody</code> - properties for the request</dd>
+<dt>Returns:</dt>
+<dd>response object
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachDigitalProductDependency(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
 <h3>detachDigitalProductDependency</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/digital-products/{consumerDigitalProductGUID}/product-dependencies/{consumedDigitalProductGUID}/detach")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/digital-product-dependencies/{digitalProductDependencyRelationshipGUID}/detach")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachDigitalProductDependency</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumerDigitalProductGUID,
- @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumedDigitalProductGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductDependencyRelationshipGUID,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Unlink dependent digital products.</div>
+<div class="block">Remove a digital product dependency relationship.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>serverName</code> - name of called server</dd>
-<dd><code>consumerDigitalProductGUID</code> - unique identifier of the digital product that has the dependency.</dd>
-<dd><code>consumedDigitalProductGUID</code> - unique identifier of the digital product that it is using.</dd>
-<dd><code>requestBody</code> - description of the relationship.</dd>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>digitalProductDependencyRelationshipGUID</code> - unique identifier of the relationship</dd>
+<dd><code>requestBody</code> - properties for the request</dd>
 <dt>Returns:</dt>
-<dd>void or
-  InvalidParameterException  one of the parameters is null or invalid.
-  PropertyServerException    a problem retrieving information from the property server(s).
-  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+<dd>response object
+ InvalidParameterException  one of the parameters is invalid
+ UserNotAuthorizedException the user is not authorized to issue this request
+ PropertyServerException    a problem reported in the open metadata server(s)</dd>
 </dl>
 </section>
 </li>
@@ -280,6 +315,37 @@ loadScripts(document, 'script');</script>
   InvalidParameterException  one of the parameters is null or invalid.
   PropertyServerException    a problem retrieving information from the property server(s).
   UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachDigitalProductDependency(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<h3>detachDigitalProductDependency</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/digital-products/{consumerDigitalProductGUID}/product-dependencies/{consumedDigitalProductGUID}/detach")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">detachDigitalProductDependency</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumerDigitalProductGUID,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumedDigitalProductGUID,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Unlink dependent digital products.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>consumerDigitalProductGUID</code> - unique identifier of the digital product that has the dependency.</dd>
+<dd><code>consumedDigitalProductGUID</code> - unique identifier of the digital product that it is using.</dd>
+<dd><code>requestBody</code> - description of the relationship.</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+
+ This is a multi-link relationship, so this request removes every digital product dependency relationship
+ between the two elements.  Use the request that takes the relationship's own unique identifier to
+ remove just one of them.</dd>
 </dl>
 </section>
 </li>

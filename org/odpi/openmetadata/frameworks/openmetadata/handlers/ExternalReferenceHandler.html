@@ -158,12 +158,26 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach an element from its external document reference.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachExternalReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachExternalReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachCitedDocumentReference(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachCitedDocumentReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;citedDocumentLinkRelationshipGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove a cited document link relationship.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachExternalReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachExternalReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
  <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Detach an external reference from an element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachExternalReference(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachExternalReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceLinkRelationshipGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove a external reference link relationship.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachMediaReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachMediaReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -173,53 +187,68 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Detach an external media reference from an element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findExternalReferences(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findExternalReferences</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachMediaReference(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachMediaReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mediaReferenceRelationshipGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove a media reference relationship.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findExternalReferences(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findExternalReferences</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  <a href="../search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of external references metadata elements that contain the search string and show which solution components (if any) are attached to it.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalReferenceByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions)" class="member-name-link">getExternalReferenceByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalReferenceByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions)" class="member-name-link">getExternalReferenceByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
  <a href="../search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a>&nbsp;getOptions)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the properties of a specific external reference.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalReferencesByName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getExternalReferencesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalReferencesByName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getExternalReferencesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="../search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of external references with a particular name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkCitedDocumentReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.CitedDocumentLinkProperties)" class="member-name-link">linkCitedDocumentReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkCitedDocumentReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.CitedDocumentLinkProperties)" class="member-name-link">linkCitedDocumentReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
  <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/externalreferences/CitedDocumentLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">CitedDocumentLinkProperties</a>&nbsp;relationshipProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach an element to its external document reference.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkExternalReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties)" class="member-name-link">linkExternalReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkExternalReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties)" class="member-name-link">linkExternalReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
  <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/externalreferences/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">ExternalReferenceLinkProperties</a>&nbsp;relationshipProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach an external reference to an element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkMediaReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.MediaReferenceProperties)" class="member-name-link">linkMediaReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkMediaReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.MediaReferenceProperties)" class="member-name-link">linkMediaReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
  <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/externalreferences/MediaReferenceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">MediaReferenceProperties</a>&nbsp;relationshipProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach an external media reference to an element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCitedDocumentReference(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.CitedDocumentLinkProperties)" class="member-name-link">updateCitedDocumentReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;citedDocumentLinkRelationshipGUID,
+ <a href="../search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
+ <a href="../properties/externalreferences/CitedDocumentLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">CitedDocumentLinkProperties</a>&nbsp;relationshipProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the properties of a cited document link relationship.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateExternalReference(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties)" class="member-name-link">updateExternalReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -228,6 +257,22 @@ loadScripts(document, 'script');</script>
  <a href="../properties/externalreferences/ExternalReferenceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">ExternalReferenceProperties</a>&nbsp;properties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of an external reference.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateExternalReferenceLink(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties)" class="member-name-link">updateExternalReferenceLink</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceLinkRelationshipGUID,
+ <a href="../search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
+ <a href="../properties/externalreferences/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">ExternalReferenceLinkProperties</a>&nbsp;relationshipProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the properties of a external reference link relationship.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMediaReference(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.MediaReferenceProperties)" class="member-name-link">updateMediaReference</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mediaReferenceRelationshipGUID,
+ <a href="../search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
+ <a href="../properties/externalreferences/MediaReferenceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">MediaReferenceProperties</a>&nbsp;relationshipProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the properties of a media reference relationship.</div>
 </div>
 </div>
 </div>
@@ -365,12 +410,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="linkExternalReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties)">
 <h3>linkExternalReference</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkExternalReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">linkExternalReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
  <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/externalreferences/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">ExternalReferenceLinkProperties</a>&nbsp;relationshipProperties)</span>
-                           throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+                             throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Attach an external reference to an element.</div>
@@ -381,6 +426,8 @@ loadScripts(document, 'script');</script>
 <dd><code>externalReferenceGUID</code> - unique identifier of the external reference</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
 <dd><code>relationshipProperties</code> - description of the relationship.</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new relationship</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
@@ -389,21 +436,43 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="detachExternalReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
+<section class="detail" id="updateExternalReferenceLink(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties)">
+<h3>updateExternalReferenceLink</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateExternalReferenceLink</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceLinkRelationshipGUID,
+ <a href="../search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
+ <a href="../properties/externalreferences/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">ExternalReferenceLinkProperties</a>&nbsp;relationshipProperties)</span>
+                                 throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Update the properties of a external reference link relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of the user making the request</dd>
+<dd><code>externalReferenceLinkRelationshipGUID</code> - unique identifier of the relationship</dd>
+<dd><code>updateOptions</code> - provides a structure for the additional options when updating a relationship.</dd>
+<dd><code>relationshipProperties</code> - description of the relationship.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachExternalReference(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
 <h3>detachExternalReference</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachExternalReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceLinkRelationshipGUID,
  <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</span>
                              throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Detach an external reference from an element.</div>
+<div class="block">Remove a external reference link relationship.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of the user making the request.</dd>
-<dd><code>elementGUID</code> - unique identifier of the first external reference</dd>
-<dd><code>externalReferenceGUID</code> - unique identifier of the second external reference</dd>
+<dd><code>externalReferenceLinkRelationshipGUID</code> - unique identifier of the relationship</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
@@ -415,12 +484,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="linkMediaReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.MediaReferenceProperties)">
 <h3>linkMediaReference</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkMediaReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">linkMediaReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
  <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/externalreferences/MediaReferenceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">MediaReferenceProperties</a>&nbsp;relationshipProperties)</span>
-                        throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+                          throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Attach an external media reference to an element.</div>
@@ -431,6 +500,8 @@ loadScripts(document, 'script');</script>
 <dd><code>externalReferenceGUID</code> - unique identifier of the second external reference</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
 <dd><code>relationshipProperties</code> - description of the relationship.</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new relationship</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
@@ -439,21 +510,43 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="detachMediaReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
+<section class="detail" id="updateMediaReference(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.MediaReferenceProperties)">
+<h3>updateMediaReference</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateMediaReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mediaReferenceRelationshipGUID,
+ <a href="../search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
+ <a href="../properties/externalreferences/MediaReferenceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">MediaReferenceProperties</a>&nbsp;relationshipProperties)</span>
+                          throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Update the properties of a media reference relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of the user making the request</dd>
+<dd><code>mediaReferenceRelationshipGUID</code> - unique identifier of the relationship</dd>
+<dd><code>updateOptions</code> - provides a structure for the additional options when updating a relationship.</dd>
+<dd><code>relationshipProperties</code> - description of the relationship.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachMediaReference(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
 <h3>detachMediaReference</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachMediaReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mediaReferenceRelationshipGUID,
  <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</span>
                           throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Detach an external media reference from an element.</div>
+<div class="block">Remove a media reference relationship.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of the user making the request.</dd>
-<dd><code>elementGUID</code> - unique identifier of the first external reference</dd>
-<dd><code>externalReferenceGUID</code> - unique identifier of the second external reference</dd>
+<dd><code>mediaReferenceRelationshipGUID</code> - unique identifier of the relationship</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
@@ -465,12 +558,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="linkCitedDocumentReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.CitedDocumentLinkProperties)">
 <h3>linkCitedDocumentReference</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkCitedDocumentReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">linkCitedDocumentReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
  <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/externalreferences/CitedDocumentLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">CitedDocumentLinkProperties</a>&nbsp;relationshipProperties)</span>
-                                throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+                                  throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Attach an element to its external document reference.</div>
@@ -481,6 +574,8 @@ loadScripts(document, 'script');</script>
 <dd><code>externalReferenceGUID</code> - unique identifier of the external reference</dd>
 <dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
 <dd><code>relationshipProperties</code> - description of the relationship.</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new relationship</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
@@ -489,21 +584,43 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="detachCitedDocumentReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
+<section class="detail" id="updateCitedDocumentReference(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.CitedDocumentLinkProperties)">
+<h3>updateCitedDocumentReference</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateCitedDocumentReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;citedDocumentLinkRelationshipGUID,
+ <a href="../search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a>&nbsp;updateOptions,
+ <a href="../properties/externalreferences/CitedDocumentLinkProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences">CitedDocumentLinkProperties</a>&nbsp;relationshipProperties)</span>
+                                  throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Update the properties of a cited document link relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of the user making the request</dd>
+<dd><code>citedDocumentLinkRelationshipGUID</code> - unique identifier of the relationship</dd>
+<dd><code>updateOptions</code> - provides a structure for the additional options when updating a relationship.</dd>
+<dd><code>relationshipProperties</code> - description of the relationship.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachCitedDocumentReference(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
 <h3>detachCitedDocumentReference</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachCitedDocumentReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;citedDocumentLinkRelationshipGUID,
  <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</span>
                                   throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Detach an element from its external document reference.</div>
+<div class="block">Remove a cited document link relationship.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of the user making the request.</dd>
-<dd><code>elementGUID</code> - unique identifier of the element</dd>
-<dd><code>externalReferenceGUID</code> - unique identifier of the external reference</dd>
+<dd><code>citedDocumentLinkRelationshipGUID</code> - unique identifier of the relationship</dd>
 <dd><code>deleteOptions</code> - options to control access to open metadata</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
@@ -604,6 +721,90 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachCitedDocumentReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
+<h3>detachCitedDocumentReference</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachCitedDocumentReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</span>
+                                  throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Detach an element from its external document reference.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of the user making the request.</dd>
+<dd><code>elementGUID</code> - unique identifier of the element</dd>
+<dd><code>externalReferenceGUID</code> - unique identifier of the external reference</dd>
+<dd><code>deleteOptions</code> - options to control access to open metadata</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.
+
+ This is a multi-link relationship, so this request removes every cited document link relationship
+ between the two elements.  Use the request that takes the relationship's own unique identifier to
+ remove just one of them.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachExternalReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
+<h3>detachExternalReference</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachExternalReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</span>
+                             throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Detach an external reference from an element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of the user making the request.</dd>
+<dd><code>elementGUID</code> - unique identifier of the first external reference</dd>
+<dd><code>externalReferenceGUID</code> - unique identifier of the second external reference</dd>
+<dd><code>deleteOptions</code> - options to control access to open metadata</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.
+
+ This is a multi-link relationship, so this request removes every external reference link relationship
+ between the two elements.  Use the request that takes the relationship's own unique identifier to
+ remove just one of them.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachMediaReference(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
+<h3>detachMediaReference</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachMediaReference</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalReferenceGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</span>
+                          throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Detach an external media reference from an element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of the user making the request.</dd>
+<dd><code>elementGUID</code> - unique identifier of the first external reference</dd>
+<dd><code>externalReferenceGUID</code> - unique identifier of the second external reference</dd>
+<dd><code>deleteOptions</code> - options to control access to open metadata</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.
+
+ This is a multi-link relationship, so this request removes every media reference relationship
+ between the two elements.  Use the request that takes the relationship's own unique identifier to
+ remove just one of them.</dd>
 </dl>
 </section>
 </li>

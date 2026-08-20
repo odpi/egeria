@@ -149,8 +149,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the client.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftwarePlatformHandler()" class="member-name-link">getSoftwarePlatformHandler</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecretsCollectionHandler()" class="member-name-link">getSecretsCollectionHandler</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the client for maintaining the relationships attached to a secrets collection.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftwarePlatformHandler()" class="member-name-link">getSoftwarePlatformHandler</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the platform manager client.</div>
 </div>
 </div>
@@ -246,6 +251,17 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a></span>&nbsp;<span class="element-name">getConnectedAssetClient</span>()</div>
 <div class="block">Return the connected asset client.  This client is from Open Connector Framework (OCF) and is for retrieving information about
  assets and creating connectors.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>client</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSecretsCollectionHandler()">
+<h3>getSecretsCollectionHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></span>&nbsp;<span class="element-name">getSecretsCollectionHandler</span>()</div>
+<div class="block">Return the client for maintaining the relationships attached to a secrets collection.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>client</dd>

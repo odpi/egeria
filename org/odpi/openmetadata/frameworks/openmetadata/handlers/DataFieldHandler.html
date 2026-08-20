@@ -152,12 +152,28 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete a data field.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachNestedDataFields(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachNestedDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachLinkedDataField(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachLinkedDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldOneGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldTwoGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a data field from another data field that it was linked to.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachNestedDataFields(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachNestedDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentDataFieldGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedDataFieldGUID,
  <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Detach two data fields from one another.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachSchemaAttributeDefinition(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)" class="member-name-link">detachSchemaAttributeDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a data field from the schema attribute that implemented it.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findDataFields(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -181,13 +197,31 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the list of data fields with a particular name.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkNestedDataFields(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.NestedDataFieldProperties)" class="member-name-link">linkNestedDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkLinkedDataField(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.LinkedDataFieldProperties)" class="member-name-link">linkLinkedDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldOneGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldTwoGUID,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
+ <a href="../properties/datadictionaries/LinkedDataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">LinkedDataFieldProperties</a>&nbsp;relationshipProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach a data field to another data field that it is linked to.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkNestedDataFields(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.NestedDataFieldProperties)" class="member-name-link">linkNestedDataFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentDataFieldGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nestedDataFieldGUID,
  <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
  <a href="../properties/datadictionaries/NestedDataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">NestedDataFieldProperties</a>&nbsp;relationshipProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Connect two data fields as parent and child.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkSchemaAttributeDefinition(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.SchemaAttributeDefinitionProperties)" class="member-name-link">linkSchemaAttributeDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
+ <a href="../properties/datadictionaries/SchemaAttributeDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">SchemaAttributeDefinitionProperties</a>&nbsp;relationshipProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach a data field to the schema attribute that implements it.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDataField(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties)" class="member-name-link">updateDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -470,6 +504,106 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkLinkedDataField(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.LinkedDataFieldProperties)">
+<h3>linkLinkedDataField</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkLinkedDataField</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldOneGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldTwoGUID,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
+ <a href="../properties/datadictionaries/LinkedDataFieldProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">LinkedDataFieldProperties</a>&nbsp;relationshipProperties)</span>
+                         throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Attach a data field to another data field that it is linked to.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of the user making the request</dd>
+<dd><code>dataFieldOneGUID</code> - unique identifier of the data field that the link is from</dd>
+<dd><code>dataFieldTwoGUID</code> - unique identifier of the data field that the link is to</dd>
+<dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
+<dd><code>relationshipProperties</code> - description of the relationship.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachLinkedDataField(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
+<h3>detachLinkedDataField</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachLinkedDataField</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldOneGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldTwoGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</span>
+                           throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Detach a data field from another data field that it was linked to.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of the user making the request.</dd>
+<dd><code>dataFieldOneGUID</code> - unique identifier of the data field that the link is from</dd>
+<dd><code>dataFieldTwoGUID</code> - unique identifier of the data field that the link is to</dd>
+<dd><code>deleteOptions</code> - options to control access to open metadata</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkSchemaAttributeDefinition(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.SchemaAttributeDefinitionProperties)">
+<h3>linkSchemaAttributeDefinition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkSchemaAttributeDefinition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
+ <a href="../search/MakeAnchorOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MakeAnchorOptions</a>&nbsp;makeAnchorOptions,
+ <a href="../properties/datadictionaries/SchemaAttributeDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">SchemaAttributeDefinitionProperties</a>&nbsp;relationshipProperties)</span>
+                                   throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Attach a data field to the schema attribute that implements it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of the user making the request</dd>
+<dd><code>dataFieldGUID</code> - unique identifier of the data field</dd>
+<dd><code>schemaAttributeGUID</code> - unique identifier of the equivalent schema attribute</dd>
+<dd><code>makeAnchorOptions</code> - options to control access to open metadata</dd>
+<dd><code>relationshipProperties</code> - description of the relationship.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachSchemaAttributeDefinition(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions)">
+<h3>detachSchemaAttributeDefinition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachSchemaAttributeDefinition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFieldGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
+ <a href="../search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a>&nbsp;deleteOptions)</span>
+                                     throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Detach a data field from the schema attribute that implemented it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of the user making the request.</dd>
+<dd><code>dataFieldGUID</code> - unique identifier of the data field</dd>
+<dd><code>schemaAttributeGUID</code> - unique identifier of the equivalent schema attribute</dd>
+<dd><code>deleteOptions</code> - options to control access to open metadata</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </section>
 </li>
