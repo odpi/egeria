@@ -116,6 +116,89 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Data processing relationships
+# https://egeria-project.org/concepts/data-processing-description
 
+@childProcessingActionGUID=add guid here
+@elementGUID=add guid here
+@parentProcessingActionGUID=add guid here
 
+###
+# @name linkDataProcessingSpecification
+# Attach a data processing description to the element that performs the processing.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/privacy-officer/elements/{{elementGUID}}/data-processing-specifications/{{dataProcessingDescriptionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "DataProcessingSpecificationProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachDataProcessingSpecification
+# Detach a data processing description from the element that performed the processing.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/privacy-officer/elements/{{elementGUID}}/data-processing-specifications/{{dataProcessingDescriptionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkDetailedProcessingAction
+# Attach a child data processing action to its parent data processing action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/privacy-officer/data-processing-actions/{{parentProcessingActionGUID}}/detailed-processing-actions/{{childProcessingActionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "DetailedProcessingActionProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachDetailedProcessingAction
+# Detach a child data processing action from its parent data processing action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/privacy-officer/data-processing-actions/{{parentProcessingActionGUID}}/detailed-processing-actions/{{childProcessingActionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}

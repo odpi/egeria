@@ -2046,3 +2046,506 @@ Content-Type: application/json
   "startFrom": 0,
   "pageSize": 10
 }
+
+###
+# =====================================================================================================================
+# Asset structure relationships
+
+###
+# @name linkAPIEndpoint
+# Attach a deployed API to the endpoint where it is called.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param deployedAPIGUID unique identifier of the deployed API
+# @param endpointGUID unique identifier of the endpoint
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/deployed-apis/{{deployedAPIGUID}}/api-endpoints/{{endpointGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "APIEndpointProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachAPIEndpoint
+# Detach a deployed API from the endpoint where it is called.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param deployedAPIGUID unique identifier of the deployed API
+# @param endpointGUID unique identifier of the endpoint
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/deployed-apis/{{deployedAPIGUID}}/api-endpoints/{{endpointGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkProcessHierarchy
+# Attach a child process to its parent process.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param parentProcessGUID unique identifier of the parent process
+# @param childProcessGUID unique identifier of the child process
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/processes/{{parentProcessGUID}}/process-hierarchies/{{childProcessGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ProcessHierarchyProperties",
+    "containmentType": "OWNED",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachProcessHierarchy
+# Detach a child process from its parent process.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param parentProcessGUID unique identifier of the parent process
+# @param childProcessGUID unique identifier of the child process
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/processes/{{parentProcessGUID}}/process-hierarchies/{{childProcessGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkNestedFiles
+# Attach a data file to the file folder that it is stored in.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param folderGUID unique identifier of the file folder
+# @param fileGUID unique identifier of the data file that is stored in the folder
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/file-folders/{{folderGUID}}/nested-files/{{fileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "NestedFileProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachNestedFile
+# Detach a data file from the file folder that it is stored in.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param folderGUID unique identifier of the file folder
+# @param fileGUID unique identifier of the data file that is stored in the folder
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/file-folders/{{folderGUID}}/nested-files/{{fileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkLinkedFiles
+# Attach a data file to a file folder that links to it without storing it.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param folderGUID unique identifier of the file folder
+# @param fileGUID unique identifier of the data file that is linked to the folder
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/file-folders/{{folderGUID}}/linked-files/{{fileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "LinkedFileProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachLinkedFile
+# Detach a data file from a file folder that links to it without storing it.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param folderGUID unique identifier of the file folder
+# @param fileGUID unique identifier of the data file that is linked to the folder
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/file-folders/{{folderGUID}}/linked-files/{{fileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkFolderHierarchy
+# Attach a child file folder to its parent file folder.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param parentFolderGUID unique identifier of the parent file folder
+# @param childFolderGUID unique identifier of the child file folder
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/file-folders/{{parentFolderGUID}}/folder-hierarchies/{{childFolderGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "FolderHierarchyProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachFolderHierarchy
+# Detach a child file folder from its parent file folder.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param parentFolderGUID unique identifier of the parent file folder
+# @param childFolderGUID unique identifier of the child file folder
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/file-folders/{{parentFolderGUID}}/folder-hierarchies/{{childFolderGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkImpactedResource
+# Attach a resource that is impacted by an incident report to that incident report.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param resourceGUID unique identifier of the impacted resource
+# @param incidentReportGUID unique identifier of the incident report
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/resources/{{resourceGUID}}/impacted-resources/{{incidentReportGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ImpactedResourceProperties",
+    "severityLevel": 0,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachImpactedResource
+# Detach a resource from an incident report that no longer impacts it.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param resourceGUID unique identifier of the impacted resource
+# @param incidentReportGUID unique identifier of the incident report
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/resources/{{resourceGUID}}/impacted-resources/{{incidentReportGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Further asset relationships
+# https://egeria-project.org/concepts/asset
+
+@archiveFileGUID=add guid here
+@collectionGUID=add guid here
+@elementGUID=add guid here
+@linkedMediaFileGUID=add guid here
+@logAssetGUID=add guid here
+@mediaFileGUID=add guid here
+@portGUID=add guid here
+@processGUID=add guid here
+@sampleDataGUID=add guid here
+
+###
+# @name linkArchiveContents
+# Attach an archive file to the collection that describes its contents.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/archive-files/{{archiveFileGUID}}/archive-contents/{{collectionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ArchiveContentsProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachArchiveContents
+# Detach an archive file from the collection that described its contents.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/archive-files/{{archiveFileGUID}}/archive-contents/{{collectionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkAssociatedLog
+# Attach an asset that holds a log to the element that the log is about.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/elements/{{elementGUID}}/associated-logs/{{logAssetGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "AssociatedLogProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachAssociatedLog
+# Detach an asset that holds a log from the element that the log was about.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/elements/{{elementGUID}}/associated-logs/{{logAssetGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkLinkedMedia
+# Attach a media file to another media file that is related to it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/media-files/{{mediaFileGUID}}/linked-media/{{linkedMediaFileGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "LinkedMediaProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachLinkedMedia
+# Detach a media file from another media file that was related to it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/media-files/{{mediaFileGUID}}/linked-media/{{linkedMediaFileGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkProcessPort
+# Attach a port to the process that owns it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/processes/{{processGUID}}/ports/{{portGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ProcessPortProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachProcessPort
+# Detach a port from the process that owned it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/processes/{{processGUID}}/ports/{{portGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkSampleData
+# Attach an asset holding sample data to the element that the sample was taken from.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/elements/{{elementGUID}}/sample-data/{{sampleDataGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SampleDataProperties",
+    "samplingMethod": "add sampling method here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachSampleData
+# Detach an asset holding sample data from the element that the sample was taken from.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/elements/{{elementGUID}}/sample-data/{{sampleDataGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}

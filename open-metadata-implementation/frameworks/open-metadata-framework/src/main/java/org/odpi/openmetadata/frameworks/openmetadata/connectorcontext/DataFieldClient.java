@@ -19,6 +19,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
 import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.LinkedDataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.SchemaAttributeDefinitionProperties;
 
 /**
  * Provides services for connectors to work with data field elements.
@@ -272,5 +274,89 @@ public class DataFieldClient extends ConnectorContextClientBase
                                                                                             PropertyServerException
     {
         return dataFieldHandler.findDataFields(connectorUserId, searchString, searchOptions);
+    }
+
+
+    /**
+     * Attach a data field to another data field that it is linked to.
+     *
+     * @param dataFieldOneGUID unique identifier of the data field that the link is from
+     * @param dataFieldTwoGUID unique identifier of the data field that the link is to
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkLinkedDataField(String                     dataFieldOneGUID,
+                               String                     dataFieldTwoGUID,
+                               MakeAnchorOptions          makeAnchorOptions,
+                               LinkedDataFieldProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        dataFieldHandler.linkLinkedDataField(connectorUserId, dataFieldOneGUID, dataFieldTwoGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a data field from another data field that it was linked to.
+     *
+     * @param dataFieldOneGUID unique identifier of the data field that the link is from
+     * @param dataFieldTwoGUID unique identifier of the data field that the link is to
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachLinkedDataField(String        dataFieldOneGUID,
+                                 String        dataFieldTwoGUID,
+                                 DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        dataFieldHandler.detachLinkedDataField(connectorUserId, dataFieldOneGUID, dataFieldTwoGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach a data field to the schema attribute that implements it.
+     *
+     * @param dataFieldGUID unique identifier of the data field
+     * @param schemaAttributeGUID unique identifier of the equivalent schema attribute
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSchemaAttributeDefinition(String                               dataFieldGUID,
+                                         String                               schemaAttributeGUID,
+                                         MakeAnchorOptions                    makeAnchorOptions,
+                                         SchemaAttributeDefinitionProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException
+    {
+        dataFieldHandler.linkSchemaAttributeDefinition(connectorUserId, dataFieldGUID, schemaAttributeGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a data field from the schema attribute that implemented it.
+     *
+     * @param dataFieldGUID unique identifier of the data field
+     * @param schemaAttributeGUID unique identifier of the equivalent schema attribute
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSchemaAttributeDefinition(String        dataFieldGUID,
+                                           String        schemaAttributeGUID,
+                                           DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        dataFieldHandler.detachSchemaAttributeDefinition(connectorUserId, dataFieldGUID, schemaAttributeGUID, deleteOptions);
     }
 }

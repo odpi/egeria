@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.DesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.NestedDesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
@@ -2661,6 +2662,1029 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 response.setElements(handler.findDesignPatterns(userId, null, null));
             }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Concept model elements
+     */
+    /**
+     * Create a concept model element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return unique identifier of the newly created element or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createConceptModelElement(String                serverName,
+                                                  NewElementRequestBody requestBody)
+    {
+        final String methodName = "createConceptModelElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+                if (requestBody.getProperties() instanceof ConceptModelElementProperties conceptModelElementProperties)
+                {
+                    response.setGUID(handler.createConceptModelElement(userId,
+                                                         requestBody,
+                                                         requestBody.getInitialClassifications(),
+                                                         conceptModelElementProperties,
+                                                         requestBody.getParentRelationshipProperties()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ConceptModelElementProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Create a new metadata element to represent a concept model element using an existing metadata element as a template.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return unique identifier of the newly created element or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createConceptModelElementFromTemplate(String              serverName,
+                                                              TemplateRequestBody requestBody)
+    {
+        final String methodName = "createConceptModelElementFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.createConceptModelElementFromTemplate(userId,
+                                                                 requestBody,
+                                                                 requestBody.getTemplateGUID(),
+                                                                 requestBody.getReplacementProperties(),
+                                                                 requestBody.getReplacementClassifications(),
+                                                                 requestBody.getPlaceholderPropertyValues(),
+                                                                 requestBody.getParentRelationshipProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Update the properties of a concept model element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptModelElementGUID unique identifier of the concept model element
+     * @param requestBody properties for the request
+     *
+     * @return boolean - true if an update occurred or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public BooleanResponse updateConceptModelElement(String                   serverName,
+                                                     String                   conceptModelElementGUID,
+                                                     UpdateElementRequestBody requestBody)
+    {
+        final String methodName = "updateConceptModelElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+                if (requestBody.getProperties() instanceof ConceptModelElementProperties conceptModelElementProperties)
+                {
+                    response.setFlag(handler.updateConceptModelElement(userId, conceptModelElementGUID, requestBody, conceptModelElementProperties));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ConceptModelElementProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Delete a concept model element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptModelElementGUID unique identifier of the concept model element
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse deleteConceptModelElement(String                   serverName,
+                                                  String                   conceptModelElementGUID,
+                                                  DeleteElementRequestBody requestBody)
+    {
+        final String methodName = "deleteConceptModelElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            handler.deleteConceptModelElement(userId, conceptModelElementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Returns the list of concept model elements with a particular name.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return a list of elements or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getConceptModelElementsByName(String            serverName,
+                                                                          FilterRequestBody requestBody)
+    {
+        final String methodName = "getConceptModelElementsByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getConceptModelElementsByName(userId, requestBody.getFilter(), requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Retrieve the list of concept model element metadata elements that contain the search string.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return a list of elements or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findConceptModelElements(String                  serverName,
+                                                                     SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findConceptModelElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findConceptModelElements(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findConceptModelElements(userId, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Return the properties of a specific concept model element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptModelElementGUID unique identifier of the concept model element
+     * @param requestBody properties for the request
+     *
+     * @return matching element or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementResponse getConceptModelElementByGUID(String         serverName,
+                                                                        String         conceptModelElementGUID,
+                                                                        GetRequestBody requestBody)
+    {
+        final String methodName = "getConceptModelElementByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            response.setElement(handler.getConceptModelElementByGUID(userId, conceptModelElementGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Concept model relationships
+     */
+
+    /**
+     * Attach a concept model to the element whose concepts it describes.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element that the concept model describes
+     * @param conceptModelGUID unique identifier of the concept model
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkConceptDesign(String                     serverName,
+                                          String                     elementGUID,
+                                          String                     conceptModelGUID,
+                                          NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkConceptDesign";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkConceptDesign(userId, elementGUID, conceptModelGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ConceptDesignProperties properties)
+            {
+                handler.linkConceptDesign(userId, elementGUID, conceptModelGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkConceptDesign(userId, elementGUID, conceptModelGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ConceptDesignProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a concept model from the element whose concepts it described.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element that the concept model describes
+     * @param conceptModelGUID unique identifier of the concept model
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachConceptDesign(String                        serverName,
+                                            String                        elementGUID,
+                                            String                        conceptModelGUID,
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachConceptDesign";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            handler.detachConceptDesign(userId, elementGUID, conceptModelGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a concept bead to one of the ends of a concept bead relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptBeadRelationshipGUID unique identifier of the concept bead relationship
+     * @param conceptBeadGUID unique identifier of the concept bead at this end of the relationship
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkConceptBeadRelationshipEnd(String                     serverName,
+                                                       String                     conceptBeadRelationshipGUID,
+                                                       String                     conceptBeadGUID,
+                                                       NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkConceptBeadRelationshipEnd";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkConceptBeadRelationshipEnd(userId, conceptBeadRelationshipGUID, conceptBeadGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ConceptBeadRelationshipEndProperties properties)
+            {
+                handler.linkConceptBeadRelationshipEnd(userId, conceptBeadRelationshipGUID, conceptBeadGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkConceptBeadRelationshipEnd(userId, conceptBeadRelationshipGUID, conceptBeadGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ConceptBeadRelationshipEndProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a concept bead from one of the ends of a concept bead relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptBeadRelationshipGUID unique identifier of the concept bead relationship
+     * @param conceptBeadGUID unique identifier of the concept bead at this end of the relationship
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachConceptBeadRelationshipEnd(String                        serverName,
+                                                         String                        conceptBeadRelationshipGUID,
+                                                         String                        conceptBeadGUID,
+                                                         DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachConceptBeadRelationshipEnd";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            handler.detachConceptBeadRelationshipEnd(userId, conceptBeadRelationshipGUID, conceptBeadGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a concept bead attribute to the concept bead that acts as its type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptBeadAttributeGUID unique identifier of the concept bead attribute
+     * @param conceptBeadGUID unique identifier of the concept bead that provides the attribute's type
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkTypedByConceptBead(String                     serverName,
+                                               String                     conceptBeadAttributeGUID,
+                                               String                     conceptBeadGUID,
+                                               NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkTypedByConceptBead";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkTypedByConceptBead(userId, conceptBeadAttributeGUID, conceptBeadGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof TypedByConceptBeadProperties properties)
+            {
+                handler.linkTypedByConceptBead(userId, conceptBeadAttributeGUID, conceptBeadGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkTypedByConceptBead(userId, conceptBeadAttributeGUID, conceptBeadGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(TypedByConceptBeadProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a concept bead attribute from the concept bead that acted as its type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptBeadAttributeGUID unique identifier of the concept bead attribute
+     * @param conceptBeadGUID unique identifier of the concept bead that provides the attribute's type
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachTypedByConceptBead(String                        serverName,
+                                                 String                        conceptBeadAttributeGUID,
+                                                 String                        conceptBeadGUID,
+                                                 DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachTypedByConceptBead";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            handler.detachTypedByConceptBead(userId, conceptBeadAttributeGUID, conceptBeadGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a concept bead to the concept bead that it inherits from.
+     *
+     * @param serverName name of the server to route the request to
+     * @param inheritingBeadGUID unique identifier of the concept bead that inherits
+     * @param inheritedBeadGUID unique identifier of the concept bead that is inherited from
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkIsAConceptBead(String                     serverName,
+                                           String                     inheritingBeadGUID,
+                                           String                     inheritedBeadGUID,
+                                           NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkIsAConceptBead";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkIsAConceptBead(userId, inheritingBeadGUID, inheritedBeadGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof IsAConceptBeadProperties properties)
+            {
+                handler.linkIsAConceptBead(userId, inheritingBeadGUID, inheritedBeadGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkIsAConceptBead(userId, inheritingBeadGUID, inheritedBeadGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(IsAConceptBeadProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a concept bead from the concept bead that it inherited from.
+     *
+     * @param serverName name of the server to route the request to
+     * @param inheritingBeadGUID unique identifier of the concept bead that inherits
+     * @param inheritedBeadGUID unique identifier of the concept bead that is inherited from
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachIsAConceptBead(String                        serverName,
+                                             String                        inheritingBeadGUID,
+                                             String                        inheritedBeadGUID,
+                                             DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachIsAConceptBead";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            handler.detachIsAConceptBead(userId, inheritingBeadGUID, inheritedBeadGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a concept bead attribute to its parent concept bead.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptBeadGUID unique identifier of the parent concept bead
+     * @param conceptBeadAttributeGUID unique identifier of the concept bead attribute
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkConceptBeadAttributeLink(String                     serverName,
+                                                     String                     conceptBeadGUID,
+                                                     String                     conceptBeadAttributeGUID,
+                                                     NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkConceptBeadAttributeLink";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkConceptBeadAttributeLink(userId, conceptBeadGUID, conceptBeadAttributeGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ConceptBeadAttributeLinkProperties properties)
+            {
+                handler.linkConceptBeadAttributeLink(userId, conceptBeadGUID, conceptBeadAttributeGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkConceptBeadAttributeLink(userId, conceptBeadGUID, conceptBeadAttributeGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ConceptBeadAttributeLinkProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a concept bead attribute from its parent concept bead.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptBeadGUID unique identifier of the parent concept bead
+     * @param conceptBeadAttributeGUID unique identifier of the concept bead attribute
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachConceptBeadAttributeLink(String                        serverName,
+                                                       String                        conceptBeadGUID,
+                                                       String                        conceptBeadAttributeGUID,
+                                                       DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachConceptBeadAttributeLink";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            handler.detachConceptBeadAttributeLink(userId, conceptBeadGUID, conceptBeadAttributeGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a concept bead to a concept bead that extends it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param extendedBeadGUID unique identifier of the concept bead that is extended
+     * @param extensionBeadGUID unique identifier of the concept bead that provides the extension
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkConceptBeadExtension(String                     serverName,
+                                                 String                     extendedBeadGUID,
+                                                 String                     extensionBeadGUID,
+                                                 NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkConceptBeadExtension";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkConceptBeadExtension(userId, extendedBeadGUID, extensionBeadGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ConceptBeadExtensionProperties properties)
+            {
+                handler.linkConceptBeadExtension(userId, extendedBeadGUID, extensionBeadGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkConceptBeadExtension(userId, extendedBeadGUID, extensionBeadGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ConceptBeadExtensionProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a concept bead from a concept bead that extended it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param extendedBeadGUID unique identifier of the concept bead that is extended
+     * @param extensionBeadGUID unique identifier of the concept bead that provides the extension
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachConceptBeadExtension(String                        serverName,
+                                                   String                        extendedBeadGUID,
+                                                   String                        extensionBeadGUID,
+                                                   DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachConceptBeadExtension";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConceptModelElementHandler handler = instanceHandler.getConceptModelElementHandler(userId, serverName, methodName);
+
+            handler.detachConceptBeadExtension(userId, extendedBeadGUID, extensionBeadGUID, requestBody);
         }
         catch (Throwable error)
         {

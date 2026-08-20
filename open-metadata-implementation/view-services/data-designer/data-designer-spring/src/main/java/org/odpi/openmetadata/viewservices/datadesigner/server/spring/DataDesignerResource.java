@@ -1200,4 +1200,189 @@ public class DataDesignerResource
     {
         return restAPI.detachCertificationTypeToDataStructure(serverName, certificationTypeGUID, dataStructureGUID, requestBody);
     }
+
+    /**
+     * Attach a data field to another data field that it is linked to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param dataFieldOneGUID unique identifier of the data field that the link is from
+     * @param dataFieldTwoGUID unique identifier of the data field that the link is to
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-fields/{dataFieldOneGUID}/linked-data-fields/{dataFieldTwoGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkLinkedDataField",
+            description="Attach a data field to another data field that it is linked to.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-field"))
+
+    public VoidResponse linkLinkedDataField(@PathVariable String serverName,
+                                            @PathVariable String dataFieldOneGUID,
+                                            @PathVariable String dataFieldTwoGUID,
+                                            @RequestBody (required = false)
+                                            NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkLinkedDataField(serverName, dataFieldOneGUID, dataFieldTwoGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a data field from another data field that it was linked to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param dataFieldOneGUID unique identifier of the data field that the link is from
+     * @param dataFieldTwoGUID unique identifier of the data field that the link is to
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-fields/{dataFieldOneGUID}/linked-data-fields/{dataFieldTwoGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachLinkedDataField",
+            description="Detach a data field from another data field that it was linked to.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-field"))
+
+    public VoidResponse detachLinkedDataField(@PathVariable String serverName,
+                                              @PathVariable String dataFieldOneGUID,
+                                              @PathVariable String dataFieldTwoGUID,
+                                              @RequestBody (required = false)
+                                              DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachLinkedDataField(serverName, dataFieldOneGUID, dataFieldTwoGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a data field to the schema attribute that implements it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param dataFieldGUID unique identifier of the data field
+     * @param schemaAttributeGUID unique identifier of the equivalent schema attribute
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-fields/{dataFieldGUID}/schema-attribute-definitions/{schemaAttributeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkSchemaAttributeDefinition",
+            description="Attach a data field to the schema attribute that implements it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-field"))
+
+    public VoidResponse linkSchemaAttributeDefinition(@PathVariable String serverName,
+                                                      @PathVariable String dataFieldGUID,
+                                                      @PathVariable String schemaAttributeGUID,
+                                                      @RequestBody (required = false)
+                                                      NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSchemaAttributeDefinition(serverName, dataFieldGUID, schemaAttributeGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a data field from the schema attribute that implemented it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param dataFieldGUID unique identifier of the data field
+     * @param schemaAttributeGUID unique identifier of the equivalent schema attribute
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-fields/{dataFieldGUID}/schema-attribute-definitions/{schemaAttributeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSchemaAttributeDefinition",
+            description="Detach a data field from the schema attribute that implemented it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-field"))
+
+    public VoidResponse detachSchemaAttributeDefinition(@PathVariable String serverName,
+                                                        @PathVariable String dataFieldGUID,
+                                                        @PathVariable String schemaAttributeGUID,
+                                                        @RequestBody (required = false)
+                                                        DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSchemaAttributeDefinition(serverName, dataFieldGUID, schemaAttributeGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a data structure to the schema type that implements it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param dataStructureGUID unique identifier of the data structure
+     * @param schemaTypeGUID unique identifier of the equivalent schema type
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-structures/{dataStructureGUID}/schema-type-definitions/{schemaTypeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkSchemaTypeDefinition",
+            description="Attach a data structure to the schema type that implements it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-field"))
+
+    public VoidResponse linkSchemaTypeDefinition(@PathVariable String serverName,
+                                                 @PathVariable String dataStructureGUID,
+                                                 @PathVariable String schemaTypeGUID,
+                                                 @RequestBody (required = false)
+                                                 NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSchemaTypeDefinition(serverName, dataStructureGUID, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a data structure from the schema type that implemented it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param dataStructureGUID unique identifier of the data structure
+     * @param schemaTypeGUID unique identifier of the equivalent schema type
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-structures/{dataStructureGUID}/schema-type-definitions/{schemaTypeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSchemaTypeDefinition",
+            description="Detach a data structure from the schema type that implemented it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-field"))
+
+    public VoidResponse detachSchemaTypeDefinition(@PathVariable String serverName,
+                                                   @PathVariable String dataStructureGUID,
+                                                   @PathVariable String schemaTypeGUID,
+                                                   @RequestBody (required = false)
+                                                   DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSchemaTypeDefinition(serverName, dataStructureGUID, schemaTypeGUID, requestBody);
+    }
 }

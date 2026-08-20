@@ -280,3 +280,130 @@ Content-Type: application/json
   "metadataElementTypeName" : "SecurityGroup",
   "graphQueryDepth": 0
 }
+
+###
+# =====================================================================================================================
+# Secrets collection relationships
+# https://egeria-project.org/concepts/secrets-collection
+
+@secretsCollectionGUID=add guid here
+@securityAccessControlGUID=add guid here
+@securityListGUID=add guid here
+@userIdentityGUID=add guid here
+
+###
+# @name linkResourcePermissions
+# Attach a security access control to the secrets collection that defines it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/secrets-collections/{{secretsCollectionGUID}}/resource-permissions/{{securityAccessControlGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ResourcePermissionsProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachResourcePermissions
+# Detach a security access control from the secrets collection that defined it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/secrets-collections/{{secretsCollectionGUID}}/resource-permissions/{{securityAccessControlGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkSecretsCollectionSecurityList
+# Attach a security list to the secrets collection that lists it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/secrets-collections/{{secretsCollectionGUID}}/security-lists/{{securityListGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SecretsCollectionSecurityListProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachSecretsCollectionSecurityList
+# Detach a security list from the secrets collection that listed it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/secrets-collections/{{secretsCollectionGUID}}/security-lists/{{securityListGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkUserAccount
+# Attach a user identity to the secrets collection that configures its account.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/secrets-collections/{{secretsCollectionGUID}}/user-accounts/{{userIdentityGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "UserAccountProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachUserAccount
+# Detach a user identity from the secrets collection that configured its account.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/secrets-collections/{{secretsCollectionGUID}}/user-accounts/{{userIdentityGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}

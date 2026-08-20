@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
 import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaProperties;
 
 /**
  * Provides services for connectors to work with Schema Type elements.
@@ -328,5 +329,47 @@ public class SchemaTypeClient extends ConnectorContextClientBase
                                                                                              PropertyServerException
     {
         return schemaTypeHandler.findSchemaTypes(connectorUserId, searchString, searchOptions);
+    }
+
+
+    /**
+     * Attach a relational database schema type to the list that contains it.
+     *
+     * @param databaseSchemaTypeListGUID unique identifier of the relational database schema type list
+     * @param relationalDBSchemaTypeGUID unique identifier of the relational database schema type
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkRelationalDBSchema(String                        databaseSchemaTypeListGUID,
+                                  String                        relationalDBSchemaTypeGUID,
+                                  MakeAnchorOptions             makeAnchorOptions,
+                                  RelationalDBSchemaProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        schemaTypeHandler.linkRelationalDBSchema(connectorUserId, databaseSchemaTypeListGUID, relationalDBSchemaTypeGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a relational database schema type from the list that contained it.
+     *
+     * @param databaseSchemaTypeListGUID unique identifier of the relational database schema type list
+     * @param relationalDBSchemaTypeGUID unique identifier of the relational database schema type
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachRelationalDBSchema(String        databaseSchemaTypeListGUID,
+                                    String        relationalDBSchemaTypeGUID,
+                                    DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        schemaTypeHandler.detachRelationalDBSchema(connectorUserId, databaseSchemaTypeListGUID, relationalDBSchemaTypeGUID, deleteOptions);
     }
 }

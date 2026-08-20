@@ -1090,4 +1090,65 @@ public class GlossaryManagerResource
     {
         return restAPI.getGlossaryTermByGUID(serverName, glossaryTermGUID, requestBody);
     }
+
+    /**
+     * Attach a glossary term to an element that it is relevant to the context of.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the glossary term that describes the context
+     * @param contextElementGUID unique identifier of the element that the term is used in the context of
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossary-terms/{glossaryTermGUID}/used-in-contexts/{contextElementGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkUsedInContext",
+            description="Attach a glossary term to an element that it is relevant to the context of.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/glossary-term"))
+
+    public VoidResponse linkUsedInContext(@PathVariable String serverName,
+                                          @PathVariable String glossaryTermGUID,
+                                          @PathVariable String contextElementGUID,
+                                          @RequestBody (required = false)
+                                          NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkUsedInContext(serverName, glossaryTermGUID, contextElementGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a glossary term from an element that it was relevant to the context of.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the glossary term that describes the context
+     * @param contextElementGUID unique identifier of the element that the term is used in the context of
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossary-terms/{glossaryTermGUID}/used-in-contexts/{contextElementGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachUsedInContext",
+            description="Detach a glossary term from an element that it was relevant to the context of.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/glossary-term"))
+
+    public VoidResponse detachUsedInContext(@PathVariable String serverName,
+                                            @PathVariable String glossaryTermGUID,
+                                            @PathVariable String contextElementGUID,
+                                            @RequestBody (required = false)
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachUsedInContext(serverName, glossaryTermGUID, contextElementGUID, requestBody);
+    }
 }

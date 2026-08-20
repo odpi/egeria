@@ -223,7 +223,7 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
     public void linkAttributeForSchema(String                          schemaTypeGUID,
                                        String                          nestedSchemaAttributeGUID,
                                        MakeAnchorOptions               makeAnchorOptions,
-                                       NestedSchemaAttributeProperties relationshipProperties) throws InvalidParameterException,
+                                       AttributeForSchemaProperties    relationshipProperties) throws InvalidParameterException,
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
     {
@@ -351,10 +351,10 @@ public class SchemaAttributeClient extends ConnectorContextClientBase
      */
     public void linkMapFromSchemaType(String                      schemaElementGUID,
                                       String                      schemaTypeGUID,
-                                      MakeAnchorOptions           makeAnchorOptions,
-                                      MapToElementTypeProperties  relationshipProperties) throws InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException
+                                      MakeAnchorOptions            makeAnchorOptions,
+                                      MapFromElementTypeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
     {
         schemaAttributeHandler.linkMapFromSchemaType(connectorUserId, schemaElementGUID, schemaTypeGUID, makeAnchorOptions, relationshipProperties);
     }

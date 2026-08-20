@@ -1033,4 +1033,164 @@ public class GovernanceOfficerResource
     {
         return restAPI.detachApprovedPurpose(serverName, urlMarker, elementGUID, dataProcessingPurposeGUID, requestBody);
     }
+
+    /**
+     * Attach a certification type to the regulation that requires it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param regulationGUID unique identifier of the regulation
+     * @param certificationTypeGUID unique identifier of the certification type required by the regulation
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/regulations/{regulationGUID}/regulation-certification-types/{certificationTypeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkRegulationCertificationType",
+            description="Attach a certification type to the regulation that requires it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse linkRegulationCertificationType(@PathVariable String serverName,
+                                                        @PathVariable String urlMarker,
+                                                        @PathVariable String regulationGUID,
+                                                        @PathVariable String certificationTypeGUID,
+                                                        @RequestBody (required = false)
+                                                        NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkRegulationCertificationType(serverName, urlMarker, regulationGUID, certificationTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a certification type from the regulation that required it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param regulationGUID unique identifier of the regulation
+     * @param certificationTypeGUID unique identifier of the certification type required by the regulation
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/regulations/{regulationGUID}/regulation-certification-types/{certificationTypeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachRegulationCertificationType",
+            description="Detach a certification type from the regulation that required it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse detachRegulationCertificationType(@PathVariable String serverName,
+                                                          @PathVariable String urlMarker,
+                                                          @PathVariable String regulationGUID,
+                                                          @PathVariable String certificationTypeGUID,
+                                                          @RequestBody (required = false)
+                                                          DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachRegulationCertificationType(serverName, urlMarker, regulationGUID, certificationTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Attach an element to an exception type that excludes it from a requirement.  This is a multi-link relationship so a new relationship is always created and its unique identifier is returned.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that is excluded from the requirement
+     * @param exceptionTypeGUID unique identifier of the exception type
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/exceptions/{exceptionTypeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkException",
+            description="Attach an element to an exception type that excludes it from a requirement.  This is a multi-link relationship so a new relationship is always created and its unique identifier is returned.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public GUIDResponse linkException(@PathVariable String serverName,
+                                      @PathVariable String urlMarker,
+                                      @PathVariable String elementGUID,
+                                      @PathVariable String exceptionTypeGUID,
+                                      @RequestBody (required = false)
+                                      NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkException(serverName, urlMarker, elementGUID, exceptionTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a exception relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param exceptionGUID unique identifier of the relationship
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/exceptions/{exceptionGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateException",
+            description="Update the properties of a exception relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse updateException(@PathVariable String serverName,
+                                        @PathVariable String urlMarker,
+                                        @PathVariable String exceptionGUID,
+                                        @RequestBody (required = false)
+                                        UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateException(serverName, urlMarker, exceptionGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an element from an exception type that excluded it from a requirement.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param exceptionGUID unique identifier of the relationship
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/exceptions/{exceptionGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachException",
+            description="Detach an element from an exception type that excluded it from a requirement.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse detachException(@PathVariable String serverName,
+                                        @PathVariable String urlMarker,
+                                        @PathVariable String exceptionGUID,
+                                        @RequestBody (required = false)
+                                        DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachException(serverName, urlMarker, exceptionGUID, requestBody);
+    }
 }

@@ -186,27 +186,9 @@ public class ClassificationDef extends TypeDef
     public String toString()
     {
         return "ClassificationDef{" +
-                "name='" + name + '\'' +
-                ", validEntityDefs=" + validEntityDefs +
+                "validEntityDefs=" + validEntityDefs +
                 ", propagatable=" + propagatable +
-                ", superType=" + superType +
-                ", description='" + description + '\'' +
-                ", descriptionGUID='" + descriptionGUID + '\'' +
-                ", origin='" + origin + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", updatedBy='" + updatedBy + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", options=" + options +
-                ", externalStandardMappings=" + externalStandardMappings +
-                ", validInstanceStatusList=" + validInstanceStatusList +
-                ", initialStatus=" + initialStatus +
-                ", propertiesDefinition=" + propertiesDefinition +
-                ", version=" + version +
-                ", versionName='" + versionName + '\'' +
-                ", category=" + category +
-                ", guid='" + guid + '\'' +
-                '}';
+                "} " + super.toString();
     }
 
 

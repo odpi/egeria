@@ -18,6 +18,1033 @@ Content-Type: application/json
 
 > {% client.global.set("token", response.body); %}
 
+###
+# =====================================================================================================================
+# Work with Storage Volumes
+# https://egeria-project.org/concepts/storage-volume
 
+@storageVolumeGUID=add guid here
+@itInfrastructureGUID=add guid here
+@dataStoreGUID=add guid here
 
+###
+# @name createStorageVolume
+# Create a storage volume.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/storage-volumes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "properties": {
+    "class": "StorageVolumeProperties",
+    "qualifiedName": "StorageVolume::add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "storageCapacity": 0,
+    "units": "add units here",
+    "relativeUncertainty": 0,
+    "absoluteUncertainty": 0,
+    "additionalProperties": {
+      "property1": "propertyValue1",
+      "property2": "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createStorageVolumeFromTemplate
+# Create a new metadata element to represent a storage volume using an existing metadata element as a template.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/storage-volumes/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "templateGUID": "add guid here",
+  "placeholderPropertyValues": {
+    "placeholder1": "propertyValue1",
+    "placeholder2": "propertyValue2"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateStorageVolume
+# Update the properties of a storage volume.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/storage-volumes/{{storageVolumeGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "StorageVolumeProperties",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "storageCapacity": 0,
+    "units": "add units here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name deleteStorageVolume
+# Delete a storage volume.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/storage-volumes/{{storageVolumeGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadedDelete" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name getStorageVolumesByName
+# Returns the list of storage volumes with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/storage-volumes/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name findStorageVolumes
+# Retrieve the list of storage volume metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/storage-volumes/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getStorageVolumeByGUID
+# Return the properties of a specific storage volume.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/storage-volumes/{{storageVolumeGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkAttachedStorage
+# Attach a storage volume to the IT infrastructure that it provides storage for.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/it-infrastructure/{{itInfrastructureGUID}}/attached-storage/{{storageVolumeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "AttachedStorageProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachAttachedStorage
+# Detach a storage volume from the IT infrastructure that it provided storage for.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/it-infrastructure/{{itInfrastructureGUID}}/attached-storage/{{storageVolumeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkStoredOn
+# Attach a data store to the storage volume that its data is stored on.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/data-stores/{{dataStoreGUID}}/stored-on/{{storageVolumeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "StoredOnProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachStoredOn
+# Detach a data store from the storage volume that its data was stored on.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/data-stores/{{dataStoreGUID}}/stored-on/{{storageVolumeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Work with Networks and Network Gateways
+# https://egeria-project.org/concepts/network
+
+@networkGUID=add guid here
+@networkGatewayGUID=add guid here
+@networkGatewayLinkGUID=add guid here
+@endpointGUID=add guid here
+
+###
+# @name createNetwork
+# Create a network.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/networks
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "properties": {
+    "class": "NetworkProperties",
+    "qualifiedName": "Network::add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "deployedImplementationType": "add technology type here",
+    "identifier": "add identifier here",
+    "versionIdentifier": "add version here",
+    "additionalProperties": {
+      "property1": "propertyValue1"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createNetworkFromTemplate
+# Create a network from a template.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/networks/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "templateGUID": "add guid here",
+  "placeholderPropertyValues": {
+    "placeholder1": "propertyValue1"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateNetwork
+# Update the properties of a network.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/networks/{{networkGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "NetworkProperties",
+    "qualifiedName": "Network::add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "deployedImplementationType": "add technology type here",
+    "identifier": "add identifier here",
+    "versionIdentifier": "add version here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name deleteNetwork
+# Delete a network.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/networks/{{networkGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadedDelete" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name getNetworksByName
+# Returns the list of networks with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/networks/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name findNetworks
+# Retrieve the list of network metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/networks/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getNetworkByGUID
+# Return the properties of a specific network.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/networks/{{networkGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createNetworkGateway
+# Create a network gateway.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/network-gateways
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "properties": {
+    "class": "NetworkGatewayProperties",
+    "qualifiedName": "NetworkGateway::add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "deployedImplementationType": "add technology type here",
+    "version": "add version here",
+    "patchLevel": "add patch level here",
+    "source": "add source here",
+    "additionalProperties": {
+      "property1": "propertyValue1"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createNetworkGatewayFromTemplate
+# Create a network gateway from a template.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/network-gateways/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "templateGUID": "add guid here",
+  "placeholderPropertyValues": {
+    "placeholder1": "propertyValue1"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateNetworkGateway
+# Update the properties of a network gateway.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/network-gateways/{{networkGatewayGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "NetworkGatewayProperties",
+    "qualifiedName": "NetworkGateway::add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "deployedImplementationType": "add technology type here",
+    "version": "add version here",
+    "patchLevel": "add patch level here",
+    "source": "add source here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name deleteNetworkGateway
+# Delete a network gateway.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/network-gateways/{{networkGatewayGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadedDelete" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name getNetworkGatewaysByName
+# Returns the list of network gateways with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/network-gateways/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name findNetworkGateways
+# Retrieve the list of network gateway metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/network-gateways/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getNetworkGatewayByGUID
+# Return the properties of a specific network gateway.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/network-gateways/{{networkGatewayGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# ---------------------------------------------------------------------------------------------------------------------
+# VisibleEndpoint is a uni-link relationship - attach and detach are addressed by the two end GUIDs.
+
+###
+# @name linkVisibleEndpoint
+# Attach an endpoint to the network that it is visible in.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/endpoints/{{endpointGUID}}/visible-endpoints/{{networkGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "VisibleEndpointProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachVisibleEndpoint
+# Detach an endpoint from the network that it was visible in.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/endpoints/{{endpointGUID}}/visible-endpoints/{{networkGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# ---------------------------------------------------------------------------------------------------------------------
+# NetworkGatewayLink is a multi-link relationship - the attach always creates a new relationship and returns its GUID.
+# The update and detach operations are addressed by that relationship GUID, not by the two end GUIDs.
+
+###
+# @name linkNetworkGateway
+# Attach a network gateway to a network that it connects to.  Returns the new relationship GUID.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/network-gateways/{{networkGatewayGUID}}/network-gateway-links/{{networkGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "NetworkGatewayLinkProperties",
+    "label": "add label",
+    "description": "add description",
+    "externalEndpointAddress": "add external address here",
+    "internalEndpointAddress": "add internal address here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateNetworkGatewayLink
+# Update the properties of a network gateway link.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/network-gateway-links/{{networkGatewayLinkGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "NetworkGatewayLinkProperties",
+    "label": "add label",
+    "description": "add description",
+    "externalEndpointAddress": "add external address here",
+    "internalEndpointAddress": "add internal address here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachNetworkGateway
+# Detach a network gateway from a network that it connected to.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/network-gateway-links/{{networkGatewayLinkGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Work with Host Clusters
+# https://egeria-project.org/concepts/host
+
+@hostClusterGUID=add guid here
+@hostGUID=add guid here
+
+###
+# @name linkHostClusterMember
+# Attach a host to the host cluster that manages it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/host-clusters/{{hostClusterGUID}}/host-cluster-members/{{hostGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "HostClusterMemberProperties",
+    "memberRole": "add role of this host within the cluster",
+    "additionalProperties": {
+      "property1": "propertyValue1"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachHostClusterMember
+# Detach a host from the host cluster that managed it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/host-clusters/{{hostClusterGUID}}/host-cluster-members/{{hostGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Work with Operating Platforms and Software Packages
+# https://egeria-project.org/concepts/operating-platform
+
+@operatingPlatformGUID=add guid here
+@collectionGUID=add guid here
+@assetGUID=add guid here
+@elementGUID=add guid here
+
+###
+# @name createOperatingPlatform
+# Create an operating platform.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/operating-platforms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "properties": {
+    "class": "OperatingPlatformProperties",
+    "qualifiedName": "OperatingPlatform::add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "operatingSystem": "add operating system name here",
+    "operatingSystemPatchLevel": "add patch level here",
+    "byteOrdering": "BIG_ENDIAN",
+    "additionalProperties": {
+      "property1": "propertyValue1"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createOperatingPlatformFromTemplate
+# Create an operating platform from a template.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/operating-platforms/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "templateGUID": "add guid here",
+  "placeholderPropertyValues": {
+    "placeholder1": "propertyValue1"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateOperatingPlatform
+# Update the properties of an operating platform.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/operating-platforms/{{operatingPlatformGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "OperatingPlatformProperties",
+    "qualifiedName": "OperatingPlatform::add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "operatingSystem": "add operating system name here",
+    "operatingSystemPatchLevel": "add patch level here",
+    "byteOrdering": "BIG_ENDIAN",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name deleteOperatingPlatform
+# Delete an operating platform.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/operating-platforms/{{operatingPlatformGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadedDelete" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name getOperatingPlatformsByName
+# Returns the list of operating platforms with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/operating-platforms/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name findOperatingPlatforms
+# Retrieve the list of operating platform metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/operating-platforms/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getOperatingPlatformByGUID
+# Return the properties of a specific operating platform.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/operating-platforms/{{operatingPlatformGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkOperatingPlatformUse
+# Attach an operating platform to the IT infrastructure that it is installed on.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/operating-platforms/{{operatingPlatformGUID}}/operating-platform-use/{{itInfrastructureGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "OperatingPlatformUseProperties",
+    "installTime": "{{$isoTimestamp}}",
+    "deployer": "add deployer identifier here",
+    "deployerTypeName": "add deployer type name here",
+    "deployerPropertyName": "add deployer property name here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachOperatingPlatformUse
+# Detach an operating platform from the IT infrastructure that it was installed on.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/operating-platforms/{{operatingPlatformGUID}}/operating-platform-use/{{itInfrastructureGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkOperatingPlatformManifest
+# Attach an operating platform to the collection of software packages that it is packaged with.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/operating-platforms/{{operatingPlatformGUID}}/operating-platform-manifests/{{collectionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "OperatingPlatformManifestProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachOperatingPlatformManifest
+# Detach an operating platform from a collection of software packages that it was packaged with.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/operating-platforms/{{operatingPlatformGUID}}/operating-platform-manifests/{{collectionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkSoftwarePackageDependency
+# Attach an asset to the collection of software packages that it depends on when it is running.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/assets/{{assetGUID}}/software-package-dependencies/{{collectionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SoftwarePackageDependencyProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachSoftwarePackageDependency
+# Detach an asset from a collection of software packages that it no longer depends on.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/assets/{{assetGUID}}/software-package-dependencies/{{collectionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# ---------------------------------------------------------------------------------------------------------------------
+# SoftwarePackageManifest is a classification (valid on Referenceable), not a relationship.
+
+###
+# @name setSoftwarePackageManifest
+# Classify an element to indicate that it describes a list of software packages.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/elements/{{elementGUID}}/software-package-manifest
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "SoftwarePackageManifestProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearSoftwarePackageManifest
+# Remove the software package manifest designation from the element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/elements/{{elementGUID}}/software-package-manifest/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
 

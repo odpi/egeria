@@ -28,6 +28,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingSpecificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DetailedProcessingActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityListProperties;
 
 
 /**
@@ -1659,5 +1662,410 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         designGUID,
                                                         implementationResourceGUID,
                                                         deleteOptions);
+    }
+
+
+    /**
+     * Attach a certification type to the regulation that requires it.
+     *
+     * @param userId                 userId of the user making the request
+     * @param regulationGUID unique identifier of the regulation
+     * @param certificationTypeGUID unique identifier of the certification type required by the regulation
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkRegulationCertificationType(String                                 userId,
+                                                String                                 regulationGUID,
+                                                String                                 certificationTypeGUID,
+                                                MakeAnchorOptions                      makeAnchorOptions,
+                                                RegulationCertificationTypeProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                                      PropertyServerException,
+                                                                                                                      UserNotAuthorizedException
+    {
+        final String methodName            = "linkRegulationCertificationType";
+        final String end1GUIDParameterName = "regulationGUID";
+        final String end2GUIDParameterName = "certificationTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(regulationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(certificationTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.REGULATION_CERTIFICATION_TYPE.typeName,
+                                                        regulationGUID,
+                                                        certificationTypeGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a certification type from the regulation that required it.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param regulationGUID unique identifier of the regulation
+     * @param certificationTypeGUID unique identifier of the certification type required by the regulation
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachRegulationCertificationType(String        userId,
+                                                  String        regulationGUID,
+                                                  String        certificationTypeGUID,
+                                                  DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        final String methodName            = "detachRegulationCertificationType";
+        final String end1GUIDParameterName = "regulationGUID";
+        final String end2GUIDParameterName = "certificationTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(regulationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(certificationTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.REGULATION_CERTIFICATION_TYPE.typeName,
+                                                        regulationGUID,
+                                                        certificationTypeGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach an element to an exception type that excludes it from a requirement.  This is a multi-link relationship so a new relationship is always created and its unique identifier is returned.
+     *
+     * @param userId                 userId of the user making the request
+     * @param elementGUID unique identifier of the element that is excluded from the requirement
+     * @param exceptionTypeGUID unique identifier of the exception type
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String linkException(String               userId,
+                                String               elementGUID,
+                                String               exceptionTypeGUID,
+                                MakeAnchorOptions    makeAnchorOptions,
+                                ExceptionProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName            = "linkException";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "exceptionTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(exceptionTypeGUID, end2GUIDParameterName, methodName);
+
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.EXCEPTION_RELATIONSHIP.typeName,
+                                                               elementGUID,
+                                                               exceptionTypeGUID,
+                                                               makeAnchorOptions,
+                                                               relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Update the properties of a exception relationship.
+     *
+     * @param userId                 userId of the user making the request
+     * @param exceptionGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateException(String               userId,
+                                String               exceptionGUID,
+                                UpdateOptions        updateOptions,
+                                ExceptionProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName        = "updateException";
+        final String guidParameterName = "exceptionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(exceptionGUID, guidParameterName, methodName);
+
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     exceptionGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach an element from an exception type that excluded it from a requirement.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param exceptionGUID unique identifier of the relationship
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachException(String        userId,
+                                String        exceptionGUID,
+                                DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        final String methodName        = "detachException";
+        final String guidParameterName = "exceptionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(exceptionGUID, guidParameterName, methodName);
+
+        openMetadataClient.deleteRelationshipInStore(userId, exceptionGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach a data processing description to the element that performs the processing.
+     *
+     * @param userId                 userId of the user making the request
+     * @param elementGUID unique identifier of the element that performs the data processing
+     * @param dataProcessingDescriptionGUID unique identifier of the data processing description
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkDataProcessingSpecification(String                                 userId,
+                                                String                                 elementGUID,
+                                                String                                 dataProcessingDescriptionGUID,
+                                                MakeAnchorOptions                      makeAnchorOptions,
+                                                DataProcessingSpecificationProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                                      PropertyServerException,
+                                                                                                                      UserNotAuthorizedException
+    {
+        final String methodName            = "linkDataProcessingSpecification";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "dataProcessingDescriptionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataProcessingDescriptionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.DATA_PROCESSING_SPECIFICATION_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        dataProcessingDescriptionGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a data processing description from the element that performed the processing.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element that performs the data processing
+     * @param dataProcessingDescriptionGUID unique identifier of the data processing description
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDataProcessingSpecification(String        userId,
+                                                  String        elementGUID,
+                                                  String        dataProcessingDescriptionGUID,
+                                                  DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        final String methodName            = "detachDataProcessingSpecification";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "dataProcessingDescriptionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataProcessingDescriptionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.DATA_PROCESSING_SPECIFICATION_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        dataProcessingDescriptionGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a child data processing action to its parent data processing action.
+     *
+     * @param userId                 userId of the user making the request
+     * @param parentProcessingActionGUID unique identifier of the parent data processing action
+     * @param childProcessingActionGUID unique identifier of the child data processing action
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkDetailedProcessingAction(String                              userId,
+                                             String                              parentProcessingActionGUID,
+                                             String                              childProcessingActionGUID,
+                                             MakeAnchorOptions                   makeAnchorOptions,
+                                             DetailedProcessingActionProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                                PropertyServerException,
+                                                                                                                UserNotAuthorizedException
+    {
+        final String methodName            = "linkDetailedProcessingAction";
+        final String end1GUIDParameterName = "parentProcessingActionGUID";
+        final String end2GUIDParameterName = "childProcessingActionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(parentProcessingActionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(childProcessingActionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.DETAILED_PROCESSING_ACTION_RELATIONSHIP.typeName,
+                                                        parentProcessingActionGUID,
+                                                        childProcessingActionGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a child data processing action from its parent data processing action.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param parentProcessingActionGUID unique identifier of the parent data processing action
+     * @param childProcessingActionGUID unique identifier of the child data processing action
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDetailedProcessingAction(String        userId,
+                                               String        parentProcessingActionGUID,
+                                               String        childProcessingActionGUID,
+                                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName            = "detachDetailedProcessingAction";
+        final String end1GUIDParameterName = "parentProcessingActionGUID";
+        final String end2GUIDParameterName = "childProcessingActionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(parentProcessingActionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(childProcessingActionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.DETAILED_PROCESSING_ACTION_RELATIONSHIP.typeName,
+                                                        parentProcessingActionGUID,
+                                                        childProcessingActionGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a security list to a security access control that uses it.  AssociatedSecurityList is a multi-link
+     * relationship - the same access control may use the same security list for more than one operation - so this
+     * always creates a new relationship and returns its unique identifier.
+     *
+     * @param userId                 userId of the user making the request
+     * @param securityAccessControlGUID unique identifier of the security access control
+     * @param securityListGUID       unique identifier of the security list
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String linkAssociatedSecurityList(String                           userId,
+                                             String                           securityAccessControlGUID,
+                                             String                           securityListGUID,
+                                             MakeAnchorOptions                makeAnchorOptions,
+                                             AssociatedSecurityListProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException
+    {
+        final String methodName            = "linkAssociatedSecurityList";
+        final String end1GUIDParameterName = "securityAccessControlGUID";
+        final String end2GUIDParameterName = "securityListGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(securityAccessControlGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(securityListGUID, end2GUIDParameterName, methodName);
+
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.ASSOCIATED_SECURITY_LIST_RELATIONSHIP.typeName,
+                                                               securityAccessControlGUID,
+                                                               securityListGUID,
+                                                               makeAnchorOptions,
+                                                               relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Update the properties of an associated security list relationship.
+     *
+     * @param userId                 userId of the user making the request
+     * @param associatedSecurityListRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateAssociatedSecurityList(String                           userId,
+                                             String                           associatedSecurityListRelationshipGUID,
+                                             UpdateOptions                    updateOptions,
+                                             AssociatedSecurityListProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException
+    {
+        final String methodName        = "updateAssociatedSecurityList";
+        final String guidParameterName = "associatedSecurityListRelationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(associatedSecurityListRelationshipGUID, guidParameterName, methodName);
+
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     associatedSecurityListRelationshipGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove an associated security list relationship.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param associatedSecurityListRelationshipGUID unique identifier of the relationship
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAssociatedSecurityList(String        userId,
+                                             String        associatedSecurityListRelationshipGUID,
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        final String methodName        = "detachAssociatedSecurityList";
+        final String guidParameterName = "associatedSecurityListRelationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(associatedSecurityListRelationshipGUID, guidParameterName, methodName);
+
+        openMetadataClient.deleteRelationshipInStore(userId, associatedSecurityListRelationshipGUID, deleteOptions);
     }
 }

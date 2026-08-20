@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
 import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.SchemaTypeDefinitionProperties;
 
 /**
  * Provides services for connectors to work with data structure elements.
@@ -277,5 +278,47 @@ public class DataStructureClient extends ConnectorContextClientBase
                                                                                                 PropertyServerException
     {
         return dataStructureHandler.findDataStructures(connectorUserId, searchString, searchOptions);
+    }
+
+
+    /**
+     * Attach a data structure to the schema type that implements it.
+     *
+     * @param dataStructureGUID unique identifier of the data structure
+     * @param schemaTypeGUID unique identifier of the equivalent schema type
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSchemaTypeDefinition(String                          dataStructureGUID,
+                                    String                          schemaTypeGUID,
+                                    MakeAnchorOptions               makeAnchorOptions,
+                                    SchemaTypeDefinitionProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        dataStructureHandler.linkSchemaTypeDefinition(connectorUserId, dataStructureGUID, schemaTypeGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a data structure from the schema type that implemented it.
+     *
+     * @param dataStructureGUID unique identifier of the data structure
+     * @param schemaTypeGUID unique identifier of the equivalent schema type
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSchemaTypeDefinition(String        dataStructureGUID,
+                                      String        schemaTypeGUID,
+                                      DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        dataStructureHandler.detachSchemaTypeDefinition(connectorUserId, dataStructureGUID, schemaTypeGUID, deleteOptions);
     }
 }

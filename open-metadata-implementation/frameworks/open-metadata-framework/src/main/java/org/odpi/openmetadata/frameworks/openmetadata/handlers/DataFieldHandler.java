@@ -313,4 +313,146 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
     }
+
+
+    /**
+     * Attach a data field to another data field that it is linked to.
+     *
+     * @param userId                 userId of the user making the request
+     * @param dataFieldOneGUID unique identifier of the data field that the link is from
+     * @param dataFieldTwoGUID unique identifier of the data field that the link is to
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkLinkedDataField(String                     userId,
+                                    String                     dataFieldOneGUID,
+                                    String                     dataFieldTwoGUID,
+                                    MakeAnchorOptions          makeAnchorOptions,
+                                    LinkedDataFieldProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName            = "linkLinkedDataField";
+        final String end1GUIDParameterName = "dataFieldOneGUID";
+        final String end2GUIDParameterName = "dataFieldTwoGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataFieldOneGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataFieldTwoGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.LINKED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                        dataFieldOneGUID,
+                                                        dataFieldTwoGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a data field from another data field that it was linked to.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param dataFieldOneGUID unique identifier of the data field that the link is from
+     * @param dataFieldTwoGUID unique identifier of the data field that the link is to
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachLinkedDataField(String        userId,
+                                      String        dataFieldOneGUID,
+                                      String        dataFieldTwoGUID,
+                                      DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName            = "detachLinkedDataField";
+        final String end1GUIDParameterName = "dataFieldOneGUID";
+        final String end2GUIDParameterName = "dataFieldTwoGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataFieldOneGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataFieldTwoGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.LINKED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                        dataFieldOneGUID,
+                                                        dataFieldTwoGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a data field to the schema attribute that implements it.
+     *
+     * @param userId                 userId of the user making the request
+     * @param dataFieldGUID unique identifier of the data field
+     * @param schemaAttributeGUID unique identifier of the equivalent schema attribute
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSchemaAttributeDefinition(String                               userId,
+                                              String                               dataFieldGUID,
+                                              String                               schemaAttributeGUID,
+                                              MakeAnchorOptions                    makeAnchorOptions,
+                                              SchemaAttributeDefinitionProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName            = "linkSchemaAttributeDefinition";
+        final String end1GUIDParameterName = "dataFieldGUID";
+        final String end2GUIDParameterName = "schemaAttributeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataFieldGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(schemaAttributeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.typeName,
+                                                        dataFieldGUID,
+                                                        schemaAttributeGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a data field from the schema attribute that implemented it.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param dataFieldGUID unique identifier of the data field
+     * @param schemaAttributeGUID unique identifier of the equivalent schema attribute
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSchemaAttributeDefinition(String        userId,
+                                                String        dataFieldGUID,
+                                                String        schemaAttributeGUID,
+                                                DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName            = "detachSchemaAttributeDefinition";
+        final String end1GUIDParameterName = "dataFieldGUID";
+        final String end2GUIDParameterName = "schemaAttributeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataFieldGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(schemaAttributeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.typeName,
+                                                        dataFieldGUID,
+                                                        schemaAttributeGUID,
+                                                        deleteOptions);
+    }
 }

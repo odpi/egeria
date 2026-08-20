@@ -401,38 +401,57 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param consumedDigitalProductGUID unique identifier of the digital product that it is using.
      * @param makeAnchorOptions      options to control access to open metadata
      * @param relationshipProperties     description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkDigitalProductDependency(String                             consumerDigitalProductGUID,
+    public String linkDigitalProductDependency(String                             consumerDigitalProductGUID,
                                              String                             consumedDigitalProductGUID,
                                              MakeAnchorOptions                  makeAnchorOptions,
                                              DigitalProductDependencyProperties relationshipProperties) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException
     {
-        collectionHandler.linkDigitalProductDependency(connectorUserId, consumerDigitalProductGUID, consumedDigitalProductGUID, makeAnchorOptions, relationshipProperties);
+        return collectionHandler.linkDigitalProductDependency(connectorUserId, consumerDigitalProductGUID, consumedDigitalProductGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
     /**
-     * Unlink dependent products.
+     * Update the properties of a digital product dependency relationship.
      *
-     * @param consumerDigitalProductGUID unique identifier of the digital product that has the dependency.
-     * @param consumedDigitalProductGUID unique identifier of the digital product that it is using.
-     * @param deleteOptions              options to control access to open metadata
+     * @param digitalProductDependencyRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachDigitalProductDependency(String        consumerDigitalProductGUID,
-                                               String        consumedDigitalProductGUID,
-                                               DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+    public void updateDigitalProductDependency(String                              digitalProductDependencyRelationshipGUID,
+                                          UpdateOptions                       updateOptions,
+                                          DigitalProductDependencyProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException
     {
-        collectionHandler.detachDigitalProductDependency(connectorUserId, consumerDigitalProductGUID, consumedDigitalProductGUID, deleteOptions);
+        collectionHandler.updateDigitalProductDependency(connectorUserId, digitalProductDependencyRelationshipGUID, updateOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Remove a digital product dependency relationship.
+     *
+     * @param digitalProductDependencyRelationshipGUID unique identifier of the relationship
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDigitalProductDependency(String        digitalProductDependencyRelationshipGUID,
+                                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        collectionHandler.detachDigitalProductDependency(connectorUserId, digitalProductDependencyRelationshipGUID, deleteOptions);
     }
 
 
@@ -544,6 +563,26 @@ public class CollectionClient extends ConnectorContextClientBase
 
 
     /**
+     * Update the properties of an agreement actor relationship.
+     *
+     * @param agreementActorRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateAgreementActor(String                   agreementActorRelationshipGUID,
+                                     UpdateOptions            updateOptions,
+                                     AgreementActorProperties relationshipProperties) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        collectionHandler.updateAgreementActor(connectorUserId, agreementActorRelationshipGUID, updateOptions, relationshipProperties);
+    }
+
+
+    /**
      * Detach an actor from an agreement.
      *
      * @param agreementActorRelationshipGUID unique identifier of the element being described
@@ -568,38 +607,57 @@ public class CollectionClient extends ConnectorContextClientBase
      * @param agreementItemGUID      unique identifier of the agreement item
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkAgreementItem(String                  agreementGUID,
+    public String linkAgreementItem(String                  agreementGUID,
                                   String                  agreementItemGUID,
                                   MakeAnchorOptions       makeAnchorOptions,
                                   AgreementItemProperties relationshipProperties) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
-        collectionHandler.linkAgreementItem(connectorUserId, agreementGUID, agreementItemGUID, makeAnchorOptions, relationshipProperties);
+        return collectionHandler.linkAgreementItem(connectorUserId, agreementGUID, agreementItemGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
     /**
-     * Detach an agreement from an element involved in its definition.
+     * Update the properties of a agreement item relationship.
      *
-     * @param agreementGUID     unique identifier of the agreement
-     * @param agreementItemGUID unique identifier of the agreement item
-     * @param deleteOptions     options to control access to open metadata
+     * @param agreementItemRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachAgreementItem(String        agreementGUID,
-                                    String        agreementItemGUID,
-                                    DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+    public void updateAgreementItem(String                   agreementItemRelationshipGUID,
+                               UpdateOptions            updateOptions,
+                               AgreementItemProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
     {
-        collectionHandler.detachAgreementItem(connectorUserId, agreementGUID, agreementItemGUID, deleteOptions);
+        collectionHandler.updateAgreementItem(connectorUserId, agreementItemRelationshipGUID, updateOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Remove a agreement item relationship.
+     *
+     * @param agreementItemRelationshipGUID unique identifier of the relationship
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAgreementItem(String        agreementItemRelationshipGUID,
+                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        collectionHandler.detachAgreementItem(connectorUserId, agreementItemRelationshipGUID, deleteOptions);
     }
 
 
@@ -1337,5 +1395,51 @@ public class CollectionClient extends ConnectorContextClientBase
                                                                          UserNotAuthorizedException
     {
         collectionHandler.removeFromCollection(connectorUserId, collectionGUID, elementGUID, deleteOptions);
+    }
+
+    /**
+     * Detach an agreement from an element involved in its definition.
+     *
+     * @param agreementGUID     unique identifier of the agreement
+     * @param agreementItemGUID unique identifier of the agreement item
+     * @param deleteOptions     options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every agreement item relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public void detachAgreementItem(String        agreementGUID,
+                                    String        agreementItemGUID,
+                                    DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        collectionHandler.detachAgreementItem(connectorUserId, agreementGUID, agreementItemGUID, deleteOptions);
+    }
+
+    /**
+     * Unlink dependent products.
+     *
+     * @param consumerDigitalProductGUID unique identifier of the digital product that has the dependency.
+     * @param consumedDigitalProductGUID unique identifier of the digital product that it is using.
+     * @param deleteOptions              options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every digital product dependency relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public void detachDigitalProductDependency(String        consumerDigitalProductGUID,
+                                               String        consumedDigitalProductGUID,
+                                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        collectionHandler.detachDigitalProductDependency(connectorUserId, consumerDigitalProductGUID, consumedDigitalProductGUID, deleteOptions);
     }
 }

@@ -157,7 +157,10 @@ public class OpenMetadataTypesArchive
         /*
          * New types for this release
          */
-
+        update0010BaseModel();
+        update0710DigitalServices();
+        update0735SolutionPortsAndWires();
+        update0770LineageMapping();
     }
 
     /*
@@ -165,9 +168,138 @@ public class OpenMetadataTypesArchive
      */
 
 
+    private void update0010BaseModel()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateLineageRelationship());
+    }
+
+
+    /**
+     * LineageRelationship defines iscQualifiedName, which identifies the information supply chain that the
+     * relationship belongs to.  Where multiple information supply chains make use of the same dependency, there
+     * needs to be a separate relationship for each of them, so multiple relationships between the same two
+     * entities are permitted.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateLineageRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LINEAGE_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
+
+
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+
+    private void update0710DigitalServices()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDigitalProductDependencyRelationship());
+    }
+
+
+    /**
+     * DigitalProductDependency is a subtype of LineageRelationship and so inherits iscQualifiedName.  The same
+     * dependency between two digital products may be used by more than one information supply chain, and each
+     * needs its own relationship.  multiLink is not inherited from the super type, so it is set explicitly here.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDigitalProductDependencyRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0735SolutionPortsAndWires()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSolutionLinkingWireRelationship());
+    }
+
+
+    /**
+     * SolutionLinkingWire defines iscQualifiedNames, which lists the information supply chains that the wire
+     * belongs to.  The 6.1 patch that introduced this intended the relationship to be multiLink, but set
+     * multiLink without setting updateMultiLink, so the change was never applied.  That patch has already taken
+     * the type to version 2 in any repository that loaded the 6.1 types, so the correction is made here as a
+     * further patch rather than by amending the 6.1 patch in place.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateSolutionLinkingWireRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0770LineageMapping()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataMappingRelationship());
+    }
+
+
+    /**
+     * DataMapping is a subtype of LineageRelationship and so inherits iscQualifiedName.  The same mapping between
+     * two schema elements may be used by more than one information supply chain, and each needs its own
+     * relationship.  multiLink is not inherited from the super type, so it is set explicitly here.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDataMappingRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
 
 
     /*

@@ -81,26 +81,6 @@ public class EntityDef extends TypeDef
     @Override
     public String toString()
     {
-        return "EntityDef{" +
-                "name='" + getName() + '\'' +
-                ", superType=" + getSuperType() +
-                ", description='" + getDescription() + '\'' +
-                ", descriptionGUID='" + getDescriptionGUID() + '\'' +
-                ", descriptionGUID='" + getDescriptionWiki() + '\'' +
-                ", origin='" + getOrigin() + '\'' +
-                ", createdBy='" + getCreatedBy() + '\'' +
-                ", updatedBy='" + getUpdatedBy() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", updateTime=" + getUpdateTime() +
-                ", options=" + getOptions() +
-                ", externalStandardMappings=" + getExternalStandardMappings() +
-                ", validInstanceStatusList=" + getValidInstanceStatusList() +
-                ", initialStatus=" + getInitialStatus() +
-                ", propertiesDefinition=" + getPropertiesDefinition() +
-                ", category=" + getCategory() +
-                ", version=" + getVersion() +
-                ", versionName='" + getVersionName() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                '}';
+        return "EntityDef{} " + super.toString();
     }
 }

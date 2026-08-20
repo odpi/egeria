@@ -213,3 +213,49 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# ---------------------------------------------------------------------------------------------------------------------
+# digital product dependency is a multi-link relationship.  The attach above returns the new relationship's unique identifier;
+# these two requests act on that single relationship.  The detach that takes the two end GUIDs removes them all.
+
+@digitalProductDependencyRelationshipGUID=add guid here
+###
+# @name updateDigitalProductDependency
+# Update the properties of a digital product dependency relationship.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/digital-product-dependencies/{{digitalProductDependencyRelationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "DigitalProductDependencyProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachDigitalProductDependencyById
+# Remove a single digital product dependency relationship, identified by its own unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/digital-product-dependencies/{{digitalProductDependencyRelationshipGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+

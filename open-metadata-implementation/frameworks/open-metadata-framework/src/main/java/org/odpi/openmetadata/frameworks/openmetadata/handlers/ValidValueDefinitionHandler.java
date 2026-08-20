@@ -193,11 +193,12 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
      * @param elementGUID           unique identifier of the location
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkValidValueImplementation(String                              userId,
+    public String linkValidValueImplementation(String                              userId,
                                              String                              validValueDefinitionGUID,
                                              String                              elementGUID,
                                              MakeAnchorOptions               makeAnchorOptions,
@@ -213,47 +214,69 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(validValueDefinitionGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
 
-        openMetadataClient.createRelatedElementsInStore(userId,
+        return openMetadataClient.createRelatedElementsInStore(userId,
                                                         OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName,
                                                         validValueDefinitionGUID,
                                                         elementGUID,
-                                                        makeAnchorOptions,
-                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+                                                               makeAnchorOptions,
+                                                               relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
     /**
-     * Detach a valid value from an implementation - probably a referenceable.
+     * Update the properties of a valid values implementation relationship.
+     *
+     * @param userId                 userId of the user making the request
+     * @param validValuesImplementationRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateValidValueImplementation(String                               userId,
+                                               String                               validValuesImplementationRelationshipGUID,
+                                               UpdateOptions                        updateOptions,
+                                               ValidValuesImplementationProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                                   PropertyServerException,
+                                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName        = "updateValidValueImplementation";
+        final String guidParameterName = "validValuesImplementationRelationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(validValuesImplementationRelationshipGUID, guidParameterName, methodName);
+
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     validValuesImplementationRelationshipGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove a valid values implementation relationship.
      *
      * @param userId                 userId of the user making the request.
-     * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
-     * @param elementGUID           unique identifier of the location
+     * @param validValuesImplementationRelationshipGUID unique identifier of the relationship
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachValidValueImplementation(String        userId,
-                                               String        validValueDefinitionGUID,
-                                               String        elementGUID,
+                                               String        validValuesImplementationRelationshipGUID,
                                                DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
-        final String methodName = "detachValidValueImplementation";
-
-        final String end1GUIDParameterName = "validValueDefinitionGUID";
-        final String end2GUIDParameterName = "elementGUID";
+        final String methodName        = "detachValidValueImplementation";
+        final String guidParameterName = "validValuesImplementationRelationshipGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(validValueDefinitionGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValuesImplementationRelationshipGUID, guidParameterName, methodName);
 
-        openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName,
-                                                        validValueDefinitionGUID,
-                                                        elementGUID,
-                                                        deleteOptions);
+        openMetadataClient.deleteRelationshipInStore(userId, validValuesImplementationRelationshipGUID, deleteOptions);
     }
 
 
@@ -889,5 +912,43 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
         final String methodName  = "findValidValueDefinitions";
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
+    }
+
+    /**
+     * Detach a valid value from an implementation - probably a referenceable.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
+     * @param elementGUID           unique identifier of the location
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every valid values implementation relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public void detachValidValueImplementation(String        userId,
+                                               String        validValueDefinitionGUID,
+                                               String        elementGUID,
+                                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "detachValidValueImplementation";
+
+        final String end1GUIDParameterName = "validValueDefinitionGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(validValueDefinitionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName,
+                                                        validValueDefinitionGUID,
+                                                        elementGUID,
+                                                        deleteOptions);
     }
 }

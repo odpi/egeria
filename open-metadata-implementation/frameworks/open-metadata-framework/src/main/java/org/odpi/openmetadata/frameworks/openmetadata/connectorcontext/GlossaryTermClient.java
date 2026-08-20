@@ -697,4 +697,46 @@ public class GlossaryTermClient extends ConnectorContextClientBase
     {
         return glossaryTermHandler.findGlossaryTerms(connectorUserId, searchString, queryOptions);
     }
+
+
+    /**
+     * Attach a glossary term to an element that it is relevant to the context of.
+     *
+     * @param glossaryTermGUID unique identifier of the glossary term that describes the context
+     * @param contextElementGUID unique identifier of the element that the term is used in the context of
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkUsedInContext(String                   glossaryTermGUID,
+                             String                   contextElementGUID,
+                             MakeAnchorOptions        makeAnchorOptions,
+                             UsedInContextProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        glossaryTermHandler.linkUsedInContext(connectorUserId, glossaryTermGUID, contextElementGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a glossary term from an element that it was relevant to the context of.
+     *
+     * @param glossaryTermGUID unique identifier of the glossary term that describes the context
+     * @param contextElementGUID unique identifier of the element that the term is used in the context of
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachUsedInContext(String        glossaryTermGUID,
+                               String        contextElementGUID,
+                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        glossaryTermHandler.detachUsedInContext(connectorUserId, glossaryTermGUID, contextElementGUID, deleteOptions);
+    }
 }

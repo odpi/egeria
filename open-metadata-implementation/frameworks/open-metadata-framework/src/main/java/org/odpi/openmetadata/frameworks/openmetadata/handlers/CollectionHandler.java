@@ -815,11 +815,12 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param consumedDigitalProductGUID unique identifier of the digital product that it is using.
      * @param makeAnchorOptions      options to control access to open metadata
      * @param relationshipProperties     description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkDigitalProductDependency(String                             userId,
+    public String linkDigitalProductDependency(String                             userId,
                                              String                             consumerDigitalProductGUID,
                                              String                             consumedDigitalProductGUID,
                                              MakeAnchorOptions                  makeAnchorOptions,
@@ -835,47 +836,69 @@ public class CollectionHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(consumerDigitalProductGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(consumedDigitalProductGUID, end2GUIDParameterName, methodName);
 
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName,
-                                                        consumerDigitalProductGUID,
-                                                        consumedDigitalProductGUID,
-                                                        makeAnchorOptions,
-                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName,
+                                                               consumerDigitalProductGUID,
+                                                               consumedDigitalProductGUID,
+                                                               makeAnchorOptions,
+                                                               relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
     /**
-     * Unlink dependent products.
+     * Update the properties of a digital product dependency relationship.
      *
-     * @param userId                     userId of the user making the request.
-     * @param consumerDigitalProductGUID unique identifier of the digital product that has the dependency.
-     * @param consumedDigitalProductGUID unique identifier of the digital product that it is using.
-     * @param deleteOptions              options to control access to open metadata
+     * @param userId                 userId of the user making the request
+     * @param digitalProductDependencyRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachDigitalProductDependency(String userId,
-                                               String consumerDigitalProductGUID,
-                                               String consumedDigitalProductGUID,
-                                               DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+    public void updateDigitalProductDependency(String                              userId,
+                                               String                              digitalProductDependencyRelationshipGUID,
+                                               UpdateOptions                       updateOptions,
+                                               DigitalProductDependencyProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException
     {
-        final String methodName = "detachDigitalProductDependency";
-
-        final String end1GUIDParameterName = "consumerDigitalProductGUID";
-        final String end2GUIDParameterName = "consumedDigitalProductGUID";
+        final String methodName        = "updateDigitalProductDependency";
+        final String guidParameterName = "digitalProductDependencyRelationshipGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(consumerDigitalProductGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(consumedDigitalProductGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(digitalProductDependencyRelationshipGUID, guidParameterName, methodName);
 
-        openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName,
-                                                        consumerDigitalProductGUID,
-                                                        consumedDigitalProductGUID,
-                                                        deleteOptions);
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     digitalProductDependencyRelationshipGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove a digital product dependency relationship.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param digitalProductDependencyRelationshipGUID unique identifier of the relationship
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDigitalProductDependency(String        userId,
+                                               String        digitalProductDependencyRelationshipGUID,
+                                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName        = "detachDigitalProductDependency";
+        final String guidParameterName = "digitalProductDependencyRelationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(digitalProductDependencyRelationshipGUID, guidParameterName, methodName);
+
+        openMetadataClient.deleteRelationshipInStore(userId, digitalProductDependencyRelationshipGUID, deleteOptions);
     }
 
 
@@ -1062,6 +1085,37 @@ public class CollectionHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Update the properties of an agreement actor relationship.
+     *
+     * @param userId                 userId of the user making the request
+     * @param agreementActorRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateAgreementActor(String                   userId,
+                                     String                   agreementActorRelationshipGUID,
+                                     UpdateOptions            updateOptions,
+                                     AgreementActorProperties relationshipProperties) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName        = "updateAgreementActor";
+        final String guidParameterName = "agreementActorRelationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(agreementActorRelationshipGUID, guidParameterName, methodName);
+
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     agreementActorRelationshipGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getElementProperties(relationshipProperties));
+    }
+
+
+    /**
      * Detach an actor from an agreement.
      *
      * @param userId                         userId of the user making the request.
@@ -1098,11 +1152,12 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param agreementItemGUID      unique identifier of the agreement item
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkAgreementItem(String                  userId,
+    public String linkAgreementItem(String                  userId,
                                   String                  agreementGUID,
                                   String                  agreementItemGUID,
                                   MakeAnchorOptions       makeAnchorOptions,
@@ -1118,47 +1173,69 @@ public class CollectionHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(agreementGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(agreementItemGUID, end2GUIDParameterName, methodName);
 
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName,
-                                                        agreementGUID,
-                                                        agreementItemGUID,
-                                                        makeAnchorOptions,
-                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName,
+                                                               agreementGUID,
+                                                               agreementItemGUID,
+                                                               makeAnchorOptions,
+                                                               relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
     /**
-     * Detach an agreement from an element involved in its definition.
+     * Update the properties of a agreement item relationship.
      *
-     * @param userId            userId of the user making the request.
-     * @param agreementGUID     unique identifier of the agreement
-     * @param agreementItemGUID unique identifier of the agreement item
-     * @param deleteOptions     options to control access to open metadata
+     * @param userId                 userId of the user making the request
+     * @param agreementItemRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateAgreementItem(String                   userId,
+                                    String                   agreementItemRelationshipGUID,
+                                    UpdateOptions            updateOptions,
+                                    AgreementItemProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName        = "updateAgreementItem";
+        final String guidParameterName = "agreementItemRelationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(agreementItemRelationshipGUID, guidParameterName, methodName);
+
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     agreementItemRelationshipGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove a agreement item relationship.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param agreementItemRelationshipGUID unique identifier of the relationship
+     * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachAgreementItem(String        userId,
-                                    String        agreementGUID,
-                                    String        agreementItemGUID,
+                                    String        agreementItemRelationshipGUID,
                                     DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
-        final String methodName = "detachAgreementItem";
-
-        final String end1GUIDParameterName = "agreementGUID";
-        final String end2GUIDParameterName = "agreementItemGUID";
+        final String methodName        = "detachAgreementItem";
+        final String guidParameterName = "agreementItemRelationshipGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(agreementGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(agreementItemGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(agreementItemRelationshipGUID, guidParameterName, methodName);
 
-        openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName,
-                                                        agreementGUID,
-                                                        agreementItemGUID,
-                                                        deleteOptions);
+        openMetadataClient.deleteRelationshipInStore(userId, agreementItemRelationshipGUID, deleteOptions);
     }
 
 
@@ -2281,6 +2358,82 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                         collectionGUID,
                                                         elementGUID,
+                                                        deleteOptions);
+    }
+
+    /**
+     * Detach an agreement from an element involved in its definition.
+     *
+     * @param userId            userId of the user making the request.
+     * @param agreementGUID     unique identifier of the agreement
+     * @param agreementItemGUID unique identifier of the agreement item
+     * @param deleteOptions     options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every agreement item relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public void detachAgreementItem(String        userId,
+                                    String        agreementGUID,
+                                    String        agreementItemGUID,
+                                    DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        final String methodName = "detachAgreementItem";
+
+        final String end1GUIDParameterName = "agreementGUID";
+        final String end2GUIDParameterName = "agreementItemGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(agreementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(agreementItemGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName,
+                                                        agreementGUID,
+                                                        agreementItemGUID,
+                                                        deleteOptions);
+    }
+
+    /**
+     * Unlink dependent products.
+     *
+     * @param userId                     userId of the user making the request.
+     * @param consumerDigitalProductGUID unique identifier of the digital product that has the dependency.
+     * @param consumedDigitalProductGUID unique identifier of the digital product that it is using.
+     * @param deleteOptions              options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every digital product dependency relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public void detachDigitalProductDependency(String userId,
+                                               String consumerDigitalProductGUID,
+                                               String consumedDigitalProductGUID,
+                                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "detachDigitalProductDependency";
+
+        final String end1GUIDParameterName = "consumerDigitalProductGUID";
+        final String end2GUIDParameterName = "consumedDigitalProductGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(consumerDigitalProductGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(consumedDigitalProductGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName,
+                                                        consumerDigitalProductGUID,
+                                                        consumedDigitalProductGUID,
                                                         deleteOptions);
     }
 }

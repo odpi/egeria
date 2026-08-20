@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -146,6 +147,77 @@ public class CommunityHandler extends OpenMetadataHandlerBase
                                    updateOptions,
                                    properties,
                                    methodName);
+    }
+
+
+    /**
+     * Attach an actor to an element that they contributed to.
+     *
+     * @param userId                 userId of the user making the request
+     * @param elementGUID            unique identifier of the element that was contributed to
+     * @param contributorGUID        unique identifier of the actor that made the contribution
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkCrowdSourcingContribution(String                              userId,
+                                              String                              elementGUID,
+                                              String                              contributorGUID,
+                                              MakeAnchorOptions                   makeAnchorOptions,
+                                              CrowdSourcingContributionProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException
+    {
+        final String methodName            = "linkCrowdSourcingContribution";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "contributorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(contributorGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.CROWD_SOURCING_CONTRIBUTION_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        contributorGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach an actor from an element that they contributed to.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID            unique identifier of the element that was contributed to
+     * @param contributorGUID        unique identifier of the actor that made the contribution
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachCrowdSourcingContribution(String        userId,
+                                                String        elementGUID,
+                                                String        contributorGUID,
+                                                DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName            = "detachCrowdSourcingContribution";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "contributorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(contributorGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.CROWD_SOURCING_CONTRIBUTION_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        contributorGUID,
+                                                        deleteOptions);
     }
 
 

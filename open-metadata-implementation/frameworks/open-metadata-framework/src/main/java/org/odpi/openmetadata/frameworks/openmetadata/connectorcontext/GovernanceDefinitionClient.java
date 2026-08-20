@@ -22,6 +22,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
 import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingSpecificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DetailedProcessingActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityListProperties;
 
 /**
  * Provides services for connectors to work with governance definition elements.
@@ -945,5 +948,254 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
                                                                                                        PropertyServerException
     {
         return governanceDefinitionHandler.findGovernanceDefinitions(connectorUserId, searchString, searchOptions);
+    }
+
+
+    /**
+     * Attach a certification type to the regulation that requires it.
+     *
+     * @param regulationGUID unique identifier of the regulation
+     * @param certificationTypeGUID unique identifier of the certification type required by the regulation
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkRegulationCertificationType(String                                 regulationGUID,
+                                           String                                 certificationTypeGUID,
+                                           MakeAnchorOptions                      makeAnchorOptions,
+                                           RegulationCertificationTypeProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.linkRegulationCertificationType(connectorUserId, regulationGUID, certificationTypeGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a certification type from the regulation that required it.
+     *
+     * @param regulationGUID unique identifier of the regulation
+     * @param certificationTypeGUID unique identifier of the certification type required by the regulation
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachRegulationCertificationType(String        regulationGUID,
+                                             String        certificationTypeGUID,
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.detachRegulationCertificationType(connectorUserId, regulationGUID, certificationTypeGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach an element to an exception type that excludes it from a requirement.  This is a multi-link relationship so a new relationship is always created and its unique identifier is returned.
+     *
+     * @param elementGUID unique identifier of the element that is excluded from the requirement
+     * @param exceptionTypeGUID unique identifier of the exception type
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String linkException(String               elementGUID,
+                           String               exceptionTypeGUID,
+                           MakeAnchorOptions    makeAnchorOptions,
+                           ExceptionProperties  relationshipProperties) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        return governanceDefinitionHandler.linkException(connectorUserId, elementGUID, exceptionTypeGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Update the properties of a exception relationship.
+     *
+     * @param exceptionGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateException(String               exceptionGUID,
+                           UpdateOptions        updateOptions,
+                           ExceptionProperties  relationshipProperties) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.updateException(connectorUserId, exceptionGUID, updateOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach an element from an exception type that excluded it from a requirement.
+     *
+     * @param exceptionGUID unique identifier of the relationship
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachException(String        exceptionGUID,
+                           DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.detachException(connectorUserId, exceptionGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach a data processing description to the element that performs the processing.
+     *
+     * @param elementGUID unique identifier of the element that performs the data processing
+     * @param dataProcessingDescriptionGUID unique identifier of the data processing description
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkDataProcessingSpecification(String                                 elementGUID,
+                                           String                                 dataProcessingDescriptionGUID,
+                                           MakeAnchorOptions                      makeAnchorOptions,
+                                           DataProcessingSpecificationProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.linkDataProcessingSpecification(connectorUserId, elementGUID, dataProcessingDescriptionGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a data processing description from the element that performed the processing.
+     *
+     * @param elementGUID unique identifier of the element that performs the data processing
+     * @param dataProcessingDescriptionGUID unique identifier of the data processing description
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDataProcessingSpecification(String        elementGUID,
+                                             String        dataProcessingDescriptionGUID,
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.detachDataProcessingSpecification(connectorUserId, elementGUID, dataProcessingDescriptionGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach a child data processing action to its parent data processing action.
+     *
+     * @param parentProcessingActionGUID unique identifier of the parent data processing action
+     * @param childProcessingActionGUID unique identifier of the child data processing action
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkDetailedProcessingAction(String                              parentProcessingActionGUID,
+                                        String                              childProcessingActionGUID,
+                                        MakeAnchorOptions                   makeAnchorOptions,
+                                        DetailedProcessingActionProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.linkDetailedProcessingAction(connectorUserId, parentProcessingActionGUID, childProcessingActionGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a child data processing action from its parent data processing action.
+     *
+     * @param parentProcessingActionGUID unique identifier of the parent data processing action
+     * @param childProcessingActionGUID unique identifier of the child data processing action
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDetailedProcessingAction(String        parentProcessingActionGUID,
+                                          String        childProcessingActionGUID,
+                                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.detachDetailedProcessingAction(connectorUserId, parentProcessingActionGUID, childProcessingActionGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach a security list to a security access control that uses it.  AssociatedSecurityList is a multi-link
+     * relationship so this always creates a new relationship and returns its unique identifier.
+     *
+     * @param securityAccessControlGUID unique identifier of the security access control
+     * @param securityListGUID       unique identifier of the security list
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String linkAssociatedSecurityList(String                           securityAccessControlGUID,
+                                             String                           securityListGUID,
+                                             MakeAnchorOptions                makeAnchorOptions,
+                                             AssociatedSecurityListProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException
+    {
+        return governanceDefinitionHandler.linkAssociatedSecurityList(connectorUserId, securityAccessControlGUID, securityListGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Update the properties of an associated security list relationship.
+     *
+     * @param associatedSecurityListRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateAssociatedSecurityList(String                           associatedSecurityListRelationshipGUID,
+                                             UpdateOptions                    updateOptions,
+                                             AssociatedSecurityListProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.updateAssociatedSecurityList(connectorUserId, associatedSecurityListRelationshipGUID, updateOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Remove an associated security list relationship.
+     *
+     * @param associatedSecurityListRelationshipGUID unique identifier of the relationship
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAssociatedSecurityList(String        associatedSecurityListRelationshipGUID,
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.detachAssociatedSecurityList(connectorUserId, associatedSecurityListRelationshipGUID, deleteOptions);
     }
 }

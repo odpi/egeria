@@ -35,6 +35,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.DeployedAPIProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.NestedSchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
@@ -1255,12 +1256,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
 
         groupGUID = schemaAttributeClient.createSchemaAttribute(newElementOptions, initialClassifications, properties, null);
 
-        /*
-         * linkAttributeForSchema always creates an AttributeForSchema relationship regardless of the properties
-         * bean class supplied - its parameter type is NestedSchemaAttributeProperties only because that class
-         * happens to share the same position/cardinality base properties (PartOfRelationshipProperties) needed here.
-         */
-        NestedSchemaAttributeProperties relationshipProperties = new NestedSchemaAttributeProperties();
+        AttributeForSchemaProperties relationshipProperties = new AttributeForSchemaProperties();
 
         relationshipProperties.setPosition(position);
 
@@ -1348,12 +1344,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
 
         if (parentIsSchemaType)
         {
-            /*
-             * linkAttributeForSchema always creates an AttributeForSchema relationship regardless of the properties
-             * bean class supplied - its parameter type is NestedSchemaAttributeProperties only because that class
-             * happens to share the same position/cardinality base properties (PartOfRelationshipProperties) needed here.
-             */
-            NestedSchemaAttributeProperties relationshipProperties = new NestedSchemaAttributeProperties();
+            AttributeForSchemaProperties relationshipProperties = new AttributeForSchemaProperties();
 
             relationshipProperties.setPosition(position);
 

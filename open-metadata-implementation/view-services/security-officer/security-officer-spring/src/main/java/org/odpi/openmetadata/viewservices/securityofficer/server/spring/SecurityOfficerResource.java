@@ -9,14 +9,7 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.UserAccountResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SecurityAccessControlRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SecurityAccessControlResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
 import org.odpi.openmetadata.viewservices.securityofficer.server.SecurityOfficerRESTServices;
@@ -295,5 +288,279 @@ public class SecurityOfficerResource
         return restAPI.detachGovernanceZones(serverName, governanceZoneGUID, nestedGovernanceZoneGUID, requestBody);
     }
 
+    /**
+     * Attach a security access control to the secrets collection that defines it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param securityAccessControlGUID unique identifier of the security access control
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/secrets-collections/{secretsCollectionGUID}/resource-permissions/{securityAccessControlGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="linkResourcePermissions",
+            description="Attach a security access control to the secrets collection that defines it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/secrets-collection"))
+
+    public VoidResponse linkResourcePermissions(@PathVariable String serverName,
+                                                @PathVariable String secretsCollectionGUID,
+                                                @PathVariable String securityAccessControlGUID,
+                                                @RequestBody (required = false)
+                                                NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkResourcePermissions(serverName, secretsCollectionGUID, securityAccessControlGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a security access control from the secrets collection that defined it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param securityAccessControlGUID unique identifier of the security access control
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/secrets-collections/{secretsCollectionGUID}/resource-permissions/{securityAccessControlGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachResourcePermissions",
+            description="Detach a security access control from the secrets collection that defined it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/secrets-collection"))
+
+    public VoidResponse detachResourcePermissions(@PathVariable String serverName,
+                                                  @PathVariable String secretsCollectionGUID,
+                                                  @PathVariable String securityAccessControlGUID,
+                                                  @RequestBody (required = false)
+                                                  DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachResourcePermissions(serverName, secretsCollectionGUID, securityAccessControlGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a security list to the secrets collection that lists it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param securityListGUID unique identifier of the security list
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/secrets-collections/{secretsCollectionGUID}/security-lists/{securityListGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkSecretsCollectionSecurityList",
+            description="Attach a security list to the secrets collection that lists it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/secrets-collection"))
+
+    public VoidResponse linkSecretsCollectionSecurityList(@PathVariable String serverName,
+                                                          @PathVariable String secretsCollectionGUID,
+                                                          @PathVariable String securityListGUID,
+                                                          @RequestBody (required = false)
+                                                          NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSecretsCollectionSecurityList(serverName, secretsCollectionGUID, securityListGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a security list from the secrets collection that listed it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param securityListGUID unique identifier of the security list
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/secrets-collections/{secretsCollectionGUID}/security-lists/{securityListGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSecretsCollectionSecurityList",
+            description="Detach a security list from the secrets collection that listed it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/secrets-collection"))
+
+    public VoidResponse detachSecretsCollectionSecurityList(@PathVariable String serverName,
+                                                            @PathVariable String secretsCollectionGUID,
+                                                            @PathVariable String securityListGUID,
+                                                            @RequestBody (required = false)
+                                                            DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSecretsCollectionSecurityList(serverName, secretsCollectionGUID, securityListGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a user identity to the secrets collection that configures its account.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param userIdentityGUID unique identifier of the user identity
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/secrets-collections/{secretsCollectionGUID}/user-accounts/{userIdentityGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkUserAccount",
+            description="Attach a user identity to the secrets collection that configures its account.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/secrets-collection"))
+
+    public VoidResponse linkUserAccount(@PathVariable String serverName,
+                                        @PathVariable String secretsCollectionGUID,
+                                        @PathVariable String userIdentityGUID,
+                                        @RequestBody (required = false)
+                                        NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkUserAccount(serverName, secretsCollectionGUID, userIdentityGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a user identity from the secrets collection that configured its account.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param userIdentityGUID unique identifier of the user identity
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/secrets-collections/{secretsCollectionGUID}/user-accounts/{userIdentityGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachUserAccount",
+            description="Detach a user identity from the secrets collection that configured its account.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/secrets-collection"))
+
+    public VoidResponse detachUserAccount(@PathVariable String serverName,
+                                          @PathVariable String secretsCollectionGUID,
+                                          @PathVariable String userIdentityGUID,
+                                          @RequestBody (required = false)
+                                          DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachUserAccount(serverName, secretsCollectionGUID, userIdentityGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a security list to a security access control that uses it.  This multi-link relationship always creates a new relationship and returns its unique identifier.
+     *
+     * @param serverName name of the server to route the request to
+     * @param securityAccessControlGUID unique identifier of the security access control
+     * @param securityListGUID unique identifier of the security list
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/security-access-controls/{securityAccessControlGUID}/associated-security-lists/{securityListGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkAssociatedSecurityList",
+            description="Attach a security list to a security access control that uses it.  This multi-link relationship always creates a new relationship and returns its unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/security-access-control"))
+
+    public GUIDResponse linkAssociatedSecurityList(@PathVariable String serverName,
+                                                   @PathVariable String securityAccessControlGUID,
+                                                   @PathVariable String securityListGUID,
+                                                   @RequestBody (required = false)
+                                                   NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkAssociatedSecurityList(serverName, securityAccessControlGUID, securityListGUID, requestBody);
+    }
+
+
+
+    /**
+     * Update the properties of an associated security list relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param associatedSecurityListRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/associated-security-lists/{associatedSecurityListRelationshipGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateAssociatedSecurityList",
+            description="Update the properties of an associated security list relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/security-access-control"))
+
+    public VoidResponse updateAssociatedSecurityList(@PathVariable String serverName,
+                                                     @PathVariable String associatedSecurityListRelationshipGUID,
+                                                     @RequestBody (required = false)
+                                                     UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateAssociatedSecurityList(serverName, associatedSecurityListRelationshipGUID, requestBody);
+    }
+
+
+
+    /**
+     * Remove an associated security list relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param associatedSecurityListRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/associated-security-lists/{associatedSecurityListRelationshipGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachAssociatedSecurityList",
+            description="Remove an associated security list relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/security-access-control"))
+
+    public VoidResponse detachAssociatedSecurityList(@PathVariable String serverName,
+                                                     @PathVariable String associatedSecurityListRelationshipGUID,
+                                                     @RequestBody (required = false)
+                                                     DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachAssociatedSecurityList(serverName, associatedSecurityListRelationshipGUID, requestBody);
+    }
 }

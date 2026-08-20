@@ -15,6 +15,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.D
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.PermittedProcessingProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingSpecificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DetailedProcessingActionProperties;
 
 
 
@@ -285,5 +288,225 @@ public class PrivacyOfficerRESTServices extends TokenController
     }
 
 
+    /*
+     * =====================================================================================================================
+     * Data processing relationships
+     */
 
+    /**
+     * Attach a data processing description to the element that performs the processing.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element that performs the data processing
+     * @param dataProcessingDescriptionGUID unique identifier of the data processing description
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkDataProcessingSpecification(String                     serverName,
+                                                        String                     elementGUID,
+                                                        String                     dataProcessingDescriptionGUID,
+                                                        NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkDataProcessingSpecification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkDataProcessingSpecification(userId, elementGUID, dataProcessingDescriptionGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof DataProcessingSpecificationProperties properties)
+            {
+                handler.linkDataProcessingSpecification(userId, elementGUID, dataProcessingDescriptionGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkDataProcessingSpecification(userId, elementGUID, dataProcessingDescriptionGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(DataProcessingSpecificationProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a data processing description from the element that performed the processing.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element that performs the data processing
+     * @param dataProcessingDescriptionGUID unique identifier of the data processing description
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachDataProcessingSpecification(String                        serverName,
+                                                          String                        elementGUID,
+                                                          String                        dataProcessingDescriptionGUID,
+                                                          DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachDataProcessingSpecification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+            handler.detachDataProcessingSpecification(userId, elementGUID, dataProcessingDescriptionGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a child data processing action to its parent data processing action.
+     *
+     * @param serverName name of the server to route the request to
+     * @param parentProcessingActionGUID unique identifier of the parent data processing action
+     * @param childProcessingActionGUID unique identifier of the child data processing action
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkDetailedProcessingAction(String                     serverName,
+                                                     String                     parentProcessingActionGUID,
+                                                     String                     childProcessingActionGUID,
+                                                     NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkDetailedProcessingAction";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkDetailedProcessingAction(userId, parentProcessingActionGUID, childProcessingActionGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof DetailedProcessingActionProperties properties)
+            {
+                handler.linkDetailedProcessingAction(userId, parentProcessingActionGUID, childProcessingActionGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkDetailedProcessingAction(userId, parentProcessingActionGUID, childProcessingActionGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(DetailedProcessingActionProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a child data processing action from its parent data processing action.
+     *
+     * @param serverName name of the server to route the request to
+     * @param parentProcessingActionGUID unique identifier of the parent data processing action
+     * @param childProcessingActionGUID unique identifier of the child data processing action
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachDetailedProcessingAction(String                        serverName,
+                                                       String                        parentProcessingActionGUID,
+                                                       String                        childProcessingActionGUID,
+                                                       DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachDetailedProcessingAction";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+            handler.detachDetailedProcessingAction(userId, parentProcessingActionGUID, childProcessingActionGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 }

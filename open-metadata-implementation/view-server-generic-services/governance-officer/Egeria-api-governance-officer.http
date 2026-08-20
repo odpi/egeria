@@ -1570,10 +1570,126 @@ Content-Type: application/json
 
 ###
 
+###
+# =====================================================================================================================
+# Regulation and exception relationships
+# https://egeria-project.org/concepts/governance-definition
 
+@exceptionGUID=add guid here
+@exceptionTypeGUID=add guid here
 
+###
+# @name linkException
+# Attach an element to an exception type that excludes it from a requirement.  This is a multi-link relationship so a new relationship is always created and its unique identifier is returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/exceptions/{{exceptionTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ExceptionProperties",
+    "label": "add label",
+    "description": "add description",
+    "conditions": "add conditions here",
+    "lastReviewTime": "{{$isoTimestamp}}",
+    "reviewDate": "{{$isoTimestamp}}",
+    "steward": "add steward here",
+    "stewardTypeName": "add steward type name here",
+    "stewardPropertyName": "add steward property name here",
+    "notes": "add notes here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
 
+###
+# @name updateException
+# Update the properties of a exception relationship.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/exceptions/{{exceptionGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "ExceptionProperties",
+    "label": "add label",
+    "description": "add description",
+    "conditions": "add conditions here",
+    "lastReviewTime": "{{$isoTimestamp}}",
+    "reviewDate": "{{$isoTimestamp}}",
+    "steward": "add steward here",
+    "stewardTypeName": "add steward type name here",
+    "stewardPropertyName": "add steward property name here",
+    "notes": "add notes here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
 
+###
+# @name detachException
+# Detach an element from an exception type that excluded it from a requirement.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/exceptions/{{exceptionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkRegulationCertificationType
+# Attach a certification type to the regulation that requires it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/regulations/{{regulationGUID}}/regulation-certification-types/{{certificationTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "RegulationCertificationTypeProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachRegulationCertificationType
+# Detach a certification type from the regulation that required it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/regulations/{{regulationGUID}}/regulation-certification-types/{{certificationTypeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}

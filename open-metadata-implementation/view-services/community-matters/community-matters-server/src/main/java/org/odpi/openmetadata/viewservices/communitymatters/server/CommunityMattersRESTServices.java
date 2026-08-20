@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CommunityHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributionProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -396,6 +397,120 @@ public class CommunityMattersRESTServices extends TokenController
             {
                 response.setElements(handler.findCommunities(userId, null, null));
             }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Crowd sourcing contributions
+     */
+
+    /**
+     * Attach an actor to an element that they contributed to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element that was contributed to
+     * @param contributorGUID unique identifier of the actor that made the contribution
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkCrowdSourcingContribution(String                     serverName,
+                                                      String                     elementGUID,
+                                                      String                     contributorGUID,
+                                                      NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkCrowdSourcingContribution";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CommunityHandler handler = instanceHandler.getCommunityHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkCrowdSourcingContribution(userId, elementGUID, contributorGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof CrowdSourcingContributionProperties properties)
+            {
+                handler.linkCrowdSourcingContribution(userId, elementGUID, contributorGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkCrowdSourcingContribution(userId, elementGUID, contributorGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(CrowdSourcingContributionProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach an actor from an element that they contributed to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element that was contributed to
+     * @param contributorGUID unique identifier of the actor that made the contribution
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachCrowdSourcingContribution(String                        serverName,
+                                                        String                        elementGUID,
+                                                        String                        contributorGUID,
+                                                        DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachCrowdSourcingContribution";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CommunityHandler handler = instanceHandler.getCommunityHandler(userId, serverName, methodName);
+
+            handler.detachCrowdSourcingContribution(userId, elementGUID, contributorGUID, requestBody);
         }
         catch (Throwable error)
         {

@@ -116,4 +116,30 @@ public class SecurityOfficerInstanceHandler extends OMVSServiceInstanceHandler
     }
 
 
+    /**
+     * This method returns an open metadata handler for maintaining the relationships attached to a secrets collection.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public AssetHandler getSecretsCollectionHandler(String userId,
+                                                    String serverName,
+                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        SecurityOfficerInstance instance = (SecurityOfficerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getSecretsCollectionHandler();
+        }
+
+        return null;
+    }
 }

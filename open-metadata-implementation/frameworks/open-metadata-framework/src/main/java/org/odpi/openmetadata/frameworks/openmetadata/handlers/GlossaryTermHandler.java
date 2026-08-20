@@ -949,4 +949,75 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
 
         return super.findRootElements(userId, searchString, queryOptions, methodName);
     }
+
+
+    /**
+     * Attach a glossary term to an element that it is relevant to the context of.
+     *
+     * @param userId                 userId of the user making the request
+     * @param glossaryTermGUID unique identifier of the glossary term that describes the context
+     * @param contextElementGUID unique identifier of the element that the term is used in the context of
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkUsedInContext(String                   userId,
+                                  String                   glossaryTermGUID,
+                                  String                   contextElementGUID,
+                                  MakeAnchorOptions        makeAnchorOptions,
+                                  UsedInContextProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName            = "linkUsedInContext";
+        final String end1GUIDParameterName = "glossaryTermGUID";
+        final String end2GUIDParameterName = "contextElementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(glossaryTermGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(contextElementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.typeName,
+                                                        glossaryTermGUID,
+                                                        contextElementGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a glossary term from an element that it was relevant to the context of.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param glossaryTermGUID unique identifier of the glossary term that describes the context
+     * @param contextElementGUID unique identifier of the element that the term is used in the context of
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachUsedInContext(String        userId,
+                                    String        glossaryTermGUID,
+                                    String        contextElementGUID,
+                                    DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        final String methodName            = "detachUsedInContext";
+        final String end1GUIDParameterName = "glossaryTermGUID";
+        final String end2GUIDParameterName = "contextElementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(glossaryTermGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(contextElementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.typeName,
+                                                        glossaryTermGUID,
+                                                        contextElementGUID,
+                                                        deleteOptions);
+    }
 }

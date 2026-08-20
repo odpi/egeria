@@ -18,6 +18,59 @@ Content-Type: application/json
 
 > {% client.global.set("token", response.body); %}
 
+###
+# =====================================================================================================================
+# Work with Translations
+#
+# MultiLanguageInterface (implemented by OpenMetadataClient) maintains the TranslationDetail elements and their
+# TranslationLink relationships to the elements they translate.
+# https://egeria-project.org/services/omvs/multi-language/overview/
 
+@elementGUID=add guid here
 
+###
+# @name setTranslation
+# Create or update the translation for a particular language/locale for a metadata element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/multi-language/elements/{{elementGUID}}/translations
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
+{
+  "class" : "NewElementRequestBody",
+  "properties": {
+    "class": "TranslationDetailProperties",
+    "language": "Spanish",
+    "languageCode": "es",
+    "locale": "es-ES",
+    "displayName": "add translated display name here",
+    "description": "add translated description here",
+    "additionalTranslations": {
+      "summary": "add translated summary here"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearTranslation
+# Remove the translation for a particular language/locale for a metadata element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/multi-language/elements/{{elementGUID}}/translations/remove?language=Spanish&locale=es-ES
+Authorization: Bearer {{token}}
+
+###
+# @name getTranslation
+# Retrieve the translation for the matching language/locale.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/multi-language/elements/{{elementGUID}}/translations/retrieve?language=Spanish&locale=es-ES
+Authorization: Bearer {{token}}
+
+###
+# @name getTranslations
+# Retrieve all translations associated with a metadata element.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/multi-language/elements/{{elementGUID}}/translations?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}

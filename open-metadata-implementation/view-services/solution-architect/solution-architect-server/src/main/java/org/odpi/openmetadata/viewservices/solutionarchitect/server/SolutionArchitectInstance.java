@@ -25,6 +25,7 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
     private final InformationSupplyChainHandler informationSupplyChainHandler;
     private final CollectionHandler             solutionBlueprintHandler;
     private final SolutionComponentHandler      solutionComponentHandler;
+    private final ConceptModelElementHandler    conceptModelElementHandler;
 
 
     /**
@@ -87,6 +88,11 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
                                                        auditLog,
                                                        myDescription.getViewServiceFullName(),
                                                        openMetadataClient);
+
+        conceptModelElementHandler = new ConceptModelElementHandler(serverName,
+                                                                    auditLog,
+                                                                    myDescription.getViewServiceFullName(),
+                                                                    openMetadataClient);
     }
 
 
@@ -132,5 +138,16 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
     public DesignPatternHandler getDesignPatternHandler()
     {
         return designPatternHandler;
+    }
+
+
+    /**
+     * Return the concept model element handler.
+     *
+     * @return client
+     */
+    public ConceptModelElementHandler getConceptModelElementHandler()
+    {
+        return conceptModelElementHandler;
     }
 }

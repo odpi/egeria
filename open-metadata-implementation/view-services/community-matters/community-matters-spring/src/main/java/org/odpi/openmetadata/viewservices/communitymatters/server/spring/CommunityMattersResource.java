@@ -246,4 +246,65 @@ public class CommunityMattersResource
         return restAPI.getCommunityByGUID(serverName, communityGUID, requestBody);
     }
 
+
+    /**
+     * Attach an actor to an element that they contributed to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element that was contributed to
+     * @param contributorGUID unique identifier of the actor that made the contribution
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/crowd-sourcing-contributions/{contributorGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkCrowdSourcingContribution",
+            description="Attach an actor to an element that they contributed to.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/community"))
+
+    public VoidResponse linkCrowdSourcingContribution(@PathVariable String                     serverName,
+                                                      @PathVariable String                     elementGUID,
+                                                      @PathVariable String                     contributorGUID,
+                                                      @RequestBody (required = false)
+                                                      NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkCrowdSourcingContribution(serverName, elementGUID, contributorGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an actor from an element that they contributed to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element that was contributed to
+     * @param contributorGUID unique identifier of the actor that made the contribution
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/crowd-sourcing-contributions/{contributorGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachCrowdSourcingContribution",
+            description="Detach an actor from an element that they contributed to.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/community"))
+
+    public VoidResponse detachCrowdSourcingContribution(@PathVariable String                        serverName,
+                                                        @PathVariable String                        elementGUID,
+                                                        @PathVariable String                        contributorGUID,
+                                                        @RequestBody (required = false)
+                                                        DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachCrowdSourcingContribution(serverName, elementGUID, contributorGUID, requestBody);
+    }
 }

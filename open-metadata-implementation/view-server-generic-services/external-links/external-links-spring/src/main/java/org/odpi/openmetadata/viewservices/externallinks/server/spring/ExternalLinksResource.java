@@ -157,7 +157,7 @@ public class ExternalLinksResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/external-reference"))
 
-    public VoidResponse linkExternalReference(@PathVariable
+    public GUIDResponse linkExternalReference(@PathVariable
                                               String                     serverName,
                                               @PathVariable String             urlMarker,
                                               @PathVariable
@@ -172,39 +172,66 @@ public class ExternalLinksResource
 
 
     /**
-     * Detach an external reference from an element.
+     * Update the properties of a external reference link relationship.
      *
-     * @param serverName         name of called server
+     * @param serverName name of the server to route the request to
      * @param urlMarker  view service URL marker
-     * @param elementGUID       unique identifier of the element
-     * @param externalReferenceGUID            unique identifier of the IT profile
-     * @param requestBody  description of the relationship.
+     * @param externalReferenceLinkRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
      *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/elements/{elementGUID}/external-references/{externalReferenceGUID}/detach")
+    @PostMapping(path = "/external-reference-links/{externalReferenceLinkRelationshipGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="detachExternalReference",
-            description="Detach an element from an IT profile.",
+    @Operation(summary="updateExternalReferenceLink",
+            description="Update the properties of a external reference link relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/external-reference"))
 
-    public VoidResponse detachExternalReference(@PathVariable
-                                                String                    serverName,
-                                                @PathVariable String             urlMarker,
-                                                @PathVariable
-                                                String elementGUID,
-                                                @PathVariable
-                                                String externalReferenceGUID,
+    public VoidResponse updateExternalReferenceLink(@PathVariable String serverName,
+                                                    @PathVariable String urlMarker,
+                                                    @PathVariable String externalReferenceLinkRelationshipGUID,
+                                                    @RequestBody (required = false)
+                                                    UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateExternalReferenceLink(serverName, urlMarker, externalReferenceLinkRelationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a external reference link relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param externalReferenceLinkRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/external-reference-links/{externalReferenceLinkRelationshipGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachExternalReference",
+            description="Remove a external reference link relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/external-reference"))
+
+    public VoidResponse detachExternalReference(@PathVariable String serverName,
+                                                @PathVariable String urlMarker,
+                                                @PathVariable String externalReferenceLinkRelationshipGUID,
                                                 @RequestBody (required = false)
                                                 DeleteRelationshipRequestBody requestBody)
     {
-        return restAPI.detachExternalReference(serverName, urlMarker, elementGUID, externalReferenceGUID, requestBody);
+        return restAPI.detachExternalReference(serverName, urlMarker, externalReferenceLinkRelationshipGUID, requestBody);
     }
+
 
 
     /**
@@ -229,7 +256,7 @@ public class ExternalLinksResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/external-reference"))
 
-    public VoidResponse linkMediaReference(@PathVariable
+    public GUIDResponse linkMediaReference(@PathVariable
                                            String                     serverName,
                                            @PathVariable String             urlMarker,
                                            @PathVariable
@@ -244,39 +271,66 @@ public class ExternalLinksResource
 
 
     /**
-     * Detach an external media reference from an element.
+     * Update the properties of a media reference relationship.
      *
-     * @param serverName         name of called server
+     * @param serverName name of the server to route the request to
      * @param urlMarker  view service URL marker
-     * @param elementGUID       unique identifier of the element
-     * @param externalReferenceGUID            unique identifier of the IT profile
-     * @param requestBody  description of the relationship.
+     * @param mediaReferenceRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
      *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/elements/{elementGUID}/media-references/{externalReferenceGUID}/detach")
+    @PostMapping(path = "/media-reference-links/{mediaReferenceRelationshipGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="detachMediaReference",
-            description="Detach an external media reference from an element.",
+    @Operation(summary="updateMediaReference",
+            description="Update the properties of a media reference relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/external-reference"))
 
-    public VoidResponse detachMediaReference(@PathVariable
-                                             String                    serverName,
-                                             @PathVariable String             urlMarker,
-                                             @PathVariable
-                                             String elementGUID,
-                                             @PathVariable
-                                             String externalReferenceGUID,
+    public VoidResponse updateMediaReference(@PathVariable String serverName,
+                                             @PathVariable String urlMarker,
+                                             @PathVariable String mediaReferenceRelationshipGUID,
+                                             @RequestBody (required = false)
+                                             UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateMediaReference(serverName, urlMarker, mediaReferenceRelationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a media reference relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param mediaReferenceRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/media-reference-links/{mediaReferenceRelationshipGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachMediaReference",
+            description="Remove a media reference relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/external-reference"))
+
+    public VoidResponse detachMediaReference(@PathVariable String serverName,
+                                             @PathVariable String urlMarker,
+                                             @PathVariable String mediaReferenceRelationshipGUID,
                                              @RequestBody (required = false)
                                              DeleteRelationshipRequestBody requestBody)
     {
-        return restAPI.detachMediaReference(serverName, urlMarker, elementGUID, externalReferenceGUID, requestBody);
+        return restAPI.detachMediaReference(serverName, urlMarker, mediaReferenceRelationshipGUID, requestBody);
     }
+
 
 
     /**
@@ -301,7 +355,7 @@ public class ExternalLinksResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/external-reference"))
 
-    public VoidResponse linkCitedDocumentReference(@PathVariable
+    public GUIDResponse linkCitedDocumentReference(@PathVariable
                                                    String                     serverName,
                                                    @PathVariable String             urlMarker,
                                                    @PathVariable
@@ -316,39 +370,66 @@ public class ExternalLinksResource
 
 
     /**
-     * Detach an element from its external document reference.
+     * Update the properties of a cited document link relationship.
      *
-     * @param serverName         name of called server
+     * @param serverName name of the server to route the request to
      * @param urlMarker  view service URL marker
-     * @param elementGUID       unique identifier of the element
-     * @param externalReferenceGUID            unique identifier of the IT profile
-     * @param requestBody  description of the relationship.
+     * @param citedDocumentLinkRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
      *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/elements/{elementGUID}/cited-document-references/{externalReferenceGUID}/detach")
+    @PostMapping(path = "/cited-document-references/{citedDocumentLinkRelationshipGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="detachCitedDocumentReference",
-            description="Detach an element from its external document reference.",
+    @Operation(summary="updateCitedDocumentReference",
+            description="Update the properties of a cited document link relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/external-reference"))
 
-    public VoidResponse detachCitedDocumentReference(@PathVariable
-                                                     String                    serverName,
-                                                     @PathVariable String             urlMarker,
-                                                     @PathVariable
-                                                     String elementGUID,
-                                                     @PathVariable
-                                                     String externalReferenceGUID,
+    public VoidResponse updateCitedDocumentReference(@PathVariable String serverName,
+                                                     @PathVariable String urlMarker,
+                                                     @PathVariable String citedDocumentLinkRelationshipGUID,
+                                                     @RequestBody (required = false)
+                                                     UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateCitedDocumentReference(serverName, urlMarker, citedDocumentLinkRelationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a cited document link relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param citedDocumentLinkRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/cited-document-references/{citedDocumentLinkRelationshipGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachCitedDocumentReference",
+            description="Remove a cited document link relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/external-reference"))
+
+    public VoidResponse detachCitedDocumentReference(@PathVariable String serverName,
+                                                     @PathVariable String urlMarker,
+                                                     @PathVariable String citedDocumentLinkRelationshipGUID,
                                                      @RequestBody (required = false)
                                                      DeleteRelationshipRequestBody requestBody)
     {
-        return restAPI.detachCitedDocumentReference(serverName, urlMarker, elementGUID, externalReferenceGUID, requestBody);
+        return restAPI.detachCitedDocumentReference(serverName, urlMarker, citedDocumentLinkRelationshipGUID, requestBody);
     }
+
 
 
     /**
@@ -696,5 +777,194 @@ public class ExternalLinksResource
                                                                GetRequestBody requestBody)
     {
         return restAPI.getExternalIdByGUID(serverName, urlMarker, externalIdGUID, requestBody);
+    }
+
+
+
+    /*
+     * =====================================================================================================================
+     * External identifier relationships
+     */
+
+    /**
+     * Attach an existing external identifier to the element that it identifies.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param externalIdGUID unique identifier of the external identifier
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/external-ids/{externalIdGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkExternalIdToElement",
+            description="Attach an existing external identifier to the element that it identifies.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/external-identifier"))
+
+    public VoidResponse linkExternalIdToElement(@PathVariable String serverName,
+                                                @PathVariable String urlMarker,
+                                                @PathVariable String elementGUID,
+                                                @PathVariable String externalIdGUID,
+                                                @RequestBody (required = false)
+                                                NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkExternalIdToElement(serverName, urlMarker, elementGUID, externalIdGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an external identifier from the element that it identifies.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param externalIdGUID unique identifier of the external identifier
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/external-ids/{externalIdGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachExternalIdFromElement",
+            description="Detach an external identifier from the element that it identifies.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/external-identifier"))
+
+    public VoidResponse detachExternalIdFromElement(@PathVariable String serverName,
+                                                    @PathVariable String urlMarker,
+                                                    @PathVariable String elementGUID,
+                                                    @PathVariable String externalIdGUID,
+                                                    @RequestBody (required = false)
+                                                    DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachExternalIdFromElement(serverName, urlMarker, elementGUID, externalIdGUID, requestBody);
+    }
+
+    /**
+     * Detach an element from its external document reference.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param elementGUID       unique identifier of the element
+     * @param externalReferenceGUID            unique identifier of the IT profile
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every cited document link relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/cited-document-references/{externalReferenceGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachCitedDocumentReference",
+            description="Detach an element from its external document reference.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/external-reference"))
+
+    public VoidResponse detachCitedDocumentReference(@PathVariable
+                                                     String                    serverName,
+                                                     @PathVariable String             urlMarker,
+                                                     @PathVariable
+                                                     String elementGUID,
+                                                     @PathVariable
+                                                     String externalReferenceGUID,
+                                                     @RequestBody (required = false)
+                                                     DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachCitedDocumentReference(serverName, urlMarker, elementGUID, externalReferenceGUID, requestBody);
+    }
+
+    /**
+     * Detach an external reference from an element.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param elementGUID       unique identifier of the element
+     * @param externalReferenceGUID            unique identifier of the IT profile
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every external reference link relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/external-references/{externalReferenceGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachExternalReference",
+            description="Detach an element from an IT profile.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/external-reference"))
+
+    public VoidResponse detachExternalReference(@PathVariable
+                                                String                    serverName,
+                                                @PathVariable String             urlMarker,
+                                                @PathVariable
+                                                String elementGUID,
+                                                @PathVariable
+                                                String externalReferenceGUID,
+                                                @RequestBody (required = false)
+                                                DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachExternalReference(serverName, urlMarker, elementGUID, externalReferenceGUID, requestBody);
+    }
+
+    /**
+     * Detach an external media reference from an element.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param elementGUID       unique identifier of the element
+     * @param externalReferenceGUID            unique identifier of the IT profile
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every media reference relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/media-references/{externalReferenceGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachMediaReference",
+            description="Detach an external media reference from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/external-reference"))
+
+    public VoidResponse detachMediaReference(@PathVariable
+                                             String                    serverName,
+                                             @PathVariable String             urlMarker,
+                                             @PathVariable
+                                             String elementGUID,
+                                             @PathVariable
+                                             String externalReferenceGUID,
+                                             @RequestBody (required = false)
+                                             DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachMediaReference(serverName, urlMarker, elementGUID, externalReferenceGUID, requestBody);
     }
 }

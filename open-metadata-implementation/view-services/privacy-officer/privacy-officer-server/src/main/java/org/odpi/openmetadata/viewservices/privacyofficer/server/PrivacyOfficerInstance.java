@@ -20,7 +20,8 @@ public class PrivacyOfficerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.PRIVACY_OFFICER;
 
-    private final CollectionHandler collectionHandler;
+    private final CollectionHandler             collectionHandler;
+    private final GovernanceDefinitionHandler   governanceDefinitionHandler;
 
 
     /**
@@ -67,6 +68,11 @@ public class PrivacyOfficerInstance extends OMVSServiceInstance
                                                   auditLog,
                                                   myDescription.getViewServiceFullName(),
                                                   openMetadataClient);
+
+        governanceDefinitionHandler = new GovernanceDefinitionHandler(serverName,
+                                                                      auditLog,
+                                                                      myDescription.getViewServiceFullName(),
+                                                                      openMetadataClient);
     }
 
 
@@ -78,5 +84,16 @@ public class PrivacyOfficerInstance extends OMVSServiceInstance
     public CollectionHandler getCollectionHandler()
     {
         return collectionHandler;
+    }
+
+
+    /**
+     * Return the governance definition handler.
+     *
+     * @return client
+     */
+    public GovernanceDefinitionHandler getGovernanceDefinitionHandler()
+    {
+        return governanceDefinitionHandler;
     }
 }

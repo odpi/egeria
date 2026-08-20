@@ -5,7 +5,10 @@ package org.odpi.openmetadata.viewservices.multilanguage.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
-
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 
 /**
@@ -26,4 +29,32 @@ public class MultiLanguageInstanceHandler extends OMVSServiceInstanceHandler
     }
 
 
+    /**
+     * This method returns an Open Metadata Store client.  It implements MultiLanguageInterface.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return  client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public OpenMetadataClient getOpenMetadataHandler(String userId,
+                                                     String serverName,
+                                                     String urlMarker,
+                                                     String serviceOperationName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        MultiLanguageInstance instance = (MultiLanguageInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getOpenMetadataHandler(urlMarker, serviceOperationName);
+        }
+
+        return null;
+    }
 }

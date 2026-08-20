@@ -446,6 +446,13 @@ public class RuntimeManagerRESTServices extends TokenController
 
             AssetHandler handler = instanceHandler.getSoftwareServerHandler(userId, serverName, methodName);
 
+            if (requestBody == null)
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                restCallLogger.logRESTCallReturn(token, response);
+                return response;
+            }
+
             List<OpenMetadataRootElement> servers = handler.getAssetsByDeployedImplementationType(userId, requestBody.getFilter(), requestBody);
 
             if (servers != null)
@@ -1607,6 +1614,13 @@ public class RuntimeManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                restCallLogger.logRESTCallReturn(token, response);
+                return response;
+            }
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
