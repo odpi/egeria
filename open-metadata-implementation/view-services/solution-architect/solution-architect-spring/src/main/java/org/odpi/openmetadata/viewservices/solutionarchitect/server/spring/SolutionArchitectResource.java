@@ -1503,4 +1503,570 @@ public class SolutionArchitectResource
     {
         return restAPI.findDesignPatterns(serverName, requestBody);
     }
+
+    /**
+     * Create a concept model element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-model-elements")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createConceptModelElement",
+            description="Create a concept model element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public GUIDResponse createConceptModelElement(@PathVariable String serverName,
+                                                  @RequestBody (required = false)
+                                                  NewElementRequestBody requestBody)
+    {
+        return restAPI.createConceptModelElement(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a concept model element using an existing metadata element as a template.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-model-elements/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createConceptModelElementFromTemplate",
+            description="Create a new metadata element to represent a concept model element using an existing metadata element as a template.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public GUIDResponse createConceptModelElementFromTemplate(@PathVariable String serverName,
+                                                              @RequestBody (required = false)
+                                                              TemplateRequestBody requestBody)
+    {
+        return restAPI.createConceptModelElementFromTemplate(serverName, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a concept model element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptModelElementGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-model-elements/{conceptModelElementGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateConceptModelElement",
+            description="Update the properties of a concept model element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public BooleanResponse updateConceptModelElement(@PathVariable String serverName,
+                                                     @PathVariable String conceptModelElementGUID,
+                                                     @RequestBody (required = false)
+                                                     UpdateElementRequestBody requestBody)
+    {
+        return restAPI.updateConceptModelElement(serverName, conceptModelElementGUID, requestBody);
+    }
+
+
+    /**
+     * Delete a concept model element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptModelElementGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-model-elements/{conceptModelElementGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteConceptModelElement",
+            description="Delete a concept model element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse deleteConceptModelElement(@PathVariable String serverName,
+                                                  @PathVariable String conceptModelElementGUID,
+                                                  @RequestBody (required = false)
+                                                  DeleteElementRequestBody requestBody)
+    {
+        return restAPI.deleteConceptModelElement(serverName, conceptModelElementGUID, requestBody);
+    }
+
+
+    /**
+     * Returns the list of concept model elements with a particular name.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-model-elements/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getConceptModelElementsByName",
+            description="Returns the list of concept model elements with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public OpenMetadataRootElementsResponse getConceptModelElementsByName(@PathVariable String serverName,
+                                                                          @RequestBody (required = false)
+                                                                          FilterRequestBody requestBody)
+    {
+        return restAPI.getConceptModelElementsByName(serverName, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of concept model element metadata elements that contain the search string.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-model-elements/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findConceptModelElements",
+            description="Retrieve the list of concept model element metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public OpenMetadataRootElementsResponse findConceptModelElements(@PathVariable String serverName,
+                                                                     @RequestBody (required = false)
+                                                                     SearchStringRequestBody requestBody)
+    {
+        return restAPI.findConceptModelElements(serverName, requestBody);
+    }
+
+
+    /**
+     * Return the properties of a specific concept model element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptModelElementGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-model-elements/{conceptModelElementGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getConceptModelElementByGUID",
+            description="Return the properties of a specific concept model element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public OpenMetadataRootElementResponse getConceptModelElementByGUID(@PathVariable String serverName,
+                                                                        @PathVariable String conceptModelElementGUID,
+                                                                        @RequestBody (required = false)
+                                                                        GetRequestBody requestBody)
+    {
+        return restAPI.getConceptModelElementByGUID(serverName, conceptModelElementGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a concept model to the element whose concepts it describes.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier
+     * @param conceptModelGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/concept-designs/{conceptModelGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkConceptDesign",
+            description="Attach a concept model to the element whose concepts it describes.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse linkConceptDesign(@PathVariable String serverName,
+                                          @PathVariable String elementGUID,
+                                          @PathVariable String conceptModelGUID,
+                                          @RequestBody (required = false)
+                                          NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkConceptDesign(serverName, elementGUID, conceptModelGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a concept model from the element whose concepts it described.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier
+     * @param conceptModelGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/concept-designs/{conceptModelGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachConceptDesign",
+            description="Detach a concept model from the element whose concepts it described.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse detachConceptDesign(@PathVariable String serverName,
+                                            @PathVariable String elementGUID,
+                                            @PathVariable String conceptModelGUID,
+                                            @RequestBody (required = false)
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachConceptDesign(serverName, elementGUID, conceptModelGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a concept bead to one of the ends of a concept bead relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptBeadRelationshipGUID unique identifier
+     * @param conceptBeadGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-bead-relationships/{conceptBeadRelationshipGUID}/relationship-ends/{conceptBeadGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkConceptBeadRelationshipEnd",
+            description="Attach a concept bead to one of the ends of a concept bead relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse linkConceptBeadRelationshipEnd(@PathVariable String serverName,
+                                                       @PathVariable String conceptBeadRelationshipGUID,
+                                                       @PathVariable String conceptBeadGUID,
+                                                       @RequestBody (required = false)
+                                                       NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkConceptBeadRelationshipEnd(serverName, conceptBeadRelationshipGUID, conceptBeadGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a concept bead from one of the ends of a concept bead relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptBeadRelationshipGUID unique identifier
+     * @param conceptBeadGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-bead-relationships/{conceptBeadRelationshipGUID}/relationship-ends/{conceptBeadGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachConceptBeadRelationshipEnd",
+            description="Detach a concept bead from one of the ends of a concept bead relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse detachConceptBeadRelationshipEnd(@PathVariable String serverName,
+                                                         @PathVariable String conceptBeadRelationshipGUID,
+                                                         @PathVariable String conceptBeadGUID,
+                                                         @RequestBody (required = false)
+                                                         DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachConceptBeadRelationshipEnd(serverName, conceptBeadRelationshipGUID, conceptBeadGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a concept bead attribute to the concept bead that acts as its type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptBeadAttributeGUID unique identifier
+     * @param conceptBeadGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-bead-attributes/{conceptBeadAttributeGUID}/typed-by/{conceptBeadGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkTypedByConceptBead",
+            description="Attach a concept bead attribute to the concept bead that acts as its type.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse linkTypedByConceptBead(@PathVariable String serverName,
+                                               @PathVariable String conceptBeadAttributeGUID,
+                                               @PathVariable String conceptBeadGUID,
+                                               @RequestBody (required = false)
+                                               NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkTypedByConceptBead(serverName, conceptBeadAttributeGUID, conceptBeadGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a concept bead attribute from the concept bead that acted as its type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptBeadAttributeGUID unique identifier
+     * @param conceptBeadGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-bead-attributes/{conceptBeadAttributeGUID}/typed-by/{conceptBeadGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachTypedByConceptBead",
+            description="Detach a concept bead attribute from the concept bead that acted as its type.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse detachTypedByConceptBead(@PathVariable String serverName,
+                                                 @PathVariable String conceptBeadAttributeGUID,
+                                                 @PathVariable String conceptBeadGUID,
+                                                 @RequestBody (required = false)
+                                                 DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachTypedByConceptBead(serverName, conceptBeadAttributeGUID, conceptBeadGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a concept bead to the concept bead that it inherits from.
+     *
+     * @param serverName name of the server to route the request to
+     * @param inheritingBeadGUID unique identifier
+     * @param inheritedBeadGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-beads/{inheritingBeadGUID}/is-a/{inheritedBeadGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkIsAConceptBead",
+            description="Attach a concept bead to the concept bead that it inherits from.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse linkIsAConceptBead(@PathVariable String serverName,
+                                           @PathVariable String inheritingBeadGUID,
+                                           @PathVariable String inheritedBeadGUID,
+                                           @RequestBody (required = false)
+                                           NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkIsAConceptBead(serverName, inheritingBeadGUID, inheritedBeadGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a concept bead from the concept bead that it inherited from.
+     *
+     * @param serverName name of the server to route the request to
+     * @param inheritingBeadGUID unique identifier
+     * @param inheritedBeadGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-beads/{inheritingBeadGUID}/is-a/{inheritedBeadGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachIsAConceptBead",
+            description="Detach a concept bead from the concept bead that it inherited from.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse detachIsAConceptBead(@PathVariable String serverName,
+                                             @PathVariable String inheritingBeadGUID,
+                                             @PathVariable String inheritedBeadGUID,
+                                             @RequestBody (required = false)
+                                             DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachIsAConceptBead(serverName, inheritingBeadGUID, inheritedBeadGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a concept bead attribute to its parent concept bead.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptBeadGUID unique identifier
+     * @param conceptBeadAttributeGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-beads/{conceptBeadGUID}/attribute-links/{conceptBeadAttributeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkConceptBeadAttributeLink",
+            description="Attach a concept bead attribute to its parent concept bead.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse linkConceptBeadAttributeLink(@PathVariable String serverName,
+                                                     @PathVariable String conceptBeadGUID,
+                                                     @PathVariable String conceptBeadAttributeGUID,
+                                                     @RequestBody (required = false)
+                                                     NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkConceptBeadAttributeLink(serverName, conceptBeadGUID, conceptBeadAttributeGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a concept bead attribute from its parent concept bead.
+     *
+     * @param serverName name of the server to route the request to
+     * @param conceptBeadGUID unique identifier
+     * @param conceptBeadAttributeGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-beads/{conceptBeadGUID}/attribute-links/{conceptBeadAttributeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachConceptBeadAttributeLink",
+            description="Detach a concept bead attribute from its parent concept bead.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse detachConceptBeadAttributeLink(@PathVariable String serverName,
+                                                       @PathVariable String conceptBeadGUID,
+                                                       @PathVariable String conceptBeadAttributeGUID,
+                                                       @RequestBody (required = false)
+                                                       DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachConceptBeadAttributeLink(serverName, conceptBeadGUID, conceptBeadAttributeGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a concept bead to a concept bead that extends it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param extendedBeadGUID unique identifier
+     * @param extensionBeadGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-beads/{extendedBeadGUID}/extensions/{extensionBeadGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkConceptBeadExtension",
+            description="Attach a concept bead to a concept bead that extends it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse linkConceptBeadExtension(@PathVariable String serverName,
+                                                 @PathVariable String extendedBeadGUID,
+                                                 @PathVariable String extensionBeadGUID,
+                                                 @RequestBody (required = false)
+                                                 NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkConceptBeadExtension(serverName, extendedBeadGUID, extensionBeadGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a concept bead from a concept bead that extended it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param extendedBeadGUID unique identifier
+     * @param extensionBeadGUID unique identifier
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/concept-beads/{extendedBeadGUID}/extensions/{extensionBeadGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachConceptBeadExtension",
+            description="Detach a concept bead from a concept bead that extended it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/concept-model"))
+
+    public VoidResponse detachConceptBeadExtension(@PathVariable String serverName,
+                                                   @PathVariable String extendedBeadGUID,
+                                                   @PathVariable String extensionBeadGUID,
+                                                   @RequestBody (required = false)
+                                                   DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachConceptBeadExtension(serverName, extendedBeadGUID, extensionBeadGUID, requestBody);
+    }
 }

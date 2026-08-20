@@ -164,38 +164,57 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
      * @param externalReferenceGUID          unique identifier of the external reference
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkExternalReference(String                          elementGUID,
+    public String linkExternalReference(String                          elementGUID,
                                       String                          externalReferenceGUID,
                                       MakeAnchorOptions               makeAnchorOptions,
                                       ExternalReferenceLinkProperties relationshipProperties) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
     {
-        externalReferenceHandler.linkExternalReference(connectorUserId, elementGUID, externalReferenceGUID, makeAnchorOptions, relationshipProperties);
+        return externalReferenceHandler.linkExternalReference(connectorUserId, elementGUID, externalReferenceGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
     /**
-     * Detach an external reference from an element.
+     * Update the properties of a external reference link relationship.
      *
-     * @param elementGUID          unique identifier of the first external reference
-     * @param externalReferenceGUID          unique identifier of the second external reference
+     * @param externalReferenceLinkRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateExternalReferenceLink(String                           externalReferenceLinkRelationshipGUID,
+                                       UpdateOptions                    updateOptions,
+                                       ExternalReferenceLinkProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        externalReferenceHandler.updateExternalReferenceLink(connectorUserId, externalReferenceLinkRelationshipGUID, updateOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Remove a external reference link relationship.
+     *
+     * @param externalReferenceLinkRelationshipGUID unique identifier of the relationship
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachExternalReference(String        elementGUID,
-                                        String        externalReferenceGUID,
-                                        DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+    public void detachExternalReference(String        externalReferenceLinkRelationshipGUID,
+                                   DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
-        externalReferenceHandler.detachExternalReference(connectorUserId, elementGUID, externalReferenceGUID, deleteOptions);
+        externalReferenceHandler.detachExternalReference(connectorUserId, externalReferenceLinkRelationshipGUID, deleteOptions);
     }
 
 
@@ -206,38 +225,57 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
      * @param externalReferenceGUID          unique identifier of the second external reference
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkMediaReference(String                   elementGUID,
+    public String linkMediaReference(String                   elementGUID,
                                    String                   externalReferenceGUID,
                                    MakeAnchorOptions        makeAnchorOptions,
                                    MediaReferenceProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
     {
-        externalReferenceHandler.linkMediaReference(connectorUserId, elementGUID, externalReferenceGUID, makeAnchorOptions, relationshipProperties);
+        return externalReferenceHandler.linkMediaReference(connectorUserId, elementGUID, externalReferenceGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
     /**
-     * Detach an external media reference from an element.
+     * Update the properties of a media reference relationship.
      *
-     * @param elementGUID          unique identifier of the first external reference
-     * @param externalReferenceGUID          unique identifier of the second external reference
+     * @param mediaReferenceRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateMediaReference(String                    mediaReferenceRelationshipGUID,
+                                UpdateOptions             updateOptions,
+                                MediaReferenceProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        externalReferenceHandler.updateMediaReference(connectorUserId, mediaReferenceRelationshipGUID, updateOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Remove a media reference relationship.
+     *
+     * @param mediaReferenceRelationshipGUID unique identifier of the relationship
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachMediaReference(String        elementGUID,
-                                     String        externalReferenceGUID,
-                                     DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    public void detachMediaReference(String        mediaReferenceRelationshipGUID,
+                                DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
-        externalReferenceHandler.detachMediaReference(connectorUserId, elementGUID, externalReferenceGUID, deleteOptions);
+        externalReferenceHandler.detachMediaReference(connectorUserId, mediaReferenceRelationshipGUID, deleteOptions);
     }
 
 
@@ -248,38 +286,57 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
      * @param externalReferenceGUID            unique identifier of the external reference
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkCitedDocumentReference(String                      elementGUID,
+    public String linkCitedDocumentReference(String                      elementGUID,
                                            String                      externalReferenceGUID,
                                            MakeAnchorOptions           makeAnchorOptions,
                                            CitedDocumentLinkProperties relationshipProperties) throws InvalidParameterException,
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
     {
-        externalReferenceHandler.linkCitedDocumentReference(connectorUserId, elementGUID, externalReferenceGUID, makeAnchorOptions, relationshipProperties);
+        return externalReferenceHandler.linkCitedDocumentReference(connectorUserId, elementGUID, externalReferenceGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
     /**
-     * Detach an element from its external document reference.
+     * Update the properties of a cited document link relationship.
      *
-     * @param elementGUID              unique identifier of the element
-     * @param externalReferenceGUID          unique identifier of the external reference
+     * @param citedDocumentLinkRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateCitedDocumentReference(String                       citedDocumentLinkRelationshipGUID,
+                                        UpdateOptions                updateOptions,
+                                        CitedDocumentLinkProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        externalReferenceHandler.updateCitedDocumentReference(connectorUserId, citedDocumentLinkRelationshipGUID, updateOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Remove a cited document link relationship.
+     *
+     * @param citedDocumentLinkRelationshipGUID unique identifier of the relationship
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachCitedDocumentReference(String        elementGUID,
-                                             String        externalReferenceGUID,
-                                             DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+    public void detachCitedDocumentReference(String        citedDocumentLinkRelationshipGUID,
+                                        DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
-        externalReferenceHandler.detachCitedDocumentReference(connectorUserId, elementGUID, externalReferenceGUID, deleteOptions);
+        externalReferenceHandler.detachCitedDocumentReference(connectorUserId, citedDocumentLinkRelationshipGUID, deleteOptions);
     }
 
 
@@ -361,5 +418,74 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
                                                                                                     PropertyServerException
     {
         return externalReferenceHandler.findExternalReferences(connectorUserId, searchString, searchOptions);
+    }
+
+    /**
+     * Detach an element from its external document reference.
+     *
+     * @param elementGUID              unique identifier of the element
+     * @param externalReferenceGUID          unique identifier of the external reference
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every cited document link relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public void detachCitedDocumentReference(String        elementGUID,
+                                             String        externalReferenceGUID,
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        externalReferenceHandler.detachCitedDocumentReference(connectorUserId, elementGUID, externalReferenceGUID, deleteOptions);
+    }
+
+    /**
+     * Detach an external reference from an element.
+     *
+     * @param elementGUID          unique identifier of the first external reference
+     * @param externalReferenceGUID          unique identifier of the second external reference
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every external reference link relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public void detachExternalReference(String        elementGUID,
+                                        String        externalReferenceGUID,
+                                        DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        externalReferenceHandler.detachExternalReference(connectorUserId, elementGUID, externalReferenceGUID, deleteOptions);
+    }
+
+    /**
+     * Detach an external media reference from an element.
+     *
+     * @param elementGUID          unique identifier of the first external reference
+     * @param externalReferenceGUID          unique identifier of the second external reference
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every media reference relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public void detachMediaReference(String        elementGUID,
+                                     String        externalReferenceGUID,
+                                     DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        externalReferenceHandler.detachMediaReference(connectorUserId, elementGUID, externalReferenceGUID, deleteOptions);
     }
 }

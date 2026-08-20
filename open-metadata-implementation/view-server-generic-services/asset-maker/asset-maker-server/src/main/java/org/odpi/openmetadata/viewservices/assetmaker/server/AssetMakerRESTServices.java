@@ -26,6 +26,17 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabili
 import org.odpi.openmetadata.frameworkservices.omf.rest.OpenMetadataRelationshipResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIEndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FolderHierarchyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.LinkedFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.NestedFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.SampleDataProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.ArchiveContentsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.LinkedMediaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessPortProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.AssociatedLogProperties;
 
 
 /**
@@ -1860,7 +1871,11 @@ public class AssetMakerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody.getProperties() instanceof AssignmentScopeProperties assignmentScopeProperties)
+            if (requestBody == null)
+            {
+                handler.assignAction(userId, actionGUID, actorGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof AssignmentScopeProperties assignmentScopeProperties)
             {
                 handler.assignAction(userId, actionGUID, actorGUID, requestBody, assignmentScopeProperties);
             }
@@ -1920,7 +1935,11 @@ public class AssetMakerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody.getProperties() instanceof AssignmentScopeProperties assignmentScopeProperties)
+            if (requestBody == null)
+            {
+                handler.reassignAction(userId, actionGUID, actorGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof AssignmentScopeProperties assignmentScopeProperties)
             {
                 handler.reassignAction(userId, actionGUID, actorGUID, requestBody, assignmentScopeProperties);
             }
@@ -3329,6 +3348,1272 @@ public class AssetMakerRESTServices extends TokenController
             SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
 
             response.setElements(handler.getIntegrationGroups(userId, integrationConnectorGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+
+    /*
+     * =====================================================================================================================
+     * Asset structure relationships
+     */
+
+    /**
+     * Attach a deployed API to the endpoint where it is called.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param endpointGUID unique identifier of the endpoint
+     * @param requestBody properties for the relationship
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkAPIEndpoint(String                     serverName,
+                                        String                     urlMarker,
+                                        String                     deployedAPIGUID,
+                                        String                     endpointGUID,
+                                        NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAPIEndpoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkAPIEndpoint(userId, deployedAPIGUID, endpointGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof APIEndpointProperties properties)
+            {
+                handler.linkAPIEndpoint(userId, deployedAPIGUID, endpointGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkAPIEndpoint(userId, deployedAPIGUID, endpointGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(APIEndpointProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Detach a deployed API from the endpoint where it is called.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param endpointGUID unique identifier of the endpoint
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachAPIEndpoint(String                        serverName,
+                                          String                        urlMarker,
+                                          String                        deployedAPIGUID,
+                                          String                        endpointGUID,
+                                          DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachAPIEndpoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachAPIEndpoint(userId, deployedAPIGUID, endpointGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Attach a child process to its parent process.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param parentProcessGUID unique identifier of the parent process
+     * @param childProcessGUID unique identifier of the child process
+     * @param requestBody properties for the relationship
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkProcessHierarchy(String                     serverName,
+                                             String                     urlMarker,
+                                             String                     parentProcessGUID,
+                                             String                     childProcessGUID,
+                                             NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkProcessHierarchy";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkProcessHierarchy(userId, parentProcessGUID, childProcessGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ProcessHierarchyProperties properties)
+            {
+                handler.linkProcessHierarchy(userId, parentProcessGUID, childProcessGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkProcessHierarchy(userId, parentProcessGUID, childProcessGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ProcessHierarchyProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Detach a child process from its parent process.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param parentProcessGUID unique identifier of the parent process
+     * @param childProcessGUID unique identifier of the child process
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachProcessHierarchy(String                        serverName,
+                                               String                        urlMarker,
+                                               String                        parentProcessGUID,
+                                               String                        childProcessGUID,
+                                               DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachProcessHierarchy";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachProcessHierarchy(userId, parentProcessGUID, childProcessGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Attach a data file to the file folder that it is stored in.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param folderGUID unique identifier of the file folder
+     * @param fileGUID unique identifier of the data file that is stored in the folder
+     * @param requestBody properties for the relationship
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkNestedFiles(String                     serverName,
+                                        String                     urlMarker,
+                                        String                     folderGUID,
+                                        String                     fileGUID,
+                                        NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkNestedFiles";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkNestedFiles(userId, folderGUID, fileGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof NestedFileProperties properties)
+            {
+                handler.linkNestedFiles(userId, folderGUID, fileGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkNestedFiles(userId, folderGUID, fileGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(NestedFileProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Detach a data file from the file folder that it is stored in.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param folderGUID unique identifier of the file folder
+     * @param fileGUID unique identifier of the data file that is stored in the folder
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachNestedFile(String                        serverName,
+                                         String                        urlMarker,
+                                         String                        folderGUID,
+                                         String                        fileGUID,
+                                         DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachNestedFile";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachNestedFile(userId, folderGUID, fileGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Attach a data file to a file folder that links to it without storing it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param folderGUID unique identifier of the file folder
+     * @param fileGUID unique identifier of the data file that is linked to the folder
+     * @param requestBody properties for the relationship
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkLinkedFiles(String                     serverName,
+                                        String                     urlMarker,
+                                        String                     folderGUID,
+                                        String                     fileGUID,
+                                        NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkLinkedFiles";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkLinkedFiles(userId, folderGUID, fileGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof LinkedFileProperties properties)
+            {
+                handler.linkLinkedFiles(userId, folderGUID, fileGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkLinkedFiles(userId, folderGUID, fileGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(LinkedFileProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Detach a data file from a file folder that links to it without storing it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param folderGUID unique identifier of the file folder
+     * @param fileGUID unique identifier of the data file that is linked to the folder
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachLinkedFile(String                        serverName,
+                                         String                        urlMarker,
+                                         String                        folderGUID,
+                                         String                        fileGUID,
+                                         DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachLinkedFile";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachLinkedFile(userId, folderGUID, fileGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Attach a child file folder to its parent file folder.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param parentFolderGUID unique identifier of the parent file folder
+     * @param childFolderGUID unique identifier of the child file folder
+     * @param requestBody properties for the relationship
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkFolderHierarchy(String                     serverName,
+                                            String                     urlMarker,
+                                            String                     parentFolderGUID,
+                                            String                     childFolderGUID,
+                                            NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkFolderHierarchy";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkFolderHierarchy(userId, parentFolderGUID, childFolderGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof FolderHierarchyProperties properties)
+            {
+                handler.linkFolderHierarchy(userId, parentFolderGUID, childFolderGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkFolderHierarchy(userId, parentFolderGUID, childFolderGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(FolderHierarchyProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Detach a child file folder from its parent file folder.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param parentFolderGUID unique identifier of the parent file folder
+     * @param childFolderGUID unique identifier of the child file folder
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachFolderHierarchy(String                        serverName,
+                                              String                        urlMarker,
+                                              String                        parentFolderGUID,
+                                              String                        childFolderGUID,
+                                              DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachFolderHierarchy";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachFolderHierarchy(userId, parentFolderGUID, childFolderGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Attach a resource that is impacted by an incident report to that incident report.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param resourceGUID unique identifier of the impacted resource
+     * @param incidentReportGUID unique identifier of the incident report
+     * @param requestBody properties for the relationship
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkImpactedResource(String                     serverName,
+                                             String                     urlMarker,
+                                             String                     resourceGUID,
+                                             String                     incidentReportGUID,
+                                             NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkImpactedResource";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkImpactedResource(userId, resourceGUID, incidentReportGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ImpactedResourceProperties properties)
+            {
+                handler.linkImpactedResource(userId, resourceGUID, incidentReportGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkImpactedResource(userId, resourceGUID, incidentReportGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ImpactedResourceProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Detach a resource from an incident report that no longer impacts it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param resourceGUID unique identifier of the impacted resource
+     * @param incidentReportGUID unique identifier of the incident report
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachImpactedResource(String                        serverName,
+                                               String                        urlMarker,
+                                               String                        resourceGUID,
+                                               String                        incidentReportGUID,
+                                               DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachImpactedResource";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachImpactedResource(userId, resourceGUID, incidentReportGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Further asset relationships
+     */
+
+    /**
+     * Attach an asset that holds a log to the element that the log is about.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the log is about
+     * @param logAssetGUID unique identifier of the asset that holds the log
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkAssociatedLog(String                     serverName,
+                                          String                     urlMarker,
+                                          String                     elementGUID,
+                                          String                     logAssetGUID,
+                                          NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAssociatedLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkAssociatedLog(userId, elementGUID, logAssetGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof AssociatedLogProperties properties)
+            {
+                handler.linkAssociatedLog(userId, elementGUID, logAssetGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkAssociatedLog(userId, elementGUID, logAssetGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(AssociatedLogProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach an asset that holds a log from the element that the log was about.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the log is about
+     * @param logAssetGUID unique identifier of the asset that holds the log
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachAssociatedLog(String                        serverName,
+                                            String                        urlMarker,
+                                            String                        elementGUID,
+                                            String                        logAssetGUID,
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachAssociatedLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachAssociatedLog(userId, elementGUID, logAssetGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach an asset holding sample data to the element that the sample was taken from.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the sample was taken from
+     * @param sampleDataGUID unique identifier of the asset holding the sample data
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkSampleData(String                     serverName,
+                                       String                     urlMarker,
+                                       String                     elementGUID,
+                                       String                     sampleDataGUID,
+                                       NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSampleData";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkSampleData(userId, elementGUID, sampleDataGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof SampleDataProperties properties)
+            {
+                handler.linkSampleData(userId, elementGUID, sampleDataGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkSampleData(userId, elementGUID, sampleDataGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(SampleDataProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach an asset holding sample data from the element that the sample was taken from.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the sample was taken from
+     * @param sampleDataGUID unique identifier of the asset holding the sample data
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachSampleData(String                        serverName,
+                                         String                        urlMarker,
+                                         String                        elementGUID,
+                                         String                        sampleDataGUID,
+                                         DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachSampleData";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachSampleData(userId, elementGUID, sampleDataGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a port to the process that owns it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param processGUID unique identifier of the process that owns the port
+     * @param portGUID unique identifier of the port
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkProcessPort(String                     serverName,
+                                        String                     urlMarker,
+                                        String                     processGUID,
+                                        String                     portGUID,
+                                        NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkProcessPort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkProcessPort(userId, processGUID, portGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ProcessPortProperties properties)
+            {
+                handler.linkProcessPort(userId, processGUID, portGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkProcessPort(userId, processGUID, portGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ProcessPortProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a port from the process that owned it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param processGUID unique identifier of the process that owns the port
+     * @param portGUID unique identifier of the port
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachProcessPort(String                        serverName,
+                                          String                        urlMarker,
+                                          String                        processGUID,
+                                          String                        portGUID,
+                                          DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachProcessPort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachProcessPort(userId, processGUID, portGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach an archive file to the collection that describes its contents.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param archiveFileGUID unique identifier of the archive file
+     * @param collectionGUID unique identifier of the collection describing the archive's contents
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkArchiveContents(String                     serverName,
+                                            String                     urlMarker,
+                                            String                     archiveFileGUID,
+                                            String                     collectionGUID,
+                                            NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkArchiveContents";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkArchiveContents(userId, archiveFileGUID, collectionGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ArchiveContentsProperties properties)
+            {
+                handler.linkArchiveContents(userId, archiveFileGUID, collectionGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkArchiveContents(userId, archiveFileGUID, collectionGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ArchiveContentsProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach an archive file from the collection that described its contents.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param archiveFileGUID unique identifier of the archive file
+     * @param collectionGUID unique identifier of the collection describing the archive's contents
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachArchiveContents(String                        serverName,
+                                              String                        urlMarker,
+                                              String                        archiveFileGUID,
+                                              String                        collectionGUID,
+                                              DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachArchiveContents";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachArchiveContents(userId, archiveFileGUID, collectionGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a media file to another media file that is related to it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param mediaFileGUID unique identifier of the media file
+     * @param linkedMediaFileGUID unique identifier of the related media file
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkLinkedMedia(String                     serverName,
+                                        String                     urlMarker,
+                                        String                     mediaFileGUID,
+                                        String                     linkedMediaFileGUID,
+                                        NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkLinkedMedia";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkLinkedMedia(userId, mediaFileGUID, linkedMediaFileGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof LinkedMediaProperties properties)
+            {
+                handler.linkLinkedMedia(userId, mediaFileGUID, linkedMediaFileGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkLinkedMedia(userId, mediaFileGUID, linkedMediaFileGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(LinkedMediaProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a media file from another media file that was related to it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param mediaFileGUID unique identifier of the media file
+     * @param linkedMediaFileGUID unique identifier of the related media file
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachLinkedMedia(String                        serverName,
+                                          String                        urlMarker,
+                                          String                        mediaFileGUID,
+                                          String                        linkedMediaFileGUID,
+                                          DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachLinkedMedia";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachLinkedMedia(userId, mediaFileGUID, linkedMediaFileGUID, requestBody);
         }
         catch (Throwable error)
         {

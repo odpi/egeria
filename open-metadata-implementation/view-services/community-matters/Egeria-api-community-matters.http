@@ -302,5 +302,48 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Work with Crowd Sourcing Contributions
+# https://egeria-project.org/concepts/community
 
+@elementGUID=add guid here
+@contributorGUID=add guid here
 
+###
+# @name linkCrowdSourcingContribution
+# Attach an actor to an element that they contributed to.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/community-matters/elements/{{elementGUID}}/crowd-sourcing-contributions/{{contributorGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "CrowdSourcingContributionProperties",
+    "roleType": "PROPOSER",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachCrowdSourcingContribution
+# Detach an actor from an element that they contributed to.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/community-matters/elements/{{elementGUID}}/crowd-sourcing-contributions/{{contributorGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}

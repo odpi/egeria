@@ -25,6 +25,7 @@ public class SecurityOfficerInstance extends OMVSServiceInstance
 
     private final ConnectedAssetClient        connectedAssetClient;
     private final AssetHandler                softwarePlatformHandler;
+    private final AssetHandler                secretsCollectionHandler;
     private final GovernanceDefinitionHandler governanceDefinitionHandler;
 
 
@@ -86,6 +87,12 @@ public class SecurityOfficerInstance extends OMVSServiceInstance
                                                    myDescription.getViewServiceFullName(),
                                                    openMetadataClient,
                                                    OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
+
+        secretsCollectionHandler = new AssetHandler(serverName,
+                                                    auditLog,
+                                                    myDescription.getViewServiceFullName(),
+                                                    openMetadataClient,
+                                                    OpenMetadataType.SECRETS_COLLECTION.typeName);
     }
 
 
@@ -124,5 +131,13 @@ public class SecurityOfficerInstance extends OMVSServiceInstance
     }
 
 
-
+    /**
+     * Return the client for maintaining the relationships attached to a secrets collection.
+     *
+     * @return client
+     */
+    public AssetHandler getSecretsCollectionHandler()
+    {
+        return secretsCollectionHandler;
+    }
 }

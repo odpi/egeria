@@ -170,4 +170,126 @@ public class PrivacyOfficerResource
         return restAPI.detachDataProcessingTarget(serverName, dataProcessingActionGUID, targetGUID, requestBody);
     }
 
+    /**
+     * Attach a data processing description to the element that performs the processing.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element that performs the data processing
+     * @param dataProcessingDescriptionGUID unique identifier of the data processing description
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/data-processing-specifications/{dataProcessingDescriptionGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkDataProcessingSpecification",
+            description="Attach a data processing description to the element that performs the processing.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-processing-description"))
+
+    public VoidResponse linkDataProcessingSpecification(@PathVariable String serverName,
+                                                        @PathVariable String elementGUID,
+                                                        @PathVariable String dataProcessingDescriptionGUID,
+                                                        @RequestBody (required = false)
+                                                        NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkDataProcessingSpecification(serverName, elementGUID, dataProcessingDescriptionGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a data processing description from the element that performed the processing.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element that performs the data processing
+     * @param dataProcessingDescriptionGUID unique identifier of the data processing description
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/data-processing-specifications/{dataProcessingDescriptionGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachDataProcessingSpecification",
+            description="Detach a data processing description from the element that performed the processing.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-processing-description"))
+
+    public VoidResponse detachDataProcessingSpecification(@PathVariable String serverName,
+                                                          @PathVariable String elementGUID,
+                                                          @PathVariable String dataProcessingDescriptionGUID,
+                                                          @RequestBody (required = false)
+                                                          DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachDataProcessingSpecification(serverName, elementGUID, dataProcessingDescriptionGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a child data processing action to its parent data processing action.
+     *
+     * @param serverName name of the server to route the request to
+     * @param parentProcessingActionGUID unique identifier of the parent data processing action
+     * @param childProcessingActionGUID unique identifier of the child data processing action
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-processing-actions/{parentProcessingActionGUID}/detailed-processing-actions/{childProcessingActionGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkDetailedProcessingAction",
+            description="Attach a child data processing action to its parent data processing action.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-processing-description"))
+
+    public VoidResponse linkDetailedProcessingAction(@PathVariable String serverName,
+                                                     @PathVariable String parentProcessingActionGUID,
+                                                     @PathVariable String childProcessingActionGUID,
+                                                     @RequestBody (required = false)
+                                                     NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkDetailedProcessingAction(serverName, parentProcessingActionGUID, childProcessingActionGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a child data processing action from its parent data processing action.
+     *
+     * @param serverName name of the server to route the request to
+     * @param parentProcessingActionGUID unique identifier of the parent data processing action
+     * @param childProcessingActionGUID unique identifier of the child data processing action
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-processing-actions/{parentProcessingActionGUID}/detailed-processing-actions/{childProcessingActionGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachDetailedProcessingAction",
+            description="Detach a child data processing action from its parent data processing action.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-processing-description"))
+
+    public VoidResponse detachDetailedProcessingAction(@PathVariable String serverName,
+                                                       @PathVariable String parentProcessingActionGUID,
+                                                       @PathVariable String childProcessingActionGUID,
+                                                       @RequestBody (required = false)
+                                                       DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachDetailedProcessingAction(serverName, parentProcessingActionGUID, childProcessingActionGUID, requestBody);
+    }
 }

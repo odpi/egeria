@@ -22,6 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaProperties;
 
 /**
  * SchemaTypeHandler provides methods to define schema types
@@ -438,5 +439,76 @@ public class SchemaTypeHandler extends OpenMetadataHandlerBase
         final String methodName  = "findSchemaTypes";
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
+    }
+
+
+    /**
+     * Attach a relational database schema type to the list that contains it.
+     *
+     * @param userId                 userId of the user making the request
+     * @param databaseSchemaTypeListGUID unique identifier of the relational database schema type list
+     * @param relationalDBSchemaTypeGUID unique identifier of the relational database schema type
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkRelationalDBSchema(String                        userId,
+                                       String                        databaseSchemaTypeListGUID,
+                                       String                        relationalDBSchemaTypeGUID,
+                                       MakeAnchorOptions             makeAnchorOptions,
+                                       RelationalDBSchemaProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName            = "linkRelationalDBSchema";
+        final String end1GUIDParameterName = "databaseSchemaTypeListGUID";
+        final String end2GUIDParameterName = "relationalDBSchemaTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(databaseSchemaTypeListGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(relationalDBSchemaTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.RELATIONAL_DB_SCHEMA.typeName,
+                                                        databaseSchemaTypeListGUID,
+                                                        relationalDBSchemaTypeGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a relational database schema type from the list that contained it.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param databaseSchemaTypeListGUID unique identifier of the relational database schema type list
+     * @param relationalDBSchemaTypeGUID unique identifier of the relational database schema type
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachRelationalDBSchema(String        userId,
+                                         String        databaseSchemaTypeListGUID,
+                                         String        relationalDBSchemaTypeGUID,
+                                         DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        final String methodName            = "detachRelationalDBSchema";
+        final String end1GUIDParameterName = "databaseSchemaTypeListGUID";
+        final String end2GUIDParameterName = "relationalDBSchemaTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(databaseSchemaTypeListGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(relationalDBSchemaTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.RELATIONAL_DB_SCHEMA.typeName,
+                                                        databaseSchemaTypeListGUID,
+                                                        relationalDBSchemaTypeGUID,
+                                                        deleteOptions);
     }
 }

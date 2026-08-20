@@ -7,9 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductDependencyProperties;
 import org.odpi.openmetadata.viewservices.productmanager.server.ProductManagerRESTServices;
@@ -60,7 +58,7 @@ public class ProductManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/digital-product"))
 
-    public VoidResponse linkDigitalProductDependency(@PathVariable
+    public GUIDResponse linkDigitalProductDependency(@PathVariable
                                                      String                                serverName,
                                                      @PathVariable
                                                      String consumerDigitalProductGUID,
@@ -74,37 +72,62 @@ public class ProductManagerResource
 
 
     /**
-     * Unlink dependent digital products.
+     * Update the properties of a digital product dependency relationship.
      *
-     * @param serverName         name of called server
-     * @param consumerDigitalProductGUID    unique identifier of the digital product that has the dependency.
-     * @param consumedDigitalProductGUID    unique identifier of the digital product that it is using.
-     * @param requestBody  description of the relationship.
+     * @param serverName name of the server to route the request to
+     * @param digitalProductDependencyRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
      *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/digital-products/{consumerDigitalProductGUID}/product-dependencies/{consumedDigitalProductGUID}/detach")
+    @PostMapping(path = "/digital-product-dependencies/{digitalProductDependencyRelationshipGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="detachDigitalProductDependency",
-            description="Unlink dependent digital products.",
+    @Operation(summary="updateDigitalProductDependency",
+            description="Update the properties of a digital product dependency relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/digital-product"))
 
-    public VoidResponse detachDigitalProductDependency(@PathVariable
-                                                       String                    serverName,
-                                                       @PathVariable
-                                                       String consumerDigitalProductGUID,
-                                                       @PathVariable
-                                                       String consumedDigitalProductGUID,
+    public VoidResponse updateDigitalProductDependency(@PathVariable String serverName,
+                                                       @PathVariable String digitalProductDependencyRelationshipGUID,
+                                                       @RequestBody (required = false)
+                                                       UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateDigitalProductDependency(serverName, digitalProductDependencyRelationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a digital product dependency relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param digitalProductDependencyRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/digital-product-dependencies/{digitalProductDependencyRelationshipGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachDigitalProductDependency",
+            description="Remove a digital product dependency relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/digital-product"))
+
+    public VoidResponse detachDigitalProductDependency(@PathVariable String serverName,
+                                                       @PathVariable String digitalProductDependencyRelationshipGUID,
                                                        @RequestBody (required = false)
                                                        DeleteRelationshipRequestBody requestBody)
     {
-        return restAPI.detachDigitalProductDependency(serverName, consumerDigitalProductGUID, consumedDigitalProductGUID, requestBody);
+        return restAPI.detachDigitalProductDependency(serverName, digitalProductDependencyRelationshipGUID, requestBody);
     }
+
 
 
 
@@ -173,5 +196,42 @@ public class ProductManagerResource
                                              DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachProductManager(serverName, digitalProductGUID, digitalProductManagerRoleGUID, requestBody);
+    }
+
+    /**
+     * Unlink dependent digital products.
+     *
+     * @param serverName         name of called server
+     * @param consumerDigitalProductGUID    unique identifier of the digital product that has the dependency.
+     * @param consumedDigitalProductGUID    unique identifier of the digital product that it is using.
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every digital product dependency relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    @PostMapping(path = "/digital-products/{consumerDigitalProductGUID}/product-dependencies/{consumedDigitalProductGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachDigitalProductDependency",
+            description="Unlink dependent digital products.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/digital-product"))
+
+    public VoidResponse detachDigitalProductDependency(@PathVariable
+                                                       String                    serverName,
+                                                       @PathVariable
+                                                       String consumerDigitalProductGUID,
+                                                       @PathVariable
+                                                       String consumedDigitalProductGUID,
+                                                       @RequestBody (required = false)
+                                                       DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachDigitalProductDependency(serverName, consumerDigitalProductGUID, consumedDigitalProductGUID, requestBody);
     }
 }

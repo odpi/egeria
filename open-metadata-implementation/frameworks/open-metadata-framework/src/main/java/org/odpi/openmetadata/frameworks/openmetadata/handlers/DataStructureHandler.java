@@ -550,4 +550,75 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
                                                         dataStructureGUID,
                                                         deleteOptions);
     }
+
+
+    /**
+     * Attach a data structure to the schema type that implements it.
+     *
+     * @param userId                 userId of the user making the request
+     * @param dataStructureGUID unique identifier of the data structure
+     * @param schemaTypeGUID unique identifier of the equivalent schema type
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSchemaTypeDefinition(String                          userId,
+                                         String                          dataStructureGUID,
+                                         String                          schemaTypeGUID,
+                                         MakeAnchorOptions               makeAnchorOptions,
+                                         SchemaTypeDefinitionProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
+    {
+        final String methodName            = "linkSchemaTypeDefinition";
+        final String end1GUIDParameterName = "dataStructureGUID";
+        final String end2GUIDParameterName = "schemaTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataStructureGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(schemaTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.typeName,
+                                                        dataStructureGUID,
+                                                        schemaTypeGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a data structure from the schema type that implemented it.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param dataStructureGUID unique identifier of the data structure
+     * @param schemaTypeGUID unique identifier of the equivalent schema type
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSchemaTypeDefinition(String        userId,
+                                           String        dataStructureGUID,
+                                           String        schemaTypeGUID,
+                                           DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String methodName            = "detachSchemaTypeDefinition";
+        final String end1GUIDParameterName = "dataStructureGUID";
+        final String end2GUIDParameterName = "schemaTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataStructureGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(schemaTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.typeName,
+                                                        dataStructureGUID,
+                                                        schemaTypeGUID,
+                                                        deleteOptions);
+    }
 }

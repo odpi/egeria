@@ -1497,3 +1497,50 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+###
+# ---------------------------------------------------------------------------------------------------------------------
+# agreement item is a multi-link relationship.  The attach above returns the new relationship's unique identifier;
+# these two requests act on that single relationship.  The detach that takes the two end GUIDs removes them all.
+
+@agreementItemRelationshipGUID=add guid here
+###
+# @name updateAgreementItem
+# Update the properties of a agreement item relationship.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/agreement-items/{{agreementItemRelationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "AgreementItemProperties",
+    "membershipRationale": "add rationale here",
+    "expression": "add expression here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachAgreementItemById
+# Remove a single agreement item relationship, identified by its own unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/agreement-items/{{agreementItemRelationshipGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+

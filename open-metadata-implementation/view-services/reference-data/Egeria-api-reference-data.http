@@ -649,6 +649,49 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# ---------------------------------------------------------------------------------------------------------------------
+# valid values implementation is a multi-link relationship.  The attach above returns the new relationship's unique identifier;
+# these two requests act on that single relationship.  The detach that takes the two end GUIDs removes them all.
 
+@validValuesImplementationRelationshipGUID=add guid here
+###
+# @name updateValidValueImplementation
+# Update the properties of a valid values implementation relationship.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-value-implementations/{{validValuesImplementationRelationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "ValidValuesImplementationProperties",
+    "symbolicName": "add symbolic name here",
+    "implementationValue": "add implementation value here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachValidValueImplementationById
+# Remove a single valid values implementation relationship, identified by its own unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/reference-data/valid-value-implementations/{{validValuesImplementationRelationshipGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
 

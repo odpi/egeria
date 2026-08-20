@@ -151,7 +151,7 @@ public class ReferenceDataResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/valid-value-definition"))
 
-    public VoidResponse linkValidValueImplementation(@PathVariable String serverName,
+    public GUIDResponse linkValidValueImplementation(@PathVariable String serverName,
                                                      @PathVariable String validValueDefinitionGUID,
                                                      @PathVariable String elementGUID,
                                                      @RequestBody (required = false)
@@ -162,34 +162,62 @@ public class ReferenceDataResource
 
 
     /**
-     * Detach a valid value from an implementation - probably a referenceable.
+     * Update the properties of a valid values implementation relationship.
      *
-     * @param serverName         name of called server
-     * @param validValueDefinitionGUID            unique identifier of the validValueDefinition
-     * @param elementGUID       unique identifier of the element
-     * @param requestBody  description of the relationship.
+     * @param serverName name of the server to route the request to
+     * @param validValuesImplementationRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
      *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/valid-values/{validValueDefinitionGUID}/implementation/elements/{elementGUID}/detach")
+    @PostMapping(path = "/valid-value-implementations/{validValuesImplementationRelationshipGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateValidValueImplementation",
+            description="Update the properties of a valid values implementation relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/valid-value-definition"))
+
+    public VoidResponse updateValidValueImplementation(@PathVariable String serverName,
+                                                       @PathVariable String validValuesImplementationRelationshipGUID,
+                                                       @RequestBody (required = false)
+                                                       UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateValidValueImplementation(serverName, validValuesImplementationRelationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a valid values implementation relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param validValuesImplementationRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/valid-value-implementations/{validValuesImplementationRelationshipGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="detachValidValueImplementation",
-            description="Detach a valid value from an implementation - probably a referenceable.",
+            description="Remove a valid values implementation relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/valid-value-definition"))
 
     public VoidResponse detachValidValueImplementation(@PathVariable String serverName,
-                                                       @PathVariable String validValueDefinitionGUID,
-                                                       @PathVariable String elementGUID,
+                                                       @PathVariable String validValuesImplementationRelationshipGUID,
                                                        @RequestBody (required = false)
-                                                           DeleteRelationshipRequestBody requestBody)
+                                                       DeleteRelationshipRequestBody requestBody)
     {
-        return restAPI.detachValidValueImplementation(serverName, validValueDefinitionGUID, elementGUID, requestBody);
+        return restAPI.detachValidValueImplementation(serverName, validValuesImplementationRelationshipGUID, requestBody);
     }
+
 
 
     /**
@@ -689,5 +717,39 @@ public class ReferenceDataResource
                                                                          GetRequestBody requestBody)
     {
         return restAPI.getValidValueDefinitionByGUID(serverName, validValueDefinitionGUID, requestBody);
+    }
+
+    /**
+     * Detach a valid value from an implementation - probably a referenceable.
+     *
+     * @param serverName         name of called server
+     * @param validValueDefinitionGUID            unique identifier of the validValueDefinition
+     * @param elementGUID       unique identifier of the element
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every valid values implementation relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    @PostMapping(path = "/valid-values/{validValueDefinitionGUID}/implementation/elements/{elementGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachValidValueImplementation",
+            description="Detach a valid value from an implementation - probably a referenceable.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/valid-value-definition"))
+
+    public VoidResponse detachValidValueImplementation(@PathVariable String serverName,
+                                                       @PathVariable String validValueDefinitionGUID,
+                                                       @PathVariable String elementGUID,
+                                                       @RequestBody (required = false)
+                                                           DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachValidValueImplementation(serverName, validValueDefinitionGUID, elementGUID, requestBody);
     }
 }

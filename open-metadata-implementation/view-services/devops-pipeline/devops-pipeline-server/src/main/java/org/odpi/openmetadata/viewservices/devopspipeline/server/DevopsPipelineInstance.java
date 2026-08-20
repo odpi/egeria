@@ -7,6 +7,10 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ViewServic
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.NetworkHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.OperatingPlatformHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.StorageVolumeHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 /**
@@ -17,6 +21,11 @@ import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStor
 public class DevopsPipelineInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.DEVOPS_PIPELINE;
+
+    private final StorageVolumeHandler storageVolumeHandler;
+    private final NetworkHandler       networkHandler;
+    private final AssetHandler         assetHandler;
+    private final OperatingPlatformHandler operatingPlatformHandler;
 
 
 
@@ -60,7 +69,68 @@ public class DevopsPipelineInstance extends OMVSServiceInstance
                                                                                   maxPageSize,
                                                                                   auditLog);
 
+        storageVolumeHandler = new StorageVolumeHandler(serverName,
+                                                        auditLog,
+                                                        myDescription.getViewServiceFullName(),
+                                                        openMetadataClient);
+
+        networkHandler = new NetworkHandler(serverName,
+                                            auditLog,
+                                            myDescription.getViewServiceFullName(),
+                                            openMetadataClient);
+
+        assetHandler = new AssetHandler(serverName,
+                                        auditLog,
+                                        myDescription.getViewServiceFullName(),
+                                        openMetadataClient);
+
+        operatingPlatformHandler = new OperatingPlatformHandler(serverName,
+                                                                auditLog,
+                                                                myDescription.getViewServiceFullName(),
+                                                                openMetadataClient);
     }
 
 
+    /**
+     * Return the open metadata handler.
+     *
+     * @return client
+     */
+    public StorageVolumeHandler getStorageVolumeHandler()
+    {
+        return storageVolumeHandler;
+    }
+
+
+    /**
+     * Return the open metadata handler.
+     *
+     * @return client
+     */
+    public NetworkHandler getNetworkHandler()
+    {
+        return networkHandler;
+    }
+
+
+    /**
+     * Return the open metadata handler.
+     *
+     * @return client
+     */
+    public AssetHandler getAssetHandler()
+    {
+        return assetHandler;
+    }
+
+
+    /**
+     * Return the open metadata handler.
+     *
+     * @return client
+     */
+    public OperatingPlatformHandler getOperatingPlatformHandler()
+    {
+        return operatingPlatformHandler;
+    }
 }

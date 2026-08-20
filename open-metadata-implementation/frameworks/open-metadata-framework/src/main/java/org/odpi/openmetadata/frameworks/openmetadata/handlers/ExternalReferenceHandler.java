@@ -157,11 +157,12 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
      * @param externalReferenceGUID          unique identifier of the external reference
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkExternalReference(String                          userId,
+    public String linkExternalReference(String                          userId,
                                       String                          elementGUID,
                                       String                          externalReferenceGUID,
                                       MakeAnchorOptions               makeAnchorOptions,
@@ -177,46 +178,69 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(externalReferenceGUID, end2GUIDParameterName, methodName);
 
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
-                                                        elementGUID,
-                                                        externalReferenceGUID,
-                                                        makeAnchorOptions,
-                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
+                                                               elementGUID,
+                                                               externalReferenceGUID,
+                                                               makeAnchorOptions,
+                                                               relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
     /**
-     * Detach an external reference from an element.
+     * Update the properties of a external reference link relationship.
+     *
+     * @param userId                 userId of the user making the request
+     * @param externalReferenceLinkRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateExternalReferenceLink(String                           userId,
+                                            String                           externalReferenceLinkRelationshipGUID,
+                                            UpdateOptions                    updateOptions,
+                                            ExternalReferenceLinkProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
+    {
+        final String methodName        = "updateExternalReferenceLink";
+        final String guidParameterName = "externalReferenceLinkRelationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(externalReferenceLinkRelationshipGUID, guidParameterName, methodName);
+
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     externalReferenceLinkRelationshipGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove a external reference link relationship.
      *
      * @param userId                 userId of the user making the request.
-     * @param elementGUID          unique identifier of the first external reference
-     * @param externalReferenceGUID          unique identifier of the second external reference
+     * @param externalReferenceLinkRelationshipGUID unique identifier of the relationship
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachExternalReference(String        userId,
-                                        String        elementGUID,
-                                        String        externalReferenceGUID,
+                                        String        externalReferenceLinkRelationshipGUID,
                                         DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
-        final String methodName = "detachExternalReference";
-        final String end1GUIDParameterName = "elementGUID";
-        final String end2GUIDParameterName = "externalReferenceGUID";
+        final String methodName        = "detachExternalReference";
+        final String guidParameterName = "externalReferenceLinkRelationshipGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(externalReferenceGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(externalReferenceLinkRelationshipGUID, guidParameterName, methodName);
 
-        openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
-                                                        elementGUID,
-                                                        externalReferenceGUID,
-                                                        deleteOptions);
+        openMetadataClient.deleteRelationshipInStore(userId, externalReferenceLinkRelationshipGUID, deleteOptions);
     }
 
 
@@ -228,11 +252,12 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
      * @param externalReferenceGUID          unique identifier of the second external reference
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkMediaReference(String                   userId,
+    public String linkMediaReference(String                   userId,
                                    String                   elementGUID,
                                    String                   externalReferenceGUID,
                                    MakeAnchorOptions        makeAnchorOptions,
@@ -248,46 +273,69 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(externalReferenceGUID, end2GUIDParameterName, methodName);
 
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName,
-                                                        elementGUID,
-                                                        externalReferenceGUID,
-                                                        makeAnchorOptions,
-                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName,
+                                                               elementGUID,
+                                                               externalReferenceGUID,
+                                                               makeAnchorOptions,
+                                                               relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
     /**
-     * Detach an external media reference from an element.
+     * Update the properties of a media reference relationship.
+     *
+     * @param userId                 userId of the user making the request
+     * @param mediaReferenceRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateMediaReference(String                    userId,
+                                     String                    mediaReferenceRelationshipGUID,
+                                     UpdateOptions             updateOptions,
+                                     MediaReferenceProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName        = "updateMediaReference";
+        final String guidParameterName = "mediaReferenceRelationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(mediaReferenceRelationshipGUID, guidParameterName, methodName);
+
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     mediaReferenceRelationshipGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove a media reference relationship.
      *
      * @param userId                 userId of the user making the request.
-     * @param elementGUID          unique identifier of the first external reference
-     * @param externalReferenceGUID          unique identifier of the second external reference
+     * @param mediaReferenceRelationshipGUID unique identifier of the relationship
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachMediaReference(String        userId,
-                                     String        elementGUID,
-                                     String        externalReferenceGUID,
+                                     String        mediaReferenceRelationshipGUID,
                                      DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
     {
-        final String methodName = "detachMediaReference";
-        final String end1GUIDParameterName = "elementGUID";
-        final String end2GUIDParameterName = "externalReferenceGUID";
+        final String methodName        = "detachMediaReference";
+        final String guidParameterName = "mediaReferenceRelationshipGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(externalReferenceGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(mediaReferenceRelationshipGUID, guidParameterName, methodName);
 
-        openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName,
-                                                        elementGUID,
-                                                        externalReferenceGUID,
-                                                        deleteOptions);
+        openMetadataClient.deleteRelationshipInStore(userId, mediaReferenceRelationshipGUID, deleteOptions);
     }
 
 
@@ -299,11 +347,12 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
      * @param externalReferenceGUID            unique identifier of the external reference
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkCitedDocumentReference(String                      userId,
+    public String linkCitedDocumentReference(String                      userId,
                                            String                      elementGUID,
                                            String                      externalReferenceGUID,
                                            MakeAnchorOptions           makeAnchorOptions,
@@ -319,46 +368,69 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(externalReferenceGUID, end2GUIDParameterName, methodName);
 
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName,
-                                                        elementGUID,
-                                                        externalReferenceGUID,
-                                                        makeAnchorOptions,
-                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName,
+                                                               elementGUID,
+                                                               externalReferenceGUID,
+                                                               makeAnchorOptions,
+                                                               relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
     /**
-     * Detach an element from its external document reference.
+     * Update the properties of a cited document link relationship.
+     *
+     * @param userId                 userId of the user making the request
+     * @param citedDocumentLinkRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateCitedDocumentReference(String                       userId,
+                                             String                       citedDocumentLinkRelationshipGUID,
+                                             UpdateOptions                updateOptions,
+                                             CitedDocumentLinkProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        final String methodName        = "updateCitedDocumentReference";
+        final String guidParameterName = "citedDocumentLinkRelationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(citedDocumentLinkRelationshipGUID, guidParameterName, methodName);
+
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     citedDocumentLinkRelationshipGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove a cited document link relationship.
      *
      * @param userId                 userId of the user making the request.
-     * @param elementGUID              unique identifier of the element
-     * @param externalReferenceGUID          unique identifier of the external reference
+     * @param citedDocumentLinkRelationshipGUID unique identifier of the relationship
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachCitedDocumentReference(String        userId,
-                                             String        elementGUID,
-                                             String        externalReferenceGUID,
+                                             String        citedDocumentLinkRelationshipGUID,
                                              DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
     {
-        final String methodName = "detachKnownExternalReference";
-        final String end1GUIDParameterName = "elementGUID";
-        final String end2GUIDParameterName = "externalReferenceGUID";
+        final String methodName        = "detachCitedDocumentReference";
+        final String guidParameterName = "citedDocumentLinkRelationshipGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(externalReferenceGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(citedDocumentLinkRelationshipGUID, guidParameterName, methodName);
 
-        openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName,
-                                                        externalReferenceGUID,
-                                                        externalReferenceGUID,
-                                                        deleteOptions);
+        openMetadataClient.deleteRelationshipInStore(userId, citedDocumentLinkRelationshipGUID, deleteOptions);
     }
 
 
@@ -468,5 +540,116 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
         final String methodName  = "findExternalReferences";
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
+    }
+
+    /**
+     * Detach an element from its external document reference.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID              unique identifier of the element
+     * @param externalReferenceGUID          unique identifier of the external reference
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every cited document link relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public void detachCitedDocumentReference(String        userId,
+                                             String        elementGUID,
+                                             String        externalReferenceGUID,
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        final String methodName = "detachKnownExternalReference";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "externalReferenceGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(externalReferenceGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName,
+                                                        externalReferenceGUID,
+                                                        externalReferenceGUID,
+                                                        deleteOptions);
+    }
+
+    /**
+     * Detach an external reference from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID          unique identifier of the first external reference
+     * @param externalReferenceGUID          unique identifier of the second external reference
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every external reference link relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public void detachExternalReference(String        userId,
+                                        String        elementGUID,
+                                        String        externalReferenceGUID,
+                                        DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        final String methodName = "detachExternalReference";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "externalReferenceGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(externalReferenceGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        externalReferenceGUID,
+                                                        deleteOptions);
+    }
+
+    /**
+     * Detach an external media reference from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID          unique identifier of the first external reference
+     * @param externalReferenceGUID          unique identifier of the second external reference
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every media reference relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public void detachMediaReference(String        userId,
+                                     String        elementGUID,
+                                     String        externalReferenceGUID,
+                                     DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        final String methodName = "detachMediaReference";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "externalReferenceGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(externalReferenceGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        externalReferenceGUID,
+                                                        deleteOptions);
     }
 }

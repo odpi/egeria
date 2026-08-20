@@ -82,6 +82,7 @@ public class ConnectorContextBase
     private final   CollectionClient               collectionClient;
     private final   CommentClient                  commentClient;
     private final   CommunityClient                communityClient;
+    private final   ConceptModelElementClient      conceptModelElementClient;
     private final   ConnectionClient               connectionClient;
     private final   ConnectorTypeClient            connectorTypeClient;
     private final   ContactDetailsClient           contactDetailsClient;
@@ -102,6 +103,8 @@ public class ConnectorContextBase
     private final   LineageClient                  lineageClient;
     private final   LocationClient                 locationClient;
     private final   MetadataRepositoryCohortClient metadataRepositoryCohortClient;
+    private final   NetworkClient                  networkClient;
+    private final   OperatingPlatformClient        operatingPlatformClient;
     private final   MultiLanguageClient            multiLanguageClient;
     private final   NoteLogClient                  noteLogClient;
     private final   PerspectiveClient              perspectiveClient;
@@ -114,6 +117,7 @@ public class ConnectorContextBase
     private final   SoftwareCapabilityClient       softwareCapabilityClient;
     private final   SolutionComponentClient        solutionComponentClient;
     private final   SpecificationPropertyClient    specificationPropertyClient;
+    private final   StorageVolumeClient            storageVolumeClient;
     private final   SkillClient                    skillClient;
     private final   TemplateClient                 templateClient;
     private final   UserIdentityClient             userIdentityClient;
@@ -283,6 +287,17 @@ public class ConnectorContextBase
                                                    openMetadataClient,
                                                    auditLog,
                                                    maxPageSize);
+
+        this.conceptModelElementClient = new ConceptModelElementClient(this,
+                                                                       localServerName,
+                                                                       localServiceName,
+                                                                       connectorUserId,
+                                                                       connectorGUID,
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       openMetadataClient,
+                                                                       auditLog,
+                                                                       maxPageSize);
 
         this.connectionClient = new ConnectionClient(this,
                                                      localServerName,
@@ -515,6 +530,28 @@ public class ConnectorContextBase
                                                            auditLog,
                                                            maxPageSize);
 
+        this.networkClient = new NetworkClient(this,
+                                               localServerName,
+                                               localServiceName,
+                                               connectorUserId,
+                                               connectorGUID,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               openMetadataClient,
+                                               auditLog,
+                                               maxPageSize);
+
+        this.operatingPlatformClient = new OperatingPlatformClient(this,
+                                                                   localServerName,
+                                                                   localServiceName,
+                                                                   connectorUserId,
+                                                                   connectorGUID,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   openMetadataClient,
+                                                                   auditLog,
+                                                                   maxPageSize);
+
         this.noteLogClient = new NoteLogClient(this,
                                                localServerName,
                                                localServiceName,
@@ -646,6 +683,17 @@ public class ConnectorContextBase
                                                                            openMetadataClient,
                                                                            auditLog,
                                                                            maxPageSize);
+
+        this.storageVolumeClient = new StorageVolumeClient(this,
+                                                           localServerName,
+                                                           localServiceName,
+                                                           connectorUserId,
+                                                           connectorGUID,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           openMetadataClient,
+                                                           auditLog,
+                                                           maxPageSize);
 
         this.templateClient = new TemplateClient(this,
                                                  localServerName,
@@ -977,6 +1025,17 @@ public class ConnectorContextBase
      * @return connector context client
      */
     public CommunityClient getCommunityClient() { return communityClient; }
+
+
+    /**
+     * Return the client for managing the elements of a concept model.
+     *
+     * @return connector context client
+     */
+    public ConceptModelElementClient getConceptModelElementClient()
+    {
+        return conceptModelElementClient;
+    }
 
 
     /**
@@ -1387,6 +1446,39 @@ public class ConnectorContextBase
     public SpecificationPropertyClient getSpecificationPropertyClient()
     {
         return specificationPropertyClient;
+    }
+
+
+    /**
+     * Return the client for managing storage volumes.
+     *
+     * @return connector context client
+     */
+    public StorageVolumeClient getStorageVolumeClient()
+    {
+        return storageVolumeClient;
+    }
+
+
+    /**
+     * Return the client for managing networks and network gateways.
+     *
+     * @return connector context client
+     */
+    public NetworkClient getNetworkClient()
+    {
+        return networkClient;
+    }
+
+
+    /**
+     * Return the client for managing operating platforms and software packages.
+     *
+     * @return connector context client
+     */
+    public OperatingPlatformClient getOperatingPlatformClient()
+    {
+        return operatingPlatformClient;
     }
 
 

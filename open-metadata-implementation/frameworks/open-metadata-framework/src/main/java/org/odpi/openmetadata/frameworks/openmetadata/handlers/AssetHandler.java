@@ -21,7 +21,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.Assignmen
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIEndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.CSVFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FolderHierarchyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.LinkedFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.NestedFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.HostClusterMemberProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
@@ -46,6 +48,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.AssociatedLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessPortProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.ArchiveContentsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.LinkedMediaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ResourcePermissionsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecretsCollectionSecurityListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.UserAccountProperties;
 
 /**
  * AssetHandler provides methods to define all types of assets and their relationships
@@ -1683,6 +1692,148 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         deleteOptions);
     }
 
+
+    /**
+     * Create a relationship that identifies a resource that is impacted by an incident report.
+     *
+     * @param userId                 userId of the user making the request
+     * @param resourceGUID           unique identifier of the impacted resource
+     * @param incidentReportGUID     unique identifier of the incident report
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkImpactedResource(String                     userId,
+                                     String                     resourceGUID,
+                                     String                     incidentReportGUID,
+                                     MakeAnchorOptions          makeAnchorOptions,
+                                     ImpactedResourceProperties relationshipProperties) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        final String methodName            = "linkImpactedResource";
+        final String end1GUIDParameterName = "resourceGUID";
+        final String end2GUIDParameterName = "incidentReportGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(resourceGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(incidentReportGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName,
+                                                        resourceGUID,
+                                                        incidentReportGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove an ImpactedResource relationship.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param resourceGUID           unique identifier of the impacted resource
+     * @param incidentReportGUID     unique identifier of the incident report
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachImpactedResource(String        userId,
+                                       String        resourceGUID,
+                                       String        incidentReportGUID,
+                                       DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        final String methodName            = "detachImpactedResource";
+        final String end1GUIDParameterName = "resourceGUID";
+        final String end2GUIDParameterName = "incidentReportGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(resourceGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(incidentReportGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName,
+                                                        resourceGUID,
+                                                        incidentReportGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Create a relationship that identifies a host as a member of a host cluster.
+     *
+     * @param userId                 userId of the user making the request
+     * @param hostClusterGUID        unique identifier of the host cluster
+     * @param hostGUID               unique identifier of the host that is managed by the cluster
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkHostClusterMember(String                      userId,
+                                      String                      hostClusterGUID,
+                                      String                      hostGUID,
+                                      MakeAnchorOptions           makeAnchorOptions,
+                                      HostClusterMemberProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
+    {
+        final String methodName            = "linkHostClusterMember";
+        final String end1GUIDParameterName = "hostClusterGUID";
+        final String end2GUIDParameterName = "hostGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(hostClusterGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(hostGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeName,
+                                                        hostClusterGUID,
+                                                        hostGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove a HostClusterMember relationship.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param hostClusterGUID        unique identifier of the host cluster
+     * @param hostGUID               unique identifier of the host that was managed by the cluster
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachHostClusterMember(String        userId,
+                                        String        hostClusterGUID,
+                                        String        hostGUID,
+                                        DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        final String methodName            = "detachHostClusterMember";
+        final String end1GUIDParameterName = "hostClusterGUID";
+        final String end2GUIDParameterName = "hostGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(hostClusterGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(hostGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeName,
+                                                        hostClusterGUID,
+                                                        hostGUID,
+                                                        deleteOptions);
+    }
+
     /*
      * IT Assets and Software capabilities
      */
@@ -2317,7 +2468,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                 String                folderGUID,
                                 String                fileGUID,
                                 MakeAnchorOptions     makeAnchorOptions,
-                                NestedFileProperties  relationshipProperties) throws InvalidParameterException,
+                                LinkedFileProperties  relationshipProperties) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
     {
@@ -4203,5 +4354,573 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
 
         return null;
+    }
+
+
+    /**
+     * Attach an asset that holds a log to the element that the log is about.
+     *
+     * @param userId                 userId of the user making the request
+     * @param elementGUID unique identifier of the element that the log is about
+     * @param logAssetGUID unique identifier of the asset that holds the log
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkAssociatedLog(String                   userId,
+                                  String                   elementGUID,
+                                  String                   logAssetGUID,
+                                  MakeAnchorOptions        makeAnchorOptions,
+                                  AssociatedLogProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName            = "linkAssociatedLog";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "logAssetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(logAssetGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        logAssetGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach an asset that holds a log from the element that the log was about.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element that the log is about
+     * @param logAssetGUID unique identifier of the asset that holds the log
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAssociatedLog(String        userId,
+                                    String        elementGUID,
+                                    String        logAssetGUID,
+                                    DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        final String methodName            = "detachAssociatedLog";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "logAssetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(logAssetGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        logAssetGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach an asset holding sample data to the element that the sample was taken from.
+     *
+     * @param userId                 userId of the user making the request
+     * @param elementGUID unique identifier of the element that the sample was taken from
+     * @param sampleDataGUID unique identifier of the asset holding the sample data
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSampleData(String                userId,
+                               String                elementGUID,
+                               String                sampleDataGUID,
+                               MakeAnchorOptions     makeAnchorOptions,
+                               SampleDataProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName            = "linkSampleData";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "sampleDataGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(sampleDataGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SAMPLE_DATA_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        sampleDataGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach an asset holding sample data from the element that the sample was taken from.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element that the sample was taken from
+     * @param sampleDataGUID unique identifier of the asset holding the sample data
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSampleData(String        userId,
+                                 String        elementGUID,
+                                 String        sampleDataGUID,
+                                 DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        final String methodName            = "detachSampleData";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "sampleDataGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(sampleDataGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SAMPLE_DATA_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        sampleDataGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a port to the process that owns it.
+     *
+     * @param userId                 userId of the user making the request
+     * @param processGUID unique identifier of the process that owns the port
+     * @param portGUID unique identifier of the port
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkProcessPort(String                 userId,
+                                String                 processGUID,
+                                String                 portGUID,
+                                MakeAnchorOptions      makeAnchorOptions,
+                                ProcessPortProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName            = "linkProcessPort";
+        final String end1GUIDParameterName = "processGUID";
+        final String end2GUIDParameterName = "portGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(processGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(portGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeName,
+                                                        processGUID,
+                                                        portGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a port from the process that owned it.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param processGUID unique identifier of the process that owns the port
+     * @param portGUID unique identifier of the port
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachProcessPort(String        userId,
+                                  String        processGUID,
+                                  String        portGUID,
+                                  DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        final String methodName            = "detachProcessPort";
+        final String end1GUIDParameterName = "processGUID";
+        final String end2GUIDParameterName = "portGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(processGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(portGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeName,
+                                                        processGUID,
+                                                        portGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach an archive file to the collection that describes its contents.
+     *
+     * @param userId                 userId of the user making the request
+     * @param archiveFileGUID unique identifier of the archive file
+     * @param collectionGUID unique identifier of the collection describing the archive's contents
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkArchiveContents(String                     userId,
+                                    String                     archiveFileGUID,
+                                    String                     collectionGUID,
+                                    MakeAnchorOptions          makeAnchorOptions,
+                                    ArchiveContentsProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName            = "linkArchiveContents";
+        final String end1GUIDParameterName = "archiveFileGUID";
+        final String end2GUIDParameterName = "collectionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(archiveFileGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(collectionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.typeName,
+                                                        archiveFileGUID,
+                                                        collectionGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach an archive file from the collection that described its contents.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param archiveFileGUID unique identifier of the archive file
+     * @param collectionGUID unique identifier of the collection describing the archive's contents
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachArchiveContents(String        userId,
+                                      String        archiveFileGUID,
+                                      String        collectionGUID,
+                                      DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName            = "detachArchiveContents";
+        final String end1GUIDParameterName = "archiveFileGUID";
+        final String end2GUIDParameterName = "collectionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(archiveFileGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(collectionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.typeName,
+                                                        archiveFileGUID,
+                                                        collectionGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a media file to another media file that is related to it.
+     *
+     * @param userId                 userId of the user making the request
+     * @param mediaFileGUID unique identifier of the media file
+     * @param linkedMediaFileGUID unique identifier of the related media file
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkLinkedMedia(String                 userId,
+                                String                 mediaFileGUID,
+                                String                 linkedMediaFileGUID,
+                                MakeAnchorOptions      makeAnchorOptions,
+                                LinkedMediaProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName            = "linkLinkedMedia";
+        final String end1GUIDParameterName = "mediaFileGUID";
+        final String end2GUIDParameterName = "linkedMediaFileGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(mediaFileGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(linkedMediaFileGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName,
+                                                        mediaFileGUID,
+                                                        linkedMediaFileGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a media file from another media file that was related to it.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param mediaFileGUID unique identifier of the media file
+     * @param linkedMediaFileGUID unique identifier of the related media file
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachLinkedMedia(String        userId,
+                                  String        mediaFileGUID,
+                                  String        linkedMediaFileGUID,
+                                  DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        final String methodName            = "detachLinkedMedia";
+        final String end1GUIDParameterName = "mediaFileGUID";
+        final String end2GUIDParameterName = "linkedMediaFileGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(mediaFileGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(linkedMediaFileGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName,
+                                                        mediaFileGUID,
+                                                        linkedMediaFileGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a security access control to the secrets collection that defines it.
+     *
+     * @param userId                 userId of the user making the request
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param securityAccessControlGUID unique identifier of the security access control
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkResourcePermissions(String                         userId,
+                                        String                         secretsCollectionGUID,
+                                        String                         securityAccessControlGUID,
+                                        MakeAnchorOptions              makeAnchorOptions,
+                                        ResourcePermissionsProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
+    {
+        final String methodName            = "linkResourcePermissions";
+        final String end1GUIDParameterName = "secretsCollectionGUID";
+        final String end2GUIDParameterName = "securityAccessControlGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(secretsCollectionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(securityAccessControlGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.RESOURCE_PERMISSIONS_RELATIONSHIP.typeName,
+                                                        secretsCollectionGUID,
+                                                        securityAccessControlGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a security access control from the secrets collection that defined it.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param securityAccessControlGUID unique identifier of the security access control
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachResourcePermissions(String        userId,
+                                          String        secretsCollectionGUID,
+                                          String        securityAccessControlGUID,
+                                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        final String methodName            = "detachResourcePermissions";
+        final String end1GUIDParameterName = "secretsCollectionGUID";
+        final String end2GUIDParameterName = "securityAccessControlGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(secretsCollectionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(securityAccessControlGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.RESOURCE_PERMISSIONS_RELATIONSHIP.typeName,
+                                                        secretsCollectionGUID,
+                                                        securityAccessControlGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a security list to the secrets collection that lists it.
+     *
+     * @param userId                 userId of the user making the request
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param securityListGUID unique identifier of the security list
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSecretsCollectionSecurityList(String                                   userId,
+                                                  String                                   secretsCollectionGUID,
+                                                  String                                   securityListGUID,
+                                                  MakeAnchorOptions                        makeAnchorOptions,
+                                                  SecretsCollectionSecurityListProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                                          PropertyServerException,
+                                                                                                                          UserNotAuthorizedException
+    {
+        final String methodName            = "linkSecretsCollectionSecurityList";
+        final String end1GUIDParameterName = "secretsCollectionGUID";
+        final String end2GUIDParameterName = "securityListGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(secretsCollectionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(securityListGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SECRETS_COLLECTION_SECURITY_LIST_RELATIONSHIP.typeName,
+                                                        secretsCollectionGUID,
+                                                        securityListGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a security list from the secrets collection that listed it.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param securityListGUID unique identifier of the security list
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSecretsCollectionSecurityList(String        userId,
+                                                    String        secretsCollectionGUID,
+                                                    String        securityListGUID,
+                                                    DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName            = "detachSecretsCollectionSecurityList";
+        final String end1GUIDParameterName = "secretsCollectionGUID";
+        final String end2GUIDParameterName = "securityListGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(secretsCollectionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(securityListGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SECRETS_COLLECTION_SECURITY_LIST_RELATIONSHIP.typeName,
+                                                        secretsCollectionGUID,
+                                                        securityListGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a user identity to the secrets collection that configures its account.
+     *
+     * @param userId                 userId of the user making the request
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param userIdentityGUID unique identifier of the user identity
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkUserAccount(String                 userId,
+                                String                 secretsCollectionGUID,
+                                String                 userIdentityGUID,
+                                MakeAnchorOptions      makeAnchorOptions,
+                                UserAccountProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName            = "linkUserAccount";
+        final String end1GUIDParameterName = "secretsCollectionGUID";
+        final String end2GUIDParameterName = "userIdentityGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(secretsCollectionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(userIdentityGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.USER_ACCOUNT_RELATIONSHIP.typeName,
+                                                        secretsCollectionGUID,
+                                                        userIdentityGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a user identity from the secrets collection that configured its account.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param userIdentityGUID unique identifier of the user identity
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachUserAccount(String        userId,
+                                  String        secretsCollectionGUID,
+                                  String        userIdentityGUID,
+                                  DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        final String methodName            = "detachUserAccount";
+        final String end1GUIDParameterName = "secretsCollectionGUID";
+        final String end2GUIDParameterName = "userIdentityGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(secretsCollectionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(userIdentityGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.USER_ACCOUNT_RELATIONSHIP.typeName,
+                                                        secretsCollectionGUID,
+                                                        userIdentityGUID,
+                                                        deleteOptions);
     }
 }

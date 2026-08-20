@@ -2005,4 +2005,117 @@ public class GlossaryManagerRESTServices extends TokenController
         return response;
     }
 
+
+    /*
+     * =====================================================================================================================
+     * Glossary term context relationships
+     */
+
+    /**
+     * Attach a glossary term to an element that it is relevant to the context of.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the glossary term that describes the context
+     * @param contextElementGUID unique identifier of the element that the term is used in the context of
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkUsedInContext(String                     serverName,
+                                          String                     glossaryTermGUID,
+                                          String                     contextElementGUID,
+                                          NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkUsedInContext";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkUsedInContext(userId, glossaryTermGUID, contextElementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof UsedInContextProperties properties)
+            {
+                handler.linkUsedInContext(userId, glossaryTermGUID, contextElementGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkUsedInContext(userId, glossaryTermGUID, contextElementGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(UsedInContextProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a glossary term from an element that it was relevant to the context of.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the glossary term that describes the context
+     * @param contextElementGUID unique identifier of the element that the term is used in the context of
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachUsedInContext(String                        serverName,
+                                            String                        glossaryTermGUID,
+                                            String                        contextElementGUID,
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachUsedInContext";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+
+            handler.detachUsedInContext(userId, glossaryTermGUID, contextElementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 }

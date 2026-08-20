@@ -1359,3 +1359,134 @@ Content-Type: application/json
 }
 
 ###
+
+###
+# =====================================================================================================================
+# Data field and data structure relationships
+# https://egeria-project.org/concepts/data-field
+
+@dataFieldOneGUID=add guid here
+@dataFieldTwoGUID=add guid here
+@schemaAttributeGUID=add guid here
+@schemaTypeGUID=add guid here
+
+###
+# @name linkLinkedDataField
+# Attach a data field to another data field that it is linked to.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{dataFieldOneGUID}}/linked-data-fields/{{dataFieldTwoGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "LinkedDataFieldProperties",
+    "relationshipTypeName": "add relationship type name here",
+    "relationshipEnd": 1,
+    "displayName": "add display name here",
+    "description": "add description here",
+    "minCardinality": 0,
+    "maxCardinality": 1,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachLinkedDataField
+# Detach a data field from another data field that it was linked to.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{dataFieldOneGUID}}/linked-data-fields/{{dataFieldTwoGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkSchemaAttributeDefinition
+# Attach a data field to the schema attribute that implements it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{dataFieldGUID}}/schema-attribute-definitions/{{schemaAttributeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SchemaAttributeDefinitionProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachSchemaAttributeDefinition
+# Detach a data field from the schema attribute that implemented it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/{{dataFieldGUID}}/schema-attribute-definitions/{{schemaAttributeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkSchemaTypeDefinition
+# Attach a data structure to the schema type that implements it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/{{dataStructureGUID}}/schema-type-definitions/{{schemaTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SchemaTypeDefinitionProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachSchemaTypeDefinition
+# Detach a data structure from the schema type that implemented it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/{{dataStructureGUID}}/schema-type-definitions/{{schemaTypeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}

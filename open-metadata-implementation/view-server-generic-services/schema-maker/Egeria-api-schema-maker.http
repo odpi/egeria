@@ -574,3 +574,515 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Schema element relationships
+
+###
+# @name linkNestedSchemaAttribute
+# Attach a nested schema attribute to its parent schema attribute.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param schemaAttributeGUID unique identifier of the parent schema attribute
+# @param nestedSchemaAttributeGUID unique identifier of the nested schema attribute
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/{{schemaAttributeGUID}}/nested-schema-attributes/{{nestedSchemaAttributeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "NestedSchemaAttributeProperties",
+    "position": 0,
+    "minCardinality": 0,
+    "maxCardinality": 1,
+    "coverageCategory": "CORE_DETAIL",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachNestedSchemaAttribute
+# Detach a nested schema attribute from its parent schema attribute.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param schemaAttributeGUID unique identifier of the parent schema attribute
+# @param nestedSchemaAttributeGUID unique identifier of the nested schema attribute
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/{{schemaAttributeGUID}}/nested-schema-attributes/{{nestedSchemaAttributeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkAttributeForSchema
+# Attach a schema attribute to the schema type that it belongs to.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param schemaTypeGUID unique identifier of the schema type
+# @param nestedSchemaAttributeGUID unique identifier of the schema attribute
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types/{{schemaTypeGUID}}/attribute-for-schema/{{nestedSchemaAttributeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "AttributeForSchemaProperties",
+    "position": 0,
+    "minCardinality": 0,
+    "maxCardinality": 1,
+    "coverageCategory": "CORE_DETAIL",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachAttributeForSchema
+# Detach a schema attribute from the schema type that it belongs to.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param schemaTypeGUID unique identifier of the schema type
+# @param nestedSchemaAttributeGUID unique identifier of the schema attribute
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types/{{schemaTypeGUID}}/attribute-for-schema/{{nestedSchemaAttributeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkForeignKey
+# Attach a foreign key column to the primary key column that it refers to.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param primaryKeyColumnGUID unique identifier of the primary key column
+# @param foreignKeyColumnGUID unique identifier of the foreign key column
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/{{primaryKeyColumnGUID}}/foreign-keys/{{foreignKeyColumnGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ForeignKeyProperties",
+    "displayName": "add display name",
+    "description": "add description",
+    "confidence": 100,
+    "steward": "add steward name",
+    "source": "add source",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachForeignKey
+# Detach a foreign key column from the primary key column that it refers to.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param primaryKeyColumnGUID unique identifier of the primary key column
+# @param foreignKeyColumnGUID unique identifier of the foreign key column
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/{{primaryKeyColumnGUID}}/foreign-keys/{{foreignKeyColumnGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkExternalSchemaType
+# Attach an external schema type to the schema element that uses it.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param schemaElementGUID unique identifier of the schema element
+# @param schemaTypeGUID unique identifier of the external schema type
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-elements/{{schemaElementGUID}}/linked-external-schema-types/{{schemaTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "LinkedExternalSchemaTypeProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachExternalSchemaType
+# Detach an external schema type from the schema element that uses it.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param schemaElementGUID unique identifier of the schema element
+# @param schemaTypeGUID unique identifier of the external schema type
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-elements/{{schemaElementGUID}}/linked-external-schema-types/{{schemaTypeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkMapFromSchemaType
+# Attach the schema type that describes the domain (from) element of a map.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param schemaElementGUID unique identifier of the map schema element
+# @param schemaTypeGUID unique identifier of the schema type describing the domain of the map
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-elements/{{schemaElementGUID}}/map-from-element-types/{{schemaTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "MapFromElementTypeProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachMapFromSchemaType
+# Detach the schema type that describes the domain (from) element of a map.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param schemaElementGUID unique identifier of the map schema element
+# @param schemaTypeGUID unique identifier of the schema type describing the domain of the map
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-elements/{{schemaElementGUID}}/map-from-element-types/{{schemaTypeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkMapToSchemaType
+# Attach the schema type that describes the range (to) element of a map.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param schemaElementGUID unique identifier of the map schema element
+# @param schemaTypeGUID unique identifier of the schema type describing the range of the map
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-elements/{{schemaElementGUID}}/map-to-element-types/{{schemaTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "MapToElementTypeProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachMapToSchemaType
+# Detach the schema type that describes the range (to) element of a map.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param schemaElementGUID unique identifier of the map schema element
+# @param schemaTypeGUID unique identifier of the schema type describing the range of the map
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-elements/{{schemaElementGUID}}/map-to-element-types/{{schemaTypeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkGraphEdge
+# Attach a graph edge to one of the graph vertices that it connects.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param graphEdgeGUID unique identifier of the graph edge
+# @param graphVertexGUID unique identifier of the graph vertex
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/graph-edges/{{graphEdgeGUID}}/graph-vertices/{{graphVertexGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "GraphEdgeLinkProperties",
+    "linkTypeName": "add link type name",
+    "relationshipEnd": 1,
+    "relationshipEndName": "add end name",
+    "description": "add description",
+    "minCardinality": 0,
+    "maxCardinality": 1,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachGraphEdge
+# Detach a graph edge from one of the graph vertices that it connects.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param graphEdgeGUID unique identifier of the graph edge
+# @param graphVertexGUID unique identifier of the graph vertex
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/graph-edges/{{graphEdgeGUID}}/graph-vertices/{{graphVertexGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkQueryTarget
+# Attach a query target to the derived schema element that queries it.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param schemaElementGUID unique identifier of the derived schema element
+# @param queryTargetSchemaElementGUID unique identifier of the schema element supplying the query target
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-elements/{{schemaElementGUID}}/query-targets/{{queryTargetSchemaElementGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "DerivedSchemaTypeQueryTargetProperties",
+    "queryId": "add id that is used on the overall formula",
+    "query": "add query",
+    "queryType": "add query type",
+    "iscQualifiedName": "add information supply chain qualified name",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachQueryTarget
+# Detach a query target from the derived schema element that queries it.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param schemaElementGUID unique identifier of the derived schema element
+# @param queryTargetSchemaElementGUID unique identifier of the schema element supplying the query target
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-elements/{{schemaElementGUID}}/query-targets/{{queryTargetSchemaElementGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkSchema
+# Attach a schema type to the element that it describes.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param elementGUID unique identifier of the element that is described by the schema type
+# @param schemaTypeGUID unique identifier of the schema type
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/elements/{{elementGUID}}/schema-types/{{schemaTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SchemaProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachSchema
+# Detach a schema type from the element that it describes.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param elementGUID unique identifier of the element that is described by the schema type
+# @param schemaTypeGUID unique identifier of the schema type
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/elements/{{elementGUID}}/schema-types/{{schemaTypeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Relational database schema relationships
+# https://egeria-project.org/concepts/schema-type
+
+@databaseSchemaTypeListGUID=add guid here
+@relationalDBSchemaTypeGUID=add guid here
+
+###
+# @name linkRelationalDBSchema
+# Attach a relational database schema type to the list that contains it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/relational-db-schema-type-lists/{{databaseSchemaTypeListGUID}}/relational-db-schemas/{{relationalDBSchemaTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "RelationalDBSchemaProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachRelationalDBSchema
+# Detach a relational database schema type from the list that contained it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/relational-db-schema-type-lists/{{databaseSchemaTypeListGUID}}/relational-db-schemas/{{relationalDBSchemaTypeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}

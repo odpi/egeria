@@ -770,7 +770,7 @@ public class CollectionManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/agreement"))
 
-    public VoidResponse linkAgreementItem(@PathVariable
+    public GUIDResponse linkAgreementItem(@PathVariable
                                           String                                serverName,
                                           @PathVariable String             urlMarker,
                                           @PathVariable
@@ -785,39 +785,66 @@ public class CollectionManagerResource
 
 
     /**
-     * Detach an agreement from an element involved in its definition.
+     * Update the properties of a agreement item relationship.
      *
-     * @param serverName         name of called server
+     * @param serverName name of the server to route the request to
      * @param urlMarker  view service URL marker
-     * @param agreementGUID  unique identifier of the agreement
-     * @param agreementItemGUID      unique identifier of the agreement item
-     * @param requestBody  description of the relationship.
+     * @param agreementItemRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
      *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/collections/agreements/{agreementGUID}/agreement-items/{agreementItemGUID}/detach")
+    @PostMapping(path = "/agreement-items/{agreementItemRelationshipGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="detachAgreementItem",
-            description="Detach an agreement from an element involved in its definition.",
+    @Operation(summary="updateAgreementItem",
+            description="Update the properties of a agreement item relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/agreement"))
 
-    public VoidResponse detachAgreementItem(@PathVariable
-                                            String                    serverName,
-                                            @PathVariable String             urlMarker,
-                                            @PathVariable
-                                            String agreementGUID,
-                                            @PathVariable
-                                            String agreementItemGUID,
+    public VoidResponse updateAgreementItem(@PathVariable String serverName,
+                                            @PathVariable String urlMarker,
+                                            @PathVariable String agreementItemRelationshipGUID,
                                             @RequestBody (required = false)
-                                                DeleteRelationshipRequestBody requestBody)
+                                            UpdateRelationshipRequestBody requestBody)
     {
-        return restAPI.detachAgreementItem(serverName, urlMarker, agreementGUID, agreementItemGUID, requestBody);
+        return restAPI.updateAgreementItem(serverName, urlMarker, agreementItemRelationshipGUID, requestBody);
     }
+
+
+    /**
+     * Remove a agreement item relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param agreementItemRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/agreement-items/{agreementItemRelationshipGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachAgreementItem",
+            description="Remove a agreement item relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/agreement"))
+
+    public VoidResponse detachAgreementItem(@PathVariable String serverName,
+                                            @PathVariable String urlMarker,
+                                            @PathVariable String agreementItemRelationshipGUID,
+                                            @RequestBody (required = false)
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachAgreementItem(serverName, urlMarker, agreementItemRelationshipGUID, requestBody);
+    }
+
 
 
     /**
@@ -1274,5 +1301,43 @@ public class CollectionManagerResource
     {
         return restAPI.removeFromCollection(serverName, urlMarker, collectionGUID, elementGUID, requestBody);
     }
-}
 
+    /**
+     * Detach an agreement from an element involved in its definition.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param agreementGUID  unique identifier of the agreement
+     * @param agreementItemGUID      unique identifier of the agreement item
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every agreement item relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    @PostMapping(path = "/collections/agreements/{agreementGUID}/agreement-items/{agreementItemGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachAgreementItem",
+            description="Detach an agreement from an element involved in its definition.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/agreement"))
+
+    public VoidResponse detachAgreementItem(@PathVariable
+                                            String                    serverName,
+                                            @PathVariable String             urlMarker,
+                                            @PathVariable
+                                            String agreementGUID,
+                                            @PathVariable
+                                            String agreementItemGUID,
+                                            @RequestBody (required = false)
+                                                DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachAgreementItem(serverName, urlMarker, agreementGUID, agreementItemGUID, requestBody);
+    }
+}

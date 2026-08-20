@@ -212,38 +212,57 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
      * @param elementGUID           unique identifier of the implementation - probably an asset
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkValidValueImplementation(String                              validValueDefinitionGUID,
+    public String linkValidValueImplementation(String                              validValueDefinitionGUID,
                                              String                              elementGUID,
                                              MakeAnchorOptions                   makeAnchorOptions,
                                              ValidValuesImplementationProperties relationshipProperties) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
     {
-        validValueDefinitionHandler.linkValidValueImplementation(connectorUserId, validValueDefinitionGUID, elementGUID, makeAnchorOptions, relationshipProperties);
+        return validValueDefinitionHandler.linkValidValueImplementation(connectorUserId, validValueDefinitionGUID, elementGUID, makeAnchorOptions, relationshipProperties);
     }
 
 
     /**
-     * Detach a valid value from an implementation - probably a referenceable.
+     * Update the properties of a valid values implementation relationship.
      *
-     * @param validValueDefinitionGUID       unique identifier of the valid value definition
-     * @param elementGUID           unique identifier of the location
+     * @param validValuesImplementationRelationshipGUID unique identifier of the relationship
+     * @param updateOptions provides a structure for the additional options when updating a relationship.
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateValidValueImplementation(String                               validValuesImplementationRelationshipGUID,
+                                          UpdateOptions                        updateOptions,
+                                          ValidValuesImplementationProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                              PropertyServerException,
+                                                                                                              UserNotAuthorizedException
+    {
+        validValueDefinitionHandler.updateValidValueImplementation(connectorUserId, validValuesImplementationRelationshipGUID, updateOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Remove a valid values implementation relationship.
+     *
+     * @param validValuesImplementationRelationshipGUID unique identifier of the relationship
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachValidValueImplementation(String        validValueDefinitionGUID,
-                                               String        elementGUID,
-                                               DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+    public void detachValidValueImplementation(String        validValuesImplementationRelationshipGUID,
+                                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
-        validValueDefinitionHandler.detachValidValueImplementation(connectorUserId, validValueDefinitionGUID, elementGUID, deleteOptions);
+        validValueDefinitionHandler.detachValidValueImplementation(connectorUserId, validValuesImplementationRelationshipGUID, deleteOptions);
     }
 
 
@@ -640,5 +659,28 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
                                                                                                        PropertyServerException
     {
         return validValueDefinitionHandler.findValidValueDefinitions(connectorUserId, searchString, searchOptions);
+    }
+
+    /**
+     * Detach a valid value from an implementation - probably a referenceable.
+     *
+     * @param validValueDefinitionGUID       unique identifier of the valid value definition
+     * @param elementGUID           unique identifier of the location
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every valid values implementation relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public void detachValidValueImplementation(String        validValueDefinitionGUID,
+                                               String        elementGUID,
+                                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        validValueDefinitionHandler.detachValidValueImplementation(connectorUserId, validValueDefinitionGUID, elementGUID, deleteOptions);
     }
 }

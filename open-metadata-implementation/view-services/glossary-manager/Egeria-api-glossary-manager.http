@@ -1121,3 +1121,53 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+###
+# =====================================================================================================================
+# Glossary term context relationships
+# https://egeria-project.org/concepts/glossary-term
+
+@contextElementGUID=add guid here
+
+###
+# @name linkUsedInContext
+# Attach a glossary term to an element that it is relevant to the context of.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossary-terms/{{glossaryTermGUID}}/used-in-contexts/{{contextElementGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "UsedInContextProperties",
+    "description": "add description here",
+    "expression": "add expression here",
+    "confidence": 100,
+    "steward": "add steward here",
+    "source": "add source here",
+    "termRelationshipStatus": "ACTIVE",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachUsedInContext
+# Detach a glossary term from an element that it was relevant to the context of.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossary-terms/{{glossaryTermGUID}}/used-in-contexts/{{contextElementGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}

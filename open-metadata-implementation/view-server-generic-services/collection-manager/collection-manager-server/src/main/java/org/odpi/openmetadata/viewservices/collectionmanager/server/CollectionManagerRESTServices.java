@@ -1366,12 +1366,12 @@ public class CollectionManagerRESTServices extends TokenController
      * @param agreementItemGUID      unique identifier of the agreement item
      * @param requestBody  description of the relationship.
      *
-     * @return void or
+     * @return unique identifier of the new relationship or
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkAgreementItem(String                     serverName,
+    public GUIDResponse linkAgreementItem(String                     serverName,
                                           String                     urlMarker,
                                           String                     agreementGUID,
                                           String                     agreementItemGUID,
@@ -1381,7 +1381,7 @@ public class CollectionManagerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
-        VoidResponse response = new VoidResponse();
+        GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1397,19 +1397,19 @@ public class CollectionManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof AgreementItemProperties properties)
                 {
-                    handler.linkAgreementItem(userId,
+                    response.setGUID(handler.linkAgreementItem(userId,
                                               agreementGUID,
                                               agreementItemGUID,
                                               requestBody,
-                                              properties);
+                                              properties));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.linkAgreementItem(userId,
+                    response.setGUID(handler.linkAgreementItem(userId,
                                               agreementGUID,
                                               agreementItemGUID,
                                               requestBody,
-                                              null);
+                                              null));
                 }
                 else
                 {
@@ -1418,11 +1418,11 @@ public class CollectionManagerRESTServices extends TokenController
             }
             else
             {
-                handler.linkAgreementItem(userId,
+                response.setGUID(handler.linkAgreementItem(userId,
                                           agreementGUID,
                                           agreementItemGUID,
                                           null,
-                                          null);
+                                          null));
             }
         }
         catch (Throwable error)
@@ -1436,23 +1436,82 @@ public class CollectionManagerRESTServices extends TokenController
 
 
     /**
-     * Detach an agreement from an element involved in its definition.
+     * Update the properties of a agreement item relationship.
      *
-     * @param serverName         name of called server
+     * @param serverName name of the server to route the request to
      * @param urlMarker  view service URL marker
-     * @param agreementGUID  unique identifier of the agreement
-     * @param agreementItemGUID      unique identifier of the agreement item
-     * @param requestBody  description of the relationship.
+     * @param agreementItemRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the relationship
      *
      * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateAgreementItem(String                        serverName,
+                                            String                        urlMarker,
+                                            String                        agreementItemRelationshipGUID,
+                                            UpdateRelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateAgreementItem";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof AgreementItemProperties properties)
+                {
+                    handler.updateAgreementItem(userId, agreementItemRelationshipGUID, requestBody, properties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(AgreementItemProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove a agreement item relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param agreementItemRelationshipGUID unique identifier of the relationship
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse detachAgreementItem(String                        serverName,
                                             String                        urlMarker,
-                                            String                        agreementGUID,
-                                            String                        agreementItemGUID,
+                                            String                        agreementItemRelationshipGUID,
                                             DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachAgreementItem";
@@ -1472,7 +1531,7 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
-            handler.detachAgreementItem(userId, agreementGUID, agreementItemGUID, requestBody);
+            handler.detachAgreementItem(userId, agreementItemRelationshipGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -2298,6 +2357,58 @@ public class CollectionManagerRESTServices extends TokenController
                                          collectionGUID,
                                          elementGUID,
                                          requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Detach an agreement from an element involved in its definition.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param agreementGUID  unique identifier of the agreement
+     * @param agreementItemGUID      unique identifier of the agreement item
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every agreement item relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public VoidResponse detachAgreementItem(String                        serverName,
+                                            String                        urlMarker,
+                                            String                        agreementGUID,
+                                            String                        agreementItemGUID,
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachAgreementItem";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachAgreementItem(userId, agreementGUID, agreementItemGUID, requestBody);
         }
         catch (Throwable error)
         {

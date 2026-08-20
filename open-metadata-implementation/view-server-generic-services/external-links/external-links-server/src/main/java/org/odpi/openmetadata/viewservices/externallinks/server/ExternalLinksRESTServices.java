@@ -242,12 +242,12 @@ public class ExternalLinksRESTServices extends TokenController
      * @param externalReferenceGUID          unique identifier of the external reference
      * @param requestBody  description of the relationship.
      *
-     * @return void or
+     * @return unique identifier of the new relationship or
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkExternalReference(String                     serverName,
+    public GUIDResponse linkExternalReference(String                     serverName,
                                               String                     urlMarker,
                                               String                     elementGUID,
                                               String                     externalReferenceGUID,
@@ -257,7 +257,7 @@ public class ExternalLinksRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
-        VoidResponse response = new VoidResponse();
+        GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
@@ -273,19 +273,19 @@ public class ExternalLinksRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof ExternalReferenceLinkProperties externalReferenceLinkProperties)
                 {
-                    handler.linkExternalReference(userId,
+                    response.setGUID(handler.linkExternalReference(userId,
                                                   elementGUID,
                                                   externalReferenceGUID,
                                                   requestBody,
-                                                  externalReferenceLinkProperties);
+                                                  externalReferenceLinkProperties));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.linkExternalReference(userId,
+                    response.setGUID(handler.linkExternalReference(userId,
                                                   elementGUID,
                                                   externalReferenceGUID,
                                                   requestBody,
-                                                  null);
+                                                  null));
                 }
                 else
                 {
@@ -294,11 +294,11 @@ public class ExternalLinksRESTServices extends TokenController
             }
             else
             {
-                handler.linkExternalReference(userId,
+                response.setGUID(handler.linkExternalReference(userId,
                                               elementGUID,
                                               externalReferenceGUID,
                                               null,
-                                              null);
+                                              null));
             }
         }
         catch (Throwable error)
@@ -312,23 +312,82 @@ public class ExternalLinksRESTServices extends TokenController
 
 
     /**
-     * Detach an external reference from an element.
+     * Update the properties of a external reference link relationship.
      *
-     * @param serverName         name of called server
+     * @param serverName name of the server to route the request to
      * @param urlMarker  view service URL marker
-     * @param elementGUID          unique identifier of the element
-     * @param externalReferenceGUID          unique identifier of the external reference
-     * @param requestBody  description of the relationship.
+     * @param externalReferenceLinkRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the relationship
      *
      * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateExternalReferenceLink(String                        serverName,
+                                                    String                        urlMarker,
+                                                    String                        externalReferenceLinkRelationshipGUID,
+                                                    UpdateRelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateExternalReferenceLink";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ExternalReferenceLinkProperties properties)
+                {
+                    handler.updateExternalReferenceLink(userId, externalReferenceLinkRelationshipGUID, requestBody, properties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ExternalReferenceLinkProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove a external reference link relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param externalReferenceLinkRelationshipGUID unique identifier of the relationship
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse detachExternalReference(String                        serverName,
                                                 String                        urlMarker,
-                                                String                        elementGUID,
-                                                String                        externalReferenceGUID,
+                                                String                        externalReferenceLinkRelationshipGUID,
                                                 DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachExternalReference";
@@ -348,7 +407,7 @@ public class ExternalLinksRESTServices extends TokenController
 
             ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName, urlMarker, methodName);
 
-            handler.detachExternalReference(userId, elementGUID, externalReferenceGUID, requestBody);
+            handler.detachExternalReference(userId, externalReferenceLinkRelationshipGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -369,12 +428,12 @@ public class ExternalLinksRESTServices extends TokenController
      * @param externalReferenceGUID          unique identifier of the external reference
      * @param requestBody  description of the relationship.
      *
-     * @return void or
+     * @return unique identifier of the new relationship or
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkMediaReference(String                     serverName,
+    public GUIDResponse linkMediaReference(String                     serverName,
                                            String                     urlMarker,
                                            String                     elementGUID,
                                            String                     externalReferenceGUID,
@@ -384,7 +443,7 @@ public class ExternalLinksRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
-        VoidResponse response = new VoidResponse();
+        GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
@@ -400,19 +459,19 @@ public class ExternalLinksRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof MediaReferenceProperties mediaReferenceProperties)
                 {
-                    handler.linkMediaReference(userId,
+                    response.setGUID(handler.linkMediaReference(userId,
                                                elementGUID,
                                                externalReferenceGUID,
                                                requestBody,
-                                               mediaReferenceProperties);
+                                               mediaReferenceProperties));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.linkMediaReference(userId,
+                    response.setGUID(handler.linkMediaReference(userId,
                                                elementGUID,
                                                externalReferenceGUID,
                                                requestBody,
-                                               null);
+                                               null));
                 }
                 else
                 {
@@ -421,11 +480,11 @@ public class ExternalLinksRESTServices extends TokenController
             }
             else
             {
-                handler.linkMediaReference(userId,
+                response.setGUID(handler.linkMediaReference(userId,
                                            elementGUID,
                                            externalReferenceGUID,
                                            null,
-                                           null);
+                                           null));
             }
         }
         catch (Throwable error)
@@ -439,23 +498,82 @@ public class ExternalLinksRESTServices extends TokenController
 
 
     /**
-     * Detach an external media reference from an element.
+     * Update the properties of a media reference relationship.
      *
-     * @param serverName         name of called server
+     * @param serverName name of the server to route the request to
      * @param urlMarker  view service URL marker
-     * @param elementGUID          unique identifier of the element
-     * @param externalReferenceGUID          unique identifier of the external reference
-     * @param requestBody  description of the relationship.
+     * @param mediaReferenceRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the relationship
      *
      * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateMediaReference(String                        serverName,
+                                             String                        urlMarker,
+                                             String                        mediaReferenceRelationshipGUID,
+                                             UpdateRelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateMediaReference";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof MediaReferenceProperties properties)
+                {
+                    handler.updateMediaReference(userId, mediaReferenceRelationshipGUID, requestBody, properties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(MediaReferenceProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove a media reference relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param mediaReferenceRelationshipGUID unique identifier of the relationship
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse detachMediaReference(String                        serverName,
                                              String                        urlMarker,
-                                             String                        elementGUID,
-                                             String                        externalReferenceGUID,
+                                             String                        mediaReferenceRelationshipGUID,
                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachMediaReference";
@@ -475,7 +593,7 @@ public class ExternalLinksRESTServices extends TokenController
 
             ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName, urlMarker, methodName);
 
-            handler.detachMediaReference(userId, elementGUID, externalReferenceGUID, requestBody);
+            handler.detachMediaReference(userId, mediaReferenceRelationshipGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -498,12 +616,12 @@ public class ExternalLinksRESTServices extends TokenController
      * @param externalReferenceGUID          unique identifier of the external reference
      * @param requestBody  description of the relationship.
      *
-     * @return void or
+     * @return unique identifier of the new relationship or
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkCitedDocumentReference(String                     serverName,
+    public GUIDResponse linkCitedDocumentReference(String                     serverName,
                                                    String                     urlMarker,
                                                    String                     elementGUID,
                                                    String                     externalReferenceGUID,
@@ -513,7 +631,7 @@ public class ExternalLinksRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
-        VoidResponse response = new VoidResponse();
+        GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
@@ -529,19 +647,19 @@ public class ExternalLinksRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof CitedDocumentLinkProperties citedDocumentLinkProperties)
                 {
-                    handler.linkCitedDocumentReference(userId,
+                    response.setGUID(handler.linkCitedDocumentReference(userId,
                                                        elementGUID,
                                                        externalReferenceGUID,
                                                        requestBody,
-                                                       citedDocumentLinkProperties);
+                                                       citedDocumentLinkProperties));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.linkCitedDocumentReference(userId,
+                    response.setGUID(handler.linkCitedDocumentReference(userId,
                                                        elementGUID,
                                                        externalReferenceGUID,
                                                        requestBody,
-                                                       null);
+                                                       null));
                 }
                 else
                 {
@@ -550,11 +668,11 @@ public class ExternalLinksRESTServices extends TokenController
             }
             else
             {
-                handler.linkCitedDocumentReference(userId,
+                response.setGUID(handler.linkCitedDocumentReference(userId,
                                                    elementGUID,
                                                    externalReferenceGUID,
                                                    null,
-                                                   null);
+                                                   null));
             }
         }
         catch (Throwable error)
@@ -568,23 +686,82 @@ public class ExternalLinksRESTServices extends TokenController
 
 
     /**
-     * Detach an element from its external document reference.
+     * Update the properties of a cited document link relationship.
      *
-     * @param serverName         name of called server
+     * @param serverName name of the server to route the request to
      * @param urlMarker  view service URL marker
-     * @param elementGUID          unique identifier of the element
-     * @param externalReferenceGUID          unique identifier of the external reference
-     * @param requestBody  description of the relationship.
+     * @param citedDocumentLinkRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the relationship
      *
      * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateCitedDocumentReference(String                        serverName,
+                                                     String                        urlMarker,
+                                                     String                        citedDocumentLinkRelationshipGUID,
+                                                     UpdateRelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateCitedDocumentReference";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof CitedDocumentLinkProperties properties)
+                {
+                    handler.updateCitedDocumentReference(userId, citedDocumentLinkRelationshipGUID, requestBody, properties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(CitedDocumentLinkProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove a cited document link relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param citedDocumentLinkRelationshipGUID unique identifier of the relationship
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
      */
     public VoidResponse detachCitedDocumentReference(String                        serverName,
                                                      String                        urlMarker,
-                                                     String                        elementGUID,
-                                                     String                        externalReferenceGUID,
+                                                     String                        citedDocumentLinkRelationshipGUID,
                                                      DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachCitedDocumentReference";
@@ -604,7 +781,7 @@ public class ExternalLinksRESTServices extends TokenController
 
             ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName, urlMarker, methodName);
 
-            handler.detachCitedDocumentReference(userId, elementGUID, externalReferenceGUID, requestBody);
+            handler.detachCitedDocumentReference(userId, citedDocumentLinkRelationshipGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -1258,6 +1435,283 @@ public class ExternalLinksRESTServices extends TokenController
             {
                 response.setElements(handler.findExternalIds(userId, null, null));
             }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+
+    /*
+     * =====================================================================================================================
+     * External identifier relationships
+     */
+
+    /**
+     * Attach an existing external identifier to the element that it identifies.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param externalIdGUID unique identifier of the external identifier
+     * @param requestBody properties for the relationship
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkExternalIdToElement(String                     serverName,
+                                                String                     urlMarker,
+                                                String                     elementGUID,
+                                                String                     externalIdGUID,
+                                                NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkExternalIdToElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ExternalIdHandler handler = instanceHandler.getExternalIdHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkExternalIdToElement(userId, elementGUID, externalIdGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ExternalIdLinkProperties properties)
+            {
+                handler.linkExternalIdToElement(userId, elementGUID, externalIdGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkExternalIdToElement(userId, elementGUID, externalIdGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ExternalIdLinkProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Detach an external identifier from the element that it identifies.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param externalIdGUID unique identifier of the external identifier
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachExternalIdFromElement(String                        serverName,
+                                                    String                        urlMarker,
+                                                    String                        elementGUID,
+                                                    String                        externalIdGUID,
+                                                    DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachExternalIdFromElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ExternalIdHandler handler = instanceHandler.getExternalIdHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachExternalIdFromElement(userId, elementGUID, externalIdGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+    /**
+     * Detach an element from its external document reference.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param elementGUID          unique identifier of the element
+     * @param externalReferenceGUID          unique identifier of the external reference
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every cited document link relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public VoidResponse detachCitedDocumentReference(String                        serverName,
+                                                     String                        urlMarker,
+                                                     String                        elementGUID,
+                                                     String                        externalReferenceGUID,
+                                                     DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachCitedDocumentReference";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachCitedDocumentReference(userId, elementGUID, externalReferenceGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Detach an external reference from an element.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param elementGUID          unique identifier of the element
+     * @param externalReferenceGUID          unique identifier of the external reference
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every external reference link relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public VoidResponse detachExternalReference(String                        serverName,
+                                                String                        urlMarker,
+                                                String                        elementGUID,
+                                                String                        externalReferenceGUID,
+                                                DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachExternalReference";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachExternalReference(userId, elementGUID, externalReferenceGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Detach an external media reference from an element.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param elementGUID          unique identifier of the element
+     * @param externalReferenceGUID          unique identifier of the external reference
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     *
+     * This is a multi-link relationship, so this request removes every media reference relationship
+     * between the two elements.  Use the request that takes the relationship's own unique identifier to
+     * remove just one of them.
+     */
+    public VoidResponse detachMediaReference(String                        serverName,
+                                             String                        urlMarker,
+                                             String                        elementGUID,
+                                             String                        externalReferenceGUID,
+                                             DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachMediaReference";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachMediaReference(userId, elementGUID, externalReferenceGUID, requestBody);
         }
         catch (Throwable error)
         {

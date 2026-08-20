@@ -1906,4 +1906,297 @@ public class GovernanceOfficerRESTServices extends TokenController
 
         return response;
     }
+
+
+    /*
+     * =====================================================================================================================
+     * Regulation and exception relationships
+     */
+
+    /**
+     * Attach a certification type to the regulation that requires it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param regulationGUID unique identifier of the regulation
+     * @param certificationTypeGUID unique identifier of the certification type required by the regulation
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkRegulationCertificationType(String                     serverName,
+                                                        String                     urlMarker,
+                                                        String                     regulationGUID,
+                                                        String                     certificationTypeGUID,
+                                                        NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkRegulationCertificationType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkRegulationCertificationType(userId, regulationGUID, certificationTypeGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof RegulationCertificationTypeProperties properties)
+            {
+                handler.linkRegulationCertificationType(userId, regulationGUID, certificationTypeGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkRegulationCertificationType(userId, regulationGUID, certificationTypeGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(RegulationCertificationTypeProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a certification type from the regulation that required it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param regulationGUID unique identifier of the regulation
+     * @param certificationTypeGUID unique identifier of the certification type required by the regulation
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachRegulationCertificationType(String                        serverName,
+                                                          String                        urlMarker,
+                                                          String                        regulationGUID,
+                                                          String                        certificationTypeGUID,
+                                                          DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachRegulationCertificationType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachRegulationCertificationType(userId, regulationGUID, certificationTypeGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach an element to an exception type that excludes it from a requirement.  This is a multi-link relationship so a new relationship is always created and its unique identifier is returned.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that is excluded from the requirement
+     * @param exceptionTypeGUID unique identifier of the exception type
+     * @param requestBody properties for the relationship
+     *
+     * @return unique identifier of the new relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse linkException(String                     serverName,
+                                      String                     urlMarker,
+                                      String                     elementGUID,
+                                      String                     exceptionTypeGUID,
+                                      NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkException";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ExceptionProperties properties)
+                {
+                    response.setGUID(handler.linkException(userId, elementGUID, exceptionTypeGUID, requestBody, properties));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setGUID(handler.linkException(userId, elementGUID, exceptionTypeGUID, requestBody, null));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ExceptionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update the properties of a exception relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param exceptionGUID unique identifier of the relationship
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateException(String                        serverName,
+                                        String                        urlMarker,
+                                        String                        exceptionGUID,
+                                        UpdateRelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateException";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ExceptionProperties properties)
+                {
+                    handler.updateException(userId, exceptionGUID, requestBody, properties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ExceptionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach an element from an exception type that excluded it from a requirement.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param exceptionGUID unique identifier of the relationship
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachException(String                        serverName,
+                                        String                        urlMarker,
+                                        String                        exceptionGUID,
+                                        DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachException";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachException(userId, exceptionGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 }

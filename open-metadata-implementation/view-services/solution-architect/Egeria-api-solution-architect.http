@@ -1755,4 +1755,412 @@ Content-Type: application/json
   "filter" : "Add name here"
 }
 
+###
+# =====================================================================================================================
+# Work with Concept Models
+#
+# ConceptModelElement is the super type of ConceptBead, ConceptBeadAttribute and ConceptBeadRelationship - set the
+# "typeName" in the properties to choose the subtype being created.
+# https://egeria-project.org/concepts/concept-model
+
+@conceptModelElementGUID=add guid here
+@conceptModelGUID=add guid here
+@conceptBeadGUID=add guid here
+@conceptBeadAttributeGUID=add guid here
+@conceptBeadRelationshipGUID=add guid here
+@inheritingBeadGUID=add guid here
+@inheritedBeadGUID=add guid here
+@extendedBeadGUID=add guid here
+@extensionBeadGUID=add guid here
+@elementGUID=add guid here
+
+###
+# @name createConceptModelElement
+# Create a concept model element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-model-elements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "properties": {
+    "class": "ConceptModelElementProperties",
+    "typeName": "ConceptBead",
+    "qualifiedName": "ConceptBead::add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "canonicalName": "add canonical name here",
+    "additionalProperties": {
+      "property1": "propertyValue1"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createConceptModelElementFromTemplate
+# Create a concept model element from a template.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-model-elements/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "templateGUID": "add guid here",
+  "placeholderPropertyValues": {
+    "placeholder1": "propertyValue1"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateConceptModelElement
+# Update the properties of a concept model element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-model-elements/{{conceptModelElementGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "ConceptModelElementProperties",
+    "typeName": "ConceptBead",
+    "qualifiedName": "ConceptBead::add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "canonicalName": "add canonical name here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name deleteConceptModelElement
+# Delete a concept model element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-model-elements/{{conceptModelElementGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadedDelete" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name getConceptModelElementsByName
+# Returns the list of concept model elements with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-model-elements/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name findConceptModelElements
+# Retrieve the list of concept model element metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-model-elements/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getConceptModelElementByGUID
+# Return the properties of a specific concept model element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-model-elements/{{conceptModelElementGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkConceptDesign
+# Attach a concept model to the element whose concepts it describes.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/elements/{{elementGUID}}/concept-designs/{{conceptModelGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ConceptDesignProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachConceptDesign
+# Detach a concept model from the element whose concepts it described.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/elements/{{elementGUID}}/concept-designs/{{conceptModelGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkConceptBeadRelationshipEnd
+# Attach a concept bead to one of the ends of a concept bead relationship.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-bead-relationships/{{conceptBeadRelationshipGUID}}/relationship-ends/{{conceptBeadGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ConceptBeadRelationshipEndProperties",
+    "attributeName": "add attribute name here",
+    "decoration": "AGGREGATION",
+    "position": 0,
+    "minCardinality": 0,
+    "maxCardinality": 1,
+    "uniqueValues": false,
+    "orderedValues": false,
+    "navigable": true,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachConceptBeadRelationshipEnd
+# Detach a concept bead from one of the ends of a concept bead relationship.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-bead-relationships/{{conceptBeadRelationshipGUID}}/relationship-ends/{{conceptBeadGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkTypedByConceptBead
+# Attach a concept bead attribute to the concept bead that acts as its type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-bead-attributes/{{conceptBeadAttributeGUID}}/typed-by/{{conceptBeadGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "TypedByConceptBeadProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachTypedByConceptBead
+# Detach a concept bead attribute from the concept bead that acted as its type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-bead-attributes/{{conceptBeadAttributeGUID}}/typed-by/{{conceptBeadGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkIsAConceptBead
+# Attach a concept bead to the concept bead that it inherits from.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-beads/{{inheritingBeadGUID}}/is-a/{{inheritedBeadGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "IsAConceptBeadProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachIsAConceptBead
+# Detach a concept bead from the concept bead that it inherited from.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-beads/{{inheritingBeadGUID}}/is-a/{{inheritedBeadGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkConceptBeadAttributeLink
+# Attach a concept bead attribute to its parent concept bead.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-beads/{{conceptBeadGUID}}/attribute-links/{{conceptBeadAttributeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ConceptBeadAttributeLinkProperties",
+    "position": 0,
+    "minCardinality": 0,
+    "maxCardinality": 1,
+    "coverageCategory": "CORE_DETAIL",
+    "uniqueValues": false,
+    "orderedValues": false,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachConceptBeadAttributeLink
+# Detach a concept bead attribute from its parent concept bead.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-beads/{{conceptBeadGUID}}/attribute-links/{{conceptBeadAttributeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkConceptBeadExtension
+# Attach a concept bead to a concept bead that extends it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-beads/{{extendedBeadGUID}}/extensions/{{extensionBeadGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ConceptBeadExtensionProperties",
+    "role": "add role here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachConceptBeadExtension
+# Detach a concept bead from a concept bead that extended it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/concept-beads/{{extendedBeadGUID}}/extensions/{{extensionBeadGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
 

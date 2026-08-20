@@ -1889,4 +1889,733 @@ public class AssetMakerResource
     }
 
 
+
+    /*
+     * =====================================================================================================================
+     * Asset structure relationships
+     */
+
+    /**
+     * Attach a deployed API to the endpoint where it is called.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param endpointGUID unique identifier of the endpoint
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/deployed-apis/{deployedAPIGUID}/api-endpoints/{endpointGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkAPIEndpoint",
+            description="Attach a deployed API to the endpoint where it is called.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse linkAPIEndpoint(@PathVariable String serverName,
+                                        @PathVariable String urlMarker,
+                                        @PathVariable String deployedAPIGUID,
+                                        @PathVariable String endpointGUID,
+                                        @RequestBody (required = false)
+                                        NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkAPIEndpoint(serverName, urlMarker, deployedAPIGUID, endpointGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a deployed API from the endpoint where it is called.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param endpointGUID unique identifier of the endpoint
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/deployed-apis/{deployedAPIGUID}/api-endpoints/{endpointGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachAPIEndpoint",
+            description="Detach a deployed API from the endpoint where it is called.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse detachAPIEndpoint(@PathVariable String serverName,
+                                          @PathVariable String urlMarker,
+                                          @PathVariable String deployedAPIGUID,
+                                          @PathVariable String endpointGUID,
+                                          @RequestBody (required = false)
+                                          DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachAPIEndpoint(serverName, urlMarker, deployedAPIGUID, endpointGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a child process to its parent process.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param parentProcessGUID unique identifier of the parent process
+     * @param childProcessGUID unique identifier of the child process
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/processes/{parentProcessGUID}/process-hierarchies/{childProcessGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkProcessHierarchy",
+            description="Attach a child process to its parent process.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/process"))
+
+    public VoidResponse linkProcessHierarchy(@PathVariable String serverName,
+                                             @PathVariable String urlMarker,
+                                             @PathVariable String parentProcessGUID,
+                                             @PathVariable String childProcessGUID,
+                                             @RequestBody (required = false)
+                                             NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkProcessHierarchy(serverName, urlMarker, parentProcessGUID, childProcessGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a child process from its parent process.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param parentProcessGUID unique identifier of the parent process
+     * @param childProcessGUID unique identifier of the child process
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/processes/{parentProcessGUID}/process-hierarchies/{childProcessGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachProcessHierarchy",
+            description="Detach a child process from its parent process.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/process"))
+
+    public VoidResponse detachProcessHierarchy(@PathVariable String serverName,
+                                               @PathVariable String urlMarker,
+                                               @PathVariable String parentProcessGUID,
+                                               @PathVariable String childProcessGUID,
+                                               @RequestBody (required = false)
+                                               DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachProcessHierarchy(serverName, urlMarker, parentProcessGUID, childProcessGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a data file to the file folder that it is stored in.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param folderGUID unique identifier of the file folder
+     * @param fileGUID unique identifier of the data file that is stored in the folder
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/file-folders/{folderGUID}/nested-files/{fileGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkNestedFiles",
+            description="Attach a data file to the file folder that it is stored in.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/folder"))
+
+    public VoidResponse linkNestedFiles(@PathVariable String serverName,
+                                        @PathVariable String urlMarker,
+                                        @PathVariable String folderGUID,
+                                        @PathVariable String fileGUID,
+                                        @RequestBody (required = false)
+                                        NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkNestedFiles(serverName, urlMarker, folderGUID, fileGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a data file from the file folder that it is stored in.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param folderGUID unique identifier of the file folder
+     * @param fileGUID unique identifier of the data file that is stored in the folder
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/file-folders/{folderGUID}/nested-files/{fileGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachNestedFile",
+            description="Detach a data file from the file folder that it is stored in.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/folder"))
+
+    public VoidResponse detachNestedFile(@PathVariable String serverName,
+                                         @PathVariable String urlMarker,
+                                         @PathVariable String folderGUID,
+                                         @PathVariable String fileGUID,
+                                         @RequestBody (required = false)
+                                         DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachNestedFile(serverName, urlMarker, folderGUID, fileGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a data file to a file folder that links to it without storing it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param folderGUID unique identifier of the file folder
+     * @param fileGUID unique identifier of the data file that is linked to the folder
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/file-folders/{folderGUID}/linked-files/{fileGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkLinkedFiles",
+            description="Attach a data file to a file folder that links to it without storing it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/folder"))
+
+    public VoidResponse linkLinkedFiles(@PathVariable String serverName,
+                                        @PathVariable String urlMarker,
+                                        @PathVariable String folderGUID,
+                                        @PathVariable String fileGUID,
+                                        @RequestBody (required = false)
+                                        NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkLinkedFiles(serverName, urlMarker, folderGUID, fileGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a data file from a file folder that links to it without storing it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param folderGUID unique identifier of the file folder
+     * @param fileGUID unique identifier of the data file that is linked to the folder
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/file-folders/{folderGUID}/linked-files/{fileGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachLinkedFile",
+            description="Detach a data file from a file folder that links to it without storing it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/folder"))
+
+    public VoidResponse detachLinkedFile(@PathVariable String serverName,
+                                         @PathVariable String urlMarker,
+                                         @PathVariable String folderGUID,
+                                         @PathVariable String fileGUID,
+                                         @RequestBody (required = false)
+                                         DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachLinkedFile(serverName, urlMarker, folderGUID, fileGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a child file folder to its parent file folder.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param parentFolderGUID unique identifier of the parent file folder
+     * @param childFolderGUID unique identifier of the child file folder
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/file-folders/{parentFolderGUID}/folder-hierarchies/{childFolderGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkFolderHierarchy",
+            description="Attach a child file folder to its parent file folder.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/folder"))
+
+    public VoidResponse linkFolderHierarchy(@PathVariable String serverName,
+                                            @PathVariable String urlMarker,
+                                            @PathVariable String parentFolderGUID,
+                                            @PathVariable String childFolderGUID,
+                                            @RequestBody (required = false)
+                                            NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkFolderHierarchy(serverName, urlMarker, parentFolderGUID, childFolderGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a child file folder from its parent file folder.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param parentFolderGUID unique identifier of the parent file folder
+     * @param childFolderGUID unique identifier of the child file folder
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/file-folders/{parentFolderGUID}/folder-hierarchies/{childFolderGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachFolderHierarchy",
+            description="Detach a child file folder from its parent file folder.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/folder"))
+
+    public VoidResponse detachFolderHierarchy(@PathVariable String serverName,
+                                              @PathVariable String urlMarker,
+                                              @PathVariable String parentFolderGUID,
+                                              @PathVariable String childFolderGUID,
+                                              @RequestBody (required = false)
+                                              DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachFolderHierarchy(serverName, urlMarker, parentFolderGUID, childFolderGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a resource that is impacted by an incident report to that incident report.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param resourceGUID unique identifier of the impacted resource
+     * @param incidentReportGUID unique identifier of the incident report
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/resources/{resourceGUID}/impacted-resources/{incidentReportGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkImpactedResource",
+            description="Attach a resource that is impacted by an incident report to that incident report.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/incident-report"))
+
+    public VoidResponse linkImpactedResource(@PathVariable String serverName,
+                                             @PathVariable String urlMarker,
+                                             @PathVariable String resourceGUID,
+                                             @PathVariable String incidentReportGUID,
+                                             @RequestBody (required = false)
+                                             NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkImpactedResource(serverName, urlMarker, resourceGUID, incidentReportGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a resource from an incident report that no longer impacts it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param resourceGUID unique identifier of the impacted resource
+     * @param incidentReportGUID unique identifier of the incident report
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/resources/{resourceGUID}/impacted-resources/{incidentReportGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachImpactedResource",
+            description="Detach a resource from an incident report that no longer impacts it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/incident-report"))
+
+    public VoidResponse detachImpactedResource(@PathVariable String serverName,
+                                               @PathVariable String urlMarker,
+                                               @PathVariable String resourceGUID,
+                                               @PathVariable String incidentReportGUID,
+                                               @RequestBody (required = false)
+                                               DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachImpactedResource(serverName, urlMarker, resourceGUID, incidentReportGUID, requestBody);
+    }
+
+    /**
+     * Attach an asset that holds a log to the element that the log is about.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the log is about
+     * @param logAssetGUID unique identifier of the asset that holds the log
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/associated-logs/{logAssetGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkAssociatedLog",
+            description="Attach an asset that holds a log to the element that the log is about.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse linkAssociatedLog(@PathVariable String serverName,
+                                          @PathVariable String urlMarker,
+                                          @PathVariable String elementGUID,
+                                          @PathVariable String logAssetGUID,
+                                          @RequestBody (required = false)
+                                          NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkAssociatedLog(serverName, urlMarker, elementGUID, logAssetGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an asset that holds a log from the element that the log was about.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the log is about
+     * @param logAssetGUID unique identifier of the asset that holds the log
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/associated-logs/{logAssetGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachAssociatedLog",
+            description="Detach an asset that holds a log from the element that the log was about.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse detachAssociatedLog(@PathVariable String serverName,
+                                            @PathVariable String urlMarker,
+                                            @PathVariable String elementGUID,
+                                            @PathVariable String logAssetGUID,
+                                            @RequestBody (required = false)
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachAssociatedLog(serverName, urlMarker, elementGUID, logAssetGUID, requestBody);
+    }
+
+
+    /**
+     * Attach an asset holding sample data to the element that the sample was taken from.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the sample was taken from
+     * @param sampleDataGUID unique identifier of the asset holding the sample data
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/sample-data/{sampleDataGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkSampleData",
+            description="Attach an asset holding sample data to the element that the sample was taken from.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse linkSampleData(@PathVariable String serverName,
+                                       @PathVariable String urlMarker,
+                                       @PathVariable String elementGUID,
+                                       @PathVariable String sampleDataGUID,
+                                       @RequestBody (required = false)
+                                       NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSampleData(serverName, urlMarker, elementGUID, sampleDataGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an asset holding sample data from the element that the sample was taken from.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element that the sample was taken from
+     * @param sampleDataGUID unique identifier of the asset holding the sample data
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/sample-data/{sampleDataGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSampleData",
+            description="Detach an asset holding sample data from the element that the sample was taken from.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse detachSampleData(@PathVariable String serverName,
+                                         @PathVariable String urlMarker,
+                                         @PathVariable String elementGUID,
+                                         @PathVariable String sampleDataGUID,
+                                         @RequestBody (required = false)
+                                         DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSampleData(serverName, urlMarker, elementGUID, sampleDataGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a port to the process that owns it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param processGUID unique identifier of the process that owns the port
+     * @param portGUID unique identifier of the port
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/processes/{processGUID}/ports/{portGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkProcessPort",
+            description="Attach a port to the process that owns it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse linkProcessPort(@PathVariable String serverName,
+                                        @PathVariable String urlMarker,
+                                        @PathVariable String processGUID,
+                                        @PathVariable String portGUID,
+                                        @RequestBody (required = false)
+                                        NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkProcessPort(serverName, urlMarker, processGUID, portGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a port from the process that owned it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param processGUID unique identifier of the process that owns the port
+     * @param portGUID unique identifier of the port
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/processes/{processGUID}/ports/{portGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachProcessPort",
+            description="Detach a port from the process that owned it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse detachProcessPort(@PathVariable String serverName,
+                                          @PathVariable String urlMarker,
+                                          @PathVariable String processGUID,
+                                          @PathVariable String portGUID,
+                                          @RequestBody (required = false)
+                                          DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachProcessPort(serverName, urlMarker, processGUID, portGUID, requestBody);
+    }
+
+
+    /**
+     * Attach an archive file to the collection that describes its contents.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param archiveFileGUID unique identifier of the archive file
+     * @param collectionGUID unique identifier of the collection describing the archive's contents
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/archive-files/{archiveFileGUID}/archive-contents/{collectionGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkArchiveContents",
+            description="Attach an archive file to the collection that describes its contents.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse linkArchiveContents(@PathVariable String serverName,
+                                            @PathVariable String urlMarker,
+                                            @PathVariable String archiveFileGUID,
+                                            @PathVariable String collectionGUID,
+                                            @RequestBody (required = false)
+                                            NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkArchiveContents(serverName, urlMarker, archiveFileGUID, collectionGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an archive file from the collection that described its contents.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param archiveFileGUID unique identifier of the archive file
+     * @param collectionGUID unique identifier of the collection describing the archive's contents
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/archive-files/{archiveFileGUID}/archive-contents/{collectionGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachArchiveContents",
+            description="Detach an archive file from the collection that described its contents.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse detachArchiveContents(@PathVariable String serverName,
+                                              @PathVariable String urlMarker,
+                                              @PathVariable String archiveFileGUID,
+                                              @PathVariable String collectionGUID,
+                                              @RequestBody (required = false)
+                                              DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachArchiveContents(serverName, urlMarker, archiveFileGUID, collectionGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a media file to another media file that is related to it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param mediaFileGUID unique identifier of the media file
+     * @param linkedMediaFileGUID unique identifier of the related media file
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/media-files/{mediaFileGUID}/linked-media/{linkedMediaFileGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkLinkedMedia",
+            description="Attach a media file to another media file that is related to it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse linkLinkedMedia(@PathVariable String serverName,
+                                        @PathVariable String urlMarker,
+                                        @PathVariable String mediaFileGUID,
+                                        @PathVariable String linkedMediaFileGUID,
+                                        @RequestBody (required = false)
+                                        NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkLinkedMedia(serverName, urlMarker, mediaFileGUID, linkedMediaFileGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a media file from another media file that was related to it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param mediaFileGUID unique identifier of the media file
+     * @param linkedMediaFileGUID unique identifier of the related media file
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/media-files/{mediaFileGUID}/linked-media/{linkedMediaFileGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachLinkedMedia",
+            description="Detach a media file from another media file that was related to it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse detachLinkedMedia(@PathVariable String serverName,
+                                          @PathVariable String urlMarker,
+                                          @PathVariable String mediaFileGUID,
+                                          @PathVariable String linkedMediaFileGUID,
+                                          @RequestBody (required = false)
+                                          DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachLinkedMedia(serverName, urlMarker, mediaFileGUID, linkedMediaFileGUID, requestBody);
+    }
 }

@@ -705,3 +705,201 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+###
+# =====================================================================================================================
+# External identifier relationships
+
+###
+# @name linkExternalIdToElement
+# Attach an existing external identifier to the element that it identifies.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param elementGUID unique identifier of the element
+# @param externalIdGUID unique identifier of the external identifier
+# @param requestBody properties for the relationship
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/external-ids/{{externalIdGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ExternalIdLinkProperties",
+    "usage": "add usage",
+    "source": "add source",
+    "lastSynchronized": "{{$isoTimestamp}}",
+    "permittedSynchronization": "BOTH_DIRECTIONS",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachExternalIdFromElement
+# Detach an external identifier from the element that it identifies.
+#
+# @param serverName name of the server to route the request to
+# @param urlMarker  view service URL marker
+# @param elementGUID unique identifier of the element
+# @param externalIdGUID unique identifier of the external identifier
+# @param requestBody delete options
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/external-ids/{{externalIdGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# ---------------------------------------------------------------------------------------------------------------------
+# cited document link is a multi-link relationship.  The attach above returns the new relationship's unique identifier;
+# these two requests act on that single relationship.  The detach that takes the two end GUIDs removes them all.
+
+@citedDocumentLinkRelationshipGUID=add guid here
+###
+# @name updateCitedDocumentReference
+# Update the properties of a cited document link relationship.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/cited-document-references/{{citedDocumentLinkRelationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "CitedDocumentLinkProperties",
+    "referenceId": "add reference id here",
+    "description": "add description here",
+    "pages": "add pages here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachCitedDocumentReferenceById
+# Remove a single cited document link relationship, identified by its own unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/cited-document-references/{{citedDocumentLinkRelationshipGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# ---------------------------------------------------------------------------------------------------------------------
+# external reference link is a multi-link relationship.  The attach above returns the new relationship's unique identifier;
+# these two requests act on that single relationship.  The detach that takes the two end GUIDs removes them all.
+
+@externalReferenceLinkRelationshipGUID=add guid here
+###
+# @name updateExternalReferenceLink
+# Update the properties of a external reference link relationship.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-reference-links/{{externalReferenceLinkRelationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "ExternalReferenceLinkProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachExternalReferenceById
+# Remove a single external reference link relationship, identified by its own unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-reference-links/{{externalReferenceLinkRelationshipGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# ---------------------------------------------------------------------------------------------------------------------
+# media reference is a multi-link relationship.  The attach above returns the new relationship's unique identifier;
+# these two requests act on that single relationship.  The detach that takes the two end GUIDs removes them all.
+
+@mediaReferenceRelationshipGUID=add guid here
+###
+# @name updateMediaReference
+# Update the properties of a media reference relationship.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/media-reference-links/{{mediaReferenceRelationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "MediaReferenceProperties",
+    "mediaId": "add media id here",
+    "description": "add description here",
+    "mediaUsage": "add usage here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachMediaReferenceById
+# Remove a single media reference relationship, identified by its own unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/media-reference-links/{{mediaReferenceRelationshipGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+

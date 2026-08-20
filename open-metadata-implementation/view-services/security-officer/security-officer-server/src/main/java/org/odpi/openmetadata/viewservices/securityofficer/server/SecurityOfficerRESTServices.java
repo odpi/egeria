@@ -20,6 +20,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ResourcePermissionsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecretsCollectionSecurityListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.UserAccountProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityListProperties;
 
 
 
@@ -620,4 +624,512 @@ public class SecurityOfficerRESTServices extends TokenController
         return response;
     }
 
+
+    /*
+     * =====================================================================================================================
+     * Secrets collection relationships
+     */
+
+    /**
+     * Attach a security access control to the secrets collection that defines it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param securityAccessControlGUID unique identifier of the security access control
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkResourcePermissions(String                     serverName,
+                                                String                     secretsCollectionGUID,
+                                                String                     securityAccessControlGUID,
+                                                NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkResourcePermissions";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getSecretsCollectionHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkResourcePermissions(userId, secretsCollectionGUID, securityAccessControlGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ResourcePermissionsProperties properties)
+            {
+                handler.linkResourcePermissions(userId, secretsCollectionGUID, securityAccessControlGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkResourcePermissions(userId, secretsCollectionGUID, securityAccessControlGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ResourcePermissionsProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a security access control from the secrets collection that defined it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param securityAccessControlGUID unique identifier of the security access control
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachResourcePermissions(String                        serverName,
+                                                  String                        secretsCollectionGUID,
+                                                  String                        securityAccessControlGUID,
+                                                  DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachResourcePermissions";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getSecretsCollectionHandler(userId, serverName, methodName);
+
+            handler.detachResourcePermissions(userId, secretsCollectionGUID, securityAccessControlGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a security list to the secrets collection that lists it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param securityListGUID unique identifier of the security list
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkSecretsCollectionSecurityList(String                     serverName,
+                                                          String                     secretsCollectionGUID,
+                                                          String                     securityListGUID,
+                                                          NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSecretsCollectionSecurityList";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getSecretsCollectionHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkSecretsCollectionSecurityList(userId, secretsCollectionGUID, securityListGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof SecretsCollectionSecurityListProperties properties)
+            {
+                handler.linkSecretsCollectionSecurityList(userId, secretsCollectionGUID, securityListGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkSecretsCollectionSecurityList(userId, secretsCollectionGUID, securityListGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(SecretsCollectionSecurityListProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a security list from the secrets collection that listed it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param securityListGUID unique identifier of the security list
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachSecretsCollectionSecurityList(String                        serverName,
+                                                            String                        secretsCollectionGUID,
+                                                            String                        securityListGUID,
+                                                            DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachSecretsCollectionSecurityList";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getSecretsCollectionHandler(userId, serverName, methodName);
+
+            handler.detachSecretsCollectionSecurityList(userId, secretsCollectionGUID, securityListGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a user identity to the secrets collection that configures its account.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param userIdentityGUID unique identifier of the user identity
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkUserAccount(String                     serverName,
+                                        String                     secretsCollectionGUID,
+                                        String                     userIdentityGUID,
+                                        NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkUserAccount";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getSecretsCollectionHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkUserAccount(userId, secretsCollectionGUID, userIdentityGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof UserAccountProperties properties)
+            {
+                handler.linkUserAccount(userId, secretsCollectionGUID, userIdentityGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkUserAccount(userId, secretsCollectionGUID, userIdentityGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(UserAccountProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a user identity from the secrets collection that configured its account.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param userIdentityGUID unique identifier of the user identity
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachUserAccount(String                        serverName,
+                                          String                        secretsCollectionGUID,
+                                          String                        userIdentityGUID,
+                                          DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachUserAccount";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getSecretsCollectionHandler(userId, serverName, methodName);
+
+            handler.detachUserAccount(userId, secretsCollectionGUID, userIdentityGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Associated security lists
+     *
+     * AssociatedSecurityList is a multi-link relationship - the attach always creates a new relationship and returns
+     * its unique identifier; update and detach work on that relationship GUID.
+     */
+
+    /**
+     * Attach a security list to a security access control that uses it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param securityAccessControlGUID unique identifier of the security access control
+     * @param securityListGUID unique identifier of the security list
+     * @param requestBody properties for the relationship
+     *
+     * @return unique identifier of the new relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse linkAssociatedSecurityList(String                     serverName,
+                                                   String                     securityAccessControlGUID,
+                                                   String                     securityListGUID,
+                                                   NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAssociatedSecurityList";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof AssociatedSecurityListProperties properties)
+                {
+                    response.setGUID(handler.linkAssociatedSecurityList(userId, securityAccessControlGUID, securityListGUID, requestBody, properties));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setGUID(handler.linkAssociatedSecurityList(userId, securityAccessControlGUID, securityListGUID, requestBody, null));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(AssociatedSecurityListProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update the properties of an associated security list relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param associatedSecurityListRelationshipGUID unique identifier of the relationship
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateAssociatedSecurityList(String                        serverName,
+                                                     String                        associatedSecurityListRelationshipGUID,
+                                                     UpdateRelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateAssociatedSecurityList";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof AssociatedSecurityListProperties properties)
+                {
+                    handler.updateAssociatedSecurityList(userId, associatedSecurityListRelationshipGUID, requestBody, properties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(AssociatedSecurityListProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove an associated security list relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param associatedSecurityListRelationshipGUID unique identifier of the relationship
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachAssociatedSecurityList(String                        serverName,
+                                                     String                        associatedSecurityListRelationshipGUID,
+                                                     DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachAssociatedSecurityList";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+            handler.detachAssociatedSecurityList(userId, associatedSecurityListRelationshipGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 }

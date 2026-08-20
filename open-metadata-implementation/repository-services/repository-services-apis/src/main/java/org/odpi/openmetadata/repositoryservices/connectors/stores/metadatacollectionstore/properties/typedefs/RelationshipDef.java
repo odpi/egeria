@@ -192,30 +192,11 @@ public class RelationshipDef extends TypeDef
     public String toString()
     {
         return "RelationshipDef{" +
-                "name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
+                "propagationRule=" + propagationRule +
                 ", endDef1=" + endDef1 +
                 ", endDef2=" + endDef2 +
                 ", multiLink=" + multiLink +
-                ", superType=" + getSuperType() +
-                ", descriptionGUID='" + getDescriptionGUID() + '\'' +
-                ", descriptionWiki='" + getDescriptionWiki() + '\'' +
-                ", origin='" + getOrigin() + '\'' +
-                ", createdBy='" + getCreatedBy() + '\'' +
-                ", updatedBy='" + getUpdatedBy() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", updateTime=" + getUpdateTime() +
-                ", options=" + getOptions() +
-                ", externalStandardMappings=" + getExternalStandardMappings() +
-                ", validInstanceStatusList=" + getValidInstanceStatusList() +
-                ", initialStatus=" + getInitialStatus() +
-                ", propertiesDefinition=" + getPropertiesDefinition() +
-                ", category=" + getCategory() +
-                ", propagationRule=" + propagationRule +
-                ", version=" + getVersion() +
-                ", versionName='" + getVersionName() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                '}';
+                "} " + super.toString();
     }
 
 
