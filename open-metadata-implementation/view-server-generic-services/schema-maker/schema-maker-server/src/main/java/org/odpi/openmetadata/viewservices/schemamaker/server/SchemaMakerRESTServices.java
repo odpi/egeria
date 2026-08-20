@@ -24,6 +24,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.MapToElem
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.NestedSchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.PrimaryKeyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.CalculatedValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIHeaderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIRequestProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIResponseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeOptionProperties;
 
 
 /**
@@ -1970,6 +1978,908 @@ public class SchemaMakerRESTServices extends TokenController
             SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachRelationalDBSchema(userId, databaseSchemaTypeListGUID, relationalDBSchemaTypeGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Schema element classifications
+     */
+
+    /**
+     * Add the PrimaryKey classification to a relational column.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param relationalColumnGUID unique identifier of the relational column
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse addPrimaryKeyClassification(String                       serverName,
+                                                    String                       urlMarker,
+                                                    String                       relationalColumnGUID,
+                                                    NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "addPrimaryKeyClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.addPrimaryKeyClassification(userId, relationalColumnGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof PrimaryKeyProperties properties)
+            {
+                handler.addPrimaryKeyClassification(userId, relationalColumnGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.addPrimaryKeyClassification(userId, relationalColumnGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(PrimaryKeyProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the PrimaryKey classification from a relational column.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param relationalColumnGUID unique identifier of the relational column
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse removePrimaryKeyClassification(String                          serverName,
+                                                       String                          urlMarker,
+                                                       String                          relationalColumnGUID,
+                                                       DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "removePrimaryKeyClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
+
+            handler.removePrimaryKeyClassification(userId, relationalColumnGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Add the TypeEmbeddedAttribute classification to a schema attribute.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param schemaAttributeGUID unique identifier of the schema attribute
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse addTypeEmbeddedAttribute(String                       serverName,
+                                                 String                       urlMarker,
+                                                 String                       schemaAttributeGUID,
+                                                 NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "addTypeEmbeddedAttribute";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.addTypeEmbeddedAttribute(userId, schemaAttributeGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof TypeEmbeddedAttributeProperties properties)
+            {
+                handler.addTypeEmbeddedAttribute(userId, schemaAttributeGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.addTypeEmbeddedAttribute(userId, schemaAttributeGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(TypeEmbeddedAttributeProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the TypeEmbeddedAttribute classification from a schema attribute.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param schemaAttributeGUID unique identifier of the schema attribute
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse removeTypeEmbeddedAttribute(String                          serverName,
+                                                    String                          urlMarker,
+                                                    String                          schemaAttributeGUID,
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "removeTypeEmbeddedAttribute";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
+
+            handler.removeTypeEmbeddedAttribute(userId, schemaAttributeGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Add the CalculatedValue classification to a schema element to show that its value is derived by a formula.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param schemaAttributeGUID unique identifier of the schema attribute
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse addCalculatedValue(String                       serverName,
+                                           String                       urlMarker,
+                                           String                       schemaAttributeGUID,
+                                           NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "addCalculatedValue";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.addCalculatedValue(userId, schemaAttributeGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof CalculatedValueProperties properties)
+            {
+                handler.addCalculatedValue(userId, schemaAttributeGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.addCalculatedValue(userId, schemaAttributeGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(CalculatedValueProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the CalculatedValue classification from a schema element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param schemaAttributeGUID unique identifier of the schema attribute
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse removeCalculatedValue(String                          serverName,
+                                              String                          urlMarker,
+                                              String                          schemaAttributeGUID,
+                                              DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "removeCalculatedValue";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
+
+            handler.removeCalculatedValue(userId, schemaAttributeGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * API and schema option relationships
+     */
+
+    /**
+     * Attach an API operation to the API schema type that contains it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiSchemaTypeGUID unique identifier of the API schema type
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkAPIOperations(String                     serverName,
+                                          String                     urlMarker,
+                                          String                     apiSchemaTypeGUID,
+                                          String                     apiOperationGUID,
+                                          NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAPIOperations";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkAPIOperations(userId, apiSchemaTypeGUID, apiOperationGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof APIOperationsProperties properties)
+            {
+                handler.linkAPIOperations(userId, apiSchemaTypeGUID, apiOperationGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkAPIOperations(userId, apiSchemaTypeGUID, apiOperationGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(APIOperationsProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach an API operation from the API schema type that contained it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiSchemaTypeGUID unique identifier of the API schema type
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachAPIOperations(String                        serverName,
+                                            String                        urlMarker,
+                                            String                        apiSchemaTypeGUID,
+                                            String                        apiOperationGUID,
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachAPIOperations";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachAPIOperations(userId, apiSchemaTypeGUID, apiOperationGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a schema type to the API operation that uses it as its header.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the header
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkAPIHeader(String                     serverName,
+                                      String                     urlMarker,
+                                      String                     apiOperationGUID,
+                                      String                     schemaTypeGUID,
+                                      NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAPIHeader";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkAPIHeader(userId, apiOperationGUID, schemaTypeGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof APIHeaderProperties properties)
+            {
+                handler.linkAPIHeader(userId, apiOperationGUID, schemaTypeGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkAPIHeader(userId, apiOperationGUID, schemaTypeGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(APIHeaderProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a schema type from the API operation that used it as its header.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the header
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachAPIHeader(String                        serverName,
+                                        String                        urlMarker,
+                                        String                        apiOperationGUID,
+                                        String                        schemaTypeGUID,
+                                        DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachAPIHeader";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachAPIHeader(userId, apiOperationGUID, schemaTypeGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a schema type to the API operation that uses it as its request.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the request
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkAPIRequest(String                     serverName,
+                                       String                     urlMarker,
+                                       String                     apiOperationGUID,
+                                       String                     schemaTypeGUID,
+                                       NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAPIRequest";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkAPIRequest(userId, apiOperationGUID, schemaTypeGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof APIRequestProperties properties)
+            {
+                handler.linkAPIRequest(userId, apiOperationGUID, schemaTypeGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkAPIRequest(userId, apiOperationGUID, schemaTypeGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(APIRequestProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a schema type from the API operation that used it as its request.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the request
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachAPIRequest(String                        serverName,
+                                         String                        urlMarker,
+                                         String                        apiOperationGUID,
+                                         String                        schemaTypeGUID,
+                                         DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachAPIRequest";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachAPIRequest(userId, apiOperationGUID, schemaTypeGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a schema type to the API operation that uses it as its response.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the response
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkAPIResponse(String                     serverName,
+                                        String                     urlMarker,
+                                        String                     apiOperationGUID,
+                                        String                     schemaTypeGUID,
+                                        NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAPIResponse";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkAPIResponse(userId, apiOperationGUID, schemaTypeGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof APIResponseProperties properties)
+            {
+                handler.linkAPIResponse(userId, apiOperationGUID, schemaTypeGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkAPIResponse(userId, apiOperationGUID, schemaTypeGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(APIResponseProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a schema type from the API operation that used it as its response.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the response
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachAPIResponse(String                        serverName,
+                                          String                        urlMarker,
+                                          String                        apiOperationGUID,
+                                          String                        schemaTypeGUID,
+                                          DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachAPIResponse";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachAPIResponse(userId, apiOperationGUID, schemaTypeGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a schema type to a schema element that may optionally use it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param schemaElementGUID unique identifier of the schema element
+     * @param schemaTypeGUID unique identifier of the schema type that is one of its options
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkSchemaTypeOption(String                     serverName,
+                                             String                     urlMarker,
+                                             String                     schemaElementGUID,
+                                             String                     schemaTypeGUID,
+                                             NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSchemaTypeOption";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkSchemaTypeOption(userId, schemaElementGUID, schemaTypeGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof SchemaTypeOptionProperties properties)
+            {
+                handler.linkSchemaTypeOption(userId, schemaElementGUID, schemaTypeGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkSchemaTypeOption(userId, schemaElementGUID, schemaTypeGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(SchemaTypeOptionProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a schema type from a schema element that may optionally have used it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param schemaElementGUID unique identifier of the schema element
+     * @param schemaTypeGUID unique identifier of the schema type that is one of its options
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachSchemaTypeOption(String                        serverName,
+                                               String                        urlMarker,
+                                               String                        schemaElementGUID,
+                                               String                        schemaTypeGUID,
+                                               DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachSchemaTypeOption";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachSchemaTypeOption(userId, schemaElementGUID, schemaTypeGUID, requestBody);
         }
         catch (Throwable error)
         {

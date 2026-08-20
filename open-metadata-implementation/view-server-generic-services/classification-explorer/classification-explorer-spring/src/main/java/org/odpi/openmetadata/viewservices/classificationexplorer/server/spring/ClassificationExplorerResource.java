@@ -3211,5 +3211,374 @@ public class ClassificationExplorerResource
         return restAPI.getSearchKeywordByGUID(serverName, urlMarker, searchKeywordGUID, requestBody);
     }
 
-}
+    /**
+     * Classify an element to say that its description is incomplete.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/incomplete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
+    @Operation(summary="setElementAsIncomplete",
+            description="Classify an element to say that its description is incomplete.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/referenceable"))
+
+    public VoidResponse setElementAsIncomplete(@PathVariable String serverName,
+                                               @PathVariable String urlMarker,
+                                               @PathVariable String elementGUID,
+                                               @RequestBody (required = false)
+                                               NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setElementAsIncomplete(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the incomplete designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/incomplete/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearElementAsIncomplete",
+            description="Remove the incomplete designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/referenceable"))
+
+    public VoidResponse clearElementAsIncomplete(@PathVariable String serverName,
+                                                 @PathVariable String urlMarker,
+                                                 @PathVariable String elementGUID,
+                                                 @RequestBody (required = false)
+                                                 DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearElementAsIncomplete(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it identifies an object.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/object-identifier")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setElementAsObjectIdentifier",
+            description="Classify an element to say that it identifies an object.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/referenceable"))
+
+    public VoidResponse setElementAsObjectIdentifier(@PathVariable String serverName,
+                                                     @PathVariable String urlMarker,
+                                                     @PathVariable String elementGUID,
+                                                     @RequestBody (required = false)
+                                                     NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setElementAsObjectIdentifier(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the object identifier designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/object-identifier/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearElementAsObjectIdentifier",
+            description="Remove the object identifier designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/referenceable"))
+
+    public VoidResponse clearElementAsObjectIdentifier(@PathVariable String serverName,
+                                                       @PathVariable String urlMarker,
+                                                       @PathVariable String elementGUID,
+                                                       @RequestBody (required = false)
+                                                       DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearElementAsObjectIdentifier(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it contains reference data.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/reference-data")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setElementAsReferenceData",
+            description="Classify an element to say that it contains reference data.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/referenceable"))
+
+    public VoidResponse setElementAsReferenceData(@PathVariable String serverName,
+                                                  @PathVariable String urlMarker,
+                                                  @PathVariable String elementGUID,
+                                                  @RequestBody (required = false)
+                                                  NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setElementAsReferenceData(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the reference data designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/reference-data/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearElementAsReferenceData",
+            description="Remove the reference data designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/referenceable"))
+
+    public VoidResponse clearElementAsReferenceData(@PathVariable String serverName,
+                                                    @PathVariable String urlMarker,
+                                                    @PathVariable String elementGUID,
+                                                    @RequestBody (required = false)
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearElementAsReferenceData(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that the resource it describes can move location.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/mobile-resource")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setElementAsMobileResource",
+            description="Classify an element to say that the resource it describes can move location.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/referenceable"))
+
+    public VoidResponse setElementAsMobileResource(@PathVariable String serverName,
+                                                   @PathVariable String urlMarker,
+                                                   @PathVariable String elementGUID,
+                                                   @RequestBody (required = false)
+                                                   NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setElementAsMobileResource(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the mobile resource designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/mobile-resource/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearElementAsMobileResource",
+            description="Remove the mobile resource designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/referenceable"))
+
+    public VoidResponse clearElementAsMobileResource(@PathVariable String serverName,
+                                                     @PathVariable String urlMarker,
+                                                     @PathVariable String elementGUID,
+                                                     @RequestBody (required = false)
+                                                     DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearElementAsMobileResource(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it describes metadata about instances rather than the instances themselves.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/instance-metadata")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setElementAsInstanceMetadata",
+            description="Classify an element to say that it describes metadata about instances rather than the instances themselves.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/referenceable"))
+
+    public VoidResponse setElementAsInstanceMetadata(@PathVariable String serverName,
+                                                     @PathVariable String urlMarker,
+                                                     @PathVariable String elementGUID,
+                                                     @RequestBody (required = false)
+                                                     NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setElementAsInstanceMetadata(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the instance metadata designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/instance-metadata/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearElementAsInstanceMetadata",
+            description="Remove the instance metadata designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/referenceable"))
+
+    public VoidResponse clearElementAsInstanceMetadata(@PathVariable String serverName,
+                                                       @PathVariable String urlMarker,
+                                                       @PathVariable String elementGUID,
+                                                       @RequestBody (required = false)
+                                                       DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearElementAsInstanceMetadata(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it is an instance of an element in a metadata model.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/metamodel-instance")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setElementAsMetamodelInstance",
+            description="Classify an element to say that it is an instance of an element in a metadata model.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/referenceable"))
+
+    public VoidResponse setElementAsMetamodelInstance(@PathVariable String serverName,
+                                                      @PathVariable String urlMarker,
+                                                      @PathVariable String elementGUID,
+                                                      @RequestBody (required = false)
+                                                      NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setElementAsMetamodelInstance(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the metamodel instance designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/metamodel-instance/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearElementAsMetamodelInstance",
+            description="Remove the metamodel instance designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/referenceable"))
+
+    public VoidResponse clearElementAsMetamodelInstance(@PathVariable String serverName,
+                                                        @PathVariable String urlMarker,
+                                                        @PathVariable String elementGUID,
+                                                        @RequestBody (required = false)
+                                                        DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearElementAsMetamodelInstance(serverName, urlMarker, elementGUID, requestBody);
+    }
+}

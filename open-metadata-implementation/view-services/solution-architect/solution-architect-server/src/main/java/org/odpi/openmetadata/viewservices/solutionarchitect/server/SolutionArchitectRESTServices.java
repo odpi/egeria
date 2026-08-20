@@ -3694,4 +3694,227 @@ public class SolutionArchitectRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response);
         return response;
     }
+
+
+    /*
+     * =====================================================================================================================
+     * Solution port relationships
+     */
+
+    /**
+     * Attach a solution port to the solution component that exposes it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param solutionComponentGUID unique identifier of the solution component
+     * @param solutionPortGUID unique identifier of the solution port
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkSolutionComponentPort(String                     serverName,
+                                                  String                     solutionComponentGUID,
+                                                  String                     solutionPortGUID,
+                                                  NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSolutionComponentPort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionComponentHandler handler = instanceHandler.getSolutionComponentHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkSolutionComponentPort(userId, solutionComponentGUID, solutionPortGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof SolutionComponentPortProperties properties)
+            {
+                handler.linkSolutionComponentPort(userId, solutionComponentGUID, solutionPortGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkSolutionComponentPort(userId, solutionComponentGUID, solutionPortGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(SolutionComponentPortProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a solution port from the solution component that exposed it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param solutionComponentGUID unique identifier of the solution component
+     * @param solutionPortGUID unique identifier of the solution port
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachSolutionComponentPort(String                        serverName,
+                                                    String                        solutionComponentGUID,
+                                                    String                        solutionPortGUID,
+                                                    DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachSolutionComponentPort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionComponentHandler handler = instanceHandler.getSolutionComponentHandler(userId, serverName, methodName);
+
+            handler.detachSolutionComponentPort(userId, solutionComponentGUID, solutionPortGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a solution port to the solution port that it delegates to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param alignsToPortGUID unique identifier of the solution port that is aligned to
+     * @param delegationPortGUID unique identifier of the solution port that delegates
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkSolutionPortDelegation(String                     serverName,
+                                                   String                     alignsToPortGUID,
+                                                   String                     delegationPortGUID,
+                                                   NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSolutionPortDelegation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionComponentHandler handler = instanceHandler.getSolutionComponentHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkSolutionPortDelegation(userId, alignsToPortGUID, delegationPortGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof SolutionPortDelegationProperties properties)
+            {
+                handler.linkSolutionPortDelegation(userId, alignsToPortGUID, delegationPortGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkSolutionPortDelegation(userId, alignsToPortGUID, delegationPortGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(SolutionPortDelegationProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a solution port from the solution port that it delegated to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param alignsToPortGUID unique identifier of the solution port that is aligned to
+     * @param delegationPortGUID unique identifier of the solution port that delegates
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachSolutionPortDelegation(String                        serverName,
+                                                     String                        alignsToPortGUID,
+                                                     String                        delegationPortGUID,
+                                                     DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachSolutionPortDelegation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionComponentHandler handler = instanceHandler.getSolutionComponentHandler(userId, serverName, methodName);
+
+            handler.detachSolutionPortDelegation(userId, alignsToPortGUID, delegationPortGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 }

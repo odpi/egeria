@@ -22,6 +22,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
 import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.CampaignProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.TaskProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.PersonalProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StudyProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ExperimentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.GlossaryProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.GovernanceProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectKindProperties;
 
 /**
  * Provides services for connectors to work with project elements.
@@ -435,5 +443,395 @@ public class ProjectClient extends ConnectorContextClientBase
                                                                                                PropertyServerException
     {
         projectHandler.clearProjectClassification(connectorUserId, elementGUID, metadataSourceOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Project classifications
+     */
+
+
+    /**
+     * Classify a project to say that it is a campaign - a long running activity made up of many projects.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsCampaign(String                 projectGUID,
+                                CampaignProperties     properties,
+                                MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        projectHandler.setProjectAsCampaign(connectorUserId, projectGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Remove the campaign designation from a project.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsCampaign(String                projectGUID,
+                                  MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        projectHandler.clearProjectAsCampaign(connectorUserId, projectGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Classify a project to say that it is a task within a larger project.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsTask(String                 projectGUID,
+                            TaskProperties         properties,
+                            MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        projectHandler.setProjectAsTask(connectorUserId, projectGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Remove the task designation from a project.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsTask(String                projectGUID,
+                              MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        projectHandler.clearProjectAsTask(connectorUserId, projectGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Classify a project to say that it is a personal project used to organize an individual's work.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsPersonalProject(String                     projectGUID,
+                                       PersonalProjectProperties  properties,
+                                       MetadataSourceOptions      metadataSourceOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        projectHandler.setProjectAsPersonalProject(connectorUserId, projectGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Remove the personal project designation from a project.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsPersonalProject(String                projectGUID,
+                                         MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        projectHandler.clearProjectAsPersonalProject(connectorUserId, projectGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Classify a project to say that it is a study project that is investigating a topic.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsStudyProject(String                  projectGUID,
+                                    StudyProjectProperties  properties,
+                                    MetadataSourceOptions   metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        projectHandler.setProjectAsStudyProject(connectorUserId, projectGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Remove the study project designation from a project.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsStudyProject(String                projectGUID,
+                                      MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        projectHandler.clearProjectAsStudyProject(connectorUserId, projectGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Classify a project to say that it is an experiment that is testing a hypothesis.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsExperiment(String                 projectGUID,
+                                  ExperimentProperties   properties,
+                                  MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        projectHandler.setProjectAsExperiment(connectorUserId, projectGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Remove the experiment designation from a project.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsExperiment(String                projectGUID,
+                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        projectHandler.clearProjectAsExperiment(connectorUserId, projectGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Classify a project to say that it is managing the development of a glossary.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsGlossaryProject(String                     projectGUID,
+                                       GlossaryProjectProperties  properties,
+                                       MetadataSourceOptions      metadataSourceOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        projectHandler.setProjectAsGlossaryProject(connectorUserId, projectGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Remove the glossary project designation from a project.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsGlossaryProject(String                projectGUID,
+                                         MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        projectHandler.clearProjectAsGlossaryProject(connectorUserId, projectGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Classify a project to say that it is part of the governance program.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsGovernanceProject(String                       projectGUID,
+                                         GovernanceProjectProperties  properties,
+                                         MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        projectHandler.setProjectAsGovernanceProject(connectorUserId, projectGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Remove the governance project designation from a project.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsGovernanceProject(String                projectGUID,
+                                           MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
+    {
+        projectHandler.clearProjectAsGovernanceProject(connectorUserId, projectGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Classify a project to describe the kind of project that it is.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectKind(String                 projectGUID,
+                          ProjectKindProperties  properties,
+                          MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        projectHandler.setProjectKind(connectorUserId, projectGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
+    }
+
+
+    /**
+     * Remove the project kind classification from a project.
+     *
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectKind(String                projectGUID,
+                            MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        projectHandler.clearProjectKind(connectorUserId, projectGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
+        }
     }
 }

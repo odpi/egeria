@@ -2549,3 +2549,514 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+###
+# =====================================================================================================================
+# Asset log classifications
+# https://egeria-project.org/concepts/asset
+
+
+###
+# @name setAssetAsAuditLog
+# Classify an asset to say that it holds an audit log.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/audit-log
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "AuditLogProperties",
+    "notes": "add notes here",
+    "process": "add the process that maintains the log here",
+    "source": "add source here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearAssetAsAuditLog
+# Remove the audit log designation from an asset.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/audit-log/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setAssetAsLineageLog
+# Classify an asset to say that it holds a lineage log.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/lineage-log
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "LineageLogProperties",
+    "notes": "add notes here",
+    "process": "add the process that maintains the log here",
+    "source": "add source here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearAssetAsLineageLog
+# Remove the lineage log designation from an asset.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/lineage-log/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setAssetAsMeteringLog
+# Classify an asset to say that it holds a metering log.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/metering-log
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "MeteringLogProperties",
+    "notes": "add notes here",
+    "process": "add the process that maintains the log here",
+    "source": "add source here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearAssetAsMeteringLog
+# Remove the metering log designation from an asset.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/metering-log/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setAssetAsSecurityLog
+# Classify an asset to say that it holds a security log.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/security-log
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "SecurityLogProperties",
+    "notes": "add notes here",
+    "process": "add the process that maintains the log here",
+    "source": "add source here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearAssetAsSecurityLog
+# Remove the security log designation from an asset.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/security-log/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setAssetAsExceptionBacklog
+# Classify an asset to say that it holds a backlog of exceptions that need to be resolved.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/exception-backlog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "ExceptionBacklogProperties",
+    "notes": "add notes here",
+    "process": "add the process that maintains the log here",
+    "source": "add source here",
+    "steward": "add steward here",
+    "stewardTypeName": "add steward type name here",
+    "stewardPropertyName": "add steward property name here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearAssetAsExceptionBacklog
+# Remove the exception backlog designation from an asset.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/exception-backlog/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setAssetAsLogAnalysis
+# Classify an asset to say that it holds the results of analysing a log.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/log-analysis
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "LogAnalysisProperties",
+    "notes": "add notes here",
+    "process": "add the process that maintains the log here",
+    "source": "add source here",
+    "dataCollectionStartTime": "{{$isoTimestamp}}",
+    "dataCollectionEndTime": "{{$isoTimestamp}}",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearAssetAsLogAnalysis
+# Remove the log analysis designation from an asset.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/{{assetGUID}}/log-analysis/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Deployed API classifications
+# https://egeria-project.org/concepts/deployed-api
+
+@deployedAPIGUID=add guid here
+
+###
+# @name setAPIAsListenerInterface
+# Classify a deployed API to say that it provides a listener interface.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/deployed-apis/{{deployedAPIGUID}}/listener-interface
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "ListenerInterfaceProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearAPIAsListenerInterface
+# Remove the listener interface designation from a deployed API.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/deployed-apis/{{deployedAPIGUID}}/listener-interface/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setAPIAsPublisherInterface
+# Classify a deployed API to say that it provides a publisher interface.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/deployed-apis/{{deployedAPIGUID}}/publisher-interface
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "PublisherInterfaceProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearAPIAsPublisherInterface
+# Remove the publisher interface designation from a deployed API.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/deployed-apis/{{deployedAPIGUID}}/publisher-interface/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setAPIAsRequestResponseInterface
+# Classify a deployed API to say that it provides a request-response interface.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/deployed-apis/{{deployedAPIGUID}}/request-response-interface
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "RequestResponseInterfaceProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearAPIAsRequestResponseInterface
+# Remove the request-response interface designation from a deployed API.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/deployed-apis/{{deployedAPIGUID}}/request-response-interface/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Data asset encoding classification
+# https://egeria-project.org/concepts/data-asset
+
+@dataAssetGUID=add guid here
+
+###
+# @name setDataAssetEncoding
+# Classify a data asset to describe how its data is encoded.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-assets/{{dataAssetGUID}}/encoding
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "DataAssetEncodingProperties",
+    "encodingType": "add encoding type here",
+    "encodingLanguage": "add encoding language here",
+    "encodingDescription": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearDataAssetEncoding
+# Remove the encoding description from a data asset.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-assets/{{dataAssetGUID}}/encoding/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Port delegation relationship
+# https://egeria-project.org/concepts/port
+
+@delegatingFromPortGUID=add guid here
+@delegatingToPortGUID=add guid here
+
+###
+# @name linkPortDelegation
+# Attach a port to the port that it delegates to.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/ports/{{delegatingFromPortGUID}}/port-delegations/{{delegatingToPortGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "PortDelegationProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachPortDelegation
+# Detach a port from the port that it delegated to.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/ports/{{delegatingFromPortGUID}}/port-delegations/{{delegatingToPortGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Registered integration connector relationship
+# https://egeria-project.org/concepts/integration-connector
+
+@integrationGroupGUID=add guid here
+
+###
+# @name linkRegisteredIntegrationConnector
+# Register an integration connector with the integration group that runs it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/integration-groups/{{integrationGroupGUID}}/registered-integration-connectors/{{integrationConnectorGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "RegisteredIntegrationConnectorProperties",
+    "connectorName": "add connector name here",
+    "connectorUserId": "add user id here",
+    "refreshTimeInterval": 60,
+    "generateConnectorActivityReports": true,
+    "permittedSynchronization": "BOTH_DIRECTIONS",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachRegisteredIntegrationConnector
+# Remove an integration connector from the integration group that ran it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/integration-groups/{{integrationGroupGUID}}/registered-integration-connectors/{{integrationConnectorGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+

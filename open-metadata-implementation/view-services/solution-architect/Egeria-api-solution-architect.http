@@ -2164,3 +2164,90 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Solution port relationships
+# https://egeria-project.org/concepts/solution-component
+
+@alignsToPortGUID=add guid here
+@delegationPortGUID=add guid here
+@solutionPortGUID=add guid here
+
+###
+# @name linkSolutionComponentPort
+# Attach a solution port to the solution component that exposes it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/solution-ports/{{solutionPortGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SolutionComponentPortProperties",
+    "role": "add role here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachSolutionComponentPort
+# Detach a solution port from the solution component that exposed it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/solution-ports/{{solutionPortGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkSolutionPortDelegation
+# Attach a solution port to the solution port that it delegates to.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-ports/{{alignsToPortGUID}}/port-delegations/{{delegationPortGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SolutionPortDelegationProperties",
+    "role": "add role here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachSolutionPortDelegation
+# Detach a solution port from the solution port that it delegated to.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-ports/{{alignsToPortGUID}}/port-delegations/{{delegationPortGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+

@@ -1403,4 +1403,232 @@ public class DevopsPipelineResource
     {
         return restAPI.clearSoftwarePackageManifest(serverName, elementGUID, requestBody);
     }
+
+    /**
+     * Classify a software server platform to say that it is a cloud platform.
+     *
+     * @param serverName name of the server to route the request to
+     * @param softwareServerPlatformGUID unique identifier of the software server platform
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-server-platforms/{softwareServerPlatformGUID}/cloud-platform")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setAsCloudPlatform",
+            description="Classify a software server platform to say that it is a cloud platform.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cloud-platform"))
+
+    public VoidResponse setAsCloudPlatform(@PathVariable String serverName,
+                                           @PathVariable String softwareServerPlatformGUID,
+                                           @RequestBody (required = false)
+                                           NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setAsCloudPlatform(serverName, softwareServerPlatformGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the cloud platform designation from a software server platform.
+     *
+     * @param serverName name of the server to route the request to
+     * @param softwareServerPlatformGUID unique identifier of the software server platform
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-server-platforms/{softwareServerPlatformGUID}/cloud-platform/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearAsCloudPlatform",
+            description="Remove the cloud platform designation from a software server platform.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cloud-platform"))
+
+    public VoidResponse clearAsCloudPlatform(@PathVariable String serverName,
+                                             @PathVariable String softwareServerPlatformGUID,
+                                             @RequestBody (required = false)
+                                             DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearAsCloudPlatform(serverName, softwareServerPlatformGUID, requestBody);
+    }
+
+    /**
+     * Classify a host to say that it is a cloud provider.
+     *
+     * @param serverName name of the server to route the request to
+     * @param hostGUID unique identifier of the host
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/hosts/{hostGUID}/cloud-provider")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setHostAsCloudProvider",
+            description="Classify a host to say that it is a cloud provider.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cloud-platform"))
+
+    public VoidResponse setHostAsCloudProvider(@PathVariable String serverName,
+                                               @PathVariable String hostGUID,
+                                               @RequestBody (required = false)
+                                               NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setHostAsCloudProvider(serverName, hostGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the cloud provider designation from a host.
+     *
+     * @param serverName name of the server to route the request to
+     * @param hostGUID unique identifier of the host
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/hosts/{hostGUID}/cloud-provider/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearHostAsCloudProvider",
+            description="Remove the cloud provider designation from a host.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cloud-platform"))
+
+    public VoidResponse clearHostAsCloudProvider(@PathVariable String serverName,
+                                                 @PathVariable String hostGUID,
+                                                 @RequestBody (required = false)
+                                                 DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearHostAsCloudProvider(serverName, hostGUID, requestBody);
+    }
+
+    /**
+     * Classify a software server to say that it is hosting a cloud tenant.
+     *
+     * @param serverName name of the server to route the request to
+     * @param softwareServerGUID unique identifier of the software server
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-servers/{softwareServerGUID}/cloud-tenant")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setServerAsCloudTenant",
+            description="Classify a software server to say that it is hosting a cloud tenant.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cloud-platform"))
+
+    public VoidResponse setServerAsCloudTenant(@PathVariable String serverName,
+                                               @PathVariable String softwareServerGUID,
+                                               @RequestBody (required = false)
+                                               NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setServerAsCloudTenant(serverName, softwareServerGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the cloud tenant designation from a software server.
+     *
+     * @param serverName name of the server to route the request to
+     * @param softwareServerGUID unique identifier of the software server
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-servers/{softwareServerGUID}/cloud-tenant/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearServerAsCloudTenant",
+            description="Remove the cloud tenant designation from a software server.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cloud-platform"))
+
+    public VoidResponse clearServerAsCloudTenant(@PathVariable String serverName,
+                                                 @PathVariable String softwareServerGUID,
+                                                 @RequestBody (required = false)
+                                                 DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearServerAsCloudTenant(serverName, softwareServerGUID, requestBody);
+    }
+
+    /**
+     * Classify a software capability to say that it is a cloud service.
+     *
+     * @param serverName name of the server to route the request to
+     * @param softwareCapabilityGUID unique identifier of the software capability
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-capabilities/{softwareCapabilityGUID}/cloud-service")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setCapabilityAsCloudService",
+            description="Classify a software capability to say that it is a cloud service.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cloud-platform"))
+
+    public VoidResponse setCapabilityAsCloudService(@PathVariable String serverName,
+                                                    @PathVariable String softwareCapabilityGUID,
+                                                    @RequestBody (required = false)
+                                                    NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setCapabilityAsCloudService(serverName, softwareCapabilityGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the cloud service designation from a software capability.
+     *
+     * @param serverName name of the server to route the request to
+     * @param softwareCapabilityGUID unique identifier of the software capability
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/software-capabilities/{softwareCapabilityGUID}/cloud-service/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearCapabilityAsCloudService",
+            description="Remove the cloud service designation from a software capability.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cloud-platform"))
+
+    public VoidResponse clearCapabilityAsCloudService(@PathVariable String serverName,
+                                                      @PathVariable String softwareCapabilityGUID,
+                                                      @RequestBody (required = false)
+                                                      DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearCapabilityAsCloudService(serverName, softwareCapabilityGUID, requestBody);
+    }
 }

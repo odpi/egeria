@@ -24,6 +24,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
 
 /**
  * LocationHandler provides methods to define locations and their relationships.
@@ -471,5 +474,194 @@ public class LocationHandler extends OpenMetadataHandlerBase
         final String methodName  = "findLocations";
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Location classifications
+     */
+
+
+    /**
+     * Classify a location to say that it is a fixed physical location.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param locationGUID unique identifier of the location
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setLocationAsFixedLocation(String                   userId,
+                                           String                   locationGUID,
+                                           FixedLocationProperties  properties,
+                                           MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName        = "setLocationAsFixedLocation";
+        final String guidParameterName = "locationGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(locationGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          locationGUID,
+                                                          OpenMetadataType.FIXED_LOCATION_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the fixed location designation from a location.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param locationGUID unique identifier of the location
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearLocationAsFixedLocation(String                userId,
+                                             String                locationGUID,
+                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName        = "clearLocationAsFixedLocation";
+        final String guidParameterName = "locationGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(locationGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            locationGUID,
+                                                            OpenMetadataType.FIXED_LOCATION_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a location to say that it is a cyber location reached over a network.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param locationGUID unique identifier of the location
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setLocationAsCyberLocation(String                   userId,
+                                           String                   locationGUID,
+                                           CyberLocationProperties  properties,
+                                           MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName        = "setLocationAsCyberLocation";
+        final String guidParameterName = "locationGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(locationGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          locationGUID,
+                                                          OpenMetadataType.CYBER_LOCATION_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the cyber location designation from a location.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param locationGUID unique identifier of the location
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearLocationAsCyberLocation(String                userId,
+                                             String                locationGUID,
+                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName        = "clearLocationAsCyberLocation";
+        final String guidParameterName = "locationGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(locationGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            locationGUID,
+                                                            OpenMetadataType.CYBER_LOCATION_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a location to say that access to it is restricted.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param locationGUID unique identifier of the location
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setLocationAsSecureLocation(String                    userId,
+                                            String                    locationGUID,
+                                            SecureLocationProperties  properties,
+                                            MetadataSourceOptions     metadataSourceOptions) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName        = "setLocationAsSecureLocation";
+        final String guidParameterName = "locationGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(locationGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          locationGUID,
+                                                          OpenMetadataType.SECURE_LOCATION_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the secure location designation from a location.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param locationGUID unique identifier of the location
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearLocationAsSecureLocation(String                userId,
+                                              String                locationGUID,
+                                              MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName        = "clearLocationAsSecureLocation";
+        final String guidParameterName = "locationGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(locationGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            locationGUID,
+                                                            OpenMetadataType.SECURE_LOCATION_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
     }
 }

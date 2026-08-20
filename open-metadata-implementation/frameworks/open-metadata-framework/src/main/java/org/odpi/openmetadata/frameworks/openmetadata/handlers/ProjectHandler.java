@@ -26,6 +26,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.CampaignProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.TaskProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.PersonalProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StudyProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ExperimentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.GlossaryProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.GovernanceProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectKindProperties;
 
 /**
  * ProjectManagerClient supports the APIs to maintain projects and their related objects.
@@ -1052,6 +1060,500 @@ public class ProjectHandler extends OpenMetadataHandlerBase
         openMetadataClient.declassifyMetadataElementInStore(userId,
                                                             elementGUID,
                                                             OpenMetadataType.PROJECT_CLASSIFICATION_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Project classifications
+     */
+
+
+    /**
+     * Classify a project to say that it is a campaign - a long running activity made up of many projects.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsCampaign(String                 userId,
+                                     String                 projectGUID,
+                                     CampaignProperties     properties,
+                                     MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName        = "setProjectAsCampaign";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          projectGUID,
+                                                          OpenMetadataType.CAMPAIGN_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the campaign designation from a project.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsCampaign(String                userId,
+                                       String                projectGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName        = "clearProjectAsCampaign";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            projectGUID,
+                                                            OpenMetadataType.CAMPAIGN_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a project to say that it is a task within a larger project.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsTask(String                 userId,
+                                 String                 projectGUID,
+                                 TaskProperties         properties,
+                                 MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName        = "setProjectAsTask";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          projectGUID,
+                                                          OpenMetadataType.TASK_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the task designation from a project.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsTask(String                userId,
+                                   String                projectGUID,
+                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String methodName        = "clearProjectAsTask";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            projectGUID,
+                                                            OpenMetadataType.TASK_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a project to say that it is a personal project used to organize an individual's work.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsPersonalProject(String                     userId,
+                                            String                     projectGUID,
+                                            PersonalProjectProperties  properties,
+                                            MetadataSourceOptions      metadataSourceOptions) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        final String methodName        = "setProjectAsPersonalProject";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          projectGUID,
+                                                          OpenMetadataType.PERSONAL_PROJECT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the personal project designation from a project.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsPersonalProject(String                userId,
+                                              String                projectGUID,
+                                              MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName        = "clearProjectAsPersonalProject";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            projectGUID,
+                                                            OpenMetadataType.PERSONAL_PROJECT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a project to say that it is a study project that is investigating a topic.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsStudyProject(String                  userId,
+                                         String                  projectGUID,
+                                         StudyProjectProperties  properties,
+                                         MetadataSourceOptions   metadataSourceOptions) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        final String methodName        = "setProjectAsStudyProject";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          projectGUID,
+                                                          OpenMetadataType.STUDY_PROJECT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the study project designation from a project.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsStudyProject(String                userId,
+                                           String                projectGUID,
+                                           MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
+    {
+        final String methodName        = "clearProjectAsStudyProject";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            projectGUID,
+                                                            OpenMetadataType.STUDY_PROJECT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a project to say that it is an experiment that is testing a hypothesis.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsExperiment(String                 userId,
+                                       String                 projectGUID,
+                                       ExperimentProperties   properties,
+                                       MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName        = "setProjectAsExperiment";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          projectGUID,
+                                                          OpenMetadataType.EXPERIMENT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the experiment designation from a project.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsExperiment(String                userId,
+                                         String                projectGUID,
+                                         MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        final String methodName        = "clearProjectAsExperiment";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            projectGUID,
+                                                            OpenMetadataType.EXPERIMENT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a project to say that it is managing the development of a glossary.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsGlossaryProject(String                     userId,
+                                            String                     projectGUID,
+                                            GlossaryProjectProperties  properties,
+                                            MetadataSourceOptions      metadataSourceOptions) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        final String methodName        = "setProjectAsGlossaryProject";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          projectGUID,
+                                                          OpenMetadataType.GLOSSARY_PROJECT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the glossary project designation from a project.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsGlossaryProject(String                userId,
+                                              String                projectGUID,
+                                              MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName        = "clearProjectAsGlossaryProject";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            projectGUID,
+                                                            OpenMetadataType.GLOSSARY_PROJECT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a project to say that it is part of the governance program.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsGovernanceProject(String                       userId,
+                                              String                       projectGUID,
+                                              GovernanceProjectProperties  properties,
+                                              MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        final String methodName        = "setProjectAsGovernanceProject";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          projectGUID,
+                                                          OpenMetadataType.GOVERNANCE_PROJECT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the governance project designation from a project.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsGovernanceProject(String                userId,
+                                                String                projectGUID,
+                                                MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
+    {
+        final String methodName        = "clearProjectAsGovernanceProject";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            projectGUID,
+                                                            OpenMetadataType.GOVERNANCE_PROJECT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a project to describe the kind of project that it is.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectKind(String                 userId,
+                               String                 projectGUID,
+                               ProjectKindProperties  properties,
+                               MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName        = "setProjectKind";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          projectGUID,
+                                                          OpenMetadataType.PROJECT_KIND_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the project kind classification from a project.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectKind(String                userId,
+                                 String                projectGUID,
+                                 MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        final String methodName        = "clearProjectKind";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            projectGUID,
+                                                            OpenMetadataType.PROJECT_KIND_CLASSIFICATION.typeName,
                                                             metadataSourceOptions);
     }
 }

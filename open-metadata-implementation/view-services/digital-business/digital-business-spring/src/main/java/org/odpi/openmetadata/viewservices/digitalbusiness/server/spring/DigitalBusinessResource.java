@@ -227,4 +227,61 @@ public class DigitalBusinessResource
     {
         return restAPI.clearBusinessSignificance(serverName, elementGUID, requestBody);
     }
+
+    /**
+     * Classify an agreement to say that it governs the sharing of data.
+     *
+     * @param serverName name of the server to route the request to
+     * @param agreementGUID unique identifier of the agreement
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/agreements/{agreementGUID}/data-sharing-agreement")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setAgreementAsDataSharingAgreement",
+            description="Classify an agreement to say that it governs the sharing of data.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/agreement"))
+
+    public VoidResponse setAgreementAsDataSharingAgreement(@PathVariable String serverName,
+                                                           @PathVariable String agreementGUID,
+                                                           @RequestBody (required = false)
+                                                           NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setAgreementAsDataSharingAgreement(serverName, agreementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the data sharing agreement designation from an agreement.
+     *
+     * @param serverName name of the server to route the request to
+     * @param agreementGUID unique identifier of the agreement
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/agreements/{agreementGUID}/data-sharing-agreement/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearAgreementAsDataSharingAgreement",
+            description="Remove the data sharing agreement designation from an agreement.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/agreement"))
+
+    public VoidResponse clearAgreementAsDataSharingAgreement(@PathVariable String serverName,
+                                                             @PathVariable String agreementGUID,
+                                                             @RequestBody (required = false)
+                                                             DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearAgreementAsDataSharingAgreement(serverName, agreementGUID, requestBody);
+    }
 }

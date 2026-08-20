@@ -407,3 +407,95 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+###
+# =====================================================================================================================
+# Secrets collection profile classification
+# https://egeria-project.org/concepts/secrets-collection
+
+
+###
+# @name setUserAccountProfile
+# Classify a secrets collection with a profile of the user accounts that it holds.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/secrets-collections/{{secretsCollectionGUID}}/user-account-profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "UserAccountProfileProperties",
+    "userAccountCount": 0,
+    "employeeAccountCount": 0,
+    "contractorAccountCount": 0,
+    "externalAccountCount": 0,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearUserAccountProfile
+# Remove the user account profile from a secrets collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/secrets-collections/{{secretsCollectionGUID}}/user-account-profile/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Governance zone profile classification
+# https://egeria-project.org/concepts/governance-zone
+
+
+###
+# @name setZoneMembershipProfile
+# Classify a governance zone with a profile of its membership.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/governance-zones/{{governanceZoneGUID}}/zone-membership-profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "ZoneMembershipProfileProperties",
+    "securityGroups": ["add security group here"],
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearZoneMembershipProfile
+# Remove the zone membership profile from a governance zone.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/governance-zones/{{governanceZoneGUID}}/zone-membership-profile/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+

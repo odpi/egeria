@@ -27,6 +27,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastru
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.StoredOnProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudPlatformProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudProviderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudTenantProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudServiceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SoftwareCapabilityHandler;
 
 
 
@@ -2551,6 +2556,446 @@ public class DevopsPipelineRESTServices extends TokenController
             OperatingPlatformHandler handler = instanceHandler.getOperatingPlatformHandler(userId, serverName, methodName);
 
             handler.clearSoftwarePackageManifest(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cloud platform classification
+     */
+
+    /**
+     * Classify a software server platform to say that it is a cloud platform.
+     *
+     * @param serverName name of the server to route the request to
+     * @param softwareServerPlatformGUID unique identifier of the software server platform
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setAsCloudPlatform(String                       serverName,
+                                           String                       softwareServerPlatformGUID,
+                                           NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setAsCloudPlatform";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setAsCloudPlatform(userId, softwareServerPlatformGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof CloudPlatformProperties properties)
+            {
+                handler.setAsCloudPlatform(userId, softwareServerPlatformGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setAsCloudPlatform(userId, softwareServerPlatformGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(CloudPlatformProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the cloud platform designation from a software server platform.
+     *
+     * @param serverName name of the server to route the request to
+     * @param softwareServerPlatformGUID unique identifier of the software server platform
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAsCloudPlatform(String                          serverName,
+                                             String                          softwareServerPlatformGUID,
+                                             DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearAsCloudPlatform";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.clearAsCloudPlatform(userId, softwareServerPlatformGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cloud provider classification
+     */
+
+    /**
+     * Classify a host to say that it is a cloud provider.
+     *
+     * @param serverName name of the server to route the request to
+     * @param hostGUID unique identifier of the host
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setHostAsCloudProvider(String                       serverName,
+                                               String                       hostGUID,
+                                               NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setHostAsCloudProvider";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setHostAsCloudProvider(userId, hostGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof CloudProviderProperties properties)
+            {
+                handler.setHostAsCloudProvider(userId, hostGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setHostAsCloudProvider(userId, hostGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(CloudProviderProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the cloud provider designation from a host.
+     *
+     * @param serverName name of the server to route the request to
+     * @param hostGUID unique identifier of the host
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearHostAsCloudProvider(String                          serverName,
+                                                 String                          hostGUID,
+                                                 DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearHostAsCloudProvider";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.clearHostAsCloudProvider(userId, hostGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cloud tenant classification
+     */
+
+    /**
+     * Classify a software server to say that it is hosting a cloud tenant.
+     *
+     * @param serverName name of the server to route the request to
+     * @param softwareServerGUID unique identifier of the software server
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setServerAsCloudTenant(String                       serverName,
+                                               String                       softwareServerGUID,
+                                               NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setServerAsCloudTenant";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setServerAsCloudTenant(userId, softwareServerGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof CloudTenantProperties properties)
+            {
+                handler.setServerAsCloudTenant(userId, softwareServerGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setServerAsCloudTenant(userId, softwareServerGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(CloudTenantProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the cloud tenant designation from a software server.
+     *
+     * @param serverName name of the server to route the request to
+     * @param softwareServerGUID unique identifier of the software server
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearServerAsCloudTenant(String                          serverName,
+                                                 String                          softwareServerGUID,
+                                                 DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearServerAsCloudTenant";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.clearServerAsCloudTenant(userId, softwareServerGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cloud service classification
+     */
+
+    /**
+     * Classify a software capability to say that it is a cloud service.
+     *
+     * @param serverName name of the server to route the request to
+     * @param softwareCapabilityGUID unique identifier of the software capability
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setCapabilityAsCloudService(String                       serverName,
+                                                    String                       softwareCapabilityGUID,
+                                                    NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setCapabilityAsCloudService";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setCapabilityAsCloudService(userId, softwareCapabilityGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof CloudServiceProperties properties)
+            {
+                handler.setCapabilityAsCloudService(userId, softwareCapabilityGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setCapabilityAsCloudService(userId, softwareCapabilityGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(CloudServiceProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the cloud service designation from a software capability.
+     *
+     * @param serverName name of the server to route the request to
+     * @param softwareCapabilityGUID unique identifier of the software capability
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearCapabilityAsCloudService(String                          serverName,
+                                                      String                          softwareCapabilityGUID,
+                                                      DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearCapabilityAsCloudService";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
+
+            handler.clearCapabilityAsCloudService(userId, softwareCapabilityGUID, requestBody);
         }
         catch (Throwable error)
         {

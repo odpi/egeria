@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.NetworkHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.OperatingPlatformHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StorageVolumeHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
@@ -26,6 +27,7 @@ public class DevopsPipelineInstance extends OMVSServiceInstance
     private final NetworkHandler       networkHandler;
     private final AssetHandler         assetHandler;
     private final OperatingPlatformHandler operatingPlatformHandler;
+    private final SoftwareCapabilityHandler softwareCapabilityHandler;
 
 
 
@@ -88,6 +90,11 @@ public class DevopsPipelineInstance extends OMVSServiceInstance
                                                                 auditLog,
                                                                 myDescription.getViewServiceFullName(),
                                                                 openMetadataClient);
+
+        softwareCapabilityHandler = new SoftwareCapabilityHandler(serverName,
+                                                                  auditLog,
+                                                                  myDescription.getViewServiceFullName(),
+                                                                  openMetadataClient);
     }
 
 
@@ -132,5 +139,16 @@ public class DevopsPipelineInstance extends OMVSServiceInstance
     public OperatingPlatformHandler getOperatingPlatformHandler()
     {
         return operatingPlatformHandler;
+    }
+
+
+    /**
+     * Return the open metadata handler.
+     *
+     * @return client
+     */
+    public SoftwareCapabilityHandler getSoftwareCapabilityHandler()
+    {
+        return softwareCapabilityHandler;
     }
 }

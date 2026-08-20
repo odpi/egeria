@@ -1340,4 +1340,65 @@ public class CollectionManagerResource
     {
         return restAPI.detachAgreementItem(serverName, urlMarker, agreementGUID, agreementItemGUID, requestBody);
     }
+
+    /**
+     * Classify a collection to describe the kind of collection that it is.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the collection
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/collections/{collectionGUID}/collection-kind")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setCollectionKind",
+            description="Classify a collection to describe the kind of collection that it is.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse setCollectionKind(@PathVariable String serverName,
+                                          @PathVariable String urlMarker,
+                                          @PathVariable String collectionGUID,
+                                          @RequestBody (required = false)
+                                          NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setCollectionKind(serverName, urlMarker, collectionGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the collection kind classification from a collection.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the collection
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/collections/{collectionGUID}/collection-kind/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearCollectionKind",
+            description="Remove the collection kind classification from a collection.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse clearCollectionKind(@PathVariable String serverName,
+                                            @PathVariable String urlMarker,
+                                            @PathVariable String collectionGUID,
+                                            @RequestBody (required = false)
+                                            DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearCollectionKind(serverName, urlMarker, collectionGUID, requestBody);
+    }
 }

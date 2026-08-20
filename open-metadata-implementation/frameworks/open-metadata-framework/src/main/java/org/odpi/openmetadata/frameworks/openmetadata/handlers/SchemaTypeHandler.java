@@ -23,6 +23,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIHeaderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIRequestProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIResponseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeOptionProperties;
 
 /**
  * SchemaTypeHandler provides methods to define schema types
@@ -509,6 +514,367 @@ public class SchemaTypeHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.RELATIONAL_DB_SCHEMA.typeName,
                                                         databaseSchemaTypeListGUID,
                                                         relationalDBSchemaTypeGUID,
+                                                        deleteOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * API and schema option relationships
+     */
+
+
+    /**
+     * Attach an API operation to the API schema type that contains it.
+     *
+     * @param userId                 userId of the user making the request
+     * @param apiSchemaTypeGUID unique identifier of the API schema type
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkAPIOperations(String                   userId,
+                                  String                   apiSchemaTypeGUID,
+                                  String                   apiOperationGUID,
+                                  MakeAnchorOptions        makeAnchorOptions,
+                                  APIOperationsProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName            = "linkAPIOperations";
+        final String end1GUIDParameterName = "apiSchemaTypeGUID";
+        final String end2GUIDParameterName = "apiOperationGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(apiSchemaTypeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(apiOperationGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName,
+                                                        apiSchemaTypeGUID,
+                                                        apiOperationGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach an API operation from the API schema type that contained it.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param apiSchemaTypeGUID unique identifier of the API schema type
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAPIOperations(String        userId,
+                                    String        apiSchemaTypeGUID,
+                                    String        apiOperationGUID,
+                                    DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        final String methodName            = "detachAPIOperations";
+        final String end1GUIDParameterName = "apiSchemaTypeGUID";
+        final String end2GUIDParameterName = "apiOperationGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(apiSchemaTypeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(apiOperationGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName,
+                                                        apiSchemaTypeGUID,
+                                                        apiOperationGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a schema type to the API operation that uses it as its header.
+     *
+     * @param userId                 userId of the user making the request
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the header
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkAPIHeader(String               userId,
+                              String               apiOperationGUID,
+                              String               schemaTypeGUID,
+                              MakeAnchorOptions    makeAnchorOptions,
+                              APIHeaderProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        final String methodName            = "linkAPIHeader";
+        final String end1GUIDParameterName = "apiOperationGUID";
+        final String end2GUIDParameterName = "schemaTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(apiOperationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(schemaTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.API_HEADER_RELATIONSHIP.typeName,
+                                                        apiOperationGUID,
+                                                        schemaTypeGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a schema type from the API operation that used it as its header.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the header
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAPIHeader(String        userId,
+                                String        apiOperationGUID,
+                                String        schemaTypeGUID,
+                                DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        final String methodName            = "detachAPIHeader";
+        final String end1GUIDParameterName = "apiOperationGUID";
+        final String end2GUIDParameterName = "schemaTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(apiOperationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(schemaTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.API_HEADER_RELATIONSHIP.typeName,
+                                                        apiOperationGUID,
+                                                        schemaTypeGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a schema type to the API operation that uses it as its request.
+     *
+     * @param userId                 userId of the user making the request
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the request
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkAPIRequest(String                userId,
+                               String                apiOperationGUID,
+                               String                schemaTypeGUID,
+                               MakeAnchorOptions     makeAnchorOptions,
+                               APIRequestProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName            = "linkAPIRequest";
+        final String end1GUIDParameterName = "apiOperationGUID";
+        final String end2GUIDParameterName = "schemaTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(apiOperationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(schemaTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName,
+                                                        apiOperationGUID,
+                                                        schemaTypeGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a schema type from the API operation that used it as its request.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the request
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAPIRequest(String        userId,
+                                 String        apiOperationGUID,
+                                 String        schemaTypeGUID,
+                                 DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        final String methodName            = "detachAPIRequest";
+        final String end1GUIDParameterName = "apiOperationGUID";
+        final String end2GUIDParameterName = "schemaTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(apiOperationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(schemaTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName,
+                                                        apiOperationGUID,
+                                                        schemaTypeGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a schema type to the API operation that uses it as its response.
+     *
+     * @param userId                 userId of the user making the request
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the response
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkAPIResponse(String                 userId,
+                                String                 apiOperationGUID,
+                                String                 schemaTypeGUID,
+                                MakeAnchorOptions      makeAnchorOptions,
+                                APIResponseProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName            = "linkAPIResponse";
+        final String end1GUIDParameterName = "apiOperationGUID";
+        final String end2GUIDParameterName = "schemaTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(apiOperationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(schemaTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName,
+                                                        apiOperationGUID,
+                                                        schemaTypeGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a schema type from the API operation that used it as its response.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the response
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAPIResponse(String        userId,
+                                  String        apiOperationGUID,
+                                  String        schemaTypeGUID,
+                                  DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        final String methodName            = "detachAPIResponse";
+        final String end1GUIDParameterName = "apiOperationGUID";
+        final String end2GUIDParameterName = "schemaTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(apiOperationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(schemaTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName,
+                                                        apiOperationGUID,
+                                                        schemaTypeGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a schema type to a schema element that may optionally use it.
+     *
+     * @param userId                 userId of the user making the request
+     * @param schemaElementGUID unique identifier of the schema element
+     * @param schemaTypeGUID unique identifier of the schema type that is one of its options
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSchemaTypeOption(String                      userId,
+                                     String                      schemaElementGUID,
+                                     String                      schemaTypeGUID,
+                                     MakeAnchorOptions           makeAnchorOptions,
+                                     SchemaTypeOptionProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        final String methodName            = "linkSchemaTypeOption";
+        final String end1GUIDParameterName = "schemaElementGUID";
+        final String end2GUIDParameterName = "schemaTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(schemaElementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(schemaTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName,
+                                                        schemaElementGUID,
+                                                        schemaTypeGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a schema type from a schema element that may optionally have used it.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param schemaElementGUID unique identifier of the schema element
+     * @param schemaTypeGUID unique identifier of the schema type that is one of its options
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSchemaTypeOption(String        userId,
+                                       String        schemaElementGUID,
+                                       String        schemaTypeGUID,
+                                       DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        final String methodName            = "detachSchemaTypeOption";
+        final String end1GUIDParameterName = "schemaElementGUID";
+        final String end2GUIDParameterName = "schemaTypeGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(schemaElementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(schemaTypeGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName,
+                                                        schemaElementGUID,
+                                                        schemaTypeGUID,
                                                         deleteOptions);
     }
 }

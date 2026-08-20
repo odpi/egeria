@@ -496,4 +496,127 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Location classifications
+# https://egeria-project.org/concepts/location
+
+
+###
+# @name setLocationAsFixedLocation
+# Classify a location to say that it is a fixed physical location.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationGUID}}/fixed-location
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "FixedLocationProperties",
+    "postalAddress": "add postal address here",
+    "mapProjection": "add map projection here",
+    "coordinates": "add coordinates here",
+    "timezone": "add timezone here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearLocationAsFixedLocation
+# Remove the fixed location designation from a location.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationGUID}}/fixed-location/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setLocationAsCyberLocation
+# Classify a location to say that it is a cyber location reached over a network.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationGUID}}/cyber-location
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "CyberLocationProperties",
+    "networkAddress": "add network address here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearLocationAsCyberLocation
+# Remove the cyber location designation from a location.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationGUID}}/cyber-location/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setLocationAsSecureLocation
+# Classify a location to say that access to it is restricted.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationGUID}}/secure-location
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "SecureLocationProperties",
+    "description": "add description here",
+    "level": "add security level here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearLocationAsSecureLocation
+# Remove the secure location designation from a location.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/location-arena/locations/{{locationGUID}}/secure-location/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
 

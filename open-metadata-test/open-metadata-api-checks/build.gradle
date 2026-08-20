@@ -1,0 +1,33 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module holds static checks over the view service REST APIs and the open metadata type system.
+// They read the project's own source files rather than running anything, so they are fast and need no
+// platform, no database and no network.  They exist to catch classes of mistake that compile cleanly:
+//
+//  - RESTAPIPathUniquenessTest      two Spring mappings claiming the same verb and path.  Spring refuses
+//                                   to start on an ambiguous mapping, so without this check the failure
+//                                   only appears when a platform boots.
+//  - RESTAPINullRequestBodyTest     a REST method dereferencing requestBody without testing it for null,
+//                                   which throws NullPointerException instead of a useful error.
+//  - OpenMetadataTypeAPICoverageTest which relationship and classification types have no handler,
+//                                   connector context client or REST API support.
+//
+// It is run automatically as part of the normal build.
+
+dependencies {
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+description = 'Open Metadata API Checks'
+
+test {
+    useJUnitPlatform()
+    testLogging.showStandardStreams = true
+}

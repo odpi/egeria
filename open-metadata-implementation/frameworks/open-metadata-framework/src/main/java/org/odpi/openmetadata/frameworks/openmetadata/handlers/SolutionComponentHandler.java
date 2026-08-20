@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentPortProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionPortDelegationProperties;
 
 /**
  * SolutionComponentHandler provides methods to define solution components and their supporting objects.
@@ -617,5 +619,153 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
                                               methodName,
                                               error);
         }
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Solution port relationships
+     */
+
+
+    /**
+     * Attach a solution port to the solution component that exposes it.
+     *
+     * @param userId                 userId of the user making the request
+     * @param solutionComponentGUID unique identifier of the solution component
+     * @param solutionPortGUID unique identifier of the solution port
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSolutionComponentPort(String                           userId,
+                                          String                           solutionComponentGUID,
+                                          String                           solutionPortGUID,
+                                          MakeAnchorOptions                makeAnchorOptions,
+                                          SolutionComponentPortProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
+    {
+        final String methodName            = "linkSolutionComponentPort";
+        final String end1GUIDParameterName = "solutionComponentGUID";
+        final String end2GUIDParameterName = "solutionPortGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(solutionComponentGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(solutionPortGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName,
+                                                        solutionComponentGUID,
+                                                        solutionPortGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a solution port from the solution component that exposed it.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param solutionComponentGUID unique identifier of the solution component
+     * @param solutionPortGUID unique identifier of the solution port
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSolutionComponentPort(String        userId,
+                                            String        solutionComponentGUID,
+                                            String        solutionPortGUID,
+                                            DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName            = "detachSolutionComponentPort";
+        final String end1GUIDParameterName = "solutionComponentGUID";
+        final String end2GUIDParameterName = "solutionPortGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(solutionComponentGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(solutionPortGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName,
+                                                        solutionComponentGUID,
+                                                        solutionPortGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a solution port to the solution port that it delegates to.
+     *
+     * @param userId                 userId of the user making the request
+     * @param alignsToPortGUID unique identifier of the solution port that is aligned to
+     * @param delegationPortGUID unique identifier of the solution port that delegates
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSolutionPortDelegation(String                            userId,
+                                           String                            alignsToPortGUID,
+                                           String                            delegationPortGUID,
+                                           MakeAnchorOptions                 makeAnchorOptions,
+                                           SolutionPortDelegationProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
+    {
+        final String methodName            = "linkSolutionPortDelegation";
+        final String end1GUIDParameterName = "alignsToPortGUID";
+        final String end2GUIDParameterName = "delegationPortGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(alignsToPortGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(delegationPortGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SOLUTION_PORT_DELEGATION_RELATIONSHIP.typeName,
+                                                        alignsToPortGUID,
+                                                        delegationPortGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a solution port from the solution port that it delegated to.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param alignsToPortGUID unique identifier of the solution port that is aligned to
+     * @param delegationPortGUID unique identifier of the solution port that delegates
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSolutionPortDelegation(String        userId,
+                                             String        alignsToPortGUID,
+                                             String        delegationPortGUID,
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName            = "detachSolutionPortDelegation";
+        final String end1GUIDParameterName = "alignsToPortGUID";
+        final String end2GUIDParameterName = "delegationPortGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(alignsToPortGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(delegationPortGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SOLUTION_PORT_DELEGATION_RELATIONSHIP.typeName,
+                                                        alignsToPortGUID,
+                                                        delegationPortGUID,
+                                                        deleteOptions);
     }
 }

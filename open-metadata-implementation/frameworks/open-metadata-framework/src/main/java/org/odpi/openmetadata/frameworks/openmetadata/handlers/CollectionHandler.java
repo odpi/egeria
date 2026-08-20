@@ -2436,4 +2436,138 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                         consumedDigitalProductGUID,
                                                         deleteOptions);
     }
+
+
+    /*
+     * =====================================================================================================================
+     * Collection kind classification
+     */
+
+
+    /**
+     * Classify a collection to describe the kind of collection that it is.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param collectionGUID unique identifier of the collection
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setCollectionKind(String                    userId,
+                                  String                    collectionGUID,
+                                  CollectionKindProperties  properties,
+                                  MetadataSourceOptions     metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName        = "setCollectionKind";
+        final String guidParameterName = "collectionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(collectionGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          collectionGUID,
+                                                          OpenMetadataType.COLLECTION_KIND_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the collection kind classification from a collection.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param collectionGUID unique identifier of the collection
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearCollectionKind(String                userId,
+                                    String                collectionGUID,
+                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName        = "clearCollectionKind";
+        final String guidParameterName = "collectionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(collectionGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            collectionGUID,
+                                                            OpenMetadataType.COLLECTION_KIND_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Data sharing agreement classification
+     */
+
+
+    /**
+     * Classify an agreement to say that it governs the sharing of data.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param agreementGUID unique identifier of the agreement
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAgreementAsDataSharingAgreement(String                          userId,
+                                                   String                          agreementGUID,
+                                                   DataSharingAgreementProperties  properties,
+                                                   MetadataSourceOptions           metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException
+    {
+        final String methodName        = "setAgreementAsDataSharingAgreement";
+        final String guidParameterName = "agreementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(agreementGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          agreementGUID,
+                                                          OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the data sharing agreement designation from an agreement.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param agreementGUID unique identifier of the agreement
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAgreementAsDataSharingAgreement(String                userId,
+                                                     String                agreementGUID,
+                                                     MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        final String methodName        = "clearAgreementAsDataSharingAgreement";
+        final String guidParameterName = "agreementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(agreementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            agreementGUID,
+                                                            OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
 }

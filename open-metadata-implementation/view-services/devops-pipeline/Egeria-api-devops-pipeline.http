@@ -1048,3 +1048,184 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Cloud platform classification
+# https://egeria-project.org/concepts/cloud-platform
+
+@softwareServerPlatformGUID=add guid here
+
+###
+# @name setAsCloudPlatform
+# Classify a software server platform to say that it is a cloud platform.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/software-server-platforms/{{softwareServerPlatformGUID}}/cloud-platform
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "CloudPlatformProperties",
+    "deployedImplementationType": "add technology type here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearAsCloudPlatform
+# Remove the cloud platform designation from a software server platform.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/software-server-platforms/{{softwareServerPlatformGUID}}/cloud-platform/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Cloud provider classification
+# https://egeria-project.org/concepts/cloud-platform
+
+
+###
+# @name setHostAsCloudProvider
+# Classify a host to say that it is a cloud provider.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/hosts/{{hostGUID}}/cloud-provider
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "CloudProviderProperties",
+    "providerName": "add provider name here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearHostAsCloudProvider
+# Remove the cloud provider designation from a host.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/hosts/{{hostGUID}}/cloud-provider/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Cloud tenant classification
+# https://egeria-project.org/concepts/cloud-platform
+
+@softwareServerGUID=add guid here
+
+###
+# @name setServerAsCloudTenant
+# Classify a software server to say that it is hosting a cloud tenant.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/software-servers/{{softwareServerGUID}}/cloud-tenant
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "CloudTenantProperties",
+    "tenantName": "add tenant name here",
+    "tenantType": "add tenant type here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearServerAsCloudTenant
+# Remove the cloud tenant designation from a software server.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/software-servers/{{softwareServerGUID}}/cloud-tenant/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# Cloud service classification
+# https://egeria-project.org/concepts/cloud-platform
+
+@softwareCapabilityGUID=add guid here
+
+###
+# @name setCapabilityAsCloudService
+# Classify a software capability to say that it is a cloud service.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/software-capabilities/{{softwareCapabilityGUID}}/cloud-service
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "CloudServiceProperties",
+    "offeringName": "add offering name here",
+    "serviceType": "add service type here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearCapabilityAsCloudService
+# Remove the cloud service designation from a software capability.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/software-capabilities/{{softwareCapabilityGUID}}/cloud-service/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+

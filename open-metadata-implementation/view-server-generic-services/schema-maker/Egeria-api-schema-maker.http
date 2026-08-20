@@ -1086,3 +1086,326 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+###
+# =====================================================================================================================
+# Schema element classifications
+# https://egeria-project.org/concepts/schema-attribute
+
+@relationalColumnGUID=add guid here
+
+###
+# @name addPrimaryKeyClassification
+# Add the PrimaryKey classification to a relational column.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/relational-columns/{{relationalColumnGUID}}/primary-key
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "PrimaryKeyProperties",
+    "displayName": "add primary key name here",
+    "keyPattern": "LOCAL_KEY",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name removePrimaryKeyClassification
+# Remove the PrimaryKey classification from a relational column.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/relational-columns/{{relationalColumnGUID}}/primary-key/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name addTypeEmbeddedAttribute
+# Add the TypeEmbeddedAttribute classification to a schema attribute.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/{{schemaAttributeGUID}}/type-embedded-attribute
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "TypeEmbeddedAttributeProperties",
+    "schemaTypeName": "add schema type name here",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "versionIdentifier": "add version here",
+    "category": "add category here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name removeTypeEmbeddedAttribute
+# Remove the TypeEmbeddedAttribute classification from a schema attribute.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/{{schemaAttributeGUID}}/type-embedded-attribute/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name addCalculatedValue
+# Add the CalculatedValue classification to a schema element to show that its value is derived by a formula.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/{{schemaAttributeGUID}}/calculated-value
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "CalculatedValueProperties",
+    "formula": "add formula here",
+    "formulaType": "add formula type here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name removeCalculatedValue
+# Remove the CalculatedValue classification from a schema element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/{{schemaAttributeGUID}}/calculated-value/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# =====================================================================================================================
+# API and schema option relationships
+# https://egeria-project.org/concepts/schema-type
+
+@apiOperationGUID=add guid here
+@apiSchemaTypeGUID=add guid here
+@schemaElementGUID=add guid here
+
+###
+# @name linkAPIOperations
+# Attach an API operation to the API schema type that contains it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/api-schema-types/{{apiSchemaTypeGUID}}/api-operations/{{apiOperationGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "APIOperationsProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachAPIOperations
+# Detach an API operation from the API schema type that contained it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/api-schema-types/{{apiSchemaTypeGUID}}/api-operations/{{apiOperationGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkAPIHeader
+# Attach a schema type to the API operation that uses it as its header.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/api-operations/{{apiOperationGUID}}/api-headers/{{schemaTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "APIHeaderProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachAPIHeader
+# Detach a schema type from the API operation that used it as its header.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/api-operations/{{apiOperationGUID}}/api-headers/{{schemaTypeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkAPIRequest
+# Attach a schema type to the API operation that uses it as its request.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/api-operations/{{apiOperationGUID}}/api-requests/{{schemaTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "APIRequestProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachAPIRequest
+# Detach a schema type from the API operation that used it as its request.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/api-operations/{{apiOperationGUID}}/api-requests/{{schemaTypeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkAPIResponse
+# Attach a schema type to the API operation that uses it as its response.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/api-operations/{{apiOperationGUID}}/api-responses/{{schemaTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "APIResponseProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachAPIResponse
+# Detach a schema type from the API operation that used it as its response.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/api-operations/{{apiOperationGUID}}/api-responses/{{schemaTypeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkSchemaTypeOption
+# Attach a schema type to a schema element that may optionally use it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-elements/{{schemaElementGUID}}/schema-type-options/{{schemaTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SchemaTypeOptionProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachSchemaTypeOption
+# Detach a schema type from a schema element that may optionally have used it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-elements/{{schemaElementGUID}}/schema-type-options/{{schemaTypeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+

@@ -2618,4 +2618,751 @@ public class AssetMakerResource
     {
         return restAPI.detachLinkedMedia(serverName, urlMarker, mediaFileGUID, linkedMediaFileGUID, requestBody);
     }
+
+    /**
+     * Classify an asset to say that it holds an audit log.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/audit-log")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setAssetAsAuditLog",
+            description="Classify an asset to say that it holds an audit log.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse setAssetAsAuditLog(@PathVariable String serverName,
+                                           @PathVariable String urlMarker,
+                                           @PathVariable String assetGUID,
+                                           @RequestBody (required = false)
+                                           NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setAssetAsAuditLog(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the audit log designation from an asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/audit-log/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearAssetAsAuditLog",
+            description="Remove the audit log designation from an asset.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse clearAssetAsAuditLog(@PathVariable String serverName,
+                                             @PathVariable String urlMarker,
+                                             @PathVariable String assetGUID,
+                                             @RequestBody (required = false)
+                                             DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearAssetAsAuditLog(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a lineage log.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/lineage-log")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setAssetAsLineageLog",
+            description="Classify an asset to say that it holds a lineage log.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse setAssetAsLineageLog(@PathVariable String serverName,
+                                             @PathVariable String urlMarker,
+                                             @PathVariable String assetGUID,
+                                             @RequestBody (required = false)
+                                             NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setAssetAsLineageLog(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the lineage log designation from an asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/lineage-log/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearAssetAsLineageLog",
+            description="Remove the lineage log designation from an asset.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse clearAssetAsLineageLog(@PathVariable String serverName,
+                                               @PathVariable String urlMarker,
+                                               @PathVariable String assetGUID,
+                                               @RequestBody (required = false)
+                                               DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearAssetAsLineageLog(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a metering log.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/metering-log")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setAssetAsMeteringLog",
+            description="Classify an asset to say that it holds a metering log.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse setAssetAsMeteringLog(@PathVariable String serverName,
+                                              @PathVariable String urlMarker,
+                                              @PathVariable String assetGUID,
+                                              @RequestBody (required = false)
+                                              NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setAssetAsMeteringLog(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the metering log designation from an asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/metering-log/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearAssetAsMeteringLog",
+            description="Remove the metering log designation from an asset.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse clearAssetAsMeteringLog(@PathVariable String serverName,
+                                                @PathVariable String urlMarker,
+                                                @PathVariable String assetGUID,
+                                                @RequestBody (required = false)
+                                                DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearAssetAsMeteringLog(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a security log.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/security-log")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setAssetAsSecurityLog",
+            description="Classify an asset to say that it holds a security log.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse setAssetAsSecurityLog(@PathVariable String serverName,
+                                              @PathVariable String urlMarker,
+                                              @PathVariable String assetGUID,
+                                              @RequestBody (required = false)
+                                              NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setAssetAsSecurityLog(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the security log designation from an asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/security-log/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearAssetAsSecurityLog",
+            description="Remove the security log designation from an asset.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse clearAssetAsSecurityLog(@PathVariable String serverName,
+                                                @PathVariable String urlMarker,
+                                                @PathVariable String assetGUID,
+                                                @RequestBody (required = false)
+                                                DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearAssetAsSecurityLog(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a backlog of exceptions that need to be resolved.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/exception-backlog")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setAssetAsExceptionBacklog",
+            description="Classify an asset to say that it holds a backlog of exceptions that need to be resolved.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse setAssetAsExceptionBacklog(@PathVariable String serverName,
+                                                   @PathVariable String urlMarker,
+                                                   @PathVariable String assetGUID,
+                                                   @RequestBody (required = false)
+                                                   NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setAssetAsExceptionBacklog(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the exception backlog designation from an asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/exception-backlog/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearAssetAsExceptionBacklog",
+            description="Remove the exception backlog designation from an asset.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse clearAssetAsExceptionBacklog(@PathVariable String serverName,
+                                                     @PathVariable String urlMarker,
+                                                     @PathVariable String assetGUID,
+                                                     @RequestBody (required = false)
+                                                     DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearAssetAsExceptionBacklog(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an asset to say that it holds the results of analysing a log.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/log-analysis")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setAssetAsLogAnalysis",
+            description="Classify an asset to say that it holds the results of analysing a log.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse setAssetAsLogAnalysis(@PathVariable String serverName,
+                                              @PathVariable String urlMarker,
+                                              @PathVariable String assetGUID,
+                                              @RequestBody (required = false)
+                                              NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setAssetAsLogAnalysis(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the log analysis designation from an asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/log-analysis/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearAssetAsLogAnalysis",
+            description="Remove the log analysis designation from an asset.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse clearAssetAsLogAnalysis(@PathVariable String serverName,
+                                                @PathVariable String urlMarker,
+                                                @PathVariable String assetGUID,
+                                                @RequestBody (required = false)
+                                                DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearAssetAsLogAnalysis(serverName, urlMarker, assetGUID, requestBody);
+    }
+
+    /**
+     * Classify a deployed API to say that it provides a listener interface.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/deployed-apis/{deployedAPIGUID}/listener-interface")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setAPIAsListenerInterface",
+            description="Classify a deployed API to say that it provides a listener interface.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/deployed-api"))
+
+    public VoidResponse setAPIAsListenerInterface(@PathVariable String serverName,
+                                                  @PathVariable String urlMarker,
+                                                  @PathVariable String deployedAPIGUID,
+                                                  @RequestBody (required = false)
+                                                  NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setAPIAsListenerInterface(serverName, urlMarker, deployedAPIGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the listener interface designation from a deployed API.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/deployed-apis/{deployedAPIGUID}/listener-interface/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearAPIAsListenerInterface",
+            description="Remove the listener interface designation from a deployed API.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/deployed-api"))
+
+    public VoidResponse clearAPIAsListenerInterface(@PathVariable String serverName,
+                                                    @PathVariable String urlMarker,
+                                                    @PathVariable String deployedAPIGUID,
+                                                    @RequestBody (required = false)
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearAPIAsListenerInterface(serverName, urlMarker, deployedAPIGUID, requestBody);
+    }
+
+
+    /**
+     * Classify a deployed API to say that it provides a publisher interface.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/deployed-apis/{deployedAPIGUID}/publisher-interface")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setAPIAsPublisherInterface",
+            description="Classify a deployed API to say that it provides a publisher interface.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/deployed-api"))
+
+    public VoidResponse setAPIAsPublisherInterface(@PathVariable String serverName,
+                                                   @PathVariable String urlMarker,
+                                                   @PathVariable String deployedAPIGUID,
+                                                   @RequestBody (required = false)
+                                                   NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setAPIAsPublisherInterface(serverName, urlMarker, deployedAPIGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the publisher interface designation from a deployed API.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/deployed-apis/{deployedAPIGUID}/publisher-interface/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearAPIAsPublisherInterface",
+            description="Remove the publisher interface designation from a deployed API.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/deployed-api"))
+
+    public VoidResponse clearAPIAsPublisherInterface(@PathVariable String serverName,
+                                                     @PathVariable String urlMarker,
+                                                     @PathVariable String deployedAPIGUID,
+                                                     @RequestBody (required = false)
+                                                     DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearAPIAsPublisherInterface(serverName, urlMarker, deployedAPIGUID, requestBody);
+    }
+
+
+    /**
+     * Classify a deployed API to say that it provides a request-response interface.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/deployed-apis/{deployedAPIGUID}/request-response-interface")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setAPIAsRequestResponseInterface",
+            description="Classify a deployed API to say that it provides a request-response interface.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/deployed-api"))
+
+    public VoidResponse setAPIAsRequestResponseInterface(@PathVariable String serverName,
+                                                         @PathVariable String urlMarker,
+                                                         @PathVariable String deployedAPIGUID,
+                                                         @RequestBody (required = false)
+                                                         NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setAPIAsRequestResponseInterface(serverName, urlMarker, deployedAPIGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the request-response interface designation from a deployed API.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/deployed-apis/{deployedAPIGUID}/request-response-interface/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearAPIAsRequestResponseInterface",
+            description="Remove the request-response interface designation from a deployed API.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/deployed-api"))
+
+    public VoidResponse clearAPIAsRequestResponseInterface(@PathVariable String serverName,
+                                                           @PathVariable String urlMarker,
+                                                           @PathVariable String deployedAPIGUID,
+                                                           @RequestBody (required = false)
+                                                           DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearAPIAsRequestResponseInterface(serverName, urlMarker, deployedAPIGUID, requestBody);
+    }
+
+    /**
+     * Classify a data asset to describe how its data is encoded.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param dataAssetGUID unique identifier of the data asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-assets/{dataAssetGUID}/encoding")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setDataAssetEncoding",
+            description="Classify a data asset to describe how its data is encoded.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-asset"))
+
+    public VoidResponse setDataAssetEncoding(@PathVariable String serverName,
+                                             @PathVariable String urlMarker,
+                                             @PathVariable String dataAssetGUID,
+                                             @RequestBody (required = false)
+                                             NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setDataAssetEncoding(serverName, urlMarker, dataAssetGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the encoding description from a data asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param dataAssetGUID unique identifier of the data asset
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-assets/{dataAssetGUID}/encoding/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearDataAssetEncoding",
+            description="Remove the encoding description from a data asset.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-asset"))
+
+    public VoidResponse clearDataAssetEncoding(@PathVariable String serverName,
+                                               @PathVariable String urlMarker,
+                                               @PathVariable String dataAssetGUID,
+                                               @RequestBody (required = false)
+                                               DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearDataAssetEncoding(serverName, urlMarker, dataAssetGUID, requestBody);
+    }
+
+    /**
+     * Attach a port to the port that it delegates to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param delegatingFromPortGUID unique identifier of the port that delegates
+     * @param delegatingToPortGUID unique identifier of the port that is delegated to
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/ports/{delegatingFromPortGUID}/port-delegations/{delegatingToPortGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkPortDelegation",
+            description="Attach a port to the port that it delegates to.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/port"))
+
+    public VoidResponse linkPortDelegation(@PathVariable String serverName,
+                                           @PathVariable String urlMarker,
+                                           @PathVariable String delegatingFromPortGUID,
+                                           @PathVariable String delegatingToPortGUID,
+                                           @RequestBody (required = false)
+                                           NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkPortDelegation(serverName, urlMarker, delegatingFromPortGUID, delegatingToPortGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a port from the port that it delegated to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param delegatingFromPortGUID unique identifier of the port that delegates
+     * @param delegatingToPortGUID unique identifier of the port that is delegated to
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/ports/{delegatingFromPortGUID}/port-delegations/{delegatingToPortGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachPortDelegation",
+            description="Detach a port from the port that it delegated to.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/port"))
+
+    public VoidResponse detachPortDelegation(@PathVariable String serverName,
+                                             @PathVariable String urlMarker,
+                                             @PathVariable String delegatingFromPortGUID,
+                                             @PathVariable String delegatingToPortGUID,
+                                             @RequestBody (required = false)
+                                             DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachPortDelegation(serverName, urlMarker, delegatingFromPortGUID, delegatingToPortGUID, requestBody);
+    }
+
+    /**
+     * Register an integration connector with the integration group that runs it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param integrationGroupGUID unique identifier of the integration group
+     * @param integrationConnectorGUID unique identifier of the integration connector
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/integration-groups/{integrationGroupGUID}/registered-integration-connectors/{integrationConnectorGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkRegisteredIntegrationConnector",
+            description="Register an integration connector with the integration group that runs it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-connector"))
+
+    public VoidResponse linkRegisteredIntegrationConnector(@PathVariable String serverName,
+                                                           @PathVariable String urlMarker,
+                                                           @PathVariable String integrationGroupGUID,
+                                                           @PathVariable String integrationConnectorGUID,
+                                                           @RequestBody (required = false)
+                                                           NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkRegisteredIntegrationConnector(serverName, urlMarker, integrationGroupGUID, integrationConnectorGUID, requestBody);
+    }
+
+
+    /**
+     * Remove an integration connector from the integration group that ran it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param integrationGroupGUID unique identifier of the integration group
+     * @param integrationConnectorGUID unique identifier of the integration connector
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/integration-groups/{integrationGroupGUID}/registered-integration-connectors/{integrationConnectorGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachRegisteredIntegrationConnector",
+            description="Remove an integration connector from the integration group that ran it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-connector"))
+
+    public VoidResponse detachRegisteredIntegrationConnector(@PathVariable String serverName,
+                                                             @PathVariable String urlMarker,
+                                                             @PathVariable String integrationGroupGUID,
+                                                             @PathVariable String integrationConnectorGUID,
+                                                             @RequestBody (required = false)
+                                                             DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachRegisteredIntegrationConnector(serverName, urlMarker, integrationGroupGUID, integrationConnectorGUID, requestBody);
+    }
 }

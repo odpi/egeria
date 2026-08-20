@@ -1254,4 +1254,849 @@ public class ProjectManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response);
         return response;
     }
+
+
+    /*
+     * =====================================================================================================================
+     * Project classifications
+     */
+
+    /**
+     * Classify a project to say that it is a campaign - a long running activity made up of many projects.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setProjectAsCampaign(String                       serverName,
+                                             String                       projectGUID,
+                                             NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setProjectAsCampaign";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setProjectAsCampaign(userId, projectGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof CampaignProperties properties)
+            {
+                handler.setProjectAsCampaign(userId, projectGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setProjectAsCampaign(userId, projectGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(CampaignProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the campaign designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearProjectAsCampaign(String                          serverName,
+                                               String                          projectGUID,
+                                               DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearProjectAsCampaign";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            handler.clearProjectAsCampaign(userId, projectGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify a project to say that it is a task within a larger project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setProjectAsTask(String                       serverName,
+                                         String                       projectGUID,
+                                         NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setProjectAsTask";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setProjectAsTask(userId, projectGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof TaskProperties properties)
+            {
+                handler.setProjectAsTask(userId, projectGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setProjectAsTask(userId, projectGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(TaskProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the task designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearProjectAsTask(String                          serverName,
+                                           String                          projectGUID,
+                                           DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearProjectAsTask";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            handler.clearProjectAsTask(userId, projectGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify a project to say that it is a personal project used to organize an individual's work.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setProjectAsPersonalProject(String                       serverName,
+                                                    String                       projectGUID,
+                                                    NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setProjectAsPersonalProject";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setProjectAsPersonalProject(userId, projectGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof PersonalProjectProperties properties)
+            {
+                handler.setProjectAsPersonalProject(userId, projectGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setProjectAsPersonalProject(userId, projectGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(PersonalProjectProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the personal project designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearProjectAsPersonalProject(String                          serverName,
+                                                      String                          projectGUID,
+                                                      DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearProjectAsPersonalProject";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            handler.clearProjectAsPersonalProject(userId, projectGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify a project to say that it is a study project that is investigating a topic.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setProjectAsStudyProject(String                       serverName,
+                                                 String                       projectGUID,
+                                                 NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setProjectAsStudyProject";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setProjectAsStudyProject(userId, projectGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof StudyProjectProperties properties)
+            {
+                handler.setProjectAsStudyProject(userId, projectGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setProjectAsStudyProject(userId, projectGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(StudyProjectProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the study project designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearProjectAsStudyProject(String                          serverName,
+                                                   String                          projectGUID,
+                                                   DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearProjectAsStudyProject";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            handler.clearProjectAsStudyProject(userId, projectGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify a project to say that it is an experiment that is testing a hypothesis.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setProjectAsExperiment(String                       serverName,
+                                               String                       projectGUID,
+                                               NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setProjectAsExperiment";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setProjectAsExperiment(userId, projectGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ExperimentProperties properties)
+            {
+                handler.setProjectAsExperiment(userId, projectGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setProjectAsExperiment(userId, projectGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ExperimentProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the experiment designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearProjectAsExperiment(String                          serverName,
+                                                 String                          projectGUID,
+                                                 DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearProjectAsExperiment";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            handler.clearProjectAsExperiment(userId, projectGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify a project to say that it is managing the development of a glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setProjectAsGlossaryProject(String                       serverName,
+                                                    String                       projectGUID,
+                                                    NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setProjectAsGlossaryProject";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setProjectAsGlossaryProject(userId, projectGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof GlossaryProjectProperties properties)
+            {
+                handler.setProjectAsGlossaryProject(userId, projectGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setProjectAsGlossaryProject(userId, projectGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(GlossaryProjectProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the glossary project designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearProjectAsGlossaryProject(String                          serverName,
+                                                      String                          projectGUID,
+                                                      DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearProjectAsGlossaryProject";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            handler.clearProjectAsGlossaryProject(userId, projectGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify a project to say that it is part of the governance program.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setProjectAsGovernanceProject(String                       serverName,
+                                                      String                       projectGUID,
+                                                      NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setProjectAsGovernanceProject";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setProjectAsGovernanceProject(userId, projectGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof GovernanceProjectProperties properties)
+            {
+                handler.setProjectAsGovernanceProject(userId, projectGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setProjectAsGovernanceProject(userId, projectGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(GovernanceProjectProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the governance project designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearProjectAsGovernanceProject(String                          serverName,
+                                                        String                          projectGUID,
+                                                        DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearProjectAsGovernanceProject";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            handler.clearProjectAsGovernanceProject(userId, projectGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify a project to describe the kind of project that it is.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setProjectKind(String                       serverName,
+                                       String                       projectGUID,
+                                       NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setProjectKind";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setProjectKind(userId, projectGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ProjectKindProperties properties)
+            {
+                handler.setProjectKind(userId, projectGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setProjectKind(userId, projectGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ProjectKindProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the project kind classification from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearProjectKind(String                          serverName,
+                                         String                          projectGUID,
+                                         DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearProjectKind";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            handler.clearProjectKind(userId, projectGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 }

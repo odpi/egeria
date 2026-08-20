@@ -28,6 +28,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.IncompleteProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.ObjectIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceDataProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.MobileResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.InstanceMetadataProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetamodelInstanceProperties;
 
 /**
  * Provides services for connectors to work with lineage relationships.
@@ -2040,5 +2046,299 @@ public class ClassificationExplorerClient extends ConnectorContextClientBase
                                                                                    PropertyServerException
     {
         stewardshipManagementHandler.unlinkElementsAsPeerDuplicates(connectorUserId, elementGUID, peerDuplicateGUID, deleteOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cross-cutting element classifications
+     */
+
+
+    /**
+     * Classify an element to say that its description is incomplete.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setElementAsIncomplete(String                 elementGUID,
+                                  IncompleteProperties   properties,
+                                  MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.setElementAsIncomplete(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the incomplete designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearElementAsIncomplete(String                elementGUID,
+                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.clearElementAsIncomplete(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it identifies an object.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setElementAsObjectIdentifier(String                      elementGUID,
+                                        ObjectIdentifierProperties  properties,
+                                        MetadataSourceOptions       metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.setElementAsObjectIdentifier(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the object identifier designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearElementAsObjectIdentifier(String                elementGUID,
+                                          MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.clearElementAsObjectIdentifier(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it contains reference data.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setElementAsReferenceData(String                   elementGUID,
+                                     ReferenceDataProperties  properties,
+                                     MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.setElementAsReferenceData(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the reference data designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearElementAsReferenceData(String                elementGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.clearElementAsReferenceData(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that the resource it describes can move location.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setElementAsMobileResource(String                    elementGUID,
+                                      MobileResourceProperties  properties,
+                                      MetadataSourceOptions     metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.setElementAsMobileResource(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the mobile resource designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearElementAsMobileResource(String                elementGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.clearElementAsMobileResource(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it describes metadata about instances rather than the instances themselves.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setElementAsInstanceMetadata(String                      elementGUID,
+                                        InstanceMetadataProperties  properties,
+                                        MetadataSourceOptions       metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.setElementAsInstanceMetadata(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the instance metadata designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearElementAsInstanceMetadata(String                elementGUID,
+                                          MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.clearElementAsInstanceMetadata(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it is an instance of an element in a metadata model.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setElementAsMetamodelInstance(String                       elementGUID,
+                                         MetamodelInstanceProperties  properties,
+                                         MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.setElementAsMetamodelInstance(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the metamodel instance designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearElementAsMetamodelInstance(String                elementGUID,
+                                           MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.clearElementAsMetamodelInstance(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
     }
 }

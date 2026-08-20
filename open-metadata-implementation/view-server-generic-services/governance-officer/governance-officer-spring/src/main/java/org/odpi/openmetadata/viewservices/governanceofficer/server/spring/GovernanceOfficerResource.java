@@ -1193,4 +1193,623 @@ public class GovernanceOfficerResource
     {
         return restAPI.detachException(serverName, urlMarker, exceptionGUID, requestBody);
     }
+
+    /**
+     * Classify an element to say that it is a control point where a governance action is performed.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/control-point")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setControlPoint",
+            description="Classify an element to say that it is a control point where a governance action is performed.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse setControlPoint(@PathVariable String serverName,
+                                        @PathVariable String urlMarker,
+                                        @PathVariable String elementGUID,
+                                        @RequestBody (required = false)
+                                        NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setControlPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the control point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/control-point/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearControlPoint",
+            description="Remove the control point designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse clearControlPoint(@PathVariable String serverName,
+                                          @PathVariable String urlMarker,
+                                          @PathVariable String elementGUID,
+                                          @RequestBody (required = false)
+                                          DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearControlPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it is a verification point where a governance requirement is checked.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/verification-point")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setVerificationPoint",
+            description="Classify an element to say that it is a verification point where a governance requirement is checked.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse setVerificationPoint(@PathVariable String serverName,
+                                             @PathVariable String urlMarker,
+                                             @PathVariable String elementGUID,
+                                             @RequestBody (required = false)
+                                             NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setVerificationPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the verification point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/verification-point/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearVerificationPoint",
+            description="Remove the verification point designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse clearVerificationPoint(@PathVariable String serverName,
+                                               @PathVariable String urlMarker,
+                                               @PathVariable String elementGUID,
+                                               @RequestBody (required = false)
+                                               DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearVerificationPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it is an enforcement point where a governance requirement is enforced.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/enforcement-point")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setEnforcementPoint",
+            description="Classify an element to say that it is an enforcement point where a governance requirement is enforced.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse setEnforcementPoint(@PathVariable String serverName,
+                                            @PathVariable String urlMarker,
+                                            @PathVariable String elementGUID,
+                                            @RequestBody (required = false)
+                                            NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setEnforcementPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the enforcement point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/enforcement-point/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearEnforcementPoint",
+            description="Remove the enforcement point designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse clearEnforcementPoint(@PathVariable String serverName,
+                                              @PathVariable String urlMarker,
+                                              @PathVariable String elementGUID,
+                                              @RequestBody (required = false)
+                                              DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearEnforcementPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it is an execution point where governance is executed.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/execution-point")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setExecutionPoint",
+            description="Classify an element to say that it is an execution point where governance is executed.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse setExecutionPoint(@PathVariable String serverName,
+                                          @PathVariable String urlMarker,
+                                          @PathVariable String elementGUID,
+                                          @RequestBody (required = false)
+                                          NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setExecutionPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the execution point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/execution-point/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearExecutionPoint",
+            description="Remove the execution point designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse clearExecutionPoint(@PathVariable String serverName,
+                                            @PathVariable String urlMarker,
+                                            @PathVariable String elementGUID,
+                                            @RequestBody (required = false)
+                                            DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearExecutionPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy administration point where policies are created and maintained.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/policy-administration-point")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setPolicyAdministrationPoint",
+            description="Classify an element to say that it is a policy administration point where policies are created and maintained.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse setPolicyAdministrationPoint(@PathVariable String serverName,
+                                                     @PathVariable String urlMarker,
+                                                     @PathVariable String elementGUID,
+                                                     @RequestBody (required = false)
+                                                     NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setPolicyAdministrationPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the policy administration point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/policy-administration-point/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearPolicyAdministrationPoint",
+            description="Remove the policy administration point designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse clearPolicyAdministrationPoint(@PathVariable String serverName,
+                                                       @PathVariable String urlMarker,
+                                                       @PathVariable String elementGUID,
+                                                       @RequestBody (required = false)
+                                                       DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearPolicyAdministrationPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy decision point where a policy decision is made.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/policy-decision-point")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setPolicyDecisionPoint",
+            description="Classify an element to say that it is a policy decision point where a policy decision is made.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse setPolicyDecisionPoint(@PathVariable String serverName,
+                                               @PathVariable String urlMarker,
+                                               @PathVariable String elementGUID,
+                                               @RequestBody (required = false)
+                                               NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setPolicyDecisionPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the policy decision point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/policy-decision-point/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearPolicyDecisionPoint",
+            description="Remove the policy decision point designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse clearPolicyDecisionPoint(@PathVariable String serverName,
+                                                 @PathVariable String urlMarker,
+                                                 @PathVariable String elementGUID,
+                                                 @RequestBody (required = false)
+                                                 DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearPolicyDecisionPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy enforcement point where a policy decision is applied.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/policy-enforcement-point")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setPolicyEnforcementPoint",
+            description="Classify an element to say that it is a policy enforcement point where a policy decision is applied.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse setPolicyEnforcementPoint(@PathVariable String serverName,
+                                                  @PathVariable String urlMarker,
+                                                  @PathVariable String elementGUID,
+                                                  @RequestBody (required = false)
+                                                  NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setPolicyEnforcementPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the policy enforcement point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/policy-enforcement-point/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearPolicyEnforcementPoint",
+            description="Remove the policy enforcement point designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse clearPolicyEnforcementPoint(@PathVariable String serverName,
+                                                    @PathVariable String urlMarker,
+                                                    @PathVariable String elementGUID,
+                                                    @RequestBody (required = false)
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearPolicyEnforcementPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy information point that supplies the information a policy decision needs.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/policy-information-point")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setPolicyInformationPoint",
+            description="Classify an element to say that it is a policy information point that supplies the information a policy decision needs.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse setPolicyInformationPoint(@PathVariable String serverName,
+                                                  @PathVariable String urlMarker,
+                                                  @PathVariable String elementGUID,
+                                                  @RequestBody (required = false)
+                                                  NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setPolicyInformationPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the policy information point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/policy-information-point/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearPolicyInformationPoint",
+            description="Remove the policy information point designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse clearPolicyInformationPoint(@PathVariable String serverName,
+                                                    @PathVariable String urlMarker,
+                                                    @PathVariable String elementGUID,
+                                                    @RequestBody (required = false)
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearPolicyInformationPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy management point.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/policy-management-point")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setPolicyManagementPoint",
+            description="Classify an element to say that it is a policy management point.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse setPolicyManagementPoint(@PathVariable String serverName,
+                                                 @PathVariable String urlMarker,
+                                                 @PathVariable String elementGUID,
+                                                 @RequestBody (required = false)
+                                                 NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setPolicyManagementPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the policy management point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/policy-management-point/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearPolicyManagementPoint",
+            description="Remove the policy management point designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse clearPolicyManagementPoint(@PathVariable String serverName,
+                                                   @PathVariable String urlMarker,
+                                                   @PathVariable String elementGUID,
+                                                   @RequestBody (required = false)
+                                                   DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearPolicyManagementPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy retrieval point where policies are retrieved for a decision.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/policy-retrieval-point")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setPolicyRetrievalPoint",
+            description="Classify an element to say that it is a policy retrieval point where policies are retrieved for a decision.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse setPolicyRetrievalPoint(@PathVariable String serverName,
+                                                @PathVariable String urlMarker,
+                                                @PathVariable String elementGUID,
+                                                @RequestBody (required = false)
+                                                NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setPolicyRetrievalPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the policy retrieval point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/policy-retrieval-point/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearPolicyRetrievalPoint",
+            description="Remove the policy retrieval point designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-definition"))
+
+    public VoidResponse clearPolicyRetrievalPoint(@PathVariable String serverName,
+                                                  @PathVariable String urlMarker,
+                                                  @PathVariable String elementGUID,
+                                                  @RequestBody (required = false)
+                                                  DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearPolicyRetrievalPoint(serverName, urlMarker, elementGUID, requestBody);
+    }
 }

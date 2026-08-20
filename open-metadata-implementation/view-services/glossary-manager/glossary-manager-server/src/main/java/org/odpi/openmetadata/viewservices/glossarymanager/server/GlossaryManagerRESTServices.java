@@ -2118,4 +2118,114 @@ public class GlossaryManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response);
         return response;
     }
+
+
+    /*
+     * =====================================================================================================================
+     * Glossary term supplement classification
+     */
+
+    /**
+     * Classify a glossary term to say that it supplements the description of another element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setTermAsElementSupplement(String                       serverName,
+                                                   String                       glossaryTermGUID,
+                                                   NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setTermAsElementSupplement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setTermAsElementSupplement(userId, glossaryTermGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ElementSupplementProperties properties)
+            {
+                handler.setTermAsElementSupplement(userId, glossaryTermGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setTermAsElementSupplement(userId, glossaryTermGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ElementSupplementProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the element supplement designation from a glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearTermAsElementSupplement(String                          serverName,
+                                                     String                          glossaryTermGUID,
+                                                     DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearTermAsElementSupplement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+
+            handler.clearTermAsElementSupplement(userId, glossaryTermGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 }
