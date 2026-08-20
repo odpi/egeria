@@ -158,6 +158,7 @@ public class OpenMetadataTypesArchive
          * New types for this release
          */
         update0010BaseModel();
+        add0680CodeAnalysis();
         update0710DigitalServices();
         update0735SolutionPortsAndWires();
         update0770LineageMapping();
@@ -202,6 +203,93 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+
+    private void add0680CodeAnalysis()
+    {
+        this.archiveBuilder.addEntityDef(getContributorAnalysisAnnotationEntity());
+        this.archiveBuilder.addEntityDef(getCodeAnalysisAnnotationEntity());
+    }
+
+
+    /**
+     * ContributorAnalysisAnnotation captures the level of activity around a code repository - who is contributing, and how much.
+     *
+     * @return entity definition
+     */
+    private EntityDef getContributorAnalysisAnnotationEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.CONTRIBUTOR_ANALYSIS_ANNOTATION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.BUS_FACTOR));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TOTAL_CONTRIBUTOR_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTIVE_CONTRIBUTOR_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMMIT_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTIVE_COMMIT_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISSUE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTIVE_ISSUE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONTRIBUTION_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTIVE_CONTRIBUTION_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COPY_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTIVE_COPY_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STARGAZER_COUNT));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /**
+     * CodeAnalysisAnnotation captures measures of the content of the code held in a code repository, including its size, shape and complexity.
+     *
+     * @return entity definition
+     */
+    private EntityDef getCodeAnalysisAnnotationEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.CODE_ANALYSIS_ANNOTATION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FILE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LINE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CODE_LINE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMMENT_LINE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRIMARY_LANGUAGE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LANGUAGE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PUBLIC_SYMBOL_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ENTRY_POINT_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_READ_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_CREATE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_UPDATE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_DELETE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_CHECKS_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_STORE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXTERNAL_CALL_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FUNCTION_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_TOTAL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_MAX));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAX_NESTING_DEPTH));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TEST_FILE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DOCUMENTED_SYMBOL_COUNT));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 
     private void update0710DigitalServices()
     {

@@ -15438,6 +15438,49 @@ public class OpenMetadataPropertyConverterBase
                             ((SchemaAnalysisAnnotationProperties)beanProperties).setSchemaName(this.removeSchemaName(elementProperties));
                             ((SchemaAnalysisAnnotationProperties)beanProperties).setSchemaType(this.removeSchemaType(elementProperties));
                         }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.CONTRIBUTOR_ANALYSIS_ANNOTATION.typeName))
+                        {
+                            beanProperties = new ContributorAnalysisAnnotationProperties();
+
+                            ((ContributorAnalysisAnnotationProperties)beanProperties).setBusFactor(this.removeBusFactor(elementProperties));
+                            ((ContributorAnalysisAnnotationProperties)beanProperties).setTotalContributorCount(this.removeTotalContributorCount(elementProperties));
+                            ((ContributorAnalysisAnnotationProperties)beanProperties).setActiveContributorCount(this.removeActiveContributorCount(elementProperties));
+                            ((ContributorAnalysisAnnotationProperties)beanProperties).setCommitCount(this.removeCommitCount(elementProperties));
+                            ((ContributorAnalysisAnnotationProperties)beanProperties).setActiveCommitCount(this.removeActiveCommitCount(elementProperties));
+                            ((ContributorAnalysisAnnotationProperties)beanProperties).setIssueCount(this.removeIssueCount(elementProperties));
+                            ((ContributorAnalysisAnnotationProperties)beanProperties).setActiveIssueCount(this.removeActiveIssueCount(elementProperties));
+                            ((ContributorAnalysisAnnotationProperties)beanProperties).setContributionCount(this.removeContributionCount(elementProperties));
+                            ((ContributorAnalysisAnnotationProperties)beanProperties).setActiveContributionCount(this.removeActiveContributionCount(elementProperties));
+                            ((ContributorAnalysisAnnotationProperties)beanProperties).setCopyCount(this.removeCopyCount(elementProperties));
+                            ((ContributorAnalysisAnnotationProperties)beanProperties).setActiveCopyCount(this.removeActiveCopyCount(elementProperties));
+                            ((ContributorAnalysisAnnotationProperties)beanProperties).setStargazerCount(this.removeStargazerCount(elementProperties));
+                        }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.CODE_ANALYSIS_ANNOTATION.typeName))
+                        {
+                            beanProperties = new CodeAnalysisAnnotationProperties();
+
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setFileCount(this.removeFileCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setLineCount(this.removeLineCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setCodeLineCount(this.removeCodeLineCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setCommentLineCount(this.removeCommentLineCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setPrimaryLanguage(this.removePrimaryLanguage(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setLanguageCount(this.removeLanguageCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setPublicSymbolCount(this.removePublicSymbolCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setEntryPointCount(this.removeEntryPointCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setDataReadCount(this.removeDataReadCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setDataCreateCount(this.removeDataCreateCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setDataUpdateCount(this.removeDataUpdateCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setDataDeleteCount(this.removeDataDeleteCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setDataChecksCount(this.removeDataChecksCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setDataStoreCount(this.removeDataStoreCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setExternalCallCount(this.removeExternalCallCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setFunctionCount(this.removeFunctionCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setCyclomaticComplexityTotal(this.removeCyclomaticComplexityTotal(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setCyclomaticComplexityMax(this.removeCyclomaticComplexityMax(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setMaxNestingDepth(this.removeMaxNestingDepth(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setTestFileCount(this.removeTestFileCount(elementProperties));
+                            ((CodeAnalysisAnnotationProperties)beanProperties).setDocumentedSymbolCount(this.removeDocumentedSymbolCount(elementProperties));
+                        }
                         else
                         {
                             beanProperties = new AnnotationProperties();
@@ -17493,5 +17536,728 @@ public class OpenMetadataPropertyConverterBase
     }
 
 
-}
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return int
+     */
+    protected int removeBusFactor(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeBusFactor";
 
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeIntProperty(localServiceName,
+                                                    OpenMetadataProperty.BUS_FACTOR.name,
+                                                    elementProperties,
+                                                    methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeTotalContributorCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeTotalContributorCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.TOTAL_CONTRIBUTOR_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeActiveContributorCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeActiveContributorCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.ACTIVE_CONTRIBUTOR_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeCommitCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeCommitCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.COMMIT_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeActiveCommitCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeActiveCommitCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.ACTIVE_COMMIT_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeIssueCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeIssueCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.ISSUE_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeActiveIssueCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeActiveIssueCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.ACTIVE_ISSUE_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeContributionCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeContributionCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.CONTRIBUTION_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeActiveContributionCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeActiveContributionCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.ACTIVE_CONTRIBUTION_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeCopyCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeCopyCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.COPY_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeActiveCopyCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeActiveCopyCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.ACTIVE_COPY_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeStargazerCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeStargazerCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.STARGAZER_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return int
+     */
+    protected int removeFileCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeFileCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeIntProperty(localServiceName,
+                                                    OpenMetadataProperty.FILE_COUNT.name,
+                                                    elementProperties,
+                                                    methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeLineCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLineCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.LINE_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeCodeLineCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeCodeLineCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.CODE_LINE_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeCommentLineCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeCommentLineCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.COMMENT_LINE_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return String
+     */
+    protected String removePrimaryLanguage(ElementProperties  elementProperties)
+    {
+        final String methodName = "removePrimaryLanguage";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PRIMARY_LANGUAGE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return int
+     */
+    protected int removeLanguageCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLanguageCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeIntProperty(localServiceName,
+                                                    OpenMetadataProperty.LANGUAGE_COUNT.name,
+                                                    elementProperties,
+                                                    methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removePublicSymbolCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removePublicSymbolCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.PUBLIC_SYMBOL_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return int
+     */
+    protected int removeEntryPointCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeEntryPointCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeIntProperty(localServiceName,
+                                                    OpenMetadataProperty.ENTRY_POINT_COUNT.name,
+                                                    elementProperties,
+                                                    methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeDataReadCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDataReadCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.DATA_READ_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeDataCreateCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDataCreateCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.DATA_CREATE_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeDataUpdateCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDataUpdateCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.DATA_UPDATE_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeDataDeleteCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDataDeleteCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.DATA_DELETE_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeDataChecksCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDataChecksCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.DATA_CHECKS_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeDataStoreCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDataStoreCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.DATA_STORE_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeExternalCallCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeExternalCallCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.EXTERNAL_CALL_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeFunctionCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeFunctionCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.FUNCTION_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeCyclomaticComplexityTotal(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeCyclomaticComplexityTotal";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_TOTAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return int
+     */
+    protected int removeCyclomaticComplexityMax(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeCyclomaticComplexityMax";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeIntProperty(localServiceName,
+                                                    OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_MAX.name,
+                                                    elementProperties,
+                                                    methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return int
+     */
+    protected int removeMaxNestingDepth(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeMaxNestingDepth";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeIntProperty(localServiceName,
+                                                    OpenMetadataProperty.MAX_NESTING_DEPTH.name,
+                                                    elementProperties,
+                                                    methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return int
+     */
+    protected int removeTestFileCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeTestFileCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeIntProperty(localServiceName,
+                                                    OpenMetadataProperty.TEST_FILE_COUNT.name,
+                                                    elementProperties,
+                                                    methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeDocumentedSymbolCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDocumentedSymbolCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.DOCUMENTED_SYMBOL_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+}

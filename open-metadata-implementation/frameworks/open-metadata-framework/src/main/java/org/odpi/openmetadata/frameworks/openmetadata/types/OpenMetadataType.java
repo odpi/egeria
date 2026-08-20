@@ -6015,6 +6015,26 @@ public enum OpenMetadataType
                                         ResourcePhysicalStatusAnnotationProperties.class),
 
     /**
+     * A set of properties describing the level of activity around a code repository like GitHub.
+     */
+    CONTRIBUTOR_ANALYSIS_ANNOTATION("9cd23886-02e3-4e8d-bf45-0d72e2dd944d",
+                                    "ContributorAnalysisAnnotation",
+                                    OpenMetadataWikiPages.MODEL_0680_CODE_ANALYSIS,
+                                    "0cd374d8-ae62-4172-b790-9844a6906f49",
+                                    "A set of properties describing the level of activity around a code repository like GitHub.",
+                                    ContributorAnalysisAnnotationProperties.class),
+
+    /**
+     * A set of properties describing the content of the code in a code repository like GitHub.
+     */
+    CODE_ANALYSIS_ANNOTATION("cc4bcbc1-e3c6-4dec-b91f-6cd8a3111af8",
+                             "CodeAnalysisAnnotation",
+                             OpenMetadataWikiPages.MODEL_0680_CODE_ANALYSIS,
+                             "cfd02960-9d5e-4d57-938a-8a7a393698da",
+                             "A set of properties describing the content of the code in a code repository like GitHub.",
+                             CodeAnalysisAnnotationProperties.class),
+
+    /**
      * A request for a stewardship action to be initiated against an element.
      */
     REQUEST_FOR_ACTION_ANNOTATION("f45765a9-f3ae-4686-983f-602c348e020d",

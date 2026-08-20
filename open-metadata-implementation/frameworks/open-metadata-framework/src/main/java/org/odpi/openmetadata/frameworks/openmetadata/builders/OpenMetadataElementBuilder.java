@@ -1060,6 +1060,142 @@ public class OpenMetadataElementBuilder
                                                                                      OpenMetadataProperty.SCHEMA_TYPE.name,
                                                                                      schemaAnalysisAnnotationProperties.getSchemaType());
                             }
+                            else if (properties instanceof ContributorAnalysisAnnotationProperties contributorAnalysisAnnotationProperties)
+                            {
+                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                                  OpenMetadataProperty.BUS_FACTOR.name,
+                                                                                  contributorAnalysisAnnotationProperties.getBusFactor());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.TOTAL_CONTRIBUTOR_COUNT.name,
+                                                                                   contributorAnalysisAnnotationProperties.getTotalContributorCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.ACTIVE_CONTRIBUTOR_COUNT.name,
+                                                                                   contributorAnalysisAnnotationProperties.getActiveContributorCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.COMMIT_COUNT.name,
+                                                                                   contributorAnalysisAnnotationProperties.getCommitCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.ACTIVE_COMMIT_COUNT.name,
+                                                                                   contributorAnalysisAnnotationProperties.getActiveCommitCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.ISSUE_COUNT.name,
+                                                                                   contributorAnalysisAnnotationProperties.getIssueCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.ACTIVE_ISSUE_COUNT.name,
+                                                                                   contributorAnalysisAnnotationProperties.getActiveIssueCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.CONTRIBUTION_COUNT.name,
+                                                                                   contributorAnalysisAnnotationProperties.getContributionCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.ACTIVE_CONTRIBUTION_COUNT.name,
+                                                                                   contributorAnalysisAnnotationProperties.getActiveContributionCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.COPY_COUNT.name,
+                                                                                   contributorAnalysisAnnotationProperties.getCopyCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.ACTIVE_COPY_COUNT.name,
+                                                                                   contributorAnalysisAnnotationProperties.getActiveCopyCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.STARGAZER_COUNT.name,
+                                                                                   contributorAnalysisAnnotationProperties.getStargazerCount());
+                            }
+                            else if (properties instanceof CodeAnalysisAnnotationProperties codeAnalysisAnnotationProperties)
+                            {
+                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                                  OpenMetadataProperty.FILE_COUNT.name,
+                                                                                  codeAnalysisAnnotationProperties.getFileCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.LINE_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getLineCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.CODE_LINE_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getCodeLineCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.COMMENT_LINE_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getCommentLineCount());
+
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.PRIMARY_LANGUAGE.name,
+                                                                                     codeAnalysisAnnotationProperties.getPrimaryLanguage());
+
+                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                                  OpenMetadataProperty.LANGUAGE_COUNT.name,
+                                                                                  codeAnalysisAnnotationProperties.getLanguageCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.PUBLIC_SYMBOL_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getPublicSymbolCount());
+
+                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                                  OpenMetadataProperty.ENTRY_POINT_COUNT.name,
+                                                                                  codeAnalysisAnnotationProperties.getEntryPointCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.DATA_READ_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getDataReadCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.DATA_CREATE_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getDataCreateCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.DATA_UPDATE_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getDataUpdateCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.DATA_DELETE_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getDataDeleteCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.DATA_CHECKS_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getDataChecksCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.DATA_STORE_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getDataStoreCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.EXTERNAL_CALL_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getExternalCallCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.FUNCTION_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getFunctionCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_TOTAL.name,
+                                                                                   codeAnalysisAnnotationProperties.getCyclomaticComplexityTotal());
+
+                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                                  OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_MAX.name,
+                                                                                  codeAnalysisAnnotationProperties.getCyclomaticComplexityMax());
+
+                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                                  OpenMetadataProperty.MAX_NESTING_DEPTH.name,
+                                                                                  codeAnalysisAnnotationProperties.getMaxNestingDepth());
+
+                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                                  OpenMetadataProperty.TEST_FILE_COUNT.name,
+                                                                                  codeAnalysisAnnotationProperties.getTestFileCount());
+
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                   OpenMetadataProperty.DOCUMENTED_SYMBOL_COUNT.name,
+                                                                                   codeAnalysisAnnotationProperties.getDocumentedSymbolCount());
+                            }
                         }
                         else if (properties instanceof CollectionProperties collectionProperties)
                         {

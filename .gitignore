@@ -106,6 +106,12 @@ egeria-lineage-repositories/**
 # Ignore archives if they are in the top level directory
 /*.omarchive
 
+# Ignore content packs written into a module directory.  The archive writers resolve "content-packs"
+# against the process working directory, so running one from anywhere other than the repository root
+# silently writes the archives into the module instead of the tracked /content-packs directory.
+# Only the copies at the repository root are checked in.
+*/**/content-packs/
+
 # Ignore report output
 component-id-report.md
 survey-report*.md
