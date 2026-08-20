@@ -3158,6 +3158,313 @@ public enum OpenMetadataProperty
                               null,
                               "c7544b4b-b181-465e-a0ca-c090f3bfe212"),
 
+    /* ======================================================
+     * These values are measures of the level of activity around a software source code repository.
+     * They are produced by contributor analysis.
+     */
+
+    /**
+     * The minimum number of team members that have to suddenly disappear from a project before the project stalls due to lack of knowledgeable or competent personnel.
+     */
+    BUS_FACTOR("busFactor",
+               DataType.INT, DataType.INT.getDisplayName(),
+               "The minimum number of team members that have to suddenly disappear from a project before the project stalls due to lack of knowledgeable or competent personnel.",
+               "3",
+               "5790f24f-0b85-4278-b431-67433d15cf95"),
+
+    /**
+     * The number of distinct contributors to the repository during its lifetime.
+     */
+    TOTAL_CONTRIBUTOR_COUNT("totalContributorCount",
+                            DataType.LONG, DataType.LONG.getDisplayName(),
+                            "The number of distinct contributors to the repository during its lifetime.",
+                            "250",
+                            "e31b451c-5f18-4d38-9f67-46fcdb5cabae"),
+
+    /**
+     * The number of distinct contributors to the repository in the last year.
+     */
+    ACTIVE_CONTRIBUTOR_COUNT("activeContributorCount",
+                             DataType.LONG, DataType.LONG.getDisplayName(),
+                             "The number of distinct contributors to the repository in the last year.",
+                             "25",
+                             "12820701-5f9a-4c76-9917-b2a0749c0de4"),
+
+    /**
+     * The number of commits to the repository during its lifetime.
+     */
+    COMMIT_COUNT("commitCount",
+                 DataType.LONG, DataType.LONG.getDisplayName(),
+                 "The number of commits to the repository during its lifetime.",
+                 "12500",
+                 "7e27e23e-225e-4d61-8cda-c3d05bd51579"),
+
+    /**
+     * The number of commits to the repository in the last year.
+     */
+    ACTIVE_COMMIT_COUNT("activeCommitCount",
+                        DataType.LONG, DataType.LONG.getDisplayName(),
+                        "The number of commits to the repository in the last year.",
+                        "1250",
+                        "ae39cbe2-abf0-4147-910e-6839c1941868"),
+
+    /**
+     * The number of issues reported in the repository during its lifetime.
+     */
+    ISSUE_COUNT("issueCount",
+                DataType.LONG, DataType.LONG.getDisplayName(),
+                "The number of issues reported in the repository during its lifetime.",
+                "900",
+                "999fb851-ee7d-4066-a1b0-74e176e0be0f"),
+
+    /**
+     * The number of issues reported in the repository in the last year.
+     */
+    ACTIVE_ISSUE_COUNT("activeIssueCount",
+                       DataType.LONG, DataType.LONG.getDisplayName(),
+                       "The number of issues reported in the repository in the last year.",
+                       "90",
+                       "0d165fcc-822b-4e3f-8f71-deef831a47b1"),
+
+    /**
+     * The number of pull requests opened in the repository during its lifetime.
+     */
+    CONTRIBUTION_COUNT("contributionCount",
+                       DataType.LONG, DataType.LONG.getDisplayName(),
+                       "The number of pull requests opened in the repository during its lifetime.",
+                       "4000",
+                       "d81304de-f6d1-40c2-ba17-b09a99c0d371"),
+
+    /**
+     * The number of pull requests opened in the repository in the last year.
+     */
+    ACTIVE_CONTRIBUTION_COUNT("activeContributionCount",
+                              DataType.LONG, DataType.LONG.getDisplayName(),
+                              "The number of pull requests opened in the repository in the last year.",
+                              "400",
+                              "f5b50469-1a1c-4e92-a18c-1e5bf2ae6bde"),
+
+    /**
+     * The number of forks of the repository during its lifetime.
+     */
+    COPY_COUNT("copyCount",
+               DataType.LONG, DataType.LONG.getDisplayName(),
+               "The number of forks of the repository during its lifetime.",
+               "120",
+               "d2148166-1565-47da-ae65-3e626e4d8319"),
+
+    /**
+     * The number of forks of the repository in the last year.
+     */
+    ACTIVE_COPY_COUNT("activeCopyCount",
+                      DataType.LONG, DataType.LONG.getDisplayName(),
+                      "The number of forks of the repository in the last year.",
+                      "12",
+                      "39b1f964-7dd1-41ed-a0db-01eb09afc1d4"),
+
+    /**
+     * The number of people who have starred the repository during its lifetime.
+     */
+    STARGAZER_COUNT("stargazerCount",
+                    DataType.LONG, DataType.LONG.getDisplayName(),
+                    "The number of people who have starred the repository during its lifetime.",
+                    "800",
+                    "141f7136-fa64-4c4c-8433-85797e628345"),
+
+    /* ======================================================
+     * These values are measures of the content of the code in a software source code repository.
+     * They are produced by code analysis.
+     */
+
+    /**
+     * Number of files in the source code repository.
+     */
+    FILE_COUNT("fileCount",
+               DataType.INT, DataType.INT.getDisplayName(),
+               "Number of files in the source code repository.",
+               "450",
+               "a82b6835-9aed-4096-bd79-676e3b6f2c83"),
+
+    /**
+     * Total number of physical lines in the source code repository, including blank lines and comments.
+     */
+    LINE_COUNT("lineCount",
+               DataType.LONG, DataType.LONG.getDisplayName(),
+               "Total number of physical lines in the source code repository, including blank lines and comments.",
+               "120000",
+               "acde4557-9b78-4aa4-a315-08ea0ad04910"),
+
+    /**
+     * Number of lines of code in the source code repository, excluding blank lines and comments.
+     */
+    CODE_LINE_COUNT("codeLineCount",
+                    DataType.LONG, DataType.LONG.getDisplayName(),
+                    "Number of lines of code in the source code repository, excluding blank lines and comments.",
+                    "85000",
+                    "cf4919e3-4e9c-45d8-9e71-245ea405d3e7"),
+
+    /**
+     * Number of comment lines in the source code repository.  This is measured directly rather than derived from the other line counts so that it is still available when one of them is missing.
+     */
+    COMMENT_LINE_COUNT("commentLineCount",
+                       DataType.LONG, DataType.LONG.getDisplayName(),
+                       "Number of comment lines in the source code repository.  This is measured directly rather than derived from the other line counts so that it is still available when one of them is missing.",
+                       "20000",
+                       "5329c4ca-4233-4768-a12d-7f185e574471"),
+
+    /**
+     * The programming language that most of the source code in the repository is written in.
+     */
+    PRIMARY_LANGUAGE("primaryLanguage",
+                     DataType.STRING, DataType.STRING.getDisplayName(),
+                     "The programming language that most of the source code in the repository is written in.",
+                     "Java",
+                     "04565a6e-4053-458d-a38b-df4b6fb0f981"),
+
+    /**
+     * Number of distinct programming languages used in the source code repository.  Polyglot components carry a higher maintenance cost.
+     */
+    LANGUAGE_COUNT("languageCount",
+                   DataType.INT, DataType.INT.getDisplayName(),
+                   "Number of distinct programming languages used in the source code repository.  Polyglot components carry a higher maintenance cost.",
+                   "3",
+                   "d8d12e02-e8b7-4cad-b57d-15a3e22df5e8"),
+
+    /**
+     * Number of symbols that the component exports for use by its callers, such as public functions, classes and endpoints.
+     */
+    PUBLIC_SYMBOL_COUNT("publicSymbolCount",
+                        DataType.LONG, DataType.LONG.getDisplayName(),
+                        "Number of symbols that the component exports for use by its callers, such as public functions, classes and endpoints.",
+                        "1200",
+                        "ee87eba9-4d86-4522-9823-c4b774c34aab"),
+
+    /**
+     * Number of entry points into the component, such as main methods, command line commands, route handlers and task definitions.
+     */
+    ENTRY_POINT_COUNT("entryPointCount",
+                      DataType.INT, DataType.INT.getDisplayName(),
+                      "Number of entry points into the component, such as main methods, command line commands, route handlers and task definitions.",
+                      "12",
+                      "a76e3408-2309-42de-b493-a71db56221a0"),
+
+    /**
+     * Number of places in the code where data is read.
+     */
+    DATA_READ_COUNT("dataReadCount",
+                    DataType.LONG, DataType.LONG.getDisplayName(),
+                    "Number of places in the code where data is read.",
+                    "340",
+                    "155c444a-0a5d-4f81-834b-4a90beaa928f"),
+
+    /**
+     * Number of places in the code where data is created.
+     */
+    DATA_CREATE_COUNT("dataCreateCount",
+                      DataType.LONG, DataType.LONG.getDisplayName(),
+                      "Number of places in the code where data is created.",
+                      "120",
+                      "f695782b-0a82-487c-9c4e-3a94d0c5d1b1"),
+
+    /**
+     * Number of places in the code where data is updated.
+     */
+    DATA_UPDATE_COUNT("dataUpdateCount",
+                      DataType.LONG, DataType.LONG.getDisplayName(),
+                      "Number of places in the code where data is updated.",
+                      "95",
+                      "7ce649b3-230e-45f2-ace8-f126f99606ab"),
+
+    /**
+     * Number of places in the code where data is deleted.
+     */
+    DATA_DELETE_COUNT("dataDeleteCount",
+                      DataType.LONG, DataType.LONG.getDisplayName(),
+                      "Number of places in the code where data is deleted.",
+                      "40",
+                      "410e60bb-7cd0-470a-8f8b-4cd15f1b99fd"),
+
+    /**
+     * Number of places in the code where data is validated.
+     */
+    DATA_CHECKS_COUNT("dataChecksCount",
+                      DataType.LONG, DataType.LONG.getDisplayName(),
+                      "Number of places in the code where data is validated.",
+                      "260",
+                      "f46e5fd5-a112-44cd-8319-b98e1cb4fc25"),
+
+    /**
+     * Number of distinct data stores that the code touches.  This gives the magnitude of the blast radius when the component misbehaves.
+     */
+    DATA_STORE_COUNT("dataStoreCount",
+                     DataType.LONG, DataType.LONG.getDisplayName(),
+                     "Number of distinct data stores that the code touches.  This gives the magnitude of the blast radius when the component misbehaves.",
+                     "4",
+                     "c2791dc9-54f1-409f-a279-63048f760208"),
+
+    /**
+     * Number of calls that the code makes out of the component.
+     */
+    EXTERNAL_CALL_COUNT("externalCallCount",
+                        DataType.LONG, DataType.LONG.getDisplayName(),
+                        "Number of calls that the code makes out of the component.",
+                        "75",
+                        "1e7f76c6-a9dc-43a8-b317-26339b634ef1"),
+
+    /**
+     * Number of functions in the source code repository.  Paired with cyclomaticComplexityTotal, this makes the mean cyclomatic complexity derivable.
+     */
+    FUNCTION_COUNT("functionCount",
+                   DataType.LONG, DataType.LONG.getDisplayName(),
+                   "Number of functions in the source code repository.  Paired with cyclomaticComplexityTotal, this makes the mean cyclomatic complexity derivable.",
+                   "2800",
+                   "6e968c86-cb13-4abf-abf9-71e522a04658"),
+
+    /**
+     * Sum of the cyclomatic complexity of every function in the source code repository.
+     */
+    CYCLOMATIC_COMPLEXITY_TOTAL("cyclomaticComplexityTotal",
+                                DataType.LONG, DataType.LONG.getDisplayName(),
+                                "Sum of the cyclomatic complexity of every function in the source code repository.",
+                                "9500",
+                                "7f546b5c-74c4-4e39-803d-d212700af7d7"),
+
+    /**
+     * The highest cyclomatic complexity found in any single function in the source code repository.  A single very complex function is a risk that a mean value hides.
+     */
+    CYCLOMATIC_COMPLEXITY_MAX("cyclomaticComplexityMax",
+                              DataType.INT, DataType.INT.getDisplayName(),
+                              "The highest cyclomatic complexity found in any single function in the source code repository.  A single very complex function is a risk that a mean value hides.",
+                              "48",
+                              "912013ab-2cd4-44ad-b486-f75b33b66e48"),
+
+    /**
+     * The deepest level of nested control flow found in any single function in the source code repository.
+     */
+    MAX_NESTING_DEPTH("maxNestingDepth",
+                      DataType.INT, DataType.INT.getDisplayName(),
+                      "The deepest level of nested control flow found in any single function in the source code repository.",
+                      "7",
+                      "d9b1e75f-30a7-40bc-85d2-f3d8f93e9649"),
+
+    /**
+     * Number of files in the source code repository that contain tests.
+     */
+    TEST_FILE_COUNT("testFileCount",
+                    DataType.INT, DataType.INT.getDisplayName(),
+                    "Number of files in the source code repository that contain tests.",
+                    "180",
+                    "4d9a80e2-2943-433f-91f5-3ef6a2f864ee"),
+
+    /**
+     * Number of exported symbols that carry documentation.  Paired with publicSymbolCount, this gives the documentation coverage of the component's public surface.
+     */
+    DOCUMENTED_SYMBOL_COUNT("documentedSymbolCount",
+                            DataType.LONG, DataType.LONG.getDisplayName(),
+                            "Number of exported symbols that carry documentation.  Paired with publicSymbolCount, this gives the documentation coverage of the component's public surface.",
+                            "900",
+                            "58d24cf3-df31-4c2a-bdd9-ea281372382e"),
+
     ;
 
 
