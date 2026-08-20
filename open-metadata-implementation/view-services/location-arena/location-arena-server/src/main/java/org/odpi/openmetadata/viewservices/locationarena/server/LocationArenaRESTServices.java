@@ -15,6 +15,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.Locati
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.NestedLocationProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
 
 
 
@@ -775,4 +778,323 @@ public class LocationArenaRESTServices extends TokenController
         return response;
     }
 
+
+    /*
+     * =====================================================================================================================
+     * Location classifications
+     */
+
+    /**
+     * Classify a location to say that it is a fixed physical location.
+     *
+     * @param serverName name of the server to route the request to
+     * @param locationGUID unique identifier of the location
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setLocationAsFixedLocation(String                       serverName,
+                                                   String                       locationGUID,
+                                                   NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setLocationAsFixedLocation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setLocationAsFixedLocation(userId, locationGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof FixedLocationProperties properties)
+            {
+                handler.setLocationAsFixedLocation(userId, locationGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setLocationAsFixedLocation(userId, locationGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(FixedLocationProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the fixed location designation from a location.
+     *
+     * @param serverName name of the server to route the request to
+     * @param locationGUID unique identifier of the location
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearLocationAsFixedLocation(String                          serverName,
+                                                     String                          locationGUID,
+                                                     DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearLocationAsFixedLocation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            handler.clearLocationAsFixedLocation(userId, locationGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify a location to say that it is a cyber location reached over a network.
+     *
+     * @param serverName name of the server to route the request to
+     * @param locationGUID unique identifier of the location
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setLocationAsCyberLocation(String                       serverName,
+                                                   String                       locationGUID,
+                                                   NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setLocationAsCyberLocation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setLocationAsCyberLocation(userId, locationGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof CyberLocationProperties properties)
+            {
+                handler.setLocationAsCyberLocation(userId, locationGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setLocationAsCyberLocation(userId, locationGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(CyberLocationProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the cyber location designation from a location.
+     *
+     * @param serverName name of the server to route the request to
+     * @param locationGUID unique identifier of the location
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearLocationAsCyberLocation(String                          serverName,
+                                                     String                          locationGUID,
+                                                     DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearLocationAsCyberLocation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            handler.clearLocationAsCyberLocation(userId, locationGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify a location to say that access to it is restricted.
+     *
+     * @param serverName name of the server to route the request to
+     * @param locationGUID unique identifier of the location
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setLocationAsSecureLocation(String                       serverName,
+                                                    String                       locationGUID,
+                                                    NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setLocationAsSecureLocation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setLocationAsSecureLocation(userId, locationGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof SecureLocationProperties properties)
+            {
+                handler.setLocationAsSecureLocation(userId, locationGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setLocationAsSecureLocation(userId, locationGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(SecureLocationProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the secure location designation from a location.
+     *
+     * @param serverName name of the server to route the request to
+     * @param locationGUID unique identifier of the location
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearLocationAsSecureLocation(String                          serverName,
+                                                      String                          locationGUID,
+                                                      DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearLocationAsSecureLocation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LocationHandler handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+
+            handler.clearLocationAsSecureLocation(userId, locationGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 }

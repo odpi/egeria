@@ -1442,4 +1442,112 @@ public class CollectionClient extends ConnectorContextClientBase
     {
         collectionHandler.detachDigitalProductDependency(connectorUserId, consumerDigitalProductGUID, consumedDigitalProductGUID, deleteOptions);
     }
+
+
+    /*
+     * =====================================================================================================================
+     * Collection kind classification
+     */
+
+
+    /**
+     * Classify a collection to describe the kind of collection that it is.
+     *
+     * @param collectionGUID unique identifier of the collection
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setCollectionKind(String                    collectionGUID,
+                             CollectionKindProperties  properties,
+                             MetadataSourceOptions     metadataSourceOptions) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        collectionHandler.setCollectionKind(connectorUserId, collectionGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(collectionGUID);
+        }
+    }
+
+
+    /**
+     * Remove the collection kind classification from a collection.
+     *
+     * @param collectionGUID unique identifier of the collection
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearCollectionKind(String                collectionGUID,
+                               MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        collectionHandler.clearCollectionKind(connectorUserId, collectionGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(collectionGUID);
+        }
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Data sharing agreement classification
+     */
+
+
+    /**
+     * Classify an agreement to say that it governs the sharing of data.
+     *
+     * @param agreementGUID unique identifier of the agreement
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAgreementAsDataSharingAgreement(String                          agreementGUID,
+                                              DataSharingAgreementProperties  properties,
+                                              MetadataSourceOptions           metadataSourceOptions) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
+    {
+        collectionHandler.setAgreementAsDataSharingAgreement(connectorUserId, agreementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(agreementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the data sharing agreement designation from an agreement.
+     *
+     * @param agreementGUID unique identifier of the agreement
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAgreementAsDataSharingAgreement(String                agreementGUID,
+                                                MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
+    {
+        collectionHandler.clearAgreementAsDataSharingAgreement(connectorUserId, agreementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(agreementGUID);
+        }
+    }
 }

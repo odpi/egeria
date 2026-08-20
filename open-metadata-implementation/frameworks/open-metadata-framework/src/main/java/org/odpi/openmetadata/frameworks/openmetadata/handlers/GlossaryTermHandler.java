@@ -1020,4 +1020,71 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
                                                         contextElementGUID,
                                                         deleteOptions);
     }
+
+
+    /*
+     * =====================================================================================================================
+     * Glossary term supplement classification
+     */
+
+
+    /**
+     * Classify a glossary term to say that it supplements the description of another element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setTermAsElementSupplement(String                       userId,
+                                           String                       glossaryTermGUID,
+                                           ElementSupplementProperties  properties,
+                                           MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
+    {
+        final String methodName        = "setTermAsElementSupplement";
+        final String guidParameterName = "glossaryTermGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(glossaryTermGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          glossaryTermGUID,
+                                                          OpenMetadataType.ELEMENT_SUPPLEMENT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the element supplement designation from a glossary term.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearTermAsElementSupplement(String                userId,
+                                             String                glossaryTermGUID,
+                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName        = "clearTermAsElementSupplement";
+        final String guidParameterName = "glossaryTermGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(glossaryTermGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            glossaryTermGUID,
+                                                            OpenMetadataType.ELEMENT_SUPPLEMENT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
 }

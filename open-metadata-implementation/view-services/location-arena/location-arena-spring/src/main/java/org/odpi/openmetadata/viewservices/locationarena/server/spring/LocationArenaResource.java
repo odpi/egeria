@@ -449,4 +449,177 @@ public class LocationArenaResource
     {
         return restAPI.getLocationByGUID(serverName, locationGUID, requestBody);
     }
+
+    /**
+     * Classify a location to say that it is a fixed physical location.
+     *
+     * @param serverName name of the server to route the request to
+     * @param locationGUID unique identifier of the location
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/locations/{locationGUID}/fixed-location")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setLocationAsFixedLocation",
+            description="Classify a location to say that it is a fixed physical location.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/location"))
+
+    public VoidResponse setLocationAsFixedLocation(@PathVariable String serverName,
+                                                   @PathVariable String locationGUID,
+                                                   @RequestBody (required = false)
+                                                   NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setLocationAsFixedLocation(serverName, locationGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the fixed location designation from a location.
+     *
+     * @param serverName name of the server to route the request to
+     * @param locationGUID unique identifier of the location
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/locations/{locationGUID}/fixed-location/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearLocationAsFixedLocation",
+            description="Remove the fixed location designation from a location.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/location"))
+
+    public VoidResponse clearLocationAsFixedLocation(@PathVariable String serverName,
+                                                     @PathVariable String locationGUID,
+                                                     @RequestBody (required = false)
+                                                     DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearLocationAsFixedLocation(serverName, locationGUID, requestBody);
+    }
+
+
+    /**
+     * Classify a location to say that it is a cyber location reached over a network.
+     *
+     * @param serverName name of the server to route the request to
+     * @param locationGUID unique identifier of the location
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/locations/{locationGUID}/cyber-location")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setLocationAsCyberLocation",
+            description="Classify a location to say that it is a cyber location reached over a network.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/location"))
+
+    public VoidResponse setLocationAsCyberLocation(@PathVariable String serverName,
+                                                   @PathVariable String locationGUID,
+                                                   @RequestBody (required = false)
+                                                   NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setLocationAsCyberLocation(serverName, locationGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the cyber location designation from a location.
+     *
+     * @param serverName name of the server to route the request to
+     * @param locationGUID unique identifier of the location
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/locations/{locationGUID}/cyber-location/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearLocationAsCyberLocation",
+            description="Remove the cyber location designation from a location.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/location"))
+
+    public VoidResponse clearLocationAsCyberLocation(@PathVariable String serverName,
+                                                     @PathVariable String locationGUID,
+                                                     @RequestBody (required = false)
+                                                     DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearLocationAsCyberLocation(serverName, locationGUID, requestBody);
+    }
+
+
+    /**
+     * Classify a location to say that access to it is restricted.
+     *
+     * @param serverName name of the server to route the request to
+     * @param locationGUID unique identifier of the location
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/locations/{locationGUID}/secure-location")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setLocationAsSecureLocation",
+            description="Classify a location to say that access to it is restricted.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/location"))
+
+    public VoidResponse setLocationAsSecureLocation(@PathVariable String serverName,
+                                                    @PathVariable String locationGUID,
+                                                    @RequestBody (required = false)
+                                                    NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setLocationAsSecureLocation(serverName, locationGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the secure location designation from a location.
+     *
+     * @param serverName name of the server to route the request to
+     * @param locationGUID unique identifier of the location
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/locations/{locationGUID}/secure-location/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearLocationAsSecureLocation",
+            description="Remove the secure location designation from a location.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/location"))
+
+    public VoidResponse clearLocationAsSecureLocation(@PathVariable String serverName,
+                                                      @PathVariable String locationGUID,
+                                                      @RequestBody (required = false)
+                                                      DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearLocationAsSecureLocation(serverName, locationGUID, requestBody);
+    }
 }

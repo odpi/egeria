@@ -1143,4 +1143,518 @@ public class SchemaMakerResource
     {
         return restAPI.detachRelationalDBSchema(serverName, urlMarker, databaseSchemaTypeListGUID, relationalDBSchemaTypeGUID, requestBody);
     }
+
+    /**
+     * Add the PrimaryKey classification to a relational column.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param relationalColumnGUID unique identifier of the relational column
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/relational-columns/{relationalColumnGUID}/primary-key")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="addPrimaryKeyClassification",
+            description="Add the PrimaryKey classification to a relational column.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-attribute"))
+
+    public VoidResponse addPrimaryKeyClassification(@PathVariable String serverName,
+                                                    @PathVariable String urlMarker,
+                                                    @PathVariable String relationalColumnGUID,
+                                                    @RequestBody (required = false)
+                                                    NewClassificationRequestBody requestBody)
+    {
+        return restAPI.addPrimaryKeyClassification(serverName, urlMarker, relationalColumnGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the PrimaryKey classification from a relational column.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param relationalColumnGUID unique identifier of the relational column
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/relational-columns/{relationalColumnGUID}/primary-key/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="removePrimaryKeyClassification",
+            description="Remove the PrimaryKey classification from a relational column.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-attribute"))
+
+    public VoidResponse removePrimaryKeyClassification(@PathVariable String serverName,
+                                                       @PathVariable String urlMarker,
+                                                       @PathVariable String relationalColumnGUID,
+                                                       @RequestBody (required = false)
+                                                       DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.removePrimaryKeyClassification(serverName, urlMarker, relationalColumnGUID, requestBody);
+    }
+
+
+    /**
+     * Add the TypeEmbeddedAttribute classification to a schema attribute.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param schemaAttributeGUID unique identifier of the schema attribute
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/type-embedded-attribute")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="addTypeEmbeddedAttribute",
+            description="Add the TypeEmbeddedAttribute classification to a schema attribute.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-attribute"))
+
+    public VoidResponse addTypeEmbeddedAttribute(@PathVariable String serverName,
+                                                 @PathVariable String urlMarker,
+                                                 @PathVariable String schemaAttributeGUID,
+                                                 @RequestBody (required = false)
+                                                 NewClassificationRequestBody requestBody)
+    {
+        return restAPI.addTypeEmbeddedAttribute(serverName, urlMarker, schemaAttributeGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the TypeEmbeddedAttribute classification from a schema attribute.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param schemaAttributeGUID unique identifier of the schema attribute
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/type-embedded-attribute/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="removeTypeEmbeddedAttribute",
+            description="Remove the TypeEmbeddedAttribute classification from a schema attribute.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-attribute"))
+
+    public VoidResponse removeTypeEmbeddedAttribute(@PathVariable String serverName,
+                                                    @PathVariable String urlMarker,
+                                                    @PathVariable String schemaAttributeGUID,
+                                                    @RequestBody (required = false)
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.removeTypeEmbeddedAttribute(serverName, urlMarker, schemaAttributeGUID, requestBody);
+    }
+
+
+    /**
+     * Add the CalculatedValue classification to a schema element to show that its value is derived by a formula.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param schemaAttributeGUID unique identifier of the schema attribute
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/calculated-value")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="addCalculatedValue",
+            description="Add the CalculatedValue classification to a schema element to show that its value is derived by a formula.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-attribute"))
+
+    public VoidResponse addCalculatedValue(@PathVariable String serverName,
+                                           @PathVariable String urlMarker,
+                                           @PathVariable String schemaAttributeGUID,
+                                           @RequestBody (required = false)
+                                           NewClassificationRequestBody requestBody)
+    {
+        return restAPI.addCalculatedValue(serverName, urlMarker, schemaAttributeGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the CalculatedValue classification from a schema element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param schemaAttributeGUID unique identifier of the schema attribute
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/calculated-value/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="removeCalculatedValue",
+            description="Remove the CalculatedValue classification from a schema element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-attribute"))
+
+    public VoidResponse removeCalculatedValue(@PathVariable String serverName,
+                                              @PathVariable String urlMarker,
+                                              @PathVariable String schemaAttributeGUID,
+                                              @RequestBody (required = false)
+                                              DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.removeCalculatedValue(serverName, urlMarker, schemaAttributeGUID, requestBody);
+    }
+
+    /**
+     * Attach an API operation to the API schema type that contains it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiSchemaTypeGUID unique identifier of the API schema type
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/api-schema-types/{apiSchemaTypeGUID}/api-operations/{apiOperationGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkAPIOperations",
+            description="Attach an API operation to the API schema type that contains it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-type"))
+
+    public VoidResponse linkAPIOperations(@PathVariable String serverName,
+                                          @PathVariable String urlMarker,
+                                          @PathVariable String apiSchemaTypeGUID,
+                                          @PathVariable String apiOperationGUID,
+                                          @RequestBody (required = false)
+                                          NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkAPIOperations(serverName, urlMarker, apiSchemaTypeGUID, apiOperationGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an API operation from the API schema type that contained it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiSchemaTypeGUID unique identifier of the API schema type
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/api-schema-types/{apiSchemaTypeGUID}/api-operations/{apiOperationGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachAPIOperations",
+            description="Detach an API operation from the API schema type that contained it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-type"))
+
+    public VoidResponse detachAPIOperations(@PathVariable String serverName,
+                                            @PathVariable String urlMarker,
+                                            @PathVariable String apiSchemaTypeGUID,
+                                            @PathVariable String apiOperationGUID,
+                                            @RequestBody (required = false)
+                                            DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachAPIOperations(serverName, urlMarker, apiSchemaTypeGUID, apiOperationGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a schema type to the API operation that uses it as its header.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the header
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/api-operations/{apiOperationGUID}/api-headers/{schemaTypeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkAPIHeader",
+            description="Attach a schema type to the API operation that uses it as its header.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-type"))
+
+    public VoidResponse linkAPIHeader(@PathVariable String serverName,
+                                      @PathVariable String urlMarker,
+                                      @PathVariable String apiOperationGUID,
+                                      @PathVariable String schemaTypeGUID,
+                                      @RequestBody (required = false)
+                                      NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkAPIHeader(serverName, urlMarker, apiOperationGUID, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a schema type from the API operation that used it as its header.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the header
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/api-operations/{apiOperationGUID}/api-headers/{schemaTypeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachAPIHeader",
+            description="Detach a schema type from the API operation that used it as its header.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-type"))
+
+    public VoidResponse detachAPIHeader(@PathVariable String serverName,
+                                        @PathVariable String urlMarker,
+                                        @PathVariable String apiOperationGUID,
+                                        @PathVariable String schemaTypeGUID,
+                                        @RequestBody (required = false)
+                                        DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachAPIHeader(serverName, urlMarker, apiOperationGUID, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a schema type to the API operation that uses it as its request.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the request
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/api-operations/{apiOperationGUID}/api-requests/{schemaTypeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkAPIRequest",
+            description="Attach a schema type to the API operation that uses it as its request.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-type"))
+
+    public VoidResponse linkAPIRequest(@PathVariable String serverName,
+                                       @PathVariable String urlMarker,
+                                       @PathVariable String apiOperationGUID,
+                                       @PathVariable String schemaTypeGUID,
+                                       @RequestBody (required = false)
+                                       NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkAPIRequest(serverName, urlMarker, apiOperationGUID, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a schema type from the API operation that used it as its request.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the request
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/api-operations/{apiOperationGUID}/api-requests/{schemaTypeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachAPIRequest",
+            description="Detach a schema type from the API operation that used it as its request.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-type"))
+
+    public VoidResponse detachAPIRequest(@PathVariable String serverName,
+                                         @PathVariable String urlMarker,
+                                         @PathVariable String apiOperationGUID,
+                                         @PathVariable String schemaTypeGUID,
+                                         @RequestBody (required = false)
+                                         DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachAPIRequest(serverName, urlMarker, apiOperationGUID, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a schema type to the API operation that uses it as its response.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the response
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/api-operations/{apiOperationGUID}/api-responses/{schemaTypeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkAPIResponse",
+            description="Attach a schema type to the API operation that uses it as its response.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-type"))
+
+    public VoidResponse linkAPIResponse(@PathVariable String serverName,
+                                        @PathVariable String urlMarker,
+                                        @PathVariable String apiOperationGUID,
+                                        @PathVariable String schemaTypeGUID,
+                                        @RequestBody (required = false)
+                                        NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkAPIResponse(serverName, urlMarker, apiOperationGUID, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a schema type from the API operation that used it as its response.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param apiOperationGUID unique identifier of the API operation
+     * @param schemaTypeGUID unique identifier of the schema type describing the response
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/api-operations/{apiOperationGUID}/api-responses/{schemaTypeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachAPIResponse",
+            description="Detach a schema type from the API operation that used it as its response.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-type"))
+
+    public VoidResponse detachAPIResponse(@PathVariable String serverName,
+                                          @PathVariable String urlMarker,
+                                          @PathVariable String apiOperationGUID,
+                                          @PathVariable String schemaTypeGUID,
+                                          @RequestBody (required = false)
+                                          DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachAPIResponse(serverName, urlMarker, apiOperationGUID, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a schema type to a schema element that may optionally use it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param schemaElementGUID unique identifier of the schema element
+     * @param schemaTypeGUID unique identifier of the schema type that is one of its options
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-elements/{schemaElementGUID}/schema-type-options/{schemaTypeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkSchemaTypeOption",
+            description="Attach a schema type to a schema element that may optionally use it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-type"))
+
+    public VoidResponse linkSchemaTypeOption(@PathVariable String serverName,
+                                             @PathVariable String urlMarker,
+                                             @PathVariable String schemaElementGUID,
+                                             @PathVariable String schemaTypeGUID,
+                                             @RequestBody (required = false)
+                                             NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSchemaTypeOption(serverName, urlMarker, schemaElementGUID, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a schema type from a schema element that may optionally have used it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param schemaElementGUID unique identifier of the schema element
+     * @param schemaTypeGUID unique identifier of the schema type that is one of its options
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/schema-elements/{schemaElementGUID}/schema-type-options/{schemaTypeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSchemaTypeOption",
+            description="Detach a schema type from a schema element that may optionally have used it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/schema-type"))
+
+    public VoidResponse detachSchemaTypeOption(@PathVariable String serverName,
+                                               @PathVariable String urlMarker,
+                                               @PathVariable String schemaElementGUID,
+                                               @PathVariable String schemaTypeGUID,
+                                               @RequestBody (required = false)
+                                               DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSchemaTypeOption(serverName, urlMarker, schemaElementGUID, schemaTypeGUID, requestBody);
+    }
 }

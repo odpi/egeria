@@ -376,4 +376,94 @@ public class SolutionComponentClient extends ConnectorContextClientBase
     {
         return solutionComponentHandler.findSolutionComponents(connectorUserId, searchString, searchOptions);
     }
+
+
+    /*
+     * =====================================================================================================================
+     * Solution port relationships
+     */
+
+
+    /**
+     * Attach a solution port to the solution component that exposes it.
+     *
+     * @param solutionComponentGUID unique identifier of the solution component
+     * @param solutionPortGUID unique identifier of the solution port
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSolutionComponentPort(String                           solutionComponentGUID,
+                                     String                           solutionPortGUID,
+                                     MakeAnchorOptions                makeAnchorOptions,
+                                     SolutionComponentPortProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        solutionComponentHandler.linkSolutionComponentPort(connectorUserId, solutionComponentGUID, solutionPortGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a solution port from the solution component that exposed it.
+     *
+     * @param solutionComponentGUID unique identifier of the solution component
+     * @param solutionPortGUID unique identifier of the solution port
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSolutionComponentPort(String        solutionComponentGUID,
+                                       String        solutionPortGUID,
+                                       DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        solutionComponentHandler.detachSolutionComponentPort(connectorUserId, solutionComponentGUID, solutionPortGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach a solution port to the solution port that it delegates to.
+     *
+     * @param alignsToPortGUID unique identifier of the solution port that is aligned to
+     * @param delegationPortGUID unique identifier of the solution port that delegates
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSolutionPortDelegation(String                            alignsToPortGUID,
+                                      String                            delegationPortGUID,
+                                      MakeAnchorOptions                 makeAnchorOptions,
+                                      SolutionPortDelegationProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        solutionComponentHandler.linkSolutionPortDelegation(connectorUserId, alignsToPortGUID, delegationPortGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a solution port from the solution port that it delegated to.
+     *
+     * @param alignsToPortGUID unique identifier of the solution port that is aligned to
+     * @param delegationPortGUID unique identifier of the solution port that delegates
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSolutionPortDelegation(String        alignsToPortGUID,
+                                        String        delegationPortGUID,
+                                        DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        solutionComponentHandler.detachSolutionPortDelegation(connectorUserId, alignsToPortGUID, delegationPortGUID, deleteOptions);
+    }
 }

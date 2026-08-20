@@ -23,6 +23,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudServiceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RegisteredIntegrationConnectorProperties;
 
 /**
  * SoftwareCapabilityHandler provides methods to define all types of softwareCapabilities and their relationships
@@ -649,5 +651,149 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
         final String methodName = "findSoftwareCapabilities";
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cloud service classification
+     */
+
+
+    /**
+     * Classify a software capability to say that it is a cloud service.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param softwareCapabilityGUID unique identifier of the software capability
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setCapabilityAsCloudService(String                  userId,
+                                            String                  softwareCapabilityGUID,
+                                            CloudServiceProperties  properties,
+                                            MetadataSourceOptions   metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName        = "setCapabilityAsCloudService";
+        final String guidParameterName = "softwareCapabilityGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(softwareCapabilityGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          softwareCapabilityGUID,
+                                                          OpenMetadataType.CLOUD_SERVICE_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the cloud service designation from a software capability.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param softwareCapabilityGUID unique identifier of the software capability
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearCapabilityAsCloudService(String                userId,
+                                              String                softwareCapabilityGUID,
+                                              MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName        = "clearCapabilityAsCloudService";
+        final String guidParameterName = "softwareCapabilityGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(softwareCapabilityGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            softwareCapabilityGUID,
+                                                            OpenMetadataType.CLOUD_SERVICE_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Registered integration connector relationship
+     */
+
+
+    /**
+     * Register an integration connector with the integration group that runs it.
+     *
+     * @param userId                 userId of the user making the request
+     * @param integrationGroupGUID unique identifier of the integration group
+     * @param integrationConnectorGUID unique identifier of the integration connector
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkRegisteredIntegrationConnector(String                                    userId,
+                                                   String                                    integrationGroupGUID,
+                                                   String                                    integrationConnectorGUID,
+                                                   MakeAnchorOptions                         makeAnchorOptions,
+                                                   RegisteredIntegrationConnectorProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                                            PropertyServerException,
+                                                                                                                            UserNotAuthorizedException
+    {
+        final String methodName            = "linkRegisteredIntegrationConnector";
+        final String end1GUIDParameterName = "integrationGroupGUID";
+        final String end2GUIDParameterName = "integrationConnectorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(integrationGroupGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(integrationConnectorGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName,
+                                                        integrationGroupGUID,
+                                                        integrationConnectorGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove an integration connector from the integration group that ran it.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param integrationGroupGUID unique identifier of the integration group
+     * @param integrationConnectorGUID unique identifier of the integration connector
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachRegisteredIntegrationConnector(String        userId,
+                                                     String        integrationGroupGUID,
+                                                     String        integrationConnectorGUID,
+                                                     DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName            = "detachRegisteredIntegrationConnector";
+        final String end1GUIDParameterName = "integrationGroupGUID";
+        final String end2GUIDParameterName = "integrationConnectorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(integrationGroupGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(integrationConnectorGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName,
+                                                        integrationGroupGUID,
+                                                        integrationConnectorGUID,
+                                                        deleteOptions);
     }
 }

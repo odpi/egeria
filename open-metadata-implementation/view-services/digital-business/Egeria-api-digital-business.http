@@ -155,3 +155,47 @@ Content-Type: application/json
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
+###
+# =====================================================================================================================
+# Data sharing agreement classification
+# https://egeria-project.org/concepts/agreement
+
+@agreementGUID=add guid here
+
+###
+# @name setAgreementAsDataSharingAgreement
+# Classify an agreement to say that it governs the sharing of data.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/digital-business/agreements/{{agreementGUID}}/data-sharing-agreement
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "DataSharingAgreementProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearAgreementAsDataSharingAgreement
+# Remove the data sharing agreement designation from an agreement.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/digital-business/agreements/{{agreementGUID}}/data-sharing-agreement/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+

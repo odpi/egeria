@@ -2199,4 +2199,1099 @@ public class GovernanceOfficerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response);
         return response;
     }
+
+
+    /*
+     * =====================================================================================================================
+     * Governance point classifications
+     */
+
+    /**
+     * Classify an element to say that it is a control point where a governance action is performed.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setControlPoint(String                       serverName,
+                                        String                       urlMarker,
+                                        String                       elementGUID,
+                                        NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setControlPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setControlPoint(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ControlPointProperties properties)
+            {
+                handler.setControlPoint(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setControlPoint(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ControlPointProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the control point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearControlPoint(String                          serverName,
+                                          String                          urlMarker,
+                                          String                          elementGUID,
+                                          DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearControlPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearControlPoint(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it is a verification point where a governance requirement is checked.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setVerificationPoint(String                       serverName,
+                                             String                       urlMarker,
+                                             String                       elementGUID,
+                                             NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setVerificationPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setVerificationPoint(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof VerificationPointProperties properties)
+            {
+                handler.setVerificationPoint(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setVerificationPoint(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(VerificationPointProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the verification point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearVerificationPoint(String                          serverName,
+                                               String                          urlMarker,
+                                               String                          elementGUID,
+                                               DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearVerificationPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearVerificationPoint(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it is an enforcement point where a governance requirement is enforced.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setEnforcementPoint(String                       serverName,
+                                            String                       urlMarker,
+                                            String                       elementGUID,
+                                            NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setEnforcementPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setEnforcementPoint(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof EnforcementPointProperties properties)
+            {
+                handler.setEnforcementPoint(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setEnforcementPoint(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(EnforcementPointProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the enforcement point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearEnforcementPoint(String                          serverName,
+                                              String                          urlMarker,
+                                              String                          elementGUID,
+                                              DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearEnforcementPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearEnforcementPoint(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it is an execution point where governance is executed.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setExecutionPoint(String                       serverName,
+                                          String                       urlMarker,
+                                          String                       elementGUID,
+                                          NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setExecutionPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setExecutionPoint(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ExecutionPointProperties properties)
+            {
+                handler.setExecutionPoint(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setExecutionPoint(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ExecutionPointProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the execution point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearExecutionPoint(String                          serverName,
+                                            String                          urlMarker,
+                                            String                          elementGUID,
+                                            DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearExecutionPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearExecutionPoint(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy administration point where policies are created and maintained.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setPolicyAdministrationPoint(String                       serverName,
+                                                     String                       urlMarker,
+                                                     String                       elementGUID,
+                                                     NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setPolicyAdministrationPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setPolicyAdministrationPoint(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof PolicyAdministrationPointProperties properties)
+            {
+                handler.setPolicyAdministrationPoint(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setPolicyAdministrationPoint(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(PolicyAdministrationPointProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the policy administration point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearPolicyAdministrationPoint(String                          serverName,
+                                                       String                          urlMarker,
+                                                       String                          elementGUID,
+                                                       DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearPolicyAdministrationPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearPolicyAdministrationPoint(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy decision point where a policy decision is made.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setPolicyDecisionPoint(String                       serverName,
+                                               String                       urlMarker,
+                                               String                       elementGUID,
+                                               NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setPolicyDecisionPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setPolicyDecisionPoint(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof PolicyDecisionPointProperties properties)
+            {
+                handler.setPolicyDecisionPoint(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setPolicyDecisionPoint(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(PolicyDecisionPointProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the policy decision point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearPolicyDecisionPoint(String                          serverName,
+                                                 String                          urlMarker,
+                                                 String                          elementGUID,
+                                                 DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearPolicyDecisionPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearPolicyDecisionPoint(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy enforcement point where a policy decision is applied.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setPolicyEnforcementPoint(String                       serverName,
+                                                  String                       urlMarker,
+                                                  String                       elementGUID,
+                                                  NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setPolicyEnforcementPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setPolicyEnforcementPoint(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof PolicyEnforcementPointProperties properties)
+            {
+                handler.setPolicyEnforcementPoint(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setPolicyEnforcementPoint(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(PolicyEnforcementPointProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the policy enforcement point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearPolicyEnforcementPoint(String                          serverName,
+                                                    String                          urlMarker,
+                                                    String                          elementGUID,
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearPolicyEnforcementPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearPolicyEnforcementPoint(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy information point that supplies the information a policy decision needs.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setPolicyInformationPoint(String                       serverName,
+                                                  String                       urlMarker,
+                                                  String                       elementGUID,
+                                                  NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setPolicyInformationPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setPolicyInformationPoint(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof PolicyInformationPointProperties properties)
+            {
+                handler.setPolicyInformationPoint(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setPolicyInformationPoint(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(PolicyInformationPointProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the policy information point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearPolicyInformationPoint(String                          serverName,
+                                                    String                          urlMarker,
+                                                    String                          elementGUID,
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearPolicyInformationPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearPolicyInformationPoint(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy management point.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setPolicyManagementPoint(String                       serverName,
+                                                 String                       urlMarker,
+                                                 String                       elementGUID,
+                                                 NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setPolicyManagementPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setPolicyManagementPoint(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof PolicyManagementPointProperties properties)
+            {
+                handler.setPolicyManagementPoint(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setPolicyManagementPoint(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(PolicyManagementPointProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the policy management point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearPolicyManagementPoint(String                          serverName,
+                                                   String                          urlMarker,
+                                                   String                          elementGUID,
+                                                   DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearPolicyManagementPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearPolicyManagementPoint(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy retrieval point where policies are retrieved for a decision.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setPolicyRetrievalPoint(String                       serverName,
+                                                String                       urlMarker,
+                                                String                       elementGUID,
+                                                NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setPolicyRetrievalPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setPolicyRetrievalPoint(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof PolicyRetrievalPointProperties properties)
+            {
+                handler.setPolicyRetrievalPoint(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setPolicyRetrievalPoint(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(PolicyRetrievalPointProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the policy retrieval point designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearPolicyRetrievalPoint(String                          serverName,
+                                                  String                          urlMarker,
+                                                  String                          elementGUID,
+                                                  DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearPolicyRetrievalPoint";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearPolicyRetrievalPoint(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 }

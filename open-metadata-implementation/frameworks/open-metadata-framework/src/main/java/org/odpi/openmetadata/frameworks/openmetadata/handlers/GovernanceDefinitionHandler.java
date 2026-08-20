@@ -31,6 +31,7 @@ import java.util.Map;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingSpecificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DetailedProcessingActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProfileProperties;
 
 
 /**
@@ -2067,5 +2068,688 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(associatedSecurityListRelationshipGUID, guidParameterName, methodName);
 
         openMetadataClient.deleteRelationshipInStore(userId, associatedSecurityListRelationshipGUID, deleteOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Governance point classifications
+     */
+
+
+    /**
+     * Classify an element to say that it is a control point where a governance action is performed.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setControlPoint(String                  userId,
+                                String                  elementGUID,
+                                ControlPointProperties  properties,
+                                MetadataSourceOptions   metadataSourceOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName        = "setControlPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.CONTROL_POINT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the control point designation from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearControlPoint(String                userId,
+                                  String                elementGUID,
+                                  MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        final String methodName        = "clearControlPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.CONTROL_POINT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to say that it is a verification point where a governance requirement is checked.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setVerificationPoint(String                       userId,
+                                     String                       elementGUID,
+                                     VerificationPointProperties  properties,
+                                     MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        final String methodName        = "setVerificationPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.VERIFICATION_POINT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the verification point designation from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearVerificationPoint(String                userId,
+                                       String                elementGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName        = "clearVerificationPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.VERIFICATION_POINT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to say that it is an enforcement point where a governance requirement is enforced.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setEnforcementPoint(String                      userId,
+                                    String                      elementGUID,
+                                    EnforcementPointProperties  properties,
+                                    MetadataSourceOptions       metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName        = "setEnforcementPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.ENFORCEMENT_POINT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the enforcement point designation from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearEnforcementPoint(String                userId,
+                                      String                elementGUID,
+                                      MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName        = "clearEnforcementPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.ENFORCEMENT_POINT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to say that it is an execution point where governance is executed.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setExecutionPoint(String                    userId,
+                                  String                    elementGUID,
+                                  ExecutionPointProperties  properties,
+                                  MetadataSourceOptions     metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName        = "setExecutionPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.EXECUTION_POINT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the execution point designation from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearExecutionPoint(String                userId,
+                                    String                elementGUID,
+                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName        = "clearExecutionPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.EXECUTION_POINT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy administration point where policies are created and maintained.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setPolicyAdministrationPoint(String                               userId,
+                                             String                               elementGUID,
+                                             PolicyAdministrationPointProperties  properties,
+                                             MetadataSourceOptions                metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                PropertyServerException,
+                                                                                                                UserNotAuthorizedException
+    {
+        final String methodName        = "setPolicyAdministrationPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.POLICY_ADMINISTRATION_POINT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the policy administration point designation from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearPolicyAdministrationPoint(String                userId,
+                                               String                elementGUID,
+                                               MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        final String methodName        = "clearPolicyAdministrationPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.POLICY_ADMINISTRATION_POINT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy decision point where a policy decision is made.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setPolicyDecisionPoint(String                         userId,
+                                       String                         elementGUID,
+                                       PolicyDecisionPointProperties  properties,
+                                       MetadataSourceOptions          metadataSourceOptions) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName        = "setPolicyDecisionPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.POLICY_DECISION_POINT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the policy decision point designation from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearPolicyDecisionPoint(String                userId,
+                                         String                elementGUID,
+                                         MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        final String methodName        = "clearPolicyDecisionPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.POLICY_DECISION_POINT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy enforcement point where a policy decision is applied.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setPolicyEnforcementPoint(String                            userId,
+                                          String                            elementGUID,
+                                          PolicyEnforcementPointProperties  properties,
+                                          MetadataSourceOptions             metadataSourceOptions) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
+    {
+        final String methodName        = "setPolicyEnforcementPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.POLICY_ENFORCEMENT_POINT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the policy enforcement point designation from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearPolicyEnforcementPoint(String                userId,
+                                            String                elementGUID,
+                                            MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName        = "clearPolicyEnforcementPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.POLICY_ENFORCEMENT_POINT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy information point that supplies the information a policy decision needs.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setPolicyInformationPoint(String                            userId,
+                                          String                            elementGUID,
+                                          PolicyInformationPointProperties  properties,
+                                          MetadataSourceOptions             metadataSourceOptions) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
+    {
+        final String methodName        = "setPolicyInformationPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.POLICY_INFORMATION_POINT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the policy information point designation from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearPolicyInformationPoint(String                userId,
+                                            String                elementGUID,
+                                            MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName        = "clearPolicyInformationPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.POLICY_INFORMATION_POINT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy management point.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setPolicyManagementPoint(String                           userId,
+                                         String                           elementGUID,
+                                         PolicyManagementPointProperties  properties,
+                                         MetadataSourceOptions            metadataSourceOptions) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
+    {
+        final String methodName        = "setPolicyManagementPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.POLICY_MANAGEMENT_POINT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the policy management point designation from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearPolicyManagementPoint(String                userId,
+                                           String                elementGUID,
+                                           MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
+    {
+        final String methodName        = "clearPolicyManagementPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.POLICY_MANAGEMENT_POINT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy retrieval point where policies are retrieved for a decision.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setPolicyRetrievalPoint(String                          userId,
+                                        String                          elementGUID,
+                                        PolicyRetrievalPointProperties  properties,
+                                        MetadataSourceOptions           metadataSourceOptions) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
+    {
+        final String methodName        = "setPolicyRetrievalPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.POLICY_RETRIEVAL_POINT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the policy retrieval point designation from an element.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearPolicyRetrievalPoint(String                userId,
+                                          String                elementGUID,
+                                          MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        final String methodName        = "clearPolicyRetrievalPoint";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.POLICY_RETRIEVAL_POINT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Governance zone profile classification
+     */
+
+
+    /**
+     * Classify a governance zone with a profile of its membership.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param governanceZoneGUID unique identifier of the governance zone
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setZoneMembershipProfile(String                           userId,
+                                         String                           governanceZoneGUID,
+                                         ZoneMembershipProfileProperties  properties,
+                                         MetadataSourceOptions            metadataSourceOptions) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
+    {
+        final String methodName        = "setZoneMembershipProfile";
+        final String guidParameterName = "governanceZoneGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(governanceZoneGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          governanceZoneGUID,
+                                                          OpenMetadataType.ZONE_MEMBERSHIP_PROFILE_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the zone membership profile from a governance zone.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param governanceZoneGUID unique identifier of the governance zone
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearZoneMembershipProfile(String                userId,
+                                           String                governanceZoneGUID,
+                                           MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
+    {
+        final String methodName        = "clearZoneMembershipProfile";
+        final String guidParameterName = "governanceZoneGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(governanceZoneGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            governanceZoneGUID,
+                                                            OpenMetadataType.ZONE_MEMBERSHIP_PROFILE_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
     }
 }

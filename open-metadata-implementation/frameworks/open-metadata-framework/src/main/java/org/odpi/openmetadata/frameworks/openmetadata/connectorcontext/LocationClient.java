@@ -21,6 +21,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
 import java.util.Map;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
 
 /**
  * Provides services for connectors to work with location elements.
@@ -360,5 +363,155 @@ public class LocationClient extends ConnectorContextClientBase
                                                                                            PropertyServerException
     {
         return locationHandler.findLocations(connectorUserId, searchString, searchOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Location classifications
+     */
+
+
+    /**
+     * Classify a location to say that it is a fixed physical location.
+     *
+     * @param locationGUID unique identifier of the location
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setLocationAsFixedLocation(String                   locationGUID,
+                                      FixedLocationProperties  properties,
+                                      MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        locationHandler.setLocationAsFixedLocation(connectorUserId, locationGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(locationGUID);
+        }
+    }
+
+
+    /**
+     * Remove the fixed location designation from a location.
+     *
+     * @param locationGUID unique identifier of the location
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearLocationAsFixedLocation(String                locationGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        locationHandler.clearLocationAsFixedLocation(connectorUserId, locationGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(locationGUID);
+        }
+    }
+
+
+    /**
+     * Classify a location to say that it is a cyber location reached over a network.
+     *
+     * @param locationGUID unique identifier of the location
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setLocationAsCyberLocation(String                   locationGUID,
+                                      CyberLocationProperties  properties,
+                                      MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        locationHandler.setLocationAsCyberLocation(connectorUserId, locationGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(locationGUID);
+        }
+    }
+
+
+    /**
+     * Remove the cyber location designation from a location.
+     *
+     * @param locationGUID unique identifier of the location
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearLocationAsCyberLocation(String                locationGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        locationHandler.clearLocationAsCyberLocation(connectorUserId, locationGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(locationGUID);
+        }
+    }
+
+
+    /**
+     * Classify a location to say that access to it is restricted.
+     *
+     * @param locationGUID unique identifier of the location
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setLocationAsSecureLocation(String                    locationGUID,
+                                       SecureLocationProperties  properties,
+                                       MetadataSourceOptions     metadataSourceOptions) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        locationHandler.setLocationAsSecureLocation(connectorUserId, locationGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(locationGUID);
+        }
+    }
+
+
+    /**
+     * Remove the secure location designation from a location.
+     *
+     * @param locationGUID unique identifier of the location
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearLocationAsSecureLocation(String                locationGUID,
+                                         MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        locationHandler.clearLocationAsSecureLocation(connectorUserId, locationGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(locationGUID);
+        }
     }
 }

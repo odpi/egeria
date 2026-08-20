@@ -30,6 +30,12 @@ import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.IncompleteProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.ObjectIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceDataProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.MobileResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.InstanceMetadataProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MetamodelInstanceProperties;
 
 
 /**
@@ -5823,6 +5829,665 @@ public class ClassificationExplorerRESTServices extends TokenController
             {
                 response.setElements(handler.findSearchKeywords(userId, null, null));
             }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cross-cutting element classifications
+     */
+
+    /**
+     * Classify an element to say that its description is incomplete.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setElementAsIncomplete(String                       serverName,
+                                               String                       urlMarker,
+                                               String                       elementGUID,
+                                               NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setElementAsIncomplete";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setElementAsIncomplete(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof IncompleteProperties properties)
+            {
+                handler.setElementAsIncomplete(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setElementAsIncomplete(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(IncompleteProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the incomplete designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearElementAsIncomplete(String                          serverName,
+                                                 String                          urlMarker,
+                                                 String                          elementGUID,
+                                                 DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearElementAsIncomplete";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearElementAsIncomplete(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it identifies an object.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setElementAsObjectIdentifier(String                       serverName,
+                                                     String                       urlMarker,
+                                                     String                       elementGUID,
+                                                     NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setElementAsObjectIdentifier";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setElementAsObjectIdentifier(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ObjectIdentifierProperties properties)
+            {
+                handler.setElementAsObjectIdentifier(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setElementAsObjectIdentifier(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ObjectIdentifierProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the object identifier designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearElementAsObjectIdentifier(String                          serverName,
+                                                       String                          urlMarker,
+                                                       String                          elementGUID,
+                                                       DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearElementAsObjectIdentifier";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearElementAsObjectIdentifier(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it contains reference data.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setElementAsReferenceData(String                       serverName,
+                                                  String                       urlMarker,
+                                                  String                       elementGUID,
+                                                  NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setElementAsReferenceData";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setElementAsReferenceData(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ReferenceDataProperties properties)
+            {
+                handler.setElementAsReferenceData(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setElementAsReferenceData(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ReferenceDataProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the reference data designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearElementAsReferenceData(String                          serverName,
+                                                    String                          urlMarker,
+                                                    String                          elementGUID,
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearElementAsReferenceData";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearElementAsReferenceData(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that the resource it describes can move location.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setElementAsMobileResource(String                       serverName,
+                                                   String                       urlMarker,
+                                                   String                       elementGUID,
+                                                   NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setElementAsMobileResource";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setElementAsMobileResource(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof MobileResourceProperties properties)
+            {
+                handler.setElementAsMobileResource(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setElementAsMobileResource(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(MobileResourceProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the mobile resource designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearElementAsMobileResource(String                          serverName,
+                                                     String                          urlMarker,
+                                                     String                          elementGUID,
+                                                     DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearElementAsMobileResource";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearElementAsMobileResource(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it describes metadata about instances rather than the instances themselves.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setElementAsInstanceMetadata(String                       serverName,
+                                                     String                       urlMarker,
+                                                     String                       elementGUID,
+                                                     NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setElementAsInstanceMetadata";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setElementAsInstanceMetadata(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof InstanceMetadataProperties properties)
+            {
+                handler.setElementAsInstanceMetadata(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setElementAsInstanceMetadata(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(InstanceMetadataProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the instance metadata designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearElementAsInstanceMetadata(String                          serverName,
+                                                       String                          urlMarker,
+                                                       String                          elementGUID,
+                                                       DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearElementAsInstanceMetadata";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearElementAsInstanceMetadata(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an element to say that it is an instance of an element in a metadata model.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setElementAsMetamodelInstance(String                       serverName,
+                                                      String                       urlMarker,
+                                                      String                       elementGUID,
+                                                      NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setElementAsMetamodelInstance";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setElementAsMetamodelInstance(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof MetamodelInstanceProperties properties)
+            {
+                handler.setElementAsMetamodelInstance(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setElementAsMetamodelInstance(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(MetamodelInstanceProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the metamodel instance designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearElementAsMetamodelInstance(String                          serverName,
+                                                        String                          urlMarker,
+                                                        String                          elementGUID,
+                                                        DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearElementAsMetamodelInstance";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearElementAsMetamodelInstance(userId, elementGUID, requestBody);
         }
         catch (Throwable error)
         {

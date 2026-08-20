@@ -262,6 +262,7 @@ include(':open-metadata-resources:open-metadata-dev-utilities:report-utilities')
 include(':open-metadata-resources:open-metadata-deployment')
 include(':open-metadata-test:open-metadata-ut')
 include(':open-metadata-test:open-metadata-bvt')
+include(':open-metadata-test:open-metadata-api-checks')
 include(':open-metadata-test:open-metadata-fvt:query-fvt')
 
 

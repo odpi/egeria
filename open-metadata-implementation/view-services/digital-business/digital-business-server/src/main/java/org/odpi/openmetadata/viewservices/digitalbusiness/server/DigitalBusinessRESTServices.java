@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSupportProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DataSharingAgreementProperties;
 
 
 
@@ -379,6 +380,116 @@ public class DigitalBusinessRESTServices extends TokenController
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
 
             handler.clearBusinessSignificance(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Data sharing agreement classification
+     */
+
+    /**
+     * Classify an agreement to say that it governs the sharing of data.
+     *
+     * @param serverName name of the server to route the request to
+     * @param agreementGUID unique identifier of the agreement
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setAgreementAsDataSharingAgreement(String                       serverName,
+                                                           String                       agreementGUID,
+                                                           NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setAgreementAsDataSharingAgreement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setAgreementAsDataSharingAgreement(userId, agreementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof DataSharingAgreementProperties properties)
+            {
+                handler.setAgreementAsDataSharingAgreement(userId, agreementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setAgreementAsDataSharingAgreement(userId, agreementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(DataSharingAgreementProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the data sharing agreement designation from an agreement.
+     *
+     * @param serverName name of the server to route the request to
+     * @param agreementGUID unique identifier of the agreement
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAgreementAsDataSharingAgreement(String                          serverName,
+                                                             String                          agreementGUID,
+                                                             DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearAgreementAsDataSharingAgreement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, methodName);
+
+            handler.clearAgreementAsDataSharingAgreement(userId, agreementGUID, requestBody);
         }
         catch (Throwable error)
         {

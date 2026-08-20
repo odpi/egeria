@@ -2069,4 +2069,127 @@ public class SolutionArchitectResource
     {
         return restAPI.detachConceptBeadExtension(serverName, extendedBeadGUID, extensionBeadGUID, requestBody);
     }
+
+    /**
+     * Attach a solution port to the solution component that exposes it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param solutionComponentGUID unique identifier of the solution component
+     * @param solutionPortGUID unique identifier of the solution port
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-components/{solutionComponentGUID}/solution-ports/{solutionPortGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkSolutionComponentPort",
+            description="Attach a solution port to the solution component that exposes it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse linkSolutionComponentPort(@PathVariable String serverName,
+                                                  @PathVariable String solutionComponentGUID,
+                                                  @PathVariable String solutionPortGUID,
+                                                  @RequestBody (required = false)
+                                                  NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSolutionComponentPort(serverName, solutionComponentGUID, solutionPortGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a solution port from the solution component that exposed it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param solutionComponentGUID unique identifier of the solution component
+     * @param solutionPortGUID unique identifier of the solution port
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-components/{solutionComponentGUID}/solution-ports/{solutionPortGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSolutionComponentPort",
+            description="Detach a solution port from the solution component that exposed it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse detachSolutionComponentPort(@PathVariable String serverName,
+                                                    @PathVariable String solutionComponentGUID,
+                                                    @PathVariable String solutionPortGUID,
+                                                    @RequestBody (required = false)
+                                                    DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSolutionComponentPort(serverName, solutionComponentGUID, solutionPortGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a solution port to the solution port that it delegates to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param alignsToPortGUID unique identifier of the solution port that is aligned to
+     * @param delegationPortGUID unique identifier of the solution port that delegates
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-ports/{alignsToPortGUID}/port-delegations/{delegationPortGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkSolutionPortDelegation",
+            description="Attach a solution port to the solution port that it delegates to.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse linkSolutionPortDelegation(@PathVariable String serverName,
+                                                   @PathVariable String alignsToPortGUID,
+                                                   @PathVariable String delegationPortGUID,
+                                                   @RequestBody (required = false)
+                                                   NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSolutionPortDelegation(serverName, alignsToPortGUID, delegationPortGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a solution port from the solution port that it delegated to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param alignsToPortGUID unique identifier of the solution port that is aligned to
+     * @param delegationPortGUID unique identifier of the solution port that delegates
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-ports/{alignsToPortGUID}/port-delegations/{delegationPortGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSolutionPortDelegation",
+            description="Detach a solution port from the solution port that it delegated to.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse detachSolutionPortDelegation(@PathVariable String serverName,
+                                                     @PathVariable String alignsToPortGUID,
+                                                     @PathVariable String delegationPortGUID,
+                                                     @RequestBody (required = false)
+                                                     DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSolutionPortDelegation(serverName, alignsToPortGUID, delegationPortGUID, requestBody);
+    }
 }

@@ -1171,3 +1171,47 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+###
+# =====================================================================================================================
+# Glossary term supplement classification
+# https://egeria-project.org/concepts/glossary-term
+
+
+###
+# @name setTermAsElementSupplement
+# Classify a glossary term to say that it supplements the description of another element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossary-terms/{{glossaryTermGUID}}/element-supplement
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "ElementSupplementProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearTermAsElementSupplement
+# Remove the element supplement designation from a glossary term.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossary-terms/{{glossaryTermGUID}}/element-supplement/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+

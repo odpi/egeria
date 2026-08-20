@@ -739,4 +739,58 @@ public class GlossaryTermClient extends ConnectorContextClientBase
     {
         glossaryTermHandler.detachUsedInContext(connectorUserId, glossaryTermGUID, contextElementGUID, deleteOptions);
     }
+
+
+    /*
+     * =====================================================================================================================
+     * Glossary term supplement classification
+     */
+
+
+    /**
+     * Classify a glossary term to say that it supplements the description of another element.
+     *
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setTermAsElementSupplement(String                       glossaryTermGUID,
+                                      ElementSupplementProperties  properties,
+                                      MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
+    {
+        glossaryTermHandler.setTermAsElementSupplement(connectorUserId, glossaryTermGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(glossaryTermGUID);
+        }
+    }
+
+
+    /**
+     * Remove the element supplement designation from a glossary term.
+     *
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearTermAsElementSupplement(String                glossaryTermGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        glossaryTermHandler.clearTermAsElementSupplement(connectorUserId, glossaryTermGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(glossaryTermGUID);
+        }
+    }
 }

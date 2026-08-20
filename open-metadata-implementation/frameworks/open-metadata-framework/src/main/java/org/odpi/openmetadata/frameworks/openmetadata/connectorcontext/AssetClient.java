@@ -45,6 +45,21 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ResourcePermissionsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecretsCollectionSecurityListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.UserAccountProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.AuditLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LineageLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.MeteringLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SecurityLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ExceptionBacklogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LogAnalysisProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.ListenerInterfaceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.PublisherInterfaceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.RequestResponseInterfaceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetEncodingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudPlatformProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudProviderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudTenantProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.UserAccountProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortDelegationProperties;
 
 /**
  * Provides services for connectors to work with Asset objects: Data Assets, Processes and Infrastructure.
@@ -1864,5 +1879,767 @@ public class AssetClient extends ConnectorContextClientBase
                                                                            UserNotAuthorizedException
     {
         assetHandler.detachUserAccount(connectorUserId, secretsCollectionGUID, userIdentityGUID, deleteOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Asset log classifications
+     */
+
+
+    /**
+     * Classify an asset to say that it holds an audit log.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAssetAsAuditLog(String                 assetGUID,
+                              AuditLogProperties     properties,
+                              MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        assetHandler.setAssetAsAuditLog(connectorUserId, assetGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
+        }
+    }
+
+
+    /**
+     * Remove the audit log designation from an asset.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAssetAsAuditLog(String                assetGUID,
+                                MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        assetHandler.clearAssetAsAuditLog(connectorUserId, assetGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
+        }
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a lineage log.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAssetAsLineageLog(String                 assetGUID,
+                                LineageLogProperties   properties,
+                                MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        assetHandler.setAssetAsLineageLog(connectorUserId, assetGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
+        }
+    }
+
+
+    /**
+     * Remove the lineage log designation from an asset.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAssetAsLineageLog(String                assetGUID,
+                                  MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        assetHandler.clearAssetAsLineageLog(connectorUserId, assetGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
+        }
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a metering log.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAssetAsMeteringLog(String                 assetGUID,
+                                 MeteringLogProperties  properties,
+                                 MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        assetHandler.setAssetAsMeteringLog(connectorUserId, assetGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
+        }
+    }
+
+
+    /**
+     * Remove the metering log designation from an asset.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAssetAsMeteringLog(String                assetGUID,
+                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        assetHandler.clearAssetAsMeteringLog(connectorUserId, assetGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
+        }
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a security log.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAssetAsSecurityLog(String                 assetGUID,
+                                 SecurityLogProperties  properties,
+                                 MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        assetHandler.setAssetAsSecurityLog(connectorUserId, assetGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
+        }
+    }
+
+
+    /**
+     * Remove the security log designation from an asset.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAssetAsSecurityLog(String                assetGUID,
+                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        assetHandler.clearAssetAsSecurityLog(connectorUserId, assetGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
+        }
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a backlog of exceptions that need to be resolved.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAssetAsExceptionBacklog(String                      assetGUID,
+                                      ExceptionBacklogProperties  properties,
+                                      MetadataSourceOptions       metadataSourceOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        assetHandler.setAssetAsExceptionBacklog(connectorUserId, assetGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
+        }
+    }
+
+
+    /**
+     * Remove the exception backlog designation from an asset.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAssetAsExceptionBacklog(String                assetGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        assetHandler.clearAssetAsExceptionBacklog(connectorUserId, assetGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
+        }
+    }
+
+
+    /**
+     * Classify an asset to say that it holds the results of analysing a log.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAssetAsLogAnalysis(String                 assetGUID,
+                                 LogAnalysisProperties  properties,
+                                 MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        assetHandler.setAssetAsLogAnalysis(connectorUserId, assetGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
+        }
+    }
+
+
+    /**
+     * Remove the log analysis designation from an asset.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAssetAsLogAnalysis(String                assetGUID,
+                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        assetHandler.clearAssetAsLogAnalysis(connectorUserId, assetGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(assetGUID);
+        }
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Deployed API classifications
+     */
+
+
+    /**
+     * Classify a deployed API to say that it provides a listener interface.
+     *
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAPIAsListenerInterface(String                       deployedAPIGUID,
+                                     ListenerInterfaceProperties  properties,
+                                     MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        assetHandler.setAPIAsListenerInterface(connectorUserId, deployedAPIGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(deployedAPIGUID);
+        }
+    }
+
+
+    /**
+     * Remove the listener interface designation from a deployed API.
+     *
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAPIAsListenerInterface(String                deployedAPIGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        assetHandler.clearAPIAsListenerInterface(connectorUserId, deployedAPIGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(deployedAPIGUID);
+        }
+    }
+
+
+    /**
+     * Classify a deployed API to say that it provides a publisher interface.
+     *
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAPIAsPublisherInterface(String                        deployedAPIGUID,
+                                      PublisherInterfaceProperties  properties,
+                                      MetadataSourceOptions         metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        assetHandler.setAPIAsPublisherInterface(connectorUserId, deployedAPIGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(deployedAPIGUID);
+        }
+    }
+
+
+    /**
+     * Remove the publisher interface designation from a deployed API.
+     *
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAPIAsPublisherInterface(String                deployedAPIGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        assetHandler.clearAPIAsPublisherInterface(connectorUserId, deployedAPIGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(deployedAPIGUID);
+        }
+    }
+
+
+    /**
+     * Classify a deployed API to say that it provides a request-response interface.
+     *
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAPIAsRequestResponseInterface(String                              deployedAPIGUID,
+                                            RequestResponseInterfaceProperties  properties,
+                                            MetadataSourceOptions               metadataSourceOptions) throws InvalidParameterException,
+                                                                                                              PropertyServerException,
+                                                                                                              UserNotAuthorizedException
+    {
+        assetHandler.setAPIAsRequestResponseInterface(connectorUserId, deployedAPIGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(deployedAPIGUID);
+        }
+    }
+
+
+    /**
+     * Remove the request-response interface designation from a deployed API.
+     *
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAPIAsRequestResponseInterface(String                deployedAPIGUID,
+                                              MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        assetHandler.clearAPIAsRequestResponseInterface(connectorUserId, deployedAPIGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(deployedAPIGUID);
+        }
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Data asset encoding classification
+     */
+
+
+    /**
+     * Classify a data asset to describe how its data is encoded.
+     *
+     * @param dataAssetGUID unique identifier of the data asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setDataAssetEncoding(String                       dataAssetGUID,
+                                DataAssetEncodingProperties  properties,
+                                MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        assetHandler.setDataAssetEncoding(connectorUserId, dataAssetGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(dataAssetGUID);
+        }
+    }
+
+
+    /**
+     * Remove the encoding description from a data asset.
+     *
+     * @param dataAssetGUID unique identifier of the data asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearDataAssetEncoding(String                dataAssetGUID,
+                                  MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        assetHandler.clearDataAssetEncoding(connectorUserId, dataAssetGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(dataAssetGUID);
+        }
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cloud platform classification
+     */
+
+
+    /**
+     * Classify a software server platform to say that it is a cloud platform.
+     *
+     * @param softwareServerPlatformGUID unique identifier of the software server platform
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAsCloudPlatform(String                   softwareServerPlatformGUID,
+                              CloudPlatformProperties  properties,
+                              MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        assetHandler.setAsCloudPlatform(connectorUserId, softwareServerPlatformGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(softwareServerPlatformGUID);
+        }
+    }
+
+
+    /**
+     * Remove the cloud platform designation from a software server platform.
+     *
+     * @param softwareServerPlatformGUID unique identifier of the software server platform
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAsCloudPlatform(String                softwareServerPlatformGUID,
+                                MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        assetHandler.clearAsCloudPlatform(connectorUserId, softwareServerPlatformGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(softwareServerPlatformGUID);
+        }
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cloud provider classification
+     */
+
+
+    /**
+     * Classify a host to say that it is a cloud provider.
+     *
+     * @param hostGUID unique identifier of the host
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setHostAsCloudProvider(String                   hostGUID,
+                                  CloudProviderProperties  properties,
+                                  MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        assetHandler.setHostAsCloudProvider(connectorUserId, hostGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(hostGUID);
+        }
+    }
+
+
+    /**
+     * Remove the cloud provider designation from a host.
+     *
+     * @param hostGUID unique identifier of the host
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearHostAsCloudProvider(String                hostGUID,
+                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        assetHandler.clearHostAsCloudProvider(connectorUserId, hostGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(hostGUID);
+        }
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cloud tenant classification
+     */
+
+
+    /**
+     * Classify a software server to say that it is hosting a cloud tenant.
+     *
+     * @param softwareServerGUID unique identifier of the software server
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setServerAsCloudTenant(String                 softwareServerGUID,
+                                  CloudTenantProperties  properties,
+                                  MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        assetHandler.setServerAsCloudTenant(connectorUserId, softwareServerGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(softwareServerGUID);
+        }
+    }
+
+
+    /**
+     * Remove the cloud tenant designation from a software server.
+     *
+     * @param softwareServerGUID unique identifier of the software server
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearServerAsCloudTenant(String                softwareServerGUID,
+                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        assetHandler.clearServerAsCloudTenant(connectorUserId, softwareServerGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(softwareServerGUID);
+        }
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Secrets collection profile classification
+     */
+
+
+    /**
+     * Classify a secrets collection with a profile of the user accounts that it holds.
+     *
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setUserAccountProfile(String                        secretsCollectionGUID,
+                                 UserAccountProfileProperties  properties,
+                                 MetadataSourceOptions         metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        assetHandler.setUserAccountProfile(connectorUserId, secretsCollectionGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(secretsCollectionGUID);
+        }
+    }
+
+
+    /**
+     * Remove the user account profile from a secrets collection.
+     *
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearUserAccountProfile(String                secretsCollectionGUID,
+                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        assetHandler.clearUserAccountProfile(connectorUserId, secretsCollectionGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(secretsCollectionGUID);
+        }
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Port delegation relationship
+     */
+
+
+    /**
+     * Attach a port to the port that it delegates to.
+     *
+     * @param delegatingFromPortGUID unique identifier of the port that delegates
+     * @param delegatingToPortGUID unique identifier of the port that is delegated to
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkPortDelegation(String                    delegatingFromPortGUID,
+                              String                    delegatingToPortGUID,
+                              MakeAnchorOptions         makeAnchorOptions,
+                              PortDelegationProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        assetHandler.linkPortDelegation(connectorUserId, delegatingFromPortGUID, delegatingToPortGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a port from the port that it delegated to.
+     *
+     * @param delegatingFromPortGUID unique identifier of the port that delegates
+     * @param delegatingToPortGUID unique identifier of the port that is delegated to
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachPortDelegation(String        delegatingFromPortGUID,
+                                String        delegatingToPortGUID,
+                                DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        assetHandler.detachPortDelegation(connectorUserId, delegatingFromPortGUID, delegatingToPortGUID, deleteOptions);
     }
 }

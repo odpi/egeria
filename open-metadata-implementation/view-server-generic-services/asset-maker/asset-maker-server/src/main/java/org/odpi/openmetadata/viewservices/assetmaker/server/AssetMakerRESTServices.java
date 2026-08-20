@@ -37,6 +37,18 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.LinkedMediaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessPortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.AssociatedLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.AuditLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LineageLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.MeteringLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SecurityLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ExceptionBacklogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LogAnalysisProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.ListenerInterfaceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.PublisherInterfaceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.RequestResponseInterfaceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetEncodingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortDelegationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RegisteredIntegrationConnectorProperties;
 
 
 /**
@@ -4614,6 +4626,1347 @@ public class AssetMakerRESTServices extends TokenController
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachLinkedMedia(userId, mediaFileGUID, linkedMediaFileGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Asset log classifications
+     */
+
+    /**
+     * Classify an asset to say that it holds an audit log.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setAssetAsAuditLog(String                       serverName,
+                                           String                       urlMarker,
+                                           String                       assetGUID,
+                                           NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setAssetAsAuditLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setAssetAsAuditLog(userId, assetGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof AuditLogProperties properties)
+            {
+                handler.setAssetAsAuditLog(userId, assetGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setAssetAsAuditLog(userId, assetGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(AuditLogProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the audit log designation from an asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAssetAsAuditLog(String                          serverName,
+                                             String                          urlMarker,
+                                             String                          assetGUID,
+                                             DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearAssetAsAuditLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearAssetAsAuditLog(userId, assetGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a lineage log.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setAssetAsLineageLog(String                       serverName,
+                                             String                       urlMarker,
+                                             String                       assetGUID,
+                                             NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setAssetAsLineageLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setAssetAsLineageLog(userId, assetGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof LineageLogProperties properties)
+            {
+                handler.setAssetAsLineageLog(userId, assetGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setAssetAsLineageLog(userId, assetGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(LineageLogProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the lineage log designation from an asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAssetAsLineageLog(String                          serverName,
+                                               String                          urlMarker,
+                                               String                          assetGUID,
+                                               DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearAssetAsLineageLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearAssetAsLineageLog(userId, assetGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a metering log.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setAssetAsMeteringLog(String                       serverName,
+                                              String                       urlMarker,
+                                              String                       assetGUID,
+                                              NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setAssetAsMeteringLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setAssetAsMeteringLog(userId, assetGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof MeteringLogProperties properties)
+            {
+                handler.setAssetAsMeteringLog(userId, assetGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setAssetAsMeteringLog(userId, assetGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(MeteringLogProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the metering log designation from an asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAssetAsMeteringLog(String                          serverName,
+                                                String                          urlMarker,
+                                                String                          assetGUID,
+                                                DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearAssetAsMeteringLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearAssetAsMeteringLog(userId, assetGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a security log.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setAssetAsSecurityLog(String                       serverName,
+                                              String                       urlMarker,
+                                              String                       assetGUID,
+                                              NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setAssetAsSecurityLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setAssetAsSecurityLog(userId, assetGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof SecurityLogProperties properties)
+            {
+                handler.setAssetAsSecurityLog(userId, assetGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setAssetAsSecurityLog(userId, assetGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(SecurityLogProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the security log designation from an asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAssetAsSecurityLog(String                          serverName,
+                                                String                          urlMarker,
+                                                String                          assetGUID,
+                                                DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearAssetAsSecurityLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearAssetAsSecurityLog(userId, assetGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a backlog of exceptions that need to be resolved.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setAssetAsExceptionBacklog(String                       serverName,
+                                                   String                       urlMarker,
+                                                   String                       assetGUID,
+                                                   NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setAssetAsExceptionBacklog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setAssetAsExceptionBacklog(userId, assetGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ExceptionBacklogProperties properties)
+            {
+                handler.setAssetAsExceptionBacklog(userId, assetGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setAssetAsExceptionBacklog(userId, assetGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ExceptionBacklogProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the exception backlog designation from an asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAssetAsExceptionBacklog(String                          serverName,
+                                                     String                          urlMarker,
+                                                     String                          assetGUID,
+                                                     DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearAssetAsExceptionBacklog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearAssetAsExceptionBacklog(userId, assetGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify an asset to say that it holds the results of analysing a log.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setAssetAsLogAnalysis(String                       serverName,
+                                              String                       urlMarker,
+                                              String                       assetGUID,
+                                              NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setAssetAsLogAnalysis";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setAssetAsLogAnalysis(userId, assetGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof LogAnalysisProperties properties)
+            {
+                handler.setAssetAsLogAnalysis(userId, assetGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setAssetAsLogAnalysis(userId, assetGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(LogAnalysisProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the log analysis designation from an asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param assetGUID unique identifier of the asset
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAssetAsLogAnalysis(String                          serverName,
+                                                String                          urlMarker,
+                                                String                          assetGUID,
+                                                DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearAssetAsLogAnalysis";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearAssetAsLogAnalysis(userId, assetGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Deployed API classifications
+     */
+
+    /**
+     * Classify a deployed API to say that it provides a listener interface.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setAPIAsListenerInterface(String                       serverName,
+                                                  String                       urlMarker,
+                                                  String                       deployedAPIGUID,
+                                                  NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setAPIAsListenerInterface";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setAPIAsListenerInterface(userId, deployedAPIGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ListenerInterfaceProperties properties)
+            {
+                handler.setAPIAsListenerInterface(userId, deployedAPIGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setAPIAsListenerInterface(userId, deployedAPIGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ListenerInterfaceProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the listener interface designation from a deployed API.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAPIAsListenerInterface(String                          serverName,
+                                                    String                          urlMarker,
+                                                    String                          deployedAPIGUID,
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearAPIAsListenerInterface";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearAPIAsListenerInterface(userId, deployedAPIGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify a deployed API to say that it provides a publisher interface.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setAPIAsPublisherInterface(String                       serverName,
+                                                   String                       urlMarker,
+                                                   String                       deployedAPIGUID,
+                                                   NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setAPIAsPublisherInterface";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setAPIAsPublisherInterface(userId, deployedAPIGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof PublisherInterfaceProperties properties)
+            {
+                handler.setAPIAsPublisherInterface(userId, deployedAPIGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setAPIAsPublisherInterface(userId, deployedAPIGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(PublisherInterfaceProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the publisher interface designation from a deployed API.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAPIAsPublisherInterface(String                          serverName,
+                                                     String                          urlMarker,
+                                                     String                          deployedAPIGUID,
+                                                     DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearAPIAsPublisherInterface";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearAPIAsPublisherInterface(userId, deployedAPIGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Classify a deployed API to say that it provides a request-response interface.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setAPIAsRequestResponseInterface(String                       serverName,
+                                                         String                       urlMarker,
+                                                         String                       deployedAPIGUID,
+                                                         NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setAPIAsRequestResponseInterface";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setAPIAsRequestResponseInterface(userId, deployedAPIGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof RequestResponseInterfaceProperties properties)
+            {
+                handler.setAPIAsRequestResponseInterface(userId, deployedAPIGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setAPIAsRequestResponseInterface(userId, deployedAPIGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(RequestResponseInterfaceProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the request-response interface designation from a deployed API.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAPIAsRequestResponseInterface(String                          serverName,
+                                                           String                          urlMarker,
+                                                           String                          deployedAPIGUID,
+                                                           DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearAPIAsRequestResponseInterface";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearAPIAsRequestResponseInterface(userId, deployedAPIGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Data asset encoding classification
+     */
+
+    /**
+     * Classify a data asset to describe how its data is encoded.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param dataAssetGUID unique identifier of the data asset
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setDataAssetEncoding(String                       serverName,
+                                             String                       urlMarker,
+                                             String                       dataAssetGUID,
+                                             NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setDataAssetEncoding";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setDataAssetEncoding(userId, dataAssetGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof DataAssetEncodingProperties properties)
+            {
+                handler.setDataAssetEncoding(userId, dataAssetGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setDataAssetEncoding(userId, dataAssetGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(DataAssetEncodingProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the encoding description from a data asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param dataAssetGUID unique identifier of the data asset
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearDataAssetEncoding(String                          serverName,
+                                               String                          urlMarker,
+                                               String                          dataAssetGUID,
+                                               DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearDataAssetEncoding";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearDataAssetEncoding(userId, dataAssetGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Port delegation relationship
+     */
+
+    /**
+     * Attach a port to the port that it delegates to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param delegatingFromPortGUID unique identifier of the port that delegates
+     * @param delegatingToPortGUID unique identifier of the port that is delegated to
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkPortDelegation(String                     serverName,
+                                           String                     urlMarker,
+                                           String                     delegatingFromPortGUID,
+                                           String                     delegatingToPortGUID,
+                                           NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkPortDelegation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkPortDelegation(userId, delegatingFromPortGUID, delegatingToPortGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof PortDelegationProperties properties)
+            {
+                handler.linkPortDelegation(userId, delegatingFromPortGUID, delegatingToPortGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkPortDelegation(userId, delegatingFromPortGUID, delegatingToPortGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(PortDelegationProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a port from the port that it delegated to.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param delegatingFromPortGUID unique identifier of the port that delegates
+     * @param delegatingToPortGUID unique identifier of the port that is delegated to
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachPortDelegation(String                        serverName,
+                                             String                        urlMarker,
+                                             String                        delegatingFromPortGUID,
+                                             String                        delegatingToPortGUID,
+                                             DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachPortDelegation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachPortDelegation(userId, delegatingFromPortGUID, delegatingToPortGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Registered integration connector relationship
+     */
+
+    /**
+     * Register an integration connector with the integration group that runs it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param integrationGroupGUID unique identifier of the integration group
+     * @param integrationConnectorGUID unique identifier of the integration connector
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkRegisteredIntegrationConnector(String                     serverName,
+                                                           String                     urlMarker,
+                                                           String                     integrationGroupGUID,
+                                                           String                     integrationConnectorGUID,
+                                                           NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkRegisteredIntegrationConnector";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkRegisteredIntegrationConnector(userId, integrationGroupGUID, integrationConnectorGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof RegisteredIntegrationConnectorProperties properties)
+            {
+                handler.linkRegisteredIntegrationConnector(userId, integrationGroupGUID, integrationConnectorGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkRegisteredIntegrationConnector(userId, integrationGroupGUID, integrationConnectorGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(RegisteredIntegrationConnectorProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove an integration connector from the integration group that ran it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param integrationGroupGUID unique identifier of the integration group
+     * @param integrationConnectorGUID unique identifier of the integration connector
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachRegisteredIntegrationConnector(String                        serverName,
+                                                             String                        urlMarker,
+                                                             String                        integrationGroupGUID,
+                                                             String                        integrationConnectorGUID,
+                                                             DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachRegisteredIntegrationConnector";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachRegisteredIntegrationConnector(userId, integrationGroupGUID, integrationConnectorGUID, requestBody);
         }
         catch (Throwable error)
         {

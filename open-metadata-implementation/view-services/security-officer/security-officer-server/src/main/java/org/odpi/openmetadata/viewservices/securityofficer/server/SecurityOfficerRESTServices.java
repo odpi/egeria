@@ -24,6 +24,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.security.Resourc
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecretsCollectionSecurityListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.UserAccountProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.UserAccountProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProfileProperties;
 
 
 
@@ -1123,6 +1125,226 @@ public class SecurityOfficerRESTServices extends TokenController
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
 
             handler.detachAssociatedSecurityList(userId, associatedSecurityListRelationshipGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Secrets collection profile classification
+     */
+
+    /**
+     * Classify a secrets collection with a profile of the user accounts that it holds.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setUserAccountProfile(String                       serverName,
+                                              String                       secretsCollectionGUID,
+                                              NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setUserAccountProfile";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getSecretsCollectionHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setUserAccountProfile(userId, secretsCollectionGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof UserAccountProfileProperties properties)
+            {
+                handler.setUserAccountProfile(userId, secretsCollectionGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setUserAccountProfile(userId, secretsCollectionGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(UserAccountProfileProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the user account profile from a secrets collection.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearUserAccountProfile(String                          serverName,
+                                                String                          secretsCollectionGUID,
+                                                DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearUserAccountProfile";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getSecretsCollectionHandler(userId, serverName, methodName);
+
+            handler.clearUserAccountProfile(userId, secretsCollectionGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Governance zone profile classification
+     */
+
+    /**
+     * Classify a governance zone with a profile of its membership.
+     *
+     * @param serverName name of the server to route the request to
+     * @param governanceZoneGUID unique identifier of the governance zone
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setZoneMembershipProfile(String                       serverName,
+                                                 String                       governanceZoneGUID,
+                                                 NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setZoneMembershipProfile";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setZoneMembershipProfile(userId, governanceZoneGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ZoneMembershipProfileProperties properties)
+            {
+                handler.setZoneMembershipProfile(userId, governanceZoneGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setZoneMembershipProfile(userId, governanceZoneGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ZoneMembershipProfileProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the zone membership profile from a governance zone.
+     *
+     * @param serverName name of the server to route the request to
+     * @param governanceZoneGUID unique identifier of the governance zone
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearZoneMembershipProfile(String                          serverName,
+                                                   String                          governanceZoneGUID,
+                                                   DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearZoneMembershipProfile";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
+
+            handler.clearZoneMembershipProfile(userId, governanceZoneGUID, requestBody);
         }
         catch (Throwable error)
         {

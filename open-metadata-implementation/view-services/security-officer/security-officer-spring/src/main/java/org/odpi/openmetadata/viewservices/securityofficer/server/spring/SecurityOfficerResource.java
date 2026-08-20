@@ -563,4 +563,118 @@ public class SecurityOfficerResource
     {
         return restAPI.detachAssociatedSecurityList(serverName, associatedSecurityListRelationshipGUID, requestBody);
     }
+
+    /**
+     * Classify a secrets collection with a profile of the user accounts that it holds.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/secrets-collections/{secretsCollectionGUID}/user-account-profile")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setUserAccountProfile",
+            description="Classify a secrets collection with a profile of the user accounts that it holds.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/secrets-collection"))
+
+    public VoidResponse setUserAccountProfile(@PathVariable String serverName,
+                                              @PathVariable String secretsCollectionGUID,
+                                              @RequestBody (required = false)
+                                              NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setUserAccountProfile(serverName, secretsCollectionGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the user account profile from a secrets collection.
+     *
+     * @param serverName name of the server to route the request to
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/secrets-collections/{secretsCollectionGUID}/user-account-profile/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearUserAccountProfile",
+            description="Remove the user account profile from a secrets collection.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/secrets-collection"))
+
+    public VoidResponse clearUserAccountProfile(@PathVariable String serverName,
+                                                @PathVariable String secretsCollectionGUID,
+                                                @RequestBody (required = false)
+                                                DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearUserAccountProfile(serverName, secretsCollectionGUID, requestBody);
+    }
+
+    /**
+     * Classify a governance zone with a profile of its membership.
+     *
+     * @param serverName name of the server to route the request to
+     * @param governanceZoneGUID unique identifier of the governance zone
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/governance-zones/{governanceZoneGUID}/zone-membership-profile")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setZoneMembershipProfile",
+            description="Classify a governance zone with a profile of its membership.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-zone"))
+
+    public VoidResponse setZoneMembershipProfile(@PathVariable String serverName,
+                                                 @PathVariable String governanceZoneGUID,
+                                                 @RequestBody (required = false)
+                                                 NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setZoneMembershipProfile(serverName, governanceZoneGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the zone membership profile from a governance zone.
+     *
+     * @param serverName name of the server to route the request to
+     * @param governanceZoneGUID unique identifier of the governance zone
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/governance-zones/{governanceZoneGUID}/zone-membership-profile/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearZoneMembershipProfile",
+            description="Remove the zone membership profile from a governance zone.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-zone"))
+
+    public VoidResponse clearZoneMembershipProfile(@PathVariable String serverName,
+                                                   @PathVariable String governanceZoneGUID,
+                                                   @RequestBody (required = false)
+                                                   DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearZoneMembershipProfile(serverName, governanceZoneGUID, requestBody);
+    }
 }

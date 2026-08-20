@@ -25,6 +25,7 @@ import java.util.Map;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingSpecificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DetailedProcessingActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProfileProperties;
 
 /**
  * Provides services for connectors to work with governance definition elements.
@@ -1197,5 +1198,545 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
                                                                                  UserNotAuthorizedException
     {
         governanceDefinitionHandler.detachAssociatedSecurityList(connectorUserId, associatedSecurityListRelationshipGUID, deleteOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Governance point classifications
+     */
+
+
+    /**
+     * Classify an element to say that it is a control point where a governance action is performed.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setControlPoint(String                  elementGUID,
+                           ControlPointProperties  properties,
+                           MetadataSourceOptions   metadataSourceOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.setControlPoint(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the control point designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearControlPoint(String                elementGUID,
+                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.clearControlPoint(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it is a verification point where a governance requirement is checked.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setVerificationPoint(String                       elementGUID,
+                                VerificationPointProperties  properties,
+                                MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.setVerificationPoint(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the verification point designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearVerificationPoint(String                elementGUID,
+                                  MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.clearVerificationPoint(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it is an enforcement point where a governance requirement is enforced.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setEnforcementPoint(String                      elementGUID,
+                               EnforcementPointProperties  properties,
+                               MetadataSourceOptions       metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.setEnforcementPoint(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the enforcement point designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearEnforcementPoint(String                elementGUID,
+                                 MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.clearEnforcementPoint(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it is an execution point where governance is executed.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setExecutionPoint(String                    elementGUID,
+                             ExecutionPointProperties  properties,
+                             MetadataSourceOptions     metadataSourceOptions) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.setExecutionPoint(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the execution point designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearExecutionPoint(String                elementGUID,
+                               MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.clearExecutionPoint(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy administration point where policies are created and maintained.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setPolicyAdministrationPoint(String                               elementGUID,
+                                        PolicyAdministrationPointProperties  properties,
+                                        MetadataSourceOptions                metadataSourceOptions) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.setPolicyAdministrationPoint(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the policy administration point designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearPolicyAdministrationPoint(String                elementGUID,
+                                          MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.clearPolicyAdministrationPoint(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy decision point where a policy decision is made.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setPolicyDecisionPoint(String                         elementGUID,
+                                  PolicyDecisionPointProperties  properties,
+                                  MetadataSourceOptions          metadataSourceOptions) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.setPolicyDecisionPoint(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the policy decision point designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearPolicyDecisionPoint(String                elementGUID,
+                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.clearPolicyDecisionPoint(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy enforcement point where a policy decision is applied.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setPolicyEnforcementPoint(String                            elementGUID,
+                                     PolicyEnforcementPointProperties  properties,
+                                     MetadataSourceOptions             metadataSourceOptions) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.setPolicyEnforcementPoint(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the policy enforcement point designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearPolicyEnforcementPoint(String                elementGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.clearPolicyEnforcementPoint(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy information point that supplies the information a policy decision needs.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setPolicyInformationPoint(String                            elementGUID,
+                                     PolicyInformationPointProperties  properties,
+                                     MetadataSourceOptions             metadataSourceOptions) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.setPolicyInformationPoint(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the policy information point designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearPolicyInformationPoint(String                elementGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.clearPolicyInformationPoint(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy management point.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setPolicyManagementPoint(String                           elementGUID,
+                                    PolicyManagementPointProperties  properties,
+                                    MetadataSourceOptions            metadataSourceOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.setPolicyManagementPoint(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the policy management point designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearPolicyManagementPoint(String                elementGUID,
+                                      MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.clearPolicyManagementPoint(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it is a policy retrieval point where policies are retrieved for a decision.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setPolicyRetrievalPoint(String                          elementGUID,
+                                   PolicyRetrievalPointProperties  properties,
+                                   MetadataSourceOptions           metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.setPolicyRetrievalPoint(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the policy retrieval point designation from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearPolicyRetrievalPoint(String                elementGUID,
+                                     MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.clearPolicyRetrievalPoint(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Governance zone profile classification
+     */
+
+
+    /**
+     * Classify a governance zone with a profile of its membership.
+     *
+     * @param governanceZoneGUID unique identifier of the governance zone
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setZoneMembershipProfile(String                           governanceZoneGUID,
+                                    ZoneMembershipProfileProperties  properties,
+                                    MetadataSourceOptions            metadataSourceOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.setZoneMembershipProfile(connectorUserId, governanceZoneGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(governanceZoneGUID);
+        }
+    }
+
+
+    /**
+     * Remove the zone membership profile from a governance zone.
+     *
+     * @param governanceZoneGUID unique identifier of the governance zone
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearZoneMembershipProfile(String                governanceZoneGUID,
+                                      MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.clearZoneMembershipProfile(connectorUserId, governanceZoneGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(governanceZoneGUID);
+        }
     }
 }

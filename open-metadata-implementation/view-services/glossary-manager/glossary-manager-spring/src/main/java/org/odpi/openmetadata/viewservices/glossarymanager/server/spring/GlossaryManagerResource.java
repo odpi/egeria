@@ -1151,4 +1151,61 @@ public class GlossaryManagerResource
     {
         return restAPI.detachUsedInContext(serverName, glossaryTermGUID, contextElementGUID, requestBody);
     }
+
+    /**
+     * Classify a glossary term to say that it supplements the description of another element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossary-terms/{glossaryTermGUID}/element-supplement")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setTermAsElementSupplement",
+            description="Classify a glossary term to say that it supplements the description of another element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/glossary-term"))
+
+    public VoidResponse setTermAsElementSupplement(@PathVariable String serverName,
+                                                   @PathVariable String glossaryTermGUID,
+                                                   @RequestBody (required = false)
+                                                   NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setTermAsElementSupplement(serverName, glossaryTermGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the element supplement designation from a glossary term.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossary-terms/{glossaryTermGUID}/element-supplement/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearTermAsElementSupplement",
+            description="Remove the element supplement designation from a glossary term.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/glossary-term"))
+
+    public VoidResponse clearTermAsElementSupplement(@PathVariable String serverName,
+                                                     @PathVariable String glossaryTermGUID,
+                                                     @RequestBody (required = false)
+                                                     DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearTermAsElementSupplement(serverName, glossaryTermGUID, requestBody);
+    }
 }

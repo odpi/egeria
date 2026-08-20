@@ -1693,3 +1693,384 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+###
+# =====================================================================================================================
+# Governance point classifications
+# https://egeria-project.org/concepts/governance-definition
+
+
+###
+# @name setControlPoint
+# Classify an element to say that it is a control point where a governance action is performed.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/control-point
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "ControlPointProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearControlPoint
+# Remove the control point designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/control-point/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setVerificationPoint
+# Classify an element to say that it is a verification point where a governance requirement is checked.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/verification-point
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "VerificationPointProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearVerificationPoint
+# Remove the verification point designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/verification-point/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setEnforcementPoint
+# Classify an element to say that it is an enforcement point where a governance requirement is enforced.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/enforcement-point
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "EnforcementPointProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearEnforcementPoint
+# Remove the enforcement point designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/enforcement-point/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setExecutionPoint
+# Classify an element to say that it is an execution point where governance is executed.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/execution-point
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "ExecutionPointProperties",
+    "qualifiedName": "add unique name here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearExecutionPoint
+# Remove the execution point designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/execution-point/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setPolicyAdministrationPoint
+# Classify an element to say that it is a policy administration point where policies are created and maintained.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/policy-administration-point
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "PolicyAdministrationPointProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearPolicyAdministrationPoint
+# Remove the policy administration point designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/policy-administration-point/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setPolicyDecisionPoint
+# Classify an element to say that it is a policy decision point where a policy decision is made.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/policy-decision-point
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "PolicyDecisionPointProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearPolicyDecisionPoint
+# Remove the policy decision point designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/policy-decision-point/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setPolicyEnforcementPoint
+# Classify an element to say that it is a policy enforcement point where a policy decision is applied.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/policy-enforcement-point
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "PolicyEnforcementPointProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearPolicyEnforcementPoint
+# Remove the policy enforcement point designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/policy-enforcement-point/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setPolicyInformationPoint
+# Classify an element to say that it is a policy information point that supplies the information a policy decision needs.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/policy-information-point
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "PolicyInformationPointProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearPolicyInformationPoint
+# Remove the policy information point designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/policy-information-point/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setPolicyManagementPoint
+# Classify an element to say that it is a policy management point.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/policy-management-point
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "PolicyManagementPointProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "pointType": "add point type here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearPolicyManagementPoint
+# Remove the policy management point designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/policy-management-point/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setPolicyRetrievalPoint
+# Classify an element to say that it is a policy retrieval point where policies are retrieved for a decision.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/policy-retrieval-point
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "PolicyRetrievalPointProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearPolicyRetrievalPoint
+# Remove the policy retrieval point designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/policy-retrieval-point/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+

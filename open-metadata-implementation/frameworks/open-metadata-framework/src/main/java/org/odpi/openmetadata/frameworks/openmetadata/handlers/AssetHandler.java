@@ -55,6 +55,20 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ResourcePermissionsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecretsCollectionSecurityListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.UserAccountProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.AuditLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LineageLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.MeteringLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SecurityLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ExceptionBacklogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LogAnalysisProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.ListenerInterfaceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.PublisherInterfaceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.RequestResponseInterfaceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudPlatformProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudProviderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudTenantProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.UserAccountProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortDelegationProperties;
 
 /**
  * AssetHandler provides methods to define all types of assets and their relationships
@@ -4921,6 +4935,979 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.USER_ACCOUNT_RELATIONSHIP.typeName,
                                                         secretsCollectionGUID,
                                                         userIdentityGUID,
+                                                        deleteOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Asset log classifications
+     */
+
+
+    /**
+     * Classify an asset to say that it holds an audit log.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param assetGUID unique identifier of the asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAssetAsAuditLog(String                 userId,
+                                   String                 assetGUID,
+                                   AuditLogProperties     properties,
+                                   MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        final String methodName        = "setAssetAsAuditLog";
+        final String guidParameterName = "assetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(assetGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          assetGUID,
+                                                          OpenMetadataType.AUDIT_LOG_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the audit log designation from an asset.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param assetGUID unique identifier of the asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAssetAsAuditLog(String                userId,
+                                     String                assetGUID,
+                                     MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName        = "clearAssetAsAuditLog";
+        final String guidParameterName = "assetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(assetGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            assetGUID,
+                                                            OpenMetadataType.AUDIT_LOG_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a lineage log.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param assetGUID unique identifier of the asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAssetAsLineageLog(String                 userId,
+                                     String                 assetGUID,
+                                     LineageLogProperties   properties,
+                                     MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName        = "setAssetAsLineageLog";
+        final String guidParameterName = "assetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(assetGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          assetGUID,
+                                                          OpenMetadataType.LINEAGE_LOG_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the lineage log designation from an asset.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param assetGUID unique identifier of the asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAssetAsLineageLog(String                userId,
+                                       String                assetGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName        = "clearAssetAsLineageLog";
+        final String guidParameterName = "assetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(assetGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            assetGUID,
+                                                            OpenMetadataType.LINEAGE_LOG_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a metering log.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param assetGUID unique identifier of the asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAssetAsMeteringLog(String                 userId,
+                                      String                 assetGUID,
+                                      MeteringLogProperties  properties,
+                                      MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName        = "setAssetAsMeteringLog";
+        final String guidParameterName = "assetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(assetGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          assetGUID,
+                                                          OpenMetadataType.METERING_LOG_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the metering log designation from an asset.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param assetGUID unique identifier of the asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAssetAsMeteringLog(String                userId,
+                                        String                assetGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName        = "clearAssetAsMeteringLog";
+        final String guidParameterName = "assetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(assetGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            assetGUID,
+                                                            OpenMetadataType.METERING_LOG_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a security log.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param assetGUID unique identifier of the asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAssetAsSecurityLog(String                 userId,
+                                      String                 assetGUID,
+                                      SecurityLogProperties  properties,
+                                      MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName        = "setAssetAsSecurityLog";
+        final String guidParameterName = "assetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(assetGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          assetGUID,
+                                                          OpenMetadataType.SECURITY_LOG_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the security log designation from an asset.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param assetGUID unique identifier of the asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAssetAsSecurityLog(String                userId,
+                                        String                assetGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName        = "clearAssetAsSecurityLog";
+        final String guidParameterName = "assetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(assetGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            assetGUID,
+                                                            OpenMetadataType.SECURITY_LOG_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an asset to say that it holds a backlog of exceptions that need to be resolved.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param assetGUID unique identifier of the asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAssetAsExceptionBacklog(String                      userId,
+                                           String                      assetGUID,
+                                           ExceptionBacklogProperties  properties,
+                                           MetadataSourceOptions       metadataSourceOptions) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        final String methodName        = "setAssetAsExceptionBacklog";
+        final String guidParameterName = "assetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(assetGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          assetGUID,
+                                                          OpenMetadataType.EXCEPTION_BACKLOG_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the exception backlog designation from an asset.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param assetGUID unique identifier of the asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAssetAsExceptionBacklog(String                userId,
+                                             String                assetGUID,
+                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName        = "clearAssetAsExceptionBacklog";
+        final String guidParameterName = "assetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(assetGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            assetGUID,
+                                                            OpenMetadataType.EXCEPTION_BACKLOG_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an asset to say that it holds the results of analysing a log.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param assetGUID unique identifier of the asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAssetAsLogAnalysis(String                 userId,
+                                      String                 assetGUID,
+                                      LogAnalysisProperties  properties,
+                                      MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName        = "setAssetAsLogAnalysis";
+        final String guidParameterName = "assetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(assetGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          assetGUID,
+                                                          OpenMetadataType.LOG_ANALYSIS_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the log analysis designation from an asset.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param assetGUID unique identifier of the asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAssetAsLogAnalysis(String                userId,
+                                        String                assetGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName        = "clearAssetAsLogAnalysis";
+        final String guidParameterName = "assetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(assetGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            assetGUID,
+                                                            OpenMetadataType.LOG_ANALYSIS_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Deployed API classifications
+     */
+
+
+    /**
+     * Classify a deployed API to say that it provides a listener interface.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAPIAsListenerInterface(String                       userId,
+                                          String                       deployedAPIGUID,
+                                          ListenerInterfaceProperties  properties,
+                                          MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        final String methodName        = "setAPIAsListenerInterface";
+        final String guidParameterName = "deployedAPIGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(deployedAPIGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          deployedAPIGUID,
+                                                          OpenMetadataType.LISTENER_INTERFACE_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the listener interface designation from a deployed API.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAPIAsListenerInterface(String                userId,
+                                            String                deployedAPIGUID,
+                                            MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName        = "clearAPIAsListenerInterface";
+        final String guidParameterName = "deployedAPIGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(deployedAPIGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            deployedAPIGUID,
+                                                            OpenMetadataType.LISTENER_INTERFACE_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a deployed API to say that it provides a publisher interface.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAPIAsPublisherInterface(String                        userId,
+                                           String                        deployedAPIGUID,
+                                           PublisherInterfaceProperties  properties,
+                                           MetadataSourceOptions         metadataSourceOptions) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        final String methodName        = "setAPIAsPublisherInterface";
+        final String guidParameterName = "deployedAPIGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(deployedAPIGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          deployedAPIGUID,
+                                                          OpenMetadataType.PUBLISHER_INTERFACE_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the publisher interface designation from a deployed API.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAPIAsPublisherInterface(String                userId,
+                                             String                deployedAPIGUID,
+                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName        = "clearAPIAsPublisherInterface";
+        final String guidParameterName = "deployedAPIGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(deployedAPIGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            deployedAPIGUID,
+                                                            OpenMetadataType.PUBLISHER_INTERFACE_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a deployed API to say that it provides a request-response interface.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAPIAsRequestResponseInterface(String                              userId,
+                                                 String                              deployedAPIGUID,
+                                                 RequestResponseInterfaceProperties  properties,
+                                                 MetadataSourceOptions               metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                   PropertyServerException,
+                                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName        = "setAPIAsRequestResponseInterface";
+        final String guidParameterName = "deployedAPIGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(deployedAPIGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          deployedAPIGUID,
+                                                          OpenMetadataType.REQUEST_RESPONSE_INTERFACE_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the request-response interface designation from a deployed API.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param deployedAPIGUID unique identifier of the deployed API
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAPIAsRequestResponseInterface(String                userId,
+                                                   String                deployedAPIGUID,
+                                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        final String methodName        = "clearAPIAsRequestResponseInterface";
+        final String guidParameterName = "deployedAPIGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(deployedAPIGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            deployedAPIGUID,
+                                                            OpenMetadataType.REQUEST_RESPONSE_INTERFACE_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Data asset encoding classification
+     */
+
+
+    /**
+     * Classify a data asset to describe how its data is encoded.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param dataAssetGUID unique identifier of the data asset
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setDataAssetEncoding(String                       userId,
+                                     String                       dataAssetGUID,
+                                     DataAssetEncodingProperties  properties,
+                                     MetadataSourceOptions        metadataSourceOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        final String methodName        = "setDataAssetEncoding";
+        final String guidParameterName = "dataAssetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataAssetGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          dataAssetGUID,
+                                                          OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the encoding description from a data asset.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param dataAssetGUID unique identifier of the data asset
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearDataAssetEncoding(String                userId,
+                                       String                dataAssetGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName        = "clearDataAssetEncoding";
+        final String guidParameterName = "dataAssetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataAssetGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            dataAssetGUID,
+                                                            OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cloud platform classification
+     */
+
+
+    /**
+     * Classify a software server platform to say that it is a cloud platform.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param softwareServerPlatformGUID unique identifier of the software server platform
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setAsCloudPlatform(String                   userId,
+                                   String                   softwareServerPlatformGUID,
+                                   CloudPlatformProperties  properties,
+                                   MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName        = "setAsCloudPlatform";
+        final String guidParameterName = "softwareServerPlatformGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(softwareServerPlatformGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          softwareServerPlatformGUID,
+                                                          OpenMetadataType.CLOUD_PLATFORM_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the cloud platform designation from a software server platform.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param softwareServerPlatformGUID unique identifier of the software server platform
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearAsCloudPlatform(String                userId,
+                                     String                softwareServerPlatformGUID,
+                                     MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName        = "clearAsCloudPlatform";
+        final String guidParameterName = "softwareServerPlatformGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(softwareServerPlatformGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            softwareServerPlatformGUID,
+                                                            OpenMetadataType.CLOUD_PLATFORM_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cloud provider classification
+     */
+
+
+    /**
+     * Classify a host to say that it is a cloud provider.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param hostGUID unique identifier of the host
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setHostAsCloudProvider(String                   userId,
+                                       String                   hostGUID,
+                                       CloudProviderProperties  properties,
+                                       MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName        = "setHostAsCloudProvider";
+        final String guidParameterName = "hostGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(hostGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          hostGUID,
+                                                          OpenMetadataType.CLOUD_PROVIDER_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the cloud provider designation from a host.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param hostGUID unique identifier of the host
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearHostAsCloudProvider(String                userId,
+                                         String                hostGUID,
+                                         MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        final String methodName        = "clearHostAsCloudProvider";
+        final String guidParameterName = "hostGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(hostGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            hostGUID,
+                                                            OpenMetadataType.CLOUD_PROVIDER_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Cloud tenant classification
+     */
+
+
+    /**
+     * Classify a software server to say that it is hosting a cloud tenant.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param softwareServerGUID unique identifier of the software server
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setServerAsCloudTenant(String                 userId,
+                                       String                 softwareServerGUID,
+                                       CloudTenantProperties  properties,
+                                       MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName        = "setServerAsCloudTenant";
+        final String guidParameterName = "softwareServerGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(softwareServerGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          softwareServerGUID,
+                                                          OpenMetadataType.CLOUD_TENANT_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the cloud tenant designation from a software server.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param softwareServerGUID unique identifier of the software server
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearServerAsCloudTenant(String                userId,
+                                         String                softwareServerGUID,
+                                         MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        final String methodName        = "clearServerAsCloudTenant";
+        final String guidParameterName = "softwareServerGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(softwareServerGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            softwareServerGUID,
+                                                            OpenMetadataType.CLOUD_TENANT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Secrets collection profile classification
+     */
+
+
+    /**
+     * Classify a secrets collection with a profile of the user accounts that it holds.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setUserAccountProfile(String                        userId,
+                                      String                        secretsCollectionGUID,
+                                      UserAccountProfileProperties  properties,
+                                      MetadataSourceOptions         metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName        = "setUserAccountProfile";
+        final String guidParameterName = "secretsCollectionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(secretsCollectionGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          secretsCollectionGUID,
+                                                          OpenMetadataType.USER_ACCOUNT_PROFILE_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the user account profile from a secrets collection.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param secretsCollectionGUID unique identifier of the secrets collection
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearUserAccountProfile(String                userId,
+                                        String                secretsCollectionGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName        = "clearUserAccountProfile";
+        final String guidParameterName = "secretsCollectionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(secretsCollectionGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            secretsCollectionGUID,
+                                                            OpenMetadataType.USER_ACCOUNT_PROFILE_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Port delegation relationship
+     */
+
+
+    /**
+     * Attach a port to the port that it delegates to.
+     *
+     * @param userId                 userId of the user making the request
+     * @param delegatingFromPortGUID unique identifier of the port that delegates
+     * @param delegatingToPortGUID unique identifier of the port that is delegated to
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkPortDelegation(String                    userId,
+                                   String                    delegatingFromPortGUID,
+                                   String                    delegatingToPortGUID,
+                                   MakeAnchorOptions         makeAnchorOptions,
+                                   PortDelegationProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName            = "linkPortDelegation";
+        final String end1GUIDParameterName = "delegatingFromPortGUID";
+        final String end2GUIDParameterName = "delegatingToPortGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(delegatingFromPortGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(delegatingToPortGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName,
+                                                        delegatingFromPortGUID,
+                                                        delegatingToPortGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a port from the port that it delegated to.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param delegatingFromPortGUID unique identifier of the port that delegates
+     * @param delegatingToPortGUID unique identifier of the port that is delegated to
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachPortDelegation(String        userId,
+                                     String        delegatingFromPortGUID,
+                                     String        delegatingToPortGUID,
+                                     DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName            = "detachPortDelegation";
+        final String end1GUIDParameterName = "delegatingFromPortGUID";
+        final String end2GUIDParameterName = "delegatingToPortGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(delegatingFromPortGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(delegatingToPortGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName,
+                                                        delegatingFromPortGUID,
+                                                        delegatingToPortGUID,
                                                         deleteOptions);
     }
 }

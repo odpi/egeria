@@ -684,5 +684,467 @@ public class ProjectManagerResource
     {
         return restAPI.clearProjectClassification(serverName, projectGUID, requestBody);
     }
-}
 
+    /**
+     * Classify a project to say that it is a campaign - a long running activity made up of many projects.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/campaign")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setProjectAsCampaign",
+            description="Classify a project to say that it is a campaign - a long running activity made up of many projects.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse setProjectAsCampaign(@PathVariable String serverName,
+                                             @PathVariable String projectGUID,
+                                             @RequestBody (required = false)
+                                             NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setProjectAsCampaign(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the campaign designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/campaign/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearProjectAsCampaign",
+            description="Remove the campaign designation from a project.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse clearProjectAsCampaign(@PathVariable String serverName,
+                                               @PathVariable String projectGUID,
+                                               @RequestBody (required = false)
+                                               DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearProjectAsCampaign(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Classify a project to say that it is a task within a larger project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/task-classification")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setProjectAsTask",
+            description="Classify a project to say that it is a task within a larger project.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse setProjectAsTask(@PathVariable String serverName,
+                                         @PathVariable String projectGUID,
+                                         @RequestBody (required = false)
+                                         NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setProjectAsTask(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the task designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/task-classification/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearProjectAsTask",
+            description="Remove the task designation from a project.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse clearProjectAsTask(@PathVariable String serverName,
+                                           @PathVariable String projectGUID,
+                                           @RequestBody (required = false)
+                                           DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearProjectAsTask(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Classify a project to say that it is a personal project used to organize an individual's work.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/personal-project")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setProjectAsPersonalProject",
+            description="Classify a project to say that it is a personal project used to organize an individual's work.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse setProjectAsPersonalProject(@PathVariable String serverName,
+                                                    @PathVariable String projectGUID,
+                                                    @RequestBody (required = false)
+                                                    NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setProjectAsPersonalProject(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the personal project designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/personal-project/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearProjectAsPersonalProject",
+            description="Remove the personal project designation from a project.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse clearProjectAsPersonalProject(@PathVariable String serverName,
+                                                      @PathVariable String projectGUID,
+                                                      @RequestBody (required = false)
+                                                      DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearProjectAsPersonalProject(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Classify a project to say that it is a study project that is investigating a topic.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/study-project")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setProjectAsStudyProject",
+            description="Classify a project to say that it is a study project that is investigating a topic.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse setProjectAsStudyProject(@PathVariable String serverName,
+                                                 @PathVariable String projectGUID,
+                                                 @RequestBody (required = false)
+                                                 NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setProjectAsStudyProject(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the study project designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/study-project/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearProjectAsStudyProject",
+            description="Remove the study project designation from a project.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse clearProjectAsStudyProject(@PathVariable String serverName,
+                                                   @PathVariable String projectGUID,
+                                                   @RequestBody (required = false)
+                                                   DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearProjectAsStudyProject(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Classify a project to say that it is an experiment that is testing a hypothesis.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/experiment")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setProjectAsExperiment",
+            description="Classify a project to say that it is an experiment that is testing a hypothesis.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse setProjectAsExperiment(@PathVariable String serverName,
+                                               @PathVariable String projectGUID,
+                                               @RequestBody (required = false)
+                                               NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setProjectAsExperiment(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the experiment designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/experiment/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearProjectAsExperiment",
+            description="Remove the experiment designation from a project.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse clearProjectAsExperiment(@PathVariable String serverName,
+                                                 @PathVariable String projectGUID,
+                                                 @RequestBody (required = false)
+                                                 DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearProjectAsExperiment(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Classify a project to say that it is managing the development of a glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/glossary-project")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setProjectAsGlossaryProject",
+            description="Classify a project to say that it is managing the development of a glossary.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse setProjectAsGlossaryProject(@PathVariable String serverName,
+                                                    @PathVariable String projectGUID,
+                                                    @RequestBody (required = false)
+                                                    NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setProjectAsGlossaryProject(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the glossary project designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/glossary-project/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearProjectAsGlossaryProject",
+            description="Remove the glossary project designation from a project.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse clearProjectAsGlossaryProject(@PathVariable String serverName,
+                                                      @PathVariable String projectGUID,
+                                                      @RequestBody (required = false)
+                                                      DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearProjectAsGlossaryProject(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Classify a project to say that it is part of the governance program.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/governance-project")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setProjectAsGovernanceProject",
+            description="Classify a project to say that it is part of the governance program.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse setProjectAsGovernanceProject(@PathVariable String serverName,
+                                                      @PathVariable String projectGUID,
+                                                      @RequestBody (required = false)
+                                                      NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setProjectAsGovernanceProject(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the governance project designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/governance-project/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearProjectAsGovernanceProject",
+            description="Remove the governance project designation from a project.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse clearProjectAsGovernanceProject(@PathVariable String serverName,
+                                                        @PathVariable String projectGUID,
+                                                        @RequestBody (required = false)
+                                                        DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearProjectAsGovernanceProject(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Classify a project to describe the kind of project that it is.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/project-kind")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setProjectKind",
+            description="Classify a project to describe the kind of project that it is.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse setProjectKind(@PathVariable String serverName,
+                                       @PathVariable String projectGUID,
+                                       @RequestBody (required = false)
+                                       NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setProjectKind(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the project kind classification from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/project-kind/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearProjectKind",
+            description="Remove the project kind classification from a project.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse clearProjectKind(@PathVariable String serverName,
+                                         @PathVariable String projectGUID,
+                                         @RequestBody (required = false)
+                                         DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearProjectKind(serverName, projectGUID, requestBody);
+    }
+}
