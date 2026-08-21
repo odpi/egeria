@@ -244,7 +244,7 @@ public class OpenMetadataTypesArchive6_0
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "agreements";
+        final String                     end1AttributeName            = "agreementsForContract";
         final String                     end1AttributeDescription     = "Agreements related to the contract.";
         final String                     end1AttributeDescriptionGUID = null;
 

@@ -1,0 +1,97 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module is a Functional Verification Test (FVT) suite that exercises the *open metadata type
+// system itself* through the connector context clients, against a real PostgreSQL-backed repository.
+// Where query-fvt asks "does the query surface behave correctly?", this suite asks "is every type in the
+// model actually usable?" - for each entity, classification and relationship type in
+// OpenMetadataTypes.omarchive it creates an instance with every declared attribute populated, reads it
+// back through the connector context, checks every property survived the round trip, and removes it
+// again.  Nothing is hand-listed: the types come from the archive, so a type added to the model is
+// automatically covered by the next run.
+//
+// It shares query-fvt's shape - an in-process OMAG Server Platform, no Kafka, a PostgreSQL local
+// repository, a permit-all security chain - but loads only OpenMetadataTypes.omarchive rather than the
+// full content-packs set: the subject under test is the type definitions, and instance content from the
+// other archives would add load time without adding type coverage.
+//
+// Like query-fvt this is NOT part of the default build.  It only runs when explicitly requested:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:type-fvt:test -PrunTypeFvt
+//
+// Database connection details (host/port/database/schema/credentials) and the platform's own port are
+// all controlled from src/test/resources/application.properties.
+
+dependencies {
+    // The OMAG Server Platform itself, run in-process via SpringApplication.run(...).
+    // user-authn is excluded: it wires in a login/token Spring Security chain that needs a real user
+    // directory and credentials, which this hermetic, no-auth platform does not set up.
+    testImplementation(project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')) {
+        exclude group: 'org.odpi.egeria', module: 'user-authn'
+    }
+
+    // Connectors needed to configure and run a metadata access store server backed by PostgreSQL
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+
+    // Clients used to configure, start and exercise the server
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+    testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+
+    // Used to build the open metadata archive Connection objects passed to
+    // addStartUpOpenMetadataArchiveList(List<Connection>) - see OMAGPlatformExtension for why this is used in
+    // preference to the single-file addStartUpOpenMetadataArchiveFile(String) method.
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+
+    // In-process Spring Boot startup/shutdown
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+
+    // A permit-all security filter chain is needed so that every request still gets an (anonymous)
+    // Authentication in the SecurityContext - the admin/platform REST controllers require one to be
+    // present even though this suite's platform has no real user directory configured.
+    testImplementation 'org.springframework.security:spring-security-config'
+    testImplementation 'org.springframework.security:spring-security-web'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Open Metadata Type Functional Verification Tests (type-fvt)'
+
+test {
+    useJUnitPlatform()
+
+    // Optional, opt-in suite: needs a reachable PostgreSQL server, so it is skipped unless explicitly
+    // requested with -PrunTypeFvt.
+    onlyIf { project.hasProperty('runTypeFvt') }
+
+    // Single JVM fork - the tests share one running platform/server (see OMAGPlatformExtension) and
+    // are not designed to run concurrently against it.  No fixed timeout: this suite creates, reads and
+    // deletes at least one instance of every type in the model, which is several thousand round trips to
+    // a real PostgreSQL repository, and it is never part of an automated/CI budget - it is only ever run
+    // deliberately, by hand.
+    maxParallelForks = 1
+    testLogging.showStandardStreams = true
+}
+
+// Resolves logging conflicts between the various connectors pulled in by the platform chassis
+loggingCapabilities {
+    enforceLogback()
+}

@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.builders;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.RunnableSoftwareComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.GovernanceRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
@@ -328,7 +329,13 @@ public class OpenMetadataElementBuilder
                                                                              OpenMetadataProperty.SOURCE.name,
                                                                              assetProperties.getSource());
 
-                        if (properties instanceof ProcessProperties processProperties)
+                        if (properties instanceof RunnableSoftwareComponentProperties runnableSoftwareComponentProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.RUNTIME_ENVIRONMENT_TYPE.name,
+                                                                                 runnableSoftwareComponentProperties.getRuntimeEnvironmentType());
+                        }
+                        else if (properties instanceof ProcessProperties processProperties)
                         {
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.EXPECTED_BEHAVIOUR.name,
@@ -1112,7 +1119,7 @@ public class OpenMetadataElementBuilder
                             }
                             else if (properties instanceof CodeAnalysisAnnotationProperties codeAnalysisAnnotationProperties)
                             {
-                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
                                                                                   OpenMetadataProperty.FILE_COUNT.name,
                                                                                   codeAnalysisAnnotationProperties.getFileCount());
 
@@ -1132,7 +1139,7 @@ public class OpenMetadataElementBuilder
                                                                                      OpenMetadataProperty.PRIMARY_LANGUAGE.name,
                                                                                      codeAnalysisAnnotationProperties.getPrimaryLanguage());
 
-                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
                                                                                   OpenMetadataProperty.LANGUAGE_COUNT.name,
                                                                                   codeAnalysisAnnotationProperties.getLanguageCount());
 
@@ -1140,7 +1147,7 @@ public class OpenMetadataElementBuilder
                                                                                    OpenMetadataProperty.PUBLIC_SYMBOL_COUNT.name,
                                                                                    codeAnalysisAnnotationProperties.getPublicSymbolCount());
 
-                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
                                                                                   OpenMetadataProperty.ENTRY_POINT_COUNT.name,
                                                                                   codeAnalysisAnnotationProperties.getEntryPointCount());
 
@@ -1180,15 +1187,15 @@ public class OpenMetadataElementBuilder
                                                                                    OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_TOTAL.name,
                                                                                    codeAnalysisAnnotationProperties.getCyclomaticComplexityTotal());
 
-                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
                                                                                   OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_MAX.name,
                                                                                   codeAnalysisAnnotationProperties.getCyclomaticComplexityMax());
 
-                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
                                                                                   OpenMetadataProperty.MAX_NESTING_DEPTH.name,
                                                                                   codeAnalysisAnnotationProperties.getMaxNestingDepth());
 
-                                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                elementProperties = propertyHelper.addLongProperty(elementProperties,
                                                                                   OpenMetadataProperty.TEST_FILE_COUNT.name,
                                                                                   codeAnalysisAnnotationProperties.getTestFileCount());
 

@@ -29,6 +29,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.Calculate
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.PrimaryKeyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityListMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.GeneratedTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
@@ -703,6 +704,10 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                           OpenMetadataProperty.SECURITY_GROUPS.name,
                                                                           securityListMembershipProperties.getSecurityGroups());
+
+                elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                          OpenMetadataProperty.SECURITY_ROLES.name,
+                                                                          securityListMembershipProperties.getSecurityRoles());
             }
             else if (properties instanceof SecurityLogProperties securityLogProperties)
             {
@@ -715,6 +720,24 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.SOURCE.name,
                                                                      securityLogProperties.getSource());
+            }
+            else if (properties instanceof GeneratedTargetProperties generatedTargetProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.PURPOSE.name,
+                                                                     generatedTargetProperties.getPurpose());
+
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.BUILD_ID.name,
+                                                                     generatedTargetProperties.getBuildId());
+
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.BUILD_TOOL.name,
+                                                                     generatedTargetProperties.getBuildTool());
+
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.BUILD_TOOL_VERSION.name,
+                                                                     generatedTargetProperties.getBuildToolVersion());
             }
             else if (properties instanceof SecurityTagsProperties securityTagsProperties)
             {

@@ -229,7 +229,7 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "nestedSubjectArea";
+        final String                     end2AttributeName            = "nestedSubjectAreas";
         final String                     end2AttributeDescription     = "The subdivisions of the broader topic.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -434,7 +434,7 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "assignedItem";
+        final String                     end1AttributeName            = "assignedItems";
         final String                     end1AttributeDescription     = "An element that has been tagged by a valid value.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -449,7 +449,7 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "referenceValue";
+        final String                     end2AttributeName            = "referenceValues";
         final String                     end2AttributeDescription     = "A valid value that represents the meaning or classification of the " +
                 "assigned item.";
         final String                     end2AttributeDescriptionGUID = null;

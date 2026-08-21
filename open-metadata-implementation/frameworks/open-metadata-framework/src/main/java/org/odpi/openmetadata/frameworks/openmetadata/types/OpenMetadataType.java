@@ -57,6 +57,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.P
 import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.ReferenceableFacetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.*;
@@ -1417,7 +1418,7 @@ public enum OpenMetadataType
      */
     CONTACT_DETAILS("79296df8-645a-4ef7-a011-912d1cdcf75a",
                     "ContactDetails",
-                    OpenMetadataWikiPages.MODEL_0110_ACTORS,
+                    OpenMetadataWikiPages.MODEL_0111_CONTACT_DETAILS,
                     "d3966e27-bed1-47df-830a-99b1e4d056d9",
                     "Information on how to send a message to an individual or automated process.",
                     ContactDetailsProperties.class),
@@ -1427,7 +1428,7 @@ public enum OpenMetadataType
      */
     CONTACT_THROUGH_RELATIONSHIP("6cb9af43-184e-4dfa-854a-1572bcf0fe75",
                                  "ContactThrough",
-                                 OpenMetadataWikiPages.MODEL_0110_ACTORS,
+                                 OpenMetadataWikiPages.MODEL_0111_CONTACT_DETAILS,
                                  "e192b0fc-f483-4555-a09d-13f71c3829db",
                                  "he contact details associated with an actor profile.",
                                  ContactThroughProperties.class),
@@ -2668,7 +2669,7 @@ public enum OpenMetadataType
      */
     METADATA_REPOSITORY("c40397bd-eab0-4b2e-bffb-e7fa0f93a5a9",
                         "MetadataRepository",
-                        OpenMetadataWikiPages.MODEL_0224_DATABASES,
+                        OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES,
                         "6e816783-17d2-43cf-88c9-2aef7aafc62e",
                         "A data store containing metadata.",
                         MetadataRepositoryProperties.class),
@@ -2678,7 +2679,7 @@ public enum OpenMetadataType
      */
     COHORT_REGISTRY_STORE("2bfdcd0d-68bb-42c3-ae75-e9fb6c3dff70",
                           "CohortRegistryStore",
-                          OpenMetadataWikiPages.MODEL_0224_DATABASES,
+                          OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES,
                           "5f3920a6-32db-4ddf-a81b-08a62b981f62",
                           "A data store containing cohort membership registration details.",
                           CohortRegistryStoreProperties.class),
@@ -2789,7 +2790,7 @@ public enum OpenMetadataType
      */
     REPORT_TYPE("ed53a480-e6d4-44f1-aac7-3fac60bbb00e",
                 "ReportType",
-                OpenMetadataWikiPages.MODEL_0239_REPORTS,
+                OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
                 "b7ba1739-bf1d-4c12-aa3f-dd5ef8dc7674",
                 "A template for generating report.",
                 ReportTypeProperties.class),
@@ -2923,6 +2924,86 @@ public enum OpenMetadataType
               "5e0ea8d1-bb58-4a85-931d-886f8388b9d2",
               "A file containing properties in YAML format.  This it typically used for configuration.",
               YAMLFileProperties.class),
+
+    /**
+     * The element that is the generated output from a build program or script.
+     */
+    GENERATED_TARGET_CLASSIFICATION("945331c2-94a4-4d7a-8432-7d27fdf074a0",
+                                    "GeneratedTarget",
+                                    OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
+                                    "37dca7fa-6509-497e-af8f-1ae18c870e46",
+                                    "The element that is the generated output from a build program or script.  It can be reproduced at will and does not need backing up.",
+                                    GeneratedTargetProperties.class),
+
+    /**
+     * A process, script or technique that can be reused in multiple contexts.
+     */
+    REUSABLE_TECHNIQUE_CLASSIFICATION("0d5614c2-dc06-4087-8113-f47b4d8548ee",
+                                      "ReusableTechnique",
+                                      OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
+                                      "b79dbbc9-949e-4350-bc2e-9f6d65fa95b4",
+                                      "A process, script or technique that can be reused in multiple contexts.  It is a collection of steps that can be executed to achieve a specific goal.",
+                                      ReusableTechniqueProperties.class),
+
+    /**
+     * Identifies where a reusable technique has been used.
+     */
+    REUSABLE_TECHNIQUE_USE_RELATIONSHIP("21bd0979-f50f-4caa-a4ca-4b0f49f352c3",
+                                        "ReusableTechniqueUse",
+                                        OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
+                                        "318c89dc-efd9-4903-b7e6-1695ccb081f5",
+                                        "Identifies where a reusable technique has been used.",
+                                        ReusableTechniqueUseProperties.class),
+
+    /**
+     * A collection of artifacts that together can be used to create a runnable software component.
+     */
+    SOFTWARE_COMPONENT("7baaf7a8-fd10-44ae-a096-754aa15dabaf",
+                       "SoftwareComponent",
+                       OpenMetadataWikiPages.MODEL_0281_SOFTWARE_MODULES,
+                       "c1d8de81-1776-4995-8c06-c33eafed1860",
+                       "A collection of artifacts that together can be used to create a useful, and potentially reusable, runnable software component.",
+                       SoftwareComponentProperties.class),
+
+    /**
+     * A collection of software components that together can be used to create a larger software component.
+     */
+    SOFTWARE_MODULE("d4f3a64c-f480-4486-8327-2ceea141fa01",
+                    "SoftwareModule",
+                    OpenMetadataWikiPages.MODEL_0281_SOFTWARE_MODULES,
+                    "5df5953b-d43d-4979-bac2-fb77cf5ef7b8",
+                    "A collection of software components that together can be used to create a useful, and potentially reusable, software component.",
+                    SoftwareModuleProperties.class),
+
+    /**
+     * A software component that is released and available for use.
+     */
+    RUNNABLE_SOFTWARE_COMPONENT("c232a299-f352-4c9e-80c7-323d4f14aa92",
+                                "RunnableSoftwareComponent",
+                                OpenMetadataWikiPages.MODEL_0282_RELEASED_SOFTWARE_COMPONENTS,
+                                "524c5655-32dc-4bc5-a75e-cf43ebcd3c99",
+                                "A software component that is released and available for use.  It is executable but may have external dependencies that require additional assets to be available before it will execute successfully.",
+                                RunnableSoftwareComponentProperties.class),
+
+    /**
+     * A dependency between runnable software components.
+     */
+    DEPENDENT_SOFTWARE_COMPONENT_RELATIONSHIP("d57f55e7-394d-4403-bac4-357e262b01e6",
+                                              "DependentSoftwareComponent",
+                                              OpenMetadataWikiPages.MODEL_0282_RELEASED_SOFTWARE_COMPONENTS,
+                                              "2e722f35-68a9-4075-a990-32de209343fc",
+                                              "A dependency between runnable software components.",
+                                              DependentSoftwareComponentProperties.class),
+
+    /**
+     * Links a software component to the software asset that derives from it.
+     */
+    SOFTWARE_SOURCE_RELATIONSHIP("0fecae73-6082-4876-b49b-34eeeaa14c24",
+                                 "SoftwareSource",
+                                 OpenMetadataWikiPages.MODEL_0282_RELEASED_SOFTWARE_COMPONENTS,
+                                 "d156443a-9f4f-4843-8353-1a9d9dd98714",
+                                 "Links a software component to the software asset that derives from it.",
+                                 SoftwareSourceProperties.class),
 
 
     /* ============================================================================================================================*/
@@ -3373,7 +3454,7 @@ public enum OpenMetadataType
      */
     GOVERNANCE_RESPONSIBILITY("89a76b24-deb8-45bf-9304-a578a610326f",
                               "GovernanceResponsibility",
-                              OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                              OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
                               "c6e947b0-13a6-4e2e-a410-17c0794db5a8",
                               "Describes a responsibility of a person, team or organization that supports the implementation of a governance driver.",
                               GovernanceResponsibilityProperties.class),
@@ -3383,7 +3464,7 @@ public enum OpenMetadataType
      */
     GOVERNANCE_PROCEDURE("69055d10-51dc-4c2b-b21f-d76fad3f8ef3",
                          "GovernanceProcedure",
-                         OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                         OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
                          "09d402ba-d4bc-40f2-bdff-eba8ed7f79f1",
                          "Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver.",
                          GovernanceProcedureProperties.class),
@@ -3393,7 +3474,7 @@ public enum OpenMetadataType
      */
     METHODOLOGY("173a4c2f-016b-4dd2-950a-6ab25bb48887",
                 "Methodology",
-                OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
                 "94a9c08c-f636-4ef0-baec-2c4920da6a60",
                 "Describes a system of ways of doing, teaching, or studying something.",
                 MethodologyProperties.class),
@@ -4288,6 +4369,56 @@ public enum OpenMetadataType
                               GovernanceActionProcessProperties.class),
 
     /**
+     * A governance action process that drives an analytical engine.
+     */
+    ANALYTICAL_ACTION_PROCESS("eeadc662-4dc8-4954-ac42-8b84b298ccf7",
+                              "AnalyticalActionProcess",
+                              OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                              "4da68d78-0028-498c-b6ea-557481a044bc",
+                              "A governance action process that is used to drive an analytical engine to produce a report or other output.",
+                              AnalyticalActionProcessProperties.class),
+
+    /**
+     * A governance action process that catalogs metadata from an external source.
+     */
+    CATALOGUING_ACTION_PROCESS("d2bc1437-26da-49a5-9eab-1b0984b911bd",
+                               "CataloguingActionProcess",
+                               OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                               "cb0e7ee1-f409-4e4c-897e-ce1607018535",
+                               "A governance action process that is used to extract metadata from an external source and catalog it in the open metadata repository.",
+                               CataloguingActionProcessProperties.class),
+
+    /**
+     * A governance action process that explores a digital resource.
+     */
+    EXPLORING_ACTION_PROCESS("d50102d3-05b4-48f1-8441-a995dfa31c5c",
+                             "ExploringActionProcess",
+                             OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                             "063005b5-ef49-433c-9ad1-e8d590dd91f6",
+                             "A governance action process that is used to explore a digital resource to understand an overview of its content and context.",
+                             ExploringActionProcessProperties.class),
+
+    /**
+     * A governance action process that provisions a digital resource.
+     */
+    PROVISIONING_ACTION_PROCESS("c010a7df-ac08-4ad6-ac86-c9292fae2961",
+                                "ProvisioningActionProcess",
+                                OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                                "dfb1c8ea-e7ac-4720-8a39-1c111ff47845",
+                                "A governance action process that is used to provision a digital resource to a target environment.",
+                                ProvisioningActionProcessProperties.class),
+
+    /**
+     * A governance action process that surveys a digital resource.
+     */
+    SURVEYING_ACTION_PROCESS("b84b118e-7ca9-496c-9d4f-74b3a9630fad",
+                             "SurveyingActionProcess",
+                             OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                             "71b48b95-de28-4986-be9e-e33bdf4a4637",
+                             "A governance action process that is used to survey a digital resource to deeply understand its content and context.",
+                             SurveyingActionProcessProperties.class),
+
+    /**
      * A description of a call to a governance engine that acts as a template when creating the appropriate engine action instance.
      */
     GOVERNANCE_ACTION_TYPE("92e20083-0393-40c0-a95b-090724a91ddc",
@@ -4771,7 +4902,7 @@ public enum OpenMetadataType
      */
     STRUCT_SCHEMA_TYPE("a13b409f-fd67-4506-8d94-14dfafd250a4",
                        "StructSchemaType",
-                       OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
+                       OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
                        "26d86816-e8b0-4a17-9250-fed94f47ea5b",
                        "A schema type that has a list of attributes, typically of different types.",
                        StructSchemaTypeProperties.class),

@@ -304,7 +304,8 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 String              hospitalCertificationTypeGUID                 = setUpCertificationType(clinicalTrialId, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), hospitalCertificationTypeTemplateGUID);
                 String              dataQualityCertificationTypeGUID              = setUpCertificationType(clinicalTrialId, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), dataQualityCertificationTypeTemplateGUID);
 
-                String nominateHospitalGUID = governanceContext.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::nominate-hospital",
+                String nominateHospitalGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                                                      "ClinicalTrials::" + clinicalTrialId + "::nominate-hospital",
                                                                                                       "Nominate Hospital (" + clinicalTrialId + ")",
                                                                                                       "Set up the certification, data processing types and license for a hospital so that it may contribute data to the clinical trial.",
                                                                                                       ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),
@@ -322,7 +323,8 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName(), hospitalCertificationTypeGUID);
 
 
-                String certifyHospitalGUID = governanceContext.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::certify-hospital",
+                String certifyHospitalGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                                                     "ClinicalTrials::" + clinicalTrialId + "::certify-hospital",
                                                                                                      "Certify Hospital (" + clinicalTrialId + ")",
                                                                                                      "Confirms the certification for a hospital so that it may contribute data to the clinical trial.",
                                                                                                      ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),
@@ -339,7 +341,8 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(certifyHospitalGUID, CocoClinicalTrialActionTarget.CLINICAL_TRIAL_MANAGER.getName(), clinicalTrialManagerGUID);
 
 
-                String onboardHospitalGUID = governanceContext.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::onboard-hospital",
+                String onboardHospitalGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                                                     "ClinicalTrials::" + clinicalTrialId + "::onboard-hospital",
                                                                                                      "Onboard Hospital (" + clinicalTrialId + ")",
                                                                                                      "Set up the onboarding pipeline that take data from a particular hospital and adds it to the data lake.",
                                                                                                      ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),
@@ -359,7 +362,8 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN.getName(), treatmentValidationInformationSupplyChainGUID);
 
 
-                String setUpDataLakeProcessGUID = governanceContext.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::set-up-data-lake",
+                String setUpDataLakeProcessGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
+                                                                                                          "ClinicalTrials::" + clinicalTrialId + "::set-up-data-lake",
                                                                                                           "Set Up Data Lake (" + clinicalTrialId + ")",
                                                                                                           "Set up the data stores for receiving data from the hospitals - this includes the file system directory and Unity Catalog Volume for incoming patient measurements, along with the data set collection for certified measurement files.",
                                                                                                           ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),

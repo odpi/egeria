@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.NetworkHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.OperatingPlatformHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StorageVolumeHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.HostClusterMemberProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.NetworkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.OperatingPlatformManifestProperties;
@@ -32,6 +33,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatfor
 import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudTenantProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SoftwareCapabilityHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SoftwareDevelopmentHandler;
 
 
 
@@ -3005,4 +3007,537 @@ public class DevopsPipelineRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response);
         return response;
     }
+
+    /**
+     * Attach an element to the reusable technique that it makes use of.
+     *
+     * @param serverName name of the server to route the request to
+     * @param techniqueUserGUID unique identifier of the element that uses the technique
+     * @param reusableTechniqueGUID unique identifier of the element classified as a reusable technique
+     * @param requestBody properties for the relationship
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkReusableTechniqueUse(String                     serverName,
+                                   String                     techniqueUserGUID,
+                                   String                     reusableTechniqueGUID,
+                                   NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkReusableTechniqueUse";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareDevelopmentHandler handler = instanceHandler.getSoftwareDevelopmentHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkReusableTechniqueUse(userId, techniqueUserGUID, reusableTechniqueGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ReusableTechniqueUseProperties properties)
+            {
+                handler.linkReusableTechniqueUse(userId, techniqueUserGUID, reusableTechniqueGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkReusableTechniqueUse(userId, techniqueUserGUID, reusableTechniqueGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ReusableTechniqueUseProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach an element from a reusable technique that it no longer makes use of.
+     *
+     * @param serverName name of the server to route the request to
+     * @param techniqueUserGUID unique identifier of the element that uses the technique
+     * @param reusableTechniqueGUID unique identifier of the element classified as a reusable technique
+     * @param requestBody delete options
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachReusableTechniqueUse(String                        serverName,
+                                     String                        techniqueUserGUID,
+                                     String                        reusableTechniqueGUID,
+                                     DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachReusableTechniqueUse";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareDevelopmentHandler handler = instanceHandler.getSoftwareDevelopmentHandler(userId, serverName, methodName);
+
+            handler.detachReusableTechniqueUse(userId, techniqueUserGUID, reusableTechniqueGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Attach a runnable software component to a component that it needs in order to execute.
+     *
+     * @param serverName name of the server to route the request to
+     * @param dependentComponentGUID unique identifier of the component that has the dependency
+     * @param dependedOnComponentGUID unique identifier of the component that is depended on
+     * @param requestBody properties for the relationship
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkDependentSoftwareComponent(String                     serverName,
+                                   String                     dependentComponentGUID,
+                                   String                     dependedOnComponentGUID,
+                                   NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkDependentSoftwareComponent";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareDevelopmentHandler handler = instanceHandler.getSoftwareDevelopmentHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkDependentSoftwareComponent(userId, dependentComponentGUID, dependedOnComponentGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof DependentSoftwareComponentProperties properties)
+            {
+                handler.linkDependentSoftwareComponent(userId, dependentComponentGUID, dependedOnComponentGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkDependentSoftwareComponent(userId, dependentComponentGUID, dependedOnComponentGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(DependentSoftwareComponentProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a runnable software component from a component that it no longer needs in order to execute.
+     *
+     * @param serverName name of the server to route the request to
+     * @param dependentComponentGUID unique identifier of the component that has the dependency
+     * @param dependedOnComponentGUID unique identifier of the component that is depended on
+     * @param requestBody delete options
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachDependentSoftwareComponent(String                        serverName,
+                                     String                        dependentComponentGUID,
+                                     String                        dependedOnComponentGUID,
+                                     DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachDependentSoftwareComponent";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareDevelopmentHandler handler = instanceHandler.getSoftwareDevelopmentHandler(userId, serverName, methodName);
+
+            handler.detachDependentSoftwareComponent(userId, dependentComponentGUID, dependedOnComponentGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Attach a software asset to the software component that it is built from.
+     *
+     * @param serverName name of the server to route the request to
+     * @param assetGUID unique identifier of the software asset
+     * @param softwareComponentGUID unique identifier of the software component
+     * @param requestBody properties for the relationship
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkSoftwareSource(String                     serverName,
+                                   String                     assetGUID,
+                                   String                     softwareComponentGUID,
+                                   NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSoftwareSource";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareDevelopmentHandler handler = instanceHandler.getSoftwareDevelopmentHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkSoftwareSource(userId, assetGUID, softwareComponentGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof SoftwareSourceProperties properties)
+            {
+                handler.linkSoftwareSource(userId, assetGUID, softwareComponentGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkSoftwareSource(userId, assetGUID, softwareComponentGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(SoftwareSourceProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a software asset from the software component that it was built from.
+     *
+     * @param serverName name of the server to route the request to
+     * @param assetGUID unique identifier of the software asset
+     * @param softwareComponentGUID unique identifier of the software component
+     * @param requestBody delete options
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachSoftwareSource(String                        serverName,
+                                     String                        assetGUID,
+                                     String                        softwareComponentGUID,
+                                     DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachSoftwareSource";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareDevelopmentHandler handler = instanceHandler.getSoftwareDevelopmentHandler(userId, serverName, methodName);
+
+            handler.detachSoftwareSource(userId, assetGUID, softwareComponentGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Classify an element to say that it is the generated output of a build program or script.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element to classify
+     * @param requestBody properties for the classification
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setElementAsGeneratedTarget(String                       serverName,
+                                           String                       elementGUID,
+                                           NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setElementAsGeneratedTarget";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareDevelopmentHandler handler = instanceHandler.getSoftwareDevelopmentHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setElementAsGeneratedTarget(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof GeneratedTargetProperties properties)
+            {
+                handler.setElementAsGeneratedTarget(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setElementAsGeneratedTarget(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(GeneratedTargetProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the generated target designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element to declassify
+     * @param requestBody metadata source options
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearElementAsGeneratedTarget(String                    serverName,
+                                             String                    elementGUID,
+                                             MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "clearElementAsGeneratedTarget";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareDevelopmentHandler handler = instanceHandler.getSoftwareDevelopmentHandler(userId, serverName, methodName);
+
+            handler.clearElementAsGeneratedTarget(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+    /**
+     * Classify an element to say that it is a technique that can be reused in multiple contexts.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element to classify
+     * @param requestBody properties for the classification
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setElementAsReusableTechnique(String                       serverName,
+                                           String                       elementGUID,
+                                           NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setElementAsReusableTechnique";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareDevelopmentHandler handler = instanceHandler.getSoftwareDevelopmentHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setElementAsReusableTechnique(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ReusableTechniqueProperties properties)
+            {
+                handler.setElementAsReusableTechnique(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setElementAsReusableTechnique(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ReusableTechniqueProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the reusable technique designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element to declassify
+     * @param requestBody metadata source options
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearElementAsReusableTechnique(String                    serverName,
+                                             String                    elementGUID,
+                                             MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "clearElementAsReusableTechnique";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareDevelopmentHandler handler = instanceHandler.getSoftwareDevelopmentHandler(userId, serverName, methodName);
+
+            handler.clearElementAsReusableTechnique(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
 }

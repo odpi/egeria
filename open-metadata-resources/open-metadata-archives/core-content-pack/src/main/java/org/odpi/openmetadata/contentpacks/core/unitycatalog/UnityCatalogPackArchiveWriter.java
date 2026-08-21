@@ -239,7 +239,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         final String displayName = "Provision Governance Action Process for " + technologyName;
         final String summary = "Create a " + technologyType + " element in the correct metadata collection so that it is provisioned into unity catalog.";
 
-        String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+        String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
                                                                    qualifiedName,
                                                                    null,
                                                                    displayName,
@@ -284,7 +284,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                        OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                         null,
                                                                         qualifiedName + "::Step1",

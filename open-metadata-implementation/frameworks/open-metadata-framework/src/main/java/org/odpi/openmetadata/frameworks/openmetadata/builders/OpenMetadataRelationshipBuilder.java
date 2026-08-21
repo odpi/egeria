@@ -289,16 +289,6 @@ public class OpenMetadataRelationshipBuilder
                                                                          OpenMetadataProperty.NOTES.name,
                                                                          exceptionProperties.getNotes());
                 }
-                else if (properties instanceof NetworkGatewayLinkProperties networkGatewayLinkProperties)
-                {
-                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.INTERNAL_ENDPOINT_ADDRESS.name,
-                                                                         networkGatewayLinkProperties.getInternalEndpointAddress());
-
-                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.EXTERNAL_ENDPOINT_ADDRESS.name,
-                                                                         networkGatewayLinkProperties.getExternalEndpointAddress());
-                }
                 else if (properties instanceof NotificationSubscriberProperties notificationSubscriberProperties)
                 {
                     if (notificationSubscriberProperties.getActivityStatus() != null)
@@ -396,6 +386,24 @@ public class OpenMetadataRelationshipBuilder
                                                                          OpenMetadataProperty.DATA_EXCHANGED.name,
                                                                          solutionLinkingWireProperties.getDataExchanged());
                 }
+            }
+            else if (properties instanceof NetworkGatewayLinkProperties networkGatewayLinkProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                     networkGatewayLinkProperties.getDisplayName());
+
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.DESCRIPTION.name,
+                                                                     networkGatewayLinkProperties.getDescription());
+
+                elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                          OpenMetadataProperty.INTERNAL_ENDPOINT_ADDRESSES.name,
+                                                                          networkGatewayLinkProperties.getInternalEndpointAddresses());
+
+                elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                          OpenMetadataProperty.EXTERNAL_ENDPOINT_ADDRESSES.name,
+                                                                          networkGatewayLinkProperties.getExternalEndpointAddresses());
             }
             else if (properties instanceof PartOfRelationshipProperties partOfRelationshipProperties)
             {

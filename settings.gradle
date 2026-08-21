@@ -264,6 +264,7 @@ include(':open-metadata-test:open-metadata-ut')
 include(':open-metadata-test:open-metadata-bvt')
 include(':open-metadata-test:open-metadata-api-checks')
 include(':open-metadata-test:open-metadata-fvt:query-fvt')
+include(':open-metadata-test:open-metadata-fvt:type-fvt')
 
 
 // These are not required if the project name == the directory name but are included for clarity - for example

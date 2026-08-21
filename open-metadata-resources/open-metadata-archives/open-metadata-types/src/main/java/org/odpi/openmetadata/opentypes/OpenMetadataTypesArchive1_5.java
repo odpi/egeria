@@ -220,7 +220,7 @@ public class OpenMetadataTypesArchive1_5
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "parentProcess";
+        final String                     end1AttributeName            = "parentProcesses";
         final String                     end1AttributeDescription     = "The more abstract or higher-level process.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -235,7 +235,7 @@ public class OpenMetadataTypesArchive1_5
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "childProcess";
+        final String                     end2AttributeName            = "childProcesses";
         final String                     end2AttributeDescription     = "The more detailed or lower-level process.";
         final String                     end2AttributeDescriptionGUID = null;
 

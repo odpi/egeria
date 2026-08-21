@@ -737,8 +737,6 @@ Content-Type: application/json
 
 @operatingPlatformGUID=add guid here
 @collectionGUID=add guid here
-@assetGUID=add guid here
-@elementGUID=add guid here
 
 ###
 # @name createOperatingPlatform
@@ -1222,6 +1220,216 @@ Content-Type: application/json
 
 {
   "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+@techniqueUserGUID=add guid here
+
+###
+@reusableTechniqueGUID=add guid here
+
+###
+# @name linkReusableTechniqueUse
+# Attach an element to the reusable technique that it makes use of.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/elements/{{techniqueUserGUID}}/reusable-technique-use/{{reusableTechniqueGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ReusableTechniqueUseProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachReusableTechniqueUse
+# Detach an element from a reusable technique that it no longer makes use of.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/elements/{{techniqueUserGUID}}/reusable-technique-use/{{reusableTechniqueGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+@dependentComponentGUID=add guid here
+
+###
+@dependedOnComponentGUID=add guid here
+
+###
+# @name linkDependentSoftwareComponent
+# Attach a runnable software component to a component that it needs in order to execute.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/runnable-software-components/{{dependentComponentGUID}}/dependent-software-component/{{dependedOnComponentGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "DependentSoftwareComponentProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachDependentSoftwareComponent
+# Detach a runnable software component from a component that it no longer needs in order to execute.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/runnable-software-components/{{dependentComponentGUID}}/dependent-software-component/{{dependedOnComponentGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+@assetGUID=add guid here
+
+###
+@softwareComponentGUID=add guid here
+
+###
+# @name linkSoftwareSource
+# Attach a software asset to the software component that it is built from.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/assets/{{assetGUID}}/software-source/{{softwareComponentGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SoftwareSourceProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachSoftwareSource
+# Detach a software asset from the software component that it was built from.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/assets/{{assetGUID}}/software-source/{{softwareComponentGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+@elementGUID=add guid here
+
+###
+# @name setElementAsGeneratedTarget
+# Classify an element to say that it is the generated output of a build program or script.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/elements/{{elementGUID}}/generated-target
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "GeneratedTargetProperties",
+    "purpose": "add purpose here",
+    "buildId": "add build identifier here",
+    "buildTool": "add build tool name here",
+    "buildToolVersion": "add build tool version here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearElementAsGeneratedTarget
+# Remove the generated target designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/elements/{{elementGUID}}/generated-target/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name setElementAsReusableTechnique
+# Classify an element to say that it is a technique that can be reused in multiple contexts.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/elements/{{elementGUID}}/reusable-technique
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "ReusableTechniqueProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearElementAsReusableTechnique
+# Remove the reusable technique designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/elements/{{elementGUID}}/reusable-technique/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",

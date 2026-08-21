@@ -867,7 +867,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "actionSources";
+        final String                     end1AttributeName            = "actionSource";
         final String                     end1AttributeDescription     = "Sources of the action request.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -882,7 +882,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "actions";
+        final String                     end2AttributeName            = "requestedActions";
         final String                     end2AttributeDescription     = "Requests to perform actions related to this element.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -908,7 +908,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "identifiedInActions";
+        final String                     end1AttributeName            = "actionsForTarget";
         final String                     end1AttributeDescription     = "Actions that have been identified for this element.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -923,7 +923,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "elementsToWorkOn";
+        final String                     end2AttributeName            = "actionTargets";
         final String                     end2AttributeDescription     = "Elements that will be updated or used to complete the action.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -1169,7 +1169,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "consumingItems";
+        final String                     end1AttributeName            = "referencingElements";
         final String                     end1AttributeDescription     = "Items that are referencing this work.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -1184,7 +1184,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "externalReference";
+        final String                     end2AttributeName            = "externalReferences";
         final String                     end2AttributeDescription     = "Link to more information from an external source.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -1211,7 +1211,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "consumingItem";
+        final String                     end1AttributeName            = "displayingItems";
         final String                     end1AttributeDescription     = "Item that is referencing this work.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -1683,7 +1683,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "localElements";
+        final String                     end1AttributeName            = "localResources";
         final String                     end1AttributeDescription     = "Elements sited at this location.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -2024,7 +2024,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "servers";
+        final String                     end1AttributeName            = "serverForEndpoint";
         final String                     end1AttributeDescription     = "Server supporting this endpoint.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -2039,7 +2039,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "endpoints";
+        final String                     end2AttributeName            = "serverEndpoints";
         final String                     end2AttributeDescription     = "Endpoints supported by this server.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -2236,7 +2236,7 @@ public class OpenMetadataTypesArchive1_2
     private RelationshipDef getNetworkGatewayLinkRelationship()
     {
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.NETWORK_GATEWAY_LINK_RELATIONSHIP,
-                                                                                this.archiveBuilder.getRelationshipDef(OpenMetadataType.LABELED_RELATIONSHIP.typeName),
+                                                                                null,
                                                                                 ClassificationPropagationRule.NONE);
 
         relationshipDef.setMultiLink(true);
@@ -2277,8 +2277,10 @@ public class OpenMetadataTypesArchive1_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXTERNAL_ENDPOINT_ADDRESS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTERNAL_ENDPOINT_ADDRESS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXTERNAL_ENDPOINT_ADDRESSES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTERNAL_ENDPOINT_ADDRESSES));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -2558,7 +2560,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "profile";
+        final String                     end1AttributeName            = "userProfile";
         final String                     end1AttributeDescription     = "Description of the person, organization or engine that uses this user identity.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -2767,7 +2769,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "subTeam";
+        final String                     end2AttributeName            = "subTeams";
         final String                     end2AttributeDescription     = "The teams where work is delegated to.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -3163,7 +3165,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "foundInCollections";
+        final String                     end1AttributeName            = "memberOfCollections";
         final String                     end1AttributeDescription     = "Collections that link to this element.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -3223,7 +3225,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "resourceListAnchors";
+        final String                     end1AttributeName            = "resourceListUsers";
         final String                     end1AttributeDescription     = "Referenceable objects that are using the linked to resource.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -3238,7 +3240,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "supportingResources";
+        final String                     end2AttributeName            = "resourceList";
         final String                     end2AttributeDescription     = "Resources identified as of interest to the anchor.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -3349,7 +3351,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "managingProject";
+        final String                     end1AttributeName            = "managingProjects";
         final String                     end1AttributeDescription     = "Project that oversees this project.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -3364,7 +3366,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "managedProject";
+        final String                     end2AttributeName            = "managedProjects";
         final String                     end2AttributeDescription     = "Project that this project is responsible for managing.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -3390,7 +3392,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "dependentProject";
+        final String                     end1AttributeName            = "dependentProjects";
         final String                     end1AttributeDescription     = "Projects that are dependent on this project.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -3751,7 +3753,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "ratingAnchor";
+        final String                     end1AttributeName            = "reviewedElement";
         final String                     end1AttributeDescription     = "Element that is rated.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -3766,7 +3768,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "starRatings";
+        final String                     end2AttributeName            = "reviews";
         final String                     end2AttributeDescription     = "Accumulated ratings.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -3792,7 +3794,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "commentAnchor";
+        final String                     end1AttributeName            = "commentedOnElement";
         final String                     end1AttributeDescription     = "Element that this comment relates.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -3833,7 +3835,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "likeAnchor";
+        final String                     end1AttributeName            = "likedElement";
         final String                     end1AttributeDescription     = "Element that is liked.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -3914,7 +3916,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "taggedElement";
+        final String                     end1AttributeName            = "taggedElements";
         final String                     end1AttributeDescription     = "Element that is tagged.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -3929,7 +3931,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "tags";
+        final String                     end2AttributeName            = "informalTags";
         final String                     end2AttributeDescription     = "Accumulated tags.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -4006,7 +4008,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "contributions";
+        final String                     end1AttributeName            = "crowdSourcedContributions";
         final String                     end1AttributeDescription     = "Items that have been contributed.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -4020,7 +4022,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "contributors";
+        final String                     end2AttributeName            = "crowdSourcingContributors";
         final String                     end2AttributeDescription     = "Person/people contributing content.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -4326,7 +4328,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "supportingVirtualConnections";
+        final String                     end1AttributeName            = "parentConnections";
         final String                     end1AttributeDescription     = "Virtual connections using this connection.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -4426,7 +4428,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end1AttributeName            = "dataContent";
+        final String                     end1AttributeName            = "dataSetContent";
         final String                     end1AttributeDescription     = "Assets supporting a data set.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -4527,7 +4529,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "accessEndpoints";
+        final String                     end2AttributeName            = "apiEndpoints";
         final String                     end2AttributeDescription     = "Endpoints used to call this API.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -4704,7 +4706,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "nestedFolder";
+        final String                     end2AttributeName            = "nestedFolders";
         final String                     end2AttributeDescription     = "Folders embedded in this folder.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -5558,7 +5560,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "delegatingFrom";
+        final String                     end1AttributeName            = "portDelegatingFrom";
         final String                     end1AttributeDescription     = "Higher level Port";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -5572,7 +5574,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "delegatingTo";
+        final String                     end2AttributeName            = "portDelegatingTo";
         final String                     end2AttributeDescription     = "Lower level port";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -5605,7 +5607,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "owningProcess";
+        final String                     end1AttributeName            = "portOwningProcesses";
         final String                     end1AttributeDescription     = "Process linked to the port";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -6388,7 +6390,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "assignedDataAssetElements";
+        final String                     end1AttributeName            = "meaningForDataElements";
         final String                     end1AttributeDescription     = "Elements identified as managing data that has the same meaning as this glossary term.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -6403,7 +6405,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "meaning";
+        final String                     end2AttributeName            = "meanings";
         final String                     end2AttributeDescription     = "Semantic definition for this element.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -7124,7 +7126,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "controlsZone";
+        final String                     end2AttributeName            = "controlsZones";
         final String                     end2AttributeDescription     = "The zones that are also governed in the same way.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -7758,7 +7760,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "licensed";
+        final String                     end1AttributeName            = "licensedElements";
         final String                     end1AttributeDescription     = "Items licensed by this type of license.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -7845,7 +7847,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "certifies";
+        final String                     end1AttributeName            = "certifiedElements";
         final String                     end1AttributeDescription     = "Items certified by this type of certification.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -8169,7 +8171,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "describesStructureFor";
+        final String                     end1AttributeName            = "describesStructure";
         final String                     end1AttributeDescription     = "Asset/port that conforms to the schema type.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -8184,7 +8186,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "schema";
+        final String                     end2AttributeName            = "schemaType";
         final String                     end2AttributeDescription     = "Structure of the content of this asset/port.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -8836,7 +8838,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "primaryKey";
+        final String                     end1AttributeName            = "linkedToPrimaryKey";
         final String                     end1AttributeDescription     = "Relational column holding the primary key.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -8850,7 +8852,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "foreignKey";
+        final String                     end2AttributeName            = "foreignKeys";
         final String                     end2AttributeDescription     = "Use of primary key from another table to enable table joins.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -9520,7 +9522,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "validValuesSet";
+        final String                     end1AttributeName            = "validValueMembers";
         final String                     end1AttributeDescription     = "The valid values set that this element belongs to.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -9535,7 +9537,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "memberOfValidValuesSet";
+        final String                     end2AttributeName            = "memberOfValidValueSets";
         final String                     end2AttributeDescription     = "Description of a single valid value.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -9587,7 +9589,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "validValuesImplementation";
+        final String                     end2AttributeName            = "validValueImplementations";
         final String                     end2AttributeDescription     = "The resource where the valid values are implemented.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -10516,7 +10518,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "resourceProfileLogs";
+        final String                     end2AttributeName            = "resourceProfileData";
         final String                     end2AttributeDescription     = "Location of the profile information.";
         final String                     end2AttributeDescriptionGUID = null;
 

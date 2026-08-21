@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.GovernanceRoleProperties;
@@ -6769,6 +6770,94 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract and delete the buildId property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeBuildId(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeBuildId";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.BUILD_ID.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the buildTool property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeBuildTool(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeBuildTool";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.BUILD_TOOL.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the buildToolVersion property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeBuildToolVersion(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeBuildToolVersion";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.BUILD_TOOL_VERSION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the runtimeEnvironmentType property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeRuntimeEnvironmentType(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeRuntimeEnvironmentType";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.RUNTIME_ENVIRONMENT_TYPE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and remove the snippet property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -8500,17 +8589,17 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string
      */
-    protected String removeInternalEndpointAddress(ElementProperties elementProperties)
+    protected List<String> removeInternalEndpointAddresses(ElementProperties elementProperties)
 
     {
-        final String methodName = "removeInternalEndpointAddress";
+        final String methodName = "removeInternalEndpointAddresses";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.INTERNAL_ENDPOINT_ADDRESS.name,
-                                                       elementProperties,
-                                                       methodName);
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.INTERNAL_ENDPOINT_ADDRESSES.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
         return null;
@@ -8523,17 +8612,17 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string
      */
-    protected String removeExternalEndpointAddress(ElementProperties elementProperties)
+    protected List<String> removeExternalEndpointAddresses(ElementProperties elementProperties)
 
     {
-        final String methodName = "removeExternalEndpointAddress";
+        final String methodName = "removeExternalEndpointAddresses";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.EXTERNAL_ENDPOINT_ADDRESS.name,
-                                                       elementProperties,
-                                                       methodName);
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.EXTERNAL_ENDPOINT_ADDRESSES.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
         return null;
@@ -13506,6 +13595,19 @@ public class OpenMetadataPropertyConverterBase
                 ((SecurityLogProperties)beanProperties).setProcess(this.removeProcess(elementProperties));
                 ((SecurityLogProperties)beanProperties).setSource(this.removeSource(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.GENERATED_TARGET_CLASSIFICATION.typeName))
+            {
+                beanProperties = new GeneratedTargetProperties();
+
+                ((GeneratedTargetProperties)beanProperties).setPurpose(this.removePurpose(elementProperties));
+                ((GeneratedTargetProperties)beanProperties).setBuildId(this.removeBuildId(elementProperties));
+                ((GeneratedTargetProperties)beanProperties).setBuildTool(this.removeBuildTool(elementProperties));
+                ((GeneratedTargetProperties)beanProperties).setBuildToolVersion(this.removeBuildToolVersion(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.REUSABLE_TECHNIQUE_CLASSIFICATION.typeName))
+            {
+                beanProperties = new ReusableTechniqueProperties();
+            }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.SECURITY_TAGS_CLASSIFICATION.typeName))
             {
                 beanProperties = new SecurityTagsProperties();
@@ -13884,6 +13986,18 @@ public class OpenMetadataPropertyConverterBase
 
                 ((BusinessCapabilityDependencyProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((BusinessCapabilityDependencyProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DEPENDENT_SOFTWARE_COMPONENT_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new DependentSoftwareComponentProperties();
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.REUSABLE_TECHNIQUE_USE_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new ReusableTechniqueUseProperties();
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.SOFTWARE_SOURCE_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new SoftwareSourceProperties();
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName))
             {
@@ -14570,10 +14684,10 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new NetworkGatewayLinkProperties();
 
-                ((NetworkGatewayLinkProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((NetworkGatewayLinkProperties)relationshipBeanProperties).setDisplayName(this.removeDisplayName(elementProperties));
                 ((NetworkGatewayLinkProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
-                ((NetworkGatewayLinkProperties)relationshipBeanProperties).setInternalEndpointAddress(this.removeInternalEndpointAddress(elementProperties));
-                ((NetworkGatewayLinkProperties)relationshipBeanProperties).setExternalEndpointAddress(this.removeExternalEndpointAddress(elementProperties));
+                ((NetworkGatewayLinkProperties)relationshipBeanProperties).setInternalEndpointAddresses(this.removeInternalEndpointAddresses(elementProperties));
+                ((NetworkGatewayLinkProperties)relationshipBeanProperties).setExternalEndpointAddresses(this.removeExternalEndpointAddresses(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName))
             {
@@ -15689,6 +15803,17 @@ public class OpenMetadataPropertyConverterBase
                         {
                             beanProperties = new SoftwareArchiveProperties();
                         }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SOFTWARE_COMPONENT.typeName))
+                        {
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SOFTWARE_MODULE.typeName))
+                            {
+                                beanProperties = new SoftwareModuleProperties();
+                            }
+                            else
+                            {
+                                beanProperties = new SoftwareComponentProperties();
+                            }
+                        }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SUBJECT_AREA.typeName))
                         {
                             beanProperties = new SubjectAreaProperties();
@@ -15934,7 +16059,30 @@ public class OpenMetadataPropertyConverterBase
                             {
                                 if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName))
                                 {
-                                    beanProperties = new GovernanceActionProcessProperties();
+                                    if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ANALYTICAL_ACTION_PROCESS.typeName))
+                                    {
+                                        beanProperties = new AnalyticalActionProcessProperties();
+                                    }
+                                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.CATALOGUING_ACTION_PROCESS.typeName))
+                                    {
+                                        beanProperties = new CataloguingActionProcessProperties();
+                                    }
+                                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EXPLORING_ACTION_PROCESS.typeName))
+                                    {
+                                        beanProperties = new ExploringActionProcessProperties();
+                                    }
+                                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName))
+                                    {
+                                        beanProperties = new ProvisioningActionProcessProperties();
+                                    }
+                                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName))
+                                    {
+                                        beanProperties = new SurveyingActionProcessProperties();
+                                    }
+                                    else
+                                    {
+                                        beanProperties = new GovernanceActionProcessProperties();
+                                    }
                                 }
                                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName))
                                 {
@@ -16852,6 +17000,12 @@ public class OpenMetadataPropertyConverterBase
                         ((DataAssetProperties)beanProperties).setAuthors(removeAuthors(elementProperties));
                         ((DataAssetProperties)beanProperties).setContentStatus(removeContentStatus(elementProperties));
                         ((DataAssetProperties)beanProperties).setUserDefinedContentStatus(removeUserDefinedContentStatus(elementProperties));
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.RUNNABLE_SOFTWARE_COMPONENT.typeName))
+                    {
+                        beanProperties = new RunnableSoftwareComponentProperties();
+
+                        ((RunnableSoftwareComponentProperties)beanProperties).setRuntimeEnvironmentType(this.removeRuntimeEnvironmentType(elementProperties));
                     }
                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PROCESS.typeName))
                     {
@@ -17806,13 +17960,13 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeFileCount(ElementProperties  elementProperties)
+    protected long removeFileCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeFileCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
+            return propertyHelper.removeLongProperty(localServiceName,
                                                     OpenMetadataProperty.FILE_COUNT.name,
                                                     elementProperties,
                                                     methodName);
@@ -17916,13 +18070,13 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeLanguageCount(ElementProperties  elementProperties)
+    protected long removeLanguageCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeLanguageCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
+            return propertyHelper.removeLongProperty(localServiceName,
                                                     OpenMetadataProperty.LANGUAGE_COUNT.name,
                                                     elementProperties,
                                                     methodName);
@@ -17960,13 +18114,13 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeEntryPointCount(ElementProperties  elementProperties)
+    protected long removeEntryPointCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeEntryPointCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
+            return propertyHelper.removeLongProperty(localServiceName,
                                                     OpenMetadataProperty.ENTRY_POINT_COUNT.name,
                                                     elementProperties,
                                                     methodName);
@@ -18180,13 +18334,13 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeCyclomaticComplexityMax(ElementProperties  elementProperties)
+    protected long removeCyclomaticComplexityMax(ElementProperties  elementProperties)
     {
         final String methodName = "removeCyclomaticComplexityMax";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
+            return propertyHelper.removeLongProperty(localServiceName,
                                                     OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_MAX.name,
                                                     elementProperties,
                                                     methodName);
@@ -18202,13 +18356,13 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeMaxNestingDepth(ElementProperties  elementProperties)
+    protected long removeMaxNestingDepth(ElementProperties  elementProperties)
     {
         final String methodName = "removeMaxNestingDepth";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
+            return propertyHelper.removeLongProperty(localServiceName,
                                                     OpenMetadataProperty.MAX_NESTING_DEPTH.name,
                                                     elementProperties,
                                                     methodName);
@@ -18224,13 +18378,13 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeTestFileCount(ElementProperties  elementProperties)
+    protected long removeTestFileCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeTestFileCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
+            return propertyHelper.removeLongProperty(localServiceName,
                                                     OpenMetadataProperty.TEST_FILE_COUNT.name,
                                                     elementProperties,
                                                     methodName);

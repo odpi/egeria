@@ -252,7 +252,7 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "visibleInNetwork";
+        final String                     end2AttributeName            = "visibleInNetworks";
         final String                     end2AttributeDescription     = "Networks from which the endpoint can be called.";
         final String                     end2AttributeDescriptionGUID = null;
 

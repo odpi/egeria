@@ -2334,7 +2334,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
     {
         String summary = "Create a " + technologyType.getDeployedImplementationType() + ", run a survey against it, and print out the resulting report.";
 
-        String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+        String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
                                                                    assetType + ":CreateAndSurveyGovernanceActionProcess",
                                                                    null,
                                                                    assetType + ":CreateAndSurvey",
@@ -2360,25 +2360,25 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         }
 
         archiveHelper.addSupportedRequestParameters(processGUID,
-                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                    OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
                                                     processGUID,
-                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                    OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
                                                     OpenMetadataType.ASSET.typeName,
                                                     null,
                                                     supportedRequestParameters);
 
         archiveHelper.addSupportedAnalysisSteps(processGUID,
-                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
                                                 processGUID,
-                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
                                                 OpenMetadataType.ASSET.typeName,
                                                 null,
                                                 surveyRequestType.getGovernanceService().getGovernanceActionDescription().supportedAnalysisSteps);
 
         archiveHelper.addProducedAnnotationTypes(processGUID,
-                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
                                                  processGUID,
-                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                 OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
                                                  OpenMetadataType.ASSET.typeName,
                                                 null,
                                                 surveyRequestType.getGovernanceService().getGovernanceActionDescription().supportedAnnotationTypes);
@@ -2402,7 +2402,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                        OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         null,
                                                                         assetType + "::CreateAndSurvey::Step1",
@@ -2435,7 +2435,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
         String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                        OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         null,
                                                                         assetType + "::CreateAndSurvey::Step2",
@@ -2468,7 +2468,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
         String step3GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                        OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         null,
                                                                         assetType + "::CreateAndSurvey::Step3",
@@ -2664,7 +2664,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
     {
         String summary = "Create a " + technologyType.getDeployedImplementationType() + " and configure an integration connector to " + actionName + " its contents.";
 
-        String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+        String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.CATALOGUING_ACTION_PROCESS.typeName,
                                                                    assetType + "::CreateAsCatalogTargetGovernanceActionProcess",
                                                                    null,
                                                                    assetType + "::CreateAsCatalogTarget",
@@ -2690,9 +2690,9 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         }
 
         archiveHelper.addSupportedRequestParameters(processGUID,
-                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                    OpenMetadataType.CATALOGUING_ACTION_PROCESS.typeName,
                                                     processGUID,
-                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                    OpenMetadataType.CATALOGUING_ACTION_PROCESS.typeName,
                                                     OpenMetadataType.ASSET.typeName,
                                                     null,
                                                     supportedRequestParameters);
@@ -2716,7 +2716,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                        OpenMetadataType.CATALOGUING_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                         null,
                                                                         assetType + "::CreateAsCatalogTarget::Step1",
@@ -2750,7 +2750,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
         String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                        OpenMetadataType.CATALOGUING_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                         null,
                                                                         assetType + "::CreateAsCatalogTarget::Step2",

@@ -215,7 +215,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "resultingElement";
+        final String                     end1AttributeName            = "templateCreatedElements";
         final String                     end1AttributeDescription     = "Element created from the template.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -230,7 +230,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "templateElement";
+        final String                     end2AttributeName            = "sourcedFromTemplate";
         final String                     end2AttributeDescription     = "Template element providing information.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -303,7 +303,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "linkedElements";
+        final String                     end1AttributeName            = "keywordElements";
         final String                     end1AttributeDescription     = "Element described by the search keyword.";
         final String                     end1AttributeDescriptionGUID = null;
 

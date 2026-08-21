@@ -767,7 +767,7 @@ Content-Type: application/json
 #  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/update
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{actorRoleGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1006,7 +1006,7 @@ Content-Type: application/json
 #  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/delete
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/{{actorRoleGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

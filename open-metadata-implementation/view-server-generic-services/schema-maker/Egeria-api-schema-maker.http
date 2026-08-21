@@ -298,6 +298,10 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+
+@schemaAttributeGUID=add guid here
+
 
 ###
 # @name createSchemaAttribute
@@ -426,7 +430,7 @@ Content-Type: application/json
 #  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/update
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/{{schemaAttributeGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -473,7 +477,7 @@ Content-Type: application/json
 #  PropertyServerException    a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/delete
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/{{schemaAttributeGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

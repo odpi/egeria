@@ -235,7 +235,7 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "relatedAgreements";
+        final String                     end1AttributeName            = "involvedInAgreements";
         final String                     end1AttributeDescription     = "The agreements that include the actor.";
         final String                     end1AttributeDescriptionGUID = null;
 
