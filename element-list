@@ -376,6 +376,7 @@ org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events
 org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular
 org.odpi.openmetadata.frameworks.openmetadata.properties.security
 org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities
+org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment
 org.odpi.openmetadata.frameworks.openmetadata.properties.solutions
 org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports
 org.odpi.openmetadata.frameworks.openmetadata.properties.templates
