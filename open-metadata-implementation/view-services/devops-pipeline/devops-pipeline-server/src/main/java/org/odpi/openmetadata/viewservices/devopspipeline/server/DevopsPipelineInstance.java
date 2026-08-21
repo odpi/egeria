@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.NetworkHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.OperatingPlatformHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SoftwareCapabilityHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SoftwareDevelopmentHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StorageVolumeHandler;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
@@ -28,6 +29,7 @@ public class DevopsPipelineInstance extends OMVSServiceInstance
     private final AssetHandler         assetHandler;
     private final OperatingPlatformHandler operatingPlatformHandler;
     private final SoftwareCapabilityHandler softwareCapabilityHandler;
+    private final SoftwareDevelopmentHandler softwareDevelopmentHandler;
 
 
 
@@ -95,6 +97,11 @@ public class DevopsPipelineInstance extends OMVSServiceInstance
                                                                   auditLog,
                                                                   myDescription.getViewServiceFullName(),
                                                                   openMetadataClient);
+
+        softwareDevelopmentHandler = new SoftwareDevelopmentHandler(serverName,
+                                                                    auditLog,
+                                                                    myDescription.getViewServiceFullName(),
+                                                                    openMetadataClient);
     }
 
 
@@ -150,5 +157,16 @@ public class DevopsPipelineInstance extends OMVSServiceInstance
     public SoftwareCapabilityHandler getSoftwareCapabilityHandler()
     {
         return softwareCapabilityHandler;
+    }
+
+
+    /**
+     * Return the open metadata handler.
+     *
+     * @return client
+     */
+    public SoftwareDevelopmentHandler getSoftwareDevelopmentHandler()
+    {
+        return softwareDevelopmentHandler;
     }
 }

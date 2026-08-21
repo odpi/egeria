@@ -237,7 +237,7 @@ public class OpenMetadataTypesArchive5_1
         /*
          * Set up end 1.
          */
-        final String end1AttributeName            = "associatedGovernanceAction";
+        final String end1AttributeName            = "associatedGovernanceActions";
         final String end1AttributeDescription     = "Describes the governance action that will use this target for action.";
         final String end1AttributeDescriptionGUID = null;
 

@@ -1187,7 +1187,7 @@ public enum OpenMetadataProperty
     /**
      * Size of the data source.
      */
-    SIZE("size", DataType.INT, DataType.INT.getDisplayName(), "Size of the data source.", null, "c2d67f78-3387-4b83-9c1c-bd0aa88a4df0"),
+    SIZE("size", DataType.LONG, DataType.LONG.getDisplayName(), "Size of the data source.", null, "c2d67f78-3387-4b83-9c1c-bd0aa88a4df0"),
 
     /**
      * Encoding scheme used on the data.
@@ -1751,6 +1751,26 @@ public enum OpenMetadataProperty
     IMPLEMENTATION_LANGUAGE("implementationLanguage", DataType.STRING, DataType.STRING.getDisplayName(), "Name of the language used to implement this component.", "Java", "e56dbaa5-6a2a-4aa0-8584-b3305234851f"),
 
     /**
+     * The identifier of the build process that created the target.
+     */
+    BUILD_ID("buildId", DataType.STRING, DataType.STRING.getDisplayName(), "The identifier of the build process that created the target.", "build-2026-08-21-0017", "c878e27d-7415-4b30-8f5c-3d6515fa8bde"),
+
+    /**
+     * The name of the build tool that created the target.
+     */
+    BUILD_TOOL("buildTool", DataType.STRING, DataType.STRING.getDisplayName(), "The name of the build tool that created the target.", "Apache Maven", "141bd6f2-6c05-460e-8711-2225f9ea5986"),
+
+    /**
+     * The version of the build tool that created the target.
+     */
+    BUILD_TOOL_VERSION("buildToolVersion", DataType.STRING, DataType.STRING.getDisplayName(), "The version of the build tool that created the target.", "3.9.6", "5719255a-972d-4909-9615-e5d5edc76c8c"),
+
+    /**
+     * The type of runtime environment needed to execute this software component.
+     */
+    RUNTIME_ENVIRONMENT_TYPE("runtimeEnvironmentType", DataType.STRING, DataType.STRING.getDisplayName(), "The type of runtime environment needed to execute this software component.", "Java Virtual Machine", "384b819d-4b9d-43ab-b8d7-1cbd282a51c1"),
+
+    /**
      * Version of the property facet schema.
      */
     SCHEMA_VERSION("schemaVersion", DataType.STRING, DataType.STRING.getDisplayName(), "Version of the property facet schema.", null, "7eb8affc-c5d5-4ab2-9395-2ac8216be397"),
@@ -1783,7 +1803,13 @@ public enum OpenMetadataProperty
     /**
      * Timezone for the location.
      */
-    TIME_ZONE("timezone", DataType.STRING, DataType.STRING.getDisplayName(), "Timezone for the location.", null, "f163935d-78d1-41ab-b00f-b688e110fdc7"),
+    TIME_ZONE("timeZone", DataType.STRING, DataType.STRING.getDisplayName(), "Timezone for the location.", null, "82434be5-6975-4e03-b3f6-403a57b4cc89"),
+
+    /**
+     * Timezone for the location.  Replaced by timeZone, which matches both the bean property and the
+     * published type documentation.  Retained so that the rename can be declared in the type system.
+     */
+    TIME_ZONE_DEPRECATED("timezone", DataType.STRING, DataType.STRING.getDisplayName(), "Timezone for the location.", null, "f163935d-78d1-41ab-b00f-b688e110fdc7"),
 
     /**
      * Level of security at this location.
@@ -2023,7 +2049,7 @@ public enum OpenMetadataProperty
     /**
      * Private properties accessible only to the connector.
      */
-    SECURED_PROPERTIES("securedProperties", DataType.MAP_STRING_OBJECT, DataType.MAP_STRING_OBJECT.getDisplayName(), "Private properties accessible only to the connector.", null, "b1b3e2dd-0ad1-4466-884b-697cf6333382"),
+    SECURED_PROPERTIES("securedProperties", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "Private properties accessible only to the connector.", null, "b1b3e2dd-0ad1-4466-884b-697cf6333382"),
 
     /**
      * Specific configuration properties used to configure the behaviour of the connector.
@@ -2375,7 +2401,7 @@ public enum OpenMetadataProperty
     /**
      * Properties that apply to the referenceable.
      */
-    SECURITY_PROPERTIES("securityProperties", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "Properties that apply to the referenceable.", null, "0d36a7b3-95f8-42bf-836b-4abd4a376ffc"),
+    SECURITY_PROPERTIES("securityProperties", DataType.MAP_STRING_OBJECT, DataType.MAP_STRING_OBJECT.getDisplayName(), "Properties that apply to the referenceable.", null, "0d36a7b3-95f8-42bf-836b-4abd4a376ffc"),
 
     /**
      * Description of how this governance control should be implemented.
@@ -3141,22 +3167,22 @@ public enum OpenMetadataProperty
 
 
     /**
-     * Network address used by callers to the network gateway.
+     * Network addresses used by callers to the network gateway.
      */
-    EXTERNAL_ENDPOINT_ADDRESS("externalEndpointAddress",
-                              DataType.STRING, DataType.STRING.getDisplayName(),
-                              "Network address used by callers to the network gateway.",
-                              null,
-                              "132a033f-0713-4e5b-9f8c-7d79fdab8e93"),
+    EXTERNAL_ENDPOINT_ADDRESSES("externalEndpointAddresses",
+                                DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(),
+                                "Network addresses used by callers to the network gateway.",
+                                null,
+                                "49fe6c1b-c959-4466-ae33-ffd3e68f8462"),
 
     /**
-     * Network address that the network gateway maps the request to.
+     * Network addresses that the network gateway maps requests to.
      */
-    INTERNAL_ENDPOINT_ADDRESS("internalEndpointAddress",
-                              DataType.STRING, DataType.STRING.getDisplayName(),
-                              "Network address that the network gateway maps the request to.",
-                              null,
-                              "c7544b4b-b181-465e-a0ca-c090f3bfe212"),
+    INTERNAL_ENDPOINT_ADDRESSES("internalEndpointAddresses",
+                                DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(),
+                                "Network addresses that the network gateway maps requests to.",
+                                null,
+                                "57bfba49-d366-4b8f-99a0-a0a016256a5d"),
 
     /* ======================================================
      * These values are measures of the level of activity around a software source code repository.
@@ -3280,7 +3306,7 @@ public enum OpenMetadataProperty
      * Number of files in the source code repository.
      */
     FILE_COUNT("fileCount",
-               DataType.INT, DataType.INT.getDisplayName(),
+               DataType.LONG, DataType.LONG.getDisplayName(),
                "Number of files in the source code repository.",
                "450",
                "a82b6835-9aed-4096-bd79-676e3b6f2c83"),
@@ -3325,7 +3351,7 @@ public enum OpenMetadataProperty
      * Number of distinct programming languages used in the source code repository.  Polyglot components carry a higher maintenance cost.
      */
     LANGUAGE_COUNT("languageCount",
-                   DataType.INT, DataType.INT.getDisplayName(),
+                   DataType.LONG, DataType.LONG.getDisplayName(),
                    "Number of distinct programming languages used in the source code repository.  Polyglot components carry a higher maintenance cost.",
                    "3",
                    "d8d12e02-e8b7-4cad-b57d-15a3e22df5e8"),
@@ -3343,7 +3369,7 @@ public enum OpenMetadataProperty
      * Number of entry points into the component, such as main methods, command line commands, route handlers and task definitions.
      */
     ENTRY_POINT_COUNT("entryPointCount",
-                      DataType.INT, DataType.INT.getDisplayName(),
+                      DataType.LONG, DataType.LONG.getDisplayName(),
                       "Number of entry points into the component, such as main methods, command line commands, route handlers and task definitions.",
                       "12",
                       "a76e3408-2309-42de-b493-a71db56221a0"),
@@ -3433,7 +3459,7 @@ public enum OpenMetadataProperty
      * The highest cyclomatic complexity found in any single function in the source code repository.  A single very complex function is a risk that a mean value hides.
      */
     CYCLOMATIC_COMPLEXITY_MAX("cyclomaticComplexityMax",
-                              DataType.INT, DataType.INT.getDisplayName(),
+                              DataType.LONG, DataType.LONG.getDisplayName(),
                               "The highest cyclomatic complexity found in any single function in the source code repository.  A single very complex function is a risk that a mean value hides.",
                               "48",
                               "912013ab-2cd4-44ad-b486-f75b33b66e48"),
@@ -3442,7 +3468,7 @@ public enum OpenMetadataProperty
      * The deepest level of nested control flow found in any single function in the source code repository.
      */
     MAX_NESTING_DEPTH("maxNestingDepth",
-                      DataType.INT, DataType.INT.getDisplayName(),
+                      DataType.LONG, DataType.LONG.getDisplayName(),
                       "The deepest level of nested control flow found in any single function in the source code repository.",
                       "7",
                       "d9b1e75f-30a7-40bc-85d2-f3d8f93e9649"),
@@ -3451,7 +3477,7 @@ public enum OpenMetadataProperty
      * Number of files in the source code repository that contain tests.
      */
     TEST_FILE_COUNT("testFileCount",
-                    DataType.INT, DataType.INT.getDisplayName(),
+                    DataType.LONG, DataType.LONG.getDisplayName(),
                     "Number of files in the source code repository that contain tests.",
                     "180",
                     "4d9a80e2-2943-433f-91f5-3ef6a2f864ee"),

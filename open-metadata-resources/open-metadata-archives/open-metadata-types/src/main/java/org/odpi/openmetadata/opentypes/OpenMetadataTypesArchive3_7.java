@@ -187,7 +187,7 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "deployedElement";
+        final String                     end1AttributeName            = "hostedITAssets";
         final String                     end1AttributeDescription     = "IT infrastructure deployed to this asset.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -305,7 +305,7 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "logSubjects";
+        final String                     end1AttributeName            = "associatedLogSubjects";
         final String                     end1AttributeDescription     = "Elements that the log records describe.";
         final String                     end1AttributeDescriptionGUID = null;
 

@@ -20,14 +20,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CodeAnalysisAnnotationProperties extends AnnotationProperties
 {
-    private int     fileCount                  = 0;
+    private long     fileCount                  = 0;
     private long    lineCount                  = 0;
     private long    codeLineCount              = 0;
     private long    commentLineCount           = 0;
     private String  primaryLanguage            = null;
-    private int     languageCount              = 0;
+    private long     languageCount              = 0;
     private long    publicSymbolCount          = 0;
-    private int     entryPointCount            = 0;
+    private long     entryPointCount            = 0;
     private long    dataReadCount              = 0;
     private long    dataCreateCount            = 0;
     private long    dataUpdateCount            = 0;
@@ -37,9 +37,9 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
     private long    externalCallCount          = 0;
     private long    functionCount              = 0;
     private long    cyclomaticComplexityTotal  = 0;
-    private int     cyclomaticComplexityMax    = 0;
-    private int     maxNestingDepth            = 0;
-    private int     testFileCount              = 0;
+    private long     cyclomaticComplexityMax    = 0;
+    private long     maxNestingDepth            = 0;
+    private long     testFileCount              = 0;
     private long    documentedSymbolCount      = 0;
 
 
@@ -94,7 +94,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return int
      */
-    public int getFileCount()
+    public long getFileCount()
     {
         return fileCount;
     }
@@ -105,7 +105,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param fileCount int
      */
-    public void setFileCount(int fileCount)
+    public void setFileCount(long fileCount)
     {
         this.fileCount = fileCount;
     }
@@ -204,7 +204,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return int
      */
-    public int getLanguageCount()
+    public long getLanguageCount()
     {
         return languageCount;
     }
@@ -215,7 +215,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param languageCount int
      */
-    public void setLanguageCount(int languageCount)
+    public void setLanguageCount(long languageCount)
     {
         this.languageCount = languageCount;
     }
@@ -248,7 +248,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return int
      */
-    public int getEntryPointCount()
+    public long getEntryPointCount()
     {
         return entryPointCount;
     }
@@ -259,7 +259,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param entryPointCount int
      */
-    public void setEntryPointCount(int entryPointCount)
+    public void setEntryPointCount(long entryPointCount)
     {
         this.entryPointCount = entryPointCount;
     }
@@ -468,7 +468,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return int
      */
-    public int getCyclomaticComplexityMax()
+    public long getCyclomaticComplexityMax()
     {
         return cyclomaticComplexityMax;
     }
@@ -479,7 +479,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param cyclomaticComplexityMax int
      */
-    public void setCyclomaticComplexityMax(int cyclomaticComplexityMax)
+    public void setCyclomaticComplexityMax(long cyclomaticComplexityMax)
     {
         this.cyclomaticComplexityMax = cyclomaticComplexityMax;
     }
@@ -490,7 +490,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return int
      */
-    public int getMaxNestingDepth()
+    public long getMaxNestingDepth()
     {
         return maxNestingDepth;
     }
@@ -501,7 +501,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param maxNestingDepth int
      */
-    public void setMaxNestingDepth(int maxNestingDepth)
+    public void setMaxNestingDepth(long maxNestingDepth)
     {
         this.maxNestingDepth = maxNestingDepth;
     }
@@ -512,7 +512,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return int
      */
-    public int getTestFileCount()
+    public long getTestFileCount()
     {
         return testFileCount;
     }
@@ -523,7 +523,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param testFileCount int
      */
-    public void setTestFileCount(int testFileCount)
+    public void setTestFileCount(long testFileCount)
     {
         this.testFileCount = testFileCount;
     }

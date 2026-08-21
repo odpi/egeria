@@ -256,7 +256,7 @@ public enum CocoClinicalTrialActionTarget
 
     GENERIC_ONBOARDING_PIPELINE("onboardingPipeline",
                                 "The standard onboarding pipeline that brings data from the landing area to the data lake that is not customized for a project or hospital.",
-                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
                                 null,
                                 true),
 
@@ -286,7 +286,7 @@ public enum CocoClinicalTrialActionTarget
 
     ONBOARD_HOSPITAL_PROCESS("onboardHospitalProcess",
                                  "The Governance Action Process that sets up the onboarding pipeline.  SetUpDataLake needs to pass the destination directory onto this process.",
-                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                 OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
                                  null,
                                  true),
 

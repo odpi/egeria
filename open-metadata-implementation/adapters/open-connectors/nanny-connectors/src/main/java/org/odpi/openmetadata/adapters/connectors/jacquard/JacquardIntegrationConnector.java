@@ -1157,7 +1157,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     {
         ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
-        String processQualifiedName = OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + productName + "::" + ResourceUse.CREATE_SUBSCRIPTION.getResourceUse() + "::" + productSubscriptionDefinition.getIdentifier();
+        String processQualifiedName = OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName + "::" + productName + "::" + ResourceUse.CREATE_SUBSCRIPTION.getResourceUse() + "::" + productSubscriptionDefinition.getIdentifier();
 
         OpenMetadataRootElement subscriptionGovernanceActionProcessElement = classificationExplorerClient.getRootElementByUniqueName(processQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, classificationExplorerClient.getGetOptions());
 
@@ -1174,7 +1174,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_IDENTIFIER.getName(), productSubscriptionDefinition.getIdentifier() + "-" + productIdentifier);
             additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_DESCRIPTION.getName(), productSubscriptionDefinition.getDescription());
 
-            String governanceActionProcessGUID = integrationContext.createProcessFromGovernanceActionType(processQualifiedName,
+            String governanceActionProcessGUID = integrationContext.createProcessFromGovernanceActionType(OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
+                                                                                                          processQualifiedName,
                                                                                                           "Create " + subscriptionName,
                                                                                                           productSubscriptionDefinition.getDescription() + "  Supply the requester (actor entity) as an action target called digitalSubscriptionRequester and the asset where the data is to be sent to as action target named destinationDataSet.",
                                                                                                           GovernanceDomain.DATA_SHARING.getOrdinal(),

@@ -271,7 +271,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "registeredIntegrationConnectors";
+        final String                     end2AttributeName            = "supportedIntegrationConnectors";
         final String                     end2AttributeDescription     = "An integration connector that should run as part of the integration group.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -314,7 +314,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "cataloguedByConnectors";
+        final String                     end1AttributeName            = "refreshedByConnectors";
         final String                     end1AttributeDescription     = "An integration connector managing metadata synchronization.";
         final String                     end1AttributeDescriptionGUID = null;
 

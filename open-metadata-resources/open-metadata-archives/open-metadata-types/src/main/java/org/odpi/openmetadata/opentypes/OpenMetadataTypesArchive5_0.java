@@ -383,7 +383,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "implementationTypes";
+        final String                     end1AttributeName            = "templateUses";
         final String                     end1AttributeDescription     = "Description of a type of technology.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -633,7 +633,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "archiveFileContents";
+        final String                     end2AttributeName            = "archiveContents";
         final String                     end2AttributeDescription     = "Collection describing the archive's contents.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -1057,7 +1057,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "consistentValue";
+        final String                     end1AttributeName            = "consistentValues";
         final String                     end1AttributeDescription     = "Valid value for another valid value set (property) that is consistent with this value.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -1072,7 +1072,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "consistentValue";
+        final String                     end2AttributeName            = "consistentValues";
         final String                     end2AttributeDescription     = "Valid value for another valid value set (property) that is consistent with this value.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -1151,7 +1151,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "implementingItem";
+        final String                     end1AttributeName            = "specificationProperties";
         final String                     end1AttributeDescription     = "Connector or template, or similar implementation.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -1166,7 +1166,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "specificationProperty";
+        final String                     end2AttributeName            = "specificationPropertyUsers";
         final String                     end2AttributeDescription     = "Valid value representing a property type that controls its behaviour.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -1272,7 +1272,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "annotationSubject";
+        final String                     end1AttributeName            = "annotationSubjects";
         final String                     end1AttributeDescription     = "The element described in the annotation.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -1322,7 +1322,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "identifiedInRequestForActions";
+        final String                     end1AttributeName            = "identifiedByRequestForActions";
         final String                     end1AttributeDescription     = "Request for action that originated the action.";
         final String                     end1AttributeDescriptionGUID = null;
 

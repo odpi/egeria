@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.NetworkHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.OperatingPlatformHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SoftwareCapabilityHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SoftwareDevelopmentHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StorageVolumeHandler;
 
 
@@ -172,4 +173,32 @@ public class DevopsPipelineInstanceHandler extends OMVSServiceInstanceHandler
 
         return null;
     }
+
+    /**
+     * This method returns an open metadata handler.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public SoftwareDevelopmentHandler getSoftwareDevelopmentHandler(String userId,
+                                                                    String serverName,
+                                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
+    {
+        DevopsPipelineInstance instance = (DevopsPipelineInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getSoftwareDevelopmentHandler();
+        }
+
+        return null;
+    }
+
 }

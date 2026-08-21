@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance.gove
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,6 +18,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "class", defaultImpl = GovernanceActionProcessProperties.class)
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = AnalyticalActionProcessProperties.class, name = "AnalyticalActionProcessProperties"),
+                @JsonSubTypes.Type(value = CataloguingActionProcessProperties.class, name = "CataloguingActionProcessProperties"),
+                @JsonSubTypes.Type(value = ExploringActionProcessProperties.class, name = "ExploringActionProcessProperties"),
+                @JsonSubTypes.Type(value = ProvisioningActionProcessProperties.class, name = "ProvisioningActionProcessProperties"),
+                @JsonSubTypes.Type(value = SurveyingActionProcessProperties.class, name = "SurveyingActionProcessProperties"),
+        })
 public class GovernanceActionProcessProperties extends GovernanceActionProperties
 {
 

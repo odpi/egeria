@@ -480,7 +480,8 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
         /*
          * Use the governance action type as a template to create the specific cancel process for the subscription.
          */
-        String cancelSubscriptionGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName() + "::" + subscriptionGUID,
+        String cancelSubscriptionGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName() + "::" + subscriptionGUID,
                                                                                                 ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName(),
                                                                                                 ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.description,
                                                                                                 GovernanceDomain.DATA_SHARING.getOrdinal(),
@@ -605,12 +606,13 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                                                                                                       UserNotAuthorizedException
     {
         OpenMetadataStore openMetadataStore = governanceContext.getOpenMetadataStore();
-        GovernanceDefinitionClient governanceDefinitionClient = governanceContext.getGovernanceDefinitionClient(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName);
+        GovernanceDefinitionClient governanceDefinitionClient = governanceContext.getGovernanceDefinitionClient(OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName);
 
         /*
          * The governance action type is used as a template to create the process.
          */
-        String provisioningProcessGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName() + "::" + subscriptionGUID,
+        String provisioningProcessGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
+                                                                                                 OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName + "::" + ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName() + "::" + subscriptionGUID,
                                                                                                  ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName(),
                                                                                                  ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.description,
                                                                                                  GovernanceDomain.DATA_SHARING.getOrdinal(),

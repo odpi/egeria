@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.assets;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.RunnableSoftwareComponentProperties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
@@ -26,6 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = DataAssetProperties.class, name = "DataAssetProperties"),
         @JsonSubTypes.Type(value = ProcessProperties.class, name = "ProcessProperties"),
         @JsonSubTypes.Type(value = InfrastructureProperties.class, name = "InfrastructureProperties"),
+        @JsonSubTypes.Type(value = RunnableSoftwareComponentProperties.class, name = "RunnableSoftwareComponentProperties"),
 })
 public class AssetProperties extends ReferenceableProperties
 {

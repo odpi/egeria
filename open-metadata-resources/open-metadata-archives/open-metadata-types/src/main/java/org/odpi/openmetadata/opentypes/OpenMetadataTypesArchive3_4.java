@@ -186,7 +186,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "describedByProfile";
+        final String                     end1AttributeName            = "assetsUsingProfile";
         final String                     end1AttributeDescription     = "The IT asset/software capability that is described by the IT profile.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -201,7 +201,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "usedByInfrastructure";
+        final String                     end2AttributeName            = "profilesForAsset";
         final String                     end2AttributeDescription     = "Description of the user identifies used by the asset/software capability.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -258,19 +258,12 @@ public class OpenMetadataTypesArchive3_4
 
     private EntityDef addSecurityRoleEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SECURITY_ROLE,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.SECURITY_LIST.typeName));
-
         /*
-         * Build the attributes
+         * distinguishedName is declared by SecurityList and inherited from there.  SecurityGroup,
+         * the sibling type, does the same.
          */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISTINGUISHED_NAME));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SECURITY_ROLE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SECURITY_LIST.typeName));
     }
 
 

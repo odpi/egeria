@@ -287,7 +287,7 @@ public class OpenMetadataTypesArchive2_11
         /*
          * Set up end 2.
          */
-        final String                     end1AttributeName            = "scopeOfEffect";
+        final String                     end1AttributeName            = "relevantToScopes";
         final String                     end1AttributeDescription     = "Scope that applies to linked elements.";
         final String                     end1AttributeDescriptionGUID = null;
 

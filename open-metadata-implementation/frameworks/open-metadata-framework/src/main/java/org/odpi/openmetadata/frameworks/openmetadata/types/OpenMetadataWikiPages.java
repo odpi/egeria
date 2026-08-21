@@ -8,7 +8,6 @@ public class OpenMetadataWikiPages
     /* ============================================================================================================================*/
     /* Wiki Pages                                                                                                                  */
     /* ============================================================================================================================*/
-
     /**
      * <a href="https://egeria-project.org/types/0/0010-Base-Model/">...</a>
      */
@@ -25,9 +24,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0012_SEARCH_KEYWORDS              = "https://egeria-project.org/types/0/0012-Search-Keywords/";
 
     /**
-     * <a href="https://egeria-project.org/types/0/0013-Actions-For-People/">...</a>
+     * <a href="https://egeria-project.org/types/0/0013-Actions/">...</a>
      */
-    public static final String MODEL_0013_ACTIONS              = "https://egeria-project.org/types/0/0013-Actions-For-People/";
+    public static final String MODEL_0013_ACTIONS              = "https://egeria-project.org/types/0/0013-Actions/";
 
     /**
      * <a href="https://egeria-project.org/types/0/0014-External-References/">...</a>
@@ -80,9 +79,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0026_ENDPOINTS                    = "https://egeria-project.org/types/0/0026-Endpoints/";
 
     /**
-     * <a href="https://egeria-project.org/types/0/0030-Hosts-and-Platforms/">...</a>
+     * <a href="https://egeria-project.org/types/0/0030-Operating-Platforms/">...</a>
      */
-    public static final String MODEL_0030_OPERATING_PLATFORMS          = "https://egeria-project.org/types/0/0030-Hosts-and-Platforms/";
+    public static final String MODEL_0030_OPERATING_PLATFORMS          = "https://egeria-project.org/types/0/0030-Operating-Platforms/";
 
     /**
      * <a href="https://egeria-project.org/types/0/0035-Complex-Hosts/">...</a>
@@ -155,6 +154,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0110_ACTORS                       = "https://egeria-project.org/types/1/0110-Actors/";
 
     /**
+     * <a href="https://egeria-project.org/types/1/0111-Contact-Details/">...</a>
+     */
+    public static final String MODEL_0111_CONTACT_DETAILS               = "https://egeria-project.org/types/1/0111-Contact-Details/";
+
+    /**
      * <a href="https://egeria-project.org/types/1/0112-People/">...</a>
      */
     public static final String MODEL_0112_PEOPLE                       = "https://egeria-project.org/types/1/0112-People/";
@@ -205,9 +209,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0140_COMMUNITIES                  = "https://egeria-project.org/types/1/0140-Communities/";
 
     /**
-     * <a href="https://egeria-project.org/types/1/0140-Communities/">...</a>
+     * <a href="https://egeria-project.org/types/1/0145-Perspectives/">...</a>
      */
-    public static final String MODEL_0145_PERSPECTIVES                  = "https://egeria-project.org/types/1/0140-Communities/";
+    public static final String MODEL_0145_PERSPECTIVES                  = "https://egeria-project.org/types/1/0145-Perspectives/";
 
     /**
      * <a href="https://egeria-project.org/types/1/0150-Feedback/">...</a>
@@ -465,9 +469,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0450_GOVERNANCE_ROLLOUT           = "https://egeria-project.org/types/4/0450-Governance-Rollout/";
 
     /**
-     * <a href="https://egeria-project.org/types/4/0451-Notification/">...</a>
+     * <a href="https://egeria-project.org/types/4/0451-Notifications/">...</a>
      */
-    public static final String MODEL_0451_NOTIFICATIONS              = "https://egeria-project.org/types/4/0451-Notification/";
+    public static final String MODEL_0451_NOTIFICATIONS              = "https://egeria-project.org/types/4/0451-Notifications/";
 
     /**
      * <a href="https://egeria-project.org/types/4/0455-Exception-Management/">...</a>
@@ -477,7 +481,7 @@ public class OpenMetadataWikiPages
     /**
      * <a href="https://egeria-project.org/types/4/0457-Connector-Activity-Reports/">...</a>
      */
-    public static final String MODEL_0457_CONNECTOR_ACTIVITY_REPORTS         = "https://egeria-project.org/types/4/0455-Connector-Activity-Reports/";
+    public static final String MODEL_0457_CONNECTOR_ACTIVITY_REPORTS         = "https://egeria-project.org/types/4/0457-Connector-Activity-Reports/";
 
     /**
      * <a href="https://egeria-project.org/types/4/0460-Governance-Execution-Points/">...</a>
@@ -617,7 +621,7 @@ public class OpenMetadataWikiPages
     /**
      * <a href="https://egeria-project.org/types/5/0540-Data-Classes/">...</a>
      */
-    public static final String MODEL_0540_DATA_VALUE_SPECIFICATION = "https://egeria-project.org/types/5/0540-Data-Value-Specification/";
+    public static final String MODEL_0540_DATA_VALUE_SPECIFICATION = "https://egeria-project.org/types/5/0540-Data-Value-Specifications/";
 
     /**
      * <a href="https://egeria-project.org/types/5/0541-Data-Classes-and-Data-Grains/">...</a>
@@ -733,9 +737,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0680_CODE_ANALYSIS                = "https://egeria-project.org/types/6/0680-Code-Analysis/";
 
     /**
-     * <a href="https://egeria-project.org/types/6/0690-Request-for-Action/">...</a>
+     * <a href="https://egeria-project.org/types/6/0690-Request-For-Action/">...</a>
      */
-    public static final String MODEL_0690_REQUEST_FOR_ACTION           = "https://egeria-project.org/types/6/0690-Request-for-Action/";
+    public static final String MODEL_0690_REQUEST_FOR_ACTION           = "https://egeria-project.org/types/6/0690-Request-For-Action/";
 
     /**
      * <a href="https://egeria-project.org/types/7/0705-Data-Sharing/">...</a>

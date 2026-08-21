@@ -185,7 +185,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "consumingConnections";
+        final String                     end1AttributeName            = "connections";
         final String                     end1AttributeDescription     = "Connections using endpoint.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -200,7 +200,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "connectToEndpoint";
+        final String                     end2AttributeName            = "endpoint";
         final String                     end2AttributeDescription     = "Location of digital resource.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -231,7 +231,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "connectedAsset";
+        final String                     end1AttributeName            = "connectedAssets";
         final String                     end1AttributeDescription     = "Description of digital resource.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -425,7 +425,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "partOfDataStructure";
+        final String                     end1AttributeName            = "partOfDataStructures";
         final String                     end1AttributeDescription     = "Parent data structure(s).";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -569,7 +569,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "linkFromDataFields";
+        final String                     end1AttributeName            = "linkedFromDataFields";
         final String                     end1AttributeDescription     = "Data field that is linked from.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -584,7 +584,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "linkToDataFields";
+        final String                     end2AttributeName            = "linkedToDataFields";
         final String                     end2AttributeDescription     = "Data field that is linked to.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -664,7 +664,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "describedByDataSpecifications";
+        final String                     end1AttributeName            = "describedByDataValueSpecifications";
         final String                     end1AttributeDescription     = "Element that include this data value specification in their definition.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -704,7 +704,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "semanticallyAssociatedDataDefinitions";
+        final String                     end1AttributeName            = "semanticallyAssociatedDefinitions";
         final String                     end1AttributeDescription     = "Definition elements that are associated with this meaning.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -719,7 +719,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "semanticDefinition";
+        final String                     end2AttributeName            = "semanticDefinitions";
         final String                     end2AttributeDescription     = "Glossary term that provides the semantic information for the definitions.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -744,7 +744,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "validatedByCertificationType";
+        final String                     end1AttributeName            = "usedInCertifications";
         final String                     end1AttributeDescription     = "Identifies the certification type used to certify that data matches this data structure.";
         final String                     end1AttributeDescriptionGUID = null;
 

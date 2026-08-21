@@ -185,7 +185,7 @@ public class OpenMetadataTypesArchive2_7
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "consumedBy";
+        final String                     end1AttributeName            = "consumedByCapabilities";
         final String                     end1AttributeDescription     = "Capability consuming this asset.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -200,7 +200,7 @@ public class OpenMetadataTypesArchive2_7
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "consumesAsset";
+        final String                     end2AttributeName            = "capabilityConsumedAssets";
         final String                     end2AttributeDescription     = "Asset that this software server capability is dependent on.";
         final String                     end2AttributeDescriptionGUID = null;
 

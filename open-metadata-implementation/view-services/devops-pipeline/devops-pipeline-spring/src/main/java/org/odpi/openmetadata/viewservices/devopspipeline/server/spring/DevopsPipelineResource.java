@@ -1631,4 +1631,292 @@ public class DevopsPipelineResource
     {
         return restAPI.clearCapabilityAsCloudService(serverName, softwareCapabilityGUID, requestBody);
     }
+
+    /**
+     * Attach an element to the reusable technique that it makes use of.
+     *
+     * @param serverName name of the server to route the request to
+     * @param techniqueUserGUID unique identifier of the element at end 1
+     * @param reusableTechniqueGUID unique identifier of the element at end 2
+     * @param requestBody properties for the relationship
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{techniqueUserGUID}/reusable-technique-use/{reusableTechniqueGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkReusableTechniqueUse",
+            description="Attach an element to the reusable technique that it makes use of.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/reusable-technique"))
+
+    public VoidResponse linkReusableTechniqueUse(@PathVariable String serverName,
+                                   @PathVariable String techniqueUserGUID,
+                                   @PathVariable String reusableTechniqueGUID,
+                                   @RequestBody (required = false) NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkReusableTechniqueUse(serverName, techniqueUserGUID, reusableTechniqueGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an element from a reusable technique that it no longer makes use of.
+     *
+     * @param serverName name of the server to route the request to
+     * @param techniqueUserGUID unique identifier of the element at end 1
+     * @param reusableTechniqueGUID unique identifier of the element at end 2
+     * @param requestBody delete options
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{techniqueUserGUID}/reusable-technique-use/{reusableTechniqueGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachReusableTechniqueUse",
+            description="Detach an element from a reusable technique that it no longer makes use of.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/reusable-technique"))
+
+    public VoidResponse detachReusableTechniqueUse(@PathVariable String serverName,
+                                     @PathVariable String techniqueUserGUID,
+                                     @PathVariable String reusableTechniqueGUID,
+                                     @RequestBody (required = false) DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachReusableTechniqueUse(serverName, techniqueUserGUID, reusableTechniqueGUID, requestBody);
+    }
+
+    /**
+     * Attach a runnable software component to a component that it needs in order to execute.
+     *
+     * @param serverName name of the server to route the request to
+     * @param dependentComponentGUID unique identifier of the element at end 1
+     * @param dependedOnComponentGUID unique identifier of the element at end 2
+     * @param requestBody properties for the relationship
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/runnable-software-components/{dependentComponentGUID}/dependent-software-component/{dependedOnComponentGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkDependentSoftwareComponent",
+            description="Attach a runnable software component to a component that it needs in order to execute.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/runnable-software-component"))
+
+    public VoidResponse linkDependentSoftwareComponent(@PathVariable String serverName,
+                                   @PathVariable String dependentComponentGUID,
+                                   @PathVariable String dependedOnComponentGUID,
+                                   @RequestBody (required = false) NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkDependentSoftwareComponent(serverName, dependentComponentGUID, dependedOnComponentGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a runnable software component from a component that it no longer needs in order to execute.
+     *
+     * @param serverName name of the server to route the request to
+     * @param dependentComponentGUID unique identifier of the element at end 1
+     * @param dependedOnComponentGUID unique identifier of the element at end 2
+     * @param requestBody delete options
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/runnable-software-components/{dependentComponentGUID}/dependent-software-component/{dependedOnComponentGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachDependentSoftwareComponent",
+            description="Detach a runnable software component from a component that it no longer needs in order to execute.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/runnable-software-component"))
+
+    public VoidResponse detachDependentSoftwareComponent(@PathVariable String serverName,
+                                     @PathVariable String dependentComponentGUID,
+                                     @PathVariable String dependedOnComponentGUID,
+                                     @RequestBody (required = false) DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachDependentSoftwareComponent(serverName, dependentComponentGUID, dependedOnComponentGUID, requestBody);
+    }
+
+    /**
+     * Attach a software asset to the software component that it is built from.
+     *
+     * @param serverName name of the server to route the request to
+     * @param assetGUID unique identifier of the element at end 1
+     * @param softwareComponentGUID unique identifier of the element at end 2
+     * @param requestBody properties for the relationship
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/software-source/{softwareComponentGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkSoftwareSource",
+            description="Attach a software asset to the software component that it is built from.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-component"))
+
+    public VoidResponse linkSoftwareSource(@PathVariable String serverName,
+                                   @PathVariable String assetGUID,
+                                   @PathVariable String softwareComponentGUID,
+                                   @RequestBody (required = false) NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSoftwareSource(serverName, assetGUID, softwareComponentGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a software asset from the software component that it was built from.
+     *
+     * @param serverName name of the server to route the request to
+     * @param assetGUID unique identifier of the element at end 1
+     * @param softwareComponentGUID unique identifier of the element at end 2
+     * @param requestBody delete options
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetGUID}/software-source/{softwareComponentGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSoftwareSource",
+            description="Detach a software asset from the software component that it was built from.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/software-component"))
+
+    public VoidResponse detachSoftwareSource(@PathVariable String serverName,
+                                     @PathVariable String assetGUID,
+                                     @PathVariable String softwareComponentGUID,
+                                     @RequestBody (required = false) DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSoftwareSource(serverName, assetGUID, softwareComponentGUID, requestBody);
+    }
+
+    /**
+     * Classify an element to say that it is the generated output of a build program or script.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element to classify
+     * @param requestBody properties for the classification
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/generated-target")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setElementAsGeneratedTarget",
+            description="Classify an element to say that it is the generated output of a build program or script.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/generated-target"))
+
+    public VoidResponse setElementAsGeneratedTarget(@PathVariable String serverName,
+                                           @PathVariable String elementGUID,
+                                           @RequestBody (required = false) NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setElementAsGeneratedTarget(serverName, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the generated target designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element to declassify
+     * @param requestBody metadata source options
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/generated-target/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearElementAsGeneratedTarget",
+            description="Remove the generated target designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/generated-target"))
+
+    public VoidResponse clearElementAsGeneratedTarget(@PathVariable String serverName,
+                                             @PathVariable String elementGUID,
+                                             @RequestBody (required = false) MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearElementAsGeneratedTarget(serverName, elementGUID, requestBody);
+    }
+
+    /**
+     * Classify an element to say that it is a technique that can be reused in multiple contexts.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element to classify
+     * @param requestBody properties for the classification
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/reusable-technique")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setElementAsReusableTechnique",
+            description="Classify an element to say that it is a technique that can be reused in multiple contexts.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/reusable-technique"))
+
+    public VoidResponse setElementAsReusableTechnique(@PathVariable String serverName,
+                                           @PathVariable String elementGUID,
+                                           @RequestBody (required = false) NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setElementAsReusableTechnique(serverName, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the reusable technique designation from an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of the element to declassify
+     * @param requestBody metadata source options
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/reusable-technique/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearElementAsReusableTechnique",
+            description="Remove the reusable technique designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/reusable-technique"))
+
+    public VoidResponse clearElementAsReusableTechnique(@PathVariable String serverName,
+                                             @PathVariable String elementGUID,
+                                             @RequestBody (required = false) MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearElementAsReusableTechnique(serverName, elementGUID, requestBody);
+    }
+
 }

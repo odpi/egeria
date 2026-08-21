@@ -194,7 +194,7 @@ public class OpenMetadataTypesArchive4_1
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "sourceOfSample";
+        final String                     end1AttributeName            = "sourcesOfSampleData";
         final String                     end1AttributeDescription     = "Represents the resource where the sample was taken from.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -499,7 +499,7 @@ public class OpenMetadataTypesArchive4_1
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "configuredInSecretsCollection";
+        final String                     end1AttributeName            = "configuredInSecurityCollections";
         final String                     end1AttributeDescription     = "A secrets collection where this user is defined.";
         final String                     end1AttributeDescriptionGUID = null;
 

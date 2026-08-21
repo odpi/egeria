@@ -122,7 +122,7 @@ public class NetworkClientBVT
          * distinct relationships.
          */
         NetworkGatewayLinkProperties linkProperties = new NetworkGatewayLinkProperties();
-        linkProperties.setExternalEndpointAddress("bvt-external-1");
+        linkProperties.setExternalEndpointAddresses(List.of("bvt-external-1"));
 
         String linkOneGUID = client.linkNetworkGateway(gatewayGUID, networkGUID, new MakeAnchorOptions(), linkProperties);
         String linkTwoGUID = client.linkNetworkGateway(gatewayGUID, networkGUID, new MakeAnchorOptions(), linkProperties);
@@ -132,7 +132,7 @@ public class NetworkClientBVT
         assertNotEquals(linkOneGUID, linkTwoGUID,
                         "NetworkGatewayLink is multi-link so linking the same pair twice must create two relationships");
 
-        linkProperties.setExternalEndpointAddress("bvt-external-1-updated");
+        linkProperties.setExternalEndpointAddresses(List.of("bvt-external-1-updated"));
 
         client.updateNetworkGatewayLink(linkOneGUID, new UpdateOptions(), linkProperties);
 

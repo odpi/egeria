@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.SoftwareSourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.ReusableTechniqueUseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.DependentSoftwareComponentProperties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
@@ -176,6 +179,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SupportedGovernanceServiceProperties.class, name = "SupportedGovernanceServiceProperties"),
                 @JsonSubTypes.Type(value = SupportedSoftwareCapabilityProperties.class, name = "SupportedSoftwareCapabilityProperties"),
                 @JsonSubTypes.Type(value = SupportingDefinitionProperties.class, name = "SupportingDefinitionProperties"),
+                @JsonSubTypes.Type(value = DependentSoftwareComponentProperties.class, name = "DependentSoftwareComponentProperties"),
+                @JsonSubTypes.Type(value = ReusableTechniqueUseProperties.class, name = "ReusableTechniqueUseProperties"),
+                @JsonSubTypes.Type(value = SoftwareSourceProperties.class, name = "SoftwareSourceProperties"),
                 @JsonSubTypes.Type(value = TargetForGovernanceActionProperties.class, name = "TargetForGovernanceActionProperties"),
                 @JsonSubTypes.Type(value = TeamStructureProperties.class, name = "TeamStructureProperties"),
                 @JsonSubTypes.Type(value = TeamRoleAppointmentProperties.class, name = "TeamRoleAppointmentProperties"),

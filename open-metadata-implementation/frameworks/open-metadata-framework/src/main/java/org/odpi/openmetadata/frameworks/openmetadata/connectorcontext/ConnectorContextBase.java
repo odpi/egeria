@@ -2093,6 +2093,7 @@ public class ConnectorContextBase
     /**
      * Create a specific governance action process from a generic governance action type.
      *
+     * @param processType type of the process
      * @param processQualifiedName new qualified name for the process
      * @param processName new name for the process
      * @param processDescription new description for the process
@@ -2107,7 +2108,8 @@ public class ConnectorContextBase
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization error
      */
-    public String createProcessFromGovernanceActionType(String              processQualifiedName,
+    public String createProcessFromGovernanceActionType(String              processType,
+                                                        String              processQualifiedName,
                                                         String              processName,
                                                         String              processDescription,
                                                         int                 domainIdentifier,
@@ -2118,7 +2120,7 @@ public class ConnectorContextBase
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
     {
-        String processGUID = this.createGovernanceActionProcess(processQualifiedName, processName, processDescription, anchorGUID, anchorScopeGUIDs);
+        String processGUID = this.createGovernanceActionProcess(processType, processQualifiedName, processName, processDescription, anchorGUID, anchorScopeGUIDs);
 
         OpenMetadataElement governanceActionType = openMetadataStore.getMetadataElementByGUID(governanceActionTypeGUID);
 
@@ -2221,6 +2223,7 @@ public class ConnectorContextBase
     /**
      * Create the governance action process asset.
      *
+     * @param processType type of the process
      * @param processQualifiedName new qualified name for the process
      * @param processName new name for the process
      * @param processDescription new description for the process
@@ -2231,7 +2234,8 @@ public class ConnectorContextBase
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization error
      */
-    public String createGovernanceActionProcess(String       processQualifiedName,
+    public String createGovernanceActionProcess(String       processType,
+                                                String       processQualifiedName,
                                                 String       processName,
                                                 String       processDescription,
                                                 String       anchorGUID,
@@ -2252,7 +2256,7 @@ public class ConnectorContextBase
                                                              OpenMetadataProperty.DESCRIPTION.name,
                                                              processDescription);
 
-        return openMetadataStore.createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+        return openMetadataStore.createMetadataElementInStore(processType,
                                                               null,
                                                               anchorGUID,
                                                               (anchorGUID == null),

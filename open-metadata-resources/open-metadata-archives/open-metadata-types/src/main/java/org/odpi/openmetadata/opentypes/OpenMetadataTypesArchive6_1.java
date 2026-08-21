@@ -1480,7 +1480,7 @@ public class OpenMetadataTypesArchive6_1
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "generalizedDesignPatterns";
+        final String                     end1AttributeName            = "generalizedDesignPattern";
         final String                     end1AttributeDescription     = "Design patterns that are generalized versions of this design pattern.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -1495,7 +1495,7 @@ public class OpenMetadataTypesArchive6_1
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "specializedDesignPatterns";
+        final String                     end2AttributeName            = "specializedDesignPattern";
         final String                     end2AttributeDescription     = "Design patterns that are specialized versions of this design pattern.";
         final String                     end2AttributeDescriptionGUID = null;
 

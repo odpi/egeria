@@ -7,9 +7,10 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabil
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,10 +22,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NetworkGatewayLinkProperties extends LabeledRelationshipProperties
+public class NetworkGatewayLinkProperties extends RelationshipBeanProperties
 {
-    private String externalEndpointAddress = null;
-    private String internalEndpointAddress = null;
+    private String       displayName               = null;
+    private String       description               = null;
+    private List<String> externalEndpointAddresses = null;
+    private List<String> internalEndpointAddresses = null;
 
     /**
      * Default constructor
@@ -47,53 +50,99 @@ public class NetworkGatewayLinkProperties extends LabeledRelationshipProperties
 
         if (template != null)
         {
-            externalEndpointAddress = template.getExternalEndpointAddress();
-            internalEndpointAddress = template.getInternalEndpointAddress();
+            displayName               = template.getDisplayName();
+            description               = template.getDescription();
+            externalEndpointAddresses = template.getExternalEndpointAddresses();
+            internalEndpointAddresses = template.getInternalEndpointAddresses();
         }
     }
 
 
     /**
-     * Return the external network address.
+     * Return the display name for this link.
      *
      * @return string
      */
-    public String getExternalEndpointAddress()
+    public String getDisplayName()
     {
-        return externalEndpointAddress;
+        return displayName;
     }
 
 
     /**
-     * Set up the external network address.
+     * Set up the display name for this link.
      *
-     * @param externalEndpointAddress string
+     * @param displayName string
      */
-    public void setExternalEndpointAddress(String externalEndpointAddress)
+    public void setDisplayName(String displayName)
     {
-        this.externalEndpointAddress = externalEndpointAddress;
+        this.displayName = displayName;
     }
 
 
     /**
-     * Returns the internal network address.
+     * Return the description of this link.
      *
      * @return string
      */
-    public String getInternalEndpointAddress()
+    public String getDescription()
     {
-        return internalEndpointAddress;
+        return description;
     }
 
 
     /**
-     * Set up the internal network address.
+     * Set up the description of this link.
      *
-     * @param internalEndpointAddress string
+     * @param description string
      */
-    public void setInternalEndpointAddress(String internalEndpointAddress)
+    public void setDescription(String description)
     {
-        this.internalEndpointAddress = internalEndpointAddress;
+        this.description = description;
+    }
+
+
+    /**
+     * Return the network addresses used by callers to the network gateway.
+     *
+     * @return list of addresses
+     */
+    public List<String> getExternalEndpointAddresses()
+    {
+        return externalEndpointAddresses;
+    }
+
+
+    /**
+     * Set up the network addresses used by callers to the network gateway.
+     *
+     * @param externalEndpointAddresses list of addresses
+     */
+    public void setExternalEndpointAddresses(List<String> externalEndpointAddresses)
+    {
+        this.externalEndpointAddresses = externalEndpointAddresses;
+    }
+
+
+    /**
+     * Returns the network addresses that the network gateway maps requests to.
+     *
+     * @return list of addresses
+     */
+    public List<String> getInternalEndpointAddresses()
+    {
+        return internalEndpointAddresses;
+    }
+
+
+    /**
+     * Set up the network addresses that the network gateway maps requests to.
+     *
+     * @param internalEndpointAddresses list of addresses
+     */
+    public void setInternalEndpointAddresses(List<String> internalEndpointAddresses)
+    {
+        this.internalEndpointAddresses = internalEndpointAddresses;
     }
 
 
@@ -106,8 +155,10 @@ public class NetworkGatewayLinkProperties extends LabeledRelationshipProperties
     public String toString()
     {
         return "NetworkGatewayLinkProperties{" +
-                "externalEndpointAddress='" + externalEndpointAddress + '\'' +
-                ", internalEndpointAddress='" + internalEndpointAddress + '\'' +
+                "displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", externalEndpointAddresses=" + externalEndpointAddresses +
+                ", internalEndpointAddresses=" + internalEndpointAddresses +
                 "} " + super.toString();
     }
 
@@ -134,8 +185,10 @@ public class NetworkGatewayLinkProperties extends LabeledRelationshipProperties
             return false;
         }
         NetworkGatewayLinkProperties that = (NetworkGatewayLinkProperties) objectToCompare;
-        return Objects.equals(externalEndpointAddress, that.externalEndpointAddress) &&
-                       Objects.equals(internalEndpointAddress, that.internalEndpointAddress);
+        return Objects.equals(displayName, that.displayName) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(externalEndpointAddresses, that.externalEndpointAddresses) &&
+                       Objects.equals(internalEndpointAddresses, that.internalEndpointAddresses);
     }
 
 
@@ -147,6 +200,6 @@ public class NetworkGatewayLinkProperties extends LabeledRelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), internalEndpointAddress, externalEndpointAddress);
+        return Objects.hash(super.hashCode(), displayName, description, externalEndpointAddresses, internalEndpointAddresses);
     }
 }
