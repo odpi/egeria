@@ -2386,9 +2386,12 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
 
+        /*
+         * A GET carries no request body.  The parameters after the URL template are the values substituted
+         * into it, so an extra argument here shifts every one of them along by a place.
+         */
         TranslationListResponse response = restClient.callTranslationListGetRESTCall(methodName,
                                                                                      urlTemplate,
-                                                                                     new NullRequestBody(),
                                                                                      serverName,
                                                                                      userId,
                                                                                      elementGUID,

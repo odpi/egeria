@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.clientfvt;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ActorProfileClient;
@@ -92,14 +91,6 @@ public class AttachmentClientFVT
      * @throws Exception any failure - which is the finding
      */
     @Test
-    @Disabled("The multi-language operations are not implemented on the server: setTranslation, "
-                      + "clearTranslation, getTranslation and getTranslations in OpenMetadataStoreRESTServices "
-                      + "are all `// todo` stubs that return an empty response without touching the repository. "
-                      + "setTranslation therefore reports success while storing nothing, and getTranslation "
-                      + "always returns null.  A test that only checked those calls complete would pass against "
-                      + "the stubs and prove nothing, so it is disabled rather than left green.  The body below "
-                      + "is the test to run once the feature is implemented - the TranslationDetail entity and "
-                      + "TranslationLink relationship it needs are already in the type model.")
     void multiLanguageClientSetsAndClearsATranslation() throws Exception
     {
         ConnectorContextBase connectorContext    = ConnectorContextFactory.newContext();
@@ -125,10 +116,47 @@ public class AttachmentClientFVT
             assertNotNull(retrieved, "getTranslation found nothing after a translation was set");
             assertEquals(language, retrieved.getLanguage(), "The translation came back in a different language");
 
+            // A second translation in the same language but a different locale must be stored and retrieved
+            // independently - that is what the locale is for.
+            TranslationDetailProperties canadian = new TranslationDetailProperties();
+
+            canadian.setLanguage(language);
+            canadian.setLanguageCode(language);
+            canadian.setLocale("CA");
+            canadian.setDisplayName("collection client-fvt en francais canadien");
+
+            multiLanguageClient.setTranslation(hostGUID, null, canadian);
+
+            assertEquals("collection client-fvt en francais canadien",
+                         multiLanguageClient.getTranslation(hostGUID, language, "CA").getDisplayName(),
+                         "The Canadian translation did not come back");
+            assertEquals("collection client-fvt en francais",
+                         multiLanguageClient.getTranslation(hostGUID, language, locale).getDisplayName(),
+                         "Adding a second locale changed which translation the first locale returns");
+
+            List<TranslationDetailProperties> allTranslations = multiLanguageClient.getTranslations(hostGUID, 0, 0);
+
+            assertNotNull(allTranslations, "getTranslations returned nothing for an element with two translations");
+            assertEquals(2, allTranslations.size(), "getTranslations did not return both translations");
+
+            // Setting the same language and locale again must update in place rather than add a duplicate.
+            translation.setDisplayName("collection client-fvt en francais (revise)");
+            multiLanguageClient.setTranslation(hostGUID, null, translation);
+
+            assertEquals(2, multiLanguageClient.getTranslations(hostGUID, 0, 0).size(),
+                         "Re-setting an existing language/locale added a duplicate instead of updating it");
+            assertEquals("collection client-fvt en francais (revise)",
+                         multiLanguageClient.getTranslation(hostGUID, language, locale).getDisplayName(),
+                         "Re-setting an existing language/locale did not update the stored translation");
+
             multiLanguageClient.clearTranslation(hostGUID, language, locale);
 
             assertNull(multiLanguageClient.getTranslation(hostGUID, language, locale),
                        "getTranslation still returns a translation after it was cleared");
+            assertNotNull(multiLanguageClient.getTranslation(hostGUID, language, "CA"),
+                          "Clearing one locale also removed the translation for another locale");
+
+            multiLanguageClient.clearTranslation(hostGUID, language, "CA");
         }
         finally
         {

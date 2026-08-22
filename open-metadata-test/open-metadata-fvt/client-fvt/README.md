@@ -59,7 +59,7 @@ assertion written by hand.
 
 ## What it covers today
 
-**54 test cases - 53 passing, 1 disabled - covering every one of the 51 clients the connector context hands out.**
+**54 test cases, all passing, covering every one of the 51 clients the connector context hands out.**
 
 | Class | Cases | What it does |
 |---|---|---|
@@ -106,16 +106,21 @@ knowing:
   `versionIdentifier` **on the classification**, which is what names a template: the entity's own properties
   describe what the template will produce and are typically placeholders. `AttachmentClientFVT` asserts the
   full round trip - classify, find by name, declassify, no longer found.
-* **The multi-language operations are not implemented on the server.** `setTranslation`, `clearTranslation`,
-  `getTranslation` and `getTranslations` in `OpenMetadataStoreRESTServices` are all `// todo` stubs: they log
-  the call and return an empty response without touching the repository. So `setTranslation` reports success
-  while storing nothing, and `getTranslation` always returns null - which is what this suite ran into. The
-  type model already has what the feature needs (a `TranslationDetail` entity with language, languageCode,
-  locale, displayName, description and additionalTranslations, and a `TranslationLink` relationship); it is
-  the service implementation that is missing. `AttachmentClientFVT`'s translation test is **`@Disabled`** with
-  that explanation, and its body is the real round-trip test, ready to run once the feature exists. It is
-  disabled rather than reduced to a call-completes check because such a check would pass against the stubs and
-  prove nothing.
+* **The multi-language operations were not implemented on the server - now implemented.** `setTranslation`,
+  `clearTranslation`, `getTranslation` and `getTranslations` were `// todo` stubs that returned an empty
+  response without touching the repository, so `setTranslation` reported success while storing nothing. They
+  now store a `TranslationDetail` entity anchored to the element it translates and attached by a
+  `TranslationLink`, with the element at end 1. `setTranslation` updates in place when a translation already
+  exists for that language and locale rather than adding a duplicate, and the locale qualifies the match where
+  an element carries several translations for one language - supply it and it must match, leave it null and a
+  translation with no locale is preferred. `AttachmentClientFVT` covers all of that: two locales of the same
+  language held independently, re-setting one updating rather than duplicating, and clearing one leaving the
+  other alone.
+* **`getTranslations` passed a request body to a GET - fixed.** Found by the test above once the service
+  existed. `OpenMetadataClientBase.getTranslations` passed `new NullRequestBody()` into a varargs list whose
+  arguments are the URL parameters, shifting every one along a place - the server saw `NullRequestBody{}` as
+  the server name and the server name as the userId. A GET carries no body. No other GET call in that client
+  makes the same mistake.
 * **`ValidMetadataValuesClient` threw a `NullPointerException` without an audit log - now fixed.** The audit
   log is optional throughout the framework: `ConnectorContextBase` accepts null, and the handlers guard their
   logging with `if (auditLog != null)` - five of the ten call sites did so. `ValidMetadataValueHandler`'s four
