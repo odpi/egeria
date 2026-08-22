@@ -400,9 +400,12 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
             validValueGUID = validMetadataValueElement.getElementGUID();
         }
 
-        auditLog.logMessage(methodName, OMFAuditCode.VALID_METADATA_UPDATE.getMessageDefinition(validMetadataValue.getPreferredValue(),
-                                                                                                propertyName,
-                                                                                                validValueGUID));
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName, OMFAuditCode.VALID_METADATA_UPDATE.getMessageDefinition(validMetadataValue.getPreferredValue(),
+                                                                                                    propertyName,
+                                                                                                    validValueGUID));
+        }
     }
 
 
@@ -557,8 +560,11 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
             openMetadataClient.deleteMetadataElementInStore(userId, validValueGUID, deleteOptions);
         }
 
-        auditLog.logMessage(methodName,
-                            OMFAuditCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName));
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                OMFAuditCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName));
+        }
 
         throw new InvalidParameterException(OMFErrorCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName),
                                             this.getClass().getName(),
@@ -602,8 +608,11 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
             openMetadataClient.deleteMetadataElementInStore(userId, validValueGUID, deleteOptions);
         }
 
-        auditLog.logMessage(methodName,
-                            OMFAuditCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName));
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                OMFAuditCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName));
+        }
 
         throw new InvalidParameterException(OMFErrorCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName),
                                             this.getClass().getName(),
@@ -651,8 +660,11 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
             openMetadataClient.deleteMetadataElementInStore(userId, validValueGUID, deleteOptions);
         }
 
-        auditLog.logMessage(methodName,
-                            OMFAuditCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName));
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                OMFAuditCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName));
+        }
 
         throw new InvalidParameterException(OMFErrorCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName),
                                             this.getClass().getName(),

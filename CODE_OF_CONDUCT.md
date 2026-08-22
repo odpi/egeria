@@ -22,6 +22,7 @@ The Egeria project is committed to maintain a **positive** [work environment](#w
 1. Step down considerately: Members of every project come and go, and the Egeria project is no different. When you leave or disengage from the project, in whole or in part, we ask that you do so in a way that minimizes disruption to the project. This means you should tell people you are leaving and take the proper steps to ensure that others can pick up where you left off.
 
 ## Glossary
+
 #### Demeaning behavior
 is acting in a way that reduces another person's dignity, sense of self-worth or respect within the community.
 
@@ -84,9 +85,22 @@ Every effort will be taken to ensure a safe and collegial environment in which t
 the Project reserves the right to take appropriate action, potentially including the removal of an individual from any and all participation in the project. 
 The Project will work towards an equitable resolution in the event of a misunderstanding.
 
+## Use of AI tools when working on Egeria code
+
+The use of AI tools in the Egeria project is encouraged, but all contributors must adhere to the following guidelines:
+
+- AI tools must not be used to generate code that violates the Egeria code of conduct or the Apache License.
+- AI tools must not be used to generate code that is not properly attributed to its original source.
+- AI tools must not be used to generate code that cannot be properly licensed under the Apache License.
+- AI tools must not be used to generate code that is not properly documented.
+- AI tools must not be used to generate code that is not properly tested.
+- AI tools use must be responsible - it is expensive on resources and so should not be used for repetitive tasks.  Use AI to generate code that runs the repetitive tasks and add them into the project for others to use.
+
+The human contributor is **ALWAYS** responsible for the quality of the code built by their use of AI tools.  The "AI made a mistake" is no excuse.
+
 ## Credits
 
-This code is based on the [Hyperledger Project](https://github.com/hyperledger/hyperledger/wiki/Hyperledger-Project-Code-of-Conduct)‘s Code of Conduct.
+This code is based on the [Hyperledger Project](https://github.com/hyperledger/hyperledger/wiki/Hyperledger-Project-Code-of-Conduct)‘s Code of Conduct. It has been modified to cover the use of AI tools in the Egeria project.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

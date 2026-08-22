@@ -348,8 +348,14 @@ public class TemplateHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Set up a search specification to locate elements with the Template classification and
-     * either the name or description or versionIdentifier matching the requested search value.
+     * Set up a search specification to locate elements with the Template classification whose displayName,
+     * description or versionIdentifier matches the requested search value.
+     * <br>
+     * The properties searched are the ones on the <b>Template classification</b>, not on the entity carrying
+     * it.  That distinction matters: a template's entity properties describe the element the template will
+     * produce and are typically placeholders, so it is the classification that names the template.  The
+     * classification declares displayName, description, versionIdentifier and additionalProperties - the
+     * three string properties are the ones worth searching.
      *
      * @param searchValue value to search on
      * @param propertyComparisonOperator comparison operator to use
@@ -364,32 +370,20 @@ public class TemplateHandler extends OpenMetadataHandlerBase
         requestedPropertyValue.setPrimitiveValue(searchValue);
         requestedPropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getDisplayName());
 
-        PropertyCondition nameCondition = new PropertyCondition();
-
-        nameCondition.setProperty(OpenMetadataProperty.DISPLAY_NAME.name);
-        nameCondition.setOperator(propertyComparisonOperator);
-        nameCondition.setValue(requestedPropertyValue);
-
-        PropertyCondition resourceNameCondition = new PropertyCondition();
-
-        nameCondition.setProperty(OpenMetadataProperty.RESOURCE_NAME.name);
-        nameCondition.setOperator(propertyComparisonOperator);
-        nameCondition.setValue(requestedPropertyValue);
-
-        PropertyCondition descriptionCondition = new PropertyCondition(nameCondition);
-
-        descriptionCondition.setProperty(OpenMetadataProperty.DESCRIPTION.name);
-
-        PropertyCondition versionCondition = new PropertyCondition(nameCondition);
-
-        versionCondition.setProperty(OpenMetadataProperty.VERSION_IDENTIFIER.name);
-
         List<PropertyCondition> conditions = new ArrayList<>();
 
-        conditions.add(nameCondition);
-        conditions.add(resourceNameCondition);
-        conditions.add(descriptionCondition);
-        conditions.add(versionCondition);
+        for (String propertyName : new String[]{OpenMetadataProperty.DISPLAY_NAME.name,
+                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                 OpenMetadataProperty.VERSION_IDENTIFIER.name})
+        {
+            PropertyCondition condition = new PropertyCondition();
+
+            condition.setProperty(propertyName);
+            condition.setOperator(propertyComparisonOperator);
+            condition.setValue(requestedPropertyValue);
+
+            conditions.add(condition);
+        }
 
         SearchProperties searchClassificationProperties = new SearchProperties();
 
