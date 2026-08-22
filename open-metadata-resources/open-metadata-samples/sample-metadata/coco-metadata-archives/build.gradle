@@ -47,3 +47,14 @@ shadowJar {
     archiveClassifier = 'jar-with-dependencies'
 }
 
+/*
+ * The archive writers resolve their GUID map - and write their archives - relative to the working directory, and
+ * the maps that keep element identities stable from one build to the next live at the top of the repository.
+ * Gradle would otherwise run the writer in this module's directory, where it finds no map (or a stale one) and
+ * quietly allocates fresh GUIDs for content that has already shipped, while reporting that nothing changed.
+ */
+run {
+    workingDir = rootProject.projectDir
+}
+
+

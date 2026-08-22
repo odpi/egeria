@@ -41,7 +41,20 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
  */
 public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWriter
 {
-    private static final Date creationDate = new Date();
+    /*
+     * This date must remain stable across regenerations of the content packs.  It is stamped into every element in
+     * the archive as its createTime, and the repository uses createTime to recognise that an element arriving from a
+     * rebuilt archive is the same element as the one it already stores.  If this date moves with each build, the
+     * repository concludes that it is looking at a different element, skips the version comparison in
+     * LocalOMRSInstanceEventProcessor.compareAndValidateReferenceInstance() and silently ignores the updated content.
+     * It is the version number (see EgeriaBaseArchiveWriter) that moves with each build, not the creation date.
+     * <br>
+     * The value below is the creation date of the content packs released in Egeria 6.0.  Using it means that a
+     * repository loaded from the 6.0 content packs recognises the elements in later content packs as the same
+     * elements and accepts their updates, so an upgrade from one release to the next migrates the content packs
+     * rather than silently ignoring them.  Do not change it.
+     */
+    private static final Date creationDate = new Date(1775025949989L); /* creation date of the Egeria 6.0 content packs */
     protected final Map<String, String> deployedImplementationTypeQNAMEs = new HashMap<>();
 
 
