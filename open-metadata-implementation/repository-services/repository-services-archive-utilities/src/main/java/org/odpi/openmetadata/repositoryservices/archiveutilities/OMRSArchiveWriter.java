@@ -130,6 +130,35 @@ public class OMRSArchiveWriter
 
 
     /**
+     * Return the contents of an open metadata archive that has already been written, or null if there is no such
+     * file (or it cannot be read).  This is how a writer looks at the previous edition of the archive it is about
+     * to replace.
+     *
+     * @param inputFileName name of the archive file to read
+     * @return archive content, or null
+     */
+    protected OpenMetadataArchive readOpenMetadataArchive(String inputFileName)
+    {
+        try
+        {
+            Connection               connection               = getOpenMetadataArchiveFileConnection(inputFileName);
+            OpenMetadataArchiveStore openMetadataArchiveStore = this.getOpenMetadataArchive(connection, null);
+
+            if (openMetadataArchiveStore != null)
+            {
+                return openMetadataArchiveStore.getArchiveContents();
+            }
+        }
+        catch (Exception error)
+        {
+            log.debug("Unable to read open metadata archive " + inputFileName + ": " + error.getMessage());
+        }
+
+        return null;
+    }
+
+
+    /**
      * Generates and writes out an open metadata archive containing all the open metadata types.
      *
      * @param outputFileName name of file to write archive to
