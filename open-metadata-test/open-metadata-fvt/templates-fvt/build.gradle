@@ -1,0 +1,99 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module is a Functional Verification Test (FVT) suite for **templated cataloguing** - creating a new
+// element from a template so that it arrives already classified, already linked and already anchored, which
+// is what makes governance hold for elements that are catalogued automatically.
+//
+// It has two halves:
+//
+//   * every template shipped in the content packs is used for real - its placeholder specification is read
+//     from the SpecificationPropertyAssignment relationships attached to it, values are supplied for each
+//     placeholder, an element is created, and the whole anchored graph is checked for placeholders that were
+//     never substituted and for a correctly linked SourcedFrom relationship;
+//   * templates built by the suite itself exercise the mechanics more harshly than the shipped ones do -
+//     placeholders in classifications and relationship properties as well as entity properties, replacement
+//     properties, and the TemplateSubstitute classification.
+//
+// It runs against a real PostgreSQL-backed repository with the full content-packs archive set loaded.  No
+// Kafka is needed - the access services are configured without topics.
+//
+// Like the other FVTs this is NOT part of the default build.  It only runs when explicitly requested:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:templates-fvt:test -PrunTemplatesFvt
+//
+// Database connection details and the platform's own port are controlled from
+// src/test/resources/application.properties.
+
+dependencies {
+    // The OMAG Server Platform itself, run in-process via SpringApplication.run(...).
+    // user-authn is excluded: it wires in a login/token Spring Security chain that needs a real user
+    // directory and credentials, which this hermetic, no-auth platform does not set up.
+    testImplementation(project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')) {
+        exclude group: 'org.odpi.egeria', module: 'user-authn'
+    }
+
+    // Connectors needed to configure and run a metadata access store server backed by PostgreSQL
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+
+    // Clients used to configure, start and exercise the server
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+    testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+
+    // Used to build the open metadata archive Connection objects passed to
+    // addStartUpOpenMetadataArchiveList(List<Connection>) - see OMAGPlatformExtension for why this is used in
+    // preference to the single-file addStartUpOpenMetadataArchiveFile(String) method.
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+
+    // In-process Spring Boot startup/shutdown
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+
+    // A permit-all security filter chain is needed so that every request still gets an (anonymous)
+    // Authentication in the SecurityContext - the admin/platform REST controllers require one to be
+    // present even though this suite's platform has no real user directory configured.
+    testImplementation 'org.springframework.security:spring-security-config'
+    testImplementation 'org.springframework.security:spring-security-web'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Open Metadata Templated Cataloguing Functional Verification Tests (templates-fvt)'
+
+test {
+    useJUnitPlatform()
+
+    // Optional, opt-in suite: needs a reachable PostgreSQL server and loads ~30 archives, so it is
+    // skipped unless explicitly requested with -PrunTemplatesFvt.
+    onlyIf { project.hasProperty('runTemplatesFvt') }
+
+    // Single JVM fork - the tests share one running platform/server (see OMAGPlatformExtension) and
+    // are not designed to run concurrently against it.  No fixed timeout: loading the full content-packs
+    // set into a real PostgreSQL repository can legitimately take a long time, and this suite is never
+    // part of an automated/CI budget - it is only ever run deliberately, by hand.
+    maxParallelForks = 1
+    testLogging.showStandardStreams = true
+}
+
+// Resolves logging conflicts between the various connectors pulled in by the platform chassis
+loggingCapabilities {
+    enforceLogback()
+}

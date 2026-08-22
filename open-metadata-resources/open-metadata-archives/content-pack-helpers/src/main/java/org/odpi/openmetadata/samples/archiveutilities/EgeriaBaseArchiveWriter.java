@@ -117,7 +117,10 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
 
         /*
          * Note: the version number is based off of the build time to ensure the
-         * latest version of the archive elements is loaded.
+         * latest version of the archive elements is loaded.  The creation date, in contrast, must be a fixed value
+         * supplied by the subclass and must not move between builds: it becomes the createTime of every element in
+         * the archive, and the repository uses createTime to match an incoming element to the one it already stores
+         * before it compares the two version numbers.
          */
         this.archiveHelper = new GovernanceArchiveHelper(archiveBuilder,
                                                          archiveGUID,

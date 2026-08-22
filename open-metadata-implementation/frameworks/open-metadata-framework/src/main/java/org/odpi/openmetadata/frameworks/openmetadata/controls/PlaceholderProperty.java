@@ -385,6 +385,42 @@ public enum PlaceholderProperty
 
 
     /**
+     * Retrieve the placeholder properties used by an information supply chain template.
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getInformationSupplyChainPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PlaceholderProperty.DISPLAY_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SCOPE.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
+     * Retrieve the placeholder properties used by a solution blueprint template.
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getSolutionBlueprintPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PlaceholderProperty.DISPLAY_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
      * Retrieve all the defined placeholder properties
      *
      * @return list of placeholder property types
@@ -437,6 +473,7 @@ public enum PlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.RESOURCE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
 
@@ -456,6 +493,7 @@ public enum PlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.HOST_URL.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.RESOURCE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());

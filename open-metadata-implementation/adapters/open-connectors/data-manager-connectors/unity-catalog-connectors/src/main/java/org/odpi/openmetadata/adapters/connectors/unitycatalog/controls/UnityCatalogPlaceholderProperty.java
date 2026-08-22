@@ -229,6 +229,7 @@ public enum UnityCatalogPlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.HOST_URL.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.RESOURCE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
 
@@ -248,6 +249,7 @@ public enum UnityCatalogPlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.HOST_URL.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.RESOURCE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());

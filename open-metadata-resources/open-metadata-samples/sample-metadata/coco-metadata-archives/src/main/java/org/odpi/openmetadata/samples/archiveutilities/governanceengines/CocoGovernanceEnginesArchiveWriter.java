@@ -2,14 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
-import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGuard;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGuard;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.RetentionClassifierGuard;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.EvaluateAnnotationsGuard;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.contentpacks.core.RequestTypeDefinition;
 import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.egeria.EgeriaArchiveWriter;
@@ -17,13 +13,13 @@ import org.odpi.openmetadata.contentpacks.core.files.FilesArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.postgres.PostgresPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.unitycatalog.UnityCatalogPackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyActionGuard;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.GovernanceActionDescription;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.*;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialPlaceholderProperty;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialsAnnotationType;
 
 import java.util.*;
@@ -195,6 +191,20 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                                         "V1.0",
                                                         null,
                                                         methodName);
+
+                /*
+                 * These supply chain templates name the clinical trial in their properties, so a caller has to supply
+                 * the trial's identifier and name.  The specification is what makes that visible to them - and without
+                 * it the ~{...}~ markers survive into the supply chain created from the template.
+                 */
+                archiveHelper.addPlaceholderProperties(iscGUID,
+                                                       OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                                                       iscGUID,
+                                                       OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                                                       OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                                                       null,
+                                                       List.of(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholderType(),
+                                                               CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholderType()));
             }
         }
     }
