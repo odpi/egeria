@@ -7,7 +7,11 @@ import org.odpi.openmetadata.frameworks.connectors.mapper.OpenConnectorsValidVal
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.Category;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -421,6 +425,18 @@ public class SimpleCatalogArchiveHelper
                                                "6.2-SNAPSHOT",
                                                null,
                                                methodName);
+
+                /*
+                 * A template's specification is what tells a caller which values they have to supply.  Without it the
+                 * placeholders in the blueprint's properties survive into every element created from it.
+                 */
+                this.addPlaceholderProperties(blueprintGUID,
+                                              solutionBlueprint.getTypeName(),
+                                              blueprintGUID,
+                                              solutionBlueprint.getTypeName(),
+                                              OpenMetadataType.COLLECTION.typeName,
+                                              null,
+                                              PlaceholderProperty.getSolutionBlueprintPlaceholderPropertyTypes());
             }
             else if (collectionGUID != null)
             {
@@ -449,6 +465,75 @@ public class SimpleCatalogArchiveHelper
             }
         }
     }
+
+    /**
+     * Add reference data for catalog templates.
+     *
+     * @param parentGUID unique identifier of template
+     * @param parentTypeName type of template
+     * @param anchorGUID unique identifier of anchor
+     * @param anchorTypeName type of anchor
+     * @param anchorDomainName domain of anchor
+     * @param anchorScopeGUID scope of anchor
+     * @param placeholderPropertyTypes list of reference values
+     */
+    public void addPlaceholderProperties(String                        parentGUID,
+                                         String                        parentTypeName,
+                                         String                        anchorGUID,
+                                         String                        anchorTypeName,
+                                         String                        anchorDomainName,
+                                         String                        anchorScopeGUID,
+                                         List<PlaceholderPropertyType> placeholderPropertyTypes)
+    {
+        if (placeholderPropertyTypes != null)
+        {
+            int ordinal = 0;
+            for (PlaceholderPropertyType placeholderPropertyType : placeholderPropertyTypes)
+            {
+                Map<String, String> additionalProperties = placeholderPropertyType.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, placeholderPropertyType.getExample());
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, Boolean.toString(placeholderPropertyType.getRequired()));
+
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           anchorGUID,
+                                                           anchorTypeName,
+                                                           anchorDomainName,
+                                                           anchorScopeGUID,
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
+                                                           parentTypeName + "::" + parentGUID + "::PlaceholderProperty::" + placeholderPropertyType.getName(),
+                                                           Category.SPECIFICATION_PROPERTY.getName(),
+                                                           SpecificationPropertyType.PLACEHOLDER_PROPERTY.getPropertyType(),
+                                                           placeholderPropertyType.getName(),
+                                                           placeholderPropertyType.getDescription(),
+                                                           SpecificationPropertyType.PLACEHOLDER_PROPERTY.getPropertyType(),
+                                                           SpecificationPropertyType.PLACEHOLDER_PROPERTY.getDescription(),
+                                                           placeholderPropertyType.getDataType(),
+                                                           null,
+                                                           placeholderPropertyType.getName(),
+                                                           null,
+                                                           true,
+                                                           ordinal,
+                                                           false,
+                                                           additionalProperties);
+
+                ordinal++;
+                if (validValueGUID != null)
+                {
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.PLACEHOLDER_PROPERTY.getPropertyType());
+                }
+            }
+        }
+    }
+
 
     /**
      * Create solution roles
@@ -5558,29 +5643,35 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create a Template classification to add to an entity as it is created.
+     * Return the properties that describe a file system, ready to be added to the extended properties of a
+     * FileSystem entity.
+     * <br>
+     * FileSystem is an entity type (a subtype of ResourceManager) that defines "format" and "encryption" as its own
+     * attributes, so these values belong on the entity itself.  It was a classification in earlier versions of the
+     * open metadata types, and building a FileSystem classification here produced archive content that loaded
+     * without complaint but could not be used: creating an element from such a template failed with "Classification
+     * FileSystem is not a recognized classification type".
      *
      * @param format format of the file system
      * @param encryption type of encryption
-     * @param methodName calling method
-     * @return classification object
+     * @return properties for the FileSystem entity
      */
-    public Classification getFileSystemClassification(String              format,
-                                                      String              encryption,
-                                                      String              methodName)
+    public Map<String, Object> getFileSystemProperties(String format,
+                                                       String encryption)
     {
-        InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null,
-                                                                                                OpenMetadataProperty.FORMAT.name,
-                                                                                                format, methodName);
+        Map<String, Object> fileSystemProperties = new HashMap<>();
 
-        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties,
-                                                                             OpenMetadataProperty.ENCRYPTION.name,
-                                                                             encryption, methodName);
+        if (format != null)
+        {
+            fileSystemProperties.put(OpenMetadataProperty.FORMAT.name, format);
+        }
 
+        if (encryption != null)
+        {
+            fileSystemProperties.put(OpenMetadataProperty.ENCRYPTION.name, encryption);
+        }
 
-        return archiveHelper.getClassification(OpenMetadataType.FILE_SYSTEM.typeName,
-                                               classificationProperties,
-                                               InstanceStatus.ACTIVE);
+        return fileSystemProperties;
     }
 
 

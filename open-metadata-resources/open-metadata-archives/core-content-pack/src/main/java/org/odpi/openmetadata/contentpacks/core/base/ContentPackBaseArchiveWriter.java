@@ -41,7 +41,20 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
  */
 public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWriter
 {
-    private static final Date creationDate = new Date();
+    /*
+     * This date must remain stable across regenerations of the content packs.  It is stamped into every element in
+     * the archive as its createTime, and the repository uses createTime to recognise that an element arriving from a
+     * rebuilt archive is the same element as the one it already stores.  If this date moves with each build, the
+     * repository concludes that it is looking at a different element, skips the version comparison in
+     * LocalOMRSInstanceEventProcessor.compareAndValidateReferenceInstance() and silently ignores the updated content.
+     * It is the version number (see EgeriaBaseArchiveWriter) that moves with each build, not the creation date.
+     * <br>
+     * The value below is the creation date of the content packs released in Egeria 6.0.  Using it means that a
+     * repository loaded from the 6.0 content packs recognises the elements in later content packs as the same
+     * elements and accepts their updates, so an upgrade from one release to the next migrates the content packs
+     * rather than silently ignoring them.  Do not change it.
+     */
+    private static final Date creationDate = new Date(1775025949989L); /* creation date of the Egeria 6.0 content packs */
     protected final Map<String, String> deployedImplementationTypeQNAMEs = new HashMap<>();
 
 
@@ -244,6 +257,19 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                         versionName,
                                                         null,
                                                         methodName);
+
+                /*
+                 * The specification tells a caller which values they must supply to use this template.  Without it the
+                 * placeholders in the supply chain's properties are invisible to callers, and any element created from
+                 * the template keeps the ~{...}~ markers instead of real values.
+                 */
+                archiveHelper.addPlaceholderProperties(iscGUID,
+                                                       OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                                                       iscGUID,
+                                                       OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                                                       OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                                                       null,
+                                                       PlaceholderProperty.getInformationSupplyChainPlaceholderPropertyTypes());
             }
             else
             {
@@ -876,13 +902,13 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
      * @param deployedImplementationType       deployed implementation type for the technology
      * @param softwareCapabilityType           type of the associated capability
      * @param softwareCapabilityName           name for the associated capability
-     * @param softwareCapabilityClassification classification for the software capability (or null)
+     * @param softwareCapabilityProperties properties for the software capability entity (or null)
      */
     protected void createHostCatalogTemplate(String                         guid,
                                              DeployedImplementationType     deployedImplementationType,
                                              DeployedImplementationType     softwareCapabilityType,
                                              String                         softwareCapabilityName,
-                                             Classification                 softwareCapabilityClassification)
+                                             Map<String, Object>            softwareCapabilityProperties)
     {
         final String methodName = "createHostCatalogTemplate";
 
@@ -922,8 +948,8 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                 null,
                                                 null,
                                                 null,
-                                                null,
-                                                softwareCapabilityClassification,
+                                                softwareCapabilityProperties,
+                                                (Classification) null,
                                                 assetGUID,
                                                 deployedImplementationType.getAssociatedTypeName(),
                                                 OpenMetadataType.ASSET.typeName,
@@ -961,7 +987,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
      * @param serverQualifiedName qualified name of the owning server
      * @param softwareCapabilityName name for the associated capability
      * @param softwareCapabilityDescription description for the software capability
-     * @param softwareCapabilityClassification optional classification for the associated capability
+     * @param softwareCapabilityProperties optional extra properties for the associated capability
      * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
      * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
      */
@@ -970,7 +996,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                            String                         serverQualifiedName,
                                                            String                         softwareCapabilityName,
                                                            String                         softwareCapabilityDescription,
-                                                           Classification                 softwareCapabilityClassification,
+                                                           Map<String, Object>            softwareCapabilityProperties,
                                                            List<ReplacementAttributeType> replacementAttributeTypes,
                                                            List<PlaceholderPropertyType>  placeholderPropertyTypes)
     {
@@ -988,9 +1014,9 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                     "6.2-SNAPSHOT",
                                                                     null, methodName));
 
-        if (softwareCapabilityClassification != null)
+        if (softwareCapabilityProperties != null)
         {
-            classifications.add(softwareCapabilityClassification);
+            extendedProperties.putAll(softwareCapabilityProperties);
         }
 
         archiveHelper.setGUID(qualifiedName, guid);

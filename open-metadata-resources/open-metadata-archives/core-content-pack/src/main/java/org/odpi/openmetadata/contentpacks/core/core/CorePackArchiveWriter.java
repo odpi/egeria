@@ -852,34 +852,31 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
     private void addMacBookProCatalogTemplate()
     {
-        final String methodName = "addMacBookProCatalogTemplate";
         final String guid       = "32a9fd56-85c9-47fe-a211-9da3871bf4da";
 
-        Classification classification = archiveHelper.getFileSystemClassification("APFS", "Enabled", methodName);
+        Map<String, Object> fileSystemProperties = archiveHelper.getFileSystemProperties("APFS", "Enabled");
 
         createHostCatalogTemplate(guid,
                                   DeployedImplementationType.MACBOOK_PRO,
                                   DeployedImplementationType.UNIX_FILE_SYSTEM,
                                   "Local File System",
-                                  classification);
+                                  fileSystemProperties);
     }
 
 
     private void addFileSystemTemplate()
     {
-        final String methodName = "addFileSystemTemplate";
         final String guid       = "522f228c-097c-4f90-9efc-26c1f2696f87";
 
-        Classification fileSystemClassification = archiveHelper.getFileSystemClassification(PlaceholderProperty.FORMAT.getPlaceholder(),
-                                                                                            PlaceholderProperty.ENCRYPTION.getPlaceholder(),
-                                                                                            methodName);
+        Map<String, Object> fileSystemProperties = archiveHelper.getFileSystemProperties(PlaceholderProperty.FORMAT.getPlaceholder(),
+                                                                                         PlaceholderProperty.ENCRYPTION.getPlaceholder());
 
         createSoftwareCapabilityCatalogTemplate(guid,
                                                 DeployedImplementationType.FILE_SYSTEM,
                                                 null,
                                                 PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder(),
                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                fileSystemClassification,
+                                                fileSystemProperties,
                                                 null,
                                                 PlaceholderProperty.getFileSystemPlaceholderPropertyTypes());
     }
@@ -887,19 +884,17 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
     private void addUNIXFileSystemTemplate()
     {
-        final String methodName = "addUNIXFileSystemTemplate";
         final String guid = "27117270-8667-41d0-a99a-9118f9b60199";
 
-        Classification fileSystemClassification = archiveHelper.getFileSystemClassification(PlaceholderProperty.FORMAT.getPlaceholder(),
-                                                                                            PlaceholderProperty.ENCRYPTION.getPlaceholder(),
-                                                                                            methodName);
+        Map<String, Object> fileSystemProperties = archiveHelper.getFileSystemProperties(PlaceholderProperty.FORMAT.getPlaceholder(),
+                                                                                         PlaceholderProperty.ENCRYPTION.getPlaceholder());
 
         createSoftwareCapabilityCatalogTemplate(guid,
                                                 DeployedImplementationType.UNIX_FILE_SYSTEM,
                                                 null,
                                                 PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder(),
                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                fileSystemClassification,
+                                                fileSystemProperties,
                                                 null,
                                                 PlaceholderProperty.getFileSystemPlaceholderPropertyTypes());
     }

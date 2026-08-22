@@ -160,6 +160,18 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                                            "Then retry the request once the definition is added."),
 
     /**
+     * OMAG-GENERIC-HANDLERS-400-014 - The {0} element carries the TemplateSubstitute classification but has no
+     * SourcedFrom relationship to the template it stands in for
+     */
+    NO_SUBSTITUTE_TEMPLATE(400, "OMAG-GENERIC-HANDLERS-400-014",
+                           "The {0} element carries the TemplateSubstitute classification but has no SourcedFrom " +
+                                   "relationship to the template it stands in for, so the {1} request has no template to work from",
+                           "The system cannot create an element from this template because the TemplateSubstitute " +
+                                   "classification directs it to the element the substitute is sourced from, and there is no such element.",
+                           "Either attach a SourcedFrom relationship from the substitute to the template it stands in for, " +
+                                   "or remove the TemplateSubstitute classification so that the element is used as a template in its own right."),
+
+    /**
      * OMAG-GENERIC-HANDLERS-403-001 - The {0} method cannot delete the requested relationship between {1} {2} and {3} {4} because it
      * was not created by the requesting user {5}
      */

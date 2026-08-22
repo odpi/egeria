@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -318,8 +319,10 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                     log.debug("Template entity " + templateEntity.getGUID() + " is a template substitute - retrieving real template.");
                 }
 
+                String templateSubstituteGUID = templateEntity.getGUID();
+
                 templateEntity = getAttachedEntity(userId,
-                                                   templateEntity.getGUID(),
+                                                   templateSubstituteGUID,
                                                    templateGUIDParameterName,
                                                    entityTypeName,
                                                    OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID,
@@ -330,6 +333,22 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                    forDuplicateProcessing,
                                                    effectiveTime,
                                                    methodName);
+
+                if (templateEntity == null)
+                {
+                    /*
+                     * The TemplateSubstitute classification says "use the element I am sourced from instead of
+                     * me", so a substitute with no SourcedFrom relationship points nowhere.  Without this check
+                     * the null travels on and surfaces much later as a null entityOneGUID on an addRelationship
+                     * call - reported as an internal error, which tells the caller nothing about what is
+                     * actually wrong with their template.
+                     */
+                    throw new InvalidParameterException(GenericHandlersErrorCode.NO_SUBSTITUTE_TEMPLATE.getMessageDefinition(templateSubstituteGUID,
+                                                                                                                              methodName),
+                                                         this.getClass().getName(),
+                                                         methodName,
+                                                         templateGUIDParameterName);
+                }
             }
         }
 

@@ -163,8 +163,9 @@ public enum OMAGServerPlatformPlaceholderProperty
         placeholderPropertyTypes.add(OMAGServerPlatformPlaceholderProperty.PLATFORM_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(OMAGServerPlatformPlaceholderProperty.PLATFORM_DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.RESOURCE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(OMAGServerPlatformPlaceholderProperty.PLATFORM_USER_ID.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.ORGANIZATION_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
@@ -182,6 +183,7 @@ public enum OMAGServerPlatformPlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_ID.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.RESOURCE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.ORGANIZATION_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
@@ -200,6 +202,7 @@ public enum OMAGServerPlatformPlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_ID.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.RESOURCE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.ORGANIZATION_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());

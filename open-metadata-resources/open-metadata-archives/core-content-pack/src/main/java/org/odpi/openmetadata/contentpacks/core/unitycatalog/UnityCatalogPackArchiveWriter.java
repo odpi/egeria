@@ -590,6 +590,20 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         folderProperties.put(OpenMetadataProperty.PATH_NAME.name, UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
         folderProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
+
+        /*
+         * The storage location folder is an anchored part of the table template, not a template in its own right, so it
+         * receives the encoding classification but not the Template classification.  If it were classified as a template
+         * it would be offered to callers as something they could create from, even though its placeholder specification
+         * (and its anchor) belong to the table above it.
+         */
+        List<Classification> folderClassifications = new ArrayList<>();
+
+        folderClassifications.add(archiveHelper.getDataAssetEncodingClassification(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getPlaceholder(),
+                                                                                    null,
+                                                                                    null,
+                                                                                    null));
+
         String folderGUID = archiveHelper.addAnchoredAsset(OpenMetadataType.DATA_FOLDER.typeName,
                                                            assetGUID,
                                                            deployedImplementationType.getAssociatedTypeName(),
@@ -601,7 +615,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                            "Location of files for table " + fullName,
                                                            additionalProperties,
                                                            folderProperties,
-                                                           classifications);
+                                                           folderClassifications);
 
         archiveHelper.addDataContentForDataSet(folderGUID, assetGUID);
 

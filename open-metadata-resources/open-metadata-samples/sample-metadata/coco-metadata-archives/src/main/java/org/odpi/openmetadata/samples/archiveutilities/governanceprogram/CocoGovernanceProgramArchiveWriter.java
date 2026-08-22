@@ -4,15 +4,13 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
 import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
-import org.odpi.openmetadata.frameworks.openmetadata.definitions.ActorDefinition;
-import org.odpi.openmetadata.frameworks.openmetadata.definitions.ProjectDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ActorRoleGroup;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialPlaceholderProperty;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
@@ -246,6 +244,19 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                                         "V1.0",
                                                         null,
                                                         methodName);
+
+                /*
+                 * These certification types name the clinical trial they belong to, so the caller has to supply its
+                 * identifier.  The specification is what tells them that; without it the ~{...}~ marker survives into
+                 * the certification type created from the template.
+                 */
+                archiveHelper.addPlaceholderProperties(certificationTypeDefinition.getGUID(),
+                                                       OpenMetadataType.CERTIFICATION_TYPE.typeName,
+                                                       certificationTypeDefinition.getGUID(),
+                                                       OpenMetadataType.CERTIFICATION_TYPE.typeName,
+                                                       OpenMetadataType.CERTIFICATION_TYPE.typeName,
+                                                       null,
+                                                       List.of(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholderType()));
             }
         }
     }
