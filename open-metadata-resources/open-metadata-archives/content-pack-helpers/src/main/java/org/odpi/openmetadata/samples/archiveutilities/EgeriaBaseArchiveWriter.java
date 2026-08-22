@@ -19,6 +19,10 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWrit
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+
+import java.io.File;
 import java.util.*;
 
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
@@ -40,6 +44,16 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
      * Specific values for initializing TypeDefs
      */
     protected static final String versionName   = "6.2-SNAPSHOT";
+
+    /*
+     * A version name ending in this suffix means the branch is still under development.
+     */
+    private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT";
+
+    /*
+     * Where the archives are written, and so where the previous edition of an archive is read back from.
+     */
+    private static final String ARCHIVE_FOLDER_NAME = "content-packs";
 
     private final Map<String, String> parentValidValueQNameToGUIDMap = new HashMap<>();
 
@@ -116,8 +130,8 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                                      dependentOpenMetadataArchives);
 
         /*
-         * Note: the version number is based off of the build time to ensure the
-         * latest version of the archive elements is loaded.  The creation date, in contrast, must be a fixed value
+         * Note: the version number is what tells a repository that the elements in a rebuilt archive are newer than
+         * the ones it already stores - see getVersionNumber().  The creation date, in contrast, must be a fixed value
          * supplied by the subclass and must not move between builds: it becomes the createTime of every element in
          * the archive, and the repository uses createTime to match an incoming element to the one it already stores
          * before it compares the two version numbers.
@@ -128,7 +142,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                                          archiveDescription,
                                                          originatorName,
                                                          creationDate,
-                                                         new Date().getTime(),
+                                                         getVersionNumber(archiveFileName),
                                                          versionName,
                                                          guidMapFileName);
 
@@ -517,6 +531,101 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
     public void writeOpenMetadataArchive()
     {
         writeOpenMetadataArchive(null);
+    }
+
+
+    /**
+     * Return the version number to stamp on every element in this archive.
+     * <br>
+     * A repository decides whether to accept the elements in a rebuilt archive by comparing their version number
+     * with the version it already stores, so the number has to increase from one edition of an archive to the next.
+     * How it increases depends on whether the branch is still under development:
+     * <ul>
+     *     <li>While the branch is a <b>snapshot</b>, the build time is used.  Development builds happen in no
+     *     particular order and a developer needs each one to supersede the last, which the clock gives for free.</li>
+     *     <li>Once the branch is a <b>release</b>, the previous edition's version plus one is used.  A released
+     *     branch is rebuilt long after it was cut - to pick up a fix, or simply to reproduce the build - and using
+     *     the clock there would stamp those elements with a version far higher than the releases that came after
+     *     it.  A repository would then treat the older release's content as the newer, and rebuilding 6.1 today
+     *     would quietly overwrite 6.2 content.  Creeping up by one keeps a released archive just above its own
+     *     predecessor and well below every release that followed.</li>
+     * </ul>
+     *
+     * @param archiveFileName name of the file this archive is written to, used to find its previous edition
+     * @return version number
+     */
+    private long getVersionNumber(String archiveFileName)
+    {
+        if (versionName.endsWith(SNAPSHOT_SUFFIX))
+        {
+            return new Date().getTime();
+        }
+
+        long previousVersionNumber = getPreviousVersionNumber(archiveFileName);
+
+        if (previousVersionNumber == 0)
+        {
+            /*
+             * There is no previous edition of this archive to move on from - it is new in this release - so there is
+             * nothing for it to have to supersede, and the build time is as good a starting point as any.
+             */
+            return new Date().getTime();
+        }
+
+        return previousVersionNumber + 1;
+    }
+
+
+    /**
+     * Return the version number stamped on the elements of the previous edition of this archive, or zero if there
+     * is no previous edition to read (or it cannot be understood).
+     * <br>
+     * Every element in an archive carries the same version number, so the first one found answers the question.
+     *
+     * @param archiveFileName name of the file this archive is written to
+     * @return version number of the previous edition, or zero
+     */
+    private long getPreviousVersionNumber(String archiveFileName)
+    {
+        File archiveFile = new File(ARCHIVE_FOLDER_NAME + "/" + archiveFileName);
+
+        if (! archiveFile.exists())
+        {
+            archiveFile = new File(archiveFileName);
+        }
+
+        if (! archiveFile.exists())
+        {
+            return 0;
+        }
+
+        OpenMetadataArchive previousArchive = super.readOpenMetadataArchive(archiveFile.getPath());
+
+        if ((previousArchive != null) && (previousArchive.getArchiveInstanceStore() != null))
+        {
+            List<EntityDetail> entities = previousArchive.getArchiveInstanceStore().getEntities();
+
+            if ((entities != null) && (! entities.isEmpty()))
+            {
+                return entities.get(0).getVersion();
+            }
+
+            List<Relationship> relationships = previousArchive.getArchiveInstanceStore().getRelationships();
+
+            if ((relationships != null) && (! relationships.isEmpty()))
+            {
+                return relationships.get(0).getVersion();
+            }
+        }
+
+        /*
+         * Say so rather than falling back on the build time in silence: in a release build that fallback is the very
+         * thing this method exists to avoid.
+         */
+        System.out.println("Unable to read the previous version number from " + archiveFile.getPath()
+                                   + ".  Falling back on the build time for the version number.");
+
+        return 0;
     }
 
 
