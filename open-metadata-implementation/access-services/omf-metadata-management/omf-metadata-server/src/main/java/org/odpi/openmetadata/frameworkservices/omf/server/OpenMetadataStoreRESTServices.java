@@ -11,7 +11,10 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGener
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -51,6 +54,7 @@ public class OpenMetadataStoreRESTServices
     private final static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(OpenMetadataStoreRESTServices.class),
                                                                                         instanceHandler.getServiceName());
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final PropertyHelper          propertyHelper          = new PropertyHelper();
 
 
 
@@ -3741,17 +3745,294 @@ public class OpenMetadataStoreRESTServices
                                        String            elementGUID,
                                        TranslationDetailProperties translationDetail)
     {
-        final String methodName = "setTranslation";
+        final String methodName             = "setTranslation";
+        final String guidParameterName      = "elementGUID";
+        final String detailParameterName    = "translationDetail";
+        final String languageParameterName  = "translationDetail.language";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
-        // todo
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+            invalidParameterHandler.validateObject(translationDetail, detailParameterName, methodName);
+            invalidParameterHandler.validateName(translationDetail.getLanguage(), languageParameterName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            RelatedMetadataElement existingTranslation = this.getMatchingTranslation(userId,
+                                                                                     handler,
+                                                                                     elementGUID,
+                                                                                     translationDetail.getLanguage(),
+                                                                                     translationDetail.getLocale(),
+                                                                                     methodName);
+
+            if (existingTranslation == null)
+            {
+                /*
+                 * A translation is anchored to the element it translates and attached to it in the same call.
+                 * The element sits at end 1 of TranslationLink ("translates") and the translation at end 2
+                 * ("translation"), and anchoring means the translation is removed with its element rather than
+                 * being left behind as an orphan when the element goes.
+                 */
+                handler.createMetadataElementInStore(userId,
+                                                      null,
+                                                      null,
+                                                      OpenMetadataType.TRANSLATION_DETAIL.typeName,
+                                                      null,
+                                                      elementGUID,
+                                                      false,
+                                                      null,
+                                                      new NewElementProperties(this.getTranslationProperties(translationDetail)),
+                                                      elementGUID,
+                                                      OpenMetadataType.TRANSLATION_LINK_RELATIONSHIP.typeName,
+                                                      null,
+                                                      true,
+                                                      false,
+                                                      false,
+                                                      new Date(),
+                                                      methodName);
+            }
+            else
+            {
+                handler.updateMetadataElementInStore(userId,
+                                                      null,
+                                                      null,
+                                                      existingTranslation.getElement().getElementGUID(),
+                                                      false,
+                                                      false,
+                                                      false,
+                                                      this.getTranslationProperties(translationDetail),
+                                                      new Date(),
+                                                      methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response);
         return response;
+    }
+
+
+    /**
+     * Return the translation attached to an element that matches the requested language and locale.
+     * <br>
+     * The language must match.  The locale qualifies the match where an element carries several translations
+     * for the same language: supply it and the locale must match too; leave it null and a translation with no
+     * locale is preferred, falling back to the first one found for that language.  That is what makes the
+     * locale "optional to qualify which translation if there are multiple translations for the language".
+     *
+     * @param userId caller's userId
+     * @param handler metadata element handler
+     * @param elementGUID element whose translations are being searched
+     * @param language language to match - required
+     * @param locale locale to match - optional
+     * @param methodName calling method
+     * @return the matching translation, or null if the element has none for this language
+     * @throws InvalidParameterException the element is not known
+     * @throws UserNotAuthorizedException the caller is not able to access the element
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    private RelatedMetadataElement getMatchingTranslation(String                                     userId,
+                                                          MetadataElementHandler<OpenMetadataElement> handler,
+                                                          String                                     elementGUID,
+                                                          String                                     language,
+                                                          String                                     locale,
+                                                          String                                     methodName) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException
+    {
+        List<RelatedMetadataElement> translations = this.getAttachedTranslations(userId, handler, elementGUID, 0, 0, methodName);
+
+        if (translations == null)
+        {
+            return null;
+        }
+
+        RelatedMetadataElement languageMatch = null;
+
+        for (RelatedMetadataElement translation : translations)
+        {
+            if (translation == null) continue;
+
+            TranslationDetailProperties properties = this.getTranslationDetail(translation);
+
+            if ((properties == null) || (! language.equals(properties.getLanguage())))
+            {
+                continue;
+            }
+
+            if (locale != null)
+            {
+                if (locale.equals(properties.getLocale()))
+                {
+                    return translation;
+                }
+            }
+            else if (properties.getLocale() == null)
+            {
+                return translation;
+            }
+            else if (languageMatch == null)
+            {
+                languageMatch = translation;
+            }
+        }
+
+        return (locale == null) ? languageMatch : null;
+    }
+
+
+    /**
+     * Return the translations attached to an element.
+     *
+     * @param userId caller's userId
+     * @param handler metadata element handler
+     * @param elementGUID element whose translations are wanted
+     * @param startFrom paging start point
+     * @param pageSize maximum results
+     * @param methodName calling method
+     * @return the attached translations, or null if there are none
+     * @throws InvalidParameterException the element is not known
+     * @throws UserNotAuthorizedException the caller is not able to access the element
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    private List<RelatedMetadataElement> getAttachedTranslations(String                                     userId,
+                                                                 MetadataElementHandler<OpenMetadataElement> handler,
+                                                                 String                                     elementGUID,
+                                                                 int                                        startFrom,
+                                                                 int                                        pageSize,
+                                                                 String                                     methodName) throws InvalidParameterException,
+                                                                                                                              UserNotAuthorizedException,
+                                                                                                                              PropertyServerException
+    {
+        final String guidParameterName = "elementGUID";
+
+        EntityDetail startingEntity = handler.getEntityFromRepository(userId,
+                                                                       elementGUID,
+                                                                       guidParameterName,
+                                                                       OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                       null,
+                                                                       null,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
+                                                                       methodName);
+
+        /*
+         * Starting at end 1 - the element being translated - returns what is attached at end 2, the
+         * TranslationDetail entities.
+         */
+        return handler.getRelatedMetadataElements(userId,
+                                                   startingEntity,
+                                                   1,
+                                                   OpenMetadataType.TRANSLATION_LINK_RELATIONSHIP.typeName,
+                                                   OpenMetadataType.TRANSLATION_DETAIL.typeName,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   false,
+                                                   false,
+                                                   new Date(),
+                                                   startFrom,
+                                                   pageSize,
+                                                   methodName);
+    }
+
+
+    /**
+     * Convert a translation bean into the element properties to store.
+     *
+     * @param translationDetail bean supplied by the caller
+     * @return element properties
+     */
+    private ElementProperties getTranslationProperties(TranslationDetailProperties translationDetail)
+    {
+        ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                OpenMetadataProperty.LANGUAGE.name,
+                                                                                translationDetail.getLanguage());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                              OpenMetadataProperty.LANGUAGE_CODE.name,
+                                                              translationDetail.getLanguageCode());
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                              OpenMetadataProperty.LOCALE.name,
+                                                              translationDetail.getLocale());
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                              OpenMetadataProperty.DISPLAY_NAME.name,
+                                                              translationDetail.getDisplayName());
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                              OpenMetadataProperty.DESCRIPTION.name,
+                                                              translationDetail.getDescription());
+        elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                 OpenMetadataProperty.ADDITIONAL_TRANSLATIONS.name,
+                                                                 translationDetail.getAdditionalTranslations());
+
+        return elementProperties;
+    }
+
+
+    /**
+     * Convert a stored translation back into the bean the caller receives.
+     *
+     * @param relatedElement the attached TranslationDetail
+     * @return translation bean, or null if there are no properties to read
+     */
+    private TranslationDetailProperties getTranslationDetail(RelatedMetadataElement relatedElement)
+    {
+        if ((relatedElement == null) || (relatedElement.getElement() == null))
+        {
+            return null;
+        }
+
+        ElementProperties elementProperties = relatedElement.getElement().getElementProperties();
+
+        if (elementProperties == null)
+        {
+            return null;
+        }
+
+        /*
+         * A copy is taken because the remove* helpers consume the properties as they read them.
+         */
+        ElementProperties           workingProperties = new ElementProperties(elementProperties);
+        TranslationDetailProperties translationDetail = new TranslationDetailProperties();
+
+        translationDetail.setLanguage(propertyHelper.removeStringProperty(instanceHandler.getServiceName(),
+                                                                           OpenMetadataProperty.LANGUAGE.name,
+                                                                           workingProperties,
+                                                                           "getTranslationDetail"));
+        translationDetail.setLanguageCode(propertyHelper.removeStringProperty(instanceHandler.getServiceName(),
+                                                                               OpenMetadataProperty.LANGUAGE_CODE.name,
+                                                                               workingProperties,
+                                                                               "getTranslationDetail"));
+        translationDetail.setLocale(propertyHelper.removeStringProperty(instanceHandler.getServiceName(),
+                                                                         OpenMetadataProperty.LOCALE.name,
+                                                                         workingProperties,
+                                                                         "getTranslationDetail"));
+        translationDetail.setDisplayName(propertyHelper.removeStringProperty(instanceHandler.getServiceName(),
+                                                                              OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                              workingProperties,
+                                                                              "getTranslationDetail"));
+        translationDetail.setDescription(propertyHelper.removeStringProperty(instanceHandler.getServiceName(),
+                                                                              OpenMetadataProperty.DESCRIPTION.name,
+                                                                              workingProperties,
+                                                                              "getTranslationDetail"));
+        translationDetail.setAdditionalTranslations(propertyHelper.removeStringMapFromProperty(instanceHandler.getServiceName(),
+                                                                                                OpenMetadataProperty.ADDITIONAL_TRANSLATIONS.name,
+                                                                                                workingProperties,
+                                                                                                "getTranslationDetail"));
+
+        return translationDetail;
     }
 
 
@@ -3777,14 +4058,47 @@ public class OpenMetadataStoreRESTServices
                                          String          locale,
                                          NullRequestBody requestBody)
     {
-        final String methodName = "clearTranslation";
+        final String methodName            = "clearTranslation";
+        final String guidParameterName     = "elementGUID";
+        final String languageParameterName = "language";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AuditLog auditLog = null;
         VoidResponse response = new VoidResponse();
 
-        // todo
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+            invalidParameterHandler.validateName(language, languageParameterName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            RelatedMetadataElement translation = this.getMatchingTranslation(userId, handler, elementGUID, language, locale, methodName);
+
+            /*
+             * Removing a translation the element does not have is not an error - the caller's intent, that
+             * there should be no translation for this language, is already satisfied.
+             */
+            if (translation != null)
+            {
+                handler.deleteMetadataElementInStore(userId,
+                                                      null,
+                                                      null,
+                                                      translation.getElement().getElementGUID(),
+                                                      false,
+                                                      false,
+                                                      false,
+                                                      new Date(),
+                                                      methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response);
         return response;
@@ -3811,14 +4125,35 @@ public class OpenMetadataStoreRESTServices
                                                     String language,
                                                     String locale)
     {
-        final String methodName = "getTranslation";
+        final String methodName            = "getTranslation";
+        final String guidParameterName     = "elementGUID";
+        final String languageParameterName = "language";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AuditLog auditLog = null;
         TranslationDetailResponse response = new TranslationDetailResponse();
 
-        // todo
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+            invalidParameterHandler.validateName(language, languageParameterName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            response.setElement(this.getTranslationDetail(this.getMatchingTranslation(userId,
+                                                                                       handler,
+                                                                                       elementGUID,
+                                                                                       language,
+                                                                                       locale,
+                                                                                       methodName)));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response);
         return response;
@@ -3845,13 +4180,53 @@ public class OpenMetadataStoreRESTServices
                                                    int    startFrom,
                                                    int    pageSize)
     {
-        final String methodName = "getTranslations";
+        final String methodName        = "getTranslations";
+        final String guidParameterName = "elementGUID";
+
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         AuditLog auditLog = null;
         TranslationListResponse response = new TranslationListResponse();
 
-        // todo
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            List<RelatedMetadataElement> translations = this.getAttachedTranslations(userId,
+                                                                                      handler,
+                                                                                      elementGUID,
+                                                                                      startFrom,
+                                                                                      pageSize,
+                                                                                      methodName);
+
+            if (translations != null)
+            {
+                List<TranslationDetailProperties> results = new ArrayList<>();
+
+                for (RelatedMetadataElement translation : translations)
+                {
+                    TranslationDetailProperties translationDetail = this.getTranslationDetail(translation);
+
+                    if (translationDetail != null)
+                    {
+                        results.add(translationDetail);
+                    }
+                }
+
+                if (! results.isEmpty())
+                {
+                    response.setElements(results);
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
 
         restCallLogger.logRESTCallReturn(token, response);
         return response;
