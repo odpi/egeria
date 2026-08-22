@@ -30,7 +30,7 @@ ext {
     jaxbVersion = '2.3.1'
     jsonldVersion = '0.13.6'
     junitVersion = '4.13.2'
-    junitjupiterVersion = '5.11.3'
+    junitjupiterVersion = '6.1.3'
     jwtVersion = '10.9.1'
     jwtApiVersion = '0.13.0'
     jwtImplVersion = '0.11.5'
