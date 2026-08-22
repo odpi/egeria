@@ -15,7 +15,7 @@
   
 Egeria provides the Apache-2.0 licensed [open metadata and governance](https://egeria-project.org)
 type system, frameworks, APIs, event payloads and interchange protocols to enable tools,
-engines and platforms to exchange metadata in order to get the best
+engines and platforms to exchange metadata and context to get the best
 value from data, whilst ensuring it is properly governed.
 
 ## Building and running Egeria
@@ -57,27 +57,20 @@ cat README.md
 
 ### Further documentation
 
-If you are new to Egeria, see the [getting started with Egeria](https://getting-started-with-egeria.pdr-associates.com/introduction.html) blogs, or alternatively,
-visit [the Egeria website](https://egeria-project.org/).
+For full documentation on Egeria, visit [the Egeria website](https://egeria-project.org/).
 
 ## Egeria governance
 
 This project aims to operate in a transparent, accessible way for the benefit of the Egeria community.
 All participation in this project is open and not bound to any corporate affiliation.
 
-To understand how to join and contribute, see the 
-[Community Guide](https://egeria-project.org/guides/community/).  This includes the call schedule.
+To understand how to join and contribute, see the [Community Guide](https://egeria-project.org/guides/community/).  This includes the call schedule.
 
-All participants are bound to the Egeria's [Code of Conduct](CODE_OF_CONDUCT.md).
-The governance of the project is described in more detail in the
-[Egeria Operations Guide](https://egeria-project.org/guides/project-operations/).
+All participants are bound to the Egeria's [Code of Conduct](CODE_OF_CONDUCT.md). The governance of the project is described in more detail in the [Egeria Operations Guide](https://egeria-project.org/guides/project-operations/).
 
 ## Acknowledgements
 
-![YourKit](https://www.yourkit.com/images/yklogo.png)
-
-We are grateful to [YourKit, LLC](https://www.yourkit.com) for supporting open source projects with its full-feature
-Java Profiler.
+The Egeria project is proudly a part of the [Linux Foundation AI and Data Foundation (LF AI & Data)](https://lfaidata.foundation/) foundation.  This foundation is focused on the development of open source software that supports the proper assembly, management, governance and delivery of context to advanced systems, particularly those using AI.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

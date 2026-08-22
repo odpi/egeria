@@ -929,12 +929,15 @@ public class OpenMetadataHandlerBase
                                 /*
                                  * Unable to retrieve the anchor - so just log the message and skip the element.
                                  */
-                                auditLog.logException(methodName,
-                                                      OMFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(localServiceName,
-                                                                                                             error.getClass().getName(),
-                                                                                                             methodName,
-                                                                                                             error.getMessage()),
-                                                      error);
+                                if (auditLog != null)
+                                {
+                                    auditLog.logException(methodName,
+                                                          OMFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(localServiceName,
+                                                                                                                 error.getClass().getName(),
+                                                                                                                 methodName,
+                                                                                                                 error.getMessage()),
+                                                          error);
+                                }
                                 return false;
                             }
                         }
