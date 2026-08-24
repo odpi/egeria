@@ -91,8 +91,14 @@ class InMemoryOMRSMetadataStore
             versionStartTime = instanceHeader.getCreateTime();
         }
 
-        if ((toTime != null) && (toTime.before(versionStartTime)))
+        if ((toTime != null) && (! toTime.after(versionStartTime)))
         {
+            /*
+             * "toTime" is exclusive, so a version that began at exactly that instant was not yet in
+             * effect during the window being asked about.  Testing with before() alone includes it, and
+             * that only shows when the two land in the same millisecond - which a store this quick does
+             * routinely.
+             */
             return false;
         }
 
@@ -1156,10 +1162,16 @@ class InMemoryOMRSMetadataStore
                 return null;
             }
 
-            if ((toTime != null) && (toTime.before(this.entity.getCreateTime())))
+            if ((toTime != null) && (! toTime.after(this.entity.getCreateTime())))
             {
                 /*
                  * The entity is known - but the query time is from before the instance existed.
+                 *
+                 * "toTime" is exclusive, so a request ending exactly at the create time asks for the
+                 * entity as it was up to the instant it came into existence - which is to say, when there
+                 * was nothing.  Testing with before() alone answers that request as though the entity
+                 * were already there.  It only shows up when the caller takes its timestamp in the same
+                 * millisecond as the create: rare against a database, routine against a store this quick.
                  */
                 return null;
             }
@@ -1230,7 +1242,7 @@ class InMemoryOMRSMetadataStore
                 return null;
             }
 
-            if ((toTime != null) && (toTime.before(this.entity.getCreateTime())))
+            if ((toTime != null) && (! toTime.after(this.entity.getCreateTime())))
             {
                 /*
                  * The entity is known - but the query time is from before the instance existed.
@@ -1323,7 +1335,14 @@ class InMemoryOMRSMetadataStore
         {
             if (! entityHistory.isEmpty())
             {
-                return entityHistory.get(0);
+                /*
+                 * A copy, not the stored object.  undoEntityUpdate() takes the previous version and calls
+                 * incrementVersion() on it, which updates it in place - so handing out the list's own
+                 * object rewrites the history entry instead of building a new version from it.  The
+                 * version that was undone back to would disappear from the history and be replaced by a
+                 * duplicate of the new current version.
+                 */
+                return new EntityDetail(entityHistory.get(0));
             }
 
             return null;
@@ -1566,7 +1585,7 @@ class InMemoryOMRSMetadataStore
                 return null;
             }
 
-            if ((toTime != null) && (toTime.before(this.relationship.getCreateTime())))
+            if ((toTime != null) && (! toTime.after(this.relationship.getCreateTime())))
             {
                 /*
                  * The relationship is known - but the query time is from before the instance existed.
@@ -1645,7 +1664,10 @@ class InMemoryOMRSMetadataStore
         {
             if (! relationshipHistory.isEmpty())
             {
-                return relationshipHistory.get(0);
+                /*
+                 * A copy - see the note in the entity version of this method for what happens otherwise.
+                 */
+                return new Relationship(relationshipHistory.get(0));
             }
 
             return null;

@@ -47,16 +47,14 @@ dependencies {
     // Clients used to configure, start and exercise the server
     testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
     testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    // The admin services client's checked exceptions (InvalidParameterException and friends) are OCF
+    // types, so this stays on the compile classpath even though the suite builds no Connection objects.
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
     testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
     testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
 
-    // Used to build the open metadata archive Connection objects passed to
-    // addStartUpOpenMetadataArchiveList(List<Connection>) - see OMAGPlatformExtension for why this is used in
-    // preference to the single-file addStartUpOpenMetadataArchiveFile(String) method.
-    testImplementation project(':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory')
-    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
 
     // In-process Spring Boot startup/shutdown
     testImplementation 'org.springframework.boot:spring-boot'

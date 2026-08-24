@@ -573,6 +573,84 @@ public class RepositoryHandler
 
 
     /**
+     * Return an entity whatever its status, including one that has been soft-deleted - or null if the
+     * repository does not hold it at all.
+     * <br>
+     * This is what the delete and purge paths need.  Every other retrieval here answers "give me the
+     * entity as it stands", and a soft-deleted entity does not stand: those calls are right to refuse it.
+     * A purge, though, exists precisely to remove an entity that has already been deleted, so it has to be
+     * able to read the thing it is about to remove.  isEntityKnown() on the metadata collection is the
+     * call defined to return DELETED instances, so the purge path uses it rather than asking for a
+     * point-in-time view and relying on that view being lenient about deleted instances.
+     *
+     * @param userId user making the request
+     * @param guid unique identifier of the entity
+     * @param methodName name of method called
+     * @return retrieved entity, or null if the repository does not hold it
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing property server
+     */
+    public EntityDetail getEntityIncludingDeleted(String userId,
+                                                  String guid,
+                                                  String methodName) throws UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String localMethodName = "getEntityIncludingDeleted";
+
+        try
+        {
+            return metadataCollection.isEntityKnown(userId, guid);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return a relationship whatever its status, including one that has been soft-deleted - or null if the
+     * repository does not hold it at all.  See {@link #getEntityIncludingDeleted(String, String, String)}
+     * for why the purge path needs this.
+     *
+     * @param userId user making the request
+     * @param guid unique identifier of the relationship
+     * @param methodName name of method called
+     * @return retrieved relationship, or null if the repository does not hold it
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing property server
+     */
+    public Relationship getRelationshipIncludingDeleted(String userId,
+                                                        String guid,
+                                                        String methodName) throws UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String localMethodName = "getRelationshipIncludingDeleted";
+
+        try
+        {
+            return metadataCollection.isRelationshipKnown(userId, guid);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Validate that the supplied GUID is for a real entity that is effective.  Return null if not.
      *
      * @param userId         user making the request.

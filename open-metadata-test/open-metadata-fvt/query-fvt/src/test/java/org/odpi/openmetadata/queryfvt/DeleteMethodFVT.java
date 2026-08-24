@@ -305,17 +305,33 @@ public class DeleteMethodFVT
                       "A default (current-value) get should no longer find a soft-deleted relationship");
 
             /*
-             * An asOfTime query for "now" is a historical query - unlike the default get above, it must still
-             * be able to see the relationship's current (deleted) state, since that state legitimately existed
-             * at this moment.  This directly exercises this session's fix to GetRelationshipExecutor.
+             * An asOfTime query answers as if it were running at the time requested, so it reports what a
+             * caller would have seen at that moment - and at this moment the relationship has been deleted,
+             * so it is not known.  That is the same answer the default get above gives, for the same reason.
+             *
+             * The call that returns deleted instances is getRelationshipHistory(): it exists to show every
+             * state a relationship has been through, which is what is needed to establish that a
+             * relationship was unavailable during a particular window.  "What did this look like then" and
+             * "what has happened to this" are different questions and only the second one returns
+             * deleted versions.
              */
             GetOptions asOfTimeOptions = new GetOptions();
             asOfTimeOptions.setAsOfTime(new Date());
 
-            OpenMetadataRelationship afterSoftDeleteAsOfTime = openMetadataStore.getRelationshipByGUID(relationshipGUID, asOfTimeOptions);
+            boolean asOfTimeGetRejectedSoftDeletedRelationship;
 
-            assertEquals(ElementStatus.DELETED, afterSoftDeleteAsOfTime.getStatus(),
-                        "An asOfTime query for 'now' should still find the soft-deleted relationship, reporting its DELETED status");
+            try
+            {
+                openMetadataStore.getRelationshipByGUID(relationshipGUID, asOfTimeOptions);
+                asOfTimeGetRejectedSoftDeletedRelationship = false;
+            }
+            catch (Exception expected)
+            {
+                asOfTimeGetRejectedSoftDeletedRelationship = true;
+            }
+
+            assertTrue(asOfTimeGetRejectedSoftDeletedRelationship,
+                      "An asOfTime query answers as at that time, so it should not find a relationship that had been deleted by then");
 
             DeleteOptions purgeOptions = new DeleteOptions();
             purgeOptions.setDeleteMethod(DeleteMethod.PURGE);

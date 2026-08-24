@@ -96,23 +96,15 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     private static final String assertion10      = testCaseId + "-10";
     private static final String assertionMsg_10  = assertionMsg_4;
 
-    private static final String assertion11      = testCaseId + "-11";
-    private static final String assertionMsg_11  = "findEntitiesByPropertyValue with general regex found {0}/{1} expected results using parameters: {2}";
 
-    private static final String assertion12      = testCaseId + "-12";
-    private static final String assertionMsg_12  = "findEntitiesByPropertyValue with general regex returned {0} unexpected results using parameters: {1}";
 
-    private static final String assertion13      = testCaseId + "-13";
-    private static final String assertionMsg_13  = "findEntitiesByProperty with general regex found {0}/{1} expected results using parameters: {2}";
 
-    private static final String assertion14      = testCaseId + "-14";
-    private static final String assertionMsg_14  = "findEntitiesByProperty with general regex returned {0} unexpected results using parameters: {1}";
 
     private static final String assertion103     = testCaseId + "-103";
-    private static final String assertionMsg_103 = "findEntities using SearchProperties with general regex found {0}/{1} expected results using parameters: {2}";
+    private static final String assertionMsg_103 = "findEntities using SearchProperties found {0}/{1} expected results using parameters: {2}";
 
     private static final String assertion104     = testCaseId + "-104";
-    private static final String assertionMsg_104 = "findEntities using SearchProperties with general regex returned {0} unexpected results using parameters: {1}";
+    private static final String assertionMsg_104 = "findEntities using SearchProperties returned {0} unexpected results using parameters: {1}";
 
     private static final String assertion105       = testCaseId + "-105";
     private static final String assertionMsg_105   = "findEntitiesByProperty with null match parameters found {0}/{1} expected results using parameters: {2}";
@@ -750,10 +742,6 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 if (stringAttributeName != null)
                 {
 
-                    performAdvancedSearchTests(stringAttributeName, RegexMatchType.Exact);
-                    performAdvancedSearchTests(stringAttributeName, RegexMatchType.Prefix);
-                    performAdvancedSearchTests(stringAttributeName, RegexMatchType.Suffix);
-                    performAdvancedSearchTests(stringAttributeName, RegexMatchType.Contains);
                 }
 
 
@@ -1458,6 +1446,35 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     }
 
 
+    /**
+     * Does one string value satisfy the search that was issued?
+     *
+     * @param candidate value found on the instance that was returned
+     * @param matchType how the search string was matched
+     * @param stringValue the full search value, used for an exact match
+     * @param truncatedStringValue the value used for prefix, suffix and contains matching
+     * @return whether it matches
+     */
+    private boolean matchesSearchValue(String         candidate,
+                                       RegexMatchType matchType,
+                                       String         stringValue,
+                                       String         truncatedStringValue)
+    {
+        if (candidate == null)
+        {
+            return false;
+        }
+
+        return switch (matchType)
+        {
+            case Exact    -> candidate.equals(stringValue);
+            case Prefix   -> candidate.startsWith(truncatedStringValue);
+            case Suffix   -> candidate.endsWith(truncatedStringValue);
+            case Contains -> candidate.contains(truncatedStringValue);
+        };
+    }
+
+
     private enum RegexMatchType
     {
         Exact,
@@ -1631,7 +1648,16 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
                                                                         entityDef.getGUID(),
                                                                         literalisedValue,
-                                                                        false, false, true, 0,
+                                                                        /*
+                                                                         * The flags say which kind of match is wanted.  This call used to be given a regex built by
+                                                                         * literaliseStringProperty*(); when the API moved to startsWith/endsWith flags the regex building
+                                                                         * was commented out of those methods but the flags were never set, so every match type issued the
+                                                                         * same 'contains' search and Exact, Prefix and Suffix then failed on the wider set of results a
+                                                                         * contains search correctly returns.
+                                                                         */
+                                                                        (matchType == RegexMatchType.Exact) || (matchType == RegexMatchType.Prefix),
+                                                                        (matchType == RegexMatchType.Exact) || (matchType == RegexMatchType.Suffix),
+                                                                        true, 0,
                                                                         null,
                                                                         null,
                                                                         null,
@@ -1752,64 +1778,22 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                              * This was an extra entity that we either did not expect or that we have not seen previously.
                              * Check it is a valid result. It can have any string attribute with the same value as strValue.
                              */
-                            boolean validEntity = false;
-                            InstanceProperties entityProperties = entity.getProperties();
-                            if (entityProperties != null)
-                            {
-                                Set<String> entityPropertyNames = entityProperties.getInstanceProperties().keySet();
-                                for (String propertyName : entityPropertyNames)
-                                {
-                                    InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
-                                    if (ipValue != null)
-                                    {
-                                        InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
-                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE)
-                                        {
-                                            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipValue;
-                                            PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
-                                            if (pdCat == OM_PRIMITIVE_TYPE_STRING)
-                                            {
-                                                String propertyValueAsString = (String) (ppv.getPrimitiveValue());
+                            /*
+                             * Copied into finals so the match test can be passed as a lambda.
+                             */
+                            final RegexMatchType searchMatchType = matchType;
+                            final String         searchValue     = stringValue;
+                            final String         searchTruncated = truncatedStringValue;
 
-                                                switch (matchType) {
-                                                    case Exact:
-                                                        /* EXACT MATCH */
-                                                        if (propertyValueAsString.equals(stringValue))
-                                                        {
-                                                            validEntity = true;
-                                                        }
-                                                        break;
-                                                    case Prefix:
-                                                        /* PREFIX MATCH */
-                                                        if (propertyValueAsString.startsWith(truncatedStringValue))
-                                                        {
-                                                            validEntity = true;
-                                                        }
-                                                        break;
-                                                    case Suffix:
-                                                        /* SUFFIX MATCH */
-                                                        if (propertyValueAsString.endsWith(truncatedStringValue))
-                                                        {
-                                                            validEntity = true;
-                                                        }
-                                                        break;
-                                                    case Contains:
-                                                        /* CONTAINS MATCH */
-                                                        if (propertyValueAsString.contains(truncatedStringValue))
-                                                        {
-                                                            validEntity = true;
-                                                        }
-                                                        break;
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            boolean validEntity = super.propertyValueMatchesSearch(entity.getProperties(),
+                                                                                  candidate -> matchesSearchValue(candidate,
+                                                                                                                  searchMatchType,
+                                                                                                                  searchValue,
+                                                                                                                  searchTruncated));
                             if (!validEntity)
                             {
-                                unexpectedResult = "(guid=" + entity.getGUID() + ")";
+                                unexpectedResult = "(guid=" + entity.getGUID() + " type=" + entity.getType().getTypeDefName()
+                                                   + " sought='" + stringValue + "' as " + matchType + ")";
                             }
                         }
                     }
@@ -2283,579 +2267,6 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
 
 
-    /*
-     *  This method tests ability to handle arbitrary regular expressions.
-     *  This method includes both searchCriteria based findEntitiesByPropertyValue tests and matchProperty based findEntitiesByProperty tests
-     */
-    private void performAdvancedSearchTests(String attributeName, RegexMatchType matchType) throws Exception {
-
-        /*
-         * The given attribute is tested for exact, prefix, suffix and contains matches for each of the values already seen.
-         * All these searches should return at least some instances in the result; some may match more than a page full.
-         */
-
-        Set<Object> possibleValues = propertyValueMap.get(attributeName).keySet();
-
-        for (Object possibleValue : possibleValues)
-        {
-            String stringValue = (String) possibleValue;
-            String truncatedStringValue = null;
-            String regexValue = null;
-            int stringValueLength;
-            int truncatedLength;
-
-            switch (matchType)
-            {
-                case Exact:
-                    /* EXACT MATCH */
-                    stringValue = escapeRegexSpecials(stringValue);
-                    regexValue = stringValue;
-                    break;
-                case Prefix:
-                    /* PREFIX MATCH */
-                    stringValueLength = stringValue.length();
-                    if (stringValueLength < 2)
-                    {
-                        return; /* not a long enough string to perform a meaningful test */
-                    }
-                    truncatedLength = (int) (Math.ceil(stringValueLength / 2.0));
-                    truncatedStringValue = stringValue.substring(0, truncatedLength);
-                    truncatedStringValue = escapeRegexSpecials(truncatedStringValue);
-                    regexValue = truncatedStringValue + ".*";
-                    break;
-                case Suffix:
-                    /* SUFFIX MATCH */
-                    stringValueLength = stringValue.length();
-                    if (stringValueLength < 2)
-                    {
-                        return; /* not a long enough string to perform a meaningful test */
-                    }
-                    truncatedLength = (int) (Math.ceil(stringValueLength / 2.0));
-                    truncatedStringValue = stringValue.substring(stringValueLength - truncatedLength, stringValueLength);
-                    truncatedStringValue = escapeRegexSpecials(truncatedStringValue);
-                    regexValue = ".*" + truncatedStringValue;
-                    break;
-                case Contains:
-                    /* CONTAINS MATCH */
-                    stringValueLength = stringValue.length();
-                    if (stringValueLength < 3)
-                    {
-                        return; /* not a long enough string to perform a meaningful test */
-                    }
-                    truncatedLength = (int) (Math.floor(stringValueLength / 2.0));
-                    int diff = stringValueLength - truncatedLength;
-                    int halfDiff = diff / 2;
-                    truncatedStringValue = stringValue.substring(halfDiff, stringValueLength - halfDiff);
-                    truncatedStringValue = escapeRegexSpecials(truncatedStringValue);
-                    regexValue = ".*" + truncatedStringValue + ".*";
-                    break;
-            }
-
-
-
-
-            /*
-             * Expected result size - this really is a minimum expectation - other instances' properties may match, if so they will be validated retrospectively
-             * Find all the values (regardless of attributeName) in the map that are an exact match to the search value
-             * Care needed to detect entities that are matched by more than one property - to avoid duplication it's
-             * important to check that the entity was not already included in the expected set.
-             */
-            int expectedEntityCount = 0;
-            List<String> expectedGUIDs = new ArrayList<>();
-            Set<String> propertyNamesSet = propertyValueMap.keySet();
-            for (String propName : propertyNamesSet)
-            {
-                if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING)
-                {
-                    Map<Object, List<String>> propValues = propertyValueMap.get(propName);
-                    Set<Object> propertyValuesSet = propValues.keySet();
-                    for (Object o : propertyValuesSet) {
-                        String knownStringValue = (String) o;
-
-                        switch (matchType)
-                        {
-                            case Exact:
-                                /* EXACT MATCH */
-                                if (knownStringValue.matches(stringValue))
-                                {
-                                    for (String matchGUID : propValues.get(knownStringValue))
-                                    {
-                                        if (!expectedGUIDs.contains(matchGUID))
-                                        {
-                                            expectedGUIDs.add(matchGUID);
-                                        }
-                                    }
-                                }
-                                break;
-                            case Prefix:
-                                /* PREFIX MATCH */
-                                if (knownStringValue.matches(truncatedStringValue + ".*"))
-                                {
-                                    for (String matchGUID : propValues.get(knownStringValue))
-                                    {
-                                        if (!expectedGUIDs.contains(matchGUID))
-                                        {
-                                            expectedGUIDs.add(matchGUID);
-                                        }
-                                    }
-                                }
-                                break;
-                            case Suffix:
-                                /* SUFFIX MATCH */
-                                if (knownStringValue.matches(".*" + truncatedStringValue))
-                                {
-                                    for (String matchGUID : propValues.get(knownStringValue))
-                                    {
-                                        if (!expectedGUIDs.contains(matchGUID))
-                                        {
-                                            expectedGUIDs.add(matchGUID);
-                                        }
-                                    }
-                                }
-                                break;
-                            case Contains:
-                                /* CONTAINS MATCH */
-                                if (knownStringValue.matches(".*" + truncatedStringValue + ".*"))
-                                {
-                                    for (String matchGUID : propValues.get(knownStringValue))
-                                    {
-                                        if (!expectedGUIDs.contains(matchGUID))
-                                        {
-                                            expectedGUIDs.add(matchGUID);
-                                        }
-                                    }
-                                }
-                                break;
-                        }
-                    }
-                }
-            }
-            expectedEntityCount = expectedGUIDs.size();
-
-
-            /*
-             * Test search using findEntitiesByPropertyValue
-             */
-
-            List<EntityDetail> result;
-
-            Map<String, String> parameters = getParameters(entityDef.getGUID(), regexValue);
-
-            long elapsedTime;
-            try
-            {
-
-                long start = System.currentTimeMillis();
-                result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
-                                                                        entityDef.getGUID(),
-                                                                        regexValue,
-                                                                        false, false, true, 0,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        pageSize);
-                elapsedTime = System.currentTimeMillis() - start;
-            }
-            catch (FunctionNotSupportedException exc)
-            {
-
-                /*
-                 * Because the above test only exercises one optional function (advanced regex support)
-                 * we can assert that it is that function that is not supported.
-                 */
-
-                super.addNotSupportedAssertion(assertion101FEBPVGEN,
-                        assertionMsg_101FEBPVGEN + exc.getMessage(),
-                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
-
-                return;
-
-            }
-            catch (RepositoryTimeoutException exc)
-            {
-
-                /*
-                 * Such a query may simply timeout, in which case we do not have enough information
-                 * to know whether this optional function is supported or not.
-                 */
-                super.addDiscoveredProperty("query timeouts",
-                                            true,
-                                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
-                return;
-
-            }
-            catch (Exception exc)
-            {
-                /*
-                 * We are not expecting any exceptions from this method call. Log and fail the test.
-                 */
-
-                String methodName = "findEntitiesByPropertyValue";
-                String operationDescription = "find entities using general regex for type " + entityDef.getName();
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-                throw new Exception(msg, exc);
-
-            }
-
-
-            /*
-             * We need to check that we got (at least) the expected number of results - which could include zero.
-             */
-            int resultCount = result == null ? 0 : result.size();
-            /*
-             * If the original discovery query was not pageLimited then we should have been able to exactly predict the expected result.
-             * In addition, the result size should be no more than a page.
-             */
-            boolean unlimited_case = !pageLimited && resultCount == expectedEntityCount;
-            /*
-             * If the original discovery query was pageLimited then we have to tolerate hitherto unseen instances in the results.
-             * If the most recent query hit the pageSize limit then we have to accept that we got less than we might have 'expected'.
-             * So in that latter case we need to accept Min().
-             */
-            boolean limited_large_case = pageLimited && expectedEntityCount >= pageSize && resultCount == pageSize;
-            boolean limited_small_case = pageLimited && expectedEntityCount < pageSize && resultCount >= expectedEntityCount;
-            boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
-
-            String assertionMessage = MessageFormat.format(assertionMsg_11, resultCount, expectedEntityCount, parameters);
-            assertCondition((acceptable_result_size),
-                    assertion11,
-                    assertionMessage,
-                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId(),
-                    "findEntitiesByPropertyValue",
-                    elapsedTime);
-
-
-            /*
-             * If there were any results, check that all expected entities were returned and (in the pageLimited case) that any
-             * additional entities were valid results for the search.
-             */
-            if (resultCount > 0)
-            {
-
-                List<String> resultGUIDs = new ArrayList<>();
-                for (EntityDetail entity : result)
-                {
-                    resultGUIDs.add(entity.getGUID());
-                }
-
-
-                /*
-                 * Here again, we need to be sensitive to whether the original search hit the page limit.
-                 * If the original search hit the limit then we may legitimately receive additional instances in the results
-                 * of a narrower search. But not if the original result set was under the page limit.
-                 */
-
-                String unexpectedResult = "0";
-
-                if (!pageLimited)
-                {
-                    if (!resultGUIDs.containsAll(expectedGUIDs))
-                    {
-                        unexpectedResult = RESULTS_MISSING_EXPECTED_GUIDS;
-                    }
-                }
-                else
-                { // pageLimited, so need to allow for and verify hitherto unseen instances
-
-                    for (EntityDetail entity : result)
-                    {
-                        if (!(expectedGUIDs.contains(entity.getGUID())))
-                        {
-                            /*
-                             * This was an extra entity that we either did not expect or that we have not seen previously.
-                             * Check it is a valid result. It can have any string attribute with the same value as strValue.
-                             */
-                            boolean validEntity = false;
-                            InstanceProperties entityProperties = entity.getProperties();
-                            if (entityProperties != null)
-                            {
-                                Set<String> entityPropertyNames = entityProperties.getInstanceProperties().keySet();
-                                for (String propertyName : entityPropertyNames)
-                                {
-                                    InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
-                                    if (ipValue != null)
-                                    {
-                                        InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
-                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE)
-                                        {
-                                            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipValue;
-                                            PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
-                                            if (pdCat == OM_PRIMITIVE_TYPE_STRING)
-                                            {
-                                                String propertyValueAsString = (String) (ppv.getPrimitiveValue());
-
-                                                switch (matchType)
-                                                {
-                                                    case Exact:
-                                                        /* EXACT MATCH */
-                                                        if (propertyValueAsString.matches(stringValue))
-                                                        {
-                                                            validEntity = true;
-                                                        }
-                                                        break;
-                                                    case Prefix:
-                                                        /* PREFIX MATCH */
-                                                        if (propertyValueAsString.matches(truncatedStringValue + ".*"))
-                                                        {
-                                                            validEntity = true;
-                                                        }
-                                                        break;
-                                                    case Suffix:
-                                                        /* SUFFIX MATCH */
-                                                        if (propertyValueAsString.matches(".*" + truncatedStringValue))
-                                                        {
-                                                            validEntity = true;
-                                                        }
-                                                        break;
-                                                    case Contains:
-                                                        /* CONTAINS MATCH */
-                                                        if (propertyValueAsString.matches(".*" + truncatedStringValue + ".*"))
-                                                        {
-                                                            validEntity = true;
-                                                        }
-                                                        break;
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (!validEntity)
-                            {
-                                unexpectedResult = "(guid=" + entity.getGUID() + ")";
-                            }
-                        }
-                    }
-                }
-
-                assertionMessage = MessageFormat.format(assertionMsg_12, unexpectedResult, parameters);
-                assertCondition(unexpectedResult.equals("0"),
-                        assertion12,
-                        assertionMessage,
-                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
-            }
-
-
-
-
-            /*
-             * Repeat the same search using findEntitiesByProperty and a MatchProperties object
-             */
-
-
-            InstanceProperties matchProperties = new InstanceProperties();
-
-            PrimitivePropertyValue mppv = new PrimitivePropertyValue();
-            mppv.setPrimitiveDefCategory(propertyCatMap.get(attributeName));
-            mppv.setPrimitiveValue(regexValue);
-            matchProperties.setProperty(attributeName, mppv);
-
-            parameters = getParameters(entityDef.getGUID(), matchProperties, MatchCriteria.ALL);
-
-            try
-            {
-                long start = System.currentTimeMillis();
-                result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                                   entityDef.getGUID(),
-                                                                   matchProperties,
-                                                                   MatchCriteria.ALL,
-                                                                   0,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   pageSize);
-                elapsedTime = System.currentTimeMillis() - start;
-            }
-            catch (FunctionNotSupportedException exc)
-            {
-
-                /*
-                 * Because the above test only exercises one optional function (advanced regex support)
-                 * we can assert that it is that function that is not supported.
-                 */
-
-                super.addNotSupportedAssertion(assertion101FEBPGEN,
-                        assertionMsg_101FEBPGEN + exc.getMessage(),
-                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
-
-                return;
-
-            }
-            catch (RepositoryTimeoutException exc)
-            {
-
-                /*
-                 * Such a query may simply timeout, in which case we do not have enough information
-                 * to know whether this optional function is supported or not.
-                 */
-                super.addDiscoveredProperty("query timeouts",
-                                            true,
-                                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
-                return;
-
-            }
-            catch (Exception exc)
-            {
-                /*
-                 * We are not expecting any exceptions from this method call. Log and fail the test.
-                 */
-
-                String methodName = "findEntitiesByProperty";
-                String operationDescription = "find entities using general regex for type " + entityDef.getName();
-                String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
-
-                throw new Exception(msg, exc);
-            }
-
-
-            /*
-             * We need to check that we got (at least) the expected number of results - which could include zero.
-             */
-            resultCount = result == null ? 0 : result.size();
-            /*
-             * If the original discovery query was not pageLimited then we should have been able to exactly predict the expected result.
-             * In addition, the result size should be no more than a page.
-             */
-            unlimited_case = !pageLimited && resultCount == expectedEntityCount;
-            /*
-             * If the original discovery query was pageLimited then we have to tolerate hitherto unseen instances in the results.
-             * If the most recent query hit the pageSize limit then we have to accept that we got less than we might have 'expected'.
-             * So in that latter case we need to accept Min().
-             */
-            limited_large_case = pageLimited && expectedEntityCount >= pageSize && resultCount == pageSize;
-            limited_small_case = pageLimited && expectedEntityCount < pageSize && resultCount >= expectedEntityCount;
-            acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
-
-            assertionMessage = MessageFormat.format(assertionMsg_13, resultCount, expectedEntityCount, parameters);
-            assertCondition((acceptable_result_size),
-                    assertion13,
-                    assertionMessage,
-                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId(),
-                    "findEntitiesByProperty",
-                    elapsedTime);
-
-
-            /*
-             * If there were any results, check that all expected entities were returned and (in the pageLimited case) that any
-             * additional entities were valid results for the search.
-             */
-            if (resultCount > 0)
-            {
-                List<String> resultGUIDs = new ArrayList<>();
-                for (EntityDetail entity : result)
-                {
-                    resultGUIDs.add(entity.getGUID());
-                }
-
-
-                /*
-                 * Here again, we need to be sensitive to whether the original search hit the page limit.
-                 * If the original search hit the limit then we may legitimately receive additional instances in the results
-                 * of a narrower search. But not if the original result set was under the page limit.
-                 */
-
-                String unexpectedResult = "0";
-
-                if (!pageLimited) {
-                    if (!resultGUIDs.containsAll(expectedGUIDs))
-                        unexpectedResult = RESULTS_MISSING_EXPECTED_GUIDS;
-                } else { // pageLimited, so need to allow for and verify hitherto unseen instances
-
-                    for (EntityDetail entity : result)
-                    {
-
-                        if (!(expectedGUIDs.contains(entity.getGUID())))
-                        {
-                            /*
-                             * This was an extra entity that we either did not expect or that we have not seen previously.
-                             * Check it is a valid result. It can have any string attribute with the same value as strValue.
-                             */
-                            boolean validEntity = false;
-                            InstanceProperties entityProperties = entity.getProperties();
-                            if (entityProperties != null)
-                            {
-                                Set<String> entityPropertyNames = entityProperties.getInstanceProperties().keySet();
-                                for (String propertyName : entityPropertyNames)
-                                {
-                                    InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
-                                    if (ipValue != null) {
-                                        InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
-                                        if (ipCategory == InstancePropertyCategory.PRIMITIVE)
-                                        {
-                                            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipValue;
-                                            PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
-                                            if (pdCat == OM_PRIMITIVE_TYPE_STRING)
-                                            {
-                                                String propertyValueAsString = (String) (ppv.getPrimitiveValue());
-
-                                                switch (matchType)
-                                                {
-                                                    case Exact:
-                                                        /* EXACT MATCH */
-                                                        if (propertyValueAsString.matches(stringValue))
-                                                        {
-                                                            validEntity = true;
-                                                        }
-                                                        break;
-                                                    case Prefix:
-                                                        /* PREFIX MATCH */
-                                                        if (propertyValueAsString.matches(truncatedStringValue + ".*"))
-                                                        {
-                                                            validEntity = true;
-                                                        }
-                                                        break;
-                                                    case Suffix:
-                                                        /* SUFFIX MATCH */
-                                                        if (propertyValueAsString.matches(".*" + truncatedStringValue))
-                                                        {
-                                                            validEntity = true;
-                                                        }
-                                                        break;
-                                                    case Contains:
-                                                        /* CONTAINS MATCH */
-                                                        if (propertyValueAsString.matches(".*" + truncatedStringValue + ".*"))
-                                                        {
-                                                            validEntity = true;
-                                                        }
-                                                        break;
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (!validEntity)
-                            {
-                                unexpectedResult = "(guid=" + entity.getGUID() + ")";
-                            }
-                        }
-                    }
-                }
-
-                assertionMessage = MessageFormat.format(assertionMsg_14, unexpectedResult, parameters);
-                assertCondition(unexpectedResult.equals("0"),
-                        assertion14,
-                        assertionMessage,
-                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
-            }
-        }
-
-    }
 
     private Map<String,String> getParameters(String entityTypeGuid,
                                              String searchCriteria) {

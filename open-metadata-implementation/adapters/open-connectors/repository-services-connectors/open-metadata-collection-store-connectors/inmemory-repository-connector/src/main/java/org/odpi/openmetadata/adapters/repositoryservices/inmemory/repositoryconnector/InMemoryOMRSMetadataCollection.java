@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * The InMemoryOMRSMetadataCollection represents a metadata repository that supports an in-memory repository.
@@ -229,6 +230,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         }
 
         repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
+
+        /*
+         * This call answers as if it were running at asOfTime, so an entity deleted by then is reported as not
+         * known.  getEntityDetailHistory() is the call that returns every version, deleted ones included.
+         */
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         return entity;
@@ -756,7 +762,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                     (repositoryValidator.verifyEntityIsClassified(repositoryName, limitResultsByClassification, entity)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                      entity.getProperties(),
-                                                                                     searchString,
+                                                                                     this.getSearchCriteria(searchString, startsWith, endsWith, ignoreCase),
                                                                                      methodName)))
                 {
                     foundEntities.add(entity);
@@ -875,6 +881,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         Relationship  relationship = repositoryStore.timeWarpRelationshipStore(asOfTime).get(guid);
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
+
+        /*
+         * This call answers as if it were running at asOfTime, so a relationship deleted by then is reported as
+         * not known.  getRelationshipHistory() is the call that returns every version, deleted ones included.
+         */
         repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, relationship, methodName);
 
         return relationship;
@@ -1255,7 +1266,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                      relationship.getProperties(),
-                                                                                     searchString,
+                                                                                     this.getSearchCriteria(searchString, startsWith, endsWith, ignoreCase),
                                                                                      methodName)))
                 {
                     foundRelationships.add(relationship);
@@ -2663,6 +2674,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         boolean oldestFirst = (sequencingOrder == HistorySequencingOrder.FORWARDS);
         List<EntityDetail> entityHistory = repositoryStore.getEntityHistory(guid, fromTime, toTime, oldestFirst);
 
+
         if (entityHistory == null)
         {
             repositoryValidator.validateEntityFromStore(repositoryName, guid, null, methodName);
@@ -3405,7 +3417,17 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         }
 
         repositoryStore.updateEntityInStore(deletedEntity);
-        repositoryStore.createEntityInStore(updatedEntity);
+
+        /*
+         * The entity is saved under the GUID the caller asked for.  createEntityInStore() is not used here
+         * even though this is a new entry in the store: it is the method that invents a GUID for a brand
+         * new entity, so it prefixes the type name and, finding anything already stored under that GUID,
+         * treats it as a random-GUID clash and allocates a different one instead.  Re-identification has
+         * already been given the GUID to use, and the relationship re-pointing above has usually left a
+         * proxy stored under it - so that path both loses the caller's GUID and leaves the requested one
+         * holding a proxy with no entity behind it.
+         */
+        repositoryStore.addEntityToStore(updatedEntity);
 
         /*
          * The repository store maintains an entity proxy for use with relationships.
@@ -3671,7 +3693,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         updatedRelationship = repositoryHelper.incrementVersion(userId, relationship, updatedRelationship);
 
         repositoryStore.updateRelationshipInStore(deletedRelationship);
-        repositoryStore.createRelationshipInStore(updatedRelationship);
+
+        /*
+         * Saved under the GUID the caller asked for - see the note in reIdentifyEntity() above for why
+         * createRelationshipInStore() is not the method to use here.
+         */
+        repositoryStore.addRelationshipToStore(updatedRelationship);
 
         return updatedRelationship;
     }
@@ -4310,4 +4337,55 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          */
         repositoryStore.purgeRelationshipFromStore(relationshipGUID);
     }
+
+    /**
+     * Turn the search string and its flags into the regular expression that the property matcher works with.
+     * <br>
+     * The search takes a literal value plus flags saying where it has to appear - the whole value, the start,
+     * the end, or anywhere - while verifyInstancePropertiesMatchSearchCriteria() matches property values
+     * against a regular expression using String.matches(), which is anchored at both ends.  Converting one to
+     * the other here keeps the property walk in that shared method, which is what reaches values held inside
+     * enumerations, arrays, maps and structs as well as plain strings.
+     * <br>
+     * The supplied value is quoted, so a value containing regular expression syntax - a dot in "label.5", say -
+     * matches itself rather than acting as a wildcard.
+     *
+     * @param searchString value being looked for
+     * @param startsWith the value must appear at the start of the property value
+     * @param endsWith the value must appear at the end of the property value
+     * @param ignoreCase case is not significant
+     * @return regular expression matching the whole property value
+     */
+    private String getSearchCriteria(String  searchString,
+                                     boolean startsWith,
+                                     boolean endsWith,
+                                     boolean ignoreCase)
+    {
+        if (searchString == null)
+        {
+            return null;
+        }
+
+        StringBuilder searchCriteria = new StringBuilder();
+
+        /*
+         * DOTALL so that ".*" spans a value that contains a line break; CASE_INSENSITIVE when asked for.
+         */
+        searchCriteria.append(ignoreCase ? "(?is)" : "(?s)");
+
+        if (! startsWith)
+        {
+            searchCriteria.append(".*");
+        }
+
+        searchCriteria.append(Pattern.quote(searchString));
+
+        if (! endsWith)
+        {
+            searchCriteria.append(".*");
+        }
+
+        return searchCriteria.toString();
+    }
+
 }

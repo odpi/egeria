@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--
+        Both servers send their audit log here through the SLF4J audit log destination, and it is written to
+        one file that can be read while a run is in progress.  That matters more here than in the sibling
+        suites: a conformance run is mostly waiting - the workbench does not start until the technology
+        under test registers in the cohort - and when it waits forever the reason is always in the audit
+        log.  Gradle buffers a test JVM's console output until the task ends, so on a run that hangs the
+        console alone tells you nothing until it is too late to be useful.
+
+        The file-based audit log destination is deliberately not used: it writes one file per audit record,
+        which is thousands of files for a start-up and far more for a full workbench run.
+    -->
+    <appender name="AUDIT_LOG_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>build/cts-fvt-data/logs/audit.log</file>
+        <append>false</append>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.odpi.openmetadata.frameworks.auditlog" level="INFO" additivity="false">
+        <appender-ref ref="AUDIT_LOG_FILE" />
+    </logger>
+
+    <logger name="org.odpi.openmetadata.ctsfvt" level="INFO" />
+
+    <root level="warn">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>

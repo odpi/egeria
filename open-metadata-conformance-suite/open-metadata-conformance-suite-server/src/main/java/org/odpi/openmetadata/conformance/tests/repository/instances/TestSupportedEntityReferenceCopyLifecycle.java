@@ -100,8 +100,13 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
      * The wait loops will wait for pollCount iterations of pollPeriod, so a pollCount of x10
      * results in a 1000ms (1s) timeout.
      *
+     * The budget only costs anything when propagation does not happen - a loop that gets what it is
+     * waiting for leaves immediately - so it is set well above what a healthy cohort needs.  The earlier
+     * 10s was close enough to a normal Kafka round trip on a loaded machine to turn ordinary slowness
+     * into a reported conformance failure.
+     *
      */
-    private Integer           pollCount   = 100;
+    private Integer           pollCount   = 300;
     private Integer           pollPeriod  = 100;   // milliseconds
 
 
@@ -781,6 +786,23 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
 
         }
 
+        /*
+         * The refresh has to have arrived before there is anything to retrieve, so that is settled here -
+         * outside the try, because assertCondition() reports a failure by throwing and the catch above
+         * would turn it back into an unexpected exception.
+         *
+         * Calling getEntityDetail() anyway when the refresh never arrived is what used to happen, and it
+         * reported the timeout as EntityNotKnownException: a stack trace saying the entity is unknown,
+         * which is a different problem with a different cause from the refresh not arriving in time.
+         */
+        assertCondition((refreshedEntityRefCopy != null),
+                        assertion12,
+                        testTypeName + assertionMsg12,
+                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                        "isEntityKnown",
+                        elapsedTime);
+
 
         /*
          * Verify that the reference copy can be retrieved form the TUT and matches the original...
@@ -809,15 +831,6 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
             throw new Exception(msg, exc);
 
         }
-
-        assertCondition((refreshedEntityRefCopy != null),
-                        assertion12,
-                        testTypeName + assertionMsg12,
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
-                        "getEntityDetail",
-                        elapsedTime);
-
 
         /*
          * Verify that the retrieved reference copy matches the original entity
@@ -876,7 +889,7 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
                 Thread.sleep(this.pollPeriod);
                 remainingCount--;
             } while (survivingEntRefCopy != null && remainingCount > 0);
-            if (survivingEntRefCopy == null && remainingCount == 0)
+            if (survivingEntRefCopy != null && remainingCount == 0)
             {
                 workPad.getAuditLog()
                         .logMessage(assertion14,

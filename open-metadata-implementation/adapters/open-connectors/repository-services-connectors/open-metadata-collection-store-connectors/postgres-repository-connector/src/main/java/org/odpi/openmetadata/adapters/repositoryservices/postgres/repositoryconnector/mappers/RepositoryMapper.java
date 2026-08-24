@@ -400,7 +400,23 @@ public class RepositoryMapper extends BaseMapper
         {
             if (primitiveDefCategory.getName().equals(propertyCategory))
             {
-                String propertyValue = super.getStringPropertyFromColumn(RepositoryColumn.PROPERTY_VALUE.getColumnName(), principleRow, true);
+                String propertyValue = super.getStringPropertyFromColumn(RepositoryColumn.PROPERTY_VALUE.getColumnName(), principleRow, false);
+
+                if (propertyValue == null)
+                {
+                    /*
+                     * A property can be stored with no value - InstanceProperties allows it, and the in-memory
+                     * repository stores and returns such a property unchanged - so reading one back has to work
+                     * rather than fail.  It is returned as a property of the right type carrying no value.
+                     *
+                     * The check has to come before the switch below: every non-string category parses the
+                     * string immediately, so a null would produce a NumberFormatException, or a
+                     * NullPointerException for char - and, worst of all, Boolean.parseBoolean(null) returns
+                     * false rather than failing, which would silently turn a value that was never set into one
+                     * that was set to false.
+                     */
+                    return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, null);
+                }
 
                 switch (primitiveDefCategory)
                 {

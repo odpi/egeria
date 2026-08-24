@@ -255,11 +255,15 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
         /*
-         * Unlike getEntityDetail(userId, guid) (the "give me the current value" overload, which is right to
-         * reject a deleted entity), this overload's whole purpose is retrieving the entity's state as of a
-         * particular moment - that state can legitimately be "it was deleted at that time", so it must not be
-         * rejected here.  The caller can check entity.getStatus() itself if it needs to know.
+         * This call answers as if it were running at asOfTime, so an entity that had been deleted by then is
+         * reported as not known - exactly as the current-value overload would have reported it had the call
+         * been made at that moment.
+         *
+         * That is not the same question as "what happened to this entity", and the two must not be conflated:
+         * getEntityDetailHistory() returns every version an entity has had, deleted ones included, which is
+         * what governance needs to show that an entity was unavailable during a particular window.
          */
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         return entity;
     }
@@ -827,11 +831,11 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
 
         /*
-         * Unlike getRelationship(userId, guid) (the "give me the current value" overload, which is right to
-         * reject a deleted relationship), this overload's whole purpose is retrieving the relationship's state
-         * as of a particular moment - that state can legitimately be "it was deleted at that time", so it must
-         * not be rejected here.  The caller can check relationship.getStatus() itself if it needs to know.
+         * This call answers as if it were running at asOfTime - see the matching note on
+         * getEntityDetail(userId, guid, asOfTime).  A relationship that had been deleted by then is reported as
+         * not known; getRelationshipHistory() is the call that returns every version, deleted ones included.
          */
+        repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, relationship, methodName);
 
         return relationship;
     }
@@ -904,7 +908,14 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             }
             else
             {
-                return new ArrayList<>(relationshipHistory.subList(startFromElement, pageSize));
+                /*
+                 * pageSize is a count, not an end index, so the window ends pageSize elements after
+                 * the start - not at pageSize.  The two are only the same when startFromElement is 0;
+                 * beyond the first page this returned the wrong versions, and threw
+                 * IllegalArgumentException once startFromElement passed pageSize.
+                 */
+                return new ArrayList<>(relationshipHistory.subList(startFromElement,
+                                                     Math.min(startFromElement + pageSize, relationshipHistory.size())));
             }
         }
 
@@ -2717,7 +2728,14 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             }
             else
             {
-                return new ArrayList<>(entityHistory.subList(startFromElement, pageSize));
+                /*
+                 * pageSize is a count, not an end index, so the window ends pageSize elements after
+                 * the start - not at pageSize.  The two are only the same when startFromElement is 0;
+                 * beyond the first page this returned the wrong versions, and threw
+                 * IllegalArgumentException once startFromElement passed pageSize.
+                 */
+                return new ArrayList<>(entityHistory.subList(startFromElement,
+                                                     Math.min(startFromElement + pageSize, entityHistory.size())));
             }
         }
 
@@ -2796,7 +2814,14 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             }
             else
             {
-                return new ArrayList<>(classificationHistory.subList(startFromElement, pageSize));
+                /*
+                 * pageSize is a count, not an end index, so the window ends pageSize elements after
+                 * the start - not at pageSize.  The two are only the same when startFromElement is 0;
+                 * beyond the first page this returned the wrong versions, and threw
+                 * IllegalArgumentException once startFromElement passed pageSize.
+                 */
+                return new ArrayList<>(classificationHistory.subList(startFromElement,
+                                                     Math.min(startFromElement + pageSize, classificationHistory.size())));
             }
         }
 

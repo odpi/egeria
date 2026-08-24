@@ -140,8 +140,13 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
      * The wait loops will wait for pollCount iterations of pollPeriod, so a pollCount of x10
      * results in a 1000ms (1s) timeout.
      *
+     * The budget only costs anything when propagation does not happen - a loop that gets what it is
+     * waiting for leaves immediately - so it is set well above what a healthy cohort needs.  The earlier
+     * 10s was close enough to a normal Kafka round trip on a loaded machine to turn ordinary slowness
+     * into a reported conformance failure.
+     *
      */
-    private Integer           pollCount   = 100;
+    private Integer           pollCount   = 300;
     private Integer           pollPeriod  = 100;   // milliseconds
 
 
@@ -1257,7 +1262,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
                 remainingCount--;
             } while (survivingEnt1Proxy != null && remainingCount > 0);
 
-            if (entity1Ref == null && remainingCount == 0)
+            if (survivingEnt1Proxy != null && remainingCount == 0)
             {
                 workPad.getAuditLog()
                         .logMessage(assertion8,

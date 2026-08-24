@@ -584,7 +584,14 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
          * mandatory (based on their cardinality) then provide them - in order to exercise the connector more fully.
          * All optional properties are removed.
          */
-        long nextVersion = newRelationship.getVersion();
+        /*
+         * nextVersion is the version number the next change will produce - which is how it is maintained
+         * everywhere else in this test ("X.getVersion() + 1").  The +1 belongs here too: a freshly created
+         * relationship is at version 1, so the update below takes it to version 2.  Without it the history-size
+         * assertions further down compared the number of stored versions against the version number from
+         * before the update, and so expected one version fewer than the relationship actually had.
+         */
+        long nextVersion = newRelationship.getVersion() + 1;
 
         if ((newRelationship.getProperties() != null) &&
                     (newRelationship.getProperties().getInstanceProperties() != null) &&
@@ -1145,7 +1152,12 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
             }
 
             /*
-             * Verify that historical query for the time when it was deleted does not return the relationship
+             * Verify that a historical query for the time when it was deleted does not return the relationship.
+             *
+             * This call answers as if it were running at that moment, and at that moment the relationship had
+             * been deleted - so it is reported as not known, exactly as a current-value get would have reported
+             * it then.  That is a different question from "what happened to this relationship":
+             * getRelationshipHistory() returns every version, deleted ones included.
              */
             try
             {

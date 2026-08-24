@@ -798,7 +798,17 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Return a historical version of an entity.  Thi includes the header, classifications and properties of the entity.
+     * Return a historical version of an entity.  This includes the header, classifications and properties of
+     * the entity.
+     * <br>
+     * This call answers as if it were being made at asOfTime: an entity that had been deleted by then is
+     * reported as not known, exactly as getEntityDetail(userId, guid) would have reported it had it been
+     * called at that moment.
+     * <br>
+     * That is a different question from "what happened to this entity", and the two should not be confused.
+     * {@link #getEntityDetailHistory} returns every version an entity has had, deleted ones included - which
+     * is what governance needs in order to show that an entity was unavailable during a particular window,
+     * since an absence may be what explains a decision taken at the time.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
@@ -808,7 +818,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
      * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection
-     *                                   at the time requested.
+     *                                   at the time requested - it had not been created yet, it had been
+     *                                   deleted by then, or it has since been purged.
      * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
      * @throws FunctionNotSupportedException the repository does not support asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -826,6 +837,13 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
     /**
      * Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
      * versions of an entity, set both the 'fromTime' and 'toTime' to null.
+     * <br>
+     * Every version is returned, including those in which the entity was deleted.  A deletion is part of the
+     * entity's history, not a gap in it: governance needs to be able to show that an entity was
+     * unavailable during a particular window, because that absence may be what explains a decision taken at
+     * the time.  This is the difference between this call and the asOfTime overload of
+     * getEntityDetail(), which answers as if it were running at
+     * one moment and so reports a deleted entity as not known.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
@@ -1397,6 +1415,10 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
     /**
      * Return a historical version of a relationship.
+     * <br>
+     * This call answers as if it were being made at asOfTime: a relationship that had been deleted by then is
+     * reported as not known.  {@link #getRelationshipHistory} is the call that returns every version a
+     * relationship has had, deleted ones included.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
@@ -1405,8 +1427,9 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws InvalidParameterException the guid or date is null or date is for a future time
      * @throws RepositoryErrorException a problem communicating with the metadata repository where
      *                                 the metadata collection is stored.
-     * @throws RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
-     *                                   at the time requested.
+     * @throws RelationshipNotKnownException the requested relationship instance is not known in the metadata
+     *                                   collection at the time requested - it had not been created yet, it had
+     *                                   been deleted by then, or it has since been purged.
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -1422,6 +1445,12 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
     /**
      * Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all
      * historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.
+     * <br>
+     * Every version is returned, including those in which the relationship was deleted.  A deletion is part of
+     * the relationship's history, not a gap in it: governance needs to be able to show that a relationship was
+     * unavailable during a particular window, because that absence may be what explains a decision taken at
+     * the time.  This is the difference between this call and the asOfTime overload of getRelationship(),
+     * which answers as if it were running at one moment and so reports a deleted relationship as not known.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.

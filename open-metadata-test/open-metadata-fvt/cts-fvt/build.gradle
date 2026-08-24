@@ -1,0 +1,138 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module is a harness for running the **Open Metadata Conformance Suite** against one of Egeria's
+// own repositories.  Unlike its sibling FVT suites, it does not test a client or an API surface directly:
+// it stands up the environment the conformance suite needs, lets the suite do the testing, and then
+// reports what the suite found.
+//
+// That environment is two servers on one platform, joined by a real cohort:
+//
+//   * a metadata access store holding the repository under test - PostgreSQL or in-memory;
+//   * a conformance test server running the repository workbench, pointed at it.
+//
+// The cohort is what makes this different from every other suite here.  The workbench does not call the
+// technology under test directly; it discovers it through cohort registration and then drives it through
+// the enterprise connector.  So this harness exercises the cohort support - registration, the enterprise
+// connector manager, and the OMRS event exchange - as much as it exercises the repository itself.  Both a
+// reachable Apache Kafka broker and a reachable PostgreSQL server are therefore required.
+//
+// Like the other FVTs this is NOT part of the default build.  It only runs when explicitly requested,
+// and which repository it certifies is chosen by which property is used to request it:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:cts-fvt:test -PrunCtsFvtPostgres
+//   ./gradlew :open-metadata-test:open-metadata-fvt:cts-fvt:test -PrunCtsFvtInMemory
+//
+// The PostgreSQL run needs a reachable PostgreSQL server as well as a reachable Kafka broker; the
+// in-memory run needs only Kafka, starts from an empty repository every time, and is much the quicker of
+// the two - which makes it the one to reach for when checking a change to shared repository services code.
+//
+// Each kind uses its own servers, its own cohort and its own report directory (build/cts-fvt-report/<kind>),
+// so the two can be run in turn and their results compared without either disturbing the other.
+//
+// Database and Kafka connection details, the platform's own port, and how long the harness is prepared to
+// wait for the workbench to finish are all controlled from src/test/resources/application.properties.
+
+dependencies {
+    // The OMAG Server Platform itself, run in-process via SpringApplication.run(...).
+    // user-authn is excluded: it wires in a login/token Spring Security chain that needs a real user
+    // directory and credentials, which this hermetic, no-auth platform does not set up.
+    // The conformance suite's own REST API arrives with the chassis, which declares
+    // open-metadata-conformance-suite-spring as a runtime dependency.
+    testImplementation(project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')) {
+        exclude group: 'org.odpi.egeria', module: 'user-authn'
+    }
+
+    // Connectors needed to configure and run the two servers.  The Kafka connector is not optional here:
+    // the cohort's registration and instance topics are what let the workbench find and drive the
+    // technology under test.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+
+    // Clients used to configure and start the two servers
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    // The admin services client's checked exceptions (InvalidParameterException and friends) are OCF
+    // types, so this stays on the compile classpath even though the suite builds no Connection objects.
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+
+
+    // The conformance suite's own report beans and REST client, used to poll the workbench for progress
+    // and to read the results once it has finished.
+    testImplementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-api')
+    testImplementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
+
+    // In-process Spring Boot startup/shutdown
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+
+    // A permit-all security filter chain is needed so that every request still gets an (anonymous)
+    // Authentication in the SecurityContext - the admin/platform REST controllers require one to be
+    // present even though this suite's platform has no real user directory configured.
+    testImplementation 'org.springframework.security:spring-security-config'
+    testImplementation 'org.springframework.security:spring-security-web'
+
+    // Used to deserialize the conformance suite's REST responses into its own beans, and to write the
+    // results out as readable JSON at the end of a run.
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Open Metadata Conformance Suite Harness for the PostgreSQL and In-Memory Repositories (cts-fvt)'
+
+test {
+    useJUnitPlatform()
+
+    // Optional, opt-in suite: every run needs a reachable Apache Kafka broker, and the PostgreSQL run needs
+    // a reachable PostgreSQL server too, so it is skipped unless one of its two properties is given.
+    onlyIf { project.hasProperty('runCtsFvtPostgres') || project.hasProperty('runCtsFvtInMemory') }
+
+    // Single JVM fork - the tests share one running platform and its two servers, and are not designed to
+    // run concurrently against them.  No fixed timeout: a full repository workbench run works through
+    // every open metadata type and takes a long time, and this suite is never part of an automated/CI
+    // budget - it is only ever run deliberately, by hand.
+    maxParallelForks = 1
+    testLogging.showStandardStreams = true
+
+    // Any cts.fvt.* setting can be overridden for a single run from the command line, e.g.
+    //
+    //   ./gradlew :open-metadata-test:open-metadata-fvt:cts-fvt:test -PrunCtsFvtPostgres \
+    //       -Dcts.fvt.workbench.entity.types=Asset,GlossaryTerm
+    //
+    // Gradle does not pass its own system properties to the forked test JVM, so they are forwarded here.
+    // Spring's Environment reads system properties ahead of application.properties, so a value given this
+    // way wins for that run without editing the file.
+    systemProperties System.properties.findAll { it.key.toString().startsWith('cts.fvt.') }
+
+    // Which repository the harness stands up.  Asking for both at once is refused rather than resolved to
+    // one of them: the run would certify a repository the command line says it is not certifying.
+    if (project.hasProperty('runCtsFvtPostgres') && project.hasProperty('runCtsFvtInMemory'))
+    {
+        throw new GradleException('Specify either -PrunCtsFvtPostgres or -PrunCtsFvtInMemory, not both - ' +
+                                          'each run certifies one repository, and they use separate servers and cohorts.')
+    }
+
+    systemProperty 'cts.fvt.repository', project.hasProperty('runCtsFvtInMemory') ? 'inmemory' : 'postgres' 
+}
+
+// Resolves logging conflicts between the various connectors pulled in by the platform chassis
+loggingCapabilities {
+    enforceLogback()
+}
