@@ -119,17 +119,23 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connection for an open metadata archive file.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeOpenMetadataArchive(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)" class="member-name-link">writeOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;outputFileName,
- <a href="../connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;openMetadataArchive)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readOpenMetadataArchive(java.lang.String)" class="member-name-link">readOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inputFileName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Generates and writes out an open metadata archive containing all the open metadata types.</div>
+<div class="block">Return the contents of an open metadata archive that has already been written, or null if there is no such
+ file (or it cannot be read).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeOpenMetadataArchive(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">writeOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;outputFileName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeOpenMetadataArchive(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)" class="member-name-link">writeOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;outputFileName,
+ <a href="../connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;openMetadataArchive)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Generates and writes out an open metadata archive containing all the open metadata types.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeOpenMetadataArchive(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">writeOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;outputFileName,
  <a href="../connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;openMetadataArchive,
  <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Generates and writes out an open metadata archive containing all the open metadata types.</div>
 </div>
 </div>
@@ -174,6 +180,21 @@ loadScripts(document, 'script');</script>
 <dd><code>fileName</code> - name of the archive file</dd>
 <dt>Returns:</dt>
 <dd>OCF Connection used to create the file-based open metadata archive</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="readOpenMetadataArchive(java.lang.String)">
+<h3>readOpenMetadataArchive</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a></span>&nbsp;<span class="element-name">readOpenMetadataArchive</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inputFileName)</span></div>
+<div class="block">Return the contents of an open metadata archive that has already been written, or null if there is no such
+ file (or it cannot be read).  This is how a writer looks at the previous edition of the archive it is about
+ to replace.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>inputFileName</code> - name of the archive file to read</dd>
+<dt>Returns:</dt>
+<dd>archive content, or null</dd>
 </dl>
 </section>
 </li>

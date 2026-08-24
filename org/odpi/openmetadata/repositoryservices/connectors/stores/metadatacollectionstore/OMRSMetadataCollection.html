@@ -1886,7 +1886,17 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <a href="../../../ffdc/exception/EntityProxyOnlyException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityProxyOnlyException</a>,
 <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
 <a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Return a historical version of an entity.  Thi includes the header, classifications and properties of the entity.</div>
+<div class="block">Return a historical version of an entity.  This includes the header, classifications and properties of
+ the entity.
+ <br>
+ This call answers as if it were being made at asOfTime: an entity that had been deleted by then is
+ reported as not known, exactly as getEntityDetail(userId, guid) would have reported it had it been
+ called at that moment.
+ <br>
+ That is a different question from "what happened to this entity", and the two should not be confused.
+ <a href="#getEntityDetailHistory(java.lang.String,java.lang.String,java.util.Date,java.util.Date,int,int,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder)"><code>getEntityDetailHistory(java.lang.String, java.lang.String, java.util.Date, java.util.Date, int, int, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder)</code></a> returns every version an entity has had, deleted ones included - which
+ is what governance needs in order to show that an entity was unavailable during a particular window,
+ since an absence may be what explains a decision taken at the time.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
@@ -1899,7 +1909,8 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - a problem communicating with the metadata repository where
                                  the metadata collection is stored.</dd>
 <dd><code><a href="../../../ffdc/exception/EntityNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityNotKnownException</a></code> - the requested entity instance is not known in the metadata collection
-                                   at the time requested.</dd>
+                                   at the time requested - it had not been created yet, it had been
+                                   deleted by then, or it has since been purged.</dd>
 <dd><code><a href="../../../ffdc/exception/EntityProxyOnlyException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">EntityProxyOnlyException</a></code> - the requested entity instance is only a proxy in the metadata collection.</dd>
 <dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support asOfTime parameter.</dd>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
@@ -1923,7 +1934,14 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
 <a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
- versions of an entity, set both the 'fromTime' and 'toTime' to null.</div>
+ versions of an entity, set both the 'fromTime' and 'toTime' to null.
+ <br>
+ Every version is returned, including those in which the entity was deleted.  A deletion is part of the
+ entity's history, not a gap in it: governance needs to be able to show that an entity was
+ unavailable during a particular window, because that absence may be what explains a decision taken at
+ the time.  This is the difference between this call and the asOfTime overload of
+ getEntityDetail(), which answers as if it were running at
+ one moment and so reports a deleted entity as not known.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
@@ -2534,7 +2552,11 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <a href="../../../ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a>,
 <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
 <a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Return a historical version of a relationship.</div>
+<div class="block">Return a historical version of a relationship.
+ <br>
+ This call answers as if it were being made at asOfTime: a relationship that had been deleted by then is
+ reported as not known.  <a href="#getRelationshipHistory(java.lang.String,java.lang.String,java.util.Date,java.util.Date,int,int,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder)"><code>getRelationshipHistory(java.lang.String, java.lang.String, java.util.Date, java.util.Date, int, int, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder)</code></a> is the call that returns every version a
+ relationship has had, deleted ones included.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
@@ -2546,8 +2568,9 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the guid or date is null or date is for a future time</dd>
 <dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - a problem communicating with the metadata repository where
                                  the metadata collection is stored.</dd>
-<dd><code><a href="../../../ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a></code> - the requested relationship instance is not known in the metadata collection
-                                   at the time requested.</dd>
+<dd><code><a href="../../../ffdc/exception/RelationshipNotKnownException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RelationshipNotKnownException</a></code> - the requested relationship instance is not known in the metadata
+                                   collection at the time requested - it had not been created yet, it had
+                                   been deleted by then, or it has since been purged.</dd>
 <dd><code><a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a></code> - the repository does not support the asOfTime parameter.</dd>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
@@ -2569,7 +2592,13 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <a href="../../../ffdc/exception/FunctionNotSupportedException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">FunctionNotSupportedException</a>,
 <a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all
- historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.</div>
+ historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.
+ <br>
+ Every version is returned, including those in which the relationship was deleted.  A deletion is part of
+ the relationship's history, not a gap in it: governance needs to be able to show that a relationship was
+ unavailable during a particular window, because that absence may be what explains a decision taken at
+ the time.  This is the difference between this call and the asOfTime overload of getRelationship(),
+ which answers as if it were running at one moment and so reports a deleted relationship as not known.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
