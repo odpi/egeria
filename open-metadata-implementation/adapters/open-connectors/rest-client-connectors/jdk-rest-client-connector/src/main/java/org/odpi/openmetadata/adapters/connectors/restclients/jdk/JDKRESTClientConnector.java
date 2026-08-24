@@ -390,12 +390,34 @@ public class JDKRESTClientConnector extends RESTClientConnector
         Map<String, String> headers = getHttpHeaders();
 
         HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.noBody();
-        String                    jsonBody      = null;
+        String                    contentType   = null;
 
         if (requestBody != null)
         {
-            jsonBody      = objectMapper.writeValueAsString(requestBody);
-            bodyPublisher = HttpRequest.BodyPublishers.ofString(jsonBody, StandardCharsets.UTF_8);
+            String bodyText;
+
+            if (requestBody instanceof String stringRequestBody)
+            {
+                /*
+                 * A string request body is sent as it stands, not as JSON.
+                 * <br>
+                 * The endpoints that take one declare it as @RequestBody String, and Spring binds that through
+                 * StringHttpMessageConverter, which hands the body over as opaque text whatever the content
+                 * type says.  Running the string through Jackson first wraps it in quotation marks, and those
+                 * quotation marks are then part of the value the server stores - it answers 200 and keeps, for
+                 * example, a metadata collection id with the quotes baked into it.  Nothing reports an error;
+                 * the value is simply wrong from then on, and the damage surfaces somewhere else entirely.
+                 */
+                bodyText    = stringRequestBody;
+                contentType = "text/plain";
+            }
+            else
+            {
+                bodyText    = objectMapper.writeValueAsString(requestBody);
+                contentType = "application/json";
+            }
+
+            bodyPublisher = HttpRequest.BodyPublishers.ofString(bodyText, StandardCharsets.UTF_8);
         }
 
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
@@ -403,9 +425,9 @@ public class JDKRESTClientConnector extends RESTClientConnector
                                                          .header("Accept", "application/json")
                                                          .method(httpMethod, bodyPublisher);
 
-        if (jsonBody != null)
+        if (contentType != null)
         {
-            requestBuilder.header("Content-Type", "application/json");
+            requestBuilder.header("Content-Type", contentType);
         }
 
         for (Map.Entry<String, String> header : headers.entrySet())

@@ -5,8 +5,6 @@ package org.odpi.openmetadata.repositoryservices.enterprise.connectormanager;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
-import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -672,6 +670,17 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                     }
                     else
                     {
+                        /*
+                         * The secrets store has to be added here too.  A remote member's connection arrives from
+                         * the cohort as a plain Connection, so this is the normal path - and without the add()
+                         * the connection is wrapped in a VirtualConnection carrying no embedded connections at
+                         * all, which the connector broker rejects ("Virtual connection ... has no embedded
+                         * connections").  The effect is that a server with a secrets store configured cannot
+                         * build a connector to any remote cohort member: registration succeeds and the members
+                         * list each other, but no server can actually call another.
+                         */
+                        embeddedConnections.add(embeddedConnection);
+
                         VirtualConnection virtualConnection = new VirtualConnection(connection);
 
                         virtualConnection.setEmbeddedConnections(embeddedConnections);

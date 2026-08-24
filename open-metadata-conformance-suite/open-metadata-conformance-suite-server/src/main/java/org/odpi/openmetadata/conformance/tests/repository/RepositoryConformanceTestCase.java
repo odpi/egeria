@@ -11,6 +11,15 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.StructPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumElementDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.CollectionDef;
+import java.util.function.Predicate;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
@@ -255,6 +264,204 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
 
     /**
+     * Return a generated value for any attribute type, not just the primitive ones.
+     * <br>
+     * The open metadata types use enumerations, arrays and maps as freely as they use primitives, so a test
+     * that only ever populates primitive attributes leaves whole categories of the model unexercised - in
+     * create, in update and in search alike.  A repository that stores or searches those values then has
+     * nothing checking that it does so correctly.
+     *
+     * @param attributeName name of the attribute being populated
+     * @param attributeType its type
+     * @return a value to store, or null if no value can be generated for that type
+     */
+    protected InstancePropertyValue getPropertyValueForAttributeType(String           attributeName,
+                                                                     AttributeTypeDef attributeType)
+    {
+        if (attributeType == null)
+        {
+            return null;
+        }
+
+        switch (attributeType.getCategory())
+        {
+            case PRIMITIVE ->
+            {
+                return this.getPrimitivePropertyValue(attributeName, (PrimitiveDef) attributeType);
+            }
+
+            case ENUM_DEF ->
+            {
+                return this.getEnumPropertyValue((EnumDef) attributeType);
+            }
+
+            case COLLECTION ->
+            {
+                return this.getCollectionPropertyValue(attributeName, (CollectionDef) attributeType);
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return a value for an enumeration attribute - the first value the enumeration defines, so it is always
+     * one the type actually allows.
+     *
+     * @param enumDef the enumeration
+     * @return property value, or null if the enumeration defines no values
+     */
+    private EnumPropertyValue getEnumPropertyValue(EnumDef enumDef)
+    {
+        List<EnumElementDef> elementDefs = enumDef.getElementDefs();
+
+        if ((elementDefs == null) || (elementDefs.isEmpty()))
+        {
+            return null;
+        }
+
+        EnumElementDef    elementDef    = elementDefs.get(0);
+        EnumPropertyValue propertyValue = new EnumPropertyValue();
+
+        propertyValue.setTypeGUID(enumDef.getGUID());
+        propertyValue.setTypeName(enumDef.getName());
+        propertyValue.setOrdinal(elementDef.getOrdinal());
+        propertyValue.setSymbolicName(elementDef.getValue());
+        propertyValue.setDescription(elementDef.getDescription());
+
+        return propertyValue;
+    }
+
+
+    /**
+     * Return a value for an array or map attribute, holding one element whose value is generated the same way a
+     * primitive attribute's would be - so a search for that value finds it wherever it is held.
+     *
+     * @param attributeName name of the attribute being populated
+     * @param collectionDef the array or map definition
+     * @return property value, or null if no value can be built for the collection's element types
+     */
+    private InstancePropertyValue getCollectionPropertyValue(String        attributeName,
+                                                             CollectionDef collectionDef)
+    {
+        List<PrimitiveDefCategory> argumentTypes = collectionDef.getArgumentTypes();
+
+        if ((argumentTypes == null) || (argumentTypes.isEmpty()))
+        {
+            return null;
+        }
+
+        switch (collectionDef.getCollectionDefCategory())
+        {
+            case OM_COLLECTION_ARRAY ->
+            {
+                PrimitivePropertyValue elementValue = this.getPrimitivePropertyValue(attributeName,
+                                                                                     argumentTypes.get(argumentTypes.size() - 1));
+
+                if (elementValue == null)
+                {
+                    return null;
+                }
+
+                Map<String, InstancePropertyValue> arrayElements = new HashMap<>();
+
+                arrayElements.put("0", elementValue);
+
+                InstanceProperties arrayProperties = new InstanceProperties();
+
+                arrayProperties.setInstanceProperties(arrayElements);
+
+                ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
+
+                arrayPropertyValue.setTypeGUID(collectionDef.getGUID());
+                arrayPropertyValue.setTypeName(collectionDef.getName());
+                arrayPropertyValue.setArrayCount(1);
+                arrayPropertyValue.setArrayValues(arrayProperties);
+
+                return arrayPropertyValue;
+            }
+
+            case OM_COLLECTION_MAP ->
+            {
+                /*
+                 * A collection's argument types are the key type followed by the value type.  Only maps keyed
+                 * by string can be populated here, because an InstanceProperties map is keyed by string - and
+                 * those are the only maps the open metadata types use.
+                 */
+                if ((argumentTypes.size() < 2) || (argumentTypes.get(0) != PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING))
+                {
+                    return null;
+                }
+
+                PrimitivePropertyValue entryValue = this.getPrimitivePropertyValue(attributeName, argumentTypes.get(1));
+
+                if (entryValue == null)
+                {
+                    return null;
+                }
+
+                Map<String, InstancePropertyValue> mapEntries = new HashMap<>();
+
+                mapEntries.put("Test" + attributeName + "Key", entryValue);
+
+                InstanceProperties mapProperties = new InstanceProperties();
+
+                mapProperties.setInstanceProperties(mapEntries);
+
+                MapPropertyValue mapPropertyValue = new MapPropertyValue();
+
+                mapPropertyValue.setTypeGUID(collectionDef.getGUID());
+                mapPropertyValue.setTypeName(collectionDef.getName());
+                mapPropertyValue.setMapValues(mapProperties);
+
+                return mapPropertyValue;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return a primitive value of the requested category, used for the elements held inside arrays and maps.
+     *
+     * @param propertyName name of the attribute the value belongs to
+     * @param primitiveDefCategory category of value wanted
+     * @return property value, or null if no value can be generated for that category
+     */
+    private PrimitivePropertyValue getPrimitivePropertyValue(String               propertyName,
+                                                             PrimitiveDefCategory primitiveDefCategory)
+    {
+        if (primitiveDefCategory == null)
+        {
+            return null;
+        }
+
+        PrimitiveDef primitiveDef = new PrimitiveDef(primitiveDefCategory);
+
+        primitiveDef.setGUID(primitiveDefCategory.getGUID());
+        primitiveDef.setName(primitiveDefCategory.getName());
+
+        PrimitivePropertyValue propertyValue = this.getPrimitivePropertyValue(propertyName, primitiveDef);
+
+        if ((propertyValue != null) && (propertyValue.getPrimitiveValue() == null))
+        {
+            /*
+             * The generator has no value for this category - OM_PRIMITIVE_TYPE_UNKNOWN, which is how the open
+             * metadata types spell "object", as in map<string,object>.  Storing a value object with nothing in
+             * it would put a property in the instance that has no value, so a string is used instead: "object"
+             * accommodates one, and it gives these map entries a value that can be searched for and compared
+             * like any other.
+             */
+            propertyValue.setPrimitiveValue("Test" + propertyName + "Value");
+        }
+
+        return propertyValue;
+    }
+
+
+    /**
      * Create a primitive property value for the requested property.
      *
      * @param propertyName name of the property
@@ -427,9 +634,11 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
                 AttributeTypeDefCategory category = attributeType.getCategory();
 
-                if (category == AttributeTypeDefCategory.PRIMITIVE) {
-                    PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
-                    propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
+                InstancePropertyValue propertyValue = this.getPropertyValueForAttributeType(attributeName, attributeType);
+
+                if (propertyValue != null)
+                {
+                    propertyMap.put(attributeName, propertyValue);
                 }
             }
 
@@ -470,10 +679,16 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
                 AttributeTypeDefCategory category = attributeType.getCategory();
 
-                if (category == AttributeTypeDefCategory.PRIMITIVE)
+                /*
+                 * Every attribute type is populated here, not just the primitives - enumerations, arrays and
+                 * maps are used throughout the open metadata types, and a repository is only exercised on
+                 * them if the instances this test creates actually carry them.
+                 */
+                InstancePropertyValue propertyValue = this.getPropertyValueForAttributeType(attributeName, attributeType);
+
+                if (propertyValue != null)
                 {
-                    PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
-                    propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
+                    propertyMap.put(attributeName, propertyValue);
                 }
             }
 
@@ -580,6 +795,96 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
 
 
     /**
+     * Does any value anywhere in these properties satisfy the caller's match test?
+     * <br>
+     * findEntitiesByPropertyValue and findRelationshipsByPropertyValue match against the string values held in an
+     * instance, and "held in" reaches inside the structured property types.  The shared implementation of that
+     * rule - OMRSRepositoryContentValidator.verifyInstancePropertiesMatchSearchCriteria - matches on a primitive
+     * string, on an enum's symbolic name, or on any value nested inside a struct, an array or a map.  A check
+     * that only looked at primitive strings would call a repository wrong for correctly returning an instance
+     * whose matching value happened to live in a map or an array, which is a legitimate result.
+     *
+     * @param properties properties of the instance that was returned
+     * @param matches decides whether one string value satisfies the search
+     * @return whether some value in the instance justifies it being returned
+     */
+    protected boolean propertyValueMatchesSearch(InstanceProperties  properties,
+                                                 Predicate<String>   matches)
+    {
+        if ((properties == null) || (properties.getInstanceProperties() == null))
+        {
+            return false;
+        }
+
+        for (InstancePropertyValue propertyValue : properties.getInstanceProperties().values())
+        {
+            if (this.propertyValueMatchesSearch(propertyValue, matches))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Does this value - or any value nested inside it - satisfy the caller's match test?
+     *
+     * @param propertyValue value to test
+     * @param matches decides whether one string value satisfies the search
+     * @return whether this value justifies the instance being returned
+     */
+    protected boolean propertyValueMatchesSearch(InstancePropertyValue propertyValue,
+                                                 Predicate<String>     matches)
+    {
+        if (propertyValue == null)
+        {
+            return false;
+        }
+
+        switch (propertyValue.getInstancePropertyCategory())
+        {
+            case PRIMITIVE ->
+            {
+                PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) propertyValue;
+
+                if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                {
+                    Object primitiveValue = primitivePropertyValue.getPrimitiveValue();
+
+                    return (primitiveValue != null) && (matches.test((String) primitiveValue));
+                }
+            }
+
+            case ENUM ->
+            {
+                String symbolicName = ((EnumPropertyValue) propertyValue).getSymbolicName();
+
+                return (symbolicName != null) && (matches.test(symbolicName));
+            }
+
+            case ARRAY ->
+            {
+                return this.propertyValueMatchesSearch(((ArrayPropertyValue) propertyValue).getArrayValues(), matches);
+            }
+
+            case MAP ->
+            {
+                return this.propertyValueMatchesSearch(((MapPropertyValue) propertyValue).getMapValues(), matches);
+            }
+
+            case STRUCT ->
+            {
+                return this.propertyValueMatchesSearch(((StructPropertyValue) propertyValue).getAttributes(), matches);
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * Return instance properties for only the mandatory properties defined in the TypeDef and all of its supertypes.
      *
      * @param userId calling user
@@ -604,13 +909,22 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 AttributeTypeDefCategory category = attributeType.getCategory();
                 AttributeCardinality     attributeCardinality = typeDefAttribute.getAttributeCardinality();
 
-                if (attributeCardinality == AttributeCardinality.AT_LEAST_ONE_ORDERED    ||
+                /*
+                 * ONE_ONLY belongs here as much as the AT_LEAST_ONE cardinalities do: it means "1 for one
+                 * instance, no more and no less", so an attribute declared that way is mandatory.  It is also
+                 * the common case - qualifiedName is ONE_ONLY - so leaving it out made this return an empty
+                 * property set for most types, and an update that strips a type's mandatory identifying
+                 * property is one a repository is right to refuse.
+                 */
+                if (attributeCardinality == AttributeCardinality.ONE_ONLY                ||
+                    attributeCardinality == AttributeCardinality.AT_LEAST_ONE_ORDERED    ||
                     attributeCardinality == AttributeCardinality.AT_LEAST_ONE_UNORDERED)
                 {
-                    if (category == AttributeTypeDefCategory.PRIMITIVE)
+                    InstancePropertyValue propertyValue = this.getPropertyValueForAttributeType(attributeName, attributeType);
+
+                    if (propertyValue != null)
                     {
-                        PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
-                        propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
+                        propertyMap.put(attributeName, propertyValue);
                     }
                 }
             }

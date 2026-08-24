@@ -3051,17 +3051,19 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
 
-        EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
-                                                                 entityGUID,
-                                                                 entityGUIDParameterName,
-                                                                 entityTypeName,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 new Date(),
-                                                                 effectiveTime,
-                                                                 methodName);
+        /*
+         * A purge removes an entity that has already been soft-deleted, so the entity it is about to
+         * remove has to be readable whatever its status.  This used to ask for the entity as of "now",
+         * which worked only because a point-in-time retrieval happened to return deleted entities; once
+         * that retrieval answers as at the time requested - where a deleted entity is not known - the
+         * purge could no longer see its own target and left the entity soft-deleted instead.
+         */
+        EntityDetail entity = repositoryHandler.getEntityIncludingDeleted(userId, entityGUID, methodName);
 
-        securityVerifier.validateUserForElementDelete(userId, entity, repositoryHelper, serviceName, methodName);
+        if (entity != null)
+        {
+            securityVerifier.validateUserForElementDelete(userId, entity, repositoryHelper, serviceName, methodName);
+        }
 
         repositoryHandler.purgeEntity(userId, entityGUID, entityTypeGUID, entityTypeName, methodName);
     }
@@ -3097,13 +3099,26 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
 
-        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
-                                                                            relationshipGUID,
-                                                                            relationshipGUIDParameterName,
-                                                                            null,
-                                                                            new Date(),
-                                                                            effectiveTime,
-                                                                            methodName);
+        /*
+         * A purge removes a relationship that has already been soft-deleted, so its target has to be
+         * readable whatever its status - see the note in purgeBeanInRepository() above.
+         */
+        Relationship relationship = repositoryHandler.getRelationshipIncludingDeleted(userId, relationshipGUID, methodName);
+
+        if (relationship == null)
+        {
+            /*
+             * Not held at all.  Going through the ordinary retrieval raises the "relationship not known"
+             * error that a caller purging something that does not exist should get.
+             */
+            relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                   relationshipGUID,
+                                                                   relationshipGUIDParameterName,
+                                                                   null,
+                                                                   null,
+                                                                   effectiveTime,
+                                                                   methodName);
+        }
 
         repositoryHandler.purgeRelationship(userId,
                                             relationship.getType().getTypeDefGUID(),

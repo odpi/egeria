@@ -17,6 +17,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupporte
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -114,6 +116,8 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
     private static final String assertionMsg41 = " entity versions are ordered FORWARDS as requested ";
     private static final String assertion43    = testCaseId + "-43";
     private static final String assertionMsg43 = " entity is known when deleted ";
+    private static final String assertion44    = testCaseId + "-44";
+    private static final String assertionMsg44 = " property stored with no value is returned with no value ";
 
 
     private final String              metadataCollectionId;
@@ -577,7 +581,14 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
          * mandatory (based on their cardinality) then provide them - in order to exercise the connector more fully.
          * All optional properties are removed.
          */
-        long nextVersion = newEntity.getVersion();
+        /*
+         * nextVersion is the version number the next change will produce - which is how it is maintained
+         * everywhere else in this test ("X.getVersion() + 1").  The +1 belongs here too: a freshly created
+         * entity is at version 1, so the update below takes it to version 2.  Without it the history-size
+         * assertions further down compared the number of stored versions against the version number from
+         * before the update, and so expected one version fewer than the entity actually had.
+         */
+        long nextVersion = newEntity.getVersion() + 1;
 
         if ((newEntity.getProperties() != null) &&
                 (newEntity.getProperties().getInstanceProperties() != null) &&
@@ -1245,7 +1256,12 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
             }
 
             /*
-             * Verify that historical query for the time when it was deleted does not return the entity
+             * Verify that a historical query for the time when it was deleted does not return the entity.
+             *
+             * This call answers as if it were running at that moment, and at that moment the entity had been
+             * deleted - so it is reported as not known, exactly as a current-value get would have reported it
+             * then.  That is a different question from "what happened to this entity":
+             * getEntityDetailHistory() returns every version, deleted ones included.
              */
             try
             {
@@ -1301,6 +1317,19 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
 
                 throw new Exception(msg, exc);
             }
+
+            /*
+             * A property can be stored with no value at all.  InstanceProperties allows it - the helper methods
+             * that build properties skip nulls, but a caller assembling InstanceProperties itself can set a
+             * property whose value is null - so a repository has to store and return one rather than fail.
+             * What this guards against is not a refusal at the point of update: it is an instance that saves
+             * successfully and then cannot be read back afterwards, which takes every later retrieval of that
+             * instance down with it, including searches that merely touch it.
+             *
+             * It runs here, at the end of the entity's life, because it updates the entity - and the version
+             * assertions earlier in this test count how many versions the entity has had.
+             */
+            this.verifyPropertyWithNoValueSurvives(metadataCollection, newEntity);
 
             /*=====================================
              * Now soft-delete the entity - this time for real
@@ -1723,6 +1752,128 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         }
 
         return matchProperties;
+    }
+
+
+    /**
+     * Store a property with no value on the entity, then read the entity back.
+     * <br>
+     * InstanceProperties can hold a property whose value is null, so a repository has to be able to store one
+     * and return it.  What this guards against is an instance that updates successfully and then cannot be
+     * read at all: the value goes into the repository, and every later retrieval of that instance fails -
+     * including searches that only touch it in passing - which is a far worse outcome than refusing the
+     * update would have been.
+     *
+     * @param metadataCollection the repository being tested
+     * @param entity the entity to test with
+     * @throws Exception the repository could not be reached
+     */
+    private void verifyPropertyWithNoValueSurvives(OMRSMetadataCollection metadataCollection,
+                                                   EntityDetail           entity) throws Exception
+    {
+        if ((entity == null) || (entity.getProperties() == null) || (entity.getProperties().getInstanceProperties() == null))
+        {
+            return;
+        }
+
+        /*
+         * Find a string property to blank out, so that the property being tested is one this type really has.
+         */
+        String            testPropertyName  = null;
+        InstanceProperties currentProperties = entity.getProperties();
+
+        /*
+         * Unique attributes are left alone.  qualifiedName is the obvious one: it is what identifies the
+         * instance to everything else, and emptying it does not test whether a value-less property survives -
+         * it removes the entity's identity and breaks everything downstream that relies on it.
+         */
+        Set<String> uniqueAttributeNames = new HashSet<>();
+
+        for (TypeDefAttribute typeDefAttribute : super.getPropertiesForTypeDef(workPad.getLocalServerUserId(), entityDef))
+        {
+            if ((typeDefAttribute != null) && (typeDefAttribute.isUnique()))
+            {
+                uniqueAttributeNames.add(typeDefAttribute.getAttributeName());
+            }
+        }
+
+        for (Map.Entry<String, InstancePropertyValue> property : currentProperties.getInstanceProperties().entrySet())
+        {
+            InstancePropertyValue propertyValue = property.getValue();
+
+            if ((propertyValue instanceof PrimitivePropertyValue primitivePropertyValue)
+                        && (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                        && (! uniqueAttributeNames.contains(property.getKey())))
+            {
+                testPropertyName = property.getKey();
+                break;
+            }
+        }
+
+        if (testPropertyName == null)
+        {
+            return;
+        }
+
+        PrimitivePropertyValue valuelessProperty = new PrimitivePropertyValue();
+
+        valuelessProperty.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        valuelessProperty.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        valuelessProperty.setPrimitiveValue(null);
+
+        Map<String, InstancePropertyValue> propertyMap = new HashMap<>(currentProperties.getInstanceProperties());
+
+        propertyMap.put(testPropertyName, valuelessProperty);
+
+        InstanceProperties propertiesWithNoValue = new InstanceProperties();
+
+        propertiesWithNoValue.setInstanceProperties(propertyMap);
+
+        try
+        {
+            long start = System.currentTimeMillis();
+
+            metadataCollection.updateEntityProperties(workPad.getLocalServerUserId(), entity.getGUID(), propertiesWithNoValue);
+
+            /*
+             * The read is the point of the test - storing the value is not much use if the instance cannot be
+             * retrieved afterwards.
+             */
+            EntityDetail retrievedEntity = metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), entity.getGUID());
+
+            long elapsedTime = System.currentTimeMillis() - start;
+
+            /*
+             * Put the property back.  This check exists to prove the value-less property survives a round trip,
+             * not to leave the entity altered - anything later in this run that meets this instance should find
+             * it as it was.
+             */
+            metadataCollection.updateEntityProperties(workPad.getLocalServerUserId(), entity.getGUID(), currentProperties);
+
+            assertCondition((retrievedEntity != null),
+                            assertion44,
+                            testTypeName + assertionMsg44,
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId(),
+                            "updateEntityProperties-no-value",
+                            elapsedTime);
+        }
+        catch (AssertionFailureException exception)
+        {
+            throw exception;
+        }
+        catch (Exception exc)
+        {
+            String methodName = "updateEntityProperties";
+            String operationDescription = "store a property with no value on an entity of type " + entityDef.getName();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("entityGUID", entity.getGUID());
+            parameters.put("propertyName", testPropertyName);
+
+            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+
+            throw new Exception(msg, exc);
+        }
     }
 
 }

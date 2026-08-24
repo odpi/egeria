@@ -4,12 +4,7 @@ package org.odpi.openmetadata.templatesfvt;
 
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.client.MetadataAccessStoreConfigurationClient;
-import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.platformchassis.springboot.OMAGServerPlatform;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 import org.springframework.boot.WebApplicationType;
@@ -232,51 +227,22 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         configurationClient.addConsoleAuditLogDestination(new ArrayList<>());
         configurationClient.configureAllAccessServicesNoTopics(new HashMap<>());
 
-        // Neither setLocalMetadataCollectionId(String), addStartUpOpenMetadataArchiveFile(String), nor
-        // addStartUpOpenMetadataArchiveList(List<Connection>) is used here directly - all three end up broken by
-        // the same underlying cause. admin-services-client always issues its REST calls through the JDK REST
-        // client connector (RESTClientFactory hardcodes JDKRESTClientConnectorProvider), whose plain
-        // `new ObjectMapper()` serializes whatever request body object it is given via
-        // `writeValueAsString(Object requestBody)`. Because that call site only ever sees the request body as a
-        // type-erased `Object`:
-        //  - a bare String body (the metadata collection id, or an archive file name) gets JSON-quoted (correct
-        //    per JSON), but the server's matching `@RequestBody String` endpoint is bound by Spring's
-        //    StringHttpMessageConverter (opaque text) ahead of Jackson, so the quotes are never stripped back
-        //    out - they end up baked into the persisted value. For the metadata collection id this was only
-        //    caught after the fact: the corrupted, quote-wrapped id was silently accepted and became every
-        //    archive-loaded entity's `replicatedBy` value, and countMetadataElements(...) - whose SQL matches
-        //    entities against the connector's own (unquoted) in-memory collection id - then saw none of them,
-        //    even though the entities were genuinely all there;
-        //  - a bare List<Connection> body loses Jackson's polymorphic "class" type-id markers on every element
-        //    (confirmed empirically: Jackson only emits @JsonTypeInfo markers for collection elements when it
-        //    can see the collection's static generic element type via reflection - e.g. a bean property/field
-        //    declared as List<Connection> - and a type-erased root Object value gives it no such static type to
-        //    reflect on), so the server fails to deserialize it ("missing type id property 'class'").
-        // Fetching the config document, setting the metadata collection id and archive connections list as
-        // fields on its nested RepositoryServicesConfig bean, and pushing the whole document back with
-        // setOMAGServerConfig(...) avoids both problems: those values are then nested inside a properly-typed
-        // bean graph, which Jackson serializes correctly via normal reflection-based bean property introspection.
-        ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
-        List<Connection>              archiveConnections            = new ArrayList<>();
+        /*
+         * The metadata collection id is set through the administration services call that exists for it:
+         *
+         *     POST {platform}/open-metadata/admin-services/servers/{server}/local-repository/metadata-collection-id
+         *
+         * This used to be done by editing the whole config document, because the client method sent the id as
+         * a JSON-quoted string and the server - which binds it as an opaque @RequestBody String - stored it
+         * with the quotation marks still attached.  The REST client connector now sends a string request body
+         * as text/plain, so the client method records the id as given.
+         */
+        configurationClient.setLocalMetadataCollectionId(METADATA_COLLECTION_ID);
 
         for (String archiveFileName : ARCHIVE_FILES)
         {
-            String archiveFilePath = new File(findContentPacksDirectory(), archiveFileName).getAbsolutePath();
-
-            archiveConnections.add(connectorConfigurationFactory.getOpenMetadataArchiveFileConnection(archiveFilePath));
+            configurationClient.addStartUpOpenMetadataArchiveFile(new File(findContentPacksDirectory(), archiveFileName).getAbsolutePath());
         }
-
-        OMAGServerConfig serverConfig = configurationClient.getOMAGServerConfig();
-
-        RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
-        LocalRepositoryConfig    localRepositoryConfig     = repositoryServicesConfig.getLocalRepositoryConfig();
-
-        localRepositoryConfig.setMetadataCollectionId(METADATA_COLLECTION_ID);
-        repositoryServicesConfig.setLocalRepositoryConfig(localRepositoryConfig);
-        repositoryServicesConfig.setOpenMetadataArchiveConnections(archiveConnections);
-        serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
-
-        configurationClient.setOMAGServerConfig(serverConfig);
 
         platformServicesClient.activateWithStoredConfig(SERVER_NAME);
 

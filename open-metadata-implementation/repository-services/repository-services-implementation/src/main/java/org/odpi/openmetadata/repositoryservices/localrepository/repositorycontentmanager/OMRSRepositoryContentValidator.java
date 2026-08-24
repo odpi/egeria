@@ -4104,6 +4104,39 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
+     * Compare the value a caller is searching for with the value an instance actually holds.
+     * <br>
+     * The two are compared on their values, not as whole objects.  A caller builds a search value from
+     * what they are looking for - a category and a value - and is not required to also supply the
+     * typeGUID and typeName that a stored value carries, so comparing the objects themselves makes the
+     * test fail on decoration the caller was never asked for.  The effect is worse than a missed match:
+     * EQ then finds nothing at all, and NEQ matches everything.
+     *
+     * @param actualValue value held by the instance
+     * @param testValue value supplied in the search condition
+     * @return true if the two values are the same
+     */
+    private boolean propertyValuesMatch(InstancePropertyValue actualValue,
+                                        InstancePropertyValue testValue)
+    {
+        if ((actualValue == null) || (testValue == null))
+        {
+            return (actualValue == testValue);
+        }
+
+        /*
+         * A string and an array that happen to render the same value are still different things.
+         */
+        if (actualValue.getInstancePropertyCategory() != testValue.getInstancePropertyCategory())
+        {
+            return false;
+        }
+
+        return Objects.equals(actualValue.valueAsObject(), testValue.valueAsObject());
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -4434,10 +4467,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     switch (condition.getOperator())
                     {
                         case EQ:
-                            matchesProperties = Objects.equals(actualValue, testValue);
+                            matchesProperties = this.propertyValuesMatch(actualValue, testValue);
                             break;
                         case NEQ:
-                            matchesProperties = !Objects.equals(actualValue, testValue);
+                            matchesProperties = ! this.propertyValuesMatch(actualValue, testValue);
                             break;
                         case LT:
                             // Should only apply to number values and dates

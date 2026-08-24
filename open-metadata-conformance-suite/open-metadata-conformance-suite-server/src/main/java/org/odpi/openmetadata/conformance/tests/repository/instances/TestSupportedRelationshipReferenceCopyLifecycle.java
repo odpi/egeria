@@ -102,8 +102,13 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
      * The wait loops will wait for pollCount iterations of pollPeriod, so a pollCount of x10
      * results in a 1000ms (1s) timeout.
      *
+     * The budget only costs anything when propagation does not happen - a loop that gets what it is
+     * waiting for leaves immediately - so it is set well above what a healthy cohort needs.  The earlier
+     * 10s was close enough to a normal Kafka round trip on a loaded machine to turn ordinary slowness
+     * into a reported conformance failure.
+     *
      */
-    private Integer           pollCount   = 100;
+    private Integer           pollCount   = 300;
     private Integer           pollPeriod  = 100;   // milliseconds
 
     private List<EntityDetail>            createdEntitiesCTS               = new ArrayList<>();
@@ -899,6 +904,21 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
             throw new Exception(msg, exc);
         }
 
+        /*
+         * The refresh has to have arrived before there is anything to retrieve, so that is settled here -
+         * outside the try, because assertCondition() reports a failure by throwing and the catch above
+         * would turn it back into an unexpected exception.  Retrieving it regardless is what used to
+         * happen, and it reported the timeout as RelationshipNotKnownException instead of as a refresh
+         * that did not arrive in time.
+         */
+        assertCondition((refreshedRelationshipRefCopy != null),
+                        assertion10,
+                        testTypeName + assertionMsg10,
+                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
+                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
+                        "isRelationshipKnown",
+                        elapsedTime);
+
 
         /*
          * Verify that the reference copy can be retrieved form the TUT and matches the original...
@@ -924,15 +944,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
             throw new Exception(msg, exc);
         }
-
-        assertCondition((refreshedRelationshipRefCopy != null),
-                        assertion10,
-                        testTypeName + assertionMsg10,
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId(),
-                        "getRelationship",
-                        elapsedTime);
-
 
         /*
          * Verify that the retrieved reference copy matches the original relationship
@@ -995,7 +1006,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
                 remainingCount--;
             } while (survivingRelRefCopy != null && remainingCount > 0);
 
-            if (survivingRelRefCopy == null && remainingCount == 0)
+            if (survivingRelRefCopy != null && remainingCount == 0)
             {
                 workPad.getAuditLog()
                         .logMessage(assertion12,
