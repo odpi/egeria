@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">JacquardErrorCode</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="JacquardErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardErrorCode</a>&gt;
 implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
-<div class="block">The ProductManagerErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
+<div class="block">The JacquardErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the Kafka monitor integration connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  The 5 fields in the enum are:
  <ul>
@@ -125,16 +125,10 @@ implements <a href="../../../../frameworks/auditlog/messagesets/ExceptionMessage
 <div class="col-last even-row-color">
 <div class="block">JACQUARD-HARVESTER-400-002 - Integration connector {0} has been configured without a secrets connector</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NULL_URL" class="member-name-link">NULL_URL</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">JACQUARD-HARVESTER-400-001 - Integration connector {0} has been configured without the URL to the database</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">JACQUARD-HARVESTER-500-001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNPARSEABLE_LAST_UPDATE_DATE" class="member-name-link">UNPARSEABLE_LAST_UPDATE_DATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -196,23 +190,10 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="NULL_URL">
-<h3>NULL_URL</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardErrorCode</a></span>&nbsp;<span class="element-name">NULL_URL</span></div>
-<div class="block">JACQUARD-HARVESTER-400-001 - Integration connector {0} has been configured without the URL to the database</div>
-</section>
-</li>
-<li>
 <section class="detail" id="NO_SECRETS">
 <h3>NO_SECRETS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardErrorCode</a></span>&nbsp;<span class="element-name">NO_SECRETS</span></div>
 <div class="block">JACQUARD-HARVESTER-400-002 - Integration connector {0} has been configured without a secrets connector</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNPARSEABLE_LAST_UPDATE_DATE">
-<h3>UNPARSEABLE_LAST_UPDATE_DATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardErrorCode</a></span>&nbsp;<span class="element-name">UNPARSEABLE_LAST_UPDATE_DATE</span></div>
 </section>
 </li>
 <li>

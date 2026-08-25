@@ -126,15 +126,6 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="col-last even-row-color">
 <div class="block">The engine service {0} has been configured with an admin class of {1} which can not be used by the class loader.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CONFIGURATION_LISTENER_INSTANCE_FAILURE" class="member-name-link">CONFIGURATION_LISTENER_INSTANCE_FAILURE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-400-021 - The engine host services are unable to retrieve the connection for the configuration
- listener for server {0} from metadata server {1}.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#ENGINE_SERVICE_NULL_HANDLERS" class="member-name-link">ENGINE_SERVICE_NULL_HANDLERS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-400-015 - Engine service {0} in engine host {1} cannot start any governance engines</div>
-</div>
 <div class="col-first odd-row-color"><code><a href="#GOVERNANCE_ENGINE_NOT_INITIALIZED" class="member-name-link">GOVERNANCE_ENGINE_NOT_INITIALIZED</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-400-017 - Engine host server {0} cannot pass a governance request to governance engine {1} because this
@@ -144,49 +135,17 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="col-last even-row-color">
 <div class="block">ENGINE-HOST-SERVICES-400-001 - Engine host {0} has been passed a null configuration document section for the engine host services</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_CONFIG_OMAS_SERVER_NAME" class="member-name-link">NO_CONFIG_OMAS_SERVER_NAME</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-400-009 - Engine host {0} is not configured with the name for the server running the {1}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NO_CONFIG_OMAS_SERVER_URL" class="member-name-link">NO_CONFIG_OMAS_SERVER_URL</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-400-008 - Engine host {0} is not configured with the platform URL root for the {1}</div>
-</div>
 <div class="col-first odd-row-color"><code><a href="#NO_ENGINE_SERVICES_CONFIGURED" class="member-name-link">NO_ENGINE_SERVICES_CONFIGURED</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-400-002 - Engine host {0} is not configured with any engine services</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_ENGINES" class="member-name-link">NO_ENGINES</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NO_ENGINES_FOR_SERVICE" class="member-name-link">NO_ENGINES_FOR_SERVICE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-400-104 - {0} in server {1} is not configured with any engines</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NO_ENGINES_FOR_SERVICE" class="member-name-link">NO_ENGINES_FOR_SERVICE</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-400-007 - No governance engines are running in the engine service {0} on engine host {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_GOVERNANCE_ENGINES" class="member-name-link">NO_GOVERNANCE_ENGINES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NO_GOVERNANCE_ENGINES" class="member-name-link">NO_GOVERNANCE_ENGINES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-400-006 - No governance engines are running in the engine host {0}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NO_OMAS_SERVER_NAME" class="member-name-link">NO_OMAS_SERVER_NAME</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-400-103 - {0} in server {1} is not configured with the name for the server running the {2}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NO_OMAS_SERVER_URL" class="member-name-link">NO_OMAS_SERVER_URL</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-400-102 - {0} in server {1} is not configured with the platform URL root for the {2}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NO_PARTNER_OMAS_SERVER_NAME" class="member-name-link">NO_PARTNER_OMAS_SERVER_NAME</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-400-011 - Engine service {0} running in engine host {1} is not configured with the name for the server running the {2}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NO_PARTNER_OMAS_SERVER_URL" class="member-name-link">NO_PARTNER_OMAS_SERVER_URL</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-400-010 - Engine service {0} running in engine host {1} is not configured with the platform URL root for the {2}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_ENGINE_NAME" class="member-name-link">NULL_ENGINE_NAME</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-400-012 - {0} in engine host {1} is configured with a null engine name</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#NULL_ENGINE_SERVICE_ADMIN_CLASS" class="member-name-link">NULL_ENGINE_SERVICE_ADMIN_CLASS</a></code></div>
 <div class="col-last even-row-color">
@@ -219,14 +178,6 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_GOVERNANCE_ENGINE_CONFIG" class="member-name-link">UNKNOWN_GOVERNANCE_ENGINE_CONFIG</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-400-023 - Properties for governance engine called {0} have not been returned by open metadata server {1} to engine host services in server {2}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_GOVERNANCE_ENGINE_CONFIG_AT_STARTUP" class="member-name-link">UNKNOWN_GOVERNANCE_ENGINE_CONFIG_AT_STARTUP</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-400-022 - Properties for governance engine called {0} have not been returned by open metadata server {1}.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#UNRECOGNIZED_SERVICE" class="member-name-link">UNRECOGNIZED_SERVICE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-400-018 - The engine service URL marker {0} is not recognized.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#WRONG_TYPE_OF_GOVERNANCE_ENGINE" class="member-name-link">WRONG_TYPE_OF_GOVERNANCE_ENGINE</a></code></div>
 <div class="col-last even-row-color">
@@ -342,41 +293,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NO_CONFIG_OMAS_SERVER_URL">
-<h3>NO_CONFIG_OMAS_SERVER_URL</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_CONFIG_OMAS_SERVER_URL</span></div>
-<div class="block">ENGINE-HOST-SERVICES-400-008 - Engine host {0} is not configured with the platform URL root for the {1}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_CONFIG_OMAS_SERVER_NAME">
-<h3>NO_CONFIG_OMAS_SERVER_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_CONFIG_OMAS_SERVER_NAME</span></div>
-<div class="block">ENGINE-HOST-SERVICES-400-009 - Engine host {0} is not configured with the name for the server running the {1}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_PARTNER_OMAS_SERVER_URL">
-<h3>NO_PARTNER_OMAS_SERVER_URL</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_PARTNER_OMAS_SERVER_URL</span></div>
-<div class="block">ENGINE-HOST-SERVICES-400-010 - Engine service {0} running in engine host {1} is not configured with the platform URL root for the {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_PARTNER_OMAS_SERVER_NAME">
-<h3>NO_PARTNER_OMAS_SERVER_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_PARTNER_OMAS_SERVER_NAME</span></div>
-<div class="block">ENGINE-HOST-SERVICES-400-011 - Engine service {0} running in engine host {1} is not configured with the name for the server running the {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_ENGINE_NAME">
-<h3>NULL_ENGINE_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">NULL_ENGINE_NAME</span></div>
-<div class="block">ENGINE-HOST-SERVICES-400-012 - {0} in engine host {1} is configured with a null engine name</div>
-</section>
-</li>
-<li>
 <section class="detail" id="NULL_ENGINE_SERVICE_ADMIN_CLASS">
 <h3>NULL_ENGINE_SERVICE_ADMIN_CLASS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">NULL_ENGINE_SERVICE_ADMIN_CLASS</span></div>
@@ -388,13 +304,6 @@ the order they are declared.</div>
 <h3>BAD_ENGINE_SERVICE_ADMIN_CLASS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">BAD_ENGINE_SERVICE_ADMIN_CLASS</span></div>
 <div class="block">The engine service {0} has been configured with an admin class of {1} which can not be used by the class loader.  The {2} exception was returned with message {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ENGINE_SERVICE_NULL_HANDLERS">
-<h3>ENGINE_SERVICE_NULL_HANDLERS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">ENGINE_SERVICE_NULL_HANDLERS</span></div>
-<div class="block">ENGINE-HOST-SERVICES-400-015 - Engine service {0} in engine host {1} cannot start any governance engines</div>
 </section>
 </li>
 <li>
@@ -413,13 +322,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="UNRECOGNIZED_SERVICE">
-<h3>UNRECOGNIZED_SERVICE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">UNRECOGNIZED_SERVICE</span></div>
-<div class="block">ENGINE-HOST-SERVICES-400-018 - The engine service URL marker {0} is not recognized.  Valid service URL markers are: {1}</div>
-</section>
-</li>
-<li>
 <section class="detail" id="NULL_SERVICE_CONFIG_VALUE">
 <h3>NULL_SERVICE_CONFIG_VALUE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">NULL_SERVICE_CONFIG_VALUE</span></div>
@@ -434,22 +336,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="CONFIGURATION_LISTENER_INSTANCE_FAILURE">
-<h3>CONFIGURATION_LISTENER_INSTANCE_FAILURE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">CONFIGURATION_LISTENER_INSTANCE_FAILURE</span></div>
-<div class="block">ENGINE-HOST-SERVICES-400-021 - The engine host services are unable to retrieve the connection for the configuration
- listener for server {0} from metadata server {1}. Exception returned was {2} with error message {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNKNOWN_GOVERNANCE_ENGINE_CONFIG_AT_STARTUP">
-<h3>UNKNOWN_GOVERNANCE_ENGINE_CONFIG_AT_STARTUP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_GOVERNANCE_ENGINE_CONFIG_AT_STARTUP</span></div>
-<div class="block">ENGINE-HOST-SERVICES-400-022 - Properties for governance engine called {0} have not been returned by open metadata server {1}.
- Exception {2} with message {3} returned to server {4}</div>
-</section>
-</li>
-<li>
 <section class="detail" id="UNKNOWN_GOVERNANCE_ENGINE_CONFIG">
 <h3>UNKNOWN_GOVERNANCE_ENGINE_CONFIG</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_GOVERNANCE_ENGINE_CONFIG</span></div>
@@ -461,27 +347,6 @@ the order they are declared.</div>
 <h3>WRONG_TYPE_OF_GOVERNANCE_ENGINE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">WRONG_TYPE_OF_GOVERNANCE_ENGINE</span></div>
 <div class="block">ENGINE-HOST-SERVICES-400-024 - Governance engine {0} defined in open metadata server {1} is of type {2} rather than {3}; engine host server {4} is not able to run requests for this governance engine</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_OMAS_SERVER_URL">
-<h3>NO_OMAS_SERVER_URL</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_OMAS_SERVER_URL</span></div>
-<div class="block">ENGINE-HOST-SERVICES-400-102 - {0} in server {1} is not configured with the platform URL root for the {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_OMAS_SERVER_NAME">
-<h3>NO_OMAS_SERVER_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_OMAS_SERVER_NAME</span></div>
-<div class="block">ENGINE-HOST-SERVICES-400-103 - {0} in server {1} is not configured with the name for the server running the {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_ENGINES">
-<h3>NO_ENGINES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesErrorCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesErrorCode</a></span>&nbsp;<span class="element-name">NO_ENGINES</span></div>
-<div class="block">ENGINE-HOST-SERVICES-400-104 - {0} in server {1} is not configured with any engines</div>
 </section>
 </li>
 </ul>

@@ -29,7 +29,6 @@ org.odpi.openmetadata.adapters.connectors.datastore.csvfile
 org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls
 org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc
 org.odpi.openmetadata.adapters.connectors.datastore.datafolder
-org.odpi.openmetadata.adapters.connectors.datastore.datafolder.ffdc
 org.odpi.openmetadata.adapters.connectors.db2luw.catalog
 org.odpi.openmetadata.adapters.connectors.db2luw.controls
 org.odpi.openmetadata.adapters.connectors.db2luw.ffdc
@@ -42,7 +41,6 @@ org.odpi.openmetadata.adapters.connectors.duckdb.ffdc
 org.odpi.openmetadata.adapters.connectors.duckdb.survey
 org.odpi.openmetadata.adapters.connectors.duckdb.utilities
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers
-org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers.glossary
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.extractor
@@ -465,6 +463,7 @@ org.odpi.openmetadata.platformservices.server
 org.odpi.openmetadata.platformservices.server.spring
 org.odpi.openmetadata.reports
 org.odpi.openmetadata.reports.componentid
+org.odpi.openmetadata.reports.messages
 org.odpi.openmetadata.repositoryservices.admin
 org.odpi.openmetadata.repositoryservices.archivemanager
 org.odpi.openmetadata.repositoryservices.archiveutilities

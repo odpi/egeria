@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">TabularDataErrorCode</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a>&gt;
 implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
-<div class="block">The ReferenceDataErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
+<div class="block">The TabularDataErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the Reference Data Connectors.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  The 5 fields in the enum are:
  <ul>
@@ -121,14 +121,6 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#INVALID_ELEMENT" class="member-name-link">INVALID_ELEMENT</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">REFERENCE-DATA-CONNECTORS-500-002 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_CLIENT_USER_ID" class="member-name-link">NULL_CLIENT_USER_ID</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">REFERENCE-DATA-CONNECTORS-400-003 - Reference Data Connector {0} has been configured without a userId needed to call the OMAG Server Platform.</div>
-</div>
 <div class="col-first even-row-color"><code><a href="#NULL_PRODUCT_DEFINITION" class="member-name-link">NULL_PRODUCT_DEFINITION</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">REFERENCE-DATA-CONNECTORS-500-004 - Product definition is null for connector {0} in method {1}</div>
@@ -152,10 +144,6 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="col-first odd-row-color"><code><a href="#UNMAPPED_COLUMN" class="member-name-link">UNMAPPED_COLUMN</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">REFERENCE-DATA-CONNECTORS-500-003 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#WRONG_NUMBER_OF_COLUMNS" class="member-name-link">WRONG_NUMBER_OF_COLUMNS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">REFERENCE-DATA-CONNECTORS-400-005 - Reference Data Connector {0} has been passed {1} columns on the {2} method for record number {3}.</div>
 </div>
 </div>
 </section>
@@ -232,13 +220,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NULL_CLIENT_USER_ID">
-<h3>NULL_CLIENT_USER_ID</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">NULL_CLIENT_USER_ID</span></div>
-<div class="block">REFERENCE-DATA-CONNECTORS-400-003 - Reference Data Connector {0} has been configured without a userId needed to call the OMAG Server Platform.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="NULL_RECORD">
 <h3>NULL_RECORD</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">NULL_RECORD</span></div>
@@ -246,24 +227,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="WRONG_NUMBER_OF_COLUMNS">
-<h3>WRONG_NUMBER_OF_COLUMNS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">WRONG_NUMBER_OF_COLUMNS</span></div>
-<div class="block">REFERENCE-DATA-CONNECTORS-400-005 - Reference Data Connector {0} has been passed {1} columns on the {2} method for record number {3}.  The data set width is {4}</div>
-</section>
-</li>
-<li>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
 <div class="block">REFERENCE-DATA-CONNECTORS-500-001 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="INVALID_ELEMENT">
-<h3>INVALID_ELEMENT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">INVALID_ELEMENT</span></div>
-<div class="block">REFERENCE-DATA-CONNECTORS-500-002 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </section>
 </li>
 <li>

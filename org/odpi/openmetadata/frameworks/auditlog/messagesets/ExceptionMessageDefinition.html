@@ -101,6 +101,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Constructor to save all the fixed values of a message.</div>
 </div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">ExceptionMessageDefinition</a><wbr>(int&nbsp;httpErrorCode,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;messageId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;messageTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;systemAction,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userAction,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;url)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Constructor to save all the fixed values of a message, including a link to further reading.</div>
+</div>
 </div>
 </section>
 </li>
@@ -130,7 +139,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.auditlog.messagesets.MessageDefinition">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.auditlog.messagesets.<a href="MessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">MessageDefinition</a></h3>
-<code><a href="MessageDefinition.html#getMessageId()">getMessageId</a>, <a href="MessageDefinition.html#getMessageParams()">getMessageParams</a>, <a href="MessageDefinition.html#getMessageTemplate()">getMessageTemplate</a>, <a href="MessageDefinition.html#getSystemAction()">getSystemAction</a>, <a href="MessageDefinition.html#getUserAction()">getUserAction</a>, <a href="MessageDefinition.html#setMessageParameters(java.lang.String...)">setMessageParameters</a></code></div>
+<code><a href="MessageDefinition.html#getMessageId()">getMessageId</a>, <a href="MessageDefinition.html#getMessageParams()">getMessageParams</a>, <a href="MessageDefinition.html#getMessageTemplate()">getMessageTemplate</a>, <a href="MessageDefinition.html#getSystemAction()">getSystemAction</a>, <a href="MessageDefinition.html#getURL()">getURL</a>, <a href="MessageDefinition.html#getUserAction()">getUserAction</a>, <a href="MessageDefinition.html#setMessageParameters(java.lang.String...)">setMessageParameters</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -163,6 +172,30 @@ loadScripts(document, 'script');</script>
 <dd><code>messageTemplate</code> - text for the message</dd>
 <dd><code>systemAction</code> - description of the action taken by the system when the condition happened</dd>
 <dd><code>userAction</code> - instructions for resolving the situation, if any</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<h3>ExceptionMessageDefinition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ExceptionMessageDefinition</span><wbr><span class="parameters">(int&nbsp;httpErrorCode,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;messageId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;messageTemplate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;systemAction,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userAction,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;url)</span></div>
+<div class="block">Constructor to save all the fixed values of a message, including a link to further reading.
+ This is typically populated from an Enum message set.  The constructor passes most values to the
+ super class and just retains the additional value for the exception.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>httpErrorCode</code> - the HTTP code that describes the nature of the error</dd>
+<dd><code>messageId</code> - unique identifier for the message</dd>
+<dd><code>messageTemplate</code> - text for the message</dd>
+<dd><code>systemAction</code> - description of the action taken by the system when the condition happened</dd>
+<dd><code>userAction</code> - instructions for resolving the situation, if any</dd>
+<dd><code>url</code> - link to a page that describes the component or concept behind this message -
+            null if there is no suitable page.</dd>
 </dl>
 </section>
 </li>

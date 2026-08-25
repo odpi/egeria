@@ -115,17 +115,9 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
+<div class="col-first even-row-color"><code><a href="#MONITORED_RESOURCE_NOTIFICATION_TYPE" class="member-name-link">MONITORED_RESOURCE_NOTIFICATION_TYPE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0009 - The {0} integration connector has stopped its monitoring of open metadata from server {1} on platform {2} and is shutting down</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#MONITORED_RESOURCE_NOTIFICATION_TYPE" class="member-name-link">MONITORED_RESOURCE_NOTIFICATION_TYPE</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0002 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where notifications are triggered by changes to its monitored resources.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NO_TARGETS" class="member-name-link">NO_TARGETS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0018 - The {0} governance action service has no targets to operate on</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#ONE_TIME_NOTIFICATION_TYPE" class="member-name-link">ONE_TIME_NOTIFICATION_TYPE</a></code></div>
 <div class="col-last odd-row-color">
@@ -134,23 +126,6 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-first even-row-color"><code><a href="#PERIODIC_NOTIFICATION_TYPE" class="member-name-link">PERIODIC_NOTIFICATION_TYPE</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0005 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#STARTING_CONNECTOR" class="member-name-link">STARTING_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0011 - The {0} integration connector is starting its harvesting of open metadata from server {1} on platform {2} into digital products</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#UNABLE_TO_REGISTER_LISTENER" class="member-name-link">UNABLE_TO_REGISTER_LISTENER</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0017 - The {0} governance action service received a {1} exception when it registered a listener with the 
- governance context.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_SET_COMPLETION_STATUS" class="member-name-link">UNABLE_TO_SET_COMPLETION_STATUS</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0016 - The {0} governance action service received a {1} exception when it registered its completion status.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0001 - The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
 </div>
 </section>
@@ -213,13 +188,6 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="UNEXPECTED_EXCEPTION">
-<h3>UNEXPECTED_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BaudotAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.baudot.ffdc">BaudotAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
-<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0001 - The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}</div>
-</section>
-</li>
-<li>
 <section class="detail" id="MONITORED_RESOURCE_NOTIFICATION_TYPE">
 <h3>MONITORED_RESOURCE_NOTIFICATION_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BaudotAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.baudot.ffdc">BaudotAuditCode</a></span>&nbsp;<span class="element-name">MONITORED_RESOURCE_NOTIFICATION_TYPE</span></div>
@@ -238,43 +206,6 @@ the order they are declared.</div>
 <h3>PERIODIC_NOTIFICATION_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BaudotAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.baudot.ffdc">BaudotAuditCode</a></span>&nbsp;<span class="element-name">PERIODIC_NOTIFICATION_TYPE</span></div>
 <div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0005 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.  The next scheduled notification will be sent at {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="CONNECTOR_STOPPING">
-<h3>CONNECTOR_STOPPING</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BaudotAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.baudot.ffdc">BaudotAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_STOPPING</span></div>
-<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0009 - The {0} integration connector has stopped its monitoring of open metadata from server {1} on platform {2} and is shutting down</div>
-</section>
-</li>
-<li>
-<section class="detail" id="STARTING_CONNECTOR">
-<h3>STARTING_CONNECTOR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BaudotAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.baudot.ffdc">BaudotAuditCode</a></span>&nbsp;<span class="element-name">STARTING_CONNECTOR</span></div>
-<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0011 - The {0} integration connector is starting its harvesting of open metadata from server {1} on platform {2} into digital products</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNABLE_TO_SET_COMPLETION_STATUS">
-<h3>UNABLE_TO_SET_COMPLETION_STATUS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BaudotAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.baudot.ffdc">BaudotAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SET_COMPLETION_STATUS</span></div>
-<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0016 - The {0} governance action service received a {1} exception when it registered its completion status.  
- The exception's message is: {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNABLE_TO_REGISTER_LISTENER">
-<h3>UNABLE_TO_REGISTER_LISTENER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BaudotAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.baudot.ffdc">BaudotAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_REGISTER_LISTENER</span></div>
-<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0017 - The {0} governance action service received a {1} exception when it registered a listener with the 
- governance context.  The exception's message is: {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_TARGETS">
-<h3>NO_TARGETS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BaudotAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.baudot.ffdc">BaudotAuditCode</a></span>&nbsp;<span class="element-name">NO_TARGETS</span></div>
-<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0018 - The {0} governance action service has no targets to operate on</div>
 </section>
 </li>
 </ul>

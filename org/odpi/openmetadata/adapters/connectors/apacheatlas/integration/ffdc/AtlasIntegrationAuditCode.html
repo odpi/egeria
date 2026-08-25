@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">AtlasIntegrationAuditCode</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a>&gt;
 implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
-<div class="block">The ApacheAtlasAuditCode is used to define the message content for the OMRS Audit Log.
+<div class="block">The AtlasIntegrationAuditCode is used to define the message content for the OMRS Audit Log.
  The 5 fields in the enum are:
  <ul>
      <li>Log Message Identifier - to uniquely identify the message</li>
@@ -155,53 +155,37 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="col-last odd-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0009 - The {0} integration connector has stopped its monitoring of Apache Atlas at {1} and is shutting down</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CREATING_ATLAS_ENTITY" class="member-name-link">CREATING_ATLAS_ENTITY</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CREATING_EGERIA_ENTITY" class="member-name-link">CREATING_EGERIA_ENTITY</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0041 - The integration connector {0} created Apache Atlas {1} entity {2} match open metadata {3} entity {4}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#CREATING_EGERIA_ENTITY" class="member-name-link">CREATING_EGERIA_ENTITY</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0040 - The integration connector {0} created open metadata {1} entity {2} match Apache Atlas {3} entity {4}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#DELETING_ATLAS_ENTITY" class="member-name-link">DELETING_ATLAS_ENTITY</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0045 - The integration connector {0} is deleting the {1} Apache Atlas entity {2} since the open metadata entity {3} has been removed</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#DELETING_EGERIA_ENTITY" class="member-name-link">DELETING_EGERIA_ENTITY</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0044 - The integration connector {0} is deleting {1} open metadata entity {2} since Apache Atlas entity {3} has been removed</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EGERIA_GLOSSARY_CATEGORY_DELETED" class="member-name-link">EGERIA_GLOSSARY_CATEGORY_DELETED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#EGERIA_GLOSSARY_DELETED" class="member-name-link">EGERIA_GLOSSARY_DELETED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0012 - The open metadata glossary category {0} equivalent for Apache Atlas glossary category {1} is missing</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#EGERIA_GLOSSARY_DELETED" class="member-name-link">EGERIA_GLOSSARY_DELETED</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0010 - The open metadata glossary {0} equivalent for Apache Atlas glossary {1} is missing</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EGERIA_GLOSSARY_TERM_DELETED" class="member-name-link">EGERIA_GLOSSARY_TERM_DELETED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#EGERIA_GLOSSARY_TERM_DELETED" class="member-name-link">EGERIA_GLOSSARY_TERM_DELETED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0011 - The open metadata glossary term {0} equivalent for Apache Atlas glossary term {1} is missing</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EGERIA_GUID_MISSING" class="member-name-link">EGERIA_GUID_MISSING</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#EGERIA_GUID_MISSING" class="member-name-link">EGERIA_GUID_MISSING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0013 - The equivalent Apache Atlas GUID for {0} open metadata element {1} is not stored as an external identifier</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#LIST_CONFIGURATION_PROPERTY_SET" class="member-name-link">LIST_CONFIGURATION_PROPERTY_SET</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#LIST_CONFIGURATION_PROPERTY_SET" class="member-name-link">LIST_CONFIGURATION_PROPERTY_SET</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0018 - The list of values from the {0} configuration property has {1} items with values {2} for {3} integration connector</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#MISSING_ATLAS_GUID" class="member-name-link">MISSING_ATLAS_GUID</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#MISSING_ATLAS_GUID" class="member-name-link">MISSING_ATLAS_GUID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0055 - The {0} integration connector can not retrieve the atlas GUID for {1} open metadata entity {2} and metadata collection {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#MISSING_CORRELATION" class="member-name-link">MISSING_CORRELATION</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0039 - The {0} integration connector can not retrieve the correlation information for {1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#REPLACING_ATLAS_ENTITY" class="member-name-link">REPLACING_ATLAS_ENTITY</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#MISSING_CORRELATION" class="member-name-link">MISSING_CORRELATION</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0047 - The integration connector {0} is replacing Apache Atlas {1} entity {2} for open metadata entity {3} since the Apache Atlas entity has been unilaterally removed</div>
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0039 - The {0} integration connector can not retrieve the correlation information for {1} open metadata entity {2} linked in Apache Atlas {3} to {4} entity {5}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#REPLACING_EGERIA_ENTITY" class="member-name-link">REPLACING_EGERIA_ENTITY</a></code></div>
 <div class="col-last even-row-color">
@@ -211,17 +195,9 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="col-last odd-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0014 - The open metadata glossary {0} for equivalent Apache Atlas glossary {1} has been unilaterally deleted; connector {2} is putting it back</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REPLACING_EGERIA_GLOSSARY_CATEGORY" class="member-name-link">REPLACING_EGERIA_GLOSSARY_CATEGORY</a></code></div>
+<div class="col-first even-row-color"><code><a href="#REPLACING_EGERIA_GLOSSARY_TERM" class="member-name-link">REPLACING_EGERIA_GLOSSARY_TERM</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0016 - The open metadata glossary category {0} for equivalent Apache Atlas glossary category {1} has been unilaterally deleted; connector {2} is putting it back</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#REPLACING_EGERIA_GLOSSARY_TERM" class="member-name-link">REPLACING_EGERIA_GLOSSARY_TERM</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0015 - The open metadata glossary term {0} for equivalent Apache Atlas glossary term {1} has been unilaterally deleted; connector {2} is putting it back</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#SYNC_ATLAS_GLOSSARY" class="member-name-link">SYNC_ATLAS_GLOSSARY</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0025 - The {0} integration connector is copying the Apache Atlas glossary called {1} into the {2} ({3}) open metadata glossary</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#SYNC_INTEGRATION_MODULE" class="member-name-link">SYNC_INTEGRATION_MODULE</a></code></div>
 <div class="col-last odd-row-color">
@@ -255,25 +231,17 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="col-last even-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0054 - The {0} integration connector encountered an {1} exception when setting up the related elements linked to entity {2}.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_REGISTER_LISTENER" class="member-name-link">UNABLE_TO_REGISTER_LISTENER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_RETRIEVE_ATLAS_GLOSSARY" class="member-name-link">UNABLE_TO_RETRIEVE_ATLAS_GLOSSARY</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0032 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#UNABLE_TO_RETRIEVE_ATLAS_GLOSSARY" class="member-name-link">UNABLE_TO_RETRIEVE_ATLAS_GLOSSARY</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0007 - The {0} integration connector us unable to retrieve requested {1} glossary from Apache Atlas</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_RETRIEVE_EGERIA_GLOSSARY" class="member-name-link">UNABLE_TO_RETRIEVE_EGERIA_GLOSSARY</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNABLE_TO_RETRIEVE_EGERIA_GLOSSARY" class="member-name-link">UNABLE_TO_RETRIEVE_EGERIA_GLOSSARY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0006 - The {0} integration connector cannot retrieve the requested {1} glossary from the open metadata ecosystem</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNABLE_TO_SET_REFERENCE_VALUE_ASSIGNMENTS" class="member-name-link">UNABLE_TO_SET_REFERENCE_VALUE_ASSIGNMENTS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0050 - The {0} integration connector encountered an {1} exception when setting up the related reference values assigned to the open metadata entity {2} that represents Apache Atlas entity {3}.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_SET_RELATED_ELEMENTS" class="member-name-link">UNABLE_TO_SET_RELATED_ELEMENTS</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_SET_REFERENCE_VALUE_ASSIGNMENTS" class="member-name-link">UNABLE_TO_SET_REFERENCE_VALUE_ASSIGNMENTS</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0053 - The {0} integration connector encountered an {1} exception when setting up the related elements linked to entity {2}.</div>
+<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0050 - The {0} integration connector encountered an {1} exception when setting up the related reference values assigned to the open metadata entity {2} that represents Apache Atlas entity {3}.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#UNABLE_TO_SET_UP_CLASSIFICATION_REFERENCE_SET" class="member-name-link">UNABLE_TO_SET_UP_CLASSIFICATION_REFERENCE_SET</a></code></div>
 <div class="col-last even-row-color">
@@ -429,13 +397,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="EGERIA_GLOSSARY_CATEGORY_DELETED">
-<h3>EGERIA_GLOSSARY_CATEGORY_DELETED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">EGERIA_GLOSSARY_CATEGORY_DELETED</span></div>
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0012 - The open metadata glossary category {0} equivalent for Apache Atlas glossary category {1} is missing</div>
-</section>
-</li>
-<li>
 <section class="detail" id="EGERIA_GUID_MISSING">
 <h3>EGERIA_GUID_MISSING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">EGERIA_GUID_MISSING</span></div>
@@ -457,13 +418,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="REPLACING_EGERIA_GLOSSARY_CATEGORY">
-<h3>REPLACING_EGERIA_GLOSSARY_CATEGORY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">REPLACING_EGERIA_GLOSSARY_CATEGORY</span></div>
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0016 - The open metadata glossary category {0} for equivalent Apache Atlas glossary category {1} has been unilaterally deleted; connector {2} is putting it back</div>
-</section>
-</li>
-<li>
 <section class="detail" id="CONFIGURATION_PROPERTY_NOT_SET">
 <h3>CONFIGURATION_PROPERTY_NOT_SET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">CONFIGURATION_PROPERTY_NOT_SET</span></div>
@@ -482,20 +436,6 @@ the order they are declared.</div>
 <h3>CONFIGURATION_PROPERTY_SET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">CONFIGURATION_PROPERTY_SET</span></div>
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0019 - The {0} configuration property is set to {1} for {2} integration connector</div>
-</section>
-</li>
-<li>
-<section class="detail" id="SYNC_ATLAS_GLOSSARY">
-<h3>SYNC_ATLAS_GLOSSARY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">SYNC_ATLAS_GLOSSARY</span></div>
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0025 - The {0} integration connector is copying the Apache Atlas glossary called {1} into the {2} ({3}) open metadata glossary</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNABLE_TO_REGISTER_LISTENER">
-<h3>UNABLE_TO_REGISTER_LISTENER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_REGISTER_LISTENER</span></div>
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0032 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}</div>
 </section>
 </li>
 <li>
@@ -555,13 +495,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="CREATING_ATLAS_ENTITY">
-<h3>CREATING_ATLAS_ENTITY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">CREATING_ATLAS_ENTITY</span></div>
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0041 - The integration connector {0} created Apache Atlas {1} entity {2} match open metadata {3} entity {4}</div>
-</section>
-</li>
-<li>
 <section class="detail" id="UPDATING_EGERIA_ENTITY">
 <h3>UPDATING_EGERIA_ENTITY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">UPDATING_EGERIA_ENTITY</span></div>
@@ -583,24 +516,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="DELETING_ATLAS_ENTITY">
-<h3>DELETING_ATLAS_ENTITY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">DELETING_ATLAS_ENTITY</span></div>
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0045 - The integration connector {0} is deleting the {1} Apache Atlas entity {2} since the open metadata entity {3} has been removed</div>
-</section>
-</li>
-<li>
 <section class="detail" id="REPLACING_EGERIA_ENTITY">
 <h3>REPLACING_EGERIA_ENTITY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">REPLACING_EGERIA_ENTITY</span></div>
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0046 - The integration connector {0} is replacing {1} open metadata entity {2} for Apache Atlas entity {3} since the open metadata entity has been unilaterally removed</div>
-</section>
-</li>
-<li>
-<section class="detail" id="REPLACING_ATLAS_ENTITY">
-<h3>REPLACING_ATLAS_ENTITY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">REPLACING_ATLAS_ENTITY</span></div>
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0047 - The integration connector {0} is replacing Apache Atlas {1} entity {2} for open metadata entity {3} since the Apache Atlas entity has been unilaterally removed</div>
 </section>
 </li>
 <li>
@@ -636,13 +555,6 @@ the order they are declared.</div>
 <h3>UNABLE_TO_GET_RELATED_ELEMENTS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_GET_RELATED_ELEMENTS</span></div>
 <div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0052 - The {0} integration connector encountered an {1} exception when retrieving the related elements linked to entity {2}.  The exception message included was {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNABLE_TO_SET_RELATED_ELEMENTS">
-<h3>UNABLE_TO_SET_RELATED_ELEMENTS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SET_RELATED_ELEMENTS</span></div>
-<div class="block">APACHE-ATLAS-INTEGRATION-CONNECTOR-0053 - The {0} integration connector encountered an {1} exception when setting up the related elements linked to entity {2}.  The exception message included was {3}</div>
 </section>
 </li>
 <li>

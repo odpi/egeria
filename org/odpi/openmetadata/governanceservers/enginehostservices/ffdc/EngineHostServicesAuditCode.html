@@ -153,30 +153,13 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="block">ENGINE-HOST-SERVICES-0033 - Engine action {0} running governance service {1} for governance engine {2} with request type {3}
  has recorded completion status of {4} and output guards of {5}.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ENGINE_ACTION_SCAN_FAILED" class="member-name-link">ENGINE_ACTION_SCAN_FAILED</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0035 - Failed to retrieve active engine actions.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#ENGINE_ACTION_TARGET_COMPLETION" class="member-name-link">ENGINE_ACTION_TARGET_COMPLETION</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0032 - Engine action {0} running governance service {1} for governance engine {2} with request type {3} has
- recorded completion on action target {4} with status {5} (start time {6}; completion time {7}) and completion message of {8}</div>
-</div>
 <div class="col-first odd-row-color"><code><a href="#ENGINE_SERVICE_INSTANCE_FAILURE" class="member-name-link">ENGINE_SERVICE_INSTANCE_FAILURE</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0020 - Engine host server {0} failed to start.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ENGINE_SERVICE_NULL_HANDLERS" class="member-name-link">ENGINE_SERVICE_NULL_HANDLERS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ENGINE_SHUTDOWN" class="member-name-link">ENGINE_SHUTDOWN</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0013 - Engine service {0} in engine host {1} cannot start any governance engines</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#ENGINE_SHUTDOWN" class="member-name-link">ENGINE_SHUTDOWN</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0015 - The governance engine {0} in server {1} is shutting down</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#EXC_ON_ERROR_STATUS_UPDATE" class="member-name-link">EXC_ON_ERROR_STATUS_UPDATE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0024 - Governance engine {0} cannot update the status for governance service {1}.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#FINISHED_ALL_GOVERNANCE_ENGINE_CONFIG" class="member-name-link">FINISHED_ALL_GOVERNANCE_ENGINE_CONFIG</a></code></div>
 <div class="col-last odd-row-color">
@@ -194,63 +177,14 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last even-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0030 - Failed to refresh configuration for governance service registered as {0} for governance request types {1}.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_CONFIG_OMAS_SERVER_NAME" class="member-name-link">NO_CONFIG_OMAS_SERVER_NAME</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0005 - Engine host {0} is not configured with the name for the server running its configuration OMAS {1}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NO_CONFIG_OMAS_SERVER_URL" class="member-name-link">NO_CONFIG_OMAS_SERVER_URL</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0004 - Engine host {0} is not configured with the platform URL root for its configuration OMAS {1}</div>
-</div>
 <div class="col-first odd-row-color"><code><a href="#NO_CONFIGURATION_LISTENER" class="member-name-link">NO_CONFIGURATION_LISTENER</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0026 - The engine host services are unable to retrieve the connection for the configuration listener for server {0}
  from metadata server {1}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_ENGINES" class="member-name-link">NO_ENGINES</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0152 - The {0} in server {1} is not configured with any engines</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NO_ENGINES_FOR_SERVICE" class="member-name-link">NO_ENGINES_FOR_SERVICE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0008 - No governance engines are configured in the engine service {0} on engine host {1}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NO_OMAS_SERVER_NAME" class="member-name-link">NO_OMAS_SERVER_NAME</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0151 - {0} in server {1} is not configured with the name for the server running the {2}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NO_OMAS_SERVER_URL" class="member-name-link">NO_OMAS_SERVER_URL</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0150 - {0} in server {1} is not configured with the platform URL root for the {2}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NO_PARTNER_OMAS_SERVER_NAME" class="member-name-link">NO_PARTNER_OMAS_SERVER_NAME</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0007 - Engine service {0} in engine host {1} is not configured with the name for the server running its partner OMAS {2}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NO_PARTNER_OMAS_SERVER_URL" class="member-name-link">NO_PARTNER_OMAS_SERVER_URL</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0006 - Engine service {0} in engine host {1} is not configured with the platform URL root for its partner OMAS {2}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NO_SUPPORTED_REQUEST_TYPES" class="member-name-link">NO_SUPPORTED_REQUEST_TYPES</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0022 - Governance engine {0} in engine host server {1} is not configured to support any type of governance requests</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_ENGINE_NAME" class="member-name-link">NULL_ENGINE_NAME</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0009 - {0} in engine host {1} is configured with a null engine name</div>
-</div>
 <div class="col-first even-row-color"><code><a href="#NULL_ENGINE_SERVICE_ADMIN_CLASS" class="member-name-link">NULL_ENGINE_SERVICE_ADMIN_CLASS</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0010 - The engine service {0} has been configured with a null admin class in engine host {1}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#REQUEST_TYPE_CONFIG_ERROR" class="member-name-link">REQUEST_TYPE_CONFIG_ERROR</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0023 - Governance engine {0} in engine host server {1} is not able to retrieve its configured governance request types from the
- Governance Engine OMAS running in server {2} on OMAG Server Platform {3}.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#RESTART_SERVICE_ERROR" class="member-name-link">RESTART_SERVICE_ERROR</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-2001 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#SERVER_INITIALIZED" class="member-name-link">SERVER_INITIALIZED</a></code></div>
 <div class="col-last odd-row-color">
@@ -296,10 +230,6 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION_DURING_RESTART" class="member-name-link">UNEXPECTED_EXCEPTION_DURING_RESTART</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-2002 - {0} caught an exception {1} while restarting incomplete engine actions; the error message was {2}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_GOVERNANCE_ENGINE_NAME" class="member-name-link">UNKNOWN_GOVERNANCE_ENGINE_NAME</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">ENGINE-HOST-SERVICES-0025 - Governance engine called {0} is not known by metadata server {1}.</div>
 </div>
 </div>
 </section>
@@ -383,48 +313,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NO_CONFIG_OMAS_SERVER_URL">
-<h3>NO_CONFIG_OMAS_SERVER_URL</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_CONFIG_OMAS_SERVER_URL</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0004 - Engine host {0} is not configured with the platform URL root for its configuration OMAS {1}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_CONFIG_OMAS_SERVER_NAME">
-<h3>NO_CONFIG_OMAS_SERVER_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_CONFIG_OMAS_SERVER_NAME</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0005 - Engine host {0} is not configured with the name for the server running its configuration OMAS {1}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_PARTNER_OMAS_SERVER_URL">
-<h3>NO_PARTNER_OMAS_SERVER_URL</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_PARTNER_OMAS_SERVER_URL</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0006 - Engine service {0} in engine host {1} is not configured with the platform URL root for its partner OMAS {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_PARTNER_OMAS_SERVER_NAME">
-<h3>NO_PARTNER_OMAS_SERVER_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_PARTNER_OMAS_SERVER_NAME</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0007 - Engine service {0} in engine host {1} is not configured with the name for the server running its partner OMAS {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_ENGINES_FOR_SERVICE">
-<h3>NO_ENGINES_FOR_SERVICE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_ENGINES_FOR_SERVICE</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0008 - No governance engines are configured in the engine service {0} on engine host {1}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_ENGINE_NAME">
-<h3>NULL_ENGINE_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NULL_ENGINE_NAME</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0009 - {0} in engine host {1} is configured with a null engine name</div>
-</section>
-</li>
-<li>
 <section class="detail" id="NULL_ENGINE_SERVICE_ADMIN_CLASS">
 <h3>NULL_ENGINE_SERVICE_ADMIN_CLASS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NULL_ENGINE_SERVICE_ADMIN_CLASS</span></div>
@@ -444,13 +332,6 @@ the order they are declared.</div>
 <h3>STARTING_ENGINE_SERVICES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">STARTING_ENGINE_SERVICES</span></div>
 <div class="block">ENGINE-HOST-SERVICES-0012 - The Open Metadata Engine Services (OMESs) are initializing in server {0}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ENGINE_SERVICE_NULL_HANDLERS">
-<h3>ENGINE_SERVICE_NULL_HANDLERS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_SERVICE_NULL_HANDLERS</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0013 - Engine service {0} in engine host {1} cannot start any governance engines</div>
 </section>
 </li>
 <li>
@@ -511,36 +392,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NO_SUPPORTED_REQUEST_TYPES">
-<h3>NO_SUPPORTED_REQUEST_TYPES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_SUPPORTED_REQUEST_TYPES</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0022 - Governance engine {0} in engine host server {1} is not configured to support any type of governance requests</div>
-</section>
-</li>
-<li>
-<section class="detail" id="REQUEST_TYPE_CONFIG_ERROR">
-<h3>REQUEST_TYPE_CONFIG_ERROR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">REQUEST_TYPE_CONFIG_ERROR</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0023 - Governance engine {0} in engine host server {1} is not able to retrieve its configured governance request types from the
- Governance Engine OMAS running in server {2} on OMAG Server Platform {3}.  The error message was {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="EXC_ON_ERROR_STATUS_UPDATE">
-<h3>EXC_ON_ERROR_STATUS_UPDATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">EXC_ON_ERROR_STATUS_UPDATE</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0024 - Governance engine {0} cannot update the status for governance service {1}.  The exception was {2} with error
- message {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNKNOWN_GOVERNANCE_ENGINE_NAME">
-<h3>UNKNOWN_GOVERNANCE_ENGINE_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">UNKNOWN_GOVERNANCE_ENGINE_NAME</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0025 - Governance engine called {0} is not known by metadata server {1}.  Exception {2} with message {3} returned to server {4}</div>
-</section>
-</li>
-<li>
 <section class="detail" id="NO_CONFIGURATION_LISTENER">
 <h3>NO_CONFIGURATION_LISTENER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_CONFIGURATION_LISTENER</span></div>
@@ -586,14 +437,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="ENGINE_ACTION_TARGET_COMPLETION">
-<h3>ENGINE_ACTION_TARGET_COMPLETION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_ACTION_TARGET_COMPLETION</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0032 - Engine action {0} running governance service {1} for governance engine {2} with request type {3} has
- recorded completion on action target {4} with status {5} (start time {6}; completion time {7}) and completion message of {8}</div>
-</section>
-</li>
-<li>
 <section class="detail" id="ENGINE_ACTION_RECORD_COMPLETION">
 <h3>ENGINE_ACTION_RECORD_COMPLETION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_ACTION_RECORD_COMPLETION</span></div>
@@ -610,13 +453,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="ENGINE_ACTION_SCAN_FAILED">
-<h3>ENGINE_ACTION_SCAN_FAILED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_ACTION_SCAN_FAILED</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0035 - Failed to retrieve active engine actions.  The exception was {0} with error message {1}</div>
-</section>
-</li>
-<li>
 <section class="detail" id="ENGINE_ACTION_CANCELLED">
 <h3>ENGINE_ACTION_CANCELLED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_ACTION_CANCELLED</span></div>
@@ -628,27 +464,6 @@ the order they are declared.</div>
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
 <div class="block">ENGINE-HOST-SERVICES-0037 - The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_OMAS_SERVER_URL">
-<h3>NO_OMAS_SERVER_URL</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_OMAS_SERVER_URL</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0150 - {0} in server {1} is not configured with the platform URL root for the {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_OMAS_SERVER_NAME">
-<h3>NO_OMAS_SERVER_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_OMAS_SERVER_NAME</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0151 - {0} in server {1} is not configured with the name for the server running the {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_ENGINES">
-<h3>NO_ENGINES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_ENGINES</span></div>
-<div class="block">ENGINE-HOST-SERVICES-0152 - The {0} in server {1} is not configured with any engines</div>
 </section>
 </li>
 <li>
@@ -670,13 +485,6 @@ the order they are declared.</div>
 <h3>ACTION_PROCESSING_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">ACTION_PROCESSING_ERROR</span></div>
 <div class="block">ENGINE-HOST-SERVICES-2000 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="RESTART_SERVICE_ERROR">
-<h3>RESTART_SERVICE_ERROR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">RESTART_SERVICE_ERROR</span></div>
-<div class="block">ENGINE-HOST-SERVICES-2001 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}</div>
 </section>
 </li>
 <li>

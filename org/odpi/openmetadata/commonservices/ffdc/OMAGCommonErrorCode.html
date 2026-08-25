@@ -178,14 +178,6 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
 <div class="col-last odd-row-color">
 <div class="block">OMAG-COMMON-400-031 - A request by user {0} to method {1} on server {2} had no request body.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NOT_ANCHOR_ELEMENT" class="member-name-link">NOT_ANCHOR_ELEMENT</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OMAG-COMMON-400-027 - The {0} element {1} is expected to be an anchor entity but is in fact anchored to {2}.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NOT_IN_THE_ZONE" class="member-name-link">NOT_IN_THE_ZONE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OMAG-COMMON-400-020 - Element {0} is not recognized by the {1} service</div>
-</div>
 <div class="col-first even-row-color"><code><a href="#NULL_ARRAY_PARAMETER" class="member-name-link">NULL_ARRAY_PARAMETER</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">OMAG-COMMON-400-007 - The array value passed on the {0} parameter of the {1} operation is null or empty</div>
@@ -234,39 +226,30 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
 <div class="col-last odd-row-color">
 <div class="block">OMAG-COMMON-400-003 - The OMAG Server name is null</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVER_URL_MALFORMED" class="member-name-link">SERVER_URL_MALFORMED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SERVER_URL_NOT_SPECIFIED" class="member-name-link">SERVER_URL_NOT_SPECIFIED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OMAG-COMMON-400-002 - The OMAS Server URL {0} is not in a recognized format</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_URL_NOT_SPECIFIED" class="member-name-link">SERVER_URL_NOT_SPECIFIED</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">OMAGCommonAuditCode - The OMAG Server Platform URL is null</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMAG-COMMON-400-016 - An unexpected {0} exception was caught by {1}; error message was {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNIQUE_NAME_ALREADY_IN_USE" class="member-name-link">UNIQUE_NAME_ALREADY_IN_USE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNIQUE_NAME_ALREADY_IN_USE" class="member-name-link">UNIQUE_NAME_ALREADY_IN_USE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMAG-COMMON-409-001 - Method {0} of service {1} is not able to create an instance of type {2} because parameter name {3} is
  defined as a unique property and value {4} is not available for use</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNKNOWN_ELEMENT" class="member-name-link">UNKNOWN_ELEMENT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMAG-COMMON-400-021 - The identifier {0} of the {1} passed by {2} to method {3} of service {4} is not recognized by the {5} server</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNRECOGNIZED_TYPE_NAME" class="member-name-link">UNRECOGNIZED_TYPE_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNRECOGNIZED_TYPE_NAME" class="member-name-link">UNRECOGNIZED_TYPE_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMAG-COMMON-400-018 - The type name {0} passed on method {1} of service {2} is not recognized</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#WRONG_ANCHOR_GUID" class="member-name-link">WRONG_ANCHOR_GUID</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OMAG-COMMON-400-026 - The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#WRONG_METADATA_COLLECTION_FOR_UPDATE" class="member-name-link">WRONG_METADATA_COLLECTION_FOR_UPDATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#WRONG_ANCHOR_GUID" class="member-name-link">WRONG_ANCHOR_GUID</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OMAG-COMMON-400-025 - Method {0} of service {1} is not able to update instance {2} of type {3} as part of {4} metadata collection named {5}
- (GUID {6}) because this instance actually belongs to {7} metadata collection name {8} (GUID {9})</div>
+<div class="block">OMAG-COMMON-400-026 - The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}.</div>
 </div>
 </div>
 </section>
@@ -333,13 +316,6 @@ the order they are declared.</div>
 <h3>SERVER_URL_NOT_SPECIFIED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">SERVER_URL_NOT_SPECIFIED</span></div>
 <div class="block">OMAGCommonAuditCode - The OMAG Server Platform URL is null</div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_URL_MALFORMED">
-<h3>SERVER_URL_MALFORMED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">SERVER_URL_MALFORMED</span></div>
-<div class="block">OMAG-COMMON-400-002 - The OMAS Server URL {0} is not in a recognized format</div>
 </section>
 </li>
 <li>
@@ -462,13 +438,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NOT_IN_THE_ZONE">
-<h3>NOT_IN_THE_ZONE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NOT_IN_THE_ZONE</span></div>
-<div class="block">OMAG-COMMON-400-020 - Element {0} is not recognized by the {1} service</div>
-</section>
-</li>
-<li>
 <section class="detail" id="UNKNOWN_ELEMENT">
 <h3>UNKNOWN_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ELEMENT</span></div>
@@ -497,25 +466,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="WRONG_METADATA_COLLECTION_FOR_UPDATE">
-<h3>WRONG_METADATA_COLLECTION_FOR_UPDATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">WRONG_METADATA_COLLECTION_FOR_UPDATE</span></div>
-<div class="block">OMAG-COMMON-400-025 - Method {0} of service {1} is not able to update instance {2} of type {3} as part of {4} metadata collection named {5}
- (GUID {6}) because this instance actually belongs to {7} metadata collection name {8} (GUID {9})</div>
-</section>
-</li>
-<li>
 <section class="detail" id="WRONG_ANCHOR_GUID">
 <h3>WRONG_ANCHOR_GUID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">WRONG_ANCHOR_GUID</span></div>
 <div class="block">OMAG-COMMON-400-026 - The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}. Method {4} cannot proceed</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NOT_ANCHOR_ELEMENT">
-<h3>NOT_ANCHOR_ELEMENT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NOT_ANCHOR_ELEMENT</span></div>
-<div class="block">OMAG-COMMON-400-027 - The {0} element {1} is expected to be an anchor entity but is in fact anchored to {2}. Method {3} cannot proceed</div>
 </section>
 </li>
 <li>

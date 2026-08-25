@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">AtlasSurveyAuditCode</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="AtlasSurveyAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc">AtlasSurveyAuditCode</a>&gt;
 implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></span></div>
-<div class="block">The AtlasDiscoveryAuditCode is used to define the message content for the OMRS Audit Log.
+<div class="block">The AtlasSurveyAuditCode is used to define the message content for the OMRS Audit Log.
  The 5 fields in the enum are:
  <ul>
      <li>Log Message id - to uniquely identify the message</li>
@@ -118,14 +118,6 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="col-first even-row-color"><code><a href="#MISSING_ASSET_UNIVERSE" class="member-name-link">MISSING_ASSET_UNIVERSE</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-0004 - The asset universe for Apache Atlas Software Server is null.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-0001 - The {0} Apache Atlas Discovery Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#WRONG_REST_CONNECTOR" class="member-name-link">WRONG_REST_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-0002 - The {0} Apache Atlas Survey Action Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#WRONG_ROOT_SCHEMA_TYPE" class="member-name-link">WRONG_ROOT_SCHEMA_TYPE</a></code></div>
 <div class="col-last odd-row-color">
@@ -191,20 +183,6 @@ the order they are declared.</div>
 <section class="constant-details" id="enum-constant-detail">
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="UNEXPECTED_EXCEPTION">
-<h3>UNEXPECTED_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasSurveyAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc">AtlasSurveyAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
-<div class="block">APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-0001 - The {0} Apache Atlas Discovery Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="WRONG_REST_CONNECTOR">
-<h3>WRONG_REST_CONNECTOR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="AtlasSurveyAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc">AtlasSurveyAuditCode</a></span>&nbsp;<span class="element-name">WRONG_REST_CONNECTOR</span></div>
-<div class="block">APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-0002 - The {0} Apache Atlas Survey Action Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}</div>
-</section>
-</li>
 <li>
 <section class="detail" id="WRONG_ROOT_SCHEMA_TYPE">
 <h3>WRONG_ROOT_SCHEMA_TYPE</h3>

@@ -125,17 +125,9 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="col-last even-row-color">
 <div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-400-002 - The file location {0} is not a directory</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FILES_LOCATION_NOT_FOUND" class="member-name-link">FILES_LOCATION_NOT_FOUND</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#FILES_LOCATION_NOT_READABLE" class="member-name-link">FILES_LOCATION_NOT_READABLE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-404-001 - The directory named {0} does not exist</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#FILES_LOCATION_NOT_READABLE" class="member-name-link">FILES_LOCATION_NOT_READABLE</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-400-003 - The directory (folder) {0} is not readable</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#FILES_LOCATION_NOT_SPECIFIED" class="member-name-link">FILES_LOCATION_NOT_SPECIFIED</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-400-001 - The name of the directory (folder) identifying where the files to be catalogued are located is null in the Connection object {0}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXC_DATA_FILE_UPDATE" class="member-name-link">UNEXPECTED_EXC_DATA_FILE_UPDATE</a></code></div>
 <div class="col-last even-row-color">
@@ -163,14 +155,6 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="col-last even-row-color">
 <div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-500-005 - The connector {0} received an unexpected {1} exception when
  processing the file named {2} in method {3}; the error message was: {4}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_IO_EXCEPTION" class="member-name-link">UNEXPECTED_IO_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-500-002 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_SECURITY_EXCEPTION" class="member-name-link">UNEXPECTED_SECURITY_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-500-001 - The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}</div>
 </div>
 </div>
 </section>
@@ -233,13 +217,6 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="FILES_LOCATION_NOT_SPECIFIED">
-<h3>FILES_LOCATION_NOT_SPECIFIED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsErrorCode</a></span>&nbsp;<span class="element-name">FILES_LOCATION_NOT_SPECIFIED</span></div>
-<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-400-001 - The name of the directory (folder) identifying where the files to be catalogued are located is null in the Connection object {0}</div>
-</section>
-</li>
-<li>
 <section class="detail" id="FILES_LOCATION_NOT_DIRECTORY">
 <h3>FILES_LOCATION_NOT_DIRECTORY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsErrorCode</a></span>&nbsp;<span class="element-name">FILES_LOCATION_NOT_DIRECTORY</span></div>
@@ -267,27 +244,6 @@ the order they are declared.</div>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXC_DATA_FILE_UPDATE</span></div>
 <div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-400-005 - An unexpected {0} exception was returned to the {1} integration
  connector when it tried to update the DataFile in the metadata repositories for file {2}.  The error message was {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="FILES_LOCATION_NOT_FOUND">
-<h3>FILES_LOCATION_NOT_FOUND</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsErrorCode</a></span>&nbsp;<span class="element-name">FILES_LOCATION_NOT_FOUND</span></div>
-<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-404-001 - The directory named {0} does not exist</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNEXPECTED_SECURITY_EXCEPTION">
-<h3>UNEXPECTED_SECURITY_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_SECURITY_EXCEPTION</span></div>
-<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-500-001 - The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNEXPECTED_IO_EXCEPTION">
-<h3>UNEXPECTED_IO_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BasicFilesIntegrationConnectorsErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc">BasicFilesIntegrationConnectorsErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_IO_EXCEPTION</span></div>
-<div class="block">BASIC-FILES-INTEGRATION-CONNECTORS-500-002 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}</div>
 </section>
 </li>
 <li>

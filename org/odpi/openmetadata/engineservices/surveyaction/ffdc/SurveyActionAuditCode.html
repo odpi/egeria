@@ -119,51 +119,38 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last even-row-color">
 <div class="block">OMES-SURVEY-ACTION-0001 - The Survey Action engine services are initializing in server {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EXC_ON_ERROR_STATUS_UPDATE" class="member-name-link">EXC_ON_ERROR_STATUS_UPDATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#IGNORING_ASSETS" class="member-name-link">IGNORING_ASSETS</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OMES-SURVEY-ACTION-0021 - Survey action engine {0} cannot update the status for survey action service {1}.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#IGNORING_ASSETS" class="member-name-link">IGNORING_ASSETS</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">OMES-SURVEY-ACTION-0030 - The survey action service {0} linked to request type {1} is processing asset {2} and ignoring the following asset action targets: {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INVALID_SURVEY_ACTION_SERVICE" class="member-name-link">INVALID_SURVEY_ACTION_SERVICE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INVALID_SURVEY_ACTION_SERVICE" class="member-name-link">INVALID_SURVEY_ACTION_SERVICE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMES-SURVEY-ACTION-0029 - The survey action service {0} linked to request type {1} can not be started.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_SURVEY_ACTION_ENGINES_STARTED" class="member-name-link">NO_SURVEY_ACTION_ENGINES_STARTED</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OMES-SURVEY-ACTION-0020 - Survey Action OMES in server {0} cannot start any survey action engines</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_SURVEY_SERVICE" class="member-name-link">NULL_SURVEY_SERVICE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SERVER_SHUTDOWN" class="member-name-link">SERVER_SHUTDOWN</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OMES-SURVEY-ACTION-0022 - Method {0} can not execute in the survey action engine {1} hosted by Survey Action OMES in server {2} because the associated " +
-                                 "survey action service properties are null</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#SERVER_SHUTDOWN" class="member-name-link">SERVER_SHUTDOWN</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">OMES-SURVEY-ACTION-0016 - The Survey Action OMES in server {0} has completed shutdown</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_SHUTTING_DOWN" class="member-name-link">SERVER_SHUTTING_DOWN</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVER_SHUTTING_DOWN" class="member-name-link">SERVER_SHUTTING_DOWN</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMES-SURVEY-ACTION-0014 - The Survey Action OMES in server {0} is shutting down</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMES-SURVEY-ACTION-0012 - The Survey Action OMES cannot initialize a new instance of itself in server {0}; error message is {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SURVEY_ACTION_SERVICE_COMPLETE" class="member-name-link">SURVEY_ACTION_SERVICE_COMPLETE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SURVEY_ACTION_SERVICE_COMPLETE" class="member-name-link">SURVEY_ACTION_SERVICE_COMPLETE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMES-SURVEY-ACTION-0019 - The survey action service {0} has completed the analysis of asset {1} with request type {2} in {3}
  milliseconds; the results are stored in survey report {4}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SURVEY_ACTION_SERVICE_FAILED" class="member-name-link">SURVEY_ACTION_SERVICE_FAILED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SURVEY_ACTION_SERVICE_FAILED" class="member-name-link">SURVEY_ACTION_SERVICE_FAILED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMES-SURVEY-ACTION-0018 - The survey action service {0} threw a {1} exception during the generation of survey report
  {2} for asset {3} during request type {4} in survey action engine {5} (guid={6}).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SURVEY_ACTION_SERVICE_STARTING" class="member-name-link">SURVEY_ACTION_SERVICE_STARTING</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SURVEY_ACTION_SERVICE_STARTING" class="member-name-link">SURVEY_ACTION_SERVICE_STARTING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMES-SURVEY-ACTION-0017 - The survey action service {0} is starting to analyze asset {1} with request type {2}
  in survey action engine {3} (guid={4}); the results will be stored in survey report {5}</div>
 </div>
@@ -277,29 +264,6 @@ the order they are declared.</div>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.surveyaction.ffdc">SurveyActionAuditCode</a></span>&nbsp;<span class="element-name">SURVEY_ACTION_SERVICE_COMPLETE</span></div>
 <div class="block">OMES-SURVEY-ACTION-0019 - The survey action service {0} has completed the analysis of asset {1} with request type {2} in {3}
  milliseconds; the results are stored in survey report {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_SURVEY_ACTION_ENGINES_STARTED">
-<h3>NO_SURVEY_ACTION_ENGINES_STARTED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.surveyaction.ffdc">SurveyActionAuditCode</a></span>&nbsp;<span class="element-name">NO_SURVEY_ACTION_ENGINES_STARTED</span></div>
-<div class="block">OMES-SURVEY-ACTION-0020 - Survey Action OMES in server {0} cannot start any survey action engines</div>
-</section>
-</li>
-<li>
-<section class="detail" id="EXC_ON_ERROR_STATUS_UPDATE">
-<h3>EXC_ON_ERROR_STATUS_UPDATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.surveyaction.ffdc">SurveyActionAuditCode</a></span>&nbsp;<span class="element-name">EXC_ON_ERROR_STATUS_UPDATE</span></div>
-<div class="block">OMES-SURVEY-ACTION-0021 - Survey action engine {0} cannot update the status for survey action service {1}.
- The exception was {2} with error message {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NULL_SURVEY_SERVICE">
-<h3>NULL_SURVEY_SERVICE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.surveyaction.ffdc">SurveyActionAuditCode</a></span>&nbsp;<span class="element-name">NULL_SURVEY_SERVICE</span></div>
-<div class="block">OMES-SURVEY-ACTION-0022 - Method {0} can not execute in the survey action engine {1} hosted by Survey Action OMES in server {2} because the associated " +
-                                 "survey action service properties are null</div>
 </section>
 </li>
 <li>

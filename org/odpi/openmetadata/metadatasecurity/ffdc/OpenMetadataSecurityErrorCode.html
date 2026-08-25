@@ -142,25 +142,17 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
 <div class="col-last even-row-color">
 <div class="block">OMAG-SERVER-SECURITY-500-002 - Element {1} is not visible to user {0}; it has been filtered from the search results</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#MULTIPLE_CONNECTIONS_FOUND" class="member-name-link">MULTIPLE_CONNECTIONS_FOUND</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NO_CONNECTIONS_ALLOWED" class="member-name-link">NO_CONNECTIONS_ALLOWED</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OMAG-SERVER-SECURITY-403-015 - {0} connections are connected to the asset with unique identifier {1} but there is no security connector to select a connection for user {2}; the calling method is {3}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NO_CONNECTIONS_ALLOWED" class="member-name-link">NO_CONNECTIONS_ALLOWED</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">OMAG-SERVER-SECURITY-403-016 - {0} connections are connected to the asset with unique identifier {1} but the user {2} is not permitted to use any of them; the calling method is {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNAUTHORIZED_ADD_FEEDBACK" class="member-name-link">UNAUTHORIZED_ADD_FEEDBACK</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNAUTHORIZED_ADD_FEEDBACK" class="member-name-link">UNAUTHORIZED_ADD_FEEDBACK</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMAG-SERVER-SECURITY-403-004 - User {0} is not authorized to attach feedback to element {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNAUTHORIZED_ANCHOR_ACCESS" class="member-name-link">UNAUTHORIZED_ANCHOR_ACCESS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OMAG-SERVER-SECURITY-403-007 - User {0} is not authorized to issue operation {1} on {2} anchor element {3}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#UNAUTHORIZED_CONNECTION_ACCESS" class="member-name-link">UNAUTHORIZED_CONNECTION_ACCESS</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UNAUTHORIZED_ANCHOR_ACCESS" class="member-name-link">UNAUTHORIZED_ANCHOR_ACCESS</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OMAG-SERVER-SECURITY-403-006 - User {0} is not authorized to access connection {1}</div>
+<div class="block">OMAG-SERVER-SECURITY-403-007 - User {0} is not authorized to issue operation {1} on {2} anchor element {3}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#UNAUTHORIZED_ELEMENT_ACCESS" class="member-name-link">UNAUTHORIZED_ELEMENT_ACCESS</a></code></div>
 <div class="col-last even-row-color">
@@ -202,16 +194,12 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
 <div class="col-last odd-row-color">
 <div class="block">OMAG-SERVER-SECURITY-403-005 - User {0} is not authorized to change the zone membership for element {1} from {2} to {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_CONNECTION_RETURNED" class="member-name-link">UNKNOWN_CONNECTION_RETURNED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_CONTROL" class="member-name-link">UNKNOWN_CONTROL</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OMAG-PLATFORM-SECURITY-500-001 - {0} connections are connected to the asset with unique identifier {1} but the connector selecting the connection for user {2} has returned an unrecognized connection; the calling method is {3}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_CONTROL" class="member-name-link">UNKNOWN_CONTROL</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">OMAG-SERVER-SECURITY-403-025 - Security access control {0} is not recognized</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_USER" class="member-name-link">UNKNOWN_USER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNKNOWN_USER" class="member-name-link">UNKNOWN_USER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-SECURITY-403-017 - User {0} is not recognized</div>
 </div>
 </div>
@@ -324,13 +312,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="UNAUTHORIZED_CONNECTION_ACCESS">
-<h3>UNAUTHORIZED_CONNECTION_ACCESS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">UNAUTHORIZED_CONNECTION_ACCESS</span></div>
-<div class="block">OMAG-SERVER-SECURITY-403-006 - User {0} is not authorized to access connection {1}</div>
-</section>
-</li>
-<li>
 <section class="detail" id="UNAUTHORIZED_ANCHOR_ACCESS">
 <h3>UNAUTHORIZED_ANCHOR_ACCESS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">UNAUTHORIZED_ANCHOR_ACCESS</span></div>
@@ -373,13 +354,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="MULTIPLE_CONNECTIONS_FOUND">
-<h3>MULTIPLE_CONNECTIONS_FOUND</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">MULTIPLE_CONNECTIONS_FOUND</span></div>
-<div class="block">OMAG-SERVER-SECURITY-403-015 - {0} connections are connected to the asset with unique identifier {1} but there is no security connector to select a connection for user {2}; the calling method is {3}</div>
-</section>
-</li>
-<li>
 <section class="detail" id="NO_CONNECTIONS_ALLOWED">
 <h3>NO_CONNECTIONS_ALLOWED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">NO_CONNECTIONS_ALLOWED</span></div>
@@ -419,13 +393,6 @@ the order they are declared.</div>
 <h3>FAILED_TO_RETRIEVE_CONTROL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">FAILED_TO_RETRIEVE_CONTROL</span></div>
 <div class="block">OMAG-SERVER-SECURITY-403-026 - Exception {0} occurred when retrieving security access control {1}; the exception message was {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNKNOWN_CONNECTION_RETURNED">
-<h3>UNKNOWN_CONNECTION_RETURNED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_CONNECTION_RETURNED</span></div>
-<div class="block">OMAG-PLATFORM-SECURITY-500-001 - {0} connections are connected to the asset with unique identifier {1} but the connector selecting the connection for user {2} has returned an unrecognized connection; the calling method is {3}</div>
 </section>
 </li>
 <li>

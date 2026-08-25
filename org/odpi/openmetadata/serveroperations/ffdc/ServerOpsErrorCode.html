@@ -137,40 +137,20 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
 <div class="col-last even-row-color">
 <div class="block">SERVER-OPS-400-030 - The View Server {0} has been passed an invalid admin services class name {1} for view service {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">SERVER-OPS-503-001 - A client-side exception was received from API call {0} to OMAG Server Platform at {1}.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#EMPTY_CONFIGURATION" class="member-name-link">EMPTY_CONFIGURATION</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">SERVER-OPS-400-019 - OMAG server {0} has been called with a configuration document that has no services configured</div>
-</div>
 <div class="col-first odd-row-color"><code><a href="#ENTERPRISE_TOPIC_START_FAILED" class="member-name-link">ENTERPRISE_TOPIC_START_FAILED</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">SERVER-OPS-400-015 - The OMAG server {0} cannot start the {1} enterprise OMRS topic connector, {2} exception with error message {3} occurred</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_EVENT_BUS_SET" class="member-name-link">NO_EVENT_BUS_SET</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NULL_ACCESS_SERVICE_ADMIN_CLASS" class="member-name-link">NULL_ACCESS_SERVICE_ADMIN_CLASS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">SERVER-OPS-400-017 - The OMAG server {0} cannot add open metadata services until the event bus is configured</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_ACCESS_SERVICE_ADMIN_CLASS" class="member-name-link">NULL_ACCESS_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">SERVER-OPS-400-011 - The OMAG server {0} has been passed a null admin services class name for access service {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NULL_VIEW_SERVICE_ADMIN_CLASS" class="member-name-link">NULL_VIEW_SERVICE_ADMIN_CLASS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NULL_VIEW_SERVICE_ADMIN_CLASS" class="member-name-link">NULL_VIEW_SERVICE_ADMIN_CLASS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">SERVER-OPS-400-029 - The View Server {0} has been passed a null admin services class name for view service {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OLD_CONFIGURATION" class="member-name-link">OLD_CONFIGURATION</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">SERVER-OPS-400-050 - The OMAG Server {0} has been passed configuration which contains the following obsolete section {1}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">SERVER-OPS-500-001 - Method {1} for OMAG server {0} returned an unexpected {2} exception with message {3}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">SERVER-OPS-500-004 - The {0} service detected an unexpected {1} exception with message {2} during initialization</div>
 </div>
 </div>
@@ -262,20 +242,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NO_EVENT_BUS_SET">
-<h3>NO_EVENT_BUS_SET</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerOpsErrorCode.html" title="enum class in org.odpi.openmetadata.serveroperations.ffdc">ServerOpsErrorCode</a></span>&nbsp;<span class="element-name">NO_EVENT_BUS_SET</span></div>
-<div class="block">SERVER-OPS-400-017 - The OMAG server {0} cannot add open metadata services until the event bus is configured</div>
-</section>
-</li>
-<li>
-<section class="detail" id="EMPTY_CONFIGURATION">
-<h3>EMPTY_CONFIGURATION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerOpsErrorCode.html" title="enum class in org.odpi.openmetadata.serveroperations.ffdc">ServerOpsErrorCode</a></span>&nbsp;<span class="element-name">EMPTY_CONFIGURATION</span></div>
-<div class="block">SERVER-OPS-400-019 - OMAG server {0} has been called with a configuration document that has no services configured</div>
-</section>
-</li>
-<li>
 <section class="detail" id="NULL_VIEW_SERVICE_ADMIN_CLASS">
 <h3>NULL_VIEW_SERVICE_ADMIN_CLASS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerOpsErrorCode.html" title="enum class in org.odpi.openmetadata.serveroperations.ffdc">ServerOpsErrorCode</a></span>&nbsp;<span class="element-name">NULL_VIEW_SERVICE_ADMIN_CLASS</span></div>
@@ -290,31 +256,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="OLD_CONFIGURATION">
-<h3>OLD_CONFIGURATION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerOpsErrorCode.html" title="enum class in org.odpi.openmetadata.serveroperations.ffdc">ServerOpsErrorCode</a></span>&nbsp;<span class="element-name">OLD_CONFIGURATION</span></div>
-<div class="block">SERVER-OPS-400-050 - The OMAG Server {0} has been passed configuration which contains the following obsolete section {1}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="UNEXPECTED_EXCEPTION">
-<h3>UNEXPECTED_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerOpsErrorCode.html" title="enum class in org.odpi.openmetadata.serveroperations.ffdc">ServerOpsErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
-<div class="block">SERVER-OPS-500-001 - Method {1} for OMAG server {0} returned an unexpected {2} exception with message {3}</div>
-</section>
-</li>
-<li>
 <section class="detail" id="UNEXPECTED_INITIALIZATION_EXCEPTION">
 <h3>UNEXPECTED_INITIALIZATION_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerOpsErrorCode.html" title="enum class in org.odpi.openmetadata.serveroperations.ffdc">ServerOpsErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_INITIALIZATION_EXCEPTION</span></div>
 <div class="block">SERVER-OPS-500-004 - The {0} service detected an unexpected {1} exception with message {2} during initialization</div>
-</section>
-</li>
-<li>
-<section class="detail" id="CLIENT_SIDE_REST_API_ERROR">
-<h3>CLIENT_SIDE_REST_API_ERROR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerOpsErrorCode.html" title="enum class in org.odpi.openmetadata.serveroperations.ffdc">ServerOpsErrorCode</a></span>&nbsp;<span class="element-name">CLIENT_SIDE_REST_API_ERROR</span></div>
-<div class="block">SERVER-OPS-503-001 - A client-side exception was received from API call {0} to OMAG Server Platform at {1}.  The error message was {2}</div>
 </section>
 </li>
 </ul>

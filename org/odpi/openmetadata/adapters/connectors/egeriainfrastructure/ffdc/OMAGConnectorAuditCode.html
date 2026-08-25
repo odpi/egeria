@@ -115,49 +115,29 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
+<div class="col-first even-row-color"><code><a href="#EGERIA_CONNECTOR_START" class="member-name-link">EGERIA_CONNECTOR_START</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The {0} integration connector has stopped its platform monitoring and is shutting down</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#EGERIA_CONNECTOR_START" class="member-name-link">EGERIA_CONNECTOR_START</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">The {0} integration connector has been started and will call the platforms with userId {1}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EGERIA_TARGET_REFRESH" class="member-name-link">EGERIA_TARGET_REFRESH</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#EGERIA_TARGET_REFRESH" class="member-name-link">EGERIA_TARGET_REFRESH</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Connector {0} is synchronizing metadata for OMAG Server Platform: {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EGERIA_TARGET_START" class="member-name-link">EGERIA_TARGET_START</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#EGERIA_TARGET_START" class="member-name-link">EGERIA_TARGET_START</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The monitoring of OMAG Server Platform '{0}' has started</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEW_SERVER" class="member-name-link">NEW_SERVER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NEW_SERVER" class="member-name-link">NEW_SERVER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The {0} integration connector has created a new {1} server element {2} for server {3} on platform {4}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NULL_METADATA_COLLECTION_ID" class="member-name-link">NULL_METADATA_COLLECTION_ID</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NULL_METADATA_COLLECTION_ID" class="member-name-link">NULL_METADATA_COLLECTION_ID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The {0} integration connector has detected that the {1} server of type {2} has no metadata collection id</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#REFRESH_SERVER_LINEAGE" class="member-name-link">REFRESH_SERVER_LINEAGE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">The {0} integration connector is refreshing the lineage of {1} server {2}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#REFRESH_SERVER_LINEAGE_BAD_CONNECTOR" class="member-name-link">REFRESH_SERVER_LINEAGE_BAD_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">The {0} integration connector cannot refresh the lineage of {1} server {2} because the connector is of type {3} rather than type {4}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#REFRESH_SERVER_LINEAGE_FAILED" class="member-name-link">REFRESH_SERVER_LINEAGE_FAILED</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">The {0} integration connector cannot refresh the lineage of {1} server {2}.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">The {0} Egeria Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_PLATFORM" class="member-name-link">UNKNOWN_PLATFORM</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">The {0} integration connector is not able to retrieve platform {1} ({2}) from the catalog</div>
 </div>
 </div>
 </section>
@@ -234,20 +214,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="UNKNOWN_PLATFORM">
-<h3>UNKNOWN_PLATFORM</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">UNKNOWN_PLATFORM</span></div>
-<div class="block">The {0} integration connector is not able to retrieve platform {1} ({2}) from the catalog</div>
-</section>
-</li>
-<li>
-<section class="detail" id="CONNECTOR_STOPPING">
-<h3>CONNECTOR_STOPPING</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_STOPPING</span></div>
-<div class="block">The {0} integration connector has stopped its platform monitoring and is shutting down</div>
-</section>
-</li>
-<li>
 <section class="detail" id="NEW_SERVER">
 <h3>NEW_SERVER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">NEW_SERVER</span></div>
@@ -259,27 +225,6 @@ the order they are declared.</div>
 <h3>NULL_METADATA_COLLECTION_ID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">NULL_METADATA_COLLECTION_ID</span></div>
 <div class="block">The {0} integration connector has detected that the {1} server of type {2} has no metadata collection id</div>
-</section>
-</li>
-<li>
-<section class="detail" id="REFRESH_SERVER_LINEAGE">
-<h3>REFRESH_SERVER_LINEAGE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">REFRESH_SERVER_LINEAGE</span></div>
-<div class="block">The {0} integration connector is refreshing the lineage of {1} server {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="REFRESH_SERVER_LINEAGE_FAILED">
-<h3>REFRESH_SERVER_LINEAGE_FAILED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">REFRESH_SERVER_LINEAGE_FAILED</span></div>
-<div class="block">The {0} integration connector cannot refresh the lineage of {1} server {2}. Exception was of type {3} with message {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="REFRESH_SERVER_LINEAGE_BAD_CONNECTOR">
-<h3>REFRESH_SERVER_LINEAGE_BAD_CONNECTOR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">REFRESH_SERVER_LINEAGE_BAD_CONNECTOR</span></div>
-<div class="block">The {0} integration connector cannot refresh the lineage of {1} server {2} because the connector is of type {3} rather than type {4}</div>
 </section>
 </li>
 <li>
