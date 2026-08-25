@@ -28,7 +28,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     METADATA_SHARING               (0,  "Metadata sharing",
                                         "The technology under test is able to share metadata with other members of the cohort.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/metadata-sharing",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/metadata-sharing/",
                                         OpenMetadataConformanceProfilePriority.MANDATORY_PROFILE),
 
     /**
@@ -36,7 +36,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     REFERENCE_COPIES               (1,  "Reference copies",
                                         "The technology under test is able to save, lock and purge reference copies of metadata from other members of the cohort.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/reference-copies",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/reference-copies/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -44,7 +44,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     METADATA_MAINTENANCE           (2,  "Metadata maintenance",
                                         "The technology under test supports requests to create, update and purge metadata instances.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/metadata-maintenance",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/metadata-maintenance/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -52,7 +52,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     DYNAMIC_TYPES                  (3,  "Dynamic types",
                                         "The technology under test supports changes to the list of its supported types while it is running.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/dynamic-types",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/dynamic-types/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
 
@@ -61,7 +61,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     HISTORICAL_SEARCH              (5,  "Historical search",
                                         "The technology under test supports search for the state of the metadata instances at a specific time in the past.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/historical-search",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/historical-search/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -69,7 +69,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     ENTITY_PROXIES                 (6,  "Entity proxies",
                                         "The technology under test is able to store stubs for entities to use on relationships when the full entity is not available.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/entity-proxies",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/entity-proxies/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -77,7 +77,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     SOFT_DELETE_RESTORE            (7,  "Soft-delete and restore",
                                         "The technology under test allows an instance to be soft-deleted and restored.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/soft-delete-restore",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/soft-delete-restore/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -85,7 +85,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     UNDO_UPDATE                    (8,  "Undo an update",
                                         "The technology under test is able to restore an instance to its previous version (although the version number is updated).",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/undo-update",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/undo-update/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -93,7 +93,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     REIDENTIFY_INSTANCE            (9,  "Reidentify instance",
                                         "The technology under test supports the command to change the unique identifier (guid) of a metadata instance.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/reidentify-instance",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/reidentify-instance/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -101,7 +101,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     RETYPE_INSTANCE                (10, "Retype instance",
                                         "The technology under test supports the command to change a metadata instance's type to either its super type or a subtype.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/retype-instance",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/retype-instance/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -109,7 +109,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     REHOME_INSTANCE                (11, "Rehome instance",
                                         "The technology under test supports the command to update the metadata collection id for a metadata instance.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/rehome-instance",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/rehome-instance/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -117,7 +117,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     ENTITY_SEARCH                   (12, "Entity search",
                                         "The technology under test supports the ability to search for entity instances.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/entity-search",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/entity-search/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -125,7 +125,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     RELATIONSHIP_SEARCH             (13, "Relationship search",
                                         "The technology under test supports the ability to search for relationship instances.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/relationship-search",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/relationship-search/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -133,7 +133,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     ENTITY_ADVANCED_SEARCH          (14, "Entity advanced search",
                                         "The technology under test supports the use of regular expressions to search for metadata instances.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/entity-advanced-search",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/entity-advanced-search/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -141,7 +141,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     RELATIONSHIP_ADVANCED_SEARCH    (15, "Relationship advanced search",
                                          "The technology under test supports the use of regular expressions to search for relationship instances.",
-                                         "https://egeria-project.org/guides/cts/repository-profiles/relationship-advanced-search",
+                                         "https://egeria-project.org/guides/cts/repository-workbench/profiles/relationship-advanced-search/",
                                          OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -149,7 +149,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     INSTANCE_VERSIONS               (16, "List the versions of each instance",
                                          "The technology under test is able to return the list of versions of an instance that are stored.",
-                                        "https://egeria-project.org/guides/cts/repository-profiles/instance-versions",
+                                        "https://egeria-project.org/guides/cts/repository-workbench/profiles/instance-versions/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -157,7 +157,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     HOME_CLASSIFICATIONS            (17, "Store classifications independently of entity",
                                      "The technology under test is able to provide a home to a classification when the entity is homed in a different repository.",
-                                     "https://egeria-project.org/guides/cts/repository-profiles/home-classifications",
+                                     "https://egeria-project.org/guides/cts/repository-workbench/profiles/home-classifications/",
                                      OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -165,7 +165,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     EXTERNAL_INSTANCES             (18, "External instances",
                                      "The technology under test is able to store and maintain external entities.",
-                                     "https://egeria-project.org/guides/cts/repository-profiles/external-instances",
+                                     "https://egeria-project.org/guides/cts/repository-workbench/profiles/external-instances/",
                                      OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
 
     /**
@@ -173,7 +173,7 @@ public enum RepositoryConformanceProfile implements Serializable
      */
     RESTORE_FROM_BACKUP             (19, "Restore metadata from a backup",
                                      "The technology under test is able to process events that load metadata from its own backup.",
-                                     "https://egeria-project.org/guides/cts/repository-profiles/restore-from-backup",
+                                     "https://egeria-project.org/guides/cts/repository-workbench/profiles/restore-from-backup/",
                                      OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE);
 
 

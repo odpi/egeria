@@ -44,7 +44,7 @@ public enum CommonServicesDescription
                                       "Open Metadata Security Services",
                                       null, // no REST API
                                       "Authorization services for Open Metadata and Governance",
-                                      "https://egeria-project.org/services/metadata-security-services",
+                                      "https://egeria-project.org/features/metadata-security/overview/",
                                       ServerTypeClassification.OMAG_SERVER.getServerTypeName(),
                                       null,
                                       null),
@@ -74,7 +74,7 @@ public enum CommonServicesDescription
                                      "Server Operations",
                                      "server-operations",
                                      "Supports the start up and shutdown of OMAG Servers.",
-                                     "https://egeria-project.org/services/server-operations/overview",
+                                     "https://egeria-project.org/services/server-operations/",
                                      ServerTypeClassification.OMAG_SERVER.getServerTypeName(),
                                      null,
                                      null),

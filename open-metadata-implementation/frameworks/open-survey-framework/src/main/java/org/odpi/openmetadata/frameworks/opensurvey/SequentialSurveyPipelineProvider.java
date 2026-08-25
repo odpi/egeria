@@ -24,7 +24,7 @@ public class SequentialSurveyPipelineProvider extends SurveyActionServiceProvide
     private static final String  connectorTypeQualifiedName = "Egeria:SurveyActionService:SequentialSurveyPipelineService";
     private static final String  connectorTypeName = "Sequential Survey Pipeline Connector";
     private static final String  connectorTypeDescription = "Connector supports the sequential execution of survey action services.";
-    private static final String  connectorWikiPage  = "https://egeria-project.org/connectors/survey-action/sequential-survey-pipeline-service/";
+    private static final String  connectorWikiPage  = "https://egeria-project.org/connectors/";
 
 
     /*

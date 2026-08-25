@@ -36,7 +36,8 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     NULL_LOCAL_SERVER_NAME(400, "CONFORMANCE-SUITE-400-001",
             "OMAG server has been called with a null local server name",
             "The system cannot configure the local server.",
-            "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+            "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly.",
+            "https://egeria-project.org/guides/cts/"),
 
     /**
      * CONFORMANCE-SUITE-400-002 - OMAG server {0} has been called with a null username (userId)
@@ -44,7 +45,8 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     NULL_USER_ID(400, "CONFORMANCE-SUITE-400-002",
             "OMAG server {0} has been called with a null username (userId)",
             "The system cannot configure the local server.",
-            "The user name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+            "The user name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly.",
+            "https://egeria-project.org/guides/cts/"),
 
     /**
      * CONFORMANCE-SUITE-400-003 - Unable to create a report for a test case with unknown identifier {0}
@@ -52,7 +54,8 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     UNKNOWN_TEST_CASE_ID(400, "CONFORMANCE-SUITE-400-003",
             "Unable to create a report for a test case with unknown identifier {0}",
             "The system cannot create the report.",
-            "Validate the test case identifier with the messages being produced by the audit log  and the conformance suite documentation."),
+            "Validate the test case identifier with the messages being produced by the audit log  and the conformance suite documentation.",
+            "https://egeria-project.org/guides/cts/"),
 
     /**
      * CONFORMANCE-SUITE-400-004 - Unable to create a report for a workbench with unknown identifier {0}
@@ -60,7 +63,8 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     UNKNOWN_WORKBENCH_ID(400, "CONFORMANCE-SUITE-400-004",
             "Unable to create a report for a workbench with unknown identifier {0}",
             "The system cannot create the report.",
-            "Validate the workbench identifier with the messages being produced by the audit log and the conformance suite documentation."),
+            "Validate the workbench identifier with the messages being produced by the audit log and the conformance suite documentation.",
+            "https://egeria-project.org/guides/cts/"),
 
     /**
      * CONFORMANCE-SUITE-400-022 - The Egeria Conformance Suite located in OMAG server {0} has been configured with no access to the enterprise repository services
@@ -68,7 +72,8 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     NO_ENTERPRISE_ACCESS(400, "CONFORMANCE-SUITE-400-022",
             "The Egeria Conformance Suite located in OMAG server {0} has been configured with no access to the enterprise repository services",
             "The system cannot access the connectors to issue metadata requests to the technologies under test.",
-            "Change the setting of the enterprise access service to ensure it is enabled."),
+            "Change the setting of the enterprise access service to ensure it is enabled.",
+            "https://egeria-project.org/guides/cts/"),
 
     /**
      * CONFORMANCE-SUITE-400-023 - Unable to create a report for a profile with unknown name {0}
@@ -76,7 +81,8 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     UNKNOWN_PROFILE_NAME(400, "CONFORMANCE-SUITE-400-023",
             "Unable to create a report for a profile with unknown name {0}",
             "The system cannot create the report.",
-            "Validate the profile name with the messages being produced by the audit log and the conformance suite documentation."),
+            "Validate the profile name with the messages being produced by the audit log and the conformance suite documentation.",
+            "https://egeria-project.org/guides/cts/"),
 
     /**
      * CONFORMANCE-SUITE-500-001 - The Egeria Conformance Suite located in OMAG server {0} has not been passed an enterprise topic connector
@@ -84,7 +90,8 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     NO_ENTERPRISE_TOPIC(500, "CONFORMANCE-SUITE-500-001",
             "The Egeria Conformance Suite located in OMAG server {0} has not been passed an enterprise topic connector",
             "The conformance suite cannot receive and evaluate events from technologies under test.",
-            "This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved."),
+            "This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved.",
+            "https://egeria-project.org/guides/cts/"),
 
     /**
      * CONFORMANCE-SUITE-500-002 - The Egeria Conformance Suite located in OMAG server {0} has not been passed an enterprise connector manager
@@ -92,7 +99,8 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     NO_ENTERPRISE_CONNECTOR_MANAGER(500, "CONFORMANCE-SUITE-500-002",
             "The Egeria Conformance Suite located in OMAG server {0} has not been passed an enterprise connector manager",
             "The conformance suite cannot issue metadata requests to the technologies under test.",
-            "This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved."),
+            "This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved.",
+            "https://egeria-project.org/guides/cts/"),
 
     /**
      * CONFORMANCE-SUITE-500-003 - The Egeria Conformance Suite testing technology {0} of type {1} has created two test cases with the same id of {2}
@@ -100,7 +108,8 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     DUPLICATE_TEST_CASE(500, "CONFORMANCE-SUITE-500-003",
             "The Egeria Conformance Suite testing technology {0} of type {1} has created two test cases with the same id of {2}",
             "The conformance suite cannot process one of the test cases.",
-            "This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved."),
+            "This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved.",
+            "https://egeria-project.org/guides/cts/"),
 
     /**
      * CONFORMANCE-SUITE-503-003 - The conformance suite service has not been initialized for server {0} and can not support REST API call {1}
@@ -108,7 +117,8 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     SERVICE_NOT_INITIALIZED(503, "CONFORMANCE-SUITE-503-003",
             "The conformance suite service has not been initialized for server {0} and can not support REST API call {1}",
             "The server has received a call to one of its open metadata conformance suite operations but cannot process it because the conformance suite service is not active.",
-            "If the server is supposed to have the conformance suite service activated, correct the server configuration and restart the server."),
+            "If the server is supposed to have the conformance suite service activated, correct the server configuration and restart the server.",
+            "https://egeria-project.org/guides/cts/"),
 
     ;
 
@@ -118,6 +128,22 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    ConformanceSuiteErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -128,14 +154,17 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    ConformanceSuiteErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    ConformanceSuiteErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -151,7 +180,8 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -168,7 +198,8 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -190,6 +221,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

@@ -302,6 +302,7 @@ public class AuditLog extends MessageFormatter
             logRecord.setMessageParameters(messageDefinition.getMessageParams());
             logRecord.setSystemAction(messageDefinition.getSystemAction());
             logRecord.setUserAction(messageDefinition.getUserAction());
+            logRecord.setMessageURL(messageDefinition.getURL());
         }
 
         logRecord.setAdditionalInformation(additionalInformation);

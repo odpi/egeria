@@ -511,7 +511,7 @@ public class MetadataExpertResource
     @Operation(summary="getMetadataElementByGUID",
             description="Retrieve the metadata element using its unique identifier.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public OpenMetadataElementResponse getMetadataElementByGUID(@PathVariable String  serverName,
                                                                 @PathVariable String  elementGUID,
@@ -541,7 +541,7 @@ public class MetadataExpertResource
     @Operation(summary="getMetadataElementByUniqueName",
             description="Retrieve the metadata element using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public OpenMetadataElementResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
                                                                       @PathVariable String          urlMarker,
@@ -569,7 +569,7 @@ public class MetadataExpertResource
     @Operation(summary="getMetadataElementGUIDByUniqueName",
             description="Retrieve the metadata element GUID using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public GUIDResponse getMetadataElementGUIDByUniqueName(@PathVariable String          serverName,
                                                            @PathVariable String          urlMarker,
@@ -597,7 +597,7 @@ public class MetadataExpertResource
     @Operation(summary="getMetadataElementHistory",
             description="Retrieve all the versions of an element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public OpenMetadataElementsResponse getMetadataElementHistory(@PathVariable String                 serverName,
                                                                   @PathVariable String                 urlMarker,
@@ -626,7 +626,7 @@ public class MetadataExpertResource
     @Operation(summary="getClassificationHistory",
             description="Retrieve all the versions of an element's classification.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public AttachedClassificationsResponse getClassificationHistory(@PathVariable String                 serverName,
                                                                     @PathVariable String             urlMarker,
@@ -657,7 +657,7 @@ public class MetadataExpertResource
     @Operation(summary="findMetadataElementsWithString",
             description="Retrieve the metadata elements that contain the requested string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public OpenMetadataElementsResponse findMetadataElementsWithString(@PathVariable String                  serverName,
                                                                        @PathVariable String                  urlMarker,
@@ -784,7 +784,7 @@ public class MetadataExpertResource
     @Operation(summary="getAllRelatedMetadataElements",
             description="Retrieve the metadata elements connected to the supplied element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public RelatedMetadataElementListResponse getAllRelatedMetadataElements(@PathVariable String  serverName,
                                                                             @PathVariable String  elementGUID,
@@ -824,7 +824,7 @@ public class MetadataExpertResource
     @Operation(summary="getRelatedMetadataElements",
             description="Retrieve the metadata elements connected to the supplied element via a specific relationship type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public RelatedMetadataElementListResponse getRelatedMetadataElements(@PathVariable String  serverName,
                                                                          @PathVariable String  elementGUID,
@@ -866,7 +866,7 @@ public class MetadataExpertResource
     @Operation(summary="getAllMetadataElementRelationships",
             description="Retrieve the relationships linking the supplied elements.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public OpenMetadataRelationshipListResponse getAllMetadataElementRelationships(@PathVariable String  serverName,
                                                                                    @PathVariable String  metadataElementAtEnd1GUID,
@@ -903,7 +903,7 @@ public class MetadataExpertResource
     @Operation(summary="getAnchoredElementsGraph",
             description="Return all the elements that are anchored to an element plus relationships between these elements and to other elements.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public OpenMetadataGraphResponse getAnchoredElementsGraph(@PathVariable String          serverName,
                                                               @PathVariable String          urlMarker,
@@ -937,7 +937,7 @@ public class MetadataExpertResource
     @Operation(summary="getMetadataElementRelationships",
             description="Retrieve the relationships linking the supplied elements via a specific type of relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public OpenMetadataRelationshipListResponse getMetadataElementRelationships(@PathVariable String  serverName,
                                                                                 @PathVariable String  metadataElementAtEnd1GUID,
@@ -974,7 +974,7 @@ public class MetadataExpertResource
     @Operation(summary="getPropertyComparisonOperatorList",
             description="Return the list of valid property comparison operator values",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public PropertyComparisonOperatorListResponse getPropertyComparisonOperatorList(@PathVariable String serverName)
     {
@@ -993,7 +993,7 @@ public class MetadataExpertResource
     @Operation(summary="getMatchCriteriaList",
             description="Return the list of valid match criteria values",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public MatchCriteriaListResponse getMatchCriteriaList(@PathVariable String serverName)
     {
@@ -1019,7 +1019,7 @@ public class MetadataExpertResource
     @Operation(summary="findMetadataElements",
             description="Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public OpenMetadataElementsResponse findMetadataElements(@PathVariable String          serverName,
                                                              @PathVariable String          urlMarker,
@@ -1050,7 +1050,7 @@ public class MetadataExpertResource
     @Operation(summary="countMetadataElements",
             description="Return a count of the metadata elements that match the supplied criteria.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public CountResponse countMetadataElements(@PathVariable String          serverName,
                                                @PathVariable String          urlMarker,
@@ -1079,7 +1079,7 @@ public class MetadataExpertResource
     @Operation(summary="findRelationshipsBetweenMetadataElements",
             description="Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public OpenMetadataRelationshipListResponse findRelationshipsBetweenMetadataElements(@PathVariable String                      serverName,
                                                                                          @PathVariable String                      urlMarker,
@@ -1109,7 +1109,7 @@ public class MetadataExpertResource
     @Operation(summary="countRelationshipsBetweenMetadataElements",
             description="Return a count of the relationships that match the requested conditions.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public CountResponse countRelationshipsBetweenMetadataElements(@PathVariable String                      serverName,
                                                                    @PathVariable String                      urlMarker,
@@ -1138,7 +1138,7 @@ public class MetadataExpertResource
     @Operation(summary="getRelationshipByGUID",
             description="Retrieve the relationship using its unique identifier.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public OpenMetadataRelationshipResponse getRelationshipByGUID(@PathVariable String  serverName,
                                                                   @PathVariable String  relationshipGUID,
@@ -1169,7 +1169,7 @@ public class MetadataExpertResource
     @Operation(summary="getRelationshipHistory",
             description="Retrieve all the versions of a relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
+                    url="https://egeria-project.org/services/omvs/"))
 
     public OpenMetadataRelationshipListResponse getRelationshipHistory(@PathVariable String                 serverName,
                                                                        @PathVariable String                 urlMarker,

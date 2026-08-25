@@ -2047,7 +2047,7 @@ public class AssetMakerResource
     @Operation(summary="linkNestedFiles",
             description="Attach a data file to the file folder that it is stored in.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/folder"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkNestedFiles(@PathVariable String serverName,
                                         @PathVariable String urlMarker,
@@ -2080,7 +2080,7 @@ public class AssetMakerResource
     @Operation(summary="detachNestedFile",
             description="Detach a data file from the file folder that it is stored in.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/folder"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachNestedFile(@PathVariable String serverName,
                                          @PathVariable String urlMarker,
@@ -2113,7 +2113,7 @@ public class AssetMakerResource
     @Operation(summary="linkLinkedFiles",
             description="Attach a data file to a file folder that links to it without storing it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/folder"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkLinkedFiles(@PathVariable String serverName,
                                         @PathVariable String urlMarker,
@@ -2146,7 +2146,7 @@ public class AssetMakerResource
     @Operation(summary="detachLinkedFile",
             description="Detach a data file from a file folder that links to it without storing it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/folder"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachLinkedFile(@PathVariable String serverName,
                                          @PathVariable String urlMarker,
@@ -2179,7 +2179,7 @@ public class AssetMakerResource
     @Operation(summary="linkFolderHierarchy",
             description="Attach a child file folder to its parent file folder.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/folder"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkFolderHierarchy(@PathVariable String serverName,
                                             @PathVariable String urlMarker,
@@ -2212,7 +2212,7 @@ public class AssetMakerResource
     @Operation(summary="detachFolderHierarchy",
             description="Detach a child file folder from its parent file folder.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/folder"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachFolderHierarchy(@PathVariable String serverName,
                                               @PathVariable String urlMarker,
@@ -3009,7 +3009,7 @@ public class AssetMakerResource
     @Operation(summary="setAPIAsListenerInterface",
             description="Classify a deployed API to say that it provides a listener interface.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/deployed-api"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setAPIAsListenerInterface(@PathVariable String serverName,
                                                   @PathVariable String urlMarker,
@@ -3040,7 +3040,7 @@ public class AssetMakerResource
     @Operation(summary="clearAPIAsListenerInterface",
             description="Remove the listener interface designation from a deployed API.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/deployed-api"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearAPIAsListenerInterface(@PathVariable String serverName,
                                                     @PathVariable String urlMarker,
@@ -3071,7 +3071,7 @@ public class AssetMakerResource
     @Operation(summary="setAPIAsPublisherInterface",
             description="Classify a deployed API to say that it provides a publisher interface.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/deployed-api"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setAPIAsPublisherInterface(@PathVariable String serverName,
                                                    @PathVariable String urlMarker,
@@ -3102,7 +3102,7 @@ public class AssetMakerResource
     @Operation(summary="clearAPIAsPublisherInterface",
             description="Remove the publisher interface designation from a deployed API.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/deployed-api"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearAPIAsPublisherInterface(@PathVariable String serverName,
                                                      @PathVariable String urlMarker,
@@ -3133,7 +3133,7 @@ public class AssetMakerResource
     @Operation(summary="setAPIAsRequestResponseInterface",
             description="Classify a deployed API to say that it provides a request-response interface.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/deployed-api"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setAPIAsRequestResponseInterface(@PathVariable String serverName,
                                                          @PathVariable String urlMarker,
@@ -3164,7 +3164,7 @@ public class AssetMakerResource
     @Operation(summary="clearAPIAsRequestResponseInterface",
             description="Remove the request-response interface designation from a deployed API.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/deployed-api"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearAPIAsRequestResponseInterface(@PathVariable String serverName,
                                                            @PathVariable String urlMarker,
@@ -3194,7 +3194,7 @@ public class AssetMakerResource
     @Operation(summary="setDataAssetEncoding",
             description="Classify a data asset to describe how its data is encoded.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/data-asset"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setDataAssetEncoding(@PathVariable String serverName,
                                              @PathVariable String urlMarker,
@@ -3225,7 +3225,7 @@ public class AssetMakerResource
     @Operation(summary="clearDataAssetEncoding",
             description="Remove the encoding description from a data asset.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/data-asset"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearDataAssetEncoding(@PathVariable String serverName,
                                                @PathVariable String urlMarker,
@@ -3256,7 +3256,7 @@ public class AssetMakerResource
     @Operation(summary="linkPortDelegation",
             description="Attach a port to the port that it delegates to.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/port"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkPortDelegation(@PathVariable String serverName,
                                            @PathVariable String urlMarker,
@@ -3289,7 +3289,7 @@ public class AssetMakerResource
     @Operation(summary="detachPortDelegation",
             description="Detach a port from the port that it delegated to.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/port"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachPortDelegation(@PathVariable String serverName,
                                              @PathVariable String urlMarker,

@@ -291,6 +291,7 @@ class OMRSRESTExceptionHandler
         response.setExceptionErrorMessageParameters(error.getReportedErrorMessageParameters());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
+        response.setExceptionURL(error.getReportedURL());
         response.setExceptionProperties(exceptionProperties);
         response.setExceptionCausedBy(error.getReportedCaughtExceptionClassName());
     }

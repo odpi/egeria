@@ -36,6 +36,16 @@ this suite exists to surface.
 The repository uses its own schema, `repository_clientFvtMetadataStore`, and the platform listens on port
 9448 - one above type-fvt - so all three suites can run side by side.
 
+## What it covers
+
+Alongside the client surfaces, the suite guards one cross-cutting behaviour:
+[`MessageURLFVT`](src/test/java/org/odpi/openmetadata/clientfvt/MessageURLFVT.java) checks that the link to
+further reading carried by a message definition survives the trip back from the server. A client rebuilds an
+exception purely from the fields of the REST response, so a link dropped anywhere in the chain - message set,
+exception, response bean, or either side of `RESTExceptionHandler` - would leave the caller with a null url
+and nothing else looking wrong. This suite is the only place that failure is visible, because it needs a real
+client talking to a real server.
+
 ## Keeping it up to date
 
 **This suite has to be extended as the client interfaces grow.** Unlike type-fvt, whose coverage follows the

@@ -22,23 +22,14 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum SurveyServiceAuditCode implements AuditLogMessageSet
 {
     /**
-     * SURVEY-ACTION-SERVICE-0001 - The survey action service received an unexpected exception {0} during method {1}; the error message was: {2}
-     */
-    UNEXPECTED_EXCEPTION("SURVEY-ACTION-SERVICE-0001",
-                         AuditLogRecordSeverityLevel.EXCEPTION,
-                         "The survey action service {0} received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector cannot process the current request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
-
-    /**
      * SURVEY-ACTION-SERVICE-0002 - The survey action service {0} is creating log file {1}
      */
     CREATING_LOG_FILE("SURVEY-ACTION-SERVICE-0002",
                      AuditLogRecordSeverityLevel.INFO,
                      "The survey action service {0} is creating log file {1} which is catalogued as CSVFile asset {2}",
                      "This message tells the survey team that a particular survey log file is being created.",
-                     "No specific action is required.  The results are added to the log file and the asset for this log file is catalogued as a CSV file."),
-
+                     "No specific action is required.  The results are added to the log file and the asset for this log file is catalogued as a CSV file.",
+                     "https://egeria-project.org/concepts/survey-action-service/"),
 
     /**
      * SURVEY-ACTION-SERVICE-0003 - The survey action service {0} is overriding log file {1}
@@ -47,8 +38,8 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.INFO,
                      "The survey action service {0} is overriding log file {1}",
                      "This message warns the survey team that a particular survey log file is being reused.",
-                     "No specific action is required.  The new results are appended to the existing results."),
-
+                     "No specific action is required.  The new results are appended to the existing results.",
+                     "https://egeria-project.org/concepts/survey-action-service/"),
 
     /**
      * SURVEY-ACTION-SERVICE-0004 - The survey action service {0} is surveying the {1} folder (directory) with an analysis level of {2}
@@ -57,7 +48,8 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.INFO,
                      "The survey action service {0} is surveying the {1} folder (directory) with an analysis level of {2}",
                      "This message shows that the starting folder to survey.",
-                     "No specific action is required.  This message is marking the start of the survey process."),
+                     "No specific action is required.  This message is marking the start of the survey process.",
+                     "https://egeria-project.org/concepts/survey-action-service/"),
 
     /**
      * SURVEY-ACTION-SERVICE-0003 - The survey action service {0} is has surveyed {1} files and folders (directories)
@@ -66,7 +58,8 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.INFO,
                      "The survey action service {0} is has surveyed {1} files and folders (directories)",
                      "This message shows that the progress of the survey.",
-                     "No specific action is required.  This message is marking the progress of the survey process."),
+                     "No specific action is required.  This message is marking the progress of the survey process.",
+                     "https://egeria-project.org/concepts/survey-action-service/"),
 
     /**
      * SURVEY-ACTION-SERVICE-0001 - The survey action service received an unexpected exception {0} during method {1}; the error message was: {2}
@@ -75,7 +68,8 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.ERROR,
                          "The survey action service {0} received an unexpected IO exception {1} when it attempted to access the attributes of file {2}; the error message was: {3}",
                          "The file is skipped and will not appear in the totals for this folder.  However a separate request for action annotation with a log file of all of the inaccessible files is created.",
-                         "If this file is of interest and you want it to be included in the survey report, use the details from the error message to determine the cause of the access error; retry the survey once it is resolved."),
+                         "If this file is of interest and you want it to be included in the survey report, use the details from the error message to determine the cause of the access error; retry the survey once it is resolved.",
+                         "https://egeria-project.org/concepts/survey-action-service/"),
 
     ;
 
@@ -84,6 +78,26 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    SurveyServiceAuditCode(String                      messageId,
+                           AuditLogRecordSeverityLevel severity,
+                           String                      message,
+                           String                      systemAction,
+                           String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -99,18 +113,22 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     SurveyServiceAuditCode(String                      messageId,
                            AuditLogRecordSeverityLevel severity,
                            String                      message,
                            String                      systemAction,
-                           String                      userAction)
+                           String                      userAction,
+                           String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -126,7 +144,8 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -143,7 +162,8 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -163,6 +183,7 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

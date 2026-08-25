@@ -59,7 +59,7 @@ public class DataDiscoveryResource
     @Operation(summary="createAnnotation",
             description="Create an annotation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createAnnotation(@PathVariable String                               serverName,
                                          @RequestBody (required = false)
@@ -87,7 +87,7 @@ public class DataDiscoveryResource
     @Operation(summary="createAnnotationFromTemplate",
             description="Create a new metadata element to represent an annotation using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createAnnotationFromTemplate(@PathVariable
                                                      String              serverName,
@@ -116,7 +116,7 @@ public class DataDiscoveryResource
     @Operation(summary="updateAnnotation",
             description="Update the properties of an annotation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public BooleanResponse updateAnnotation(@PathVariable
                                             String                                  serverName,
@@ -150,7 +150,7 @@ public class DataDiscoveryResource
             description="Create a relationship that links a new annotation to its survey report.  This relationship is typically " +
                     "established during the createAnnotation as the parent relationship.  It is included for completeness.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse attachAnnotationToReport(@PathVariable
                                            String                     serverName,
@@ -184,7 +184,7 @@ public class DataDiscoveryResource
     @Operation(summary="detachAnnotationFromReport",
             description="Detach an annotation from its report (ReportedAnnotation relationship).",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachAnnotationFromReport(@PathVariable
                                               String                    serverName,
@@ -218,7 +218,7 @@ public class DataDiscoveryResource
     @Operation(summary="linkAnnotationToDescribedElement",
             description="Attach an annotation to the element that it is describing (via AssociatedAnnotation relationship).",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkAnnotationToDescribedElement(@PathVariable String                     serverName,
                                                          @PathVariable String                     elementGUID,
@@ -249,7 +249,7 @@ public class DataDiscoveryResource
     @Operation(summary="detachAnnotationFromDescribedElement",
             description="Detach an annotation from the element that it is describing (via AssociatedAnnotation relationship).",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachAnnotationFromDescribedElement(@PathVariable String                        serverName,
                                                              @PathVariable String                        elementGUID,
@@ -280,7 +280,7 @@ public class DataDiscoveryResource
     @Operation(summary="linkAnnotationToItsPredecessor",
             description="Attach an annotation to the equivalent annotation from the previous run of the survey.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkAnnotationToItsPredecessor(@PathVariable String                     serverName,
                                                        @PathVariable String                     previousAnnotationGUID,
@@ -311,7 +311,7 @@ public class DataDiscoveryResource
     @Operation(summary="detachAnnotationFromItsPredecessor",
             description="Detach an annotation from an annotation from the previous run of the survey.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachAnnotationFromItsPredecessor(@PathVariable String                        serverName,
                                                            @PathVariable String                        previousAnnotationGUID,
@@ -342,7 +342,7 @@ public class DataDiscoveryResource
     @Operation(summary="linkResourceProfileData",
             description="Attach a resource profile log annotation to an asset where the profile data is stored.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkResourceProfileData(@PathVariable String                     serverName,
                                                 @PathVariable String                     annotationGUID,
@@ -373,7 +373,7 @@ public class DataDiscoveryResource
     @Operation(summary="detachResourceProfileData",
             description="Detach a resource profile log annotation from an asset where the profile data is stored.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachResourceProfileData(@PathVariable String                        serverName,
                                                   @PathVariable String                        annotationGUID,
@@ -404,7 +404,7 @@ public class DataDiscoveryResource
     @Operation(summary="linkAnnotationMatch",
             description="Attach an annotation to an element that has been matched with the subject of the survey.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkAnnotationMatch(@PathVariable String                     serverName,
                                            @PathVariable String                     annotationGUID,
@@ -435,7 +435,7 @@ public class DataDiscoveryResource
     @Operation(summary="detachAnnotationMatch",
             description="Remove an AnnotationMatch relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachAnnotationMatch(@PathVariable String                        serverName,
                                              @PathVariable String                        annotationGUID,
@@ -466,7 +466,7 @@ public class DataDiscoveryResource
     @Operation(summary="linkRequestForActionTarget",
             description="Attach a request for action annotation to the element that needs attention.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkRequestForActionTarget(@PathVariable String                     serverName,
                                                    @PathVariable String                     annotationGUID,
@@ -497,7 +497,7 @@ public class DataDiscoveryResource
     @Operation(summary="detachRequestForActionTarget",
             description="Detach a request for action annotation from its intended target element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachRequestForActionTarget(@PathVariable String                        serverName,
                                                      @PathVariable String                        annotationGUID,
@@ -527,7 +527,7 @@ public class DataDiscoveryResource
     @Operation(summary="deleteAnnotation",
             description="Delete an annotation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse deleteAnnotation(@PathVariable
                                          String                    serverName,
@@ -557,7 +557,7 @@ public class DataDiscoveryResource
     @Operation(summary="getAnnotationsByName",
             description="Returns the list of annotations with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getAnnotationsByName(@PathVariable
                                                                  String            serverName,
@@ -585,7 +585,7 @@ public class DataDiscoveryResource
     @Operation(summary="getAnnotationsByAnalysisStep",
             description="Returns the list of annotations associated with a particular analysis step.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getAnnotationsByAnalysisStep(@PathVariable
                                                                          String            serverName,
@@ -613,7 +613,7 @@ public class DataDiscoveryResource
     @Operation(summary="getAnnotationsByAnnotationType",
             description="Returns the list of annotations with a particular annotation type property.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getAnnotationsByAnnotationType(@PathVariable
                                                                            String            serverName,
@@ -642,7 +642,7 @@ public class DataDiscoveryResource
     @Operation(summary="getAnnotationsForElement",
             description="Returns the list of annotations that describe the supplied element (AssociatedAnnotation relationship).",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getAnnotationsForElement(@PathVariable String             serverName,
                                                                      @PathVariable String             elementGUID,
@@ -671,7 +671,7 @@ public class DataDiscoveryResource
     @Operation(summary="getNewAnnotations",
             description="Returns the annotations created under the supplied survey report.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getNewAnnotations(@PathVariable
                                                               String             serverName,
@@ -702,7 +702,7 @@ public class DataDiscoveryResource
     @Operation(summary="getAnnotationExtensions",
             description="Returns the list of annotations that extend the supplied annotation (AnnotationExtension relationship).",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getAnnotationExtensions(@PathVariable
                                                                     String             serverName,
@@ -733,7 +733,7 @@ public class DataDiscoveryResource
     @Operation(summary="getPreviousAnnotations",
             description="Returns the list of annotations that are extended by the supplied annotation (AnnotationExtension relationship).",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getPreviousAnnotations(@PathVariable
                                                                    String             serverName,
@@ -763,7 +763,7 @@ public class DataDiscoveryResource
     @Operation(summary="findAnnotations",
             description="Retrieve the list of annotation metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse findAnnotations(@PathVariable
                                                             String                  serverName,
@@ -792,7 +792,7 @@ public class DataDiscoveryResource
     @Operation(summary="getAnnotationByGUID",
             description="Return the properties of a specific annotation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/annotation"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementResponse getAnnotationByGUID(@PathVariable
                                                                String             serverName,

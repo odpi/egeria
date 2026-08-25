@@ -87,6 +87,8 @@ public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
                                                                                 null,
                                                                                 restResult.getExceptionProperties());
 
+                                                                                error.setReportedURL(restResult.getExceptionURL());
+
         log.error("Invalid Parameter Exception", error);
         throw error;
     }
@@ -113,6 +115,8 @@ public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
                                                                           null,
                                                                           restResult.getExceptionProperties());
 
+                                                                          error.setReportedURL(restResult.getExceptionURL());
+
         log.error("User Not Authorized Exception", error);
         throw error;
     }
@@ -137,6 +141,8 @@ public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
                                                                                     restResult.getExceptionUserAction(),
                                                                                     restResult.getExceptionCausedBy(),
                                                                                     restResult.getExceptionProperties());
+
+                                                                                    error.setReportedURL(restResult.getExceptionURL());
 
         log.error("Configuration Error Exception", error);
         throw error;

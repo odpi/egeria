@@ -26,44 +26,32 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum HarvestOpenMetadataErrorCode implements ExceptionMessageSet
 {
     /**
-     * HARVEST-OPEN-METADATA-400-001 - Integration connector {0} has been configured without the URL to the database
-     */
-    NULL_URL(400, "HARVEST-OPEN-METADATA-400-001",
-                     "Integration connector {0} has been configured without the URL to the database",
-                     "The connector is move to FAILED status and will not be called by the integration daemon until the configuration error has been corrected.",
-                     "The the database URL is configured in the integration connector's connection endpoint in the address property.  Typically it is the host name and port where the database is listening.  The connection is either found in the Integration Daemon's configuration, or, if the Integration Daemon is configured with integration groups, in the open metadata definition of the appropriate integration group."),
-
-    /**
-     * HARVEST-OPEN-METADATA-400-002 - Integration connector {0} has been configured with either a null userId or password for connecting to the database
-     */
-    NULL_USER(400, "HARVEST-OPEN-METADATA-400-002",
-             "Integration connector {0} has been configured with either a null userId or password for connecting to the database",
-             "The connector is moved to FAILED status and will no longer be called to synchronize metadata.",
-             "Update the connection information for the connector.  " +
-                     "This may have been supplied through the Integration Daemon's configuration, " +
-                     "or if the Integration Daemon is using integration groups, " +
-                     "the connection information is stored in the open metadata ecosystem.  " +
-                     "It is possible to supply the userId and password directly in the connection object or via an embedded SecretsConnector."),
-
-    /**
-     * HARVEST-OPEN-METADATA-400-003 - Integration connector {0} has been configured with a metadataSourceQualifiedName value
-     */
-    NOT_NULL_ASSET_MANAGER(400, "HARVEST-OPEN-METADATA-400-003",
-                           "Integration connector {0} has been configured with a metadataSourceQualifiedName value",
-                           "The metadataSourceQualifiedName prevents this connector from seeing all of the correlation properties from each of the external sources.",
-                           "Update the metadata source qualified name for the connector and set it to null - then restart the connector."),
-
-    /**
      * HARVEST-OPEN-METADATA-500-001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "HARVEST-OPEN-METADATA-500-001",
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot catalog one or more metadata elements.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
     ;
 
     private final ExceptionMessageDefinition messageDefinition;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique identifier for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    HarvestOpenMetadataErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -79,14 +67,17 @@ public enum HarvestOpenMetadataErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    HarvestOpenMetadataErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    HarvestOpenMetadataErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
                                                                 errorMessageId,
                                                                 errorMessage,
                                                                 systemAction,
-                                                                userAction);
+                                                                userAction,
+                                                                url);
     }
 
 

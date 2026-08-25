@@ -28,7 +28,8 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot catalog one or more metadata elements in the metadata repository.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     /**
      * LISKOV-DATA-HUB-MANAGER-0009 - The {0} integration connector has stopped its monitoring of data sharing hubs from server {1} on platform {2} and is shutting down
@@ -37,8 +38,8 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.INFO,
                        "The {0} integration connector has stopped its monitoring of data sharing hubs from server {1} on platform {2} and is shutting down",
                        "The connector is disconnecting.",
-                       "No action is required unless there are errors that follow indicating that there were problems shutting down."),
-
+                       "No action is required unless there are errors that follow indicating that there were problems shutting down.",
+                       "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     /**
      * LISKOV-DATA-HUB-MANAGER-0011 - The {0} integration connector is starting its monitoring of data sharing hubs from server {1} on platform {2}
@@ -47,7 +48,8 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.INFO,
                        "The {0} integration connector is starting its monitoring of data sharing hubs from server {1} on platform {2}",
                        "The connector is initializing its monitoring of the data sharing hubs connected as Catalog Targets.",
-                       "Monitor the data dictionaries for these data sharing hubs are being maintained successfully."),
+                       "Monitor the data dictionaries for these data sharing hubs are being maintained successfully.",
+                       "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     /**
      * LISKOV-DATA-HUB-MANAGER-0012 - The {0} integration connector has created a new catalog target for data sharing hub {1} ({2})
@@ -56,8 +58,8 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                  AuditLogRecordSeverityLevel.INFO,
                  "The {0} integration connector has created a new catalog target for data sharing hub {1} ({2})",
                  "The connector is initiating its management of a new data sharing hub .",
-                 "No action is required.  This message is for monitoring the set up of the data sharing hub management."),
-
+                 "No action is required.  This message is for monitoring the set up of the data sharing hub management.",
+                 "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     /**
      * LISKOV-DATA-HUB-MANAGER-0013 - The {0} integration connector has created a new data dictionary for data sharing hub {1} ({2})
@@ -66,7 +68,8 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                  AuditLogRecordSeverityLevel.INFO,
                  "The {0} integration connector has created a new data dictionary for data sharing hub {1} ({2})",
                  "The connector has created a data dictionary for a new data sharing hub.",
-                 "No action is required.  This message is for monitoring the set up of the data sharing hub data dictionary."),
+                 "No action is required.  This message is for monitoring the set up of the data sharing hub data dictionary.",
+                 "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     /**
      * LISKOV-DATA-HUB-MANAGER-0014 - The {0} integration connector has created a new data field {1} ({2}) for data sharing hub {3} ({4})
@@ -75,16 +78,8 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.INFO,
                         "The {0} integration connector has created a new data field {1} ({2}) for data sharing hub {3} ({4})",
                         "The connector has created a data field for a data sharing hub's data dictionary.",
-                        "No action is required.  This message is for monitoring the set up of the data sharing hub's data fields."),
-
-    /**
-     * LISKOV-DATA-HUB-MANAGER-0015 - The {0} integration connector is refreshing dthe ata dictionary for data sharing hub {1} ({2})
-     */
-    REFRESHING_DATA_HUB("LISKOV-DATA-HUB-MANAGER-0015",
-                 AuditLogRecordSeverityLevel.INFO,
-                 "The {0} integration connector is refreshing the data dictionary for data sharing hub {1} ({2})",
-                 "The connector is initiating its refreshing of a data sharing hub .",
-                 "No action is required.  This message is for monitoring the activity of the data sharing hub management."),
+                        "No action is required.  This message is for monitoring the set up of the data sharing hub's data fields.",
+                        "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     /**
      * LISKOV-DATA-HUB-MANAGER-0016 - The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data sharing hub {4} ({5})
@@ -93,7 +88,8 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                               AuditLogRecordSeverityLevel.INFO,
                               "The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data sharing hub {4} ({5})",
                               "The connector is initiating its refreshing of a data sharing hub.",
-                              "No action is required.  This message is for monitoring the activity of the data sharing hub management."),
+                              "No action is required.  This message is for monitoring the activity of the data sharing hub management.",
+                              "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     /**
      * LISKOV-DATA-HUB-MANAGER-0017 - The {0} integration connector is retrieving known data dictionary definitions for data sharing hub {1} ({2})
@@ -102,7 +98,8 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                               AuditLogRecordSeverityLevel.INFO,
                               "The {0} integration connector is retrieving known data dictionary definitions for data sharing hub {1} ({2})",
                               "The connector is initiating its retrieving the contents of the data dictionary for a data sharing hub.",
-                              "No action is required.  This message is for monitoring the progress of the data sharing hub management refresh."),
+                              "No action is required.  This message is for monitoring the progress of the data sharing hub management refresh.",
+                              "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     /**
      * LISKOV-DATA-HUB-MANAGER-0018 - The {0} integration connector has created a new data structure {1} ({2}) for data sharing hub {3} ({4})
@@ -111,16 +108,18 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                    AuditLogRecordSeverityLevel.INFO,
                    "The {0} integration connector has created a new data structure {1} ({2}) for data sharing hub {3} ({4})",
                    "The connector has created a data structure for a data sharing hub's data dictionary.",
-                   "No action is required.  This message is for monitoring the set up of the data sharing hub's data structures."),
+                   "No action is required.  This message is for monitoring the set up of the data sharing hub's data structures.",
+                   "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     /**
      * LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data sharing hub {4} ({5})
      */
-    REFRESHING_CSV_FILE("LISKOV-DATA-HUB-MANAGER-0016",
+    REFRESHING_CSV_FILE("LISKOV-DATA-HUB-MANAGER-0019",
                         AuditLogRecordSeverityLevel.INFO,
                         "The {0} integration connector is refreshing data fields from CSV File {2} ({3}) for data sharing hub {4} ({5})",
                         "The connector is initiating its refreshing of a data sharing hub.",
-                        "No action is required.  This message is for monitoring the activity of the data sharing hub management."),
+                        "No action is required.  This message is for monitoring the activity of the data sharing hub management.",
+                        "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     ;
 
@@ -129,6 +128,26 @@ public enum LiskovAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    LiskovAuditCode(String                      messageId,
+                    AuditLogRecordSeverityLevel severity,
+                    String                      message,
+                    String                      systemAction,
+                    String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -144,18 +163,22 @@ public enum LiskovAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     LiskovAuditCode(String                      messageId,
                     AuditLogRecordSeverityLevel severity,
                     String                      message,
                     String                      systemAction,
-                    String                      userAction)
+                    String                      userAction,
+                    String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -171,7 +194,8 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -188,7 +212,8 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -208,6 +233,7 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

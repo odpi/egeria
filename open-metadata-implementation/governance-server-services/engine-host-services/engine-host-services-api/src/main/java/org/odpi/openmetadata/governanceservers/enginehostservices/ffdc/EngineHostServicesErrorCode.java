@@ -34,7 +34,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                   "The engine host services can not retrieve its configuration values.  " +
                           "The hosting engine host server fails to start.",
                   "This is an internal logic error since the admin services should not have initialized the engine host services " +
-                          "without this section of the configuration document filled in.  Raise an issue to get this fixed."),
+                          "without this section of the configuration document filled in.  Raise an issue to get this fixed.",
+                          "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * ENGINE-HOST-SERVICES-400-002 - Engine host {0} is not configured with any engine services
@@ -43,7 +44,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                        "Engine host {0} is not configured with any engine services",
                                        "The engine host, fails to start because it would be bored with nothing to do.",
                                        "Add the configuration for at least one engine service to the engine services' section " +
-                                               "of this engine host's configuration document and then restart the engine host server."),
+                                               "of this engine host's configuration document and then restart the engine host server.",
+                                               "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * ENGINE-HOST-SERVICES-400-003 - The engine host services are unable to initialize a new instance of engine host {0}; exception {1} with message {2}
@@ -54,7 +56,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                              "The engine host services detected an error during the start up of a specific engine host instance.  " +
                                      "No engine services are running in the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  " +
-                                     "Once this is resolved, restart the engine host."),
+                                     "Once this is resolved, restart the engine host.",
+                                     "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * ENGINE-HOST-SERVICES-400-004 - Engine service with URL marker {0} is not registered in the engine host {1}
@@ -69,7 +72,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                    "start up.  If the engine host is running the correct engine services then validate that " +
                                    "the caller has passed the correct URL marker of the engine service to the engine host." +
                                    "If all of this is correct then it may be a code error in the engine host services and you need to " +
-                                   "raise an issue to get it fixed.  Once the cause is resolved, retry the request."),
+                                   "raise an issue to get it fixed.  Once the cause is resolved, retry the request.",
+                                   "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * ENGINE-HOST-SERVICES-400-005 - Governance engine named {0} is not running in the engine host {1}
@@ -86,7 +90,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                 "the caller has passed matching connector name and URL marker of the engine service to the " +
                                 "engine host." +
                                 "If all of this is correct then it may be a code error in the engine host services and you need to " +
-                                "raise an issue to get it fixed.  Once the cause is resolved, retry the request."),
+                                "raise an issue to get it fixed.  Once the cause is resolved, retry the request.",
+                                "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * ENGINE-HOST-SERVICES-400-006 - No governance engines are running in the engine host {0}
@@ -97,7 +102,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                           "This is either a configuration error or a logic error.  If this is a configuration error, the" +
                                   "engine host will have logged detailed messages to the audit log to describe what is wrong " +
                                   "and how to fix it.  " +
-                                  "If there are no errors in the configuration, raise an issue to get help to fix this."),
+                                  "If there are no errors in the configuration, raise an issue to get help to fix this.",
+                                  "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * ENGINE-HOST-SERVICES-400-007 - No governance engines are running in the engine service {0} on engine host {1}
@@ -108,66 +114,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                           "This is either a configuration error or a logic error.  If this is a configuration error, the" +
                                   "engine host will have logged detailed messages to the audit log when it was initializing the engine service " +
                                   "to describe what is wrong and how to fix it.  " +
-                                  "If there are no errors in the configuration, raise an issue to get help to fix this."),
-
-    /**
-     * ENGINE-HOST-SERVICES-400-008 - Engine host {0} is not configured with the platform URL root for the {1}
-     */
-    NO_CONFIG_OMAS_SERVER_URL(400,"ENGINE-HOST-SERVICES-400-008",
-                       "Engine host {0} is not configured with the platform URL root for the {1}",
-                       "The engine service is not able to locate the server where its partner service is running in order " +
-                               "to exchange metadata.  The engine host server fails to start.",
-                       "To be successful each engine service needs both the platform URL root and the name of the " +
-                               "server there the OMAS is running as well as the list of connections for the connectors it is to manage. Add this " +
-                               "configuration to the engine host's configuration document and check that the " +
-                               "other required configuration properties are in place. Then restart the engine host server."),
-
-    /**
-     * ENGINE-HOST-SERVICES-400-009 - Engine host {0} is not configured with the name for the server running the {1}
-     */
-    NO_CONFIG_OMAS_SERVER_NAME(400, "ENGINE-HOST-SERVICES-400-009",
-                        "Engine host {0} is not configured with the name for the server running the {1}",
-                        "The engine service is not able to locate the metadata server where its partner service is running in order " +
-                                "to exchange metadata.  The engine host fails to start.",
-                        "Add the configuration for the server name for this engine service to the engine host's " +
-                                "configuration document.  " +
-                                "Ensure that the platform URL root points to the platform where the metadata server is running and that" +
-                                "there is at least one connection for an integration connector listed.  Once the configuration document is set up " +
-                                "correctly, restart the engine host."),
-
-    /**
-     * ENGINE-HOST-SERVICES-400-010 - Engine service {0} running in engine host {1} is not configured with the platform URL root for the {2}
-     */
-    NO_PARTNER_OMAS_SERVER_URL(400,"ENGINE-HOST-SERVICES-400-010",
-                       "Engine service {0} running in engine host {1} is not configured with the platform URL root for the {2}",
-                       "The engine service is not able to locate the server where its partner OMAS is running in order " +
-                               "to exchange metadata.  The engine host server fails to start.",
-                       "To be successful each engine service needs both the platform URL root and the name of the " +
-                               "server there the OMAS is running as well as the list of connections for the connectors it is to manage. Add this " +
-                               "configuration to the engine host's configuration document and check that the " +
-                               "other required configuration properties are in place. Then restart the engine host server."),
-
-    /**
-     * ENGINE-HOST-SERVICES-400-011 - Engine service {0} running in engine host {1} is not configured with the name for the server running the {2}
-     */
-    NO_PARTNER_OMAS_SERVER_NAME(400, "ENGINE-HOST-SERVICES-400-011",
-                        "Engine service {0} running in engine host {1} is not configured with the name for the server running the {2}",
-                        "The engine service is not able to locate the metadata server where its partner OMAS is running in order " +
-                                "to exchange metadata.  The engine host fails to start.",
-                        "Add the configuration for the server name for this engine service to the engine host's " +
-                                "configuration document.  " +
-                                "Ensure that the platform URL root points to the platform where the metadata server is running and that" +
-                                "there is at least one connection for an integration connector listed.  Once the configuration document is set up " +
-                                "correctly, restart the engine host."),
-
-    /**
-     * ENGINE-HOST-SERVICES-400-012 - {0} in engine host {1} is configured with a null engine name
-     */
-    NULL_ENGINE_NAME(400, "ENGINE-HOST-SERVICES-400-012",
-                     "{0} in engine host {1} is configured with a null engine name",
-                     "The start up of the engine host server fails with an exception.",
-                     "Correct the qualified name for the governance engine configured for the engine service" +
-                             " in the engine host's configuration document."),
+                                  "If there are no errors in the configuration, raise an issue to get help to fix this.",
+                                  "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * ENGINE-HOST-SERVICES-400-013 - The engine service {0} has been configured with a null admin class in engine host {1}
@@ -180,7 +128,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                             "the platform.  This is driven by the component scan for REST APIs implemented by the spring modules by " +
                                             "the platform-chassis-spring module.  " +
                                             "Ensure the engine service registers itself with the engine-host-services module and " +
-                                            "the platform-chassis-spring module has access to the engine service's spring module."),
+                                            "the platform-chassis-spring module has access to the engine service's spring module.",
+                                            "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * The engine service {0} has been configured with an admin class of {1} which can not be used by the class loader.  The {2} exception was returned with message {3}
@@ -192,17 +141,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                    "Check that the jar containing the engine service's admin class is visible to the OMAG Server Platform through " +
                                            "the class path - and that the class name specified includes the full, correct package name and class name.  " +
                                            "Once the class is correctly set up, restart the engine host.  It will be necessary to restart the " +
-                                           "OMAG Server Platform if the class path needed adjustment. "),
-
-
-    /**
-     * ENGINE-HOST-SERVICES-400-015 - Engine service {0} in engine host {1} cannot start any governance engines
-     */
-    ENGINE_SERVICE_NULL_HANDLERS(400,"ENGINE-HOST-SERVICES-400-015",
-                                 "Engine service {0} in engine host {1} cannot start any governance engines",
-                                 "The server is not able to run any governance requests.  It fails to start.",
-                                 "Correct the configuration for the engine service to ensure it has at least one valid governance engine."),
-
+                                           "OMAG Server Platform if the class path needed adjustment. ",
+                                           "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * ENGINE-HOST-SERVICES-400-016 - Method {0} can not execute in the governance engine {1} hosted by engine host server {2} because the associated governance service properties are invalid: {3}
@@ -212,7 +152,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                     "governance service properties are invalid: {3}",
                             "The governance request is not run and an error is returned to the caller.",
                             "This may be an error in the governance engine's logic or the Governance Engine OMAS may have returned " +
-                                    "invalid configuration.  Raise an issue to get help to fix it"),
+                                    "invalid configuration.  Raise an issue to get help to fix it",
+                                    "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * ENGINE-HOST-SERVICES-400-017 - Engine host server {0} cannot pass a governance request to governance engine {1} because this
@@ -223,16 +164,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                               "retrieved its configuration from the metadata access server",
                                       "The governance engine is not able to run any governance requests until it is able to retrieve its configuration.",
                                       "Use the configuration interface of the Governance Engine OMAS to create a definition of at least one governance" +
-                                              " engine."),
-
-    /**
-     * ENGINE-HOST-SERVICES-400-018 - The engine service URL marker {0} is not recognized.  Valid service URL markers are: {1}
-     */
-    UNRECOGNIZED_SERVICE(400, "ENGINE-HOST-SERVICES-400-018",
-                         "The engine service URL marker {0} is not recognized.  Valid service URL markers are: {1}",
-                         "The request fails and returns this exception.  No action is taken by the engine host.",
-                         "Correct the supplied URL marker to one that is valid.  The admin services has a command to list the " +
-                                 "engine services configured for this engine host."),
+                                              " engine.",
+                                              "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * ENGINE-HOST-SERVICES-400-019 - The configuration document for engine {0} configuration property for engine service {1} in engine host {2} is null
@@ -240,7 +173,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
     NULL_SERVICE_CONFIG_VALUE(400, "ENGINE-HOST-SERVICES-400-019",
                               "The configuration document for engine {0} configuration property for engine service {1} in engine host {2} is null",
                               "The engine service fails to start and this causes the hosting engine host to fail.",
-                              "Add a suitable value for this configuration property in the engine service configuration."),
+                              "Add a suitable value for this configuration property in the engine service configuration.",
+                              "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * ENGINE-HOST-SERVICES-400-020 - The engine host services in engine host server {0} are unable to initialize a new instance of engine service {1}; exception {2} with message {3}
@@ -250,9 +184,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                         "The engine service detected an error during the start up of a specific governance engine instance.  " +
                                                 "Its governance services are not available.",
                                         "Review the error message and any other reported failures to determine the cause of the problem.  " +
-                                                "Once this is resolved, restart the server."),
-
-    
+                                                "Once this is resolved, restart the server.",
+                                                "https://egeria-project.org/services/engine-host-services/"),
 
    /*
      * Unavailable configuration in metadata server (the server may be down or the definitions are not loaded in the metadata server).
@@ -262,39 +195,6 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
      */
 
     /**
-     * ENGINE-HOST-SERVICES-400-021 - The engine host services are unable to retrieve the connection for the configuration
-     * listener for server {0} from metadata server {1}. Exception returned was {2} with error message {3}
-     */
-    CONFIGURATION_LISTENER_INSTANCE_FAILURE(400, "ENGINE-HOST-SERVICES-400-021",
-                                            "The engine host services are unable to retrieve the connection for the configuration " +
-                                                    "listener for server {0} from metadata server {1}. " +
-                                                    "Exception returned was {2} with error message {3}",
-                                            "The server continues to run.  The engine host services will start up the " +
-                                                    "governance engines and they will operate with whatever configuration that they can retrieve.  " +
-                                                    "Periodically the engine host services will" +
-                                                    "retry the request to retrieve the connection information.  " +
-                                                    "Without the connection, the engine host services will not be notified of changes to the governance " +
-                                                    "engines' configuration",
-                                            "This problem may be caused because the engine host services has been configured with the wrong location for the " +
-                                                    "metadata server, or the metadata server is not running the Governance Engine OMAS service or " +
-                                                    "the metadata server is not running at all.  Investigate the status of the metadata server to " +
-                                                    "ensure it is running and correctly configured.  Once it is ready, either restart the server, or issue the " +
-                                                    "refresh-config command or wait for the engine host services to retry the configuration request."),
-
-    /**
-     * ENGINE-HOST-SERVICES-400-022 - Properties for governance engine called {0} have not been returned by open metadata server {1}.
-     * Exception {2} with message {3} returned to server {4}
-     */
-    UNKNOWN_GOVERNANCE_ENGINE_CONFIG_AT_STARTUP(400, "ENGINE-HOST-SERVICES-400-022",
-                                               "Properties for governance engine called {0} have not been returned by open metadata server {1}.  Exception {2} " +
-                                                       "with message {3} returned to server {4}",
-                                               "The engine host services is not able to initialize the governance engine and so it will not be able to support governance " +
-                                                       "requests targeted to this governance engine.  ",
-                                               "This may be a configuration error or the metadata server may be down.  Look for other error messages and review the " +
-                                                       "configuration of the engine host services.  Once the cause is resolved, restart the server."),
-
-
-    /**
      * ENGINE-HOST-SERVICES-400-023 - Properties for governance engine called {0} have not been returned by open metadata server {1} to engine host services in server {2}
      */
     UNKNOWN_GOVERNANCE_ENGINE_CONFIG(400, "ENGINE-HOST-SERVICES-400-023",
@@ -302,7 +202,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                     "The engine host server is still not able to initialize the governance engine and so it will not be able to support governance " +
                                             "requests targeted to this governance engine.",
                                     "This may be a configuration error or the metadata server may be down.  Look for other error messages and review the " +
-                                            "configuration of the engine host.  Once the cause is resolved, restart the server."),
+                                            "configuration of the engine host.  Once the cause is resolved, restart the server.",
+                                            "https://egeria-project.org/services/engine-host-services/"),
 
     /**
      * ENGINE-HOST-SERVICES-400-024 - Governance engine {0} defined in open metadata server {1} is of type {2} rather than {3}; engine host server {4} is not able to run requests for this governance engine
@@ -312,40 +213,9 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                      "The governance engine has been associated with the wrong type of Open Metadata Engine Services (OMES) and so it will not de able to support governance " +
                                              "requests targeted to this governance engine.",
                                      "This is a configuration error.  Update the configuration for the engine host service to ensure governance engines are correctly " +
-                                             "matched to the engine services.  Once the cause is resolved, restart the server."),
+                                             "matched to the engine services.  Once the cause is resolved, restart the server.",
+                                             "https://egeria-project.org/services/engine-host-services/"),
 
-    /**
-     * ENGINE-HOST-SERVICES-400-102 - {0} in server {1} is not configured with the platform URL root for the {2}
-     */
-    NO_OMAS_SERVER_URL(400,"ENGINE-HOST-SERVICES-400-102",
-                       "{0} in server {1} is not configured with the platform URL root for the {2}",
-                       "The engine service is not able to locate the metadata server to retrieve the configuration for " +
-                               "its governance engines.  The Engine Host server fails to start.",
-                       "To be successful the engine service needs both the platform URL root and the name of the metadata " +
-                               "server as well as the list of engines it is to host. Add the " +
-                               "configuration for the platform URL root to this server's configuration document and check that the " +
-                               "other required configuration properties are in place. Then restart this server."),
-
-    /**
-     * ENGINE-HOST-SERVICES-400-103 - {0} in server {1} is not configured with the name for the server running the {2}
-     */
-    NO_OMAS_SERVER_NAME(400, "ENGINE-HOST-SERVICES-400-103",
-                        "{0} in server {1} is not configured with the name for the server running the {2}",
-                        "The server is not able to retrieve its configuration from the metadata server.  It fails to start.",
-                        "Add the configuration for the metadata server name to this server's configuration document.  " +
-                                "Ensure that the platform URL root points to the platform where the metadata server is running and that" +
-                                "there is at least one engine listed.  Once the configuration document is set up correctly,  " +
-                                "restart this server."),
-
-    /**
-     * ENGINE-HOST-SERVICES-400-104 - {0} in server {1} is not configured with any engines
-     */
-    NO_ENGINES(400, "ENGINE-HOST-SERVICES-400-104",
-               "{0} in server {1} is not configured with any engines",
-               "The server is not able to run any services in this engine service.  The engine service fails to start which causes " +
-                       "the server to fail too.",
-               "Add the qualified name for at least one engine to the engine service in this server's configuration document " +
-                       "and then restart the server."),
     ;
 
 
@@ -354,6 +224,22 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    EngineHostServicesErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -364,14 +250,17 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    EngineHostServicesErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    EngineHostServicesErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -387,7 +276,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -404,7 +294,8 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -426,6 +317,7 @@ public enum EngineHostServicesErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

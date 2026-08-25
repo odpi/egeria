@@ -28,7 +28,8 @@ public enum YAMLAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The YAML secrets store connector received an unexpected {0} exception during method {1}; the error message was: {2}",
                          "The connector cannot process the current request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/secrets-store-connector/"),
 
     /**
      * YAML-SECRETS-STORE-CONNECTOR-0002 - The YAML secrets store connector is creating a new secrets store at {0}
@@ -37,7 +38,8 @@ public enum YAMLAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.INFO,
                          "The YAML secrets store connector is creating a new secrets store at {0}",
                          "The connector needs to create a new secrets store.",
-                         "Validate that this new secrets store should be created."),
+                         "Validate that this new secrets store should be created.",
+                         "https://egeria-project.org/concepts/secrets-store-connector/"),
 
 
 
@@ -48,7 +50,8 @@ public enum YAMLAuditCode implements AuditLogMessageSet
                               AuditLogRecordSeverityLevel.SECURITY,
                               "Adding client-side secret {0} to secrets store {1}",
                               "A secrets collection for a client-side secret is from the named secrets store.",
-                              "Make sure this client-side secret is valid and has the correct permissions."),
+                              "Make sure this client-side secret is valid and has the correct permissions.",
+                              "https://egeria-project.org/concepts/secrets-store-connector/"),
 
     /**
      * YAML-SECRETS-STORE-CONNECTOR-0004 - Removing security access control {0} from the platform user directory
@@ -57,7 +60,8 @@ public enum YAMLAuditCode implements AuditLogMessageSet
                                 AuditLogRecordSeverityLevel.SECURITY,
                                 "Removing client-side secret {0} from from secrets store {1}",
                                 "A secrets collection for a client-side secret is removed from the named secrets store.",
-                                "Make sure this client-side secret is no longer needed."),
+                                "Make sure this client-side secret is no longer needed.",
+                                "https://egeria-project.org/concepts/secrets-store-connector/"),
 
     ;
 
@@ -66,10 +70,11 @@ public enum YAMLAuditCode implements AuditLogMessageSet
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
 
 
     /**
-     * Constructor
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -83,11 +88,34 @@ public enum YAMLAuditCode implements AuditLogMessageSet
                   String                      systemAction,
                   String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * Constructor
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    YAMLAuditCode(String                      messageId,
+                  AuditLogRecordSeverityLevel severity,
+                  String                      message,
+                  String                      systemAction,
+                  String                      userAction,
+                  String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -103,7 +131,8 @@ public enum YAMLAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -120,7 +149,8 @@ public enum YAMLAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -140,6 +170,7 @@ public enum YAMLAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

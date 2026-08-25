@@ -28,7 +28,8 @@ public enum BabbageAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot catalog one or more metadata elements in the metadata repository.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
     /**
      * BABBAGE-ANALYTICAL-ENGINE-0009 - The {0} integration connector has stopped its monitoring of engine actions from server {1} on platform {2} and is shutting down
@@ -37,7 +38,8 @@ public enum BabbageAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.INFO,
                        "The {0} integration connector has stopped its monitoring of engine actions from server {1} on platform {2} and is shutting down",
                        "The connector is disconnecting.",
-                       "No action is required unless there are errors that follow indicating that there were problems shutting down."),
+                       "No action is required unless there are errors that follow indicating that there were problems shutting down.",
+                       "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
 
     /**
@@ -47,7 +49,8 @@ public enum BabbageAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.INFO,
                        "The {0} integration connector is starting its monitoring for analytical work from server {1} on platform {2}",
                        "The connector is initializing engine actions from the Governance Action Types connected as Catalog Targets.",
-                       "Monitor the creation of the engine actions and ensure they are executing successfully."),
+                       "Monitor the creation of the engine actions and ensure they are executing successfully.",
+                       "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
     /**
      * BABBAGE-ANALYTICAL-ENGINE-0012 - The {0} integration connector has created a new engine action {1} for Governance Action Type {2} ({3})
@@ -56,7 +59,8 @@ public enum BabbageAuditCode implements AuditLogMessageSet
                       AuditLogRecordSeverityLevel.INFO,
                       "The {0} integration connector has created a new engine action {1} for Governance Action Type {2} ({3})",
                       "The connector is initiating analytical work.",
-                      "No action is required.  This message is for monitoring the set up of the engine actions."),
+                      "No action is required.  This message is for monitoring the set up of the engine actions.",
+                      "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
 
 
@@ -67,6 +71,26 @@ public enum BabbageAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    BabbageAuditCode(String                      messageId,
+                     AuditLogRecordSeverityLevel severity,
+                     String                      message,
+                     String                      systemAction,
+                     String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -82,18 +106,22 @@ public enum BabbageAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     BabbageAuditCode(String                      messageId,
                      AuditLogRecordSeverityLevel severity,
                      String                      message,
                      String                      systemAction,
-                     String                      userAction)
+                     String                      userAction,
+                     String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -109,7 +137,8 @@ public enum BabbageAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -126,7 +155,8 @@ public enum BabbageAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -146,6 +176,7 @@ public enum BabbageAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

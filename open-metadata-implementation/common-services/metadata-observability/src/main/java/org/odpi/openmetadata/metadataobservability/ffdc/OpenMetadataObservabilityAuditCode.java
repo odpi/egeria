@@ -28,7 +28,8 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                           AuditLogRecordSeverityLevel.ACTIVITY,
                           "User {0} created {1} asset {2} during operation {3} of service {4}",
                           "This message is used to capture user requests to create an asset.",
-                          "No action is required, but this message can be used to capture user activity information related to asset creation."),
+                          "No action is required, but this message can be used to capture user activity information related to asset creation.",
+                          "https://egeria-project.org/services/common-services/"),
 
     /**
      * METADATA-OBSERVABILITY-0002 - User {0} retrieved {1} asset {2} during operation {3} of service {4}
@@ -37,7 +38,8 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                   AuditLogRecordSeverityLevel.ACTIVITY,
                   "User {0} retrieved {1} asset {2} during operation {3} of service {4}",
                   "This message is used to capture user requests to receive an asset.",
-                  "No action is required, but this message can be used to capture user activity information."),
+                  "No action is required, but this message can be used to capture user activity information.",
+                  "https://egeria-project.org/services/common-services/"),
 
 
     /**
@@ -47,7 +49,8 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.ACTIVITY,
                         "User {0} retrieved an attachment to {1} asset {2} during operation {3} of service {4}",
                         "This message is used to capture user requests to receive full details about an asset.",
-                        "No action is required, but this message can be used to capture user activity information about the use of assets."),
+                        "No action is required, but this message can be used to capture user activity information about the use of assets.",
+                        "https://egeria-project.org/services/common-services/"),
 
     /**
      * METADATA-OBSERVABILITY-0004 - User {0} updated an attachment to {1} asset {2} during operation {3} of service {4}
@@ -56,7 +59,8 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                                    AuditLogRecordSeverityLevel.ACTIVITY,
                                    "User {0} updated an attachment to {1} asset {2} during operation {3} of service {4}",
                                    "This message is used to capture user requests to build out the knowledge for an asset.",
-                                   "No action is required, but this message can be used to capture user activity information related to curation of an asset."),
+                                   "No action is required, but this message can be used to capture user activity information related to curation of an asset.",
+                                   "https://egeria-project.org/services/common-services/"),
 
 
     /**
@@ -66,7 +70,8 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                                    AuditLogRecordSeverityLevel.ACTIVITY,
                                    "User {0} updated feedback related to {1} asset {2} during operation {3} of service {4}",
                                    "This message is used to capture user requests to maintain feedback on an asset.",
-                                   "No action is required, but this message can be used to capture user activity information related to the maintenance of feedback attached to an asset."),
+                                   "No action is required, but this message can be used to capture user activity information related to the maintenance of feedback attached to an asset.",
+                                   "https://egeria-project.org/services/common-services/"),
 
     /**
      * METADATA-OBSERVABILITY-0006 - User {0} updated {1} asset {2} during operation {3} of service {4}
@@ -75,7 +80,8 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                                    AuditLogRecordSeverityLevel.ACTIVITY,
                                    "User {0} updated {1} asset {2} during operation {3} of service {4}",
                                    "This message is used to capture user requests to update an asset.",
-                                   "No action is required, but this message can be used to capture user activity information related to asset updates."),
+                                   "No action is required, but this message can be used to capture user activity information related to asset updates.",
+                                   "https://egeria-project.org/services/common-services/"),
 
     /**
      * METADATA-OBSERVABILITY-0007 - User {0} deleted {1} asset {2} during operation {3} of service {4}
@@ -84,7 +90,8 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                           AuditLogRecordSeverityLevel.ACTIVITY,
                           "User {0} deleted {1} asset {2} during operation {3} of service {4}",
                           "This message is used to capture user requests to delete an asset.",
-                          "No action is required, but this message can be used to capture user activity information related to asset deletion."),
+                          "No action is required, but this message can be used to capture user activity information related to asset deletion.",
+                          "https://egeria-project.org/services/common-services/"),
 
     /**
      * METADATA-OBSERVABILITY-0008 - User {0} retrieved {1} asset {2} during search operation {3} of service {4}
@@ -93,7 +100,8 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                           AuditLogRecordSeverityLevel.ACTIVITY,
                           "User {0} retrieved {1} asset {2} during search operation {3} of service {4}",
                           "This message is used to capture user requests to retrieve an asset as part of a search request.  The asset may not be the caller's choice.",
-                          "No action is required, but this message can be used to capture user activity information relating to the assets being retrieved through searches."),
+                          "No action is required, but this message can be used to capture user activity information relating to the assets being retrieved through searches.",
+                          "https://egeria-project.org/services/common-services/"),
 
     /**
      * METADATA-OBSERVABILITY-0009 - User {0} retrieved an attachment to {1} asset {2} during search operation {3} of service {4}
@@ -102,7 +110,8 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                                      AuditLogRecordSeverityLevel.ACTIVITY,
                                      "User {0} retrieved an attachment to {1} asset {2} during search operation {3} of service {4}",
                                      "This message is used to capture user requests to retrieve part of an asset as part of a search request.  This asset may not be the caller's choice.",
-                                     "No action is required, but this message can be used to capture user activity information relating to the attachments of an asset assets being retrieved through searches."),
+                                     "No action is required, but this message can be used to capture user activity information relating to the attachments of an asset assets being retrieved through searches.",
+                                     "https://egeria-project.org/services/common-services/"),
 
 
     /**
@@ -112,7 +121,8 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                           AuditLogRecordSeverityLevel.ACTIVITY,
                           "User {0} issued REST API call to operation {1} of service {2} on server {3}",
                           "This message is used to capture user activity.",
-                          "No action is required, but this message can be used to capture user activity information."),
+                          "No action is required, but this message can be used to capture user activity information.",
+                          "https://egeria-project.org/services/common-services/"),
     ;
 
     private final String                     logMessageId;
@@ -120,6 +130,26 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    OpenMetadataObservabilityAuditCode(String                     messageId,
+                                       AuditLogRecordSeverityLevel severity,
+                                       String                     message,
+                                       String                     systemAction,
+                                       String                     userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -135,18 +165,22 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     OpenMetadataObservabilityAuditCode(String                     messageId,
                                        AuditLogRecordSeverityLevel severity,
                                        String                     message,
                                        String                     systemAction,
-                                       String                     userAction)
+                                       String                     userAction,
+                                       String                     url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -162,7 +196,8 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -179,7 +214,8 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -199,6 +235,7 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

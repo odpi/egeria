@@ -22,15 +22,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum OSFAuditCode implements AuditLogMessageSet
 {
     /**
-     * OPEN-SURVEY-0001 - The {0} survey action service has been disconnected - either due to its own actions or a cancel request
-     */
-    DISCONNECT_DETECTED("OPEN-SURVEY-0001",
-                        AuditLogRecordSeverityLevel.INFO,
-                        "The {0} survey action service has been disconnected - either due to its own actions or a cancel request",
-                        "The survey action framework will attempt to stop the work of the survey action framework",
-                        "Monitor the shutdown of the survey action service."),
-
-    /**
      * OPEN-SURVEY-0002 - The {0} Survey Action Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}
      */
     WRONG_TYPE_OF_CONNECTOR("OPEN-SURVEY-0002",
@@ -38,7 +29,8 @@ public enum OSFAuditCode implements AuditLogMessageSet
                             "The {0} Survey Action Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
                             "The survey cannot continue since it cannot work with the supplied connector.",
                             "Use the details from the error message to determine the class of the connector.  " +
-                                    "Update the connector type associated with its Connection in the metadata store."),
+                                    "Update the connector type associated with its Connection in the metadata store.",
+                                    "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
      * OPEN-SURVEY-0003 - The survey action service {0} is creating log file {1}
@@ -47,8 +39,8 @@ public enum OSFAuditCode implements AuditLogMessageSet
                       AuditLogRecordSeverityLevel.INFO,
                       "The survey action service {0} is creating log file {1} which is catalogued as CSVFile asset {2}",
                       "This message tells the survey team that a particular survey log file is being created.",
-                      "No specific action is required.  The results are added to the log file and the asset for this log file is catalogued as a CSV file."),
-
+                      "No specific action is required.  The results are added to the log file and the asset for this log file is catalogued as a CSV file.",
+                      "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
      * OPEN-SURVEY-0004 - The survey action service {0} is overriding log file {1}
@@ -57,8 +49,8 @@ public enum OSFAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.INFO,
                      "The survey action service {0} is overriding log file {1}",
                      "This message warns the survey team that a particular survey log file is being reused.",
-                     "No specific action is required.  The new results are appended to the existing results."),
-
+                     "No specific action is required.  The new results are appended to the existing results.",
+                     "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
      * OPEN-SURVEY-0005 - No information about the asset {0} has been returned from the asset store for survey action service {1}
@@ -67,8 +59,8 @@ public enum OSFAuditCode implements AuditLogMessageSet
               AuditLogRecordSeverityLevel.ERROR,
               "No information about the asset {0} has been returned from the asset store for survey action framework {1}",
              "The service terminates without running the requested function.",
-             "This is an unexpected condition because the lack of an asset should have been caught before this point."),
-
+             "This is an unexpected condition because the lack of an asset should have been caught before this point.",
+             "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
      * OPEN-SURVEY-0006 - Asset {0} is of type {1} but survey action service {2} only supports the following asset type(s): {3}
@@ -80,7 +72,8 @@ public enum OSFAuditCode implements AuditLogMessageSet
                        "The caller has requested a governance request type that is incompatible with the type of the " +
                                "asset that has been supplied.  This problem could be resolved by issuing the survey request with " +
                                "a governance request type that is compatible with the asset, or changing the survey action service " +
-                               "associated with the governance request type to one that supports this type of asset."),
+                               "associated with the governance request type to one that supports this type of asset.",
+                               "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
      * OPEN-SURVEY-0007 - Asset {0} has a root schema of type {1} but survey action service {2} only supports the following root schema type(s): {3}
@@ -92,7 +85,8 @@ public enum OSFAuditCode implements AuditLogMessageSet
                              "The caller has requested a governance request type that cannot process a root schema for an asset because its type is unsupported." +
                                      "  This problem could be resolved by issuing the survey request with " +
                                      "a governance request type that is compatible with the asset's schema, or changing the survey action service " +
-                                     "associated with the governance request type to one that supports this type of schema."),
+                                     "associated with the governance request type to one that supports this type of schema.",
+                                     "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
      * OPEN-SURVEY-0008 - The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached
@@ -101,17 +95,8 @@ public enum OSFAuditCode implements AuditLogMessageSet
               AuditLogRecordSeverityLevel.ERROR,
               "The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached",
               "The survey cannot continue since it cannot assess whether the data stored in the associated resource matches the desired schema.",
-              "Update the asset to include the desired schema and re-run this survey.  If you want to discover the asset's schema then use a different survey service."),
-
-    /**
-     * OPEN-SURVEY-0009 - The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached
-     */
-    NO_SCHEMA_ATTRIBUTES("OPEN-SURVEY-0009",
-              AuditLogRecordSeverityLevel.ERROR,
-              "The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached",
-              "The survey cannot continue since it cannot assess whether the data stored in the associated resource matches the desired schema because there are no schema attributes attached to the root schema.",
-              "Update the asset to include the desired schema attributes and re-run this survey.  If you want to discover the asset's schema then use a different survey service."),
-
+              "Update the asset to include the desired schema and re-run this survey.  If you want to discover the asset's schema then use a different survey service.",
+              "https://egeria-project.org/frameworks/osf/overview/"),
 
     ;
 
@@ -121,10 +106,11 @@ public enum OSFAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
 
 
     /**
-     * The constructor for OSFAuditCode expects to be passed one of the enumeration rows defined above.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -138,11 +124,34 @@ public enum OSFAuditCode implements AuditLogMessageSet
                  String                      systemAction,
                  String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for OSFAuditCode expects to be passed one of the enumeration rows defined above.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    OSFAuditCode(String                      messageId,
+                 AuditLogRecordSeverityLevel severity,
+                 String                      message,
+                 String                      systemAction,
+                 String                      userAction,
+                 String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -158,7 +167,8 @@ public enum OSFAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -175,7 +185,8 @@ public enum OSFAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -195,6 +206,7 @@ public enum OSFAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

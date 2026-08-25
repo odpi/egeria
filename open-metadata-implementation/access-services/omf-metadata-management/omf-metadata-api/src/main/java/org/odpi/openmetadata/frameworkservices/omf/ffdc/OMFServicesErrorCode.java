@@ -27,24 +27,14 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum OMFServicesErrorCode implements ExceptionMessageSet
 {
     /**
-     * OMF-SERVICES-400-011 - The permitted synchronization direction of {0} does not allow connector {1} to issue {2} requests
-     */
-    NOT_PERMITTED_SYNCHRONIZATION(400,"OMF-SERVICES-400-011",
-                                  "The permitted synchronization direction of {0} does not allow connector {1} to issue {2} requests",
-                                  "The request is not issued and an exception is returned to the caller.",
-                                  "The request was disabled through the administration calls for the integration connector." +
-                                          "Either change the configuration of the integration service or change the connector to skip the part of the " +
-                                          "synchronization that uses this request since the organization does not want this type of metadata synchronized."),
-
-    /**
      * OMF-SERVICES-404-001 - The open metadata repository services are not initialized for the {0} operation
      */
     OMRS_NOT_INITIALIZED(404, "OMF-SERVICES-404-001",
                          "The open metadata repository services are not initialized for the {0} operation",
                          "The system cannot connect to the open metadata property server.",
                          "Check that the server where the Open Metadata Store Services are running initialized correctly.  " +
-                                 "Correct any errors discovered and retry the request when the open metadata services are available."),
-
+                                 "Correct any errors discovered and retry the request when the open metadata services are available.",
+                                 "https://egeria-project.org/services/framework-services/"),
 
     /**
      * OMF-SERVICES-409-001 - Multiple {0} relationships are attached to {1} metadata element {2}
@@ -52,8 +42,8 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
     MULTIPLE_RELATIONSHIPS_FOUND(404, "OMF-SERVICES-409-001",
                          "Multiple {0} relationships are attached to metadata element {1}",
                          "This relationship type is a singleton, which means that only once relationship of this type can be attached to an element.  The system cannot retrieve the singleton relationship because there are more than one relationship defined.",
-                         "Using a different method, retrieve all of the relationships of this type for this element and either delete/archive the relationships no longer needed, or adjust their effectivity date(s) so that only one relationship is effective at any one time."),
-
+                         "Using a different method, retrieve all of the relationships of this type for this element and either delete/archive the relationships no longer needed, or adjust their effectivity date(s) so that only one relationship is effective at any one time.",
+                         "https://egeria-project.org/services/framework-services/"),
 
     /**
      * OMF-SERVICES-500-001 A null topic listener has been passed by user {0} on method {1}
@@ -61,7 +51,8 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
     NULL_LISTENER(500, "OMF-SERVICES-500-001",
                   "A null topic listener has been passed by user {0} on method {1}",
                   "There is a coding error in the caller to the OMF Services.",
-                  "Correct the caller logic and retry the request."),
+                  "Correct the caller logic and retry the request.",
+                  "https://egeria-project.org/services/framework-services/"),
 
     /**
      * OMF-SERVICES-500-004 An unexpected exception occurred when sending an event through connector {0} to the OMF Services out topic.
@@ -71,7 +62,8 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
                          "An unexpected exception occurred when sending an event through connector {0} to the OMF Services out topic.  The failing " +
                                  "event was {1}, the exception was {2} with message {2}",
                          "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
-                         "Look for errors in the remote server's audit log and console to understand and correct the source of the error."),
+                         "Look for errors in the remote server's audit log and console to understand and correct the source of the error.",
+                         "https://egeria-project.org/services/framework-services/"),
 
     /**
      * OMF-SERVICES-500-006 The requested connector for connection named {0} has not been created.
@@ -82,7 +74,8 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
                                     " running in OMAG Server {2} at {3}",
                             "The system cannot create a connector which means some of its services will not work.",
                             "This problem is likely to be caused by an incorrect connection object.  Check the settings on the Connection" +
-                                    "and correct if necessary.  If the connection is correct, contact the Egeria community for help."),
+                                    "and correct if necessary.  If the connection is correct, contact the Egeria community for help.",
+                                    "https://egeria-project.org/services/framework-services/"),
 
     /**
      * OMF-SERVICES-500-007 The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2}
@@ -92,7 +85,8 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
                             "The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2} at {3} is " +
                                     "not of the required type. It should be an instance of {4}",
                             "The system cannot create the required connector which means some of its services will not work.",
-                            "Verify that the OMAG server is running and the OMAS service is correctly configured."),
+                            "Verify that the OMAG server is running and the OMAS service is correctly configured.",
+                            "https://egeria-project.org/services/framework-services/"),
 
     /**
      * OMF-SERVICES-500-008 - The Design Model OMAS has received an unexpected {0} exception during method {1}.  The message was: {2}
@@ -100,9 +94,8 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "OMF-SERVICES-500-008",
                          "The OMF Services has received an unexpected {0} exception during method {1} for service {2}.  The message was: {3}",
                          "The request returns with a PropertyServerException to indicate there has been an internal server error. The server also created a detailed error message and stack trace in the audit log.",
-                         "Review the stack trace to identify where the error occurred and work to resolve the cause."),
-
-
+                         "Review the stack trace to identify where the error occurred and work to resolve the cause.",
+                         "https://egeria-project.org/services/framework-services/"),
 
     ;
 
@@ -111,6 +104,22 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    OMFServicesErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -121,14 +130,17 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    OMFServicesErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OMFServicesErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -144,7 +156,8 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -161,7 +174,8 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -183,6 +197,7 @@ public enum OMFServicesErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

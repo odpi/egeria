@@ -50,13 +50,17 @@ class RESTExceptionHandler
                     paramName = (String)nameObject;
                 }
             }
-            throw new InvalidParameterException(restResult.getRelatedHTTPCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                restResult.getExceptionErrorMessage(),
-                                                restResult.getExceptionSystemAction(),
-                                                restResult.getExceptionUserAction(),
-                                                paramName);
+            InvalidParameterException restException = new InvalidParameterException(restResult.getRelatedHTTPCode(),
+                                                                                    this.getClass().getName(),
+                                                                                    methodName,
+                                                                                    restResult.getExceptionErrorMessage(),
+                                                                                    restResult.getExceptionSystemAction(),
+                                                                                    restResult.getExceptionUserAction(),
+                                                                                    paramName);
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -77,16 +81,20 @@ class RESTExceptionHandler
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new PropertyServerException(restResult.getRelatedHTTPCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              restResult.getExceptionErrorMessage(),
-                                              null,
-                                              null,
-                                              restResult.getExceptionSystemAction(),
-                                              restResult.getExceptionUserAction(),
-                                              null,
-                                              null);
+            PropertyServerException restException = new PropertyServerException(restResult.getRelatedHTTPCode(),
+                                                                                this.getClass().getName(),
+                                                                                methodName,
+                                                                                restResult.getExceptionErrorMessage(),
+                                                                                null,
+                                                                                null,
+                                                                                restResult.getExceptionSystemAction(),
+                                                                                restResult.getExceptionUserAction(),
+                                                                                null,
+                                                                                null);
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -120,13 +128,17 @@ class RESTExceptionHandler
                 }
             }
 
-            throw new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
-                                                 this.getClass().getName(),
-                                                 methodName,
-                                                 restResult.getExceptionErrorMessage(),
-                                                 restResult.getExceptionSystemAction(),
-                                                 restResult.getExceptionUserAction(),
-                                                 userId);
+            UserNotAuthorizedException restException = new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
+                                                                                      this.getClass().getName(),
+                                                                                      methodName,
+                                                                                      restResult.getExceptionErrorMessage(),
+                                                                                      restResult.getExceptionSystemAction(),
+                                                                                      restResult.getExceptionUserAction(),
+                                                                                      userId);
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 }

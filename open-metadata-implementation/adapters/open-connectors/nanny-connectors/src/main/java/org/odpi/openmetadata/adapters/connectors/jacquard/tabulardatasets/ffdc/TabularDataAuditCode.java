@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 
 
 /**
- * The ReferenceDataAuditCode is used to define the message content for the OMRS Audit Log.
+ * The TabularDataAuditCode is used to define the message content for the OMRS Audit Log.
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Identifier - to uniquely identify the message</li>
@@ -28,7 +28,8 @@ public enum TabularDataAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.ERROR,
                          "The {0} Tabular Metadata Connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot connector the the OMAG Infrastructure.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/tabular-data-set-connector/"),
 
 
 
@@ -39,15 +40,11 @@ public enum TabularDataAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
 
 
     /**
-     * The constructor for ReferenceDataAuditCode expects to be passed one of the enumeration rows defined in
-     * ReferenceDataAuditCode above.   For example:
-     * <br>
-     *     ReferenceDataAuditCode   auditCode = ReferenceDataAuditCode.SERVER_NOT_AVAILABLE;
-     * <br>
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -61,11 +58,39 @@ public enum TabularDataAuditCode implements AuditLogMessageSet
                          String                      systemAction,
                          String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for TabularDataAuditCode expects to be passed one of the enumeration rows defined in
+     * TabularDataAuditCode above.   For example:
+     * <br>
+     *     TabularDataAuditCode   auditCode = TabularDataAuditCode.UNEXPECTED_EXCEPTION;
+     * <br>
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    TabularDataAuditCode(String                      messageId,
+                         AuditLogRecordSeverityLevel severity,
+                         String                      message,
+                         String                      systemAction,
+                         String                      userAction,
+                         String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -81,7 +106,8 @@ public enum TabularDataAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -98,7 +124,8 @@ public enum TabularDataAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -112,12 +139,13 @@ public enum TabularDataAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "ReferenceDataAuditCode{" +
+        return "TabularDataAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

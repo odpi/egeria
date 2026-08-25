@@ -29,7 +29,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
               "The {0} governance action service is copying source file {1} to destination file {2}",
               "The provisioning governance action service connector is designed to deploy files on request.  " +
                                   "This message confirms that a file has been copied.",
-              "No specific action is required.  This message is to log that a copy provisioning action has taken place."),
+              "No specific action is required.  This message is to log that a copy provisioning action has taken place.",
+              "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0002 - The {0} governance action service is moving source file {1} to destination file {2}
@@ -39,17 +40,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
               "The {0} governance action service is moving source file {1} to destination file {2}",
               "The provisioning governance action service connector is designed to deploy files on request.  " +
                       "This message confirms that a file has been moved.",
-              "No specific action is required.  This message is to log that a move provisioning action has taken place."),
-
-    /**
-     * GOVERNANCE-ACTION-CONNECTORS-0003 - The {0} governance action service is deleting file {1}
-     */
-    DELETE_FILE("GOVERNANCE-ACTION-CONNECTORS-0003",
-                AuditLogRecordSeverityLevel.INFO,
-              "The {0} governance action service is deleting file {1}",
-              "The provisioning governance action service connector is designed to manage files on request.  " +
-                      "This message confirms that a file has been delete.",
-              "No specific action is required.  This message is to log that a delete provisioning action has taken place."),
+              "No specific action is required.  This message is to log that a move provisioning action has taken place.",
+              "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0004 - The {0} governance action service has created lineage from source {1} to process {2} to destination {3}
@@ -58,8 +50,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                     AuditLogRecordSeverityLevel.INFO,
                         "The {0} governance action service has created lineage from source {1} to process {2} to destination {3}",
                         "The provisioning governance action service connector has created lineage to cover the data movement it has just performed.",
-                        "Validate that the lineage is being created between the correct metadata elements."),
-
+                        "Validate that the lineage is being created between the correct metadata elements.",
+                        "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0005 - The {0} governance action service has been called without a source file name to work with
@@ -70,7 +62,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                 "The provisioning governance action service connector is designed to manage files on request.  " +
                         "It cannot operate without the name of the source file and so it terminates with a FAILED completion status.",
                 "The source file is passed to the governance action service through the request parameters or via the TargetForAction " +
-                        "relationship.  Correct the information passed to the governance service and rerun the request."),
+                        "relationship.  Correct the information passed to the governance service and rerun the request.",
+                        "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0006 - The {0} governance action service cannot provision file {1} 
@@ -81,7 +74,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                       "The {0} governance action service cannot provision file {1} to {2} destination folder using {3} file pattern",
                       "This message is logged and the governance action is marked as failed",
                       "Since no exception occurred it means that there are currently files already occupying all the possible file names allowed by the file pattern.  " +
-                                      "Files in the destination folder need to be deleted or this connector needs to be reconfigured with a new destination folder or file pattern."),
+                                      "Files in the destination folder need to be deleted or this connector needs to be reconfigured with a new destination folder or file pattern.",
+                                      "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0007 - The {0} governance action service encountered an {1} exception when provisioning file {2} to {3}
@@ -94,7 +88,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                 "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                   "exception stack trace to determine why the connector is not able to access the directory and resolve that issue.  " +
                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
-                                  "connector in the integration daemon once the original cause of the error has been corrected."),
+                                  "connector in the integration daemon once the original cause of the error has been corrected.",
+                                  "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0008 - The {0} governance action service encountered an {1} exception when attempting to retrieve the file 
@@ -108,7 +103,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                    "working, use the information from the " +
                                    "exception stack trace to determine why the connector is not able to access the endpoint and resolve that issue.  " +
                                    "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
-                                   "connector in the integration daemon once the original cause of the error has been corrected."),
+                                   "connector in the integration daemon once the original cause of the error has been corrected.",
+                                   "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0009 - The {0} governance action service is using the qualified name from the Folder asset as the path name: {1}
@@ -118,7 +114,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                        "The {0} governance action service is using the qualified name from the Folder asset as the path name: {1}",
                        "The governance action connector will use the qualified name of the asset as the path name to work with.",
                        "Validate that the qualified name is a good choice for the path name.  If it is not, add a connection " +
-                               "with an endpoint that has the desired path in its networkAddress property."),
+                               "with an endpoint that has the desired path in its networkAddress property.",
+                               "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0010 - The {0} governance action service detected that asset {1} has no linked connection
@@ -129,7 +126,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                              "Since the asset has no connection, the governance action connector will use the qualified name of the " +
                                      "asset as the path name to work with.",
                              "The governance action service will next produce the GOVERNANCE-ACTION-CONNECTORS-0006 message with the " +
-                                     "qualified name.  Follow the instructions for this message."),
+                                     "qualified name.  Follow the instructions for this message.",
+                                     "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0011 - The {0} governance action service detected that asset {1} has {2} linked connections for 
@@ -142,7 +140,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                          "Since the governance action service cannot choose an appropriate endpoint, it " +
                                  "will use the qualified name of the asset as the path name to work with.",
                          "The governance action service will next produce the GOVERNANCE-ACTION-CONNECTORS-0006 message with the " +
-                                 "qualified name embedded in it.  Follow the instructions for this message."),
+                                 "qualified name embedded in it.  Follow the instructions for this message.",
+                                 "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0012 - The context for {0} governance action service returned a RelatedMetadataElement with a
@@ -156,7 +155,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                      "The governance action service will write the GOVERNANCE-ACTION-CONNECTORS-0006 message with the " +
                                  "qualified name embedded in it.  Follow the instructions for this message.  Also investigate why the related " +
                                  "element returned a null related element.  This is a logic error in the context or one of its " +
-                                 "underlying services."),
+                                 "underlying services.",
+                                 "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0013 - The {0} governance action service detected that asset {1} has no endpoint linked to connection {2}
@@ -167,7 +167,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                          "Since the asset's connection has no endpoint, the governance action connector will use the qualified name of the " +
                                  "asset as the path name to work with.",
                          "The governance action service will next write out the GOVERNANCE-ACTION-CONNECTORS-0006 message with the " +
-                                 "qualified name.  Follow the instructions for this message."),
+                                 "qualified name.  Follow the instructions for this message.",
+                                 "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0014 - The {0} governance action service detected that asset {1} has a linked connection {2} with {3} linked
@@ -178,7 +179,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                          "The {0} governance action service detected that asset {1} has a linked connection {2} with {3} linked " +
                                  "endpoints which is not valid: {4}",
                          "The governance action service ignores this connection.",
-                         "The governance action service will search for additional connections."),
+                         "The governance action service will search for additional connections.",
+                         "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0015 - The {0} governance action service detected that the endpoint {1} linked to connection {2}
@@ -190,7 +192,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                        "Since the asset's connection has no networkAddress in its endpoint, the governance action connector will use the qualified name of the " +
                                "asset as the path name to work with.",
                        "The governance action service will log the GOVERNANCE-ACTION-CONNECTORS-0006 message with the " +
-                               "qualified name.  Follow the instructions for this message."),
+                               "qualified name.  Follow the instructions for this message.",
+                               "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0016 - The {0} governance action service received a {1} exception when it registered its completion status.  
@@ -200,7 +203,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                     AuditLogRecordSeverityLevel.INFO,
                        "The {0} governance action service received a {1} exception when it registered its completion status.  The exception's message is: {2}",
                        "The governance action throws a GovernanceServiceException in the hope that the hosting server is able to clean up.",
-                       "Review the exception messages that are logged about the same time as one of them will point to the root cause of the error."),
+                       "Review the exception messages that are logged about the same time as one of them will point to the root cause of the error.",
+                       "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0017 - The {0} governance action service received a {1} exception when it registered a listener with the 
@@ -211,7 +215,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                     "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}",
                                     "The governance action service throws a GovernanceServiceException.",
                                     "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
-                                            "and follow its instructions."),
+                                            "and follow its instructions.",
+                                            "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0018 - The {0} governance action service has no targets to operate on
@@ -222,7 +227,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                "The governance action service returns an INVALID completion status.",
                "This is an error in the way that the governance action service has been called." +
                                         "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
-                                        "or as part of a governance action process.  Then correct this approach so that an action target is set up."),
+                                        "or as part of a governance action process.  Then correct this approach so that an action target is set up.",
+                                        "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0019 - The {0} governance action service has publishZones set to null
@@ -233,7 +239,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                 "The governance action service will remove the AssetZoneMembership from ",
                                 "Verify that this is the intended behaviour.  If zones are needed, the zone names are passed with as a configuration property or as a " +
                                         "request parameter.  Either method can provide a valid list of zone names expressed as a comma separated list" +
-                                        "(for example: zone1,zone2) that will control the visibility of the asset."),
+                                        "(for example: zone1,zone2) that will control the visibility of the asset.",
+                                        "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0020 - The {0} governance action service is publishing asset {1} to the following zones: {2}
@@ -242,7 +249,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                   AuditLogRecordSeverityLevel.INFO,
                                 "The {0} governance action service is publishing asset {1} to the following zones: {2}",
                                 "This governance action service completes normally.",
-                                "Validate that these are the intended zones."),
+                                "Validate that these are the intended zones.",
+                                "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0021 - The {0} governance action service is initiating governance action process {1} with request parameters 
@@ -252,7 +260,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.INFO,
                      "The {0} governance action service is initiating governance action process {1} with request parameters {2} for action targets {3}",
                      "The request is sent to the partner metadata server and executed.  This results in governance services running on one or more engine host servers.",
-                     "Validate that the call to the process has the expected parameters and executes successfully."),
+                     "Validate that the call to the process has the expected parameters and executes successfully.",
+                     "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0022 - The {0} governance action service encountered an {1} exception initiating governance action process {2}
@@ -265,7 +274,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                            "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                    "exception stack trace to determine why the connector is not able to initiate the process and resolve that issue.  " +
                                    "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
-                                   "connector in the integration daemon once the original cause of the error has been corrected."),
+                                   "connector in the integration daemon once the original cause of the error has been corrected.",
+                                   "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0023 - The {0} governance action service cannot retrieve the template {1} configured in property {2}.  
@@ -275,8 +285,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.ERROR,
                                "The {0} governance action service cannot retrieve the template {1} configured in property {2}.",
                                "The asset is created with the supplied parameters.",
-                               "Determine whether the template name is specified incorrectly, or if the name is correct, why it is not accessible to governance service.  Once the situation has been corrected, future assets will be created with the right template.  However this asset may need some remediation to add the values that would have been added by the template."),
-
+                               "Determine whether the template name is specified incorrectly, or if the name is correct, why it is not accessible to governance service.  Once the situation has been corrected, future assets will be created with the right template.  However this asset may need some remediation to add the values that would have been added by the template.",
+                               "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0024 - {0}
@@ -285,7 +295,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.INFO,
                      "{0}",
                      "The message is supplied by the caller.",
-                     "Look at the message text to understand any actions."),
+                     "Look at the message text to understand any actions.",
+                     "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0025 - The {0} governance action service is attaching the retention classification to asset {1} with an archive time of {2} and a delete time of {3}
@@ -294,7 +305,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                   AuditLogRecordSeverityLevel.INFO,
                   "The {0} governance action service is attaching the retention classification to asset {1} with an archive time of {2} and a delete time of {3}",
                   "This governance action service completes normally once the retention classification is attached.",
-                  "Validate that these are the intended retention dates."),
+                  "Validate that these are the intended retention dates.",
+                  "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0026 - The {0} governance action service has not been passed a steward as an action target
@@ -303,7 +315,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
              AuditLogRecordSeverityLevel.ERROR,
              "The {0} governance action service has not been passed a steward as an action target",
              "The governance action service will stop with a completion status of INVALID.",
-             "Rerun the request, but this time add a steward action target."),
+             "Rerun the request, but this time add a steward action target.",
+             "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0027 - The {0} governance action service has not been passed a survey report as an action target
@@ -312,7 +325,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                AuditLogRecordSeverityLevel.ERROR,
                "The {0} governance action service has not been passed a survey report as an action target",
                "The governance action service will end with a completion status of INVALID.",
-               "Rerun the request, but this time add a survey report action target."),
+               "Rerun the request, but this time add a survey report action target.",
+               "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0028 - No request for action annotations detected in survey report {0}
@@ -321,8 +335,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                AuditLogRecordSeverityLevel.INFO,
                "No request for action annotations detected in survey report {0}",
                "The governance action service will stop with a completion status of ACTIONED.",
-               "No action is required since the survey completed successfully."),
-
+               "No action is required since the survey completed successfully.",
+               "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0029 - {0} request for action annotations detected in survey report {1}
@@ -331,7 +345,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
             AuditLogRecordSeverityLevel.INFO,
             "{0} request for action annotations detected in survey report {1}",
             "The governance action service will stop with a completion status of ACTIONED. A ToDo has been created for each Request for Action annotation to notify the appropriate steward.",
-            "Instructions for the action to take are in the Todos and the attached requests for action."),
+            "Instructions for the action to take are in the Todos and the attached requests for action.",
+            "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0030 - The {0} governance action service has not been passed the unique identifier of the server's template as a request parameter
@@ -340,7 +355,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.ERROR,
                      "The {0} governance action service has not been passed the unique identifier of the server's template as a request parameter",
                      "The governance action service will terminate with a completion status of INVALID.",
-                     "Rerun the request, but this time add a templateGUID request parameter."),
+                     "Rerun the request, but this time add a templateGUID request parameter.",
+                     "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-00301- The {0} governance action service has not been passed the unique identifier of an integration connector as an action target
@@ -349,7 +365,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.ERROR,
                      "The {0} governance action service has not been passed the unique identifier of an integration connector as an action target",
                      "The governance action service will immediately end with a completion status of INVALID.",
-                     "Rerun the request, but this time add an integrationConnector action target."),
+                     "Rerun the request, but this time add an integrationConnector action target.",
+                     "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0032 - Integration connector {0} is now cataloging {1} server at {2}
@@ -358,8 +375,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                   AuditLogRecordSeverityLevel.INFO,
                   "Integration connector {0} is now cataloging {1} server {2}",
                   "The governance action service has completed the setup of the integration connector.  It will exit with a completion status of ACTIONED.",
-                  "Check that the integration connector is able to contact the server and the cataloguing is operating as expected."),
-
+                  "Check that the integration connector is able to contact the server and the cataloguing is operating as expected.",
+                  "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0033 - The {0} governance action service has not been passed a {1} action target
@@ -370,7 +387,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                "The governance action service returns an INVALID completion status.",
                "This is an error in the way that the governance action service has been called since a vital piece of information is missing." +
                        "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
-                       "or as part of a governance action process.  Then correct this approach so that this action target is set up."),
+                       "or as part of a governance action process.  Then correct this approach so that this action target is set up.",
+                       "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0034 - The {0} governance action service has created a new {1} asset called {2} ({3})
@@ -379,8 +397,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                           AuditLogRecordSeverityLevel.INFO,
                           "The {0} governance action service has created a new {1} asset called {2} ({3})",
                           "The governance action service returns an ACTIONED completion status.",
-                          "Ensure follow-on uses of the asset are successful."),
-
+                          "Ensure follow-on uses of the asset are successful.",
+                          "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0035 - The {0} governance action service has deleted the {1} asset called {2} ({3})
@@ -389,8 +407,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                       AuditLogRecordSeverityLevel.INFO,
                       "The {0} governance action service has deleted the {1} asset called {2} ({3})",
                       "The governance action service returns an ACTIONED completion status.",
-                      "Ensure follow-on uses of the asset GUID are successful."),
-
+                      "Ensure follow-on uses of the asset GUID are successful.",
+                      "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0036 - The {0} governance action service has determined that today is {1}
@@ -399,7 +417,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                       AuditLogRecordSeverityLevel.INFO,
                       "The {0} governance action service has determined that today is {1}",
                       "The governance action service has completed successfully.",
-                      "Ensure follow-on uses of the day of the week are successful."),
+                      "Ensure follow-on uses of the day of the week are successful.",
+                      "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0037 - The governance action service {0} received an unexpected {1} exception during method {2}; the error message was: {3}
@@ -408,7 +427,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The governance service {0} received an unexpected {1} exception during method {2}; the error message was: {3}",
                          "The service cannot process the current request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0038 - The governance action service {0} completed successfully
@@ -417,7 +437,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.INFO,
                          "The governance service {0} has completed successfully",
                          "The service is shutting down.",
-                         "No action is required except to validate that the shutdown is occurring at an appropriate time."),
+                         "No action is required except to validate that the shutdown is occurring at an appropriate time.",
+                         "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0039 - The {0} governance action service has not been passed a {1} request parameter
@@ -428,7 +449,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                           "The governance action service returns an INVALID completion status with this message.",
                           "This is an error in the way that the governance action service has been called since a vital piece of information is missing." +
                                   "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
-                                  "or as part of a governance action process.  Then correct this approach so that this request parameter is set up."),
+                                  "or as part of a governance action process.  Then correct this approach so that this request parameter is set up.",
+                                  "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0040 - The {0} governance action service has created a new {1} digital subscription {2} for {3} {4} ({5}) requested by {6} {7} ({8})
@@ -437,7 +459,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                       AuditLogRecordSeverityLevel.INFO,
                       "The {0} governance action service has created a new {1} digital subscription {2} for {3} {4} ({5}) requested by {6} {7} ({8})",
                       "The governance action service returns an ACTIONED completion status with this subscription as a new action target.",
-                      "Ensure follow-on uses of the subscription are successful."),
+                      "Ensure follow-on uses of the subscription are successful.",
+                      "https://egeria-project.org/concepts/governance-action-service/"),
 
     ;
 
@@ -446,13 +469,11 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
 
 
     /**
-     * The constructor for GovernanceActionConnectorsAuditCode expects to be passed one of the enumeration rows defined in
-     * GovernanceActionConnectorsAuditCode above.   For example:
-     *     GovernanceActionConnectorsAuditCode   auditCode = GovernanceActionConnectorsAuditCode.SERVER_NOT_AVAILABLE
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -466,11 +487,37 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                         String                      systemAction,
                                         String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for GovernanceActionConnectorsAuditCode expects to be passed one of the enumeration rows defined in
+     * GovernanceActionConnectorsAuditCode above.   For example:
+     *     GovernanceActionConnectorsAuditCode   auditCode = GovernanceActionConnectorsAuditCode.SERVER_NOT_AVAILABLE
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    GovernanceActionConnectorsAuditCode(String                      messageId,
+                                        AuditLogRecordSeverityLevel severity,
+                                        String                      message,
+                                        String                      systemAction,
+                                        String                      userAction,
+                                        String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -486,7 +533,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -503,7 +551,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -523,6 +572,7 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

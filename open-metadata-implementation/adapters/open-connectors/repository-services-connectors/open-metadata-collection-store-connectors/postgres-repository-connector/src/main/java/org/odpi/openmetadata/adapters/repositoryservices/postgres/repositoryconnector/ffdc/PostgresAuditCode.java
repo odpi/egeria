@@ -27,7 +27,8 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The PostgreSQL repository connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}",
                          "The connector cannot process the current request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/repository-connector/"),
 
     /**
      * POSTGRES-REPOSITORY-CONNECTOR-0002 - The PostgreSQL repository connector {0} is connecting to database {1}
@@ -36,7 +37,8 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.STARTUP,
                          "The PostgreSQL repository connector {0} is connecting to database {1}",
                          "The connector is testing its connection to the database.",
-                         "Check for errors following this message."),
+                         "Check for errors following this message.",
+                         "https://egeria-project.org/concepts/repository-connector/"),
 
     /**
      * POSTGRES-REPOSITORY-CONNECTOR-0003 - The PostgreSQL repository connector {0} is validating the schema definitions for schema {1}
@@ -45,36 +47,8 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                                  AuditLogRecordSeverityLevel.STARTUP,
                                  "The PostgreSQL repository connector {0} is validating the schema definitions for schema {1}",
                                  "The connector is testing the table and column definitions for the database schema.  If they are missing, they are created automatically.",
-                                 "Check for errors in configuring the schema."),
-
-    /**
-     * POSTGRES-REPOSITORY-CONNECTOR-0004 - The PostgreSQL repository connector {0} has opened database schema {1} which is the repository for server {2} (metadata collection id {3})
-     */
-    INVALID_REPOSITORY_CONTROL_TABLE("POSTGRES-REPOSITORY-CONNECTOR-0004",
-                                 AuditLogRecordSeverityLevel.ERROR,
-                                 "The PostgreSQL repository connector {0} has opened database schema {1} which is the repository for server {2} (metadata collection id {3})",
-                                 "The connector has been configured to use the wrong repository.",
-                                 "Update the configuration for this server to connect it either to an empty database schema, or the database schema it was using last time."),
-
-    /**
-     * POSTGRES-REPOSITORY-CONNECTOR-0005 - The PostgreSQL repository connector {0} has opened database schema {1} for server {2} (metadata collection id {3})
-     */
-    CONFIRMING_CONTROL_TABLE("POSTGRES-REPOSITORY-CONNECTOR-0005",
-                                 AuditLogRecordSeverityLevel.STARTUP,
-                                 "The PostgreSQL repository connector {0} has opened database schema {1} for server {2} (metadata collection id {3})",
-                                 "The connector has validated that it is connected to the correct database schema.",
-                                 "No action is required."),
-
-
-    /**
-     * POSTGRES-REPOSITORY-CONNECTOR-0006 - The PostgreSQL repository connector {0} has initialized database schema {1} for server {2} (metadata collection id {3})
-     */
-    NEW_CONTROL_TABLE("POSTGRES-REPOSITORY-CONNECTOR-0006",
-                             AuditLogRecordSeverityLevel.STARTUP,
-                             "The PostgreSQL repository connector {0} has initialized database schema {1} for server {2} (metadata collection id {3})",
-                             "The connector has created the repository control table for a new repository.",
-                             "No action is required, the new repository has been successfully initialized."),
-
+                                 "Check for errors in configuring the schema.",
+                                 "https://egeria-project.org/concepts/repository-connector/"),
 
     /**
      * POSTGRES-REPOSITORY-CONNECTOR-0007 - The PostgreSQL repository connector {0} has is using a default 'asOfTime' for queries of: {1}
@@ -83,7 +57,8 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                       AuditLogRecordSeverityLevel.STARTUP,
                       "The PostgreSQL repository connector {0} has is using a default 'asOfTime' for queries of: {1}",
                       "All queries that do not explicitly specify an asOfTime will use this value.  A value of null means it will use the current time.  This value is changed using the 'defaultAsOfTime' configuration property.",
-                      "Check that this is the intended value.  Typically it is only changed from its default value of null for audits that are focused on a particular moment in time."),
+                      "Check that this is the intended value.  Typically it is only changed from its default value of null for audits that are focused on a particular moment in time.",
+                      "https://egeria-project.org/concepts/repository-connector/"),
 
     /**
      * POSTGRES-REPOSITORY-CONNECTOR-0008 - The PostgreSQL repository connector {0} is using a repository mode of: {1}
@@ -92,7 +67,8 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.STARTUP,
                        "The PostgreSQL repository connector {0} is using a repository mode of: {1}",
                        "The repository mode is used to switch the repository into a read-only mode.  The default mode is read-write.  This value is changed using the 'repositoryMode' configuration property.  If it is set to 'readOnly' then repositoryMode=read-only; if it is set to anything else (or not set) then repositoryMode=read-write.",
-                       "Check that this is the intended value.  Typically it is only changed from its default value of read-write for situations where you do not want any changes to be made to the metadata in the repository."),
+                       "Check that this is the intended value.  Typically it is only changed from its default value of read-write for situations where you do not want any changes to be made to the metadata in the repository.",
+                       "https://egeria-project.org/concepts/repository-connector/"),
 
     ;
 
@@ -101,6 +77,26 @@ public enum PostgresAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId    - unique id for the message
+     * @param severity     - the severity of the message
+     * @param message      - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction   - instructions for resolving the situation, if any
+     */
+    PostgresAuditCode(String                      messageId,
+                      AuditLogRecordSeverityLevel severity,
+                      String                      message,
+                      String                      systemAction,
+                      String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -116,18 +112,22 @@ public enum PostgresAuditCode implements AuditLogMessageSet
      * @param message      - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction   - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     PostgresAuditCode(String                      messageId,
                       AuditLogRecordSeverityLevel severity,
                       String                      message,
                       String                      systemAction,
-                      String                      userAction)
+                      String                      userAction,
+                      String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
     /**
@@ -140,7 +140,8 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
     /**
@@ -153,7 +154,8 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -173,6 +175,7 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                        ", logMessage='" + logMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

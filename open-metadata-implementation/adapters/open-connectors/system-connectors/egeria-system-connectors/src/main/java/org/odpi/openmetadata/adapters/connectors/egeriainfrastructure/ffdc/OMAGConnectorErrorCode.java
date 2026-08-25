@@ -31,8 +31,8 @@ public enum OMAGConnectorErrorCode implements ExceptionMessageSet
     NULL_URL(400, "OMAG-CONNECTORS-400-001",
                      "Egeria connector {0} has been configured without the URL to the OMAG Server Platform",
                      "The connector cannot contact the OMAG Infrastructure.",
-                     "The Platform URL Root is configured in the connector's connection endpoint in the address property.  Typically it is the host name and port where the OMAG Server Platform is running."),
-
+                     "The Platform URL Root is configured in the connector's connection endpoint in the address property.  Typically it is the host name and port where the OMAG Server Platform is running.",
+                     "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
     /**
      * EGERIA-CONNECTOR-400-002 - Egeria connector {0} has been configured without the name of the OMAG Server to call
@@ -40,16 +40,8 @@ public enum OMAGConnectorErrorCode implements ExceptionMessageSet
     NULL_SERVER_NAME(400, "OMAG-CONNECTORS-400-002",
              "Egeria connector {0} has been configured without the name of the OMAG Server to call",
              "The connector cannot contact the OMAG Server.",
-             "The server's name is configured in the connector's connection additionalProperties in the serverName property."),
-
-    /**
-     * EGERIA-CONNECTOR-400-003 - Egeria connector {0} has been configured without a userId needed to call the OMAG Server Platform.
-     */
-    NULL_CLIENT_USER_ID(400, "OMAG-CONNECTORS-400-002",
-                     "Egeria connector {0} has been configured without a userId needed to call the OMAG Server Platform.",
-                     "The connector is not authorized to contact the OMAG Server Platform.",
-                     "The userId is configured in the connector's connection userId property."),
-
+             "The server's name is configured in the connector's connection additionalProperties in the serverName property.",
+             "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
     /**
      * EGERIA-CONNECTOR-500-001 - The {0} Egeria connector received an unexpected exception {1} during method {2}; the error message was: {3}
@@ -57,7 +49,8 @@ public enum OMAGConnectorErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "OMAG-CONNECTORS-500-001",
                          "The {0} Egeria connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot contact the OMAG Infrastructure.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
     ;
 
@@ -66,6 +59,22 @@ public enum OMAGConnectorErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    OMAGConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -76,14 +85,17 @@ public enum OMAGConnectorErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    OMAGConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OMAGConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -99,7 +111,8 @@ public enum OMAGConnectorErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -116,7 +129,8 @@ public enum OMAGConnectorErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -138,6 +152,7 @@ public enum OMAGConnectorErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

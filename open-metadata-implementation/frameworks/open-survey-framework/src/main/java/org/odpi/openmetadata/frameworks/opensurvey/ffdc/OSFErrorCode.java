@@ -33,7 +33,8 @@ public enum OSFErrorCode implements ExceptionMessageSet
     NULL_SURVEY_CONTEXT(400, "OPEN-SURVEY-400-001",
             "No survey context supplied to the survey action service {0}",
             "The survey action service is not able to determine which asset to analyze.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action service.  Once the cause is resolved, retry the survey action request."),
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action service.  Once the cause is resolved, retry the survey action request.",
+            "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
      * OPEN-SURVEY-400-002 - No embedded survey action services supplied to the survey action pipeline {0}
@@ -41,7 +42,8 @@ public enum OSFErrorCode implements ExceptionMessageSet
     NO_EMBEDDED_SURVEY_ACTION_SERVICES(400, "OPEN-SURVEY-400-002",
             "No embedded survey action services supplied to the survey action pipeline {0}",
             "The survey action pipeline is not able to survey action which survey action services to run.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action pipeline service.  Once the cause is resolved, retry the survey action request."),
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action pipeline service.  Once the cause is resolved, retry the survey action request.",
+            "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
      * OPEN-SURVEY-400-003 - No embedded survey action services supplied to the survey action pipeline {0}
@@ -49,9 +51,8 @@ public enum OSFErrorCode implements ExceptionMessageSet
     INVALID_EMBEDDED_SURVEY_ACTION_SERVICE(400, "OPEN-SURVEY-400-003",
             "No embedded survey action services supplied to the survey action pipeline {0}",
             "The survey action pipeline is not able to discover which survey action services to run.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action pipeline service or the associated open survey action engine.  Once the cause is resolved, retry the survey action request."),
-
-
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action pipeline service or the associated open survey action engine.  Once the cause is resolved, retry the survey action request.",
+            "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
      * OPEN-SURVEY-400-005 - Asset {0} is of type {1} but survey action service {2} only supports the following asset type(s): {3}
@@ -62,8 +63,8 @@ public enum OSFErrorCode implements ExceptionMessageSet
                        "The caller has requested a governance request type that is incompatible with the type of the " +
                                "asset that has been supplied.  This problem could be resolved by issuing the survey request with " +
                                "a governance request type that is compatible with the asset, or changing the survey action service " +
-                               "associated with the governance request type to one that supports this type of asset."),
-
+                               "associated with the governance request type to one that supports this type of asset.",
+                               "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
      * OPEN-SURVEY-400-006 - The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}
@@ -72,7 +73,8 @@ public enum OSFErrorCode implements ExceptionMessageSet
                             "The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
                             "The survey cannot continue since it cannot work with the supplied connector.",
                             "Use the details from the error message to determine the class of the connector.  " +
-                                    "Update the connector type associated with its Connection in the metadata store."),
+                                    "Update the connector type associated with its Connection in the metadata store.",
+                                    "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
      * OPEN-SURVEY-400-007 - The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached
@@ -80,17 +82,8 @@ public enum OSFErrorCode implements ExceptionMessageSet
     NO_SCHEMA(400, "OPEN-SURVEY-400-007",
                             "The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached",
                             "The survey cannot continue since it cannot assess whether the data stored in the associated resource matches the desired schema.",
-                            "Update the asset to include the desired schema and re-run this survey.  If you want to discover the asset's schema then use a different survey service."),
-
-    /**
-     * OPEN-SURVEY-400-008 - The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached
-     */
-    NO_SCHEMA_ATTRIBUTES(400,"OPEN-SURVEY-400-008",
-                         "The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached",
-                         "The survey cannot continue since it cannot assess whether the data stored in the associated resource matches the desired schema because there are no schema attributes attached to the root schema.",
-                         "Update the asset to include the desired schema attributes and re-run this survey.  If you want to discover the asset's schema then use a different survey service."),
-
-
+                            "Update the asset to include the desired schema and re-run this survey.  If you want to discover the asset's schema then use a different survey service.",
+                            "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
      * OPEN-SURVEY-500-001 - Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}
@@ -98,7 +91,8 @@ public enum OSFErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "OPEN-SURVEY-500-001",
                          "Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}",
                          "The survey action service failed during its operation.",
-                         "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action service.  Once the cause is resolved, retry the survey action request."),
+                         "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action service.  Once the cause is resolved, retry the survey action request.",
+                         "https://egeria-project.org/frameworks/osf/overview/"),
 
     ;
 
@@ -107,9 +101,10 @@ public enum OSFErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
 
     /**
-     * The constructor for OSFErrorCode expects to be passed one of the enumeration rows defined above.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique id for the message
@@ -119,11 +114,29 @@ public enum OSFErrorCode implements ExceptionMessageSet
      */
     OSFErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for OSFErrorCode expects to be passed one of the enumeration rows defined above.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    OSFErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
+    {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -139,7 +152,8 @@ public enum OSFErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -156,7 +170,8 @@ public enum OSFErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -178,6 +193,7 @@ public enum OSFErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

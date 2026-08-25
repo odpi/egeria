@@ -1128,7 +1128,7 @@ public class ClassificationExplorerResource
     @Operation(summary="addSupplementaryPropertiesToElement",
             description="Link a glossary term to an element using the SupplementaryProperties relationship.",
             externalDocs=@ExternalDocumentation(description="Supplementary Properties",
-                    url="https://egeria-project.org/types/0/0011-Managing-Reference-Values/"))
+                    url="https://egeria-project.org/types/0/"))
 
     public VoidResponse addSupplementaryPropertiesToElement(@PathVariable String                  serverName,
                                                             @PathVariable String                    urlMarker,
@@ -1161,7 +1161,7 @@ public class ClassificationExplorerResource
     @Operation(summary="removeSupplementaryPropertiesFromElement",
             description="Remove the SupplementaryProperties relationship between a glossary term and an element.",
             externalDocs=@ExternalDocumentation(description="Supplementary Properties",
-                    url="https://egeria-project.org/types/0/0011-Managing-Reference-Values/"))
+                    url="https://egeria-project.org/types/0/"))
 
     public VoidResponse removeSupplementaryPropertiesFromElement(@PathVariable String                        serverName,
                                                                  @PathVariable String                    urlMarker,
@@ -1393,7 +1393,7 @@ public class ClassificationExplorerResource
     @Operation(summary="addSearchKeywordToElement",
             description="Creates a search keyword and attaches it to an element.",
             externalDocs=@ExternalDocumentation(description="Search Keyword",
-                    url="https://egeria-project.org/concepts/search-keywords/"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse addSearchKeywordToElement(@PathVariable String                 serverName,
                                                   @PathVariable String                 urlMarker,
@@ -1423,7 +1423,7 @@ public class ClassificationExplorerResource
     @Operation(summary="updateSearchKeyword",
             description="Update an existing search keyword.",
             externalDocs=@ExternalDocumentation(description="Search Keywords",
-                    url="https://egeria-project.org/concepts/search-keyword/"))
+                    url="https://egeria-project.org/concepts/"))
 
     public BooleanResponse updateSearchKeyword(@PathVariable String                         serverName,
                                                @PathVariable String                        urlMarker,
@@ -1454,7 +1454,7 @@ public class ClassificationExplorerResource
     @Operation(summary="removeSearchKeywordFromElement",
             description="Removes a search keyword added to the element.  This deletes the link to the search keyword and the search keyword itself.",
             externalDocs=@ExternalDocumentation(description="Search Keywords",
-                    url="https://egeria-project.org/concepts/search-keyword/"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse removeSearchKeywordFromElement(@PathVariable String                         serverName,
                                                        @PathVariable String                        urlMarker,
@@ -2076,7 +2076,7 @@ public class ClassificationExplorerResource
 
     @Operation(summary="getSourceElements",
             description="Retrieve the elements linked via a SourceFrom relationship to the requested element.  The elements returned were used to create the requested element.  Typically only one element is returned.",
-            externalDocs=@ExternalDocumentation(description="Templates", url="https://egeria-project.org/types/0/0011-Managing-Referenceables/"))
+            externalDocs=@ExternalDocumentation(description="Templates", url="https://egeria-project.org/types/0/"))
 
     public OpenMetadataRootElementsResponse getSourceElements(@PathVariable String                        serverName,
                                                                      @PathVariable String                        urlMarker,
@@ -2107,7 +2107,7 @@ public class ClassificationExplorerResource
 
     @Operation(summary="getElementsSourcedFrom",
             description="Retrieve the elements linked via a SourcedFrom relationship to the requested element. The elements returned were created using the requested element as a template.",
-            externalDocs=@ExternalDocumentation(description="Templates", url="https://egeria-project.org/types/0/0011-Managing-Referenceables/"))
+            externalDocs=@ExternalDocumentation(description="Templates", url="https://egeria-project.org/types/0/"))
 
     public OpenMetadataRootElementsResponse getElementsSourcedFrom(@PathVariable String                        serverName,
                                                                           @PathVariable String                        urlMarker,
@@ -3142,7 +3142,7 @@ public class ClassificationExplorerResource
     @Operation(summary="findSearchKeyword",
             description="Return the list of search keywords containing the supplied string. The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.",
             externalDocs=@ExternalDocumentation(description="Search Keywords",
-                    url="https://egeria-project.org/concepts/search-keyword/"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse findSearchKeywords(@PathVariable String                  serverName,
                                                                @PathVariable String                        urlMarker,
@@ -3171,7 +3171,7 @@ public class ClassificationExplorerResource
     @Operation(summary="getSearchKeywordByKeyword",
             description="Return the list of search keywords containing the supplied keyword. The keyword is located in the request body and is interpreted as a plain string.",
             externalDocs=@ExternalDocumentation(description="Search Keywords",
-                    url="https://egeria-project.org/concepts/search-keyword/"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getSearchKeywordByKeyword(@PathVariable String                  serverName,
                                                                       @PathVariable String                        urlMarker,
@@ -3200,7 +3200,7 @@ public class ClassificationExplorerResource
     @Operation(summary="getSearchKeywordByGUID",
             description="Return the requested searchKeyword.",
             externalDocs=@ExternalDocumentation(description="Search Keywords",
-                    url="https://egeria-project.org/concepts/search-keyword/"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementResponse getSearchKeywordByGUID(@PathVariable String                        serverName,
                                                                   @PathVariable String                        urlMarker,

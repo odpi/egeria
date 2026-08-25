@@ -705,7 +705,7 @@ public class ExternalLinksResource
     @Operation(summary="getExternalIdsByName",
             description="Returns the list of external identifiers with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/external-identifier"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getExternalIdsByName(@PathVariable
                                                                  String            serverName,
@@ -735,7 +735,7 @@ public class ExternalLinksResource
     @Operation(summary="findExternalIds",
             description="Retrieve the list of external identifiers metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/external-identifier"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse findExternalIds(@PathVariable
                                                             String                  serverName,
@@ -766,7 +766,7 @@ public class ExternalLinksResource
     @Operation(summary="getExternalIdByGUID",
             description="Return the properties of a specific external identifier.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/external-identifier"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementResponse getExternalIdByGUID(@PathVariable
                                                                String             serverName,
@@ -806,7 +806,7 @@ public class ExternalLinksResource
     @Operation(summary="linkExternalIdToElement",
             description="Attach an existing external identifier to the element that it identifies.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/external-identifier"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkExternalIdToElement(@PathVariable String serverName,
                                                 @PathVariable String urlMarker,
@@ -839,7 +839,7 @@ public class ExternalLinksResource
     @Operation(summary="detachExternalIdFromElement",
             description="Detach an external identifier from the element that it identifies.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/external-identifier"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachExternalIdFromElement(@PathVariable String serverName,
                                                     @PathVariable String urlMarker,

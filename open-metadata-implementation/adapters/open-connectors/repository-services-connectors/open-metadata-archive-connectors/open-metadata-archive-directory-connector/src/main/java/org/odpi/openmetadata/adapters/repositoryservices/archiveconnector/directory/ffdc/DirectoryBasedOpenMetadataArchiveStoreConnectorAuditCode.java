@@ -21,15 +21,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements AuditLogMessageSet
 {
     /**
-     * OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0001 - Opening directory "{0}" for Open Metadata Archive Store
-     */
-    OPENING_FILE("OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0001",
-                 AuditLogRecordSeverityLevel.STARTUP,
-                 "Opening directory \"{0}\" for Open Metadata Archive Store",
-                 "The caller is requesting the contents of the open metadata archive store which is located in the named directory.",
-                 "Validate that the directory name is correct.  "),
-
-    /**
      * OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002 - Unable to open directory "{0}".  Message from {1} exception was {2}
      */
     BAD_FILE("OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002",
@@ -38,7 +29,8 @@ public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements 
               "The caller is cannot open an open metadata archive.",
               "Use the information from the exception to determine the cause of the error.  For example, is the directory (folder) name correct?  " +
                       "Look particularly for extraneous quotes, " +
-                      "incorrect directory name (relative files are read from the perspective of the caller's home directory) or incorrect characters.  Does the server have permission to access the directory?  Once the cause of the error is corrected, restart the caller."),
+                      "incorrect directory name (relative files are read from the perspective of the caller's home directory) or incorrect characters.  Does the server have permission to access the directory?  Once the cause of the error is corrected, restart the caller.",
+                      "https://egeria-project.org/concepts/open-metadata-archive-store-connector/"),
 
     ;
 
@@ -47,13 +39,11 @@ public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements 
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
     
 
     /**
-     * The constructor for DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode expects to be passed one of the enumeration rows defined in
-     * DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode above.   For example:
-     *     DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode   auditCode = DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE;
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId unique id for the message
      * @param severity severity of the message
@@ -67,11 +57,37 @@ public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements 
                                                              String                      systemAction,
                                                              String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode expects to be passed one of the enumeration rows defined in
+     * DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode above.   For example:
+     *     DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode   auditCode = DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE;
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId unique id for the message
+     * @param severity severity of the message
+     * @param message text for the message
+     * @param systemAction description of the action taken by the system when the condition happened
+     * @param userAction instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode(String                      messageId,
+                                                             AuditLogRecordSeverityLevel severity,
+                                                             String                      message,
+                                                             String                      systemAction,
+                                                             String                      userAction,
+                                                             String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -87,7 +103,8 @@ public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements 
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -104,7 +121,8 @@ public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements 
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -124,6 +142,7 @@ public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements 
                        ", logMessage='" + logMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

@@ -96,6 +96,14 @@ public interface FFDCResponse extends RequestIdService
 
 
     /**
+     * Return the link to further reading about the component or concept behind the exception's message.
+     *
+     * @return url; null if the message definition does not supply one
+     */
+    String getExceptionURL();
+
+
+    /**
      * Return the additional properties stored by the exceptions.
      *
      * @return property map
@@ -185,6 +193,14 @@ public interface FFDCResponse extends RequestIdService
      * @param exceptionUserAction - string instructions
      */
     void setExceptionUserAction(String exceptionUserAction);
+
+
+    /**
+     * Set up the link to further reading about the component or concept behind the exception's message.
+     *
+     * @param exceptionURL url; null if the message definition does not supply one
+     */
+    void setExceptionURL(String exceptionURL);
 
 
     /**

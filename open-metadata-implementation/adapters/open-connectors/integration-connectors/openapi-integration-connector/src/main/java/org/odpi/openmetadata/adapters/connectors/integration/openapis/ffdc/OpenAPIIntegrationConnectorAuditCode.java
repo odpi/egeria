@@ -26,7 +26,8 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                                           "The {0} integration connector has been initialized to monitor URL {1} with templateQualifiedName={2}",
                                           "The connector is designed to monitor changes to the Open API Specification located at the URL.  " +
                                                   "If the templateQualifiedName is set, it identifies a template entity to use when cataloging APIs.",
-                                          "No specific action is required.  This message is to confirm the configuration for the integration connector."),
+                                          "No specific action is required.  This message is to confirm the configuration for the integration connector.",
+                                          "https://egeria-project.org/concepts/integration-connector/"),
 
     CONNECTOR_CONFIGURATION_NO_ENDPOINT("OPEN-API-INTEGRATION-CONNECTOR-0002",
                                           AuditLogRecordSeverityLevel.INFO,
@@ -34,27 +35,29 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                                           "The connector is designed to monitor changes to the Open API Specification located at specific URLs.  " +
                                                   "These URLs will be retrieved by querying Endpoints with a protocol of 'Http(s)' from the open metadata repositories." +
                                                   "If the templateQualifiedName is set, it identifies a template entity to use when cataloging APIs",
-                                          "No specific action is required.  This message is to confirm that the missing endpoint in the configuration is correct for the integration connector."),
-
+                                          "No specific action is required.  This message is to confirm that the missing endpoint in the configuration is correct for the integration connector.",
+                                          "https://egeria-project.org/concepts/integration-connector/"),
 
     CONNECTOR_REFRESH_WITH_ENDPOINT("OPEN-API-INTEGRATION-CONNECTOR-0003",
                                           AuditLogRecordSeverityLevel.INFO,
                                           "The {0} integration connector has been refreshed to monitor URL {1}",
                                           "The connector will retrieve the API Specification for the URL",
-                                          "Look to see if the spec is retrieved."),
+                                          "Look to see if the spec is retrieved.",
+                                          "https://egeria-project.org/concepts/integration-connector/"),
 
     CONNECTOR_REFRESH_ALL_ENDPOINTS("OPEN-API-INTEGRATION-CONNECTOR-0004",
                                         AuditLogRecordSeverityLevel.INFO,
                                         "The {0} integration connector has been refreshed to monitor all Http(s) Endpoints.  Currently {1} are known.",
                                         "The connector will attempt to retrieve the specifications for each of the endpoints.",
-                                        "Look to see if the right specs are retrieved."),
+                                        "Look to see if the right specs are retrieved.",
+                                        "https://egeria-project.org/concepts/integration-connector/"),
 
     NEW_ENDPOINT("OPEN-API-INTEGRATION-CONNECTOR-0005",
                                     AuditLogRecordSeverityLevel.INFO,
                                     "The {0} integration connector has retrieved a new endpoint {1} at URL {2}.",
                                     "The connector will attempt to retrieve the specification for this endpoint if supported.",
-                                    "Look to see if an Open API Specification is retrieved where it is expected."),
-
+                                    "Look to see if an Open API Specification is retrieved where it is expected.",
+                                    "https://egeria-project.org/concepts/integration-connector/"),
 
     RETRIEVED_OPEN_API_SPEC("OPEN-API-INTEGRATION-CONNECTOR-0006",
                           AuditLogRecordSeverityLevel.INFO,
@@ -65,13 +68,15 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                           "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                   "exception stack trace to determine why the connector is not able to access the directory and resolve that issue.  " +
                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
-                                  "connector in the integration daemon once the original cause of the error has been corrected."),
+                                  "connector in the integration daemon once the original cause of the error has been corrected.",
+                                  "https://egeria-project.org/concepts/integration-connector/"),
 
     CATALOGUED_OPEN_API_SPEC("OPEN-API-INTEGRATION-CONNECTOR-0007",
                             AuditLogRecordSeverityLevel.INFO,
                             "The {0} integration connector retrieved the Open API Specification from URL {1} ({2} ({3})) and catalogued {4} APIs with a total of {5} operations.",
                             "The connector extracted the content of the Open API, retrieved/created the endpoint for it and created a DeployedAPI asset for each 'tag' linked to an APIOperation for each 'path/operation' pair",
-                            "Validate that the connector is extracting all the required information for your use case."),
+                            "Validate that the connector is extracting all the required information for your use case.",
+                            "https://egeria-project.org/concepts/integration-connector/"),
 
     UNABLE_TO_RETRIEVE_OPEN_API_SPEC("OPEN-API-INTEGRATION-CONNECTOR-0008",
                             AuditLogRecordSeverityLevel.EXCEPTION,
@@ -79,54 +84,50 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                                     "method when trying to retrieve the Open API Spec for URL {3}.  The error message was {4}",
                                      "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
                                      "Use the message in the nested exception to determine the root cause of the error. Once this is " +
-                                             "resolved, follow the instructions in the messages produced by the integration daemon to restart this connector."),
+                                             "resolved, follow the instructions in the messages produced by the integration daemon to restart this connector.",
+                                             "https://egeria-project.org/concepts/integration-connector/"),
 
     CONNECTOR_STOPPING("OPEN-API-INTEGRATION-CONNECTOR-0009",
                                   AuditLogRecordSeverityLevel.INFO,
                                   "The {0} integration connector has stopped its monitoring and is shutting down",
                                   "The connector is disconnecting.",
-                                  "No action is required unless there are errors that follow indicating that there were problems shutting down."),
+                                  "No action is required unless there are errors that follow indicating that there were problems shutting down.",
+                                  "https://egeria-project.org/concepts/integration-connector/"),
 
     NEW_DEPLOYED_API("OPEN-API-INTEGRATION-CONNECTOR-0010",
                                   AuditLogRecordSeverityLevel.INFO,
                                   "The {0} integration connector created a new DeployedAPI asset {1} ({2}) for the Open API Specification retrieved from URL {3}",
                                   "The connector has catalogued a new DeployedAPI asset to represent the API described by this specification.",
-                                  "No specific action is required.  This message confirms that a new API has been catalogued."),
+                                  "No specific action is required.  This message confirms that a new API has been catalogued.",
+                                  "https://egeria-project.org/concepts/integration-connector/"),
 
     NEW_API_OPERATION("OPEN-API-INTEGRATION-CONNECTOR-0011",
                                   AuditLogRecordSeverityLevel.INFO,
                                   "The {0} integration connector created a new APIOperation {1} ({2}) for path {3} and command {4} under DeployedAPI {5}",
                                   "The connector has catalogued a new APIOperation schema type to represent this path/command combination from the Open API Specification.",
-                                  "No specific action is required.  This message confirms that a new API operation has been catalogued."),
-
-
-    MISSING_TEMPLATE("OPEN-API-INTEGRATION-CONNECTOR-0015",
-                     AuditLogRecordSeverityLevel.ERROR,
-                     "The {0} integration connector cannot retrieve the DataFile template with qualified name: {1}",
-                     "The metadata element for the template is not found in the open metadata repositories.  " +
-                             "The template name was configured for the connector.  This means that files should be catalogued " +
-                             "using the template.  Since the template is missing, files are not being catalogued.",
-                     "Create the template in the metadata repository.  The connector will catalog the files during " +
-                             "its next periodic refresh or you can force it to refresh immediately by calling the refresh" +
-                             "operation on the integration daemon."),
+                                  "No specific action is required.  This message confirms that a new API operation has been catalogued.",
+                                  "https://egeria-project.org/concepts/integration-connector/"),
 
     BAD_ENDPOINT("OPEN-API-INTEGRATION-CONNECTOR-0016",
                  AuditLogRecordSeverityLevel.ERROR,
                  "The {0} integration connector retrieved an invalid {1} element in method {2}.  Element guid is: {3}",
                  "The metadata element is ignored.",
-                 "Investigate why this element is incomplete."),
+                 "Investigate why this element is incomplete.",
+                 "https://egeria-project.org/concepts/integration-connector/"),
 
     UNEXPECTED_EXCEPTION( "OPEN-API-INTEGRATION-CONNECTOR-0029",
                           AuditLogRecordSeverityLevel.EXCEPTION,
                           "The {0} integration connector received an unexpected exception {1} in method {2}; the error message was: {3}",
                          "The connector cannot catalog one or more APIs.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/integration-connector/"),
 
     CLIENT_SIDE_REST_API_ERROR( "OPEN-API-INTEGRATION-CONNECTOR-0030",
                                 AuditLogRecordSeverityLevel.EXCEPTION,
                                 "A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}",
                                 "The server has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
-                                "Look for errors in the local server's console to understand and correct the source of the error.")
+                                "Look for errors in the local server's console to understand and correct the source of the error.",
+                                "https://egeria-project.org/concepts/integration-connector/")
 
     ;
 
@@ -135,13 +136,11 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
 
 
     /**
-     * The constructor for OpenAPIIntegrationConnectorAuditCode expects to be passed one of the enumeration rows defined in
-     * OpenAPIIntegrationConnectorAuditCode above.   For example:
-     *     OpenAPIIntegrationConnectorAuditCode   auditCode = OpenAPIIntegrationConnectorAuditCode.SERVER_NOT_AVAILABLE;
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique identifier for the message
      * @param severity - severity of the message
@@ -155,11 +154,37 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                                          String                      systemAction,
                                          String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for OpenAPIIntegrationConnectorAuditCode expects to be passed one of the enumeration rows defined in
+     * OpenAPIIntegrationConnectorAuditCode above.   For example:
+     *     OpenAPIIntegrationConnectorAuditCode   auditCode = OpenAPIIntegrationConnectorAuditCode.SERVER_NOT_AVAILABLE;
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    OpenAPIIntegrationConnectorAuditCode(String                      messageId,
+                                         AuditLogRecordSeverityLevel severity,
+                                         String                      message,
+                                         String                      systemAction,
+                                         String                      userAction,
+                                         String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -175,7 +200,8 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -192,7 +218,8 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -212,6 +239,7 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

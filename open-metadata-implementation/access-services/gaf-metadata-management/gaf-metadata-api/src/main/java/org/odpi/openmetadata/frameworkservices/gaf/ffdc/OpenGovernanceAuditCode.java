@@ -30,7 +30,8 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                          "The local server has started up a new instance of the Open Metadata Store Services.  " +
                                  "It will support open metadata store REST requests.",
                          "This is part of the normal start up of the service.  No action is required if this service " +
-                                 "startup was intentional."),
+                                 "startup was intentional.",
+                                 "https://egeria-project.org/services/gaf-metadata-management/"),
 
     /**
      * OPEN-GOVERNANCE-0002 - The catalog integrator context manager is being initialized for calls to server {0} on platform {1}
@@ -39,7 +40,8 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.STARTUP,
                          "The open integration context manager is being initialized for calls to server {0} on platform {1}",
                          "The integration daemon is initializing its context manager.",
-                         "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
+                         "Verify that the start up sequence goes on to initialize the context for each connector configured for this service.",
+                         "https://egeria-project.org/services/gaf-metadata-management/"),
 
     /**
      * OPEN-GOVERNANCE-0003 The Open Governance service is ready to publish  notifications to topic {0}
@@ -49,7 +51,8 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                        "The Open Governance service is ready to publish notifications to topic {0}",
                        "The local server has started up the event publisher for the GAF Services.  " +
                                "It will begin publishing metadata changes to its out topic.",
-                       "This is part of the normal start up of the service. Check that there are no errors from the event bus."),
+                       "This is part of the normal start up of the service. Check that there are no errors from the event bus.",
+                       "https://egeria-project.org/services/gaf-metadata-management/"),
 
     /**
      * OPEN-GOVERNANCE-0005 - The Open Metadata Store Services has initialized a new instance for server {0}
@@ -59,7 +62,8 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                         "The Open Metadata Store Services has initialized a new instance for server {0}",
                         "The Open Metadata Store Services has completed initialization of a new server instance.",
                         "Verify that there are no error messages logged by the service.  If there are none it means that " +
-                                "all parts of the service initialized successfully."),
+                                "all parts of the service initialized successfully.",
+                                "https://egeria-project.org/services/gaf-metadata-management/"),
 
     /**
      * OPEN-GOVERNANCE-0006 - The Open Metadata Store Services are unable to initialize a new instance; error message is {0}
@@ -68,29 +72,8 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                              AuditLogRecordSeverityLevel.ERROR,
                              "The Open Metadata Store Services are unable to initialize a new instance; error message is {0}",
                              "The service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
-                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
-
-    /**
-     * OPEN-GOVERNANCE-0008 - The Open Metadata Store Services detected an unexpected {0} exception during the initialization of its services;
-     * error message is {1}
-     */
-    UNEXPECTED_INITIALIZATION_EXCEPTION("OPEN-GOVERNANCE-0008",
-                                        AuditLogRecordSeverityLevel.EXCEPTION,
-                                        "The Open Metadata Store Services detected an unexpected {0} exception during the " +
-                                                "initialization of its services; error message is {1}",
-                                        "The service detected an error during the start up of a specific server instance.  Its services are not available " +
-                                                "for the server and an error is returned to the caller.",
-                                        "Review the error message and any other reported failures to determine the cause of the problem.  In particular consider the" +
-                                                " state of the Event Bus.  Once this is resolved, restart the server."),
-
-    /**
-     * OPEN-GOVERNANCE-0009 - The Open Governance Service are shutting down server instance {0}
-     */
-    SERVICE_TERMINATING("OPEN-GOVERNANCE-0009",
-                        AuditLogRecordSeverityLevel.SHUTDOWN,
-                        "The Open Governance Service are shutting down server instance {0}",
-                        "The local handlers has requested shutdown of the Open Governance Service.",
-                        "No action is required.  This is part of the normal operation of the service."),
+                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.",
+                             "https://egeria-project.org/services/gaf-metadata-management/"),
 
     /**
      * OPEN-GOVERNANCE-0011 The Open Governance Service caught an unexpected {0} exception whilst shutting down the out
@@ -105,8 +88,8 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                                  "not be released properly.",
                          "This is part of the normal shutdown of the engine host. However, an exception is not expected at this point unless it " +
                                  "is the consequence of a previous error. Review the error message and any other reported failures to " +
-                                 "determine if this exception needs special attention."),
-
+                                 "determine if this exception needs special attention.",
+                                 "https://egeria-project.org/services/gaf-metadata-management/"),
 
     /**
      * OPEN-GOVERNANCE-0012 - The Open Metadata Store Services are shutting down its instance for server {0}
@@ -117,7 +100,8 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                      "The local administrator has requested shut down of an Open Metadata Store Services instance.  " +
                              "The open metadata store interfaces are no longer available and no configuration events will " +
                              "be published to the out topic",
-                     "This is part of the normal shutdown of the service.  Verify that all resources have been released."),
+                     "This is part of the normal shutdown of the service.  Verify that all resources have been released.",
+                     "https://egeria-project.org/services/gaf-metadata-management/"),
 
     /**
      * OMES-GOVERNANCE-ACTION-0015 - The Open Governance Framework received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3}
@@ -126,15 +110,8 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                            AuditLogRecordSeverityLevel.ERROR,
                            "The Open Governance Framework (OGF) received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3}",
                            "The engine services detected an error while processing a watchdog event.",
-                           "Review the error message and any other reported failures to determine the cause of the problem.  It may also be necessary to initiate the action that did not occur due to the failure to process this event."),
-    /**
-     * OPEN-GOVERNANCE-0020 - Log message for asset {0} from governance service {1}: {2}
-     */
-    ASSET_AUDIT_LOG("OPEN-GOVERNANCE-0020",
-                    AuditLogRecordSeverityLevel.INFO,
-                    "Log message for asset {0} from governance service {1}: {2}",
-                    "A governance service has logged a message about an asset.",
-                    "Review the message to ensure no action is required."),
+                           "Review the error message and any other reported failures to determine the cause of the problem.  It may also be necessary to initiate the action that did not occur due to the failure to process this event.",
+                           "https://egeria-project.org/services/gaf-metadata-management/"),
 
     /**
      * OPEN-GOVERNANCE-0021 - Failed to publish watchdog event to Watchdog Governance Action Service for governance engine {0}.
@@ -145,8 +122,8 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                                 "Failed to publish watchdog event to Watchdog Governance Action Service for governance engine {0}.  The exception was {1} with error message {2}",
                                 "An open watchdog governance action service has raised an exception while processing an incoming " +
                                         "watchdog event.  The exception explains the reason.",
-                                "Review the error messages and resolve the cause of the problem if needed."),
-
+                                "Review the error messages and resolve the cause of the problem if needed.",
+                                "https://egeria-project.org/services/gaf-metadata-management/"),
 
     ;
 
@@ -156,6 +133,26 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId    - unique id for the message
+     * @param severity     - severity of the message
+     * @param message      - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction   - instructions for resolving the situation, if any
+     */
+    OpenGovernanceAuditCode(String                      messageId,
+                            AuditLogRecordSeverityLevel severity,
+                            String                      message,
+                            String                      systemAction,
+                            String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -171,18 +168,22 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
      * @param message      - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction   - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     OpenGovernanceAuditCode(String                      messageId,
                             AuditLogRecordSeverityLevel severity,
                             String                      message,
                             String                      systemAction,
-                            String                      userAction)
+                            String                      userAction,
+                            String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -198,7 +199,8 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -215,7 +217,8 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -235,6 +238,7 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                        ", logMessage='" + logMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

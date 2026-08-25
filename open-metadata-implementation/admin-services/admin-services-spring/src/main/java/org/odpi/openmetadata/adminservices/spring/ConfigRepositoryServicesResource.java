@@ -368,7 +368,7 @@ public class ConfigRepositoryServicesResource
                description="Set up an in memory local repository.  This native repository uses hashmaps to store content.  It is useful" +
                                    " for demos, testing and POCs.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/connectors/repository/in-memory/overview/"))
+                                                   url="https://egeria-project.org/connectors/"))
 
     public VoidResponse setInMemLocalRepository(@PathVariable                   String          serverName,
                                                 @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
@@ -395,7 +395,7 @@ public class ConfigRepositoryServicesResource
     @Operation(summary="setPostgresLocalRepository",
             description="Set up a PostgreSQL Database schema as the local repository.  Each repository is stored in its own database schema.  The storage properties should include databaseURL, databaseSchema, secretsStore and secretsCollectionName.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/connectors/repository/postgres/overview/"))
+                    url="https://egeria-project.org/connectors/"))
 
     public VoidResponse setPostgresLocalRepository(@PathVariable                  String              serverName,
                                                    @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
@@ -422,7 +422,7 @@ public class ConfigRepositoryServicesResource
                description="Set up a read-only local repository.  This native repository holds metadata from open metadata archives, " +
                                    "or reference metadata from other members of sny connected cohorts.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/connectors/repository/read-only/overview/"))
+                                                   url="https://egeria-project.org/connectors/"))
 
     public VoidResponse setReadOnlyLocalRepository(@PathVariable String serverName,
                                                    @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)

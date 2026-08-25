@@ -31,7 +31,8 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
     NULL_URL(400, "APACHE-ATLAS-REST-CONNECTOR-400-001",
                      "Apache Atlas REST connector {0} has been configured without the URL to Apache Atlas",
                      "The connector is move to FAILED status and will not be called by the integration daemon until the configuration error has been corrected.",
-                     "The Apache Atlas URL is configured in the Apache Atlas REST connector's connection endpoint in the address property.  Typically it is the host name and port where Apache Atlas is listening.  The connection is either found in the Integration Daemon's configuration, or, if the Integration Daemon is configured with integration groups, in the open metadata definition of the appropriate integration group."),
+                     "The Apache Atlas URL is configured in the Apache Atlas REST connector's connection endpoint in the address property.  Typically it is the host name and port where Apache Atlas is listening.  The connection is either found in the Integration Daemon's configuration, or, if the Integration Daemon is configured with integration groups, in the open metadata definition of the appropriate integration group.",
+                     "https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/"),
 
     /**
      * APACHE-ATLAS-REST-CONNECTOR-400-002 - Apache Atlas REST connector {0} has been configured with either a null userId or password for connecting to Apache Atlas
@@ -43,7 +44,8 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
                      "This may have been supplied through the Integration Daemon's configuration, " +
                      "or if the Integration Daemon is using integration groups, " +
                      "the connection information is stored in the open metadata ecosystem.  " +
-                     "It is possible to supply the userId and password directly in the connection object or via an embedded SecretsConnector."),
+                     "It is possible to supply the userId and password directly in the connection object or via an embedded SecretsConnector.",
+                     "https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/"),
 
 
     /**
@@ -52,7 +54,8 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
     CATEGORY_ALREADY_EXISTS(400, "APACHE-ATLAS-REST-CONNECTOR-400-004",
                             "Glossary category {0} already exists in Apache Atlas",
                             "The connector attempts to add a numerical post-fix to the category name to ensure it has a unique name.",
-                            "No action is required. The connector will validate whether it has already created the category on another thread, or it will try the request with a new name."),
+                            "No action is required. The connector will validate whether it has already created the category on another thread, or it will try the request with a new name.",
+                            "https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/"),
 
     /**
      * APACHE-ATLAS-REST-CONNECTOR-400-005 - Glossary term {0} already exists in Apache Atlas
@@ -60,7 +63,8 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
     TERM_ALREADY_EXISTS(400, "APACHE-ATLAS-REST-CONNECTOR-400-005",
                         "Glossary term {0} already exists in Apache Atlas",
                         "The connector attempts to add a numerical post-fix to the term name to ensure it has a unique name.",
-                        "No action is required. The connector will validate whether it has already created the term on another thread, or it will try the request with a new name."),
+                        "No action is required. The connector will validate whether it has already created the term on another thread, or it will try the request with a new name.",
+                        "https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/"),
 
 
     /**
@@ -69,7 +73,8 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "APACHE-ATLAS-REST-CONNECTOR-500-001",
                          "The {0} Apache Atlas REST connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot catalog one or more metadata elements.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/"),
 
     /**
      * APACHE-ATLAS-REST-CONNECTOR-503-001 - A client-side exception {0} was received from API call {1} to URL {2}.  The error message was {3}
@@ -77,7 +82,8 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
     CLIENT_SIDE_REST_API_ERROR(503, "APACHE-ATLAS-REST-CONNECTOR-503-001",
                                        "A client-side exception of {0} was received from API call {1} to URL {2}.  The error message was {3}",
                                        "The connector has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
-                                       "Look for errors in the local server's console to understand and correct the source of the error."),
+                                       "Look for errors in the local server's console to understand and correct the source of the error.",
+                                       "https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/"),
 
     ;
 
@@ -86,6 +92,22 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    ApacheAtlasErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -96,14 +118,17 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    ApacheAtlasErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    ApacheAtlasErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -119,7 +144,8 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -136,7 +162,8 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -158,6 +185,7 @@ public enum ApacheAtlasErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

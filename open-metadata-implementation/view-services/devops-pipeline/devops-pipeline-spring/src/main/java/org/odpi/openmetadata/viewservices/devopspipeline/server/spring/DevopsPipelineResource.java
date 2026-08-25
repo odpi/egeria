@@ -59,7 +59,7 @@ public class DevopsPipelineResource
     @Operation(summary="createStorageVolume",
             description="Create a storage volume.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/storage-volume"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createStorageVolume(@PathVariable String serverName,
                                             @RequestBody (required = false)
@@ -86,7 +86,7 @@ public class DevopsPipelineResource
     @Operation(summary="createStorageVolumeFromTemplate",
             description="Create a new metadata element to represent a storage volume using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/storage-volume"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createStorageVolumeFromTemplate(@PathVariable String serverName,
                                                         @RequestBody (required = false)
@@ -114,7 +114,7 @@ public class DevopsPipelineResource
     @Operation(summary="updateStorageVolume",
             description="Update the properties of a storage volume.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/storage-volume"))
+                    url="https://egeria-project.org/concepts/"))
 
     public BooleanResponse updateStorageVolume(@PathVariable String serverName,
                                                @PathVariable String storageVolumeGUID,
@@ -143,7 +143,7 @@ public class DevopsPipelineResource
     @Operation(summary="deleteStorageVolume",
             description="Delete a storage volume.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/storage-volume"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse deleteStorageVolume(@PathVariable String serverName,
                                             @PathVariable String storageVolumeGUID,
@@ -171,7 +171,7 @@ public class DevopsPipelineResource
     @Operation(summary="getStorageVolumesByName",
             description="Returns the list of storage volumes with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/storage-volume"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getStorageVolumesByName(@PathVariable String serverName,
                                                                     @RequestBody (required = false)
@@ -198,7 +198,7 @@ public class DevopsPipelineResource
     @Operation(summary="findStorageVolumes",
             description="Retrieve the list of storage volume metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/storage-volume"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse findStorageVolumes(@PathVariable String serverName,
                                                                @RequestBody (required = false)
@@ -226,7 +226,7 @@ public class DevopsPipelineResource
     @Operation(summary="getStorageVolumeByGUID",
             description="Return the properties of a specific storage volume.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/storage-volume"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementResponse getStorageVolumeByGUID(@PathVariable String serverName,
                                                                   @PathVariable String storageVolumeGUID,
@@ -257,7 +257,7 @@ public class DevopsPipelineResource
     @Operation(summary="linkAttachedStorage",
             description="Attach a storage volume to the IT infrastructure that it provides storage for.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/storage-volume"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkAttachedStorage(@PathVariable String serverName,
                                             @PathVariable String itInfrastructureGUID,
@@ -289,7 +289,7 @@ public class DevopsPipelineResource
     @Operation(summary="detachAttachedStorage",
             description="Detach a storage volume from the IT infrastructure that it provided storage for.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/storage-volume"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachAttachedStorage(@PathVariable String serverName,
                                               @PathVariable String itInfrastructureGUID,
@@ -321,7 +321,7 @@ public class DevopsPipelineResource
     @Operation(summary="linkStoredOn",
             description="Attach a data store to the storage volume that its data is stored on.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/storage-volume"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkStoredOn(@PathVariable String serverName,
                                      @PathVariable String dataStoreGUID,
@@ -353,7 +353,7 @@ public class DevopsPipelineResource
     @Operation(summary="detachStoredOn",
             description="Detach a data store from the storage volume that its data was stored on.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/storage-volume"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachStoredOn(@PathVariable String serverName,
                                        @PathVariable String dataStoreGUID,
@@ -381,7 +381,7 @@ public class DevopsPipelineResource
     @Operation(summary="createNetwork",
             description="Create a network.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createNetwork(@PathVariable String serverName,
                                       @RequestBody (required = false)
@@ -408,7 +408,7 @@ public class DevopsPipelineResource
     @Operation(summary="createNetworkFromTemplate",
             description="Create a new metadata element to represent a network using an existing metadata element as a template.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createNetworkFromTemplate(@PathVariable String serverName,
                                                   @RequestBody (required = false)
@@ -436,7 +436,7 @@ public class DevopsPipelineResource
     @Operation(summary="updateNetwork",
             description="Update the properties of a network.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public BooleanResponse updateNetwork(@PathVariable String serverName,
                                          @PathVariable String networkGUID,
@@ -465,7 +465,7 @@ public class DevopsPipelineResource
     @Operation(summary="deleteNetwork",
             description="Delete a network.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse deleteNetwork(@PathVariable String serverName,
                                       @PathVariable String networkGUID,
@@ -493,7 +493,7 @@ public class DevopsPipelineResource
     @Operation(summary="getNetworksByName",
             description="Returns the list of networks with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getNetworksByName(@PathVariable String serverName,
                                                               @RequestBody (required = false)
@@ -520,7 +520,7 @@ public class DevopsPipelineResource
     @Operation(summary="findNetworks",
             description="Retrieve the list of network metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse findNetworks(@PathVariable String serverName,
                                                          @RequestBody (required = false)
@@ -548,7 +548,7 @@ public class DevopsPipelineResource
     @Operation(summary="getNetworkByGUID",
             description="Return the properties of a specific network.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementResponse getNetworkByGUID(@PathVariable String serverName,
                                                             @PathVariable String networkGUID,
@@ -576,7 +576,7 @@ public class DevopsPipelineResource
     @Operation(summary="createNetworkGateway",
             description="Create a network gateway.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createNetworkGateway(@PathVariable String serverName,
                                              @RequestBody (required = false)
@@ -603,7 +603,7 @@ public class DevopsPipelineResource
     @Operation(summary="createNetworkGatewayFromTemplate",
             description="Create a new metadata element to represent a network gateway using an existing metadata element as a template.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createNetworkGatewayFromTemplate(@PathVariable String serverName,
                                                          @RequestBody (required = false)
@@ -631,7 +631,7 @@ public class DevopsPipelineResource
     @Operation(summary="updateNetworkGateway",
             description="Update the properties of a network gateway.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public BooleanResponse updateNetworkGateway(@PathVariable String serverName,
                                                 @PathVariable String networkGatewayGUID,
@@ -660,7 +660,7 @@ public class DevopsPipelineResource
     @Operation(summary="deleteNetworkGateway",
             description="Delete a network gateway.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse deleteNetworkGateway(@PathVariable String serverName,
                                              @PathVariable String networkGatewayGUID,
@@ -688,7 +688,7 @@ public class DevopsPipelineResource
     @Operation(summary="getNetworkGatewaysByName",
             description="Returns the list of network gateways with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getNetworkGatewaysByName(@PathVariable String serverName,
                                                                      @RequestBody (required = false)
@@ -715,7 +715,7 @@ public class DevopsPipelineResource
     @Operation(summary="findNetworkGateways",
             description="Retrieve the list of network gateway metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse findNetworkGateways(@PathVariable String serverName,
                                                                 @RequestBody (required = false)
@@ -743,7 +743,7 @@ public class DevopsPipelineResource
     @Operation(summary="getNetworkGatewayByGUID",
             description="Return the properties of a specific network gateway.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementResponse getNetworkGatewayByGUID(@PathVariable String serverName,
                                                                    @PathVariable String networkGatewayGUID,
@@ -773,7 +773,7 @@ public class DevopsPipelineResource
     @Operation(summary="linkVisibleEndpoint",
             description="Attach an endpoint to the network that it is visible in.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkVisibleEndpoint(@PathVariable String serverName,
                                             @PathVariable String endpointGUID,
@@ -804,7 +804,7 @@ public class DevopsPipelineResource
     @Operation(summary="detachVisibleEndpoint",
             description="Detach an endpoint from the network that it was visible in.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachVisibleEndpoint(@PathVariable String serverName,
                                               @PathVariable String endpointGUID,
@@ -835,7 +835,7 @@ public class DevopsPipelineResource
     @Operation(summary="linkNetworkGateway",
             description="Attach a network gateway to a network that it connects to.  This multi-link relationship always creates a new relationship and returns its unique identifier.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse linkNetworkGateway(@PathVariable String serverName,
                                            @PathVariable String networkGatewayGUID,
@@ -865,7 +865,7 @@ public class DevopsPipelineResource
     @Operation(summary="updateNetworkGatewayLink",
             description="Update the properties of a network gateway link.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse updateNetworkGatewayLink(@PathVariable String serverName,
                                                  @PathVariable String networkGatewayLinkGUID,
@@ -894,7 +894,7 @@ public class DevopsPipelineResource
     @Operation(summary="detachNetworkGateway",
             description="Detach a network gateway from a network that it connected to.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/network"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachNetworkGateway(@PathVariable String serverName,
                                              @PathVariable String networkGatewayLinkGUID,
@@ -924,7 +924,7 @@ public class DevopsPipelineResource
     @Operation(summary="linkHostClusterMember",
             description="Attach a host to the host cluster that manages it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/host"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkHostClusterMember(@PathVariable String                     serverName,
                                               @PathVariable String                     hostClusterGUID,
@@ -955,7 +955,7 @@ public class DevopsPipelineResource
     @Operation(summary="detachHostClusterMember",
             description="Detach a host from the host cluster that managed it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/host"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachHostClusterMember(@PathVariable String                        serverName,
                                                 @PathVariable String                        hostClusterGUID,
@@ -983,7 +983,7 @@ public class DevopsPipelineResource
     @Operation(summary="createOperatingPlatform",
             description="Create an operating platform.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createOperatingPlatform(@PathVariable String serverName,
                                                 @RequestBody (required = false)
@@ -1010,7 +1010,7 @@ public class DevopsPipelineResource
     @Operation(summary="createOperatingPlatformFromTemplate",
             description="Create a new metadata element to represent an operating platform using an existing metadata element as a template.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createOperatingPlatformFromTemplate(@PathVariable String serverName,
                                                             @RequestBody (required = false)
@@ -1038,7 +1038,7 @@ public class DevopsPipelineResource
     @Operation(summary="updateOperatingPlatform",
             description="Update the properties of an operating platform.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public BooleanResponse updateOperatingPlatform(@PathVariable String serverName,
                                                    @PathVariable String operatingPlatformGUID,
@@ -1067,7 +1067,7 @@ public class DevopsPipelineResource
     @Operation(summary="deleteOperatingPlatform",
             description="Delete an operating platform.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse deleteOperatingPlatform(@PathVariable String serverName,
                                                 @PathVariable String operatingPlatformGUID,
@@ -1095,7 +1095,7 @@ public class DevopsPipelineResource
     @Operation(summary="getOperatingPlatformsByName",
             description="Returns the list of operating platforms with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getOperatingPlatformsByName(@PathVariable String serverName,
                                                                         @RequestBody (required = false)
@@ -1122,7 +1122,7 @@ public class DevopsPipelineResource
     @Operation(summary="findOperatingPlatforms",
             description="Retrieve the list of operating platform metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse findOperatingPlatforms(@PathVariable String serverName,
                                                                    @RequestBody (required = false)
@@ -1150,7 +1150,7 @@ public class DevopsPipelineResource
     @Operation(summary="getOperatingPlatformByGUID",
             description="Return the properties of a specific operating platform.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementResponse getOperatingPlatformByGUID(@PathVariable String serverName,
                                                                       @PathVariable String operatingPlatformGUID,
@@ -1180,7 +1180,7 @@ public class DevopsPipelineResource
     @Operation(summary="linkOperatingPlatformUse",
             description="Attach an operating platform to the IT infrastructure that it is installed on.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkOperatingPlatformUse(@PathVariable String serverName,
                                                  @PathVariable String operatingPlatformGUID,
@@ -1211,7 +1211,7 @@ public class DevopsPipelineResource
     @Operation(summary="detachOperatingPlatformUse",
             description="Detach an operating platform from the IT infrastructure that it was installed on.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachOperatingPlatformUse(@PathVariable String serverName,
                                                    @PathVariable String operatingPlatformGUID,
@@ -1242,7 +1242,7 @@ public class DevopsPipelineResource
     @Operation(summary="linkOperatingPlatformManifest",
             description="Attach an operating platform to the collection of software packages that it is packaged with.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkOperatingPlatformManifest(@PathVariable String serverName,
                                                       @PathVariable String operatingPlatformGUID,
@@ -1273,7 +1273,7 @@ public class DevopsPipelineResource
     @Operation(summary="detachOperatingPlatformManifest",
             description="Detach an operating platform from a collection of software packages that it was packaged with.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachOperatingPlatformManifest(@PathVariable String serverName,
                                                         @PathVariable String operatingPlatformGUID,
@@ -1304,7 +1304,7 @@ public class DevopsPipelineResource
     @Operation(summary="linkSoftwarePackageDependency",
             description="Attach an asset to the collection of software packages that it depends on when it is running.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkSoftwarePackageDependency(@PathVariable String serverName,
                                                       @PathVariable String assetGUID,
@@ -1335,7 +1335,7 @@ public class DevopsPipelineResource
     @Operation(summary="detachSoftwarePackageDependency",
             description="Detach an asset from a collection of software packages that it no longer depends on.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachSoftwarePackageDependency(@PathVariable String serverName,
                                                         @PathVariable String assetGUID,
@@ -1365,7 +1365,7 @@ public class DevopsPipelineResource
     @Operation(summary="setSoftwarePackageManifest",
             description="Classify an element to indicate that it describes a list of software packages.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setSoftwarePackageManifest(@PathVariable String serverName,
                                                    @PathVariable String elementGUID,
@@ -1394,7 +1394,7 @@ public class DevopsPipelineResource
     @Operation(summary="clearSoftwarePackageManifest",
             description="Remove the software package manifest designation from the element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/operating-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearSoftwarePackageManifest(@PathVariable String serverName,
                                                      @PathVariable String elementGUID,
@@ -1422,7 +1422,7 @@ public class DevopsPipelineResource
     @Operation(summary="setAsCloudPlatform",
             description="Classify a software server platform to say that it is a cloud platform.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/cloud-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setAsCloudPlatform(@PathVariable String serverName,
                                            @PathVariable String softwareServerPlatformGUID,
@@ -1451,7 +1451,7 @@ public class DevopsPipelineResource
     @Operation(summary="clearAsCloudPlatform",
             description="Remove the cloud platform designation from a software server platform.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/cloud-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearAsCloudPlatform(@PathVariable String serverName,
                                              @PathVariable String softwareServerPlatformGUID,
@@ -1479,7 +1479,7 @@ public class DevopsPipelineResource
     @Operation(summary="setHostAsCloudProvider",
             description="Classify a host to say that it is a cloud provider.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/cloud-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setHostAsCloudProvider(@PathVariable String serverName,
                                                @PathVariable String hostGUID,
@@ -1508,7 +1508,7 @@ public class DevopsPipelineResource
     @Operation(summary="clearHostAsCloudProvider",
             description="Remove the cloud provider designation from a host.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/cloud-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearHostAsCloudProvider(@PathVariable String serverName,
                                                  @PathVariable String hostGUID,
@@ -1536,7 +1536,7 @@ public class DevopsPipelineResource
     @Operation(summary="setServerAsCloudTenant",
             description="Classify a software server to say that it is hosting a cloud tenant.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/cloud-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setServerAsCloudTenant(@PathVariable String serverName,
                                                @PathVariable String softwareServerGUID,
@@ -1565,7 +1565,7 @@ public class DevopsPipelineResource
     @Operation(summary="clearServerAsCloudTenant",
             description="Remove the cloud tenant designation from a software server.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/cloud-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearServerAsCloudTenant(@PathVariable String serverName,
                                                  @PathVariable String softwareServerGUID,
@@ -1593,7 +1593,7 @@ public class DevopsPipelineResource
     @Operation(summary="setCapabilityAsCloudService",
             description="Classify a software capability to say that it is a cloud service.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/cloud-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setCapabilityAsCloudService(@PathVariable String serverName,
                                                     @PathVariable String softwareCapabilityGUID,
@@ -1622,7 +1622,7 @@ public class DevopsPipelineResource
     @Operation(summary="clearCapabilityAsCloudService",
             description="Remove the cloud service designation from a software capability.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/cloud-platform"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearCapabilityAsCloudService(@PathVariable String serverName,
                                                       @PathVariable String softwareCapabilityGUID,
@@ -1651,7 +1651,7 @@ public class DevopsPipelineResource
     @Operation(summary="linkReusableTechniqueUse",
             description="Attach an element to the reusable technique that it makes use of.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/reusable-technique"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkReusableTechniqueUse(@PathVariable String serverName,
                                    @PathVariable String techniqueUserGUID,
@@ -1681,7 +1681,7 @@ public class DevopsPipelineResource
     @Operation(summary="detachReusableTechniqueUse",
             description="Detach an element from a reusable technique that it no longer makes use of.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/reusable-technique"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachReusableTechniqueUse(@PathVariable String serverName,
                                      @PathVariable String techniqueUserGUID,
@@ -1710,7 +1710,7 @@ public class DevopsPipelineResource
     @Operation(summary="linkDependentSoftwareComponent",
             description="Attach a runnable software component to a component that it needs in order to execute.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/runnable-software-component"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkDependentSoftwareComponent(@PathVariable String serverName,
                                    @PathVariable String dependentComponentGUID,
@@ -1740,7 +1740,7 @@ public class DevopsPipelineResource
     @Operation(summary="detachDependentSoftwareComponent",
             description="Detach a runnable software component from a component that it no longer needs in order to execute.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/runnable-software-component"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachDependentSoftwareComponent(@PathVariable String serverName,
                                      @PathVariable String dependentComponentGUID,
@@ -1769,7 +1769,7 @@ public class DevopsPipelineResource
     @Operation(summary="linkSoftwareSource",
             description="Attach a software asset to the software component that it is built from.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/software-component"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkSoftwareSource(@PathVariable String serverName,
                                    @PathVariable String assetGUID,
@@ -1799,7 +1799,7 @@ public class DevopsPipelineResource
     @Operation(summary="detachSoftwareSource",
             description="Detach a software asset from the software component that it was built from.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/software-component"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachSoftwareSource(@PathVariable String serverName,
                                      @PathVariable String assetGUID,
@@ -1827,7 +1827,7 @@ public class DevopsPipelineResource
     @Operation(summary="setElementAsGeneratedTarget",
             description="Classify an element to say that it is the generated output of a build program or script.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/generated-target"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setElementAsGeneratedTarget(@PathVariable String serverName,
                                            @PathVariable String elementGUID,
@@ -1855,7 +1855,7 @@ public class DevopsPipelineResource
     @Operation(summary="clearElementAsGeneratedTarget",
             description="Remove the generated target designation from an element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/generated-target"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearElementAsGeneratedTarget(@PathVariable String serverName,
                                              @PathVariable String elementGUID,
@@ -1882,7 +1882,7 @@ public class DevopsPipelineResource
     @Operation(summary="setElementAsReusableTechnique",
             description="Classify an element to say that it is a technique that can be reused in multiple contexts.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/reusable-technique"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setElementAsReusableTechnique(@PathVariable String serverName,
                                            @PathVariable String elementGUID,
@@ -1910,7 +1910,7 @@ public class DevopsPipelineResource
     @Operation(summary="clearElementAsReusableTechnique",
             description="Remove the reusable technique designation from an element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/reusable-technique"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearElementAsReusableTechnique(@PathVariable String serverName,
                                              @PathVariable String elementGUID,

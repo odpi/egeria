@@ -28,7 +28,8 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.ERROR,
                          "The {0} Egeria Connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot connector the the OMAG Infrastructure.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
     /**
      * The {0} integration connector has been started and will call the platforms with userId {1}.  The monitored platforms are: {2}
@@ -37,26 +38,8 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                            AuditLogRecordSeverityLevel.INFO,
                            "The {0} Egeria Connector has been started.  The monitored platforms are: {1}",
                            "The connector is designed to catalog details of Software Server Platforms that have the deployedImplementationType property set to 'OMAG Server Platform'.",
-                           "No specific action is required.  This message is to confirm the start of the integration connector."),
-
-    /**
-     * The {0} integration connector is not able to retrieve platform {1} ({2}) from the catalog
-     */
-    UNKNOWN_PLATFORM("OMAG-CONNECTORS-0003",
-                     AuditLogRecordSeverityLevel.ERROR,
-                     "The {0} integration connector is not able to retrieve platform {1} ({2}) from the catalog",
-                     "The connector continues to catalog platforms.",
-                     "Determine why this platform is not catalogued."),
-
-    /**
-     * The {0} integration connector has stopped its platform monitoring and is shutting down
-     */
-    CONNECTOR_STOPPING("OMAG-CONNECTORS-0004",
-                       AuditLogRecordSeverityLevel.INFO,
-                       "The {0} integration connector has stopped its platform monitoring and is shutting down",
-                       "The connector is disconnecting.",
-                       "No action is required unless there are errors that follow indicating that there were problems shutting down."),
-
+                           "No specific action is required.  This message is to confirm the start of the integration connector.",
+                           "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
     /**
      * The {0} integration connector has created a new {1} server element {2} for server {3} on platform {4}
@@ -65,7 +48,8 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.INFO,
                        "The {0} integration connector has created a new {1} server element {2} for server {3} on platform {4}",
                        "The connector is has catalogued a new server.",
-                       "No action is required unless there are errors that follow indicating that there were problems with the new definition."),
+                       "No action is required unless there are errors that follow indicating that there were problems with the new definition.",
+                       "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
     /**
      * The {0} integration connector has detected that the {1} server of type {2} has no metadata collection id
@@ -74,35 +58,8 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                AuditLogRecordSeverityLevel.INFO,
                "The {0} integration connector has detected that the {1} server of type {2} has no metadata collection id",
                "No metadata collection asset nor inventory catalog software capability is connected to the server.",
-               "This is only ok if the server is a metadata access point."),
-
-    /**
-     * The {0} integration connector is refreshing the lineage of {1} server {2}
-     */
-    REFRESH_SERVER_LINEAGE("OMAG-CONNECTORS-0007",
-                                AuditLogRecordSeverityLevel.INFO,
-                                "The {0} integration connector is refreshing the lineage of {1} server {2}",
-                                "The connector has retrieved the connector for this server and is comparing the catalogued lineage relationships with the server's configuration",
-                                "Validate that there are no errors reported while these relationships are reviewed and updated."),
-
-    /**
-     * The {0} integration connector cannot refresh the lineage of {1} server {2}. Exception was of type {3} with message {4}
-     */
-    REFRESH_SERVER_LINEAGE_FAILED("OMAG-CONNECTORS-0008",
-                           AuditLogRecordSeverityLevel.INFO,
-                           "The {0} integration connector cannot refresh the lineage of {1} server {2}. Exception was of type {3} with message {4}",
-                           "The connector hit a problem refreshing lineage relationships for the server. The exception describes the nature of the issue.",
-                           "Review the exception to determine the cause of the problem.  Correct it and the lineage will be updated on the next refresh."),
-
-
-    /**
-     * The {0} integration connector cannot refresh the lineage of {1} server {2} because the connector is of type {3} rather than type {4}
-     */
-    REFRESH_SERVER_LINEAGE_BAD_CONNECTOR("OMAG-CONNECTORS-0009",
-                                  AuditLogRecordSeverityLevel.INFO,
-                                  "The {0} integration connector cannot refresh the lineage of {1} server {2} because the connector is of type {3} rather than type {4}",
-                                  "The connector hit a problem refreshing lineage relationships for the server because the resource connector associated with the server is no of the expected type.",
-                                  "Correct the connector type linked to the server's connection and the lineage will be updated on the next refresh."),
+               "This is only ok if the server is a metadata access point.",
+               "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
     /**
      * The monitoring of OMAG Server Platform '{0}' has started
@@ -111,7 +68,8 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                            AuditLogRecordSeverityLevel.INFO,
                            "The monitoring of OMAG Server Platform {0} has started",
                            "The connector will synchronize the configuration of the platform and its servers with its open metadata description.",
-                           "No specific action is required.  This message is to confirm the start of the target processor."),
+                           "No specific action is required.  This message is to confirm the start of the target processor.",
+                           "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
     /**
      * Connector {0} is synchronizing metadata for OMAG Server Platform: {1}
@@ -120,7 +78,8 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.INFO,
                         "Connector {0} is synchronizing metadata for OMAG Server Platform: {1}",
                         "The connector is synchronizing the configuration of the platform and its servers with its open metadata description.",
-                        "No specific action is required.  This message is to confirm the refreshing of the target processor."),
+                        "No specific action is required.  This message is to confirm the refreshing of the target processor.",
+                        "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
     ;
 
@@ -129,6 +88,26 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    OMAGConnectorAuditCode(String                      messageId,
+                           AuditLogRecordSeverityLevel severity,
+                           String                      message,
+                           String                      systemAction,
+                           String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -144,18 +123,22 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     OMAGConnectorAuditCode(String                      messageId,
                            AuditLogRecordSeverityLevel severity,
                            String                      message,
                            String                      systemAction,
-                           String                      userAction)
+                           String                      userAction,
+                           String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -171,7 +154,8 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -188,7 +172,8 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -208,6 +193,7 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

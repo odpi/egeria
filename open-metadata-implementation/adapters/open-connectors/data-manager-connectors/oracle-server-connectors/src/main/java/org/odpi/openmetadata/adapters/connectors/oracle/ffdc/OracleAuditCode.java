@@ -28,7 +28,8 @@ public enum OracleAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The Oracle Database connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}",
                          "The connector cannot process the current request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/"),
 
     /**
      * ORACLE-CONNECTOR-0002 - The {0} survey action service cannot retrieve details of any pluggable databases for Oracle Database Server {1}
@@ -37,7 +38,8 @@ public enum OracleAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.INFO,
                        "The {0} survey action service cannot retrieve details of any pluggable databases for Oracle Database Server {1} ({2})",
                        "The survey terminates.",
-                       "This may not be an error if there are no user pluggable databases on the database server.  If there are, check the permissions associated with the database userId."),
+                       "This may not be an error if there are no user pluggable databases on the database server.  If there are, check the permissions associated with the database userId.",
+                       "https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/"),
 
     /**
      * ORACLE-CONNECTOR-0003 - The {0} integration connector has catalogued Oracle Pluggable Database {1} ({2})
@@ -46,7 +48,8 @@ public enum OracleAuditCode implements AuditLogMessageSet
                   AuditLogRecordSeverityLevel.INFO,
                   "The {0} integration connector has catalogued Oracle Pluggable Database {1} ({2})",
                   "The integration connector looks for another pluggable database.",
-                  "This is an information message showing that the integration connector has found a new pluggable database."),
+                  "This is an information message showing that the integration connector has found a new pluggable database.",
+                  "https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/"),
 
 
     /**
@@ -56,7 +59,8 @@ public enum OracleAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.INFO,
                         "The {0} integration connector is skipping Oracle Pluggable Database {1} ({2}) because it is already catalogued",
                         "The integration connector continues, looking for another pluggable database.",
-                        "This is an information message showing that the integration connector is working, but does not need to do any processing on this pluggable database."),
+                        "This is an information message showing that the integration connector is working, but does not need to do any processing on this pluggable database.",
+                        "https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/"),
 
 
     /**
@@ -66,7 +70,8 @@ public enum OracleAuditCode implements AuditLogMessageSet
                     AuditLogRecordSeverityLevel.INFO,
                     "The {0} Oracle Database Connector has been supplied with a friendship connector with GUID {1}",
                     "The friendship connector is an integration connector that is able to catalog a JDBC database.  Therefore, they will cooperate to synchronize the contents of the Oracle Database Server with the open metadata ecosystem.",
-                    "No action is required, this message is just to acknowledge that that the two integration connectors are going to collaborate to catalog the entire contents of the Oracle Database Server."),
+                    "No action is required, this message is just to acknowledge that that the two integration connectors are going to collaborate to catalog the entire contents of the Oracle Database Server.",
+                    "https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/"),
 
     /**
      * ORACLE-CONNECTOR-0009 - The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Oracle Pluggable Database Asset {3} for Database {4}
@@ -75,7 +80,8 @@ public enum OracleAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.INFO,
                        "The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Oracle Pluggable Database Asset {3} for Database {4}",
                        "The connector has requested that its friendship connector starts to catalog a new Oracle Pluggable Database.",
-                       "Verify that the cataloguing starts the next time that the friendship connector refreshes."),
+                       "Verify that the cataloguing starts the next time that the friendship connector refreshes.",
+                       "https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/"),
 
     ;
 
@@ -84,10 +90,11 @@ public enum OracleAuditCode implements AuditLogMessageSet
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
 
 
     /**
-     * Constructor
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -101,11 +108,34 @@ public enum OracleAuditCode implements AuditLogMessageSet
                     String                      systemAction,
                     String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * Constructor
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    OracleAuditCode(String                      messageId,
+                    AuditLogRecordSeverityLevel severity,
+                    String                      message,
+                    String                      systemAction,
+                    String                      userAction,
+                    String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -121,7 +151,8 @@ public enum OracleAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -138,7 +169,8 @@ public enum OracleAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -158,6 +190,7 @@ public enum OracleAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

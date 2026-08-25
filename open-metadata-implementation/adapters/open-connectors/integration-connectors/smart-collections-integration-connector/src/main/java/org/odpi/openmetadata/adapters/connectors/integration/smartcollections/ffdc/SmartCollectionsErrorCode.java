@@ -31,7 +31,8 @@ public enum SmartCollectionsErrorCode implements ExceptionMessageSet
     NO_SECRETS(400, "SMART-COLLECTIONS-INTEGRATION-CONNECTOR-400-001",
               "Connector {0} has not been supplied with a secret that can be used to authenticate the REST calls it makes to run saved queries",
               "The connector is not able to issue the REST calls needed to refresh the membership of its results sets.",
-              "Add an embedded connection to a secrets store connector to the connector's connection so that it can retrieve the userId and password it needs to call the metadata access server."),
+              "Add an embedded connection to a secrets store connector to the connector's connection so that it can retrieve the userId and password it needs to call the metadata access server.",
+              "https://egeria-project.org/concepts/integration-connector/"),
 
     /**
      * SMART-COLLECTIONS-INTEGRATION-CONNECTOR-500-001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}
@@ -39,15 +40,8 @@ public enum SmartCollectionsErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "SMART-COLLECTIONS-INTEGRATION-CONNECTOR-500-001",
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot refresh the membership of one or more results sets.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
-
-    /**
-     * SMART-COLLECTIONS-INTEGRATION-CONNECTOR-503-001 - A client-side exception {0} was received from API call {1} to URL {2}.  The error message was {3}
-     */
-    CLIENT_SIDE_REST_API_ERROR(503, "SMART-COLLECTIONS-INTEGRATION-CONNECTOR-503-001",
-                               "A client-side exception of {0} was received from API call {1} to URL {2}.  The error message was {3}",
-                               "The integration connector has issued a call to a REST API in a remote server and has received an exception from the local client libraries.",
-                               "Look for errors in the local server's console to understand and correct the source of the error."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/integration-connector/"),
 
     ;
 
@@ -56,6 +50,22 @@ public enum SmartCollectionsErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    SmartCollectionsErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -66,14 +76,17 @@ public enum SmartCollectionsErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    SmartCollectionsErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    SmartCollectionsErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -89,7 +102,8 @@ public enum SmartCollectionsErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -106,7 +120,8 @@ public enum SmartCollectionsErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -128,6 +143,7 @@ public enum SmartCollectionsErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

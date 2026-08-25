@@ -699,7 +699,7 @@ public class CollectionManagerResource
     @Operation(summary="linkAgreementActor",
             description="Attach an actor to an agreement.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/agreement"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse linkAgreementActor(@PathVariable
                                            String                                serverName,
@@ -734,7 +734,7 @@ public class CollectionManagerResource
     @Operation(summary="detachAgreementActor",
             description="Detach an actor from an agreement.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/agreement"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachAgreementActor(@PathVariable
                                              String                    serverName,
@@ -768,7 +768,7 @@ public class CollectionManagerResource
     @Operation(summary="linkAgreementItem",
             description="Attach an agreement to an element involved in its definition.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/agreement"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse linkAgreementItem(@PathVariable
                                           String                                serverName,
@@ -803,7 +803,7 @@ public class CollectionManagerResource
     @Operation(summary="updateAgreementItem",
             description="Update the properties of a agreement item relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/agreement"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse updateAgreementItem(@PathVariable String serverName,
                                             @PathVariable String urlMarker,
@@ -834,7 +834,7 @@ public class CollectionManagerResource
     @Operation(summary="detachAgreementItem",
             description="Remove a agreement item relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/agreement"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachAgreementItem(@PathVariable String serverName,
                                             @PathVariable String urlMarker,
@@ -867,7 +867,7 @@ public class CollectionManagerResource
     @Operation(summary="linkContract",
             description="Attach an agreement to an external reference element that describes the location of the contract documents.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/agreement"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkContract(@PathVariable
                                      String                                serverName,
@@ -1326,7 +1326,7 @@ public class CollectionManagerResource
     @Operation(summary="detachAgreementItem",
             description="Detach an agreement from an element involved in its definition.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/agreement"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachAgreementItem(@PathVariable
                                             String                    serverName,

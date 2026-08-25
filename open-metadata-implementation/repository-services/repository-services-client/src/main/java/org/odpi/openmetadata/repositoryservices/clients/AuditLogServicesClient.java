@@ -372,30 +372,38 @@ public class AuditLogServicesClient implements AuditLoggingComponent
                  * InvalidParameterException because the serverName is invalid - so this is turned into
                  * a RepositoryErrorException as if the whole platform is missing.
                  */
-                throw new RepositoryErrorException(restResult.getRelatedHTTPCode(),
-                                                   this.getClass().getName(),
-                                                   methodName,
-                                                   restResult.getExceptionErrorMessage(),
-                                                   restResult.getExceptionErrorMessageId(),
-                                                   restResult.getExceptionErrorMessageParameters(),
-                                                   restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction(),
-                                                   restResult.getExceptionCausedBy(),
-                                                   restResult.getExceptionProperties());
+                RepositoryErrorException restException = new RepositoryErrorException(restResult.getRelatedHTTPCode(),
+                                                                                      this.getClass().getName(),
+                                                                                      methodName,
+                                                                                      restResult.getExceptionErrorMessage(),
+                                                                                      restResult.getExceptionErrorMessageId(),
+                                                                                      restResult.getExceptionErrorMessageParameters(),
+                                                                                      restResult.getExceptionSystemAction(),
+                                                                                      restResult.getExceptionUserAction(),
+                                                                                      restResult.getExceptionCausedBy(),
+                                                                                      restResult.getExceptionProperties());
+
+                restException.setReportedURL(restResult.getExceptionURL());
+
+                throw restException;
             }
             else
             {
-                throw new InvalidParameterException(restResult.getRelatedHTTPCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    restResult.getExceptionErrorMessage(),
-                                                    restResult.getExceptionErrorMessageId(),
-                                                    restResult.getExceptionErrorMessageParameters(),
-                                                    restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction(),
-                                                    restResult.getExceptionCausedBy(),
-                                                    parameterName,
-                                                    restResult.getExceptionProperties());
+                InvalidParameterException restException = new InvalidParameterException(restResult.getRelatedHTTPCode(),
+                                                                                        this.getClass().getName(),
+                                                                                        methodName,
+                                                                                        restResult.getExceptionErrorMessage(),
+                                                                                        restResult.getExceptionErrorMessageId(),
+                                                                                        restResult.getExceptionErrorMessageParameters(),
+                                                                                        restResult.getExceptionSystemAction(),
+                                                                                        restResult.getExceptionUserAction(),
+                                                                                        restResult.getExceptionCausedBy(),
+                                                                                        parameterName,
+                                                                                        restResult.getExceptionProperties());
+
+                restException.setReportedURL(restResult.getExceptionURL());
+
+                throw restException;
             }
         }
     }
@@ -421,17 +429,21 @@ public class AuditLogServicesClient implements AuditLoggingComponent
             {
                 userId = (String)restResult.getExceptionProperties().get("userId");
             }
-            throw new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
-                                                 this.getClass().getName(),
-                                                 methodName,
-                                                 restResult.getExceptionErrorMessage(),
-                                                 restResult.getExceptionErrorMessageId(),
-                                                 restResult.getExceptionErrorMessageParameters(),
-                                                 restResult.getExceptionSystemAction(),
-                                                 restResult.getExceptionUserAction(),
-                                                 restResult.getExceptionCausedBy(),
-                                                 userId,
-                                                 restResult.getExceptionProperties());
+            UserNotAuthorizedException restException = new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
+                                                                                      this.getClass().getName(),
+                                                                                      methodName,
+                                                                                      restResult.getExceptionErrorMessage(),
+                                                                                      restResult.getExceptionErrorMessageId(),
+                                                                                      restResult.getExceptionErrorMessageParameters(),
+                                                                                      restResult.getExceptionSystemAction(),
+                                                                                      restResult.getExceptionUserAction(),
+                                                                                      restResult.getExceptionCausedBy(),
+                                                                                      userId,
+                                                                                      restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -458,16 +470,20 @@ public class AuditLogServicesClient implements AuditLoggingComponent
             /*
              * All the other expected exceptions have been processed so default exception to RepositoryErrorException
              */
-            throw new RepositoryErrorException(restResult.getRelatedHTTPCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               restResult.getExceptionErrorMessage(),
-                                               restResult.getExceptionErrorMessageId(),
-                                               restResult.getExceptionErrorMessageParameters(),
-                                               restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction(),
-                                               restResult.getExceptionCausedBy(),
-                                               restResult.getExceptionProperties());
+            RepositoryErrorException restException = new RepositoryErrorException(restResult.getRelatedHTTPCode(),
+                                                                                  this.getClass().getName(),
+                                                                                  methodName,
+                                                                                  restResult.getExceptionErrorMessage(),
+                                                                                  restResult.getExceptionErrorMessageId(),
+                                                                                  restResult.getExceptionErrorMessageParameters(),
+                                                                                  restResult.getExceptionSystemAction(),
+                                                                                  restResult.getExceptionUserAction(),
+                                                                                  restResult.getExceptionCausedBy(),
+                                                                                  restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 }

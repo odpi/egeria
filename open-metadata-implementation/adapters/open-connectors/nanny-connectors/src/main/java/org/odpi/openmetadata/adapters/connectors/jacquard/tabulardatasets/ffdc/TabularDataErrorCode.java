@@ -6,7 +6,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
 /**
- * The ReferenceDataErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
+ * The TabularDataErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the Reference Data Connectors.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  * The 5 fields in the enum are:
  * <ul>
@@ -31,8 +31,8 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
     NULL_URL(400, "REFERENCE-DATA-CONNECTORS-400-001",
                      "Reference Data Connector {0} has been configured without the URL to the OMAG Server Platform",
                      "The connector cannot contact the OMAG Infrastructure.",
-                     "The Platform URL Root is configured in the connector's connection endpoint in the address property.  Typically it is the host name and port where the OMAG Server Platform is running."),
-
+                     "The Platform URL Root is configured in the connector's connection endpoint in the address property.  Typically it is the host name and port where the OMAG Server Platform is running.",
+                     "https://egeria-project.org/concepts/tabular-data-set-connector/"),
 
     /**
      * REFERENCE-DATA-CONNECTORS-400-002 - Reference Data Connector {0} has been configured without the name of the OMAG Server to call
@@ -40,15 +40,8 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
     NULL_SERVER_NAME(400, "REFERENCE-DATA-CONNECTORS-400-002",
              "Reference Data Connector {0} has been configured without the name of the OMAG Server to call",
              "The connector cannot contact the OMAG Server.",
-             "The server's name is configured in the connector's connection additionalProperties in the serverName property."),
-
-    /**
-     * REFERENCE-DATA-CONNECTORS-400-003 - Reference Data Connector {0} has been configured without a userId needed to call the OMAG Server Platform.
-     */
-    NULL_CLIENT_USER_ID(400, "REFERENCE-DATA-CONNECTORS-400-003",
-                     "Reference Data Connector {0} has been configured without a userId needed to call the OMAG Server Platform.",
-                     "The connector is not authorized to contact the OMAG Server Platform.",
-                     "The default userId is configured in the connector's connection userId property.  The parent connector may also supply a userId with the setEnvironment() call."),
+             "The server's name is configured in the connector's connection additionalProperties in the serverName property.",
+             "https://egeria-project.org/concepts/tabular-data-set-connector/"),
 
     /**
      * REFERENCE-DATA-CONNECTORS-400-004 - Reference Data Connector {0} has no data at record {1}.  The data set size is {2}
@@ -56,16 +49,8 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
     NULL_RECORD(400, "REFERENCE-DATA-CONNECTORS-400-004",
                         "Reference Data Connector {0} has no data at record {1}.  The data set size is {2}",
                         "The connector is not able to return data at the requested record number.",
-                        "Request data from the connector with record numbers from '0' to the 'data set size minus 1'."),
-
-    /**
-     * REFERENCE-DATA-CONNECTORS-400-005 - Reference Data Connector {0} has been passed {1} columns on the {2} method for record number {3}.  The data set width is {4}
-     */
-    WRONG_NUMBER_OF_COLUMNS(400, "REFERENCE-DATA-CONNECTORS-400-005",
-                "Reference Data Connector {0} has been passed {1} columns on the {2} method for record number {3}.  The data set width is {4}",
-                "The connector is not able to store data at the requested record number because the caller has not passed the correct number of column values.",
-                "The column definitions can be extracted using the getColumnDefinitions().  They show the columns and the types of values that should be stored in them."),
-
+                        "Request data from the connector with record numbers from '0' to the 'data set size minus 1'.",
+                        "https://egeria-project.org/concepts/tabular-data-set-connector/"),
 
     /**
      * REFERENCE-DATA-CONNECTORS-500-001 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}
@@ -73,15 +58,8 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "REFERENCE-DATA-CONNECTORS-500-001",
                          "The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot continue with the request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
-
-    /**
-     * REFERENCE-DATA-CONNECTORS-500-002 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}
-     */
-    INVALID_ELEMENT(500, "REFERENCE-DATA-CONNECTORS-500-002",
-                         "The {0} Reference Data Connector received an invalid element from the metadata store: {1}",
-                         "The connector cannot continue to work with this element.",
-                         "Use the details from the element and any other related error messages to determine the cause of the error and retry the request once this is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/tabular-data-set-connector/"),
 
     /**
      * REFERENCE-DATA-CONNECTORS-500-003 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}
@@ -89,8 +67,8 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
     UNMAPPED_COLUMN(500, "REFERENCE-DATA-CONNECTORS-500-003",
                     "The {0} Reference Data Connector cannot map column {1}",
                     "The connector cannot continue to work with this element.",
-                    "Use the details from the element and any other related error messages to determine the cause of the error and retry the request once this is resolved."),
-
+                    "Use the details from the element and any other related error messages to determine the cause of the error and retry the request once this is resolved.",
+                    "https://egeria-project.org/concepts/tabular-data-set-connector/"),
 
     /**
      * REFERENCE-DATA-CONNECTORS-500-004 - Product definition is null for connector {0} in method {1}
@@ -98,7 +76,8 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
     NULL_PRODUCT_DEFINITION(500, "REFERENCE-DATA-CONNECTORS-500-004",
                     "Product definition is null for connector {0} in method {1}",
                     "The connector cannot continue to work without the product definition.",
-                    "This is a timing issue.  The connector should set up a valid product definition either in its constructor or start() method.  The calls to retrieve the table name/description should occur after start()."),
+                    "This is a timing issue.  The connector should set up a valid product definition either in its constructor or start() method.  The calls to retrieve the table name/description should occur after start().",
+                    "https://egeria-project.org/concepts/tabular-data-set-connector/"),
 
     ;
 
@@ -107,6 +86,22 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    TabularDataErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -117,14 +112,17 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    TabularDataErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    TabularDataErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -140,7 +138,8 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -157,7 +156,8 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -179,6 +179,7 @@ public enum TabularDataErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

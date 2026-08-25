@@ -26,68 +26,14 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum OCFServicesErrorCode implements ExceptionMessageSet
 {
     /**
-     * CONNECTED-ASSET-SERVICES-400-001 - The connection value passed on the {0} parameter of the {1} operation is null
-     */
-    NULL_CONNECTION_PARAMETER(400, "CONNECTED-ASSET-SERVICES-400-001",
-                              "The connection value passed on the {0} parameter of the {1} operation is null",
-                              "The system cannot process the request without this value.",
-                              "Correct the code in the caller to provide the name."),
-
-    /**
-     * CONNECTED-ASSET-SERVICES-400-002 - The request for the properties of asset {0} failed with the following message returned: {1}
-     */
-    NO_ASSET_PROPERTIES(400, "CONNECTED-ASSET-SERVICES-400-002",
-                        "The request for the properties of asset {0} failed with the following message returned: {1}",
-                        "The system cannot process the request.",
-                        "Use the information in the message to understand the nature of the problem and once it is resolved, retry the request."),
-
-    /**
-     * CONNECTED-ASSET-SERVICES-400-003 - Service {0} cannot process one of the classifications supplied on the {1} call because the classification name is null
-     */
-    NULL_CLASSIFICATION_NAME(400, "CONNECTED-ASSET-SERVICES-400-003",
-                             "Service {0} cannot process one of the classifications supplied on the {1} call because the classification name is null",
-                             "The system cannot create a new instance because the classification might be important.",
-                             "Correct the list of classifications passed with this request."),
-
-    /**
-     * CONNECTED-ASSET-SERVICES-400-004 - Service {0} cannot process the properties supplied with classification {1}.  The associated error message was: {2}
-     */
-    BAD_CLASSIFICATION_PROPERTIES(400, "CONNECTED-ASSET-SERVICES-400-004",
-                                  "Service {0} cannot process the properties supplied with classification {1}.  The associated error message was: {2}",
-                                  "The system cannot create a new instance with invalid properties in any of the classifications.",
-                                  "Correct the classification parameters passed with this request."),
-
-    /**
-     * CONNECTED-ASSET-SERVICES-400-005 - Service {0} cannot process the properties supplied to method {1} because the
-     * requested owner {2} ({3}) is not a recognized software server capability.  The associated error message is: {4}
-     */
-    INTEGRATOR_NOT_RETURNED(400, "CONNECTED-ASSET-SERVICES-400-005",
-                                  "Service {0} cannot process the properties supplied to method {1} because the requested owner {2} ({3}) is " +
-                                          "not a recognized software server capability.  The associated error message is: {4}",
-                                  "The system cannot create a new instance in the metadata repository with an invalid integrator specified as" +
-                                    " the owner.",
-                                  "Ensure the request includes the unique identifiers for a valid software server capability entity to represent " +
-                                    "the integrator and retry the request."),
-
-    /**
-     * CONNECTED-ASSET-SERVICES-400-006 - Service {0} cannot process the properties supplied to method {1} because the unique name {2}
-     * given for the requested owner does not match the unique name of {3} returned in software server capability {4}
-     */
-    BAD_INTEGRATOR_NAME(400, "CONNECTED-ASSET-SERVICES-400-006",
-                        "Service {0} cannot process the properties supplied to method {1} because the unique name {2} given for the " +
-                                "requested owner does not match the unique name of {3} returned in software server capability {4}",
-                        "The system cannot create a new instance with an invalid integrator specified as the owner.",
-                        "Retry the request with a matching the unique identifier and name for a valid software server capability entity to " +
-                                "represent the owner of the new instance."),
-
-    /**
      * CONNECTED-ASSET-SERVICES-404-001 - The open metadata repository services are not initialized for the {0} operation
      */
     OMRS_NOT_INITIALIZED(404, "CONNECTED-ASSET-SERVICES-404-001",
                          "The open metadata repository services are not initialized for the {0} operation",
                          "The system cannot connect to an open metadata repository.",
                          "Check that the server where the Open Connector Framework metadata services are running is initialized correctly.  " +
-                                 "Correct any errors discovered and retry the request when the open metadata services are available."),
+                                 "Correct any errors discovered and retry the request when the open metadata services are available.",
+                                 "https://egeria-project.org/services/ocf-metadata-management/"),
 
     /**
      * CONNECTED-ASSET-SERVICES-500-001 - The requested connector for connection named {0} has not been created.
@@ -98,17 +44,8 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
                                     " running in OMAG Server {1} at {2}",
                             "The system cannot create a connector which means some of its services will not work.",
                             "This problem is likely to be caused by an incorrect connection object.  Check the settings on the Connection" +
-                                    "and correct if necessary.  If the connection is correct, contact the Egeria community for help."),
-
-    /**
-     * CONNECTED-ASSET-SERVICES-500-002 - The connector generated from the connection named {0} return by the {1} service running
-     * in OMAG Server {2} at {3} is not of the required type. It should be an instance of {4}
-     */
-    WRONG_TYPE_OF_CONNECTOR(500, "CONNECTED-ASSET-SERVICES-500-002",
-                            "The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2} at {3} is " +
-                                    "not of the required type. It should be an instance of {4}",
-                            "The system cannot create the required connector which means some of its services will not work.",
-                            "Verify that the OMAG server is running and the OMAS service is correctly configured."),
+                                    "and correct if necessary.  If the connection is correct, contact the Egeria community for help.",
+                                    "https://egeria-project.org/services/ocf-metadata-management/"),
 
     ;
 
@@ -117,6 +54,22 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    OCFServicesErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -127,14 +80,17 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    OCFServicesErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OCFServicesErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -150,7 +106,8 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -167,7 +124,8 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -189,6 +147,7 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

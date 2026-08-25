@@ -57,6 +57,7 @@ public abstract class OMRSAPIResponse implements RequestIdService
     private String[]            exceptionErrorMessageParameters = null;
     private String              exceptionSystemAction           = null;
     private String              exceptionUserAction             = null;
+    private String              exceptionURL             = null;
     private Map<String, Object> exceptionProperties             = null;
 
 
@@ -89,6 +90,7 @@ public abstract class OMRSAPIResponse implements RequestIdService
             this.exceptionErrorMessageParameters = template.getExceptionErrorMessageParameters();
             this.exceptionSystemAction = template.getExceptionSystemAction();
             this.exceptionUserAction = template.getExceptionUserAction();
+            this.exceptionURL = template.getExceptionURL();
             this.exceptionProperties = template.getExceptionProperties();
         }
     }
@@ -345,6 +347,31 @@ public abstract class OMRSAPIResponse implements RequestIdService
 
 
     /**
+     * Return the link to further reading about the component or concept behind the exception's message.  It
+     * comes from the message definition in the server that raised the exception and gives the caller
+     * somewhere to go for background on the situation.
+     *
+     * @return url; null if the message definition does not supply one
+     */
+    public String getExceptionURL()
+    {
+        return exceptionURL;
+    }
+
+
+    /**
+     * Set up the link to further reading about the component or concept behind the exception's message.
+     *
+     * @param exceptionURL url; null if the message definition does not supply one
+     */
+    public void setExceptionURL(String exceptionURL)
+    {
+        this.exceptionURL = exceptionURL;
+    }
+
+
+
+    /**
      * Return the additional properties stored by the exceptions.
      *
      * @return property map
@@ -398,6 +425,7 @@ public abstract class OMRSAPIResponse implements RequestIdService
                 ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionURL='" + exceptionURL + '\'' +
                 ", exceptionProperties=" + exceptionProperties +
                 '}';
     }
@@ -430,6 +458,7 @@ public abstract class OMRSAPIResponse implements RequestIdService
                 Arrays.equals(exceptionErrorMessageParameters, that.exceptionErrorMessageParameters) &&
                 Objects.equals(exceptionSystemAction, that.exceptionSystemAction) &&
                 Objects.equals(exceptionUserAction, that.exceptionUserAction) &&
+                Objects.equals(exceptionURL, that.exceptionURL) &&
                 Objects.equals(exceptionProperties, that.exceptionProperties);
     }
 
@@ -442,6 +471,6 @@ public abstract class OMRSAPIResponse implements RequestIdService
     @Override
     public int hashCode()
     {
-        return Objects.hash(requestId, relatedHTTPCode, exceptionClassName, exceptionSubclassName, exceptionCausedBy, actionDescription, exceptionErrorMessage, exceptionErrorMessageId, Arrays.hashCode(exceptionErrorMessageParameters), exceptionSystemAction, exceptionUserAction, exceptionProperties);
+        return Objects.hash(requestId, relatedHTTPCode, exceptionClassName, exceptionSubclassName, exceptionCausedBy, actionDescription, exceptionErrorMessage, exceptionErrorMessageId, Arrays.hashCode(exceptionErrorMessageParameters), exceptionSystemAction, exceptionUserAction, exceptionURL, exceptionProperties);
     }
 }

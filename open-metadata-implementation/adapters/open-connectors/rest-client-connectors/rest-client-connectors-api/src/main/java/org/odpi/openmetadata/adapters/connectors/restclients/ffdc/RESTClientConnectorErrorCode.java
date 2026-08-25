@@ -26,14 +26,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum RESTClientConnectorErrorCode implements ExceptionMessageSet
 {
     /**
-     * CLIENT-SIDE-REST-API-CONNECTOR-503-001 - A null response was received from REST API call {0} to server {1}
-     */
-    NULL_RESPONSE_FROM_API(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-001 ",
-            "A null response was received from REST API call {0} to server {1}",
-            "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
-            "Look for errors in the remote server's audit log and console to understand and correct the source of the error."),
-
-    /**
      * CLIENT-SIDE-REST-API-CONNECTOR-503-002 - A client-side exception {0} was received by method {1} from API call {2} to server {3} on platform {4}.  The error message was {5}
      */
     CLIENT_SIDE_REST_API_ERROR(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-002 ",
@@ -42,15 +34,8 @@ public enum RESTClientConnectorErrorCode implements ExceptionMessageSet
             "Review the error message to determine the cause of the error.  Check that the server is running and the URL is correct. " +
                     "Also check that the request body has legal values in it.  " +
                     "Look for errors in the local server's audit log to understand and correct the cause of the error. " +
-                    "Then rerun the request"),
-
-    /**
-     * CLIENT-SIDE-REST-API-CONNECTOR-503-003 - A {0} exception was received from REST API call {1} to server {2}: error message was: {3}
-     */
-    EXCEPTION_RESPONSE_FROM_API(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-003 ",
-            "A {0} exception was received from REST API call {1} to server {2}: error message was: {3}",
-            "The system has issued a call to an open metadata access service REST API in a remote server and has received an exception response.",
-            "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error."),
+                    "Then rerun the request",
+                    "https://egeria-project.org/concepts/rest-client-connector/"),
 
     /**
      * CLIENT-SIDE-REST-API-CONNECTOR-503-004 - REST API call {0} to server {1} on platform {2} returned an unsuccessful HTTP status {3}.  The response body was: {4}
@@ -58,7 +43,8 @@ public enum RESTClientConnectorErrorCode implements ExceptionMessageSet
     UNSUCCESSFUL_HTTP_RESPONSE(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-004 ",
             "REST API call {0} to server {1} on platform {2} returned an unsuccessful HTTP status {3}.  The response body was: {4}",
             "The remote server rejected the request, or was not able to process it, before returning a body of the expected type.",
-            "Review the HTTP status and response body to determine the cause of the error, correct the request and retry."),
+            "Review the HTTP status and response body to determine the cause of the error, correct the request and retry.",
+            "https://egeria-project.org/concepts/rest-client-connector/"),
     ;
 
 
@@ -67,6 +53,22 @@ public enum RESTClientConnectorErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    RESTClientConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -77,14 +79,17 @@ public enum RESTClientConnectorErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    RESTClientConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    RESTClientConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -100,7 +105,8 @@ public enum RESTClientConnectorErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -117,7 +123,8 @@ public enum RESTClientConnectorErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -139,6 +146,7 @@ public enum RESTClientConnectorErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

@@ -36,7 +36,8 @@ public enum MyProfileErrorCode implements ExceptionMessageSet
     PROFILE_ALREADY_EXISTS(400, "OMVS-MY-PROFILE-400-001",
             "The personal profile for user {0} already exists",
             "No action is taken.",
-            "Retrieve the personal profile for this user with the 'getMyProfile' operation."),
+            "Retrieve the personal profile for this user with the 'getMyProfile' operation.",
+            "https://egeria-project.org/services/omvs/my-profile/overview/"),
 
 
     /**
@@ -45,7 +46,8 @@ public enum MyProfileErrorCode implements ExceptionMessageSet
     PROFILE_DOESNT_EXISTS(400, "OMVS-MY-PROFILE-400-002",
                            "The personal profile for user {0} does not exists",
                            "No action is taken except this exception is thrown.",
-                           "Create a new profile for this user with the 'addMyProfile' operation."),
+                           "Create a new profile for this user with the 'addMyProfile' operation.",
+                           "https://egeria-project.org/services/omvs/my-profile/overview/"),
 
 
 
@@ -56,6 +58,22 @@ public enum MyProfileErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    MyProfileErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -66,14 +84,17 @@ public enum MyProfileErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    MyProfileErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    MyProfileErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -89,7 +110,8 @@ public enum MyProfileErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -106,7 +128,8 @@ public enum MyProfileErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -128,6 +151,7 @@ public enum MyProfileErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

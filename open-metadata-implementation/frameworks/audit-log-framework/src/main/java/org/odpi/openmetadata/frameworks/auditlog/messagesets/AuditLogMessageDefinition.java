@@ -40,7 +40,31 @@ public class AuditLogMessageDefinition extends MessageDefinition
                                      String                 systemAction,
                                      String                 userAction)
     {
-        super(messageId, messageTemplate, systemAction, userAction);
+        this(messageId, severity, messageTemplate, systemAction, userAction, null);
+    }
+
+
+    /**
+     * Constructor to save all the fixed values of a message, including a link to further reading.
+     * This is typically populated from an Enum message set.  The constructor passes most values to the
+     * super class and just retains the additional value for the audit log.
+     *
+     * @param messageId unique id for the message
+     * @param severity severity of the message
+     * @param messageTemplate text for the message
+     * @param systemAction description of the action taken by the system when the condition happened
+     * @param userAction instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind this message -
+     *            null if there is no suitable page.
+     */
+    public AuditLogMessageDefinition(String                 messageId,
+                                     AuditLogRecordSeverity severity,
+                                     String                 messageTemplate,
+                                     String                 systemAction,
+                                     String                 userAction,
+                                     String                 url)
+    {
+        super(messageId, messageTemplate, systemAction, userAction, url);
         this.severity = severity;
     }
 
@@ -71,6 +95,7 @@ public class AuditLogMessageDefinition extends MessageDefinition
                        ", messageParams=" + Arrays.toString(getMessageParams()) +
                        ", systemAction='" + getSystemAction() + '\'' +
                        ", userAction='" + getUserAction() + '\'' +
+                       ", url='" + getURL() + '\'' +
                        '}';
     }
 }

@@ -33,7 +33,8 @@ public enum TokenControllerErrorCode implements ExceptionMessageSet
     NO_USER(400, "TOKEN-CONTROLLER-401-001",
                      "Call made to {0} service {1} has no logged-on user",
                      "An inbound REST API call has been received but there is no userId in the authorization bearer token.",
-                     "Ensure the user acquires a valid token and this token is included in the request header."),
+                     "Ensure the user acquires a valid token and this token is included in the request header.",
+                     "https://egeria-project.org/features/metadata-security/overview/"),
     ;
 
     private final int    httpErrorCode;
@@ -41,6 +42,22 @@ public enum TokenControllerErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    TokenControllerErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -51,14 +68,17 @@ public enum TokenControllerErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    TokenControllerErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    TokenControllerErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -74,7 +94,8 @@ public enum TokenControllerErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -91,7 +112,8 @@ public enum TokenControllerErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -113,6 +135,7 @@ public enum TokenControllerErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

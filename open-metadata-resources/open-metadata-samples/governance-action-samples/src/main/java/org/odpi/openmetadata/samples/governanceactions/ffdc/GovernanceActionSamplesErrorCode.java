@@ -32,7 +32,8 @@ public enum GovernanceActionSamplesErrorCode implements ExceptionMessageSet
     HOSPITAL_NOT_NOMINATED(400, "GOVERNANCE-ACTION-SAMPLES-400-001",
                    "The {0} governance action service has detected that hospital {1} ({2}) is not nominated to participate in project {3} ({4})",
                    "The service stops processing for this hospital.",
-                   "Retry the request once the nomination is complete."),
+                   "Retry the request once the nomination is complete.",
+                   "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * The {0} governance action service has detected that hospital {1} ({2}) is not certified to supply data for project {3} ({4})
@@ -40,7 +41,8 @@ public enum GovernanceActionSamplesErrorCode implements ExceptionMessageSet
     UNCERTIFIED_HOSPITAL(400, "GOVERNANCE-ACTION-SAMPLES-400-002",
                          "The {0} governance action service has detected that hospital {1} ({2}) is not certified to supply data for project {3} ({4})",
                          "The service stops setting up the onboarding pipeline for this hospital.",
-                         "Retry the request once the certification is complete."),
+                         "Retry the request once the certification is complete.",
+                         "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * The {0} governance action service has detected that certification type {1} is not linked to the clinical trial project {2}
@@ -48,16 +50,18 @@ public enum GovernanceActionSamplesErrorCode implements ExceptionMessageSet
     WRONG_CERTIFICATION_TYPE_FOR_TRIAL(400, "GOVERNANCE-ACTION-SAMPLES-400-003",
                                        "The {0} governance action service has detected that certification type {1} is not linked to the clinical trial project {2}",
                                        "The service stops certifying this hospital.",
-                                       "Retry the request and ensure that a valid certification type, that is linked to the clinical trial project using the GovernedBy relationship, is specified in the action targets."),
+                                       "Retry the request and ensure that a valid certification type, that is linked to the clinical trial project using the GovernedBy relationship, is specified in the action targets.",
+                                       "https://egeria-project.org/concepts/governance-action-service/"),
 
 
     /**
      * The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}
      */
-    UNEXPECTED_EXCEPTION(500, "GOVERNANCE-ACTION-CONNECTORS-500-004",
+    UNEXPECTED_EXCEPTION(500, "GOVERNANCE-ACTION-SAMPLES-500-001",
                          "The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}",
                          "The governance action returns an exception to the Governance Action Engine.",
-                         "Use details from the error message to determine the cause of the error and retry the service call once it is resolved."),
+                         "Use details from the error message to determine the cause of the error and retry the service call once it is resolved.",
+                         "https://egeria-project.org/concepts/governance-action-service/"),
     ;
 
 
@@ -66,6 +70,22 @@ public enum GovernanceActionSamplesErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    GovernanceActionSamplesErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -76,14 +96,17 @@ public enum GovernanceActionSamplesErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    GovernanceActionSamplesErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    GovernanceActionSamplesErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -99,7 +122,8 @@ public enum GovernanceActionSamplesErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -116,7 +140,8 @@ public enum GovernanceActionSamplesErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -138,6 +163,7 @@ public enum GovernanceActionSamplesErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

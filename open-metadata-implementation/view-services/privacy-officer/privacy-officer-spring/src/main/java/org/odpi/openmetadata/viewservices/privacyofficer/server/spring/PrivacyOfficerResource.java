@@ -54,7 +54,7 @@ public class PrivacyOfficerResource
     @Operation(summary="linkPermittedProcessing",
             description="Link a data processing purpose to a data processing description.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/data-processing-purpose"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkPermittedProcessing(@PathVariable
                                                 String                  serverName,
@@ -88,7 +88,7 @@ public class PrivacyOfficerResource
     @Operation(summary="detachPermittedProcessing",
             description="Detach a data processing purpose from a data processing description.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/data-processing-purpose"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachPermittedProcessing(@PathVariable
                                                   String                    serverName,
@@ -122,7 +122,7 @@ public class PrivacyOfficerResource
     @Operation(summary="linkDataProcessingTarget",
             description="Link a data processing action to a target element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/data-processing-action"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkDataProcessingTarget(@PathVariable
                                                  String                  serverName,
@@ -156,7 +156,7 @@ public class PrivacyOfficerResource
     @Operation(summary="detachDataProcessingTarget",
             description="Detach a data processing action from a target element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/data-processing-action"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachDataProcessingTarget(@PathVariable
                                                    String                    serverName,

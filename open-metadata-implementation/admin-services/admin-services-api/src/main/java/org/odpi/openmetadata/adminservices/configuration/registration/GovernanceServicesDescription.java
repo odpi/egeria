@@ -17,7 +17,7 @@ public enum GovernanceServicesDescription
                                       "Conformance Suite Services",
                                       "conformance-suite",
                                       "Run automated open metadata conformance suite services.",
-                                      "https://egeria-project.org/guides/cts/overview/",
+                                      "https://egeria-project.org/guides/cts/",
                                       ServerTypeClassification.CONFORMANCE_SERVER.getServerTypeName(),
                                       null,
                                       null),

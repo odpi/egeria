@@ -30,17 +30,20 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessage
     ERROR_SENDING_EVENT(400, "OCF-KAFKA-TOPIC-CONNECTOR-400-001 ",
             "An unexpected {0} exception was caught while sending an event to topic {1}.  The message in the exception was: {2}",
             "The system cannot send the event.",
-            "Review the exception that was returned from the send."),
+            "Review the exception that was returned from the send.",
+            "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
     ERROR_ATTEMPTING_KAFKA_INITIALIZATION(400, "OCF-KAFKA-TOPIC-CONNECTOR-400-002 ",
             "Egeria was unable to initialize a connection to a Kafka cluster.  The message in the exception was: {0}",
             "The system is unable initialize.",
-            "Ensure that Kafka is available"),
+            "Ensure that Kafka is available",
+            "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
     ERROR_CONNECTING_KAFKA_PRODUCER(400, "OCF-KAFKA-TOPIC-CONNECTOR-400-003 ",
             "Egeria encountered an exception while attempting to connect a message producer to a Kafka.  The message in the exception was: {0}",
             "Egeria cannot produce events",
-            "Ensure that the Kafka service is available and that the connection properties are valid."),
+            "Ensure that the Kafka service is available and that the connection properties are valid.",
+            "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
     ;
 
@@ -49,6 +52,22 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessage
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    KafkaOpenMetadataTopicConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -59,14 +78,17 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessage
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    KafkaOpenMetadataTopicConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    KafkaOpenMetadataTopicConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -82,7 +104,8 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessage
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -99,7 +122,8 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessage
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -121,6 +145,7 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessage
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

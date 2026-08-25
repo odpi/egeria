@@ -671,7 +671,7 @@ public class RuntimeManagerResource
                     "archive that is readable through the connector identified by the connection.  " +
                     "It can be used with OMAG servers that are of type Open Metadata Store.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/open-metadata-archives/"))
+                    url="https://egeria-project.org/concepts/open-metadata-archive/"))
 
     public VoidResponse addOpenMetadataArchiveFile(@PathVariable String serverName,
                                                    @PathVariable String serverGUID,
@@ -699,7 +699,7 @@ public class RuntimeManagerResource
             description="An open metadata archive contains metadata types and instances.  This operation loads the supplied open metadata " +
                     "archive into the local repository.  It can be used with OMAG servers that are of type Open Metadata Store.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/open-metadata-archives/"))
+                    url="https://egeria-project.org/concepts/open-metadata-archive/"))
 
     public VoidResponse addOpenMetadataArchive(@PathVariable String              serverName,
                                                @PathVariable String              serverGUID,

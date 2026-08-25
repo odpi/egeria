@@ -31,7 +31,8 @@ public enum OpenLineageIntegrationConnectorErrorCode implements ExceptionMessage
     UNEXPECTED_EXCEPTION(500, "OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-001",
              "The {0} integration connector received an unexpected {1} exception in method {2} when working with open lineage events; the error message was: {3}",
              "The connector cannot process one or more lineage events.",
-             "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+             "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+             "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
 
     /**
      * OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-002 - The {0} integration connector received a null raw open lineage event in method {1} when working with open lineage events
@@ -39,7 +40,8 @@ public enum OpenLineageIntegrationConnectorErrorCode implements ExceptionMessage
     NO_RAW_EVENT(500, "OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-002",
                          "The {0} integration connector received a null raw open lineage event in method {1} when working with open lineage events",
                          "The connector cannot process an open lineage events because it has no content.",
-                         "Validate the set up and source of the events and retry the request once it is resolved."),
+                         "Validate the set up and source of the events and retry the request once it is resolved.",
+                         "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
     ;
 
 
@@ -48,6 +50,22 @@ public enum OpenLineageIntegrationConnectorErrorCode implements ExceptionMessage
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    OpenLineageIntegrationConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -58,14 +76,17 @@ public enum OpenLineageIntegrationConnectorErrorCode implements ExceptionMessage
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    OpenLineageIntegrationConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OpenLineageIntegrationConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -81,7 +102,8 @@ public enum OpenLineageIntegrationConnectorErrorCode implements ExceptionMessage
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -98,7 +120,8 @@ public enum OpenLineageIntegrationConnectorErrorCode implements ExceptionMessage
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -120,6 +143,7 @@ public enum OpenLineageIntegrationConnectorErrorCode implements ExceptionMessage
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

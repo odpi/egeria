@@ -35,6 +35,7 @@ public class AuditLogRecord
     private List<String>               additionalInformation = null;
     private String                     systemAction          = null;
     private String                     userAction            = null;
+    private String                     messageURL            = null;
     private String                     exceptionClassName    = null;
     private String                     exceptionMessage      = null;
     private String                     exceptionStackTrace   = null;
@@ -73,6 +74,7 @@ public class AuditLogRecord
             this.additionalInformation = template.getAdditionalInformation();
             this.systemAction = template.getSystemAction();
             this.userAction = template.getUserAction();
+            this.messageURL = template.getMessageURL();
             this.exceptionClassName = template.getExceptionClassName();
             this.exceptionMessage = template.getExceptionMessage();
             this.exceptionStackTrace = template.getExceptionStackTrace();
@@ -433,6 +435,30 @@ public class AuditLogRecord
 
 
     /**
+     * Return the link to further reading about the component or concept behind this message.  It comes from
+     * the message definition and gives the reader of the log somewhere to go for background on the situation
+     * that the record describes.
+     *
+     * @return url; null if the message definition does not supply one
+     */
+    public String getMessageURL()
+    {
+        return messageURL;
+    }
+
+
+    /**
+     * Set up the link to further reading about the component or concept behind this message.
+     *
+     * @param messageURL url; null if the message definition does not supply one
+     */
+    public void setMessageURL(String messageURL)
+    {
+        this.messageURL = messageURL;
+    }
+
+
+    /**
      * Return the name of any exception linked to the audit log record.
      *
      * @return the class name
@@ -522,6 +548,7 @@ public class AuditLogRecord
                 ", additionalInformation=" + additionalInformation +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", messageURL='" + messageURL + '\'' +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
                 ", exceptionMessage='" + exceptionMessage + '\'' +
                 ", exceptionStackTrace='" + exceptionStackTrace + '\'' +
@@ -563,6 +590,7 @@ public class AuditLogRecord
                 Objects.equals(additionalInformation, that.additionalInformation) &&
                 Objects.equals(systemAction, that.systemAction) &&
                 Objects.equals(userAction, that.userAction) &&
+                Objects.equals(messageURL, that.messageURL) &&
                 Objects.equals(exceptionClassName, that.exceptionClassName) &&
                 Objects.equals(exceptionMessage, that.exceptionMessage) &&
                 Objects.equals(exceptionStackTrace, that.exceptionStackTrace);
@@ -578,8 +606,8 @@ public class AuditLogRecord
     public int hashCode()
     {
         int result = Objects.hash(guid, timeStamp, originatorProperties, originatorComponent, actionDescription, threadId, threadName, requestId, severityCode, severity,
-                                  messageId, messageText, additionalInformation, systemAction, userAction, exceptionClassName, exceptionMessage,
-                                  exceptionStackTrace);
+                                  messageId, messageText, additionalInformation, systemAction, userAction, messageURL, exceptionClassName,
+                                  exceptionMessage, exceptionStackTrace);
         result = 31 * result + Arrays.hashCode(messageParameters);
         return result;
     }

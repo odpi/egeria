@@ -32,7 +32,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                  "Within this engine service are one or more survey action engines that analyze the " +
                                  "content of assets on demand and create annotation metadata. The configuration for the " +
                                 "survey action engines is retrieved from the metadata server and the survey action engines are initialized.",
-                                "Verify that the start up sequence goes on to initialize the configured survey action engines."),
+                                "Verify that the start up sequence goes on to initialize the configured survey action engines.",
+                                "https://egeria-project.org/services/omes/survey-action/overview/"),
 
     /**
      * OMES-SURVEY-ACTION-0012 - The Survey Action OMES cannot initialize a new instance of itself in server {0}; error message is {1}
@@ -41,7 +42,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                              AuditLogRecordSeverityLevel.ERROR,
                              "The Survey Action OMES cannot initialize a new instance of itself in server {0}; error message is {1}",
                              "The engine services detected an error during the start up of a specific engine host server instance.  Its survey action services are not available for the server.",
-                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.",
+                             "https://egeria-project.org/services/omes/survey-action/overview/"),
 
     /**
      * OMES-SURVEY-ACTION-0014 - The Survey Action OMES in server {0} is shutting down
@@ -50,7 +52,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.SHUTDOWN,
                          "The Survey Action OMES in server {0} is shutting down",
                          "The local administrator has requested shut down of this engine service.",
-                         "Verify that this server is no longer needed and the shutdown is expected."),
+                         "Verify that this server is no longer needed and the shutdown is expected.",
+                         "https://egeria-project.org/services/omes/survey-action/overview/"),
 
     /**
      * OMES-SURVEY-ACTION-0016 - The Survey Action OMES in server {0} has completed shutdown
@@ -59,7 +62,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                    AuditLogRecordSeverityLevel.SHUTDOWN,
                          "The Survey Action OMES in server {0} has completed shutdown",
                          "The local administrator has requested shut down of this engine service and the operation has completed.",
-                         "Verify that all configured survey action engines shut down successfully."),
+                         "Verify that all configured survey action engines shut down successfully.",
+                         "https://egeria-project.org/services/omes/survey-action/overview/"),
 
     /**
      * OMES-SURVEY-ACTION-0017 - The survey action service {0} is starting to analyze asset {1} with request type {2}
@@ -70,7 +74,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                    "The survey action service {0} is starting to analyze asset {1} with request type {2} in survey action engine {3} (guid={4});" +
                                        " the results will be stored in survey report {5}",
                                    "A new survey request is being processed.",
-                                   "Verify that the survey action service ran to completion."),
+                                   "Verify that the survey action service ran to completion.",
+                                   "https://egeria-project.org/services/omes/survey-action/overview/"),
 
     /**
      * OMES-SURVEY-ACTION-0018 - The survey action service {0} threw a {1} exception during the generation of survey report
@@ -81,7 +86,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                  "The survey action service {0} threw a {1} exception during the generation of survey report {2} for asset {3} " +
                                      "during request type {4} in survey action engine {5} (guid={6}). The error message was {7}",
                                  "A survey action service failed to complete the analysis of an asset.",
-                                 "Review the exception to determine the cause of the error."),
+                                 "Review the exception to determine the cause of the error.",
+                                 "https://egeria-project.org/services/omes/survey-action/overview/"),
 
     /**
      * OMES-SURVEY-ACTION-0019 - The survey action service {0} has completed the analysis of asset {1} with request type {2} in {3}
@@ -92,39 +98,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                    "The survey action service {0} has completed the analysis of asset {1} with request type {2} in {3} " +
                                        "milliseconds; the results are stored in survey report {4}",
                                    "A survey request has completed.",
-                                   "It is possible to query the result of the survey request through Egeria's Open Metadata REST APIs."),
-
-    /**
-     * OMES-SURVEY-ACTION-0020 - Survey Action OMES in server {0} cannot start any survey action engines
-     */
-    NO_SURVEY_ACTION_ENGINES_STARTED("OMES-SURVEY-ACTION-0020",
-                                     AuditLogRecordSeverityLevel.ERROR,
-                                     "Survey Action OMES in server {0} cannot start any survey action engines",
-                                     "The engine service is not able to run any survey requests.  It fails to start.",
-                                     "Add the configuration for at least one survey action engine to this engine service."),
-
-    /**
-     * OMES-SURVEY-ACTION-0021 - Survey action engine {0} cannot update the status for survey action service {1}.
-     * The exception was {2} with error message {3}
-     */
-    EXC_ON_ERROR_STATUS_UPDATE("OMES-SURVEY-ACTION-0021",
-                               AuditLogRecordSeverityLevel.EXCEPTION,
-                                 "Survey action engine {0} cannot update the status for survey action service {1}.  The exception was {2} with error message {3}",
-                                 "The server is not able to record the failed result for a survey request. The survey report status is not updated.",
-                                 "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the survey request."),
-
-    /**
-     * OMES-SURVEY-ACTION-0022 - Method {0} can not execute in the survey action engine {1} hosted by Survey Action OMES in server {2} because the associated " +
-     *                                 "survey action service properties are null
-     */
-    NULL_SURVEY_SERVICE( "OMES-SURVEY-ACTION-0022",
-                        AuditLogRecordSeverityLevel.ERROR,
-                        "Method {0} can not execute in the survey action engine {1} hosted by Survey Action OMES in server {2} because the associated " +
-                                "survey action service properties are null",
-                        "The survey request is not run and an error is returned to the caller.",
-                        "This may be an error in the survey action engine's logic or the Open Survey Framework (OSF) may have returned " +
-                                "invalid configuration.  Raise an issue to get help to fix it"),
-
+                                   "It is possible to query the result of the survey request through Egeria's Open Metadata REST APIs.",
+                                   "https://egeria-project.org/services/omes/survey-action/overview/"),
 
     /**
      * OMES-SURVEY-ACTION-0029 - The survey action service {0} linked to request type {1} can not be started.
@@ -144,7 +119,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                       "survey action service's implementation has been deployed so the Survey Action OMES can load it.  If all this is " +
                                       "true this it is likely to be a code error in the survey action service in which case, " +
                                       "raise an issue with the author of the survey action service to get it fixed.  Once the cause is resolved, " +
-                                      "retry the survey request."),
+                                      "retry the survey request.",
+                                      "https://egeria-project.org/services/omes/survey-action/overview/"),
 
     /**
      * OMES-SURVEY-ACTION-0030 - The survey action service {0} linked to request type {1} is processing asset {2} and ignoring the following asset action targets: {3}
@@ -153,7 +129,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                   AuditLogRecordSeverityLevel.INFO,
                                   "The survey action service {0} linked to request type {1} for engine action {2} is processing asset {3} and ignoring the following asset action targets: {4}",
                                   "There are multiple assets in the action targets.  The survey action service can only process one of them.  The other assets are ignored.",
-                                  "Create a new engine action for each of the ignored assets so that they each run in their own survey action service."),
+                                  "Create a new engine action for each of the ignored assets so that they each run in their own survey action service.",
+                                  "https://egeria-project.org/services/omes/survey-action/overview/"),
     ;
 
 
@@ -162,13 +139,11 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
 
 
     /**
-     * The constructor for SurveyActionAuditCode expects to be passed one of the enumeration rows defined in
-     * SurveyActionAuditCode above.   For example:
-     *     SurveyActionAuditCode   auditCode = SurveyActionAuditCode.SERVER_SHUTDOWN;
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique identifier for the message
      * @param severity - severity of the message
@@ -182,11 +157,37 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                            String                      systemAction,
                            String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for SurveyActionAuditCode expects to be passed one of the enumeration rows defined in
+     * SurveyActionAuditCode above.   For example:
+     *     SurveyActionAuditCode   auditCode = SurveyActionAuditCode.SERVER_SHUTDOWN;
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    SurveyActionAuditCode(String                      messageId,
+                           AuditLogRecordSeverityLevel severity,
+                           String                      message,
+                           String                      systemAction,
+                           String                      userAction,
+                           String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -202,7 +203,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -219,7 +221,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -239,6 +242,7 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                        ", logMessage='" + logMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

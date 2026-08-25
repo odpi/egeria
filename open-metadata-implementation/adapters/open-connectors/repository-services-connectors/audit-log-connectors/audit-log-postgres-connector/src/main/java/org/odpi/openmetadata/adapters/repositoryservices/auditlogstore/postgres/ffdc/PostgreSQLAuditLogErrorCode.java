@@ -26,32 +26,32 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum PostgreSQLAuditLogErrorCode implements ExceptionMessageSet
 {
     /**
-     * JDBC-AUDIT-LOG-400-001 - Audit log destination connector {0} has been configured without the URL to the database
-     */
-    NULL_URL(400, "JDBC-AUDIT-LOG-400-001",
-                     "Audit log destination connector {0} has been configured without the URL to the database",
-                     "The connector does not emit audit log events.",
-                     "The database connection URL is configured in the audit log destination connector's connection endpoint in the address property."),
-
-    /**
-     * JDBC-AUDIT-LOG-400-002 - Audit log destination connector {0} has been configured with either a null userId or password for connecting to Apache Atlas
-     */
-    NULL_USER(400, "JDBC-AUDIT-LOG-400-002",
-             "Audit log destination connector {0} has been configured with either a null userId or password for connecting to Apache Atlas",
-             "The connector is moved to FAILED status and will no longer be called to synchronize metadata.",
-             "Update the connection information for the connector from the server's configuration document."),
-
-    /**
      * JDBC-AUDIT-LOG-500-001 - The {0} audit log destination connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "JDBC-AUDIT-LOG-500-001",
                          "The {0} audit log destination connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot store audit log records.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/audit-log-destination-connector/"),
 
     ;
 
     private final ExceptionMessageDefinition messageDefinition;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique identifier for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    PostgreSQLAuditLogErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -67,14 +67,17 @@ public enum PostgreSQLAuditLogErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    PostgreSQLAuditLogErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    PostgreSQLAuditLogErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
                                                                 errorMessageId,
                                                                 errorMessage,
                                                                 systemAction,
-                                                                userAction);
+                                                                userAction,
+                                                                url);
     }
 
 

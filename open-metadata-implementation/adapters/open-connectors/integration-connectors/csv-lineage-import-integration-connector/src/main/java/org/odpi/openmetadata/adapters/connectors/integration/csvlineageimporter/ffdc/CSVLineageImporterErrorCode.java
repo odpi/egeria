@@ -25,47 +25,14 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum CSVLineageImporterErrorCode implements ExceptionMessageSet
 {
-    FILES_LOCATION_NOT_SPECIFIED(400, "CSV-LINEAGE-IMPORTER-400-001",
-            "The name of the directory (folder) identifying where the files to be catalogued are located is null in the Connection object {0}",
-            "The connector cannot monitor the directory for files because the name of the directory is not passed in the Connection object.",
-            "The name of the directory should be set up in the address property of the connection's Endpoint object.  Correct this in the configuration " +
-                    "for this connector in the Files Integration integration service configuration which is part of the configuration of the " +
-                    "Integration Daemon OMAG server where this connector is running."),
-    FILES_LOCATION_NOT_DIRECTORY(400, "CSV-LINEAGE-IMPORTER-400-002",
-            "The file location {0} is not a directory",
-            "The connector cannot work with this location since it is not a directory (folder).",
-            "Ensure a valid directory name is passed in the address property in the Endpoint object of the Connection object.  " +
-                    "This connection object is part of he Files Integration integration service configuration which is part of the configuration " +
-                    "of the Integration Daemon OMAG server where this connector is running."),
-    FILES_LOCATION_NOT_READABLE(400, "CSV-LINEAGE-IMPORTER-400-003",
-            "The directory (folder) {0} is not readable",
-            "The connector cannot open the file because it does not have sufficient permission.",
-            "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
     UNEXPECTED_EXC_RETRIEVING_FOLDER(400,"CSV-LINEAGE-IMPORTER-400-004",
             "An unexpected {0} exception was returned to the {1} integration connector by the {2} " +
                     "method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}",
             "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
             "Use the message in the nested exception to determine the root cause of the error. Once this is " +
-                    "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector."),
-    UNEXPECTED_EXC_DATA_FILE_UPDATE(400,"CSV-LINEAGE-IMPORTER-400-005",
-            "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
-                    "DataFile in the metadata repositories for file {2}.  The error message was {3}",
-            "The exception is logged and the integration connector continues to synchronize metadata.  " +
-                    "This file is not catalogued at this time but may succeed later.",
-            "Use the message in the unexpected exception to determine the root cause of the error and fix it."),
-    FILES_LOCATION_NOT_FOUND(404, "CSV-LINEAGE-IMPORTER-404-001",
-             "The directory named {0} does not exist",
-             "The connector cannot locate the file it has been asked to work with.",
-             "Ensure that the name of the file in the address property of the connection's Endpoint object matches the location of the file " +
-                           "that the connector is to access."),
-    UNEXPECTED_SECURITY_EXCEPTION(500, "CSV-LINEAGE-IMPORTER-500-001",
-             "The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}",
-             "The connector cannot access the file.",
-             "Use details from the error message to determine the cause of the error and retry the request once it is resolved."),
-    UNEXPECTED_IO_EXCEPTION(500, "CSV-LINEAGE-IMPORTER-500-002",
-             "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
-             "The connector cannot process the file.",
-             "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                    "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector.",
+                    "https://egeria-project.org/features/lineage-management/overview/"),
+
     ;
 
 
@@ -74,6 +41,22 @@ public enum CSVLineageImporterErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    CSVLineageImporterErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -84,14 +67,17 @@ public enum CSVLineageImporterErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    CSVLineageImporterErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    CSVLineageImporterErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -107,7 +93,8 @@ public enum CSVLineageImporterErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -124,7 +111,8 @@ public enum CSVLineageImporterErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -146,6 +134,7 @@ public enum CSVLineageImporterErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

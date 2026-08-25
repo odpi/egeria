@@ -28,16 +28,8 @@ public enum JDBCAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The JDBC resource connector for database {0} received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot process the current request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
-
-    /**
-     * JDBC-RESOURCE-CONNECTOR-0002 - The JDBC resource connector has connected to database {0}
-     */
-    CONNECTOR_CONNECTED_TO_DATABASE("JDBC-RESOURCE-CONNECTOR-0002",
-                                    AuditLogRecordSeverityLevel.INFO,
-                                    "The JDBC resource connector has connected to database {0} for thread {2} ({1})",
-                                    "The connector is designed provide a standard interface to a relational database that supports Java Database Connectivity (JDBC).  This message confirms that the connector has successfully connected to the database.  The number of times that this message is emitted by a connector indicates how many database connections it is using.",
-                                    "No specific action is required.  This message is to confirm that the configuration of the connector is sufficient to connect to the database."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     /**
      * JDBC-RESOURCE-CONNECTOR-0003 - The JDBC resource connector for database {0} has received {1} results from query {2}
@@ -46,11 +38,9 @@ public enum JDBCAuditCode implements AuditLogMessageSet
                                        AuditLogRecordSeverityLevel.INFO,
                                        "The JDBC resource connector for database {0} has received {1} results from query {2}",
                                     "The connector has detected that the row count on the SQL requests is incorrect.",
-                                    "Check the code where this error occurred to determine if the connector code is wrong - or the caller.  Correct whichever has the problem."),
+                                    "Check the code where this error occurred to determine if the connector code is wrong - or the caller.  Correct whichever has the problem.",
+                                    "https://egeria-project.org/concepts/digital-resource-connector/"),
 
-    /**
-     * JDBC-RESOURCE-CONNECTOR-0004 - The JDBC resource connector for database {0} has issued a rollback after receiving SQL Exception with message {1}
-     */
     ROllBACK_AFTER_EXCEPTION("JDBC-RESOURCE-CONNECTOR-0004",
                            AuditLogRecordSeverityLevel.INFO,
                            "The JDBC resource connector for database {0} has issued a rollback after receiving {1} error with message {2}",
@@ -64,7 +54,8 @@ public enum JDBCAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.INFO,
                        "The JDBC resource connector for database {0} is closing all {1} connection(s) to database and is shutting down",
                        "The connector has been requested to disconnect from the database and is ensuring all connections are closed.  This message is output by each data source that was created by the connector.  Therefore the number of times that this message is emitted indicates the number of data sources were created by the connector.",
-                       "No action is required unless there are errors that follow indicating that there were problems shutting down."),
+                       "No action is required unless there are errors that follow indicating that there were problems shutting down.",
+                       "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     /**
      * JDBC-RESOURCE-CONNECTOR-0010 - The JDBC resource connector for database {0} has enabled TCP keepalive using driver property {1}
@@ -73,10 +64,8 @@ public enum JDBCAuditCode implements AuditLogMessageSet
                                  AuditLogRecordSeverityLevel.INFO,
                                  "The JDBC resource connector for database {0} has enabled TCP keepalive using driver property {1}",
                                  "The connector has switched on socket level keepalive for the connections in its pool.  This stops the pool from filling up with connections whose network peer has disappeared silently, which would otherwise drain the pool to zero without it recovering.",
-                                 "No action is required.  If the database is reached through a firewall or load balancer that drops idle connections, check that its idle timeout is longer than the keepalive interval configured in the operating system."),
-
-
-
+                                 "No action is required.  If the database is reached through a firewall or load balancer that drops idle connections, check that its idle timeout is longer than the keepalive interval configured in the operating system.",
+                                 "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     ;
 
@@ -85,6 +74,26 @@ public enum JDBCAuditCode implements AuditLogMessageSet
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    JDBCAuditCode(String                      messageId,
+                  AuditLogRecordSeverityLevel severity,
+                  String                      message,
+                  String                      systemAction,
+                  String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -100,18 +109,22 @@ public enum JDBCAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     JDBCAuditCode(String                      messageId,
                   AuditLogRecordSeverityLevel severity,
                   String                      message,
                   String                      systemAction,
-                  String                      userAction)
+                  String                      userAction,
+                  String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -127,7 +140,8 @@ public enum JDBCAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -144,7 +158,8 @@ public enum JDBCAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -164,6 +179,7 @@ public enum JDBCAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

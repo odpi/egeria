@@ -353,6 +353,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                    messageParameters,
                                    logRecord.getSystemAction(),
                                    logRecord.getUserAction(),
+                                   logRecord.getMessageURL(),
                                    logRecord.getExceptionClassName(),
                                    logRecord.getExceptionMessage(),
                                    logRecord.getExceptionStackTrace(),
@@ -598,6 +599,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                 String              messageParameters,
                                 String              systemAction,
                                 String              userAction,
+                                String              messageURL,
                                 String              exceptionClassName,
                                 String              exceptionMessage,
                                 String              exceptionStacktrace,
@@ -622,6 +624,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                                                                          messageParameters,
                                                                                          systemAction,
                                                                                          userAction,
+                                                                                         messageURL,
                                                                                          exceptionClassName,
                                                                                          exceptionMessage,
                                                                                          exceptionStacktrace,
@@ -654,6 +657,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
      * @param messageParameters   message parameters
      * @param systemAction        system action
      * @param userAction          user action
+     * @param messageURL          link to further reading about the message
      * @param exceptionClassName  class of exception
      * @param exceptionMessage    message from exception
      * @param exceptionStacktrace stack trace if there is an exception
@@ -675,6 +679,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                                                String messageParameters,
                                                                String systemAction,
                                                                String userAction,
+                                                               String messageURL,
                                                                String exceptionClassName,
                                                                String exceptionMessage,
                                                                String exceptionStacktrace,
@@ -698,6 +703,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
         openMetadataRecord.put(AuditLogColumn.MESSAGE_PARAMETERS.getColumnName(), new JDBCDataValue(messageParameters, AuditLogColumn.MESSAGE_PARAMETERS.getColumnType().getJdbcType()));
         openMetadataRecord.put(AuditLogColumn.SYSTEM_ACTION.getColumnName(), new JDBCDataValue(systemAction, AuditLogColumn.SYSTEM_ACTION.getColumnType().getJdbcType()));
         openMetadataRecord.put(AuditLogColumn.USER_ACTION.getColumnName(), new JDBCDataValue(userAction, AuditLogColumn.USER_ACTION.getColumnType().getJdbcType()));
+        openMetadataRecord.put(AuditLogColumn.MESSAGE_URL.getColumnName(), new JDBCDataValue(messageURL, AuditLogColumn.MESSAGE_URL.getColumnType().getJdbcType()));
         openMetadataRecord.put(AuditLogColumn.EXCEPTION_CLASS_NAME.getColumnName(), new JDBCDataValue(exceptionClassName, AuditLogColumn.EXCEPTION_CLASS_NAME.getColumnType().getJdbcType()));
         openMetadataRecord.put(AuditLogColumn.EXCEPTION_MESSAGE.getColumnName(), new JDBCDataValue(exceptionMessage, AuditLogColumn.EXCEPTION_MESSAGE.getColumnType().getJdbcType()));
         openMetadataRecord.put(AuditLogColumn.EXCEPTION_STACK_TRACE.getColumnName(), new JDBCDataValue(exceptionStacktrace, AuditLogColumn.EXCEPTION_STACK_TRACE.getColumnType().getJdbcType()));

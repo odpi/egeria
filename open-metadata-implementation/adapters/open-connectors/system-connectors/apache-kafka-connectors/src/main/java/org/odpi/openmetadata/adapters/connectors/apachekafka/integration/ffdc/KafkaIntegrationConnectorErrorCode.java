@@ -32,16 +32,8 @@ public enum KafkaIntegrationConnectorErrorCode implements ExceptionMessageSet
     MISSING_EVENT_BROKER(400, "APACHE-KAFKA-INTEGRATION-CONNECTOR-400-001",
                          "The {0} integration connector cannot proceed processing catalog target {0} ({1}) because it has no event broker capability attached.",
                          "The connector cannot catalog one or more topics because it has no event broker to connect it to.",
-                         "Add an event broker to the server definition."),
-
-
-    /**
-     * APACHE-KAFKA-INTEGRATION-CONNECTOR-500-001 - The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {2}
-     */
-    UNEXPECTED_EXCEPTION(500, "APACHE-KAFKA-INTEGRATION-CONNECTOR-500-001",
-             "The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {2}",
-             "The connector cannot catalog one or more topics.",
-             "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Add an event broker to the server definition.",
+                         "https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/"),
 
     ;
 
@@ -51,6 +43,22 @@ public enum KafkaIntegrationConnectorErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    KafkaIntegrationConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -61,14 +69,17 @@ public enum KafkaIntegrationConnectorErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    KafkaIntegrationConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    KafkaIntegrationConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -84,7 +95,8 @@ public enum KafkaIntegrationConnectorErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -101,7 +113,8 @@ public enum KafkaIntegrationConnectorErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -123,6 +136,7 @@ public enum KafkaIntegrationConnectorErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

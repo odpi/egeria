@@ -33,26 +33,8 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
                       "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                   "exception stack trace to determine why the connector is not able to access the event broker and resolve that issue.  " +
                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
-                                  "connector in the integration daemon once the original cause of the error has been corrected."),
-
-    /**
-     * APACHE-ATLAS-REST-CONNECTOR-0008 - The {0} Apache Atlas REST Connector received an unexpected exception {1} during method {2}; the error message was: {3}
-     */
-    UNEXPECTED_EXCEPTION("APACHE-ATLAS-REST-CONNECTOR-0008",
-                         AuditLogRecordSeverityLevel.EXCEPTION,
-                         "The {0} Apache Atlas REST Connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector cannot catalog one or more metadata elements.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
-
-    /**
-     * APACHE-ATLAS-REST-CONNECTOR-0009 - The {0} Apache Atlas REST Connector has stopped its monitoring of Apache Atlas at {1} and is shutting down
-     */
-    CONNECTOR_STOPPING("APACHE-ATLAS-REST-CONNECTOR-0009",
-                       AuditLogRecordSeverityLevel.INFO,
-                       "The {0} Apache Atlas REST Connector has stopped its monitoring of Apache Atlas at {1} and is shutting down",
-                       "The connector is disconnecting.",
-                       "No action is required unless there are errors that follow indicating that there were problems shutting down."),
-
+                                  "connector in the integration daemon once the original cause of the error has been corrected.",
+                                  "https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/"),
 
     /**
      * APACHE-ATLAS-REST-CONNECTOR-0031 - A client-side exception was received from API call {0} to server {1} at {2}.  The error message was {3}
@@ -61,7 +43,8 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
                                 AuditLogRecordSeverityLevel.EXCEPTION,
                                 "A client-side exception was received from API call {0} to server {1} at {2}.  The error message was {3}",
                                 "The server has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
-                                "Look for errors in the local server's console to understand and correct the source of the error."),
+                                "Look for errors in the local server's console to understand and correct the source of the error.",
+                                "https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/"),
     ;
 
     private final String                      logMessageId;
@@ -69,6 +52,26 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    ApacheAtlasAuditCode(String                      messageId,
+                         AuditLogRecordSeverityLevel severity,
+                         String                      message,
+                         String                      systemAction,
+                         String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -84,18 +87,22 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     ApacheAtlasAuditCode(String                      messageId,
                          AuditLogRecordSeverityLevel severity,
                          String                      message,
                          String                      systemAction,
-                         String                      userAction)
+                         String                      userAction,
+                         String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -111,7 +118,8 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -128,7 +136,8 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -148,6 +157,7 @@ public enum ApacheAtlasAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

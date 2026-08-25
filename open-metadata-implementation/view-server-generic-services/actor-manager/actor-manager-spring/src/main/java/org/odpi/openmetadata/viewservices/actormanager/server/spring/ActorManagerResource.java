@@ -357,7 +357,7 @@ public class ActorManagerResource
     @Operation(summary="createContributionRecord",
             description="Creates a new contributionRecord for an element and returns the unique identifier for it.",
             externalDocs=@ExternalDocumentation(description="Contribution Records",
-                    url="https://egeria-project.org/concepts/contribution-record/"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createContributionRecord(@PathVariable String            serverName,
                                                  @PathVariable String                        urlMarker,
@@ -387,7 +387,7 @@ public class ActorManagerResource
     @Operation(summary="updateContributionRecord",
             description="Update an existing contribution record.",
             externalDocs=@ExternalDocumentation(description="Contribution Records",
-                    url="https://egeria-project.org/concepts/contribution-record/"))
+                    url="https://egeria-project.org/concepts/"))
 
 
     public BooleanResponse updateContributionRecord(@PathVariable String                         serverName,
@@ -419,7 +419,7 @@ public class ActorManagerResource
     @Operation(summary="deleteContributionRecord",
             description="Removes a contribution record from the repository.",
             externalDocs=@ExternalDocumentation(description="Contribution Records",
-                    url="https://egeria-project.org/concepts/contribution-record/"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse   deleteContributionRecord(@PathVariable String          serverName,
                                                    @PathVariable String                        urlMarker,
@@ -449,7 +449,7 @@ public class ActorManagerResource
     @Operation(summary="findContributionRecords",
             description="Retrieve the list of contribution record metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Contribution Records",
-                    url="https://egeria-project.org/concepts/contribution-record/"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse findContributionRecords(@PathVariable String                  serverName,
                                                                     @PathVariable String                        urlMarker,
@@ -479,7 +479,7 @@ public class ActorManagerResource
     @Operation(summary="getContributionRecordsByName",
             description="Retrieve the list of contribution record metadata elements with a matching qualified or display name. There are no wildcards supported on this request.",
             externalDocs=@ExternalDocumentation(description="Contribution Records",
-                    url="https://egeria-project.org/concepts/contribution-record/"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getContributionRecordsByName(@PathVariable String          serverName,
                                                                          @PathVariable String            urlMarker,
@@ -508,7 +508,7 @@ public class ActorManagerResource
     @Operation(summary="getContributionRecordByGUID",
             description="Retrieve the contribution record metadata element with the supplied unique identifier.",
             externalDocs=@ExternalDocumentation(description="Contribution Records",
-                    url="https://egeria-project.org/concepts/contribution-record/"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementResponse getContributionRecordByGUID(@PathVariable String                        serverName,
                                                                        @PathVariable String                        urlMarker,
@@ -1944,7 +1944,7 @@ public class ActorManagerResource
     @Operation(summary="createSkill",
             description="Create a skill.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/skill"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createSkill(@PathVariable String                               serverName,
                                        @PathVariable String             urlMarker,
@@ -1974,7 +1974,7 @@ public class ActorManagerResource
     @Operation(summary="createSkillFromTemplate",
             description="Create a new metadata element to represent a skill using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/skill"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createSkillFromTemplate(@PathVariable
                                                    String              serverName,
@@ -2005,7 +2005,7 @@ public class ActorManagerResource
     @Operation(summary="updateSkill",
             description="Update the properties of a skill.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/skill"))
+                    url="https://egeria-project.org/concepts/"))
 
     public BooleanResponse updateSkill(@PathVariable String                                  serverName,
                                           @PathVariable String             urlMarker,
@@ -2036,7 +2036,7 @@ public class ActorManagerResource
     @Operation(summary="deleteSkill",
             description="Delete a skill.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/skill"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse deleteSkill(@PathVariable
                                        String                    serverName,
@@ -2068,7 +2068,7 @@ public class ActorManagerResource
     @Operation(summary="getSkillsByName",
             description="Returns the list of skills with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/skill"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getSkillsByName(@PathVariable
                                                                String            serverName,
@@ -2098,7 +2098,7 @@ public class ActorManagerResource
     @Operation(summary="findSkills",
             description="Retrieve the list of skill metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/skill"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse findSkills(@PathVariable
                                                           String                  serverName,
@@ -2129,7 +2129,7 @@ public class ActorManagerResource
     @Operation(summary="getSkillByGUID",
             description="Return the properties of a specific skill.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/skill"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementResponse getSkillByGUID(@PathVariable
                                                              String             serverName,

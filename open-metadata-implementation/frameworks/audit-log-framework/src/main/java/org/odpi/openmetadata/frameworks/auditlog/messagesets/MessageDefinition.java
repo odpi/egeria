@@ -27,12 +27,14 @@ public class MessageDefinition
     private final String messageTemplate;
     private final String systemAction;
     private final String userAction;
+    private final String url;
 
     private String[] params;
 
     /**
      * Constructor to save all the fixed values of a message.  This is typically populated
-     * from an Enum message set.
+     * from an Enum message set.  Use the constructor that takes a url if there is a page
+     * that explains this message's situation in more detail.
      *
      * @param messageId unique id of the message type.
      * @param messageTemplate template for the message text with placeholders for parameters.
@@ -41,10 +43,28 @@ public class MessageDefinition
      */
     public MessageDefinition(String messageId, String messageTemplate, String systemAction, String userAction)
     {
+        this(messageId, messageTemplate, systemAction, userAction, null);
+    }
+
+
+    /**
+     * Constructor to save all the fixed values of a message, including a link to further reading.
+     * This is typically populated from an Enum message set.
+     *
+     * @param messageId unique id of the message type.
+     * @param messageTemplate template for the message text with placeholders for parameters.
+     * @param systemAction description of the actions of the system when the situation arose.
+     * @param userAction instructions on what to do next.
+     * @param url link to a page that describes the component or concept behind this message -
+     *            null if there is no suitable page.
+     */
+    public MessageDefinition(String messageId, String messageTemplate, String systemAction, String userAction, String url)
+    {
         this.messageId       = messageId;
         this.messageTemplate = messageTemplate;
         this.systemAction    = systemAction;
         this.userAction      = userAction;
+        this.url             = url;
     }
 
 
@@ -104,6 +124,18 @@ public class MessageDefinition
 
 
     /**
+     * Returns the link to further reading about the component or concept behind this message.  This gives
+     * the reader of a log record or an error response somewhere to go for background on the situation.
+     *
+     * @return url String - null if the message has no suitable page
+     */
+    public String getURL()
+    {
+        return url;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -116,6 +148,7 @@ public class MessageDefinition
                        ", messageTemplate='" + messageTemplate + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        ", params=" + Arrays.toString(params) +
                        '}';
     }

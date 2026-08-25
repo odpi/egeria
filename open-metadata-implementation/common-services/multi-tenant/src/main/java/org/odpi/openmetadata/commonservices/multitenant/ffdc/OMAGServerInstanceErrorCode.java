@@ -28,21 +28,13 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
 {
     /**
-     * OMAG-MULTI-TENANT-400-001 - The OMAG server {0} has been configured with a bad connection to its security connector.  Error message is {1}. Connection is {2}
-     */
-    BAD_SERVER_SECURITY_CONNECTION(400, "OMAG-MULTI-TENANT-400-001",
-            "The OMAG server {0} has been configured with a bad connection to its security connector.  Error message is {1}. Connection is {2}",
-            "The system cannot validate the users issuing requests to this server.",
-            "Review the error message to determine the cause of the problem."),
-
-
-    /**
      * OMAG-MULTI-TENANT-400-002 - The OMAG server {0} has been requested to shut down but the following services are still running: {1}
      */
     SERVICES_NOT_SHUTDOWN(400, "OMAG-MULTI-TENANT-400-002",
             "The OMAG server {0} has been requested to shutdown but the following services are still running: {1}",
             "The system cannot shutdown the server correctly.",
-            "Review other error messages to determine the cause of the problem.  This is likely to be a logic error in the services listed in the message"),
+            "Review other error messages to determine the cause of the problem.  This is likely to be a logic error in the services listed in the message",
+            "https://egeria-project.org/services/multi-tenant/"),
 
     /**
      * OMAG-MULTI-TENANT-400-003 - Method {0} called on behalf of the {1} service cannot create a client-side open metadata topic connection because the topic name is not configured in the configuration for this service.
@@ -51,7 +43,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                          "Method {0} called on behalf of the {1} service cannot create a client-side open " +
                                  "metadata topic connection because the topic name is not configured in the configuration for this service.",
                          "This is a configuration error and an exception is sent to the requester.",
-                         "Correct the configuration of the access service to include the name of the topic."),
+                         "Correct the configuration of the access service to include the name of the topic.",
+                         "https://egeria-project.org/services/multi-tenant/"),
 
     /**
      * OMAG-MULTI-TENANT-400-004 - The connector provider class name {0} does not create a connector of class {1} which is required for the {2}
@@ -59,7 +52,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
     NOT_CORRECT_CONNECTOR_PROVIDER(400,"OMAG-MULTI-TENANT-400-004",
                                    "The connector provider class name {0} does not create a connector of class {1} which is required for the {2}",
                                    "An invalid parameter exception is returned to the caller.",
-                                   "Either change the connector or the hosting environment because the current combination is not compatible."),
+                                   "Either change the connector or the hosting environment because the current combination is not compatible.",
+                                   "https://egeria-project.org/services/multi-tenant/"),
 
     /**
      * OMAG-MULTI-TENANT-400-005 - The URL marker {0} is not recognized
@@ -67,7 +61,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
     INVALID_URL_MARKER(400, "OMAG-MULTI-TENANT-400-005",
                        "The URL marker {0} is not recognized",
                        "The system cannot continue with the request because the supplied URL marker does not match the registered services.",
-                       "Update the parameters passed on the request to either remove the URL marker, or set it to a URL marker that is recognized by the OMAG Server Platform."),
+                       "Update the parameters passed on the request to either remove the URL marker, or set it to a URL marker that is recognized by the OMAG Server Platform.",
+                       "https://egeria-project.org/services/multi-tenant/"),
 
     /**
      * OMAG-MULTI-TENANT-400-006 - Generic view service {0} is not configured for this server and can only be called with the URL marker of a configured view service; {1} is not configured
@@ -75,7 +70,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
     UNCONFIGURED_URL_MARKER(400, "OMAG-MULTI-TENANT-400-006",
                        "Generic view service {0} is not configured for this server and can only be called with the URL marker of a configured view service; {1} is not configured",
                        "The system cannot continue with the request because the supplied URL marker does not match the configured view services.  This generic service is running only as a support service for other, configured services.",
-                       "Update the parameters passed on the request to use a URL Marker for a configured view service, or add this view service to the configuration document for this server."),
+                       "Update the parameters passed on the request to use a URL Marker for a configured view service, or add this view service to the configuration document for this server.",
+                       "https://egeria-project.org/services/multi-tenant/"),
 
     /**
      * OMAG-MULTI-TENANT-404-001 - The OMAG Server {0} is not available to service a request from user {1}
@@ -84,7 +80,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                          "The OMAG Server {0} is not available to service a request from user {1}",
                          "The system cannot process the request because the server is not running on the called platform.",
                          "Verify that the correct server is being called on the correct platform and that this server is running. " +
-                                 "Retry the request when the server is available."),
+                                 "Retry the request when the server is available.",
+                                 "https://egeria-project.org/services/multi-tenant/"),
 
     /**
      * OMAG-MULTI-TENANT-404-002 - The {0} service is not available on OMAG Server {1} to handle a request from user {2}
@@ -93,7 +90,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
             "The {0} service is not available on OMAG Server {1} to handle a request from user {2}",
             "The system cannot process the request because the service is not available.",
             "Verify that the correct server is being called on the correct platform and that the requested service is configured to run there.  " +
-                                  "Once the correct environment is in place, retry the request."),
+                                  "Once the correct environment is in place, retry the request.",
+                                  "https://egeria-project.org/services/multi-tenant/"),
 
     /**
      * OMAG-MULTI-TENANT-404-003 - The server name is not available for the {0} operation
@@ -102,7 +100,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
             "The server name is not available for the {0} operation",
             "The system cannot return the server name because it is not available.",
             "Check that the server where the access service is running initialized correctly.  " +
-                            "Correct any errors discovered and retry the request when the open metadata services are available."),
+                            "Correct any errors discovered and retry the request when the open metadata services are available.",
+                            "https://egeria-project.org/services/multi-tenant/"),
 
     /**
      * OMAG-MULTI-TENANT-404-004 - The open metadata repository services are not initialized for the {0} operation
@@ -111,7 +110,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
             "The open metadata repository services are not initialized for the {0} operation",
             "The system cannot connect to the open metadata repository services because they are not running in this server.",
             "Check that the server where the called service is running initialized correctly.  " +
-                    "Correct any errors discovered and retry the request when the open metadata services are available."),
+                    "Correct any errors discovered and retry the request when the open metadata services are available.",
+                    "https://egeria-project.org/services/multi-tenant/"),
 
     /**
      * OMAG-MULTI-TENANT-404-005 - The open metadata repository services are not available for the {0} operation
@@ -120,7 +120,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
             "The open metadata repository services are not available for the {0} operation",
             "The system cannot connect to the open metadata repository services because they are not in the correct state to be called.",
             "Check that the server where the called service is running initialized correctly and is not in the process of shutting down.  " +
-                    "Correct any errors discovered and retry the request when the open metadata repository services are available."),
+                    "Correct any errors discovered and retry the request when the open metadata repository services are available.",
+                    "https://egeria-project.org/services/multi-tenant/"),
 
     /**
      * OMAG-MULTI-TENANT-500-001 - An unsupported bean class named {0} was passed to the OMAG Server Platform by the {1} request for
@@ -130,8 +131,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                        "An unsupported bean class named {0} was passed to the OMAG Server Platform by the {1} request for open metadata view service {2} on " +
                                "server {3}; error message was: {4}",
                        "The system cannot process the request because it is not able to instantiate the bean.",
-                       "Correct the code that initializes the converter during server start up."),
-
+                       "Correct the code that initializes the converter during server start up.",
+                       "https://egeria-project.org/services/multi-tenant/"),
 
     /**
      * OMAG-MULTI-TENANT-500-003 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connection because the connector provider is incorrect.  The error message was {3}
@@ -140,8 +141,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                                  "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open " +
                                          "metadata topic connection because the connector provider is incorrect.  The error message was {3}",
                                  "This is an internal error.  The access service is not using a valid connector provider.",
-                                 "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
-
+                                 "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve.",
+                                 "https://egeria-project.org/services/multi-tenant/"),
 
     ;
 
@@ -150,6 +151,22 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    OMAGServerInstanceErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -160,14 +177,17 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    OMAGServerInstanceErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OMAGServerInstanceErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -183,7 +203,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -200,7 +221,8 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -222,6 +244,7 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

@@ -104,9 +104,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0040_SOFTWARE_SERVERS             = "https://egeria-project.org/types/0/0040-Software-Servers/";
 
     /**
-     * <a href="https://egeria-project.org/types/0/0041-Server-Purpose/">...</a>
+     * <a href="https://egeria-project.org/types/0/">...</a>
      */
-    public static final String MODEL_0041_SERVER_PURPOSES              = "https://egeria-project.org/types/0/0041-Server-Purpose/";
+    public static final String MODEL_0041_SERVER_PURPOSES              = "https://egeria-project.org/types/0/";
 
     /**
      * <a href="https://egeria-project.org/types/0/0042-Software-Capabilities/">...</a>
@@ -174,14 +174,14 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0117_IT_PROFILES                  = "https://egeria-project.org/types/1/0117-IT-Profiles/";
 
     /**
-     * <a href="https://egeria-project.org/types/1/0118-Actor_Roles/">...</a>
+     * <a href="https://egeria-project.org/types/1/0118-Actor-Roles/">...</a>
      */
     public static final String MODEL_0118_ACTOR_ROLES                       = "https://egeria-project.org/types/1/0118-Actor-Roles/";
 
     /**
-     * <a href="https://egeria-project.org/types/1/0119-Team-Roles/">...</a>
+     * <a href="https://egeria-project.org/types/1/">...</a>
      */
-    public static final String MODEL_0119_TEAM_ROLES                        = "https://egeria-project.org/types/1/0119-Team-Roles/";
+    public static final String MODEL_0119_TEAM_ROLES                        = "https://egeria-project.org/types/1/";
 
     /**
      * <a href="https://egeria-project.org/types/1/0120-Assignment-Scopes/">...</a>
@@ -199,7 +199,7 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0130_PROJECTS                     = "https://egeria-project.org/types/1/0130-Projects/";
 
     /**
-     * <a href="https://egeria-project.org/types/1/0137-Actions/">...</a>
+     * <a href="https://egeria-project.org/types/0/0013-Actions/">...</a>
      */
     public static final String MODEL_0135_ACTIONS_FOR_PEOPLE = "https://egeria-project.org/types/1/0135-Actions-For-People/";
 
@@ -414,9 +414,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0420_GOVERNANCE_CONTROLS          = "https://egeria-project.org/types/4/0420-Governance-Controls/";
 
     /**
-     * <a href="https://egeria-project.org/types/4/0421-Governance-Classification-Levels/">...</a>
+     * <a href="https://egeria-project.org/types/4/">...</a>
      */
-    public static final String MODEL_0421_GOVERNANCE_CLASSIFICATION    = "https://egeria-project.org/types/4/0421-Governance-Classification-Levels/";
+    public static final String MODEL_0421_GOVERNANCE_CLASSIFICATION    = "https://egeria-project.org/types/4/";
 
     /**
      * <a href="https://egeria-project.org/types/4/0422-Governed-Data-Classifications/">...</a>
@@ -619,7 +619,7 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0537_DISPLAY_SCHEMAS              = "https://egeria-project.org/types/5/0537-Display-Schemas/";
 
     /**
-     * <a href="https://egeria-project.org/types/5/0540-Data-Classes/">...</a>
+     * <a href="https://egeria-project.org/concepts/data-class/">...</a>
      */
     public static final String MODEL_0540_DATA_VALUE_SPECIFICATION = "https://egeria-project.org/types/5/0540-Data-Value-Specifications/";
 
@@ -639,7 +639,7 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0550_INSTANCE_METADATA            = "https://egeria-project.org/types/5/0550-Instance-Metadata/";
 
     /**
-     * <a href="https://egeria-project.org/types/5/0565-Design-Model-Elements/">...</a>
+     * <a href="https://egeria-project.org/types/5/0565-Design-Models/">...</a>
      */
     public static final String MODEL_0565_DESIGN_MODELS = "https://egeria-project.org/types/5/0565-Design-Models/";
 
@@ -762,7 +762,7 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0712_DIGITAL_SUBSCRIPTION = "https://egeria-project.org/types/7/0712-Digital-Subscription/";
 
     /**
-     * <a href="https://egeria-project.org/types/7/0715-Digital-Product-Management/">...</a>
+     * <a href="https://egeria-project.org/types/7/">...</a>
      */
     public static final String MODEL_0715_DIGITAL_BUSINESS = "https://egeria-project.org/types/7/0715-Digital-Business/";
 

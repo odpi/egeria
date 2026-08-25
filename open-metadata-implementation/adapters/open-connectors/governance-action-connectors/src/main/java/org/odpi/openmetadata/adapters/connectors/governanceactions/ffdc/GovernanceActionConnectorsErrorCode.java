@@ -34,7 +34,8 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
                         "The provisioning governance action service connector is designed to manage files on request.  " +
                                 "It cannot operate without the name of the source file and so it terminates with a FAILED completion status.",
                         "The source file is passed to the governance action service through the request parameters or via the TargetForAction " +
-                                "relationship.  Correct the information passed to the governance service and rerun the request"),
+                                "relationship.  Correct the information passed to the governance service and rerun the request",
+                                "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * A FileFolder element with a path name of {0} is not found in the open metadata ecosystem
@@ -42,7 +43,8 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
     FOLDER_ELEMENT_NOT_FOUND(404, "GOVERNANCE-ACTION-CONNECTORS-404-002",
                              "A FileFolder element with a path name of {0} is not found in the open metadata ecosystem",
                              "The governance action service is not able to proceed until the element has been created.",
-                             "The path name of the folder is passed either in the folderName configuration property; folderName request parameters or folderTarget action target."),
+                             "The path name of the folder is passed either in the folderName configuration property; folderName request parameters or folderTarget action target.",
+                             "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2}
@@ -51,7 +53,8 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
                                 "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2}",
                                 "The governance action throws a GovernanceServiceException in the hope that the .",
                                 "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
-                                        "and follow its instructions."),
+                                        "and follow its instructions.",
+                                        "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}
@@ -59,7 +62,8 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "GOVERNANCE-ACTION-CONNECTORS-500-004",
                                   "The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}",
                                   "The governance action returns an exception to the Governance Action Engine.",
-                                  "Use details from the error message to determine the cause of the error and retry the service call once it is resolved."),
+                                  "Use details from the error message to determine the cause of the error and retry the service call once it is resolved.",
+                                  "https://egeria-project.org/concepts/governance-action-service/"),
     ;
 
 
@@ -68,6 +72,22 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    GovernanceActionConnectorsErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -78,14 +98,17 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    GovernanceActionConnectorsErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    GovernanceActionConnectorsErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -101,7 +124,8 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -118,7 +142,8 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -140,6 +165,7 @@ public enum GovernanceActionConnectorsErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

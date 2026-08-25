@@ -76,7 +76,8 @@ public enum AuditLogTable implements PostgreSQLTable
                          AuditLogColumn.ADDITIONAL_INFO,
                          AuditLogColumn.THREAD_ID},
                  new AuditLogColumn[]{
-                         AuditLogColumn.LAST_REQUEST_ID}
+                         AuditLogColumn.LAST_REQUEST_ID,
+                         AuditLogColumn.MESSAGE_URL}
     ),
 
 
