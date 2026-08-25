@@ -1123,7 +1123,9 @@ loadScripts(document, 'script');</script>
  There are three considerations: (1) Are the effectivity dates in the entity's properties indicating that this entity
  is effective at this time? (2) If the entity is a memento (ie it has the Memento classification attached) then it should only be
  returned if the request is for lineage. (3) If the entity is a known duplicate (ie it has the KnownDuplicate classification attached)
- and this request is not for duplicate processing then retrieve and combine the duplicate entities.</div>
+ and this request is not for duplicate processing then retrieve and combine the duplicate entities.
+ When the duplicate entities are combined, the latest version of each classification is used.  If the peers disagree on the
+ values of a classification, the conflict is reported on the audit log.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
