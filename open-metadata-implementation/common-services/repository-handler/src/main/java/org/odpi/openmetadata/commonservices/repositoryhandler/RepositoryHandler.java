@@ -184,6 +184,8 @@ public class RepositoryHandler
      * is effective at this time? (2) If the entity is a memento (ie it has the Memento classification attached) then it should only be
      * returned if the request is for lineage. (3) If the entity is a known duplicate (ie it has the KnownDuplicate classification attached)
      * and this request is not for duplicate processing then retrieve and combine the duplicate entities.
+     * When the duplicate entities are combined, the latest version of each classification is used.  If the peers disagree on the
+     * values of a classification, the conflict is reported on the audit log.
      *
      * @param userId calling user
      * @param entity retrieved entity
@@ -257,6 +259,14 @@ public class RepositoryHandler
             Map<String, Classification> classificationMap = new HashMap<>();
 
             /*
+             * These values are accumulated so that any conflict between the classifications of the peers can be reported on the audit log.
+             */
+            List<String> peerGUIDs                  = new ArrayList<>();
+            Set<String>  conflictingClassifications = new HashSet<>();
+
+            peerGUIDs.add(entity.getGUID());
+
+            /*
              * Begin by filling the classification map with the classifications from the original entity
              */
             if (entity.getClassifications() != null)
@@ -279,6 +289,8 @@ public class RepositoryHandler
 
                 if (peerEntity != null)
                 {
+                    peerGUIDs.add(peerEntity.getGUID());
+
                     /*
                      * Use the latest entity
                      */
@@ -296,16 +308,38 @@ public class RepositoryHandler
                                 {
                                     classificationMap.put(peerClassification.getName(), peerClassification);
                                 }
-                                else if (errorHandler.validateIsLatestUpdate(existingClassification, peerClassification))
+                                else
                                 {
-                                    classificationMap.put(peerClassification.getName(), peerClassification);
+                                    /*
+                                     * Two of the peers have the same classification attached.  If their properties do not match then the
+                                     * choice made below is hiding a difference between the peers and so it is reported on the audit log
+                                     * once all the peers have been processed.
+                                     */
+                                    if (! sameClassificationValues(existingClassification, peerClassification))
+                                    {
+                                        conflictingClassifications.add(peerClassification.getName());
+                                    }
+
+                                    if (errorHandler.validateIsLatestUpdate(existingClassification, peerClassification))
+                                    {
+                                        classificationMap.put(peerClassification.getName(), peerClassification);
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            }
 
-                resultingEntity.setClassifications(new ArrayList<>(classificationMap.values()));
+            resultingEntity.setClassifications(new ArrayList<>(classificationMap.values()));
+
+            if (! conflictingClassifications.isEmpty())
+            {
+                auditLog.logMessage(methodName,
+                                    RepositoryHandlerAuditCode.ENTITY_DEDUP_CLASSIFICATION_CONFLICT.getMessageDefinition(conflictingClassifications.toString(),
+                                                                                                                        peerGUIDs.toString(),
+                                                                                                                        resultingEntity.getGUID(),
+                                                                                                                        methodName));
             }
         }
 
@@ -322,6 +356,27 @@ public class RepositoryHandler
         }
 
         return resultingEntity;
+    }
+
+
+    /**
+     * Compare the property values of two classifications of the same name that are attached to different peer duplicate entities.
+     * The audit header values (such as the update time) are ignored because they naturally differ between two independently
+     * maintained copies of the same classification: it is only a difference in the values that the caller needs to know about.
+     *
+     * @param existingClassification classification already selected for the deduplicated entity
+     * @param peerClassification classification of the same name from another peer
+     * @return true if both classifications hold the same values
+     */
+    private boolean sameClassificationValues(Classification existingClassification,
+                                             Classification peerClassification)
+    {
+        if (existingClassification.getProperties() == null)
+        {
+            return (peerClassification.getProperties() == null);
+        }
+
+        return existingClassification.getProperties().equals(peerClassification.getProperties());
     }
 
 
@@ -408,6 +463,8 @@ public class RepositoryHandler
     /**
      * Filter entity results that do not match the caller's criteria.  If all entities are filtered out, an empty list is
      * returned to show that the caller can issue another retrieve if more elements are needed.
+     * Where deduplication resolves more than one of the retrieved entities to the same consolidated (or combined) entity,
+     * that entity appears only once in the results.
      *
      * @param userId calling user
      * @param retrievedEntities list of entities retrieved from the repositories
@@ -442,7 +499,15 @@ public class RepositoryHandler
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        Set<String> acceptedGUIDs = new HashSet<>();
+        /*
+         * The retrieved GUIDs are the GUIDs returned by the repositories.  The returned GUIDs are the GUIDs of the entities
+         * that are passed back to the caller.  These two sets are different when deduplication is in play because two or more
+         * peer duplicates from the repositories resolve to the same consolidated (or combined) entity.  Both sets are needed:
+         * the first prevents the same retrieved entity being validated twice; the second prevents the same deduplicated entity
+         * appearing more than once in the results.
+         */
+        Set<String> retrievedGUIDs = new HashSet<>();
+        Set<String> returnedGUIDs  = new HashSet<>();
 
         if (retrievedEntities != null)
         {
@@ -452,12 +517,12 @@ public class RepositoryHandler
             {
                 if (entity != null)
                 {
-                    if (! acceptedGUIDs.contains(entity.getGUID()))
+                    if (! retrievedGUIDs.contains(entity.getGUID()))
                     {
                         /*
                          * Only validate an entity once.
                          */
-                        acceptedGUIDs.add(entity.getGUID());
+                        retrievedGUIDs.add(entity.getGUID());
 
                         EntityDetail validatedEntity = this.validateRetrievedEntity(userId,
                                                                                     entity,
@@ -473,7 +538,14 @@ public class RepositoryHandler
 
                         if (validatedEntity != null)
                         {
-                            results.add(validatedEntity);
+                            if (returnedGUIDs.add(validatedEntity.getGUID()))
+                            {
+                                results.add(validatedEntity);
+                            }
+                            else
+                            {
+                                log.debug("Skipping entity since already returned - because using consolidated entities");
+                            }
                         }
                         else
                         {
@@ -482,7 +554,7 @@ public class RepositoryHandler
                     }
                     else
                     {
-                        log.debug("Skipping entity since already retrieved - because using consolidated entities");
+                        log.debug("Skipping entity since already retrieved");
                     }
                 }
             }

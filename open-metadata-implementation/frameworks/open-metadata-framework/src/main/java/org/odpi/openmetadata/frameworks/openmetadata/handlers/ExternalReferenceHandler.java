@@ -421,8 +421,8 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
     public void detachCitedDocumentReference(String        userId,
                                              String        citedDocumentLinkRelationshipGUID,
                                              DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         final String methodName        = "detachCitedDocumentReference";
         final String guidParameterName = "citedDocumentLinkRelationshipGUID";
@@ -564,7 +564,7 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException
     {
-        final String methodName = "detachKnownExternalReference";
+        final String methodName = "detachCitedDocumentReference";
         final String end1GUIDParameterName = "elementGUID";
         final String end2GUIDParameterName = "externalReferenceGUID";
 
@@ -574,7 +574,7 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.CITED_DOCUMENT_LINK_RELATIONSHIP.typeName,
-                                                        externalReferenceGUID,
+                                                        elementGUID,
                                                         externalReferenceGUID,
                                                         deleteOptions);
     }

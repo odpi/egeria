@@ -9,7 +9,7 @@ The RepositoryHandlerAuditCode is used to define the message content for the OMR
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 9 |
+| **Number of messages** | 10 |
 | **Message identifiers begin** | `OMAG-REPOSITORY-HANDLER-` |
 | **Java class** | `org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandlerAuditCode` |
 | **Module** | [open-metadata-implementation/common-services/repository-handler](../../open-metadata-implementation/common-services/repository-handler) |
@@ -30,6 +30,7 @@ The RepositoryHandlerAuditCode is used to define the message content for the OMR
 | [OMAG-REPOSITORY-HANDLER-0012](#omag-repository-handler-0012) | TRACE | The Open Metadata Service has soft-deleted relationship {0} of type {1} ({2}) between entity {3} of type {4} ({5}) and entity {6} of type {7} ({8}) during method {9} |
 | [OMAG-REPOSITORY-HANDLER-0013](#omag-repository-handler-0013) | INFO | The Open Metadata Service is retrying the {0} classification of entity {1} due to a race condition.  The original {2} exception returned from the classification request had an error message of {3} |
 | [OMAG-REPOSITORY-HANDLER-0014](#omag-repository-handler-0014) | INFO | Successfully deduplicated relationships {0} down to {1} |
+| [OMAG-REPOSITORY-HANDLER-0015](#omag-repository-handler-0015) | INFO | Conflicting values were found for classification(s) {0} while combining the peer duplicate entities {1} into entity {2} during method {3} |
 
 ----
 
@@ -218,6 +219,27 @@ The relationship accumulator has successfully removed deduplicated relationships
 **User action**
 
 Check that these are valid duplicates.
+
+
+----
+
+### OMAG-REPOSITORY-HANDLER-0015
+
+> Conflicting values were found for classification(s) {0} while combining the peer duplicate entities {1} into entity {2} during method {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `RepositoryHandlerAuditCode.ENTITY_DEDUP_CLASSIFICATION_CONFLICT` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The deduplication process combines the classifications attached to each of the peer duplicate entities.  Where the same classification is attached to more than one peer, but with different property values, the most recently updated version of that classification is the one returned to the caller.  The request continues using the selected classifications.
+
+**User action**
+
+Review the classifications attached to the peer duplicate entities listed in the message.  If the differences are not intentional, correct the classifications on the peer entities so that they agree, or create a consolidated entity that holds the agreed values.
 
 
 ----

@@ -313,10 +313,10 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void updateCitedDocumentReference(String                       citedDocumentLinkRelationshipGUID,
-                                        UpdateOptions                updateOptions,
-                                        CitedDocumentLinkProperties  relationshipProperties) throws InvalidParameterException,
-                                                                                                    PropertyServerException,
-                                                                                                    UserNotAuthorizedException
+                                             UpdateOptions                updateOptions,
+                                             CitedDocumentLinkProperties  relationshipProperties) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
         externalReferenceHandler.updateCitedDocumentReference(connectorUserId, citedDocumentLinkRelationshipGUID, updateOptions, relationshipProperties);
     }
@@ -332,9 +332,9 @@ public class ExternalReferenceClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachCitedDocumentReference(String        citedDocumentLinkRelationshipGUID,
-                                        DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         externalReferenceHandler.detachCitedDocumentReference(connectorUserId, citedDocumentLinkRelationshipGUID, deleteOptions);
     }

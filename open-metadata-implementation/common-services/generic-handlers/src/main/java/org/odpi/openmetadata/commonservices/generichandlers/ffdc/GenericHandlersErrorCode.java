@@ -223,7 +223,7 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
     MISSING_METADATA_INSTANCE(500, "OMAG-GENERIC-HANDLERS-500-004",
                           "One of the converters for the {0} service is not able to populate a bean of type {1} " +
                                   "because a metadata instance of type {2} has not passed to method {3}",
-                          "The system cannot process the request because it is missing one or more metadata elements" +
+                          "The system cannot process the request because it is missing one or more metadata elements " +
                                       "needed to instantiate the bean.",
                           "Correct the handler code that calls the converter as part of this request since it has not passed sufficient" +
                                       " metadata instances to the converter.  Alternatively, these instances may not be in the repositories " +

@@ -439,7 +439,7 @@ Correct the code that sets up the converter as part of this service.
 
 **System action**
 
-The system cannot process the request because it is missing one or more metadata elementsneeded to instantiate the bean.
+The system cannot process the request because it is missing one or more metadata elements needed to instantiate the bean.
 
 **User action**
 

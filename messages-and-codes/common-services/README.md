@@ -6,7 +6,7 @@
 
 The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time.
 
-This directory documents 177 messages in 11 message sets.  Return to the [messages and codes index](../README.md).
+This directory documents 178 messages in 11 message sets.  Return to the [messages and codes index](../README.md).
 
 
 ## Message sets
@@ -22,7 +22,7 @@ This directory documents 177 messages in 11 message sets.  Return to the [messag
 | [OpenMetadataObservabilityAuditCode](OpenMetadataObservabilityAuditCode.md) | Audit log messages | `METADATA-OBSERVABILITY-` | 10 | <https://egeria-project.org/services/common-services/> |
 | [OpenMetadataSecurityAuditCode](OpenMetadataSecurityAuditCode.md) | Audit log messages | `OPEN-METADATA-SECURITY-` | 26 | <https://egeria-project.org/features/metadata-security/overview/> |
 | [OpenMetadataSecurityErrorCode](OpenMetadataSecurityErrorCode.md) | Exception messages | `O-` | 20 | <https://egeria-project.org/features/metadata-security/overview/> |
-| [RepositoryHandlerAuditCode](RepositoryHandlerAuditCode.md) | Audit log messages | `OMAG-REPOSITORY-HANDLER-` | 9 | <https://egeria-project.org/services/repository-handler/> |
+| [RepositoryHandlerAuditCode](RepositoryHandlerAuditCode.md) | Audit log messages | `OMAG-REPOSITORY-HANDLER-` | 10 | <https://egeria-project.org/services/repository-handler/> |
 | [RepositoryHandlerErrorCode](RepositoryHandlerErrorCode.md) | Exception messages | `OMAG-REPOSITORY-HANDLER-` | 26 | <https://egeria-project.org/services/repository-handler/> |
 
 
