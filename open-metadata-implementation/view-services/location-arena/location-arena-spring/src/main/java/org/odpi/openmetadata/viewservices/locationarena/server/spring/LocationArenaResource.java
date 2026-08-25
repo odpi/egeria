@@ -59,7 +59,7 @@ public class LocationArenaResource
     @Operation(summary="createLocation",
             description="Create a location.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createLocation(@PathVariable String                               serverName,
                                        @RequestBody (required = false)
@@ -87,7 +87,7 @@ public class LocationArenaResource
     @Operation(summary="createLocationFromTemplate",
             description="Create a new metadata element to represent a location using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createLocationFromTemplate(@PathVariable
                                                    String              serverName,
@@ -116,7 +116,7 @@ public class LocationArenaResource
     @Operation(summary="updateLocation",
             description="Update the properties of a location.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public BooleanResponse updateLocation(@PathVariable
                                           String                                  serverName,
@@ -148,7 +148,7 @@ public class LocationArenaResource
     @Operation(summary="linkPeerLocation",
             description="Attach a location to one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkPeerLocation(@PathVariable
                                          String                     serverName,
@@ -182,7 +182,7 @@ public class LocationArenaResource
     @Operation(summary="detachPeerLocations",
             description="Detach a location from one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachPeerLocations(@PathVariable
                                             String                    serverName,
@@ -216,7 +216,7 @@ public class LocationArenaResource
     @Operation(summary="linkNestedLocation",
             description="Attach a super location to a nested location.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkNestedLocation(@PathVariable
                                            String                     serverName,
@@ -250,7 +250,7 @@ public class LocationArenaResource
     @Operation(summary="detachNestedLocation",
             description="Detach a super location from a nested location.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachNestedLocation(@PathVariable
                                              String                    serverName,
@@ -284,7 +284,7 @@ public class LocationArenaResource
     @Operation(summary="linkKnownLocation",
             description="Attach an element to its location.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkKnownLocation(@PathVariable
                                           String                     serverName,
@@ -318,7 +318,7 @@ public class LocationArenaResource
     @Operation(summary="detachKnownLocation",
             description="Detach an element from its location.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachKnownLocation(@PathVariable
                                             String                    serverName,
@@ -351,7 +351,7 @@ public class LocationArenaResource
     @Operation(summary="deleteLocation",
             description="Delete a location.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse deleteLocation(@PathVariable
                                        String                    serverName,
@@ -381,7 +381,7 @@ public class LocationArenaResource
     @Operation(summary="getLocationsByName",
             description="Returns the list of locations with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getLocationsByName(@PathVariable
                                                                String            serverName,
@@ -409,7 +409,7 @@ public class LocationArenaResource
     @Operation(summary="findLocations",
             description="Retrieve the list of location metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse findLocations(@PathVariable
                                                           String                  serverName,
@@ -438,7 +438,7 @@ public class LocationArenaResource
     @Operation(summary="getLocationByGUID",
             description="Return the properties of a specific location.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementResponse getLocationByGUID(@PathVariable
                                                              String             serverName,
@@ -468,7 +468,7 @@ public class LocationArenaResource
     @Operation(summary="setLocationAsFixedLocation",
             description="Classify a location to say that it is a fixed physical location.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setLocationAsFixedLocation(@PathVariable String serverName,
                                                    @PathVariable String locationGUID,
@@ -497,7 +497,7 @@ public class LocationArenaResource
     @Operation(summary="clearLocationAsFixedLocation",
             description="Remove the fixed location designation from a location.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearLocationAsFixedLocation(@PathVariable String serverName,
                                                      @PathVariable String locationGUID,
@@ -526,7 +526,7 @@ public class LocationArenaResource
     @Operation(summary="setLocationAsCyberLocation",
             description="Classify a location to say that it is a cyber location reached over a network.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setLocationAsCyberLocation(@PathVariable String serverName,
                                                    @PathVariable String locationGUID,
@@ -555,7 +555,7 @@ public class LocationArenaResource
     @Operation(summary="clearLocationAsCyberLocation",
             description="Remove the cyber location designation from a location.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearLocationAsCyberLocation(@PathVariable String serverName,
                                                      @PathVariable String locationGUID,
@@ -584,7 +584,7 @@ public class LocationArenaResource
     @Operation(summary="setLocationAsSecureLocation",
             description="Classify a location to say that access to it is restricted.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setLocationAsSecureLocation(@PathVariable String serverName,
                                                     @PathVariable String locationGUID,
@@ -613,7 +613,7 @@ public class LocationArenaResource
     @Operation(summary="clearLocationAsSecureLocation",
             description="Remove the secure location designation from a location.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/location"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearLocationAsSecureLocation(@PathVariable String serverName,
                                                       @PathVariable String locationGUID,

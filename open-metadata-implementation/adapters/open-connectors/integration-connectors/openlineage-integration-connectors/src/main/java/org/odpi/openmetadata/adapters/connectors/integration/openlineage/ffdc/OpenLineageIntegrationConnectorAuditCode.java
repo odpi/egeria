@@ -28,50 +28,8 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
                                  AuditLogRecordSeverityLevel.INFO,
                                  "The {0} integration connector is monitoring Apache Kafka topic {1} with connection: {2}",
                                  "The connector is designed to monitor open lineage events published to an Apache Kafka topic.",
-                                 "No specific action is required.  This message is to confirm the configuration for the Kafka Open Lineage Receiver integration connector.  It is output for each unique embedded connector and KafkaTopic catalog target"),
-
-    /**
-     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0002 - The {0} integration connector encountered an {1} exception when opening connector to topic {2} during the {3} method.  The exception message included was {4} and the connection was {5}
-     */
-    BAD_KAFKA_RECEIVER_CONFIGURATION("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0002",
-                          AuditLogRecordSeverityLevel.EXCEPTION,
-                          "The {0} integration connector encountered an {1} exception when opening connector to topic {2} during the {3} method.  The exception message included was {4} and the connection was {5}",
-                          "The exception is passed back to the integration daemon that is hosting " +
-                                  "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
-                                  "error handling that was performed.  These can help to determine how to recover from this error",
-                          "This message contains the exception that was the original cause of the problem. Use the information from the " +
-                                  "exception stack trace to determine why the connector is not able to access the event broker and resolve that issue.  " +
-                                  "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
-                                  "connector in the integration daemon once the original cause of the error has been corrected."),
-
-    /**
-     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0003 - The {0} integration connector was passed no embedded open metadata topic connection in its connection properties: {1}
-     */
-    NO_KAFKA_CONNECTION("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0003",
-                       AuditLogRecordSeverityLevel.ERROR,
-                       "The {0} integration connector was passed no embedded open metadata topic connection in its connection properties: {1}",
-                       "The configuration for this connector does not have the correct connection configuration that includes the connection for the kafka open metadata topic connector.",
-                       "Review the documentation for this connector and correct its configuration to include the connection for the open " +
-                               "metadata topic connection that should be embedded in the connection for the integration connector with the topic name set up in the network address of the endpoint."),
-
-    /**
-     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0004 - The {0} integration connector was passed a blank topic name in its connection properties: {1}
-     */
-    NO_KAFKA_TOPIC_NAME("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0004",
-                            AuditLogRecordSeverityLevel.ERROR,
-                        "The {0} integration connector was passed a blank topic name in its connection properties: {1}",
-                        "The configuration for this connector does not include the name of the topic in the embedded connection for the kafka open metadata topic connector.",
-                        "Review the documentation for this connector and correct its configuration to ensure the connection for the open " +
-                                "metadata topic connection that should be embedded in the connection for the integration connector has the topic name set up in the network address of the endpoint."),
-
-    /**
-     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0005 - The {0} integration connector is listening for open lineage events on topic {1}
-     */
-    LISTENING_ON_TOPIC("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0005",
-                              AuditLogRecordSeverityLevel.INFO,
-                              "The {0} integration connector is listening for open lineage events on topic {1}",
-                              "The connector will pass any events received to the other integration connectors that have registered listeners.",
-                              "No action is required unless there are errors that follow indicating that there are problems access events from the topic."),
+                                 "No specific action is required.  This message is to confirm the configuration for the Kafka Open Lineage Receiver integration connector.  It is output for each unique embedded connector and KafkaTopic catalog target",
+                                 "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
 
     /**
      * OPEN-LINEAGE-INTEGRATION-CONNECTOR-001 - The {0} integration connector received an unexpected {1} exception in method {2} when working with open lineage events; the error message was: {3}
@@ -80,7 +38,8 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} integration connector received an unexpected {1} exception in method {2} when working with open lineage events; the error message was: {3}",
                          "The connector cannot process one or more lineage events.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
 
     ;
 
@@ -89,6 +48,26 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    OpenLineageIntegrationConnectorAuditCode(String                      messageId,
+                                             AuditLogRecordSeverityLevel severity,
+                                             String                      message,
+                                             String                      systemAction,
+                                             String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -104,18 +83,22 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     OpenLineageIntegrationConnectorAuditCode(String                      messageId,
                                              AuditLogRecordSeverityLevel severity,
                                              String                      message,
                                              String                      systemAction,
-                                             String                      userAction)
+                                             String                      userAction,
+                                             String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -131,7 +114,8 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -148,7 +132,8 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -168,6 +153,7 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

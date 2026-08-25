@@ -29,7 +29,8 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
                          "The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}",
                          "The request returns a PropertyServerException.",
                          "This is probably a logic error. Review the stack trace to identify where the error " +
-                                 "occurred and work to resolve the cause."),
+                                 "occurred and work to resolve the cause.",
+                                 "https://egeria-project.org/services/ffdc-services/"),
 
     /**
      * OMAG-COMMON-0002 - A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}
@@ -38,7 +39,8 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
              AuditLogRecordSeverityLevel.ERROR,
              "A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}",
              "The server has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
-             "Look for errors in the local server's console to understand and correct the source of the error.")
+             "Look for errors in the local server's console to understand and correct the source of the error.",
+             "https://egeria-project.org/services/ffdc-services/")
     ;
 
     private final String                     logMessageId;
@@ -46,6 +48,26 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    OMAGCommonAuditCode(String                     messageId,
+                        AuditLogRecordSeverityLevel severity,
+                        String                     message,
+                        String                     systemAction,
+                        String                     userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -61,18 +83,22 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     OMAGCommonAuditCode(String                     messageId,
                         AuditLogRecordSeverityLevel severity,
                         String                     message,
                         String                     systemAction,
-                        String                     userAction)
+                        String                     userAction,
+                        String                     url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -88,7 +114,8 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -105,7 +132,8 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -125,6 +153,7 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 ", messageDefinition=" + getMessageDefinition() +
                 '}';
     }

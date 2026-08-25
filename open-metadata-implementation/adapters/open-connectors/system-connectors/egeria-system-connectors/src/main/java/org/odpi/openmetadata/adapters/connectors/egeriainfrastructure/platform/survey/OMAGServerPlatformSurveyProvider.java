@@ -30,7 +30,7 @@ public class OMAGServerPlatformSurveyProvider extends SurveyActionServiceProvide
     private static final String connectorQualifiedName = "Egeria:SurveyActionService:System:OMAGServerPlatform";
     private static final String connectorDisplayName   = "OMAG Server Platform Survey Action Service";
     private static final String connectorDescription   = "Connector that analyzes information about the servers running on an instance of Egeria's OMAG Server Platform.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/egeria/omag-server-platform-survey-connector/";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/";
 
 
     /*

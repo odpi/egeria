@@ -38,7 +38,8 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorErrorCode implements Excep
              "Unable to open file {0}.  Message from {1} exception was {2}",
              "The server is cannot open an open metadata archive store.",
              "Use the information from the exception to determine the cause of the error.  For example, is the filename correct?  " +
-                     "Does this runtime have permission to access the file?  Once the cause of the error is corrected, restart the caller."),
+                     "Does this runtime have permission to access the file?  Once the cause of the error is corrected, restart the caller.",
+                     "https://egeria-project.org/concepts/open-metadata-archive-store-connector/"),
     ;
 
     private final int    httpErrorCode;
@@ -46,6 +47,22 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorErrorCode implements Excep
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    FileBasedOpenMetadataArchiveStoreConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -56,14 +73,17 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorErrorCode implements Excep
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    FileBasedOpenMetadataArchiveStoreConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    FileBasedOpenMetadataArchiveStoreConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -79,7 +99,8 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorErrorCode implements Excep
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -96,7 +117,8 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorErrorCode implements Excep
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -118,6 +140,7 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorErrorCode implements Excep
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

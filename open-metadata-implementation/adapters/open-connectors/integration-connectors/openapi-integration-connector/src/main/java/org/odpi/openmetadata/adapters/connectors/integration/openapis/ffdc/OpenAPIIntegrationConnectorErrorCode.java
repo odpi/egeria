@@ -25,20 +25,17 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum OpenAPIIntegrationConnectorErrorCode implements ExceptionMessageSet
 {
-    UNEXPECTED_EXCEPTION(500, "OPEN-API-INTEGRATION-CONNECTOR-500-001",
-                         "The {0} integration connector received an unexpected exception {1} when cataloguing APIs; the error message was: {2}",
-                         "The connector cannot catalog one or more APIs.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
-
     NULL_URL(400, "OPEN-API-INTEGRATION-CONNECTOR-400-014",
              "OMAG server has been called with a null local server name",
              "The system cannot configure the local server without knowing what it is called.",
-             "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+             "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly.",
+             "https://egeria-project.org/concepts/integration-connector/"),
 
     CLIENT_SIDE_REST_API_ERROR(503, "OPEN-API-INTEGRATION-CONNECTOR-503-001",
                                "A client-side exception of {0} was received from API call {1} to URL {2}.  The error message was {3}",
                                "The integration has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
-                               "Look for errors in the local server's console to understand and correct the source of the error.")
+                               "Look for errors in the local server's console to understand and correct the source of the error.",
+                               "https://egeria-project.org/concepts/integration-connector/")
 
     ;
 
@@ -48,6 +45,22 @@ public enum OpenAPIIntegrationConnectorErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    OpenAPIIntegrationConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -58,14 +71,17 @@ public enum OpenAPIIntegrationConnectorErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    OpenAPIIntegrationConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OpenAPIIntegrationConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -81,7 +97,8 @@ public enum OpenAPIIntegrationConnectorErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -98,7 +115,8 @@ public enum OpenAPIIntegrationConnectorErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -120,6 +138,7 @@ public enum OpenAPIIntegrationConnectorErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

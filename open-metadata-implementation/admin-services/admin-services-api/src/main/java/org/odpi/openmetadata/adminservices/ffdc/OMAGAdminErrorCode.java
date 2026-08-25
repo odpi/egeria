@@ -36,7 +36,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     NULL_LOCAL_SERVER_NAME(400, "OMAG-ADMIN-400-001",
             "OMAG server has been called with a null local server name",
             "The system cannot configure the local server.",
-            "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+            "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-002 - OMAG Server Platform was requested to start OMAG Server {0} but the configuration document retrieved for it
@@ -50,18 +51,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                       "This connector is set up for the OMAG Server Platform.  " +
                                       "It is either not configured correctly, or there is an error in its " +
                                       "implementation because it is not retrieving the correct configuration document for" +
-                                      "the requested server."),
-
-    /**
-     * OMAG-ADMIN-400-003 - OMAG server {0} has been configured with a null local server user identifier (userId)
-     */
-    NULL_LOCAL_SERVER_USERID(400, "OMAG-ADMIN-400-003",
-                   "OMAG server {0} has been configured with a null local server user identifier (userId)",
-                   "The system fails to start the server because this user identifier is needed for processing events " +
-                                     "from external topics.  If the server continues to operate, it will not be able to function correctly.",
-                   "The local server's user identifier is supplied in the configuration document for the OMAG server.  " +
-                                     "This configuration needs to be corrected before the server can operate correctly.  " +
-                                     "Once the configuration document has been corrected, restart the server."),
+                                      "the requested server.",
+                                      "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-004 - A REST API call to OMAG server {0} has been made with a null user identifier (userId)
@@ -70,7 +61,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                    "A REST API call to OMAG server {0} has been made with a null user identifier (userId)",
                    "The server rejects the request.",
                    "The user name is supplied in a parameter (typically called userID) in the call to the OMAG server. " +
-                           "This parameter needs to be changes to a valid user identifier before the request can operate correctly."),
+                           "This parameter needs to be changes to a valid user identifier before the request can operate correctly.",
+                           "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-005 - Unable to configure server {0} since access service {1} is not registered in this OMAG Server Platform
@@ -86,7 +78,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                           "OMAG Server Platform by adding a description of the access service to the " +
                                           "access service registration (look for OMAGAccessServiceRegistration.registerAccessService() in " +
                                           "existing access service modules to see this code pattern). Once the access service being " +
-                                          "requested is registered, retry the configuration request."),
+                                          "requested is registered, retry the configuration request.",
+                                          "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-006 - Unable to configure server {0} since access service {1} is not enabled in this OMAG Server Platform
@@ -94,7 +87,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     ACCESS_SERVICE_NOT_ENABLED(400, "OMAG-ADMIN-400-006",
             "Unable to configure server {0} since access service {1} is not enabled in this OMAG Server Platform",
             "The system cannot configure the local server with this access service.",
-            "Choose a different access service or enable the access service in this platform."),
+            "Choose a different access service or enable the access service in this platform.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-007 - OMAG server {0} has been configured with a null cohort name
@@ -103,7 +97,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "OMAG server {0} has been configured with a null cohort name",
             "The system cannot configure the local server with access to this cohort.",
             "The cohort name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can be configured to " +
-                             "register with the cohort."),
+                             "register with the cohort.",
+                             "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-008 - The local repository mode has not been set for OMAG server {0}
@@ -111,7 +106,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     LOCAL_REPOSITORY_MODE_NOT_SET(400, "OMAG-ADMIN-400-008",
             "The local repository mode has not been set for OMAG server {0}",
             "The local repository mode must be enabled before the event mapper connection, local metadata collection id or local metadata collection name is set.",
-            "Set up a local repository for this server, then rerun the failing request."),
+            "Set up a local repository for this server, then rerun the failing request.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-009 - The OMAG server {0} has been passed null configuration
@@ -119,7 +115,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     NULL_SERVER_CONFIG(400, "OMAG-ADMIN-400-009",
             "The OMAG server {0} has been passed null configuration",
             "The system cannot initialize the local server instance without any configuration.",
-            "Retry the request with server configuration."),
+            "Retry the request with server configuration.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-010 - The OMAG server {0} has been passed a configuration document with no open metadata repository services configuration
@@ -128,8 +125,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "The OMAG server {0} has been passed a configuration document with no open metadata repository services configuration",
             "The system cannot initialize the local server instance because all servers need at least an audit log which is supported by the " +
                                    "repository services.",
-            "Use the administration services to add the repository services configuration."),
-
+            "Use the administration services to add the repository services configuration.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-011 No configuration document was found for OMAG server {0}
@@ -137,7 +134,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     NO_CONFIG_DOCUMENT(400, "OMAG-ADMIN-400-011",
                            "No configuration document was found for OMAG server {0}",
                            "The system cannot initialize the local server instance without a configuration document.",
-                           "Use the administration services to build up the definition of the server into a configuration document."),
+                           "Use the administration services to build up the definition of the server into a configuration document.",
+                           "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-012 Unable to parse configuration document for OMAG server {0} due to exception {1} with message {2}
@@ -145,8 +143,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     CONFIG_DOCUMENT_PARSE_ERROR(400, "OMAG-ADMIN-400-012",
                        "Unable to parse configuration document for OMAG server {0} due to exception {1} with message {2}",
                        "The system cannot process a configuration document.",
-                       "Review the error message to understand why the parsing error occurred."),
-
+                       "Review the error message to understand why the parsing error occurred.",
+                       "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-013 - The OMAG server {0} is not able to open its configuration file {1} due to the following error: {2} which included a message {3}
@@ -154,7 +152,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     BAD_CONFIG_FILE(400, "OMAG-ADMIN-400-013",
             "The OMAG server {0} is not able to open its configuration file {1} due to the following error: {2} which included a message {3}",
             "The system cannot initialize the server.",
-            "Review the error message to determine the cause of the problem."),
+            "Review the error message to determine the cause of the problem.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-014 - The OMAG server {0} has been passed an invalid maximum page size of {1}
@@ -164,19 +163,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "The server failed to start.",
             "The maximum page size sets an upper limit on how many results a caller can request on a paged REST API call.  " +
                               "If it is set to zero then it means there is no limit, a positive number is the maximum paging size allowed.  " +
-                              "Set the maximum page size in the configuration document to an appropriate value and restart the server."),
-
-
-    /**
-     * OMAG-ADMIN-400-016 - The OMAG server {0} cannot set up new event bus configuration because other services are already configured
-     */
-    TOO_LATE_TO_SET_EVENT_BUS(400, "OMAG-ADMIN-400-016",
-            "The OMAG server {0} cannot set up new event bus configuration because other services are already configured",
-            "It is not possible to change the event bus configuration for this server while there are other open metadata services configured.",
-            "Remove any configuration for this server's cohorts, local repository and access services, " +
-                                      "and retry the request to add the event bus configuration.  " +
-                                      "Then it is possible to add the configuration for the other services back " +
-                                      "into the configuration document."),
+                              "Set the maximum page size in the configuration document to an appropriate value and restart the server.",
+                              "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-017 - The OMAG server {0} cannot add open metadata services until the event bus is configured
@@ -184,7 +172,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     NO_EVENT_BUS_SET(400, "OMAG-ADMIN-400-017",
             "The OMAG server {0} cannot add open metadata services until the event bus is configured",
             "No change has occurred in this server's configuration document.",
-            "Add the event bus configuration using the administration services and retry the request."),
+            "Add the event bus configuration using the administration services and retry the request.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-018 - OMAG server {0} has been called with a null metadata collection name
@@ -192,7 +181,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     NULL_METADATA_COLLECTION_NAME(400, "OMAG-ADMIN-400-018",
             "OMAG server {0} has been called with a null metadata collection name",
             "The system cannot add this metadata collection name to the configuration document for the local server.",
-            "The metadata collection name is optional.  If it is not set up then the local server name is used instead."),
+            "The metadata collection name is optional.  If it is not set up then the local server name is used instead.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-019 - OMAG server {0} has been called with a configuration document that has no services configured
@@ -200,7 +190,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     EMPTY_CONFIGURATION(400, "OMAG-ADMIN-400-019",
             "OMAG server {0} has been called with a configuration document that has no services configured",
             "The requested server provides no function.",
-            "Use the administration services to add configuration for OMAG services to the server's configuration document."),
+            "Use the administration services to add configuration for OMAG services to the server's configuration document.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-020 - The {0} service of OMAG server {1} has been configured with a null root URL for the remote {2} access service
@@ -209,7 +200,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "The {0} service of OMAG server {1} has been configured with a null root URL for the remote {2} access service",
             "The system cannot accept this value in the configuration document because it needs this value to be able to call the correct " +
                                          "server platform where the access service is running.",
-            "The root URL is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+            "The root URL is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-021 - The {0} service of OMAG server {1} has been configured with a null server name for the remote {2} access service
@@ -218,7 +210,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "The {0} service of OMAG server {1} has been configured with a null server name for the remote {2} access service",
             "The system cannot accept this value in the configuration document because it needs this value to be able to call the correct " +
                                             "server where the access service is running.",
-            "The server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+            "The server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-022 - OMAG server {0} has been configured with a null file name for an Open Metadata Archive
@@ -226,7 +219,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     NULL_FILE_NAME(400, "OMAG-ADMIN-400-022",
             "OMAG server {0} has been configured with a null file name for an Open Metadata Archive",
             "The system cannot configure the local server to load this Open Metadata Archive file.",
-            "The file name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can load the open metadata archive."),
+            "The file name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can load the open metadata archive.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-023 - The configuration document for OMAG server {0} is at version {1} which is not compatible with this OMAG Server Platform which supports versions {2}
@@ -234,7 +228,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     INCOMPATIBLE_CONFIG_FILE(400, "OMAG-ADMIN-400-023",
             "The configuration document for OMAG server {0} is at version {1} which is not compatible with this OMAG Server Platform which supports versions {2}",
             "The system cannot configure the local server because it can not read the configuration document.",
-            "Migrate the configuration document to a compatible version (or delete and recreate it).  See https://egeria-project.org/guides/migration/migrating-configuration-documents/"),
+            "Migrate the configuration document to a compatible version (or delete and recreate it).  See https://egeria-project.org/guides/",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-024 - The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property.  The resulting {3} exception included the following message: {4}
@@ -242,7 +237,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     BAD_CONFIG_PROPERTIES(400, "OMAG-ADMIN-400-024",
             "The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property.  The resulting {3} exception included the following message: {4}",
             "The access service has not been passed valid configuration .",
-            "Correct the value of the failing configuration property and restart the server."),
+            "Correct the value of the failing configuration property and restart the server.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-025 - The {0} Open Metadata Access Service (OMAS) has been passed a null enterprise OMRS topic for server {1}
@@ -251,7 +247,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "The {0} Open Metadata Access Service (OMAS) has been passed a null enterprise OMRS topic for server {1}",
             "The access service has not been passed valid configuration for its enterprise repository services.   It needs this value to retrieve " +
                                 "metadata from the open metadata repositories.",
-            "Correct the configuration for the enterprise repository services and restart the server."),
+            "Correct the configuration for the enterprise repository services and restart the server.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-026 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connector.  The error
@@ -261,7 +258,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connector.  The error " +
                     "message was {3}",
             "The access service has not been passed valid configuration.  It needs the topic connector to send and receive events.",
-            "Correct the configuration for the topic connector and restart the server."),
+            "Correct the configuration for the topic connector and restart the server.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-027 - OMAG server {0} has been called with a null connection for method {1}
@@ -269,7 +267,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     NULL_CONNECTION(400, "OMAG-ADMIN-400-027",
             "OMAG server {0} has been called with a null connection for method {1}",
             "The system cannot add this connection to the server's configuration document.",
-            "Change the call to pass a valid connection for the server.  If you want to clear the connection use the clear version of the method."),
+            "Change the call to pass a valid connection for the server.  If you want to clear the connection use the clear version of the method.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-028 - The OMAG Server Platform has been called with a null connection for method {0}
@@ -277,8 +276,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     NULL_PLATFORM_CONNECTION(400, "OMAG-ADMIN-400-028",
             "The OMAG Server Platform has been called with a null connection for method {0}",
             "The admin services cannot add this connection to the platform runtime.",
-            "Change the call to pass a valid connection for the platform.  If you want to clear the connection use the clear version of the method."),
-
+            "Change the call to pass a valid connection for the platform.  If you want to clear the connection use the clear version of the method.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-031 - The configuration document for server {0} includes configuration for a {1} but also has configuration for the {2}
@@ -288,7 +287,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "The configuration document for server {0} includes configuration for a {1} but also has configuration for the {2} subsystem which " +
                     "is not a compatible combination",
             "The server fails to initialize and an exception is returned to the caller.",
-            "Reconfigure the server to include a compatible combination of subsystems."),
+            "Reconfigure the server to include a compatible combination of subsystems.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-032 - The supplied configuration for server {0} was not accepted because there is no value provided for property {1}
@@ -296,7 +296,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     MISSING_CONFIGURATION_PROPERTY(400, "OMAG-ADMIN-400-032",
             "The supplied configuration for server {0} was not accepted because there is no value provided for property {1}",
             "The system returns an exception and does not update the configuration document for the server.",
-            "Retry the configuration request with the property value set up correctly."),
+            "Retry the configuration request with the property value set up correctly.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-033 - The OMAG server {0} cannot override the cohort topic until the {1} cohort is set up
@@ -304,7 +305,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     COHORT_NOT_KNOWN(400, "OMAG-ADMIN-400-033",
             "The OMAG server {0} cannot override the cohort topic until the {1} cohort is set up",
             "No change has occurred in this server's configuration document because the admin services .",
-            "Add the cohort configuration using the administration services and retry the request."),
+            "Add the cohort configuration using the administration services and retry the request.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-034 - The OMAG server {0} cannot override the cohort topic for the {1} cohort because the contents of the topic
@@ -315,7 +317,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                     "follow the expected pattern",
             "No change has occurred in this server's configuration document because the topic connection in the cohort configuration does not " +
                                  "follow the same structure as Egeria expects and so any update may have unexpected consequences.",
-            "Use the setCohortConfig() method to manually update the cohort topic in the cohort configuration."),
+            "Use the setCohortConfig() method to manually update the cohort topic in the cohort configuration.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-035 - Unable to classify the type of server for OMAG server {0} from its configuration document
@@ -325,7 +328,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "The system cannot initialize the local server instance.",
             "Analyse the server's configuration document to determine why the type of server it requests " +
                                   "is not identified.  Update the server's configuration document to provide " +
-                                  "a valid server configuration."),
+                                  "a valid server configuration.",
+                                  "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-036 - Unable to configure server {0} since view service {1} is not registered in this OMAG Server Platform
@@ -340,7 +344,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                         "service. A view service is registered in the " +
                                         "OMAG Server Platform by adding a description of the view service to the " +
                                         "view service registration. Once the view service being " +
-                                        "requested is registered, retry the configuration request."),
+                                        "requested is registered, retry the configuration request.",
+                                        "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-037 - Unable to configure server {0} since view service {1} is not enabled in this OMAG Server Platform
@@ -348,7 +353,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     VIEW_SERVICE_NOT_ENABLED(400, "OMAG-ADMIN-400-037",
                              "Unable to configure server {0} since view service {1} is not enabled in this OMAG Server Platform",
                              "The system cannot configure the local server with this view service.",
-                             "Validate and correct the name of the view service URL marker or enable the view service in this platform."),
+                             "Validate and correct the name of the view service URL marker or enable the view service in this platform.",
+                             "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-038 - OMAG server {0} has been called by {1} with a null client config
@@ -357,7 +363,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                            "OMAG server {0} has been called by {1} with a null client config",
                            "The system cannot configure the local server with the governance service because it needs to be able to call a " +
                                "metadata access point or metadata server.",
-                           "The client config is supplied by the caller to the OMAG server. This call needs to be supplied, including the name and URL of the OMAG server, before the server can operate correctly."),
+                           "The client config is supplied by the caller to the OMAG server. This call needs to be supplied, including the name and URL of the OMAG server, before the server can operate correctly.",
+                           "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-039 - The {0} service of OMAG server {1} has been configured with a null root URL for its remote OMAG Server
@@ -367,7 +374,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                  "The system cannot accept this value in the configuration document because the server would not be able to " +
                                       "operate correctly.",
                                  "The root URL is supplied by the caller to the OMAG server. This URL value needs to be corrected before the server" +
-                                      " can operate correctly."),
+                                      " can operate correctly.",
+                                      "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-040 - The {0} service of server {1} has been configured with a null name for the remote server
@@ -377,7 +385,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                             "The system cannot accept a null value for this property in the configuration document because the server would not" +
                                   " be able to operate properly.",
                             "The OMAG Server name is supplied by the caller to the OMAG server. This remote server name needs to be corrected before " +
-                                  "the server can operate correctly."),
+                                  "the server can operate correctly.",
+                                  "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-041 - The connection passed to the {0} method does not describe a valid connector.  Connection object is: {1}.
@@ -390,7 +399,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                            "connector for this connection and returned a detailed exception. Because of this exception, the system is " +
                            "unable to accept an invalid connection object and so the request is rejected.  No change is made to the configuration.",
                           "Use the detail messages from the connector broker to work out what is wrong with the connection object.  " +
-                           "Once the connection object is corrected, retry the request."),
+                           "Once the connection object is corrected, retry the request.",
+                           "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-042 - The {0} Open Metadata View Service (OMVS) has been passed an invalid configuration of {1} in the {2} property
@@ -398,15 +408,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     VIEW_SERVICE_CONFIG(400, "OMAG-ADMIN-400-042",
                           "The {0} Open Metadata View Service (OMVS) has been passed an invalid configuration of {1} in the {2} property",
                           "The view service has not been passed valid configuration.",
-                          "Check whether the view service expects SolutionViewServiceConfiguration or IntegrationViewServiceConfiguration, correct the configuration and restart the server."),
-
-    /**
-     * OMAG-ADMIN-400-043 - A retrieve all configurations has been attempted, but operation is not supported by the configuration store connector
-     */
-    RETRIEVE_ALL_CONFIGS_NOT_SUPPORTED(400, "OMAG-ADMIN-400-043",
-                        "A retrieve all configurations has been attempted, but operation is not supported by the configuration store connector",
-                        "The retrieve all server configurations operation is rejected.",
-                        "Check whether OMAG Server configuration connector supports retrieve all configurations."),
+                          "Check whether the view service expects SolutionViewServiceConfiguration or IntegrationViewServiceConfiguration, correct the configuration and restart the server.",
+                          "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-044 - User {0} has attempted to obtain a server config store to be able to retrieve the OMAG server stored configurations but an error occurred
@@ -414,8 +417,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE(400, "OMAG-ADMIN-400-044",
                                          "User {0} has attempted to obtain a server config store to be able to retrieve the OMAG server stored configurations but an error occurred",
                                          "The retrieve all server configurations operation is rejected, as the OMAG Server Configuration store could not be obtained.",
-                                         "Check that the OMAG Server configuration connector has been specified correctly."),
-
+                                         "Check that the OMAG Server configuration connector has been specified correctly.",
+                                         "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-046 - Unable to configure server {0} since engine service {1} is not registered in this OMAG Server Platform
@@ -430,7 +433,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                         "service. An engine service is registered in the " +
                                         "OMAG Server Platform by adding a description of the engine service to the " +
                                         "engine service registration. Once the engine service being " +
-                                        "requested is registered, retry the configuration request."),
+                                        "requested is registered, retry the configuration request.",
+                                        "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-047 - Unable to configure server {0} since engine service {1} is not enabled in this OMAG Server Platform
@@ -438,16 +442,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     ENGINE_SERVICE_NOT_ENABLED(400, "OMAG-ADMIN-400-047",
                              "Unable to configure server {0} since engine service {1} is not enabled in this OMAG Server Platform",
                              "The system cannot configure the local server with this engine service.",
-                             "Validate and correct the name of the engine service URL marker or enable the engine service in this platform."),
-
-
-    /**
-     * OMAG-ADMIN-400-051 - The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}
-     */
-    VIEW_SERVICE_MAX_PAGE_SIZE_TOO_LOW(400, "OMAG-ADMIN-400-051",
-                                       "The {0} Open Metadata View Service (OMVS) for server {1} requires a max page size of at least {2}, but was configured with {3}",
-                                       "The view service fails to start as it does not have a sufficiently large maxPageSize .",
-                                       "Reconfigure the View service to have a maxPageSize that is sufficient."),
+                             "Validate and correct the name of the engine service URL marker or enable the engine service in this platform.",
+                             "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-400-052 - Unable to configure an event mapper for OMAG server {0} because its local repository mode is set to {1}
@@ -456,15 +452,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                   "Unable to configure an event mapper for OMAG server {0} because its local repository mode is set to {1}",
                                   "The local repository mode must be set to repository proxy before the event mapper connection is set.  The system cannot configure the local server.",
                                   "The local repository mode is supplied by the caller to the OMAG server when the repository connection is set up.  " +
-                                          "This call to enable the repository connection needs to be made before the call to set the event mapper connection."),
-
-    /**
-     * OMAG-ADMIN-400-105 - The {0} property in the configuration for server {1} is null
-     */
-    NULL_PROPERTY_NAME(400, "OMAG-ADMIN-400-105",
-               "The {0} property in the configuration for server {1} is null",
-               "The server fails to start because this value is needed to operate successfully.",
-               "Add a value for this property to the configuration document and restart the server."),
+                                          "This call to enable the repository connection needs to be made before the call to set the event mapper connection.",
+                                          "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-404-100 - The {0} audit log destination connection name does not exist, so the requested {1} operation cannot proceed
@@ -472,24 +461,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     AUDIT_LOG_DESTINATION_NOT_FOUND(404, "OMAG-ADMIN-404-100",
                        "The {0} audit log destination connection name does not exist, so the requested {1} operation cannot proceed",
                        "The audit log destination is not changed.",
-                       "Amend the request so it refers to an audit destination log connection name that exists."),
-
-    /**
-     * OMAG-ADMIN-500-001 - Method {1} for OMAG server {0} returned an unexpected {2} exception with message {3}
-     */
-    UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001",
-            "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
-            "The function requested failed.",
-            "This is likely to be either a configuration, operational or logic error. Validate the request. Look at the user action for the embedded exception since this will provide the most specific information."),
-
-    /**
-     * OMAG-ADMIN-500-002 - Method {0} returned an unexpected {1} exception with message {2}
-     */
-    UNEXPECTED_PLATFORM_EXCEPTION(500, "OMAG-ADMIN-500-002",
-            "Method {0} returned an unexpected {1} exception with message {2}",
-            "The system cannot configure the OMAG server.  The exception message gives more detail on the route cause of the problem.",
-            "This is likely to be either an operational or logic error. Look for other errors.  Validate the request parameters.  If you are stuck," +
-                                          " raise an issue on Egeria's GitHub."),
+                       "Amend the request so it refers to an audit destination log connection name that exists.",
+                       "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-500-003 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open
@@ -499,7 +472,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open " +
                                          "metadata topic connection because the connector provider is incorrect.  The error message was {3}",
             "This is an internal error.  The access service is not using a valid connector provider.",
-            "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
+            "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve.",
+            "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-500-004 - The {0} service detected an unexpected {1} exception with message {2} during initialization
@@ -508,7 +482,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "The {0} service detected an unexpected {1} exception with message {2} during initialization",
             "The system cannot start the service in the OMAG server.",
             "This is likely to be either an operational or logic error. Look for other errors in the audit log.  Validate the request.  " +
-                                                "If you are stuck, raise an issue."),
+                                                "If you are stuck, raise an issue.",
+                                                "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-503-001 - A client-side exception was received from API call {0} to OMAG Server Platform at {1}.  The error message was {2}
@@ -517,7 +492,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "A client-side exception was received from API call {0} to OMAG Server Platform at {1}.  The error message was {2}",
             "The server has issued a call to the open metadata admin service REST API in a remote server and has received an exception from the " +
                                        "local client libraries.",
-            "Look for errors in the local client's console to understand and correct the source of the error.")
+            "Look for errors in the local client's console to understand and correct the source of the error.",
+            "https://egeria-project.org/guides/admin/")
 
     ;
 
@@ -526,6 +502,22 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    OMAGAdminErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -536,14 +528,17 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    OMAGAdminErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OMAGAdminErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -559,7 +554,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -576,7 +572,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -598,6 +595,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

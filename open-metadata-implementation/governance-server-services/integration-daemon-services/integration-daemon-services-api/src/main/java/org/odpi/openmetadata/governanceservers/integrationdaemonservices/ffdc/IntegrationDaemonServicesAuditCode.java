@@ -30,7 +30,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                         "A new OMAG server has been started that is configured to run as an integration daemon.  " +
                                  "Within the integration daemon are one or more dynamic integration groups that host " +
                                 "integration connectors to exchange metadata with third party technologies.",
-                        "Verify that the start up sequence goes on to initialize the configured integration services."),
+                        "Verify that the start up sequence goes on to initialize the configured integration services.",
+                        "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0003 - Integration service {0} is not configured with the platform URL root for its partner OMAS {1}
@@ -40,7 +41,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                          "Integration daemon {0} is not configured with the platform URL root for its partner OMAS {1}",
                          "The service is not able to connect to the open metadata ecosystem.  It fails to start.",
                          "Add the platform URL root of the OMAG server where the partner OMAS is running " +
-                               "to this integration service's configuration."),
+                               "to this integration service's configuration.",
+                               "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0004 - Integration service {0} is not configured with the name for the server running its partner OMAS {1}
@@ -50,17 +52,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                        "Integration daemon {0} is not configured with the name for the server running its partner OMAS {1}",
                       "The service is not able to connect to the open metadata ecosystem.  It fails to start.",
                      "Add the server name of the OMAG server where the partner OMAS is running " +
-                                "to this integration service's configuration."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0007 - The {0} integration service is configured without any integration connectors
-     */
-    NO_INTEGRATION_CONNECTORS("INTEGRATION-DAEMON-SERVICES-0007",
-                              AuditLogRecordSeverityLevel.ERROR,
-                      "The {0} integration service is configured without any integration connectors",
-                      "The integration service completes initialization with no errors.",
-                      "Add the connection for at least one integration connector to the integration service's section " +
-                                      "of this integration daemon's configuration document and then restart the integration daemon."),
+                                "to this integration service's configuration.",
+                                "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0008 - A new integration connector named {0} is initializing in integration service {1} running in integration daemon {2}, permitted synchronization is: {3}
@@ -70,7 +63,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                       "A new integration connector named {0} is initializing in integration daemon {1}, permitted synchronization is: {2}",
                       "The integration daemon is initializing an integration connector using the information in the configured " +
                                                "connection.",
-                      "Verify that this connector is successfully initialized."),
+                      "Verify that this connector is successfully initialized.",
+                      "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0009 - A new integration connector named {0} failed to initialize in integration service {1}.
@@ -83,7 +77,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                       "The integration service fails to initialize.  This, in turn causes the integration daemon to fail to start.",
                       "Correct the connection for this integration connector in the integration service's section " +
                                        "of this integration daemon's configuration document and then " +
-                                       "restart the integration daemon."),
+                                       "restart the integration daemon.",
+                                       "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0010 - The connection for integration connector named {0} created a connector of class {1}
@@ -96,7 +91,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                      "The integration service, and hence the hosting integration daemon, fails to start.",
                               "Change the connection in the integration service's section " +
                                       "of this integration daemon's configuration document to a valid integration connector and then " +
-                                      "restart the integration daemon."),
+                                      "restart the integration daemon.",
+                                      "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0012 - The integration daemon services are unable to initialize a new instance of integration daemon {0};
@@ -109,7 +105,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                              "The integration daemon services detected an error during the start up of a specific integration daemon " +
                                      "instance.  Its integration services are not available.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  " +
-                                     "Once this is resolved, restart the integration daemon."),
+                                     "Once this is resolved, restart the integration daemon.",
+                                     "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0013 - The integration daemon {0} has initialized
@@ -119,17 +116,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                        "The integration daemon {0} has initialized",
                        "The integration daemon services has completed initialization.",
                        "Verify that all the configured integration services, and their connectors within have successfully started and" +
-                               "are able to connect both to their third party technology and their partner OMAS."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0014 - The integration service {0} does not have a default permitted synchronization value set.
-     */
-    NO_PERMITTED_SYNCHRONIZATION("INTEGRATION-DAEMON-SERVICES-0014",
-                                 AuditLogRecordSeverityLevel.STARTUP,
-                       "The integration service {0} does not have a default permitted synchronization value set.",
-                       "The integration daemon is not able to initialize one of the configured integration because its defaultPermittedSynchronization value is null.  " +
-                               "The integration daemon shuts down and this error is reported to the caller as a configuration exception.",
-                       "Update the configuration for the integration service to include a value for the default permitted synchronization."),
+                               "are able to connect both to their third party technology and their partner OMAS.",
+                               "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0015 - User {0} has updated the following configuration properties for the integration connector {1} in integration daemon {2}: {3}
@@ -138,7 +126,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                          AuditLogRecordSeverityLevel.INFO,
                                          "User {0} has updated the following configuration properties for the integration connector {1} in integration daemon {2}: {3}",
                                          "The connector will be restarted once the new properties are in place.",
-                                         "Ensure that the connector does not report any errors during the restart processing as it operates using its new properties."),
+                                         "Ensure that the connector does not report any errors during the restart processing as it operates using its new properties.",
+                                         "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0016 - User {0} has cleared all the configuration properties for the integration connector {1} in integration daemon {2}
@@ -147,30 +136,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                           AuditLogRecordSeverityLevel.INFO,
                                           "User {0} has cleared all the configuration properties for the integration connector {1} in integration daemon {2}",
                                           "The connector will be restarted once the properties are cleared.",
-                                          "Ensure that the connector does not report any errors during the restart processing as it operated on its default properties."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0017 - Integration daemon {0} is not configured with any integration services
-     */
-    NO_INTEGRATION_SERVICES_CONFIGURED("INTEGRATION-DAEMON-SERVICES-0017",
-                                       AuditLogRecordSeverityLevel.INFO,
-                                       "Integration daemon {0} is not configured with any integration services",
-                                       "The integration daemon continues start up, looking for integration groups.",
-                                       "No change is required if the integration daemon requires no statically configured integration connectors. " +
-                                               "If statically configured integration connectors are required, add the configuration for at least " +
-                                               "one integration service, with the associated integration connector configurations," +
-                                               " to this integration daemon's configuration document and then restart the integration daemon."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0018 - Integration daemon {0} is not configured with any integration groups
-     */
-    NO_INTEGRATION_GROUPS_CONFIGURED("INTEGRATION-DAEMON-SERVICES-0018",
-                                     AuditLogRecordSeverityLevel.INFO,
-                                       "Integration daemon {0} is not configured with any integration groups",
-                                       "The integration daemon continues start up.",
-                                       "No change is required if the integration daemon requires no dynamically configured integration connectors. " +
-                                               "If dynamically configured integration connectors are required, add the configuration for at least " +
-                                               "one integration group to this integration daemon's configuration document and then restart the integration daemon."),
+                                          "Ensure that the connector does not report any errors during the restart processing as it operated on its default properties.",
+                                          "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0019 - The integration daemon services has registered the configuration listener for server {0}.  It will receive configuration updates from metadata server {1}
@@ -183,7 +150,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                               "integration groups and they will operate with whatever configuration that they can retrieve.  " +
                                               "Periodically the integration daemon services will" +
                                               "retry the request to retrieve the integration connector configuration associated with the group and activate/deactivate the requested integration connectors as requested.",
-                                      "Ensure the configuration for the integration connectors is attached to the integration group(s) configured for this integration daemon."),
+                                      "Ensure the configuration for the integration connectors is attached to the integration group(s) configured for this integration daemon.",
+                                      "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0020 - The integration daemon {0} is shutting down
@@ -192,59 +160,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.SHUTDOWN,
                     "The integration daemon {0} is shutting down",
                     "The local administrator has requested shut down of this integration daemon server.",
-                    "Verify that this server is no longer needed and the shutdown is expected."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0021 - The integration service {0} in integration daemon {1} is shutting down
-     */
-    SERVICE_SHUTTING_DOWN("INTEGRATION-DAEMON-SERVICES-0021",
-                          AuditLogRecordSeverityLevel.SHUTDOWN,
-                          "The integration service {0} in integration daemon {1} is shutting down",
-                          "The local administrator has requested shut down of this integration service.  Once shutdown" +
-                                  "is complete, no more metadata exchange will be processed by the integration connectors in this service.",
-                          "Verify that there are no errors reported by the integration connectors as they shutdown."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0022 - The integration connector {0} is shutting down
-     */
-    CONNECTOR_SHUTTING_DOWN("INTEGRATION-DAEMON-SERVICES-0022",
-                            AuditLogRecordSeverityLevel.SHUTDOWN,
-                         "The integration connector {0} is shutting down",
-                         "The local administrator has requested shut down of the hosting integration daemon server.",
-                         "Verify that this connector is no longer needed and the shutdown is expected."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0023 - The integration connector {0} reported an error on disconnect.  The exception was {1} with message {2}
-     */
-    CONNECTOR_SHUTDOWN_FAILURE("INTEGRATION-DAEMON-SERVICES-0023",
-                               AuditLogRecordSeverityLevel.SHUTDOWN,
-                            "The integration connector {0} reported an error on disconnect.  The exception was {1} with message {2}",
-                            "The integration service moves on to shut down its other connectors.",
-                            "Review the error message and other diagnostics produced by the connector to determine the source of the " +
-                                       "error.  Release any locked resources.  If a particular connector is repeatedly problematic and the " +
-                                       "code can not be improved, then it may need to be isolated to its own integration daemon running on " +
-                                       "its own OMAG Server Platform to allow the platform to be restarted to allow the operating system or " +
-                                       "container to clear resources held by the connector."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0024 - The integration connector {0} in integration service {1} has shutdown.  Statistics recorded were: {2}
-     */
-    INTEGRATION_CONNECTOR_SHUTDOWN("INTEGRATION-DAEMON-SERVICES-0024",
-                                   AuditLogRecordSeverityLevel.SHUTDOWN,
-                                 "The integration connector {0} in integration service {1} has shutdown.  Statistics recorded were: {2}",
-                                 "The local administrator has requested shut down of the hosting integration service.  " +
-                                           "Once the connector is disconnected, no more metadata exchange will happen between this connector's " +
-                                           "third party technology and the open metadata ecosystem.",
-                                 "Verify that this shutdown is intended and this integration connector is no longer needed."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0025 - The integration service {0} in integration daemon {1} has completed shutdown
-     */
-    INTEGRATION_SERVICE_SHUTDOWN("INTEGRATION-DAEMON-SERVICES-0025",
-                                 AuditLogRecordSeverityLevel.SHUTDOWN,
-                                 "The integration service {0} in integration daemon {1} has completed shutdown",
-                                 "The integration service has disconnected all of its connectors.",
-                                 "Verify that there are no errors reported by the integration connectors as they shutdown."),
+                    "Verify that this server is no longer needed and the shutdown is expected.",
+                    "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0026 - The integration daemon {0} has completed shutdown
@@ -253,8 +170,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                     AuditLogRecordSeverityLevel.SHUTDOWN,
                          "The integration daemon {0} has completed shutdown",
                          "The local administrator has requested shut down of this integration daemon server and the operation has completed.",
-                         "Verify that all integration connectors that support the metadata exchange have shut down successfully."),
-
+                         "Verify that all integration connectors that support the metadata exchange have shut down successfully.",
+                         "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0027 - The integration daemon services are unable to retrieve the connection for the configuration
@@ -275,7 +192,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                       "metadata server, or the metadata server is not running the Governance Engine OMAS service or " +
                                       "the metadata server is not running at all.  Investigate the status of the metadata server to " +
                                       "ensure it is running and correctly configured.  Once it is ready, either restart the server, or issue the " +
-                                      "refresh-config command or wait for the engine host services to retry the configuration request."),
+                                      "refresh-config command or wait for the engine host services to retry the configuration request.",
+                                      "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0028 - Unable to refresh configuration for integration group {0}.  The exception was {1} with an error message {2}
@@ -287,7 +205,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                 "Review the error messages and resolve the cause of the problem.  " +
                                         "Either wait for the integration daemon services to refresh the configuration, or issue the refreshConfig " +
                                         "call to request that the integration group calls the Governance Engine OMAS to refresh the configuration for " +
-                                        "the integration group."),
+                                        "the integration group.",
+                                        "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0030 - The dedicated thread for integration connector {0} has started in integration daemon {1}
@@ -296,8 +215,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                               AuditLogRecordSeverityLevel.STARTUP,
                     "The dedicated thread for integration connector {0} has started in integration daemon {1}",
                     "The server will call the integration connector's engage() method to indicate that it can issue blocking calls.",
-                    "Ensure that the connector is running successfully."),
-
+                    "Ensure that the connector is running successfully.",
+                    "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0031 - The integration connector {0} method {1} has returned with a {2} exception containing message {3}
@@ -307,19 +226,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                      "The integration connector {0} method {1} has returned with a {2} exception containing message {3}",
                               "The server will change the integration connector's status to failed.",
                               "Use the message from the exception and knowledge of the integration connector's behavior to " +
-                            "track down and resolve the cause of the error and then restart the connector."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0032 - The integration connector {0} method {1} has not been called because it previously
-     * returned with a {2} exception containing message {4}
-     */
-    CONNECTOR_FAILED("INTEGRATION-DAEMON-SERVICES-0032",
-                     AuditLogRecordSeverityLevel.ERROR,
-                    "The integration connector {0} method {1} has not been called because it previously returned with a {2} exception " +
-                             "containing message {4}",
-                    "The server skips all calls to this connector until it is restarted.",
-                    "Use the message from the exception and knowledge of the integration connector's behavior to " +
-                            "track down and resolve the cause of the error and then, if appropriate, restart the connector."),
+                            "track down and resolve the cause of the error and then restart the connector.",
+                            "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0034 - The integration connector {0} has returned from the "engage()" method in integration daemon {1}
@@ -332,7 +240,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                          "connector has finished its processing of a single blocking call.  " +
                                          "The integration daemon will wait one minute and then call engage() again unless the server is " +
                                          "shutting down.",
-                    "Verify that the connector is not reporting errors which have caused it to terminate prematurely."),
+                    "Verify that the connector is not reporting errors which have caused it to terminate prematurely.",
+                    "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0035 - The dedicated thread for integration connector {0} is terminating in integration daemon {1}
@@ -345,7 +254,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                          "connector terminates.",
                                  "Verify that there are no errors as the thread terminates.  In particular, if the thread detects" +
                                          "shutdown after the integration daemon has completed, there should still be an orderly shutdown of " +
-                                         "the connector."),
+                                         "the connector.",
+                                         "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0036 - The integration service {0} method {1} has returned with a {2} exception containing message {3} when attempting to connect to the associated metadata access server
@@ -358,7 +268,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                             "connector may be configured with the wrong metadata server, in which case the integration connector's " +
                             "configuration needs updating and the integration daemon will need restarting.  " +
                             "If neither of these are the cause of the problem, use the message from the exception and knowledge of the open metadata landscape to " +
-                            "track down and resolve the cause of the error and then restart the connector."),
+                            "track down and resolve the cause of the error and then restart the connector.",
+                            "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0037 - The integration service {0} method {1} has returned with a {2} exception containing message {3} when attempting to create and initialize a connector
@@ -367,17 +278,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                  AuditLogRecordSeverityLevel.ERROR,
                      "The integration service {0} method {1} has returned with a {2} exception containing message {3} when attempting to create and initialize a connector",
                      "The server will change the integration connector's status to Configuration Failed.  It will ignore the connector during each refresh() call until the connector is restarted with workable configuration.",
-                     "Check the configuration of the connector."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0040 - The integration daemon thread for integration daemon {0} has started
-     */
-    DAEMON_THREAD_STARTING("INTEGRATION-DAEMON-SERVICES-0040",
-                           AuditLogRecordSeverityLevel.STARTUP,
-                              "The integration daemon thread for integration daemon {0} has started",
-                              "The thread will periodically call refresh() on the integration connectors hosted in this daemon.  " +
-                                   "The time between each refresh is set up in the configuration for the integration connector.",
-                              "Ensure that the connector is running successfully."),
+                     "Check the configuration of the connector.",
+                     "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0041 - Integration connector {0} is refreshing for the first time in the {1} integration daemon
@@ -386,7 +288,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                    AuditLogRecordSeverityLevel.INFO,
                            "Integration connector {0} is refreshing for the first time in the {1} integration daemon",
                            "The thread is about to call refresh() on the integration connector hosted in this daemon for the first time.",
-                           "Ensure that the connector does not report any errors during the refresh processing."),
+                           "Ensure that the connector does not report any errors during the refresh processing.",
+                           "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0042 - Integration connector {0} is refreshing again in {1} integration daemon
@@ -395,7 +298,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                              AuditLogRecordSeverityLevel.INFO,
                              "Integration connector {0} is refreshing again in {1} integration daemon",
                              "The thread is about to call refresh() on the integration connector hosted in this daemon.",
-                             "Ensure that the connector does not report any errors during the refresh processing."),
+                             "Ensure that the connector does not report any errors during the refresh processing.",
+                             "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0043 - The integration connector {0} in integration daemon {1} has completed refresh processing in {2} millisecond(s)
@@ -404,26 +308,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                       AuditLogRecordSeverityLevel.INFO,
                              "The integration connector {0} in integration daemon {1} has completed refresh processing in {2} millisecond(s)",
                              "The to call refresh() has returned.",
-                             "Verify that the time between refresh calls is appropriate for the connector."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0044 - The integration daemon thread for integration daemon {0} is shutting down
-     */
-    DAEMON_THREAD_TERMINATING("INTEGRATION-DAEMON-SERVICES-0044",
-                              AuditLogRecordSeverityLevel.SHUTDOWN,
-                           "The integration daemon thread for integration daemon {0} is shutting down",
-                           "The thread will stop calling refresh() on the integration connectors hosted in this daemon and stop running.",
-                           "Ensure that the thread terminates without errors."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0045 - The integration daemon thread for integration daemon {0} caught a {1} exception from an integration connector containing message {2}
-     */
-    DAEMON_THREAD_CONNECTOR_ERROR("INTEGRATION-DAEMON-SERVICES-0045",
-                                  AuditLogRecordSeverityLevel.EXCEPTION,
-                    "The integration daemon thread for integration daemon {0} caught a {1} exception from an integration connector containing message {2}",
-                    "The integration daemon thread will move to the next connector and revisit this connector at the next refresh time.",
-                    "Use the message from the exception and knowledge of the integration connector's behavior to " +
-                            "track down and resolve the cause of the error and then restart the connector.  The integration daemon thread will then continue to call the connector."),
+                             "Verify that the time between refresh calls is appropriate for the connector.",
+                             "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0050 - Integration service {0} is not authorized to call its partner OMAS running in integration daemon {1} on OMAG Server Platform {2} with userId {3}.  The error message was: {4}
@@ -440,7 +326,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                   "extent of the authorization failure.  Then either turn off the integration services that are not permitted or " +
                                   "ensure the integration's userId has sufficient access.  If one of the integration connectors needs unusually " +
                                   "permissive access, you could consider isolating it in its own integration daemon that has a more powerful userId, " +
-                                  "leaving the rest of the integration connectors working with the current userId."),
+                                  "leaving the rest of the integration connectors working with the current userId.",
+                                  "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0051 - All integration connector configuration is being refreshed for integration group {0}
@@ -453,16 +340,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                                    "During this process, some refresh requests may fail if the associated integration" +
                                                    "connector is only partially configured.",
                                               "Monitor the integration daemon services to ensure all the integration connectors are retrieved. " +
-                                                   "Then it is ready to process new refresh requests."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0052 - The integration group {0} in server {1} is shutting down
-     */
-    GROUP_SHUTDOWN("INTEGRATION-DAEMON-SERVICES-0052",
-                   AuditLogRecordSeverityLevel.SHUTDOWN,
-                   "The integration group {0} in server {1} is shutting down",
-                   "The local administrator has requested shut down of this integration group.  No more governance requests will be processed by this engine.",
-                   "Verify that this shutdown is intended and the integration group is no longer needed."),
+                                                   "Then it is ready to process new refresh requests.",
+                                                   "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0053 - Failed to process a change to integration group {0}.  The exception was {1} with error message {2}
@@ -472,7 +351,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                         "Failed to process a change to integration group {0}.  The exception was {1} with error message {2}",
                         "The integration daemon cannot process the change to a governance group.  The exception explains the reason.",
                         "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
-                                     "refresh the configuration of the integration group by calling the integration daemon's refreshConfig service."),
+                                     "refresh the configuration of the integration group by calling the integration daemon's refreshConfig service.",
+                                     "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0054 - Failed to process a change to integration connector {0}.  The exception was {1} with error message {2}
@@ -482,20 +362,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                         "Failed to process a change to integration connector {0}.  The exception was {1} with error message {2}",
                         "The integration daemon cannot process the change to a integration connector.  The exception explains the reason.",
                         "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
-                                "refresh the configuration of the integration group by calling the integration daemon's refreshConfig service."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0055 - Failed to start up integration connector {0} because its interface does not match to an integration
-     * service connector interface that is supported by this server
-     */
-    UNKNOWN_CONNECTOR_INTERFACE("INTEGRATION-DAEMON-SERVICES-0055",
-                                AuditLogRecordSeverityLevel.ERROR,
-                            "Failed to start up integration connector {0} because its interface does not match to an integration service connector " +
-                                        "interface that is supported by this server",
-                            "The integration connector is ignored.",
-                            "Review the implementation of the integration connector and ensure it is implementing an appropriate interface.  Once " +
-                                        "resolved, the integration daemon's platform needs to be restarted to load the new implementation for the " +
-                                        "integration connector."),
+                                "refresh the configuration of the integration group by calling the integration daemon's refreshConfig service.",
+                                "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0056 - Refresh of all integration connector configuration has completed for integration group {0}
@@ -506,7 +374,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                               "The integration connectors for this integration group are running with the latest configuration.",
                                               "No action is required as long as all the expected integration connectors are started." +
                                                    "If there are any errors reported by the integration connectors then validate the configuration " +
-                                                   "of the integration connector and its associated integration group in the metadata server."),
+                                                   "of the integration connector and its associated integration group in the metadata server.",
+                                                   "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0057 - User {0} has updated the endpoint network address for the integration connector {1} in integration daemon {2} to: {3}
@@ -515,7 +384,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                      AuditLogRecordSeverityLevel.INFO,
                                          "User {0} has updated the endpoint network address for the integration connector {1} in integration daemon {2} to: {3}",
                                          "The connector will be restarted once the new endpoint network address is in place.",
-                                         "Ensure that the connector does not report any errors during the restart processing as it connects to the new endpoint."),
+                                         "Ensure that the connector does not report any errors during the restart processing as it connects to the new endpoint.",
+                                         "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0058 - User {0} has attempted to update the endpoint network address for the integration connector {1} in integration daemon {2} to {3} but this connector does not have an endpoint defined
@@ -524,17 +394,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                            AuditLogRecordSeverityLevel.ERROR,
                                      "User {0} has attempted to update the endpoint network address for the integration connector {1} in integration daemon {2} to {3} but this connector does not have an endpoint defined",
                                      "The connector continues to operate as before.",
-                                     "If the connector should have an endpoint then update the whole connection for the connector."),
-
-    /**
-     * INTEGRATION-DAEMON-SERVICES-0059 - User {0} has updated the connection for the integration connector {1} in integration daemon {2}
-     */
-    DAEMON_CONNECTOR_CONNECTION_UPDATE("INTEGRATION-DAEMON-SERVICES-0059",
-                                       AuditLogRecordSeverityLevel.INFO,
-                                     "User {0} has updated the connection for the integration connector {1} in integration daemon {2}",
-                                     "The connector will be restarted once the new connection is in place.",
-                                     "Ensure that the connector does not report any errors during the restart processing as it operates with this new connection information."),
-
+                                     "If the connector should have an endpoint then update the whole connection for the connector.",
+                                     "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0060 - The integration connector refresh thread for integration connector {0} has started
@@ -544,7 +405,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                            "The integration connector refresh thread for integration connector {0} has started",
                            "The thread will periodically call refresh() on the integration connector.  " +
                                    "The time between each refresh is set up in the configuration for the integration connector.",
-                           "Ensure that the integration connector is running successfully."),
+                           "Ensure that the integration connector is running successfully.",
+                           "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0064 - The integration connector refresh thread for integration connector {0} is shutting down
@@ -553,7 +415,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                               AuditLogRecordSeverityLevel.SHUTDOWN,
                               "The integration connector refresh thread for integration connector {0} is shutting down",
                               "The thread will stop calling refresh() on the integration connectors hosted in this daemon and stop running.",
-                              "Ensure that the thread terminates without errors."),
+                              "Ensure that the thread terminates without errors.",
+                              "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0065 - The integration connector refresh thread for integration connector {0} caught a {1} exception  containing message {2}
@@ -564,7 +427,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                   "The integration connector thread will revisit this connector at the next refresh time.",
                                   "Use the message from the exception and knowledge of the integration connector's behavior to " +
                                           "track down and resolve the cause of the error and then restart the connector.  " +
-                                           "The integration connector refresh thread will then continue to call the connector."),
+                                           "The integration connector refresh thread will then continue to call the connector.",
+                                           "https://egeria-project.org/services/integration-daemon-services/"),
 
     ;
 
@@ -574,6 +438,26 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    IntegrationDaemonServicesAuditCode(String                      messageId,
+                                       AuditLogRecordSeverityLevel severity,
+                                       String                      message,
+                                       String                      systemAction,
+                                       String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -589,18 +473,22 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     IntegrationDaemonServicesAuditCode(String                      messageId,
                                        AuditLogRecordSeverityLevel severity,
                                        String                      message,
                                        String                      systemAction,
-                                       String                      userAction)
+                                       String                      userAction,
+                                       String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -616,7 +504,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -633,7 +522,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -653,6 +543,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                        ", logMessage='" + logMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

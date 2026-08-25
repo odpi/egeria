@@ -61,7 +61,7 @@ public class SchemaMakerResource
     @Operation(summary="createSchemaType",
             description="Create a schema type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public GUIDResponse createSchemaType(@PathVariable String                               serverName,
                                          @PathVariable String             urlMarker,
@@ -91,7 +91,7 @@ public class SchemaMakerResource
     @Operation(summary="createSchemaTypeFromTemplate",
             description="Create a new metadata element to represent a schema type using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public GUIDResponse createSchemaTypeFromTemplate(@PathVariable
                                                      String              serverName,
@@ -122,7 +122,7 @@ public class SchemaMakerResource
     @Operation(summary="updateSchemaType",
             description="Update the properties of a schema type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public BooleanResponse updateSchemaType(@PathVariable
                                             String                                  serverName,
@@ -155,7 +155,7 @@ public class SchemaMakerResource
     @Operation(summary="deleteSchemaType",
             description="Delete a schema type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse deleteSchemaType(@PathVariable
                                          String                    serverName,
@@ -187,7 +187,7 @@ public class SchemaMakerResource
     @Operation(summary="getSchemaTypesByName",
             description="Returns the list of schema types with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public OpenMetadataRootElementsResponse getSchemaTypesByName(@PathVariable
                                                                  String            serverName,
@@ -217,7 +217,7 @@ public class SchemaMakerResource
     @Operation(summary="findSchemaTypes",
             description="Retrieve the list of schema type metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public OpenMetadataRootElementsResponse findSchemaTypes(@PathVariable
                                                             String                  serverName,
@@ -248,7 +248,7 @@ public class SchemaMakerResource
     @Operation(summary="getSchemaTypeByGUID",
             description="Return the properties of a specific schema type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public OpenMetadataRootElementResponse getSchemaTypeByGUID(@PathVariable
                                                                String             serverName,
@@ -280,7 +280,7 @@ public class SchemaMakerResource
     @Operation(summary="createSchemaAttribute",
             description="Create a schema attribute.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public GUIDResponse createSchemaAttribute(@PathVariable String                               serverName,
                                               @PathVariable String             urlMarker,
@@ -310,7 +310,7 @@ public class SchemaMakerResource
     @Operation(summary="createSchemaAttributeFromTemplate",
             description="Create a new metadata element to represent a schema attribute using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public GUIDResponse createSchemaAttributeFromTemplate(@PathVariable
                                                           String              serverName,
@@ -341,7 +341,7 @@ public class SchemaMakerResource
     @Operation(summary="updateSchemaAttribute",
             description="Update the properties of a schema attribute.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public BooleanResponse updateSchemaAttribute(@PathVariable String                                  serverName,
                                                  @PathVariable String             urlMarker,
@@ -372,7 +372,7 @@ public class SchemaMakerResource
     @Operation(summary="deleteSchemaAttribute",
             description="Delete a schema attribute.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse deleteSchemaAttribute(@PathVariable
                                               String                    serverName,
@@ -404,7 +404,7 @@ public class SchemaMakerResource
     @Operation(summary="getSchemaAttributesByName",
             description="Returns the list of schema attributes with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public OpenMetadataRootElementsResponse getSchemaAttributesByName(@PathVariable
                                                                       String            serverName,
@@ -435,7 +435,7 @@ public class SchemaMakerResource
     @Operation(summary="findSchemaAttributes",
             description="Retrieve the list of schema attribute metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public OpenMetadataRootElementsResponse findSchemaAttributes(@PathVariable
                                                                  String                  serverName,
@@ -466,7 +466,7 @@ public class SchemaMakerResource
     @Operation(summary="getSchemaAttributeByGUID",
             description="Return the properties of a specific schema attribute.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public OpenMetadataRootElementResponse getSchemaAttributeByGUID(@PathVariable
                                                                     String             serverName,
@@ -506,7 +506,7 @@ public class SchemaMakerResource
     @Operation(summary="linkNestedSchemaAttribute",
             description="Attach a nested schema attribute to its parent schema attribute.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkNestedSchemaAttribute(@PathVariable String serverName,
                                                   @PathVariable String urlMarker,
@@ -539,7 +539,7 @@ public class SchemaMakerResource
     @Operation(summary="detachNestedSchemaAttribute",
             description="Detach a nested schema attribute from its parent schema attribute.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachNestedSchemaAttribute(@PathVariable String serverName,
                                                     @PathVariable String urlMarker,
@@ -572,7 +572,7 @@ public class SchemaMakerResource
     @Operation(summary="linkAttributeForSchema",
             description="Attach a schema attribute to the schema type that it belongs to.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkAttributeForSchema(@PathVariable String serverName,
                                                @PathVariable String urlMarker,
@@ -605,7 +605,7 @@ public class SchemaMakerResource
     @Operation(summary="detachAttributeForSchema",
             description="Detach a schema attribute from the schema type that it belongs to.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachAttributeForSchema(@PathVariable String serverName,
                                                  @PathVariable String urlMarker,
@@ -638,7 +638,7 @@ public class SchemaMakerResource
     @Operation(summary="linkForeignKey",
             description="Attach a foreign key column to the primary key column that it refers to.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkForeignKey(@PathVariable String serverName,
                                        @PathVariable String urlMarker,
@@ -671,7 +671,7 @@ public class SchemaMakerResource
     @Operation(summary="detachForeignKey",
             description="Detach a foreign key column from the primary key column that it refers to.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachForeignKey(@PathVariable String serverName,
                                          @PathVariable String urlMarker,
@@ -704,7 +704,7 @@ public class SchemaMakerResource
     @Operation(summary="linkExternalSchemaType",
             description="Attach an external schema type to the schema element that uses it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkExternalSchemaType(@PathVariable String serverName,
                                                @PathVariable String urlMarker,
@@ -737,7 +737,7 @@ public class SchemaMakerResource
     @Operation(summary="detachExternalSchemaType",
             description="Detach an external schema type from the schema element that uses it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachExternalSchemaType(@PathVariable String serverName,
                                                  @PathVariable String urlMarker,
@@ -770,7 +770,7 @@ public class SchemaMakerResource
     @Operation(summary="linkMapFromSchemaType",
             description="Attach the schema type that describes the domain (from) element of a map.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkMapFromSchemaType(@PathVariable String serverName,
                                               @PathVariable String urlMarker,
@@ -803,7 +803,7 @@ public class SchemaMakerResource
     @Operation(summary="detachMapFromSchemaType",
             description="Detach the schema type that describes the domain (from) element of a map.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachMapFromSchemaType(@PathVariable String serverName,
                                                 @PathVariable String urlMarker,
@@ -836,7 +836,7 @@ public class SchemaMakerResource
     @Operation(summary="linkMapToSchemaType",
             description="Attach the schema type that describes the range (to) element of a map.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkMapToSchemaType(@PathVariable String serverName,
                                             @PathVariable String urlMarker,
@@ -869,7 +869,7 @@ public class SchemaMakerResource
     @Operation(summary="detachMapToSchemaType",
             description="Detach the schema type that describes the range (to) element of a map.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachMapToSchemaType(@PathVariable String serverName,
                                               @PathVariable String urlMarker,
@@ -902,7 +902,7 @@ public class SchemaMakerResource
     @Operation(summary="linkGraphEdge",
             description="Attach a graph edge to one of the graph vertices that it connects.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkGraphEdge(@PathVariable String serverName,
                                       @PathVariable String urlMarker,
@@ -935,7 +935,7 @@ public class SchemaMakerResource
     @Operation(summary="detachGraphEdge",
             description="Detach a graph edge from one of the graph vertices that it connects.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachGraphEdge(@PathVariable String serverName,
                                         @PathVariable String urlMarker,
@@ -968,7 +968,7 @@ public class SchemaMakerResource
     @Operation(summary="linkQueryTarget",
             description="Attach a query target to the derived schema element that queries it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkQueryTarget(@PathVariable String serverName,
                                         @PathVariable String urlMarker,
@@ -1001,7 +1001,7 @@ public class SchemaMakerResource
     @Operation(summary="detachQueryTarget",
             description="Detach a query target from the derived schema element that queries it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachQueryTarget(@PathVariable String serverName,
                                           @PathVariable String urlMarker,
@@ -1034,7 +1034,7 @@ public class SchemaMakerResource
     @Operation(summary="linkSchema",
             description="Attach a schema type to the element that it describes.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkSchema(@PathVariable String serverName,
                                    @PathVariable String urlMarker,
@@ -1067,7 +1067,7 @@ public class SchemaMakerResource
     @Operation(summary="detachSchema",
             description="Detach a schema type from the element that it describes.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachSchema(@PathVariable String serverName,
                                      @PathVariable String urlMarker,
@@ -1099,7 +1099,7 @@ public class SchemaMakerResource
     @Operation(summary="linkRelationalDBSchema",
             description="Attach a relational database schema type to the list that contains it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkRelationalDBSchema(@PathVariable String serverName,
                                                @PathVariable String urlMarker,
@@ -1132,7 +1132,7 @@ public class SchemaMakerResource
     @Operation(summary="detachRelationalDBSchema",
             description="Detach a relational database schema type from the list that contained it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachRelationalDBSchema(@PathVariable String serverName,
                                                  @PathVariable String urlMarker,
@@ -1163,7 +1163,7 @@ public class SchemaMakerResource
     @Operation(summary="addPrimaryKeyClassification",
             description="Add the PrimaryKey classification to a relational column.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse addPrimaryKeyClassification(@PathVariable String serverName,
                                                     @PathVariable String urlMarker,
@@ -1194,7 +1194,7 @@ public class SchemaMakerResource
     @Operation(summary="removePrimaryKeyClassification",
             description="Remove the PrimaryKey classification from a relational column.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse removePrimaryKeyClassification(@PathVariable String serverName,
                                                        @PathVariable String urlMarker,
@@ -1225,7 +1225,7 @@ public class SchemaMakerResource
     @Operation(summary="addTypeEmbeddedAttribute",
             description="Add the TypeEmbeddedAttribute classification to a schema attribute.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse addTypeEmbeddedAttribute(@PathVariable String serverName,
                                                  @PathVariable String urlMarker,
@@ -1256,7 +1256,7 @@ public class SchemaMakerResource
     @Operation(summary="removeTypeEmbeddedAttribute",
             description="Remove the TypeEmbeddedAttribute classification from a schema attribute.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse removeTypeEmbeddedAttribute(@PathVariable String serverName,
                                                     @PathVariable String urlMarker,
@@ -1287,7 +1287,7 @@ public class SchemaMakerResource
     @Operation(summary="addCalculatedValue",
             description="Add the CalculatedValue classification to a schema element to show that its value is derived by a formula.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse addCalculatedValue(@PathVariable String serverName,
                                            @PathVariable String urlMarker,
@@ -1318,7 +1318,7 @@ public class SchemaMakerResource
     @Operation(summary="removeCalculatedValue",
             description="Remove the CalculatedValue classification from a schema element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-attribute"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse removeCalculatedValue(@PathVariable String serverName,
                                               @PathVariable String urlMarker,
@@ -1349,7 +1349,7 @@ public class SchemaMakerResource
     @Operation(summary="linkAPIOperations",
             description="Attach an API operation to the API schema type that contains it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkAPIOperations(@PathVariable String serverName,
                                           @PathVariable String urlMarker,
@@ -1382,7 +1382,7 @@ public class SchemaMakerResource
     @Operation(summary="detachAPIOperations",
             description="Detach an API operation from the API schema type that contained it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachAPIOperations(@PathVariable String serverName,
                                             @PathVariable String urlMarker,
@@ -1415,7 +1415,7 @@ public class SchemaMakerResource
     @Operation(summary="linkAPIHeader",
             description="Attach a schema type to the API operation that uses it as its header.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkAPIHeader(@PathVariable String serverName,
                                       @PathVariable String urlMarker,
@@ -1448,7 +1448,7 @@ public class SchemaMakerResource
     @Operation(summary="detachAPIHeader",
             description="Detach a schema type from the API operation that used it as its header.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachAPIHeader(@PathVariable String serverName,
                                         @PathVariable String urlMarker,
@@ -1481,7 +1481,7 @@ public class SchemaMakerResource
     @Operation(summary="linkAPIRequest",
             description="Attach a schema type to the API operation that uses it as its request.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkAPIRequest(@PathVariable String serverName,
                                        @PathVariable String urlMarker,
@@ -1514,7 +1514,7 @@ public class SchemaMakerResource
     @Operation(summary="detachAPIRequest",
             description="Detach a schema type from the API operation that used it as its request.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachAPIRequest(@PathVariable String serverName,
                                          @PathVariable String urlMarker,
@@ -1547,7 +1547,7 @@ public class SchemaMakerResource
     @Operation(summary="linkAPIResponse",
             description="Attach a schema type to the API operation that uses it as its response.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkAPIResponse(@PathVariable String serverName,
                                         @PathVariable String urlMarker,
@@ -1580,7 +1580,7 @@ public class SchemaMakerResource
     @Operation(summary="detachAPIResponse",
             description="Detach a schema type from the API operation that used it as its response.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachAPIResponse(@PathVariable String serverName,
                                           @PathVariable String urlMarker,
@@ -1613,7 +1613,7 @@ public class SchemaMakerResource
     @Operation(summary="linkSchemaTypeOption",
             description="Attach a schema type to a schema element that may optionally use it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse linkSchemaTypeOption(@PathVariable String serverName,
                                              @PathVariable String urlMarker,
@@ -1646,7 +1646,7 @@ public class SchemaMakerResource
     @Operation(summary="detachSchemaTypeOption",
             description="Detach a schema type from a schema element that may optionally have used it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/schema-type"))
+                    url="https://egeria-project.org/concepts/schema/"))
 
     public VoidResponse detachSchemaTypeOption(@PathVariable String serverName,
                                                @PathVariable String urlMarker,

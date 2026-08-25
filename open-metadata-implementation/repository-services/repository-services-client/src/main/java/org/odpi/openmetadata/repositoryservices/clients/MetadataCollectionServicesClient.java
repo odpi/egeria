@@ -6055,16 +6055,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new ClassificationErrorException(restResult.getRelatedHTTPCode(),
-                                                   this.getClass().getName(),
-                                                   methodName,
-                                                   restResult.getExceptionErrorMessage(),
-                                                   restResult.getExceptionErrorMessageId(),
-                                                   restResult.getExceptionErrorMessageParameters(),
-                                                   restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction(),
-                                                   restResult.getExceptionCausedBy(),
-                                                   restResult.getExceptionProperties());
+            ClassificationErrorException restException = new ClassificationErrorException(restResult.getRelatedHTTPCode(),
+                                                                                          this.getClass().getName(),
+                                                                                          methodName,
+                                                                                          restResult.getExceptionErrorMessage(),
+                                                                                          restResult.getExceptionErrorMessageId(),
+                                                                                          restResult.getExceptionErrorMessageParameters(),
+                                                                                          restResult.getExceptionSystemAction(),
+                                                                                          restResult.getExceptionUserAction(),
+                                                                                          restResult.getExceptionCausedBy(),
+                                                                                          restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6083,16 +6087,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new EntityConflictException(restResult.getRelatedHTTPCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              restResult.getExceptionErrorMessage(),
-                                              restResult.getExceptionErrorMessageId(),
-                                              restResult.getExceptionErrorMessageParameters(),
-                                              restResult.getExceptionSystemAction(),
-                                              restResult.getExceptionUserAction(),
-                                              restResult.getExceptionCausedBy(),
-                                              restResult.getExceptionProperties());
+            EntityConflictException restException = new EntityConflictException(restResult.getRelatedHTTPCode(),
+                                                                                this.getClass().getName(),
+                                                                                methodName,
+                                                                                restResult.getExceptionErrorMessage(),
+                                                                                restResult.getExceptionErrorMessageId(),
+                                                                                restResult.getExceptionErrorMessageParameters(),
+                                                                                restResult.getExceptionSystemAction(),
+                                                                                restResult.getExceptionUserAction(),
+                                                                                restResult.getExceptionCausedBy(),
+                                                                                restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6111,16 +6119,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new EntityNotDeletedException(restResult.getRelatedHTTPCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                restResult.getExceptionErrorMessage(),
-                                                restResult.getExceptionErrorMessageId(),
-                                                restResult.getExceptionErrorMessageParameters(),
-                                                restResult.getExceptionSystemAction(),
-                                                restResult.getExceptionUserAction(),
-                                                restResult.getExceptionCausedBy(),
-                                                restResult.getExceptionProperties());
+            EntityNotDeletedException restException = new EntityNotDeletedException(restResult.getRelatedHTTPCode(),
+                                                                                    this.getClass().getName(),
+                                                                                    methodName,
+                                                                                    restResult.getExceptionErrorMessage(),
+                                                                                    restResult.getExceptionErrorMessageId(),
+                                                                                    restResult.getExceptionErrorMessageParameters(),
+                                                                                    restResult.getExceptionSystemAction(),
+                                                                                    restResult.getExceptionUserAction(),
+                                                                                    restResult.getExceptionCausedBy(),
+                                                                                    restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6139,16 +6151,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new EntityNotKnownException(restResult.getRelatedHTTPCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              restResult.getExceptionErrorMessage(),
-                                              restResult.getExceptionErrorMessageId(),
-                                              restResult.getExceptionErrorMessageParameters(),
-                                              restResult.getExceptionSystemAction(),
-                                              restResult.getExceptionUserAction(),
-                                              restResult.getExceptionCausedBy(),
-                                              restResult.getExceptionProperties());
+            EntityNotKnownException restException = new EntityNotKnownException(restResult.getRelatedHTTPCode(),
+                                                                                this.getClass().getName(),
+                                                                                methodName,
+                                                                                restResult.getExceptionErrorMessage(),
+                                                                                restResult.getExceptionErrorMessageId(),
+                                                                                restResult.getExceptionErrorMessageParameters(),
+                                                                                restResult.getExceptionSystemAction(),
+                                                                                restResult.getExceptionUserAction(),
+                                                                                restResult.getExceptionCausedBy(),
+                                                                                restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6167,16 +6183,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new EntityProxyOnlyException(restResult.getRelatedHTTPCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               restResult.getExceptionErrorMessage(),
-                                               restResult.getExceptionErrorMessageId(),
-                                               restResult.getExceptionErrorMessageParameters(),
-                                               restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction(),
-                                               restResult.getExceptionCausedBy(),
-                                               restResult.getExceptionProperties());
+            EntityProxyOnlyException restException = new EntityProxyOnlyException(restResult.getRelatedHTTPCode(),
+                                                                                  this.getClass().getName(),
+                                                                                  methodName,
+                                                                                  restResult.getExceptionErrorMessage(),
+                                                                                  restResult.getExceptionErrorMessageId(),
+                                                                                  restResult.getExceptionErrorMessageParameters(),
+                                                                                  restResult.getExceptionSystemAction(),
+                                                                                  restResult.getExceptionUserAction(),
+                                                                                  restResult.getExceptionCausedBy(),
+                                                                                  restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6195,16 +6215,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new FunctionNotSupportedException(restResult.getRelatedHTTPCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    restResult.getExceptionErrorMessage(),
-                                                    restResult.getExceptionErrorMessageId(),
-                                                    restResult.getExceptionErrorMessageParameters(),
-                                                    restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction(),
-                                                    restResult.getExceptionCausedBy(),
-                                                    restResult.getExceptionProperties());
+            FunctionNotSupportedException restException = new FunctionNotSupportedException(restResult.getRelatedHTTPCode(),
+                                                                                            this.getClass().getName(),
+                                                                                            methodName,
+                                                                                            restResult.getExceptionErrorMessage(),
+                                                                                            restResult.getExceptionErrorMessageId(),
+                                                                                            restResult.getExceptionErrorMessageParameters(),
+                                                                                            restResult.getExceptionSystemAction(),
+                                                                                            restResult.getExceptionUserAction(),
+                                                                                            restResult.getExceptionCausedBy(),
+                                                                                            restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6224,16 +6248,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new HomeEntityException(restResult.getRelatedHTTPCode(),
-                                          this.getClass().getName(),
-                                          methodName,
-                                          restResult.getExceptionErrorMessage(),
-                                          restResult.getExceptionErrorMessageId(),
-                                          restResult.getExceptionErrorMessageParameters(),
-                                          restResult.getExceptionSystemAction(),
-                                          restResult.getExceptionUserAction(),
-                                          restResult.getExceptionCausedBy(),
-                                          restResult.getExceptionProperties());
+            HomeEntityException restException = new HomeEntityException(restResult.getRelatedHTTPCode(),
+                                                                        this.getClass().getName(),
+                                                                        methodName,
+                                                                        restResult.getExceptionErrorMessage(),
+                                                                        restResult.getExceptionErrorMessageId(),
+                                                                        restResult.getExceptionErrorMessageParameters(),
+                                                                        restResult.getExceptionSystemAction(),
+                                                                        restResult.getExceptionUserAction(),
+                                                                        restResult.getExceptionCausedBy(),
+                                                                        restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6252,16 +6280,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new HomeRelationshipException(restResult.getRelatedHTTPCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                restResult.getExceptionErrorMessage(),
-                                                restResult.getExceptionErrorMessageId(),
-                                                restResult.getExceptionErrorMessageParameters(),
-                                                restResult.getExceptionSystemAction(),
-                                                restResult.getExceptionUserAction(),
-                                                restResult.getExceptionCausedBy(),
-                                                restResult.getExceptionProperties());
+            HomeRelationshipException restException = new HomeRelationshipException(restResult.getRelatedHTTPCode(),
+                                                                                    this.getClass().getName(),
+                                                                                    methodName,
+                                                                                    restResult.getExceptionErrorMessage(),
+                                                                                    restResult.getExceptionErrorMessageId(),
+                                                                                    restResult.getExceptionErrorMessageParameters(),
+                                                                                    restResult.getExceptionSystemAction(),
+                                                                                    restResult.getExceptionUserAction(),
+                                                                                    restResult.getExceptionCausedBy(),
+                                                                                    restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6280,16 +6312,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new InvalidEntityException(restResult.getRelatedHTTPCode(),
-                                             this.getClass().getName(),
-                                             methodName,
-                                             restResult.getExceptionErrorMessage(),
-                                             restResult.getExceptionErrorMessageId(),
-                                             restResult.getExceptionErrorMessageParameters(),
-                                             restResult.getExceptionSystemAction(),
-                                             restResult.getExceptionUserAction(),
-                                             restResult.getExceptionCausedBy(),
-                                             restResult.getExceptionProperties());
+            InvalidEntityException restException = new InvalidEntityException(restResult.getRelatedHTTPCode(),
+                                                                              this.getClass().getName(),
+                                                                              methodName,
+                                                                              restResult.getExceptionErrorMessage(),
+                                                                              restResult.getExceptionErrorMessageId(),
+                                                                              restResult.getExceptionErrorMessageParameters(),
+                                                                              restResult.getExceptionSystemAction(),
+                                                                              restResult.getExceptionUserAction(),
+                                                                              restResult.getExceptionCausedBy(),
+                                                                              restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6334,30 +6370,38 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                  * InvalidParameterException because the serverName is invalid - so this is turned into
                  * a RepositoryErrorException as if the whole platform is missing.
                  */
-                throw new RepositoryErrorException(restResult.getRelatedHTTPCode(),
-                                                   this.getClass().getName(),
-                                                   methodName,
-                                                   restResult.getExceptionErrorMessage(),
-                                                   restResult.getExceptionErrorMessageId(),
-                                                   restResult.getExceptionErrorMessageParameters(),
-                                                   restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction(),
-                                                   restResult.getExceptionCausedBy(),
-                                                   restResult.getExceptionProperties());
+                RepositoryErrorException restException = new RepositoryErrorException(restResult.getRelatedHTTPCode(),
+                                                                                      this.getClass().getName(),
+                                                                                      methodName,
+                                                                                      restResult.getExceptionErrorMessage(),
+                                                                                      restResult.getExceptionErrorMessageId(),
+                                                                                      restResult.getExceptionErrorMessageParameters(),
+                                                                                      restResult.getExceptionSystemAction(),
+                                                                                      restResult.getExceptionUserAction(),
+                                                                                      restResult.getExceptionCausedBy(),
+                                                                                      restResult.getExceptionProperties());
+
+                restException.setReportedURL(restResult.getExceptionURL());
+
+                throw restException;
             }
             else
             {
-                throw new InvalidParameterException(restResult.getRelatedHTTPCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    restResult.getExceptionErrorMessage(),
-                                                    restResult.getExceptionErrorMessageId(),
-                                                    restResult.getExceptionErrorMessageParameters(),
-                                                    restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction(),
-                                                    restResult.getExceptionCausedBy(),
-                                                    parameterName,
-                                                    restResult.getExceptionProperties());
+                InvalidParameterException restException = new InvalidParameterException(restResult.getRelatedHTTPCode(),
+                                                                                        this.getClass().getName(),
+                                                                                        methodName,
+                                                                                        restResult.getExceptionErrorMessage(),
+                                                                                        restResult.getExceptionErrorMessageId(),
+                                                                                        restResult.getExceptionErrorMessageParameters(),
+                                                                                        restResult.getExceptionSystemAction(),
+                                                                                        restResult.getExceptionUserAction(),
+                                                                                        restResult.getExceptionCausedBy(),
+                                                                                        parameterName,
+                                                                                        restResult.getExceptionProperties());
+
+                restException.setReportedURL(restResult.getExceptionURL());
+
+                throw restException;
             }
         }
     }
@@ -6377,16 +6421,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new InvalidRelationshipException(restResult.getRelatedHTTPCode(),
-                                                   this.getClass().getName(),
-                                                   methodName,
-                                                   restResult.getExceptionErrorMessage(),
-                                                   restResult.getExceptionErrorMessageId(),
-                                                   restResult.getExceptionErrorMessageParameters(),
-                                                   restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction(),
-                                                   restResult.getExceptionCausedBy(),
-                                                   restResult.getExceptionProperties());
+            InvalidRelationshipException restException = new InvalidRelationshipException(restResult.getRelatedHTTPCode(),
+                                                                                          this.getClass().getName(),
+                                                                                          methodName,
+                                                                                          restResult.getExceptionErrorMessage(),
+                                                                                          restResult.getExceptionErrorMessageId(),
+                                                                                          restResult.getExceptionErrorMessageParameters(),
+                                                                                          restResult.getExceptionSystemAction(),
+                                                                                          restResult.getExceptionUserAction(),
+                                                                                          restResult.getExceptionCausedBy(),
+                                                                                          restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6405,16 +6453,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new InvalidTypeDefException(restResult.getRelatedHTTPCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              restResult.getExceptionErrorMessage(),
-                                              restResult.getExceptionErrorMessageId(),
-                                              restResult.getExceptionErrorMessageParameters(),
-                                              restResult.getExceptionSystemAction(),
-                                              restResult.getExceptionUserAction(),
-                                              restResult.getExceptionCausedBy(),
-                                              restResult.getExceptionProperties());
+            InvalidTypeDefException restException = new InvalidTypeDefException(restResult.getRelatedHTTPCode(),
+                                                                                this.getClass().getName(),
+                                                                                methodName,
+                                                                                restResult.getExceptionErrorMessage(),
+                                                                                restResult.getExceptionErrorMessageId(),
+                                                                                restResult.getExceptionErrorMessageParameters(),
+                                                                                restResult.getExceptionSystemAction(),
+                                                                                restResult.getExceptionUserAction(),
+                                                                                restResult.getExceptionCausedBy(),
+                                                                                restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6433,16 +6485,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new PagingErrorException(restResult.getRelatedHTTPCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           restResult.getExceptionErrorMessage(),
-                                           restResult.getExceptionErrorMessageId(),
-                                           restResult.getExceptionErrorMessageParameters(),
-                                           restResult.getExceptionSystemAction(),
-                                           restResult.getExceptionUserAction(),
-                                           restResult.getExceptionCausedBy(),
-                                           restResult.getExceptionProperties());
+            PagingErrorException restException = new PagingErrorException(restResult.getRelatedHTTPCode(),
+                                                                          this.getClass().getName(),
+                                                                          methodName,
+                                                                          restResult.getExceptionErrorMessage(),
+                                                                          restResult.getExceptionErrorMessageId(),
+                                                                          restResult.getExceptionErrorMessageParameters(),
+                                                                          restResult.getExceptionSystemAction(),
+                                                                          restResult.getExceptionUserAction(),
+                                                                          restResult.getExceptionCausedBy(),
+                                                                          restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6461,16 +6517,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new PatchErrorException(restResult.getRelatedHTTPCode(),
-                                          this.getClass().getName(),
-                                          methodName,
-                                          restResult.getExceptionErrorMessage(),
-                                          restResult.getExceptionErrorMessageId(),
-                                          restResult.getExceptionErrorMessageParameters(),
-                                          restResult.getExceptionSystemAction(),
-                                          restResult.getExceptionUserAction(),
-                                          restResult.getExceptionCausedBy(),
-                                          restResult.getExceptionProperties());
+            PatchErrorException restException = new PatchErrorException(restResult.getRelatedHTTPCode(),
+                                                                        this.getClass().getName(),
+                                                                        methodName,
+                                                                        restResult.getExceptionErrorMessage(),
+                                                                        restResult.getExceptionErrorMessageId(),
+                                                                        restResult.getExceptionErrorMessageParameters(),
+                                                                        restResult.getExceptionSystemAction(),
+                                                                        restResult.getExceptionUserAction(),
+                                                                        restResult.getExceptionCausedBy(),
+                                                                        restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6489,16 +6549,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new PropertyErrorException(restResult.getRelatedHTTPCode(),
-                                             this.getClass().getName(),
-                                             methodName,
-                                             restResult.getExceptionErrorMessage(),
-                                             restResult.getExceptionErrorMessageId(),
-                                             restResult.getExceptionErrorMessageParameters(),
-                                             restResult.getExceptionSystemAction(),
-                                             restResult.getExceptionUserAction(),
-                                             restResult.getExceptionCausedBy(),
-                                             restResult.getExceptionProperties());
+            PropertyErrorException restException = new PropertyErrorException(restResult.getRelatedHTTPCode(),
+                                                                              this.getClass().getName(),
+                                                                              methodName,
+                                                                              restResult.getExceptionErrorMessage(),
+                                                                              restResult.getExceptionErrorMessageId(),
+                                                                              restResult.getExceptionErrorMessageParameters(),
+                                                                              restResult.getExceptionSystemAction(),
+                                                                              restResult.getExceptionUserAction(),
+                                                                              restResult.getExceptionCausedBy(),
+                                                                              restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6517,16 +6581,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new RelationshipConflictException(restResult.getRelatedHTTPCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    restResult.getExceptionErrorMessage(),
-                                                    restResult.getExceptionErrorMessageId(),
-                                                    restResult.getExceptionErrorMessageParameters(),
-                                                    restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction(),
-                                                    restResult.getExceptionCausedBy(),
-                                                    restResult.getExceptionProperties());
+            RelationshipConflictException restException = new RelationshipConflictException(restResult.getRelatedHTTPCode(),
+                                                                                            this.getClass().getName(),
+                                                                                            methodName,
+                                                                                            restResult.getExceptionErrorMessage(),
+                                                                                            restResult.getExceptionErrorMessageId(),
+                                                                                            restResult.getExceptionErrorMessageParameters(),
+                                                                                            restResult.getExceptionSystemAction(),
+                                                                                            restResult.getExceptionUserAction(),
+                                                                                            restResult.getExceptionCausedBy(),
+                                                                                            restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6545,16 +6613,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new RelationshipNotDeletedException(restResult.getRelatedHTTPCode(),
-                                                      this.getClass().getName(),
-                                                      methodName,
-                                                      restResult.getExceptionErrorMessage(),
-                                                      restResult.getExceptionErrorMessageId(),
-                                                      restResult.getExceptionErrorMessageParameters(),
-                                                      restResult.getExceptionSystemAction(),
-                                                      restResult.getExceptionUserAction(),
-                                                      restResult.getExceptionCausedBy(),
-                                                      restResult.getExceptionProperties());
+            RelationshipNotDeletedException restException = new RelationshipNotDeletedException(restResult.getRelatedHTTPCode(),
+                                                                                                this.getClass().getName(),
+                                                                                                methodName,
+                                                                                                restResult.getExceptionErrorMessage(),
+                                                                                                restResult.getExceptionErrorMessageId(),
+                                                                                                restResult.getExceptionErrorMessageParameters(),
+                                                                                                restResult.getExceptionSystemAction(),
+                                                                                                restResult.getExceptionUserAction(),
+                                                                                                restResult.getExceptionCausedBy(),
+                                                                                                restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6573,16 +6645,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new RelationshipNotKnownException(restResult.getRelatedHTTPCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    restResult.getExceptionErrorMessage(),
-                                                    restResult.getExceptionErrorMessageId(),
-                                                    restResult.getExceptionErrorMessageParameters(),
-                                                    restResult.getExceptionSystemAction(),
-                                                    restResult.getExceptionUserAction(),
-                                                    restResult.getExceptionCausedBy(),
-                                                    restResult.getExceptionProperties());
+            RelationshipNotKnownException restException = new RelationshipNotKnownException(restResult.getRelatedHTTPCode(),
+                                                                                            this.getClass().getName(),
+                                                                                            methodName,
+                                                                                            restResult.getExceptionErrorMessage(),
+                                                                                            restResult.getExceptionErrorMessageId(),
+                                                                                            restResult.getExceptionErrorMessageParameters(),
+                                                                                            restResult.getExceptionSystemAction(),
+                                                                                            restResult.getExceptionUserAction(),
+                                                                                            restResult.getExceptionCausedBy(),
+                                                                                            restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6601,16 +6677,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new StatusNotSupportedException(restResult.getRelatedHTTPCode(),
-                                                  this.getClass().getName(),
-                                                  methodName,
-                                                  restResult.getExceptionErrorMessage(),
-                                                  restResult.getExceptionErrorMessageId(),
-                                                  restResult.getExceptionErrorMessageParameters(),
-                                                  restResult.getExceptionSystemAction(),
-                                                  restResult.getExceptionUserAction(),
-                                                  restResult.getExceptionCausedBy(),
-                                                  restResult.getExceptionProperties());
+            StatusNotSupportedException restException = new StatusNotSupportedException(restResult.getRelatedHTTPCode(),
+                                                                                        this.getClass().getName(),
+                                                                                        methodName,
+                                                                                        restResult.getExceptionErrorMessage(),
+                                                                                        restResult.getExceptionErrorMessageId(),
+                                                                                        restResult.getExceptionErrorMessageParameters(),
+                                                                                        restResult.getExceptionSystemAction(),
+                                                                                        restResult.getExceptionUserAction(),
+                                                                                        restResult.getExceptionCausedBy(),
+                                                                                        restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6629,16 +6709,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new TypeDefConflictException(restResult.getRelatedHTTPCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               restResult.getExceptionErrorMessage(),
-                                               restResult.getExceptionErrorMessageId(),
-                                               restResult.getExceptionErrorMessageParameters(),
-                                               restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction(),
-                                               restResult.getExceptionCausedBy(),
-                                               restResult.getExceptionProperties());
+            TypeDefConflictException restException = new TypeDefConflictException(restResult.getRelatedHTTPCode(),
+                                                                                  this.getClass().getName(),
+                                                                                  methodName,
+                                                                                  restResult.getExceptionErrorMessage(),
+                                                                                  restResult.getExceptionErrorMessageId(),
+                                                                                  restResult.getExceptionErrorMessageParameters(),
+                                                                                  restResult.getExceptionSystemAction(),
+                                                                                  restResult.getExceptionUserAction(),
+                                                                                  restResult.getExceptionCausedBy(),
+                                                                                  restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6657,16 +6741,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new TypeDefInUseException(restResult.getRelatedHTTPCode(),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            restResult.getExceptionErrorMessage(),
-                                            restResult.getExceptionErrorMessageId(),
-                                            restResult.getExceptionErrorMessageParameters(),
-                                            restResult.getExceptionSystemAction(),
-                                            restResult.getExceptionUserAction(),
-                                            restResult.getExceptionCausedBy(),
-                                            restResult.getExceptionProperties());
+            TypeDefInUseException restException = new TypeDefInUseException(restResult.getRelatedHTTPCode(),
+                                                                            this.getClass().getName(),
+                                                                            methodName,
+                                                                            restResult.getExceptionErrorMessage(),
+                                                                            restResult.getExceptionErrorMessageId(),
+                                                                            restResult.getExceptionErrorMessageParameters(),
+                                                                            restResult.getExceptionSystemAction(),
+                                                                            restResult.getExceptionUserAction(),
+                                                                            restResult.getExceptionCausedBy(),
+                                                                            restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6685,16 +6773,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new TypeDefKnownException(restResult.getRelatedHTTPCode(),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            restResult.getExceptionErrorMessage(),
-                                            restResult.getExceptionErrorMessageId(),
-                                            restResult.getExceptionErrorMessageParameters(),
-                                            restResult.getExceptionSystemAction(),
-                                            restResult.getExceptionUserAction(),
-                                            restResult.getExceptionCausedBy(),
-                                            restResult.getExceptionProperties());
+            TypeDefKnownException restException = new TypeDefKnownException(restResult.getRelatedHTTPCode(),
+                                                                            this.getClass().getName(),
+                                                                            methodName,
+                                                                            restResult.getExceptionErrorMessage(),
+                                                                            restResult.getExceptionErrorMessageId(),
+                                                                            restResult.getExceptionErrorMessageParameters(),
+                                                                            restResult.getExceptionSystemAction(),
+                                                                            restResult.getExceptionUserAction(),
+                                                                            restResult.getExceptionCausedBy(),
+                                                                            restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6713,16 +6805,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new TypeDefNotKnownException(restResult.getRelatedHTTPCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               restResult.getExceptionErrorMessage(),
-                                               restResult.getExceptionErrorMessageId(),
-                                               restResult.getExceptionErrorMessageParameters(),
-                                               restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction(),
-                                               restResult.getExceptionCausedBy(),
-                                               restResult.getExceptionProperties());
+            TypeDefNotKnownException restException = new TypeDefNotKnownException(restResult.getRelatedHTTPCode(),
+                                                                                  this.getClass().getName(),
+                                                                                  methodName,
+                                                                                  restResult.getExceptionErrorMessage(),
+                                                                                  restResult.getExceptionErrorMessageId(),
+                                                                                  restResult.getExceptionErrorMessageParameters(),
+                                                                                  restResult.getExceptionSystemAction(),
+                                                                                  restResult.getExceptionUserAction(),
+                                                                                  restResult.getExceptionCausedBy(),
+                                                                                  restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6741,16 +6837,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new TypeDefNotSupportedException(restResult.getRelatedHTTPCode(),
-                                                   this.getClass().getName(),
-                                                   methodName,
-                                                   restResult.getExceptionErrorMessage(),
-                                                   restResult.getExceptionErrorMessageId(),
-                                                   restResult.getExceptionErrorMessageParameters(),
-                                                   restResult.getExceptionSystemAction(),
-                                                   restResult.getExceptionUserAction(),
-                                                   restResult.getExceptionCausedBy(),
-                                                   restResult.getExceptionProperties());
+            TypeDefNotSupportedException restException = new TypeDefNotSupportedException(restResult.getRelatedHTTPCode(),
+                                                                                          this.getClass().getName(),
+                                                                                          methodName,
+                                                                                          restResult.getExceptionErrorMessage(),
+                                                                                          restResult.getExceptionErrorMessageId(),
+                                                                                          restResult.getExceptionErrorMessageParameters(),
+                                                                                          restResult.getExceptionSystemAction(),
+                                                                                          restResult.getExceptionUserAction(),
+                                                                                          restResult.getExceptionCausedBy(),
+                                                                                          restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6769,16 +6869,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new TypeErrorException(restResult.getRelatedHTTPCode(),
-                                         this.getClass().getName(),
-                                         methodName,
-                                         restResult.getExceptionErrorMessage(),
-                                         restResult.getExceptionErrorMessageId(),
-                                         restResult.getExceptionErrorMessageParameters(),
-                                         restResult.getExceptionSystemAction(),
-                                         restResult.getExceptionUserAction(),
-                                         restResult.getExceptionCausedBy(),
-                                         restResult.getExceptionProperties());
+            TypeErrorException restException = new TypeErrorException(restResult.getRelatedHTTPCode(),
+                                                                      this.getClass().getName(),
+                                                                      methodName,
+                                                                      restResult.getExceptionErrorMessage(),
+                                                                      restResult.getExceptionErrorMessageId(),
+                                                                      restResult.getExceptionErrorMessageParameters(),
+                                                                      restResult.getExceptionSystemAction(),
+                                                                      restResult.getExceptionUserAction(),
+                                                                      restResult.getExceptionCausedBy(),
+                                                                      restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6803,17 +6907,21 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
             {
                 userId = (String)restResult.getExceptionProperties().get("userId");
             }
-            throw new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
-                                                 this.getClass().getName(),
-                                                 methodName,
-                                                 restResult.getExceptionErrorMessage(),
-                                                 restResult.getExceptionErrorMessageId(),
-                                                 restResult.getExceptionErrorMessageParameters(),
-                                                 restResult.getExceptionSystemAction(),
-                                                 restResult.getExceptionUserAction(),
-                                                 restResult.getExceptionCausedBy(),
-                                                 userId,
-                                                 restResult.getExceptionProperties());
+            UserNotAuthorizedException restException = new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
+                                                                                      this.getClass().getName(),
+                                                                                      methodName,
+                                                                                      restResult.getExceptionErrorMessage(),
+                                                                                      restResult.getExceptionErrorMessageId(),
+                                                                                      restResult.getExceptionErrorMessageParameters(),
+                                                                                      restResult.getExceptionSystemAction(),
+                                                                                      restResult.getExceptionUserAction(),
+                                                                                      restResult.getExceptionCausedBy(),
+                                                                                      userId,
+                                                                                      restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 
@@ -6840,16 +6948,20 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
             /*
              * All the other expected exceptions have been processed so default exception to RepositoryErrorException
              */
-            throw new RepositoryErrorException(restResult.getRelatedHTTPCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               restResult.getExceptionErrorMessage(),
-                                               restResult.getExceptionErrorMessageId(),
-                                               restResult.getExceptionErrorMessageParameters(),
-                                               restResult.getExceptionSystemAction(),
-                                               restResult.getExceptionUserAction(),
-                                               restResult.getExceptionCausedBy(),
-                                               restResult.getExceptionProperties());
+            RepositoryErrorException restException = new RepositoryErrorException(restResult.getRelatedHTTPCode(),
+                                                                                  this.getClass().getName(),
+                                                                                  methodName,
+                                                                                  restResult.getExceptionErrorMessage(),
+                                                                                  restResult.getExceptionErrorMessageId(),
+                                                                                  restResult.getExceptionErrorMessageParameters(),
+                                                                                  restResult.getExceptionSystemAction(),
+                                                                                  restResult.getExceptionUserAction(),
+                                                                                  restResult.getExceptionCausedBy(),
+                                                                                  restResult.getExceptionProperties());
+
+            restException.setReportedURL(restResult.getExceptionURL());
+
+            throw restException;
         }
     }
 }

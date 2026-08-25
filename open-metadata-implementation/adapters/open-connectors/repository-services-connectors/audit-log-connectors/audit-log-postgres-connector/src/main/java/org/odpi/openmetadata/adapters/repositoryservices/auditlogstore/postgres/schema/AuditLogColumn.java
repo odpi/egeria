@@ -33,6 +33,7 @@ public enum AuditLogColumn implements PostgreSQLColumn
     MESSAGE_PARAMETERS      ( "message_parameters", ColumnType.STRING, "The parameters used to fill out the message definition.", true),
     SYSTEM_ACTION           ( "system_action", ColumnType.STRING, "The description of what the system did.", true),
     USER_ACTION             ( "user_action", ColumnType.STRING, "The description of what the user should do (if anything).", true),
+    MESSAGE_URL             ( "message_url", ColumnType.STRING, "Link to further reading about the component or concept behind the message.", false),
     EXCEPTION_CLASS_NAME    ( "exception_class_name", ColumnType.STRING, "The class of exception produced.", false),
     EXCEPTION_MESSAGE       ( "exception_message", ColumnType.STRING, "The message associated with the exception.", false),
     EXCEPTION_STACK_TRACE   ( "exception_stacktrace", ColumnType.STRING, "The stacktrace showing where the exception occurred.", false),

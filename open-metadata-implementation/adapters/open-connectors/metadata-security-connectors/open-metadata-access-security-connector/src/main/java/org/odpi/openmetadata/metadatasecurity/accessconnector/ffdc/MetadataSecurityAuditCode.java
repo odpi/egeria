@@ -28,7 +28,8 @@ public enum MetadataSecurityAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.EXCEPTION,
                            "The {0} open metadata security connector encountered an {1} exception when attempting to retrieve information for user {2} and group {3} from the secrets store; the error message was {4}",
                            "The connector is not able to confirm access to the resource through this secrets store",
-                           "This message contains the exception that was the original cause of the problem.  Use the diagnostics ."),
+                           "This message contains the exception that was the original cause of the problem.  Use the diagnostics .",
+                           "https://egeria-project.org/concepts/server-metadata-security-connector/"),
 
 
     ;
@@ -38,13 +39,11 @@ public enum MetadataSecurityAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
 
 
     /**
-     * The constructor for GovernanceActionConnectorsAuditCode expects to be passed one of the enumeration rows defined in
-     * GovernanceActionConnectorsAuditCode above.   For example:
-     *     GovernanceActionConnectorsAuditCode   auditCode = GovernanceActionConnectorsAuditCode.SERVER_NOT_AVAILABLE
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -58,11 +57,37 @@ public enum MetadataSecurityAuditCode implements AuditLogMessageSet
                               String                      systemAction,
                               String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for GovernanceActionConnectorsAuditCode expects to be passed one of the enumeration rows defined in
+     * GovernanceActionConnectorsAuditCode above.   For example:
+     *     GovernanceActionConnectorsAuditCode   auditCode = GovernanceActionConnectorsAuditCode.SERVER_NOT_AVAILABLE
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    MetadataSecurityAuditCode(String                      messageId,
+                              AuditLogRecordSeverityLevel severity,
+                              String                      message,
+                              String                      systemAction,
+                              String                      userAction,
+                              String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -78,7 +103,8 @@ public enum MetadataSecurityAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -95,7 +121,8 @@ public enum MetadataSecurityAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -115,6 +142,7 @@ public enum MetadataSecurityAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

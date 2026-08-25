@@ -28,44 +28,13 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
 {
     /**
-     * CSV-FILE-CONNECTOR-400-001 - The file name is null in the Connection object {0}
-     */
-    FILE_NOT_SPECIFIED(400, "CSV-FILE-CONNECTOR-400-001",
-            "The file name is null in the Connection object {0}",
-            "The connector cannot open the structure file because the name of the file is not passed in the Connection object.",
-            "The name of the file should be set up in the address property of the connection's Endpoint object."),
-
-    /**
-     * CSV-FILE-CONNECTOR-400-002 - The file {0} given in Connection object {1} is a directory
-     */
-    DIRECTORY_SPECIFIED(400, "CSV-FILE-CONNECTOR-400-002",
-            "The file {0} given in Connection object {1} is a directory",
-            "The connector cannot work with a directory.",
-            "Ensure a valid file name is passed in the address property in the Endpoint object of the Connection object."),
-
-    /**
-     * CSV-FILE-CONNECTOR-400-003 - The file {0} given in Connection object {1} is not readable
-     */
-    FILE_NOT_READABLE(400, "CSV-FILE-CONNECTOR-400-003",
-            "The file {0} given in Connection object {1} is not readable",
-            "The connector cannot open the file.",
-            "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
-
-    /**
      * CSV-FILE-CONNECTOR-400-004 - File {0} does not have {1} rows
      */
     FILE_TOO_SHORT(400, "CSV-FILE-CONNECTOR-400-004",
             "File {0} does not have {1} rows",
             "The connector cannot retrieve the requested record because the file is too short.",
-            "Ensure the record number requested is within the size of the file.  Method getRecordCount will provide information on the number of data records in the file"),
-
-    /**
-     * CSV-FILE-CONNECTOR-404-001 - The file named {0} in the Connection object {1} does not exist
-     */
-    FILE_NOT_FOUND(404, "CSV-FILE-CONNECTOR-404-001",
-             "The file named {0} in the Connection object {1} does not exist",
-             "The connector cannot open the structure file.",
-             "Add an existing file to the address property of the connection's Endpoint object."),
+            "Ensure the record number requested is within the size of the file.  Method getRecordCount will provide information on the number of data records in the file",
+            "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     /**
      * CSV-FILE-CONNECTOR-500-001 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}
@@ -73,7 +42,8 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
     UNEXPECTED_IO_EXCEPTION(500, "CSV-FILE-CONNECTOR-500-001",
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
              "The connector cannot process the structure file.",
-             "Use details from the error message to determine the cause of the error and retry the request once it is resolved."),
+             "Use details from the error message to determine the cause of the error and retry the request once it is resolved.",
+             "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     /**
      * CSV-FILE-CONNECTOR-500-002 - The connector cannot change its column names because they are fixed in the connector's configuration
@@ -81,7 +51,8 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
     FIXED_COLUMN_NAMES(500, "CSV-FILE-CONNECTOR-500-002",
                                     "The connector cannot change its column names because they are fixed in the connector's configuration",
                                     "The connector cannot process the new column descriptions.",
-                                    "Remove the column names definition from the configuration properties to enable new column names to be specified."),
+                                    "Remove the column names definition from the configuration properties to enable new column names to be specified.",
+                                    "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     /**
      * CSV-FILE-CONNECTOR-500-003 - Connection {0} has been configured without the embedded CSV File Store connection
@@ -89,7 +60,8 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
     NO_EMBEDDED_FILE_STORE(500, "CSV-FILE-CONNECTOR-500-003",
                                    "Connection {0} has been configured without the embedded CSV File Store connection",
                                    "The connector cannot start because it does not have the connector that manages the file.",
-                                   "Update the connection to include the embedded connection needed to work with CSV files."),
+                                   "Update the connection to include the embedded connection needed to work with CSV files.",
+                                   "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     /**
      * CSV-FILE-CONNECTOR-500-004 - The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}
@@ -97,7 +69,8 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "CSV-FILE-CONNECTOR-500-004",
                                  "The {0} CSV File connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                                  "The connector cannot process the current request.",
-                                 "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                                 "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                                 "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     ;
 
@@ -106,6 +79,22 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    CSVFileConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -116,14 +105,17 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    CSVFileConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    CSVFileConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -139,7 +131,8 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -156,7 +149,8 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -178,6 +172,7 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

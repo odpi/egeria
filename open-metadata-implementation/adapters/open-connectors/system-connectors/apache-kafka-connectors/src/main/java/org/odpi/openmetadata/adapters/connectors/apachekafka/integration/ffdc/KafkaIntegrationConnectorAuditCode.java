@@ -28,22 +28,8 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                             AuditLogRecordSeverityLevel.INFO,
                             "The {0} integration connector is cataloguing event broker {1} at URL {2} with template={3}",
                             "The connector monitors changes to the topics managed by the event broker and catalogs them in open metadata.",
-                            "No specific action is required.  This message is to confirm the configuration for a specific catalog target."),
-
-    /**
-     * APACHE-KAFKA-INTEGRATION-CONNECTOR-0002 - The {0} integration connector encountered an {1} exception when opening event broker {2} during
-     * the {3} method.  The exception message included was {4}
-     */
-    BAD_CONFIGURATION("APACHE-KAFKA-INTEGRATION-CONNECTOR-0002",
-                      AuditLogRecordSeverityLevel.EXCEPTION,
-                      "The {0} integration connector encountered an {1} exception when opening event broker {2} during the {3} method.  The exception message included was {4}",
-                      "The exception is passed back to the integration daemon that is hosting " +
-                              "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
-                              "error handling that was performed.  These can help to determine how to recover from this error",
-                      "This message contains the exception that was the original cause of the problem. Use the information from the " +
-                              "exception stack trace to determine why the connector is not able to access the event broker and resolve that issue.  " +
-                              "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
-                              "connector in the integration daemon once the original cause of the error has been corrected."),
+                            "No specific action is required.  This message is to confirm the configuration for a specific catalog target.",
+                            "https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/"),
 
     /**
      * APACHE-KAFKA-INTEGRATION-CONNECTOR-0004 - The {0} integration connector received an unexpected {2} exception when retrieving topics from
@@ -54,7 +40,8 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                               "The {0} integration connector received an unexpected {2} exception when retrieving topics from event broker at {1}.  The error message was {3}",
                               "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
                               "Use the message in the nested exception to determine the root cause of the error. Once this is " +
-                                      "resolved, follow the instructions in the messages produced by the integration daemon to restart this connector."),
+                                      "resolved, follow the instructions in the messages produced by the integration daemon to restart this connector.",
+                                      "https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/"),
 
     /**
      * APACHE-KAFKA-INTEGRATION-CONNECTOR-0005 - The {0} integration connector has retrieved {2} topics from {1}
@@ -63,32 +50,8 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.INFO,
                      "The {0} integration connector has retrieved {2} topics from {1}",
                      "The connector will maintain these topics as assets.",
-                     "No action is required unless there are errors that follow indicating that the topics can not be maintained."),
-
-    /**
-     * APACHE-KAFKA-INTEGRATION-CONNECTOR-0014 - An unexpected {0} exception was returned to the {1} integration connector when it tried to update the
-     * Topic in the metadata repositories for topic {2}.  The error message was {3}
-     */
-    UNEXPECTED_EXC_TOPIC_UPDATE("APACHE-KAFKA-INTEGRATION-CONNECTOR-0014",
-                                AuditLogRecordSeverityLevel.EXCEPTION,
-                                "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
-                                        "Topic in the metadata repositories for topic {2}.  The error message was {3}",
-                                "The exception is logged and the integration connector continues to synchronize metadata.  " +
-                                        "This topic is not catalogued at this time but may succeed later.",
-                                "Use the message in the unexpected exception to determine the root cause of the error and fix it."),
-
-    /**
-     * APACHE-KAFKA-INTEGRATION-CONNECTOR-0015 - The {0} integration connector cannot retrieve the Topic template with qualified name: {1}
-     */
-    MISSING_TEMPLATE("APACHE-KAFKA-INTEGRATION-CONNECTOR-0015",
-                     AuditLogRecordSeverityLevel.ERROR,
-                     "The {0} integration connector cannot retrieve the Topic template with qualified name: {1}",
-                     "The metadata element for the template is not found in the open metadata repositories.  " +
-                             "The template name was configured for the connector.  This means that topics should be catalogued " +
-                             "using the template.  Since the template is missing, topics are not being catalogued.",
-                     "Create the template in the metadata repository.  The connector will catalog the topics during " +
-                             "its next periodic refresh or you can force it to refresh immediately by calling the refresh" +
-                             "operation on the integration daemon."),
+                     "No action is required unless there are errors that follow indicating that the topics can not be maintained.",
+                     "https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/"),
 
     /**
      * APACHE-KAFKA-INTEGRATION-CONNECTOR-0016 - The {0} integration connector created the Topic {1} ({2}) for a new real-world topic
@@ -97,27 +60,8 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                   AuditLogRecordSeverityLevel.INFO,
                   "The {0} integration connector created the Topic {1} ({2}) for a new real-world topic",
                   "The connector created the Topic as part of its monitoring of the topics in the event broker.",
-                  "No action is required.  This message is to record the reason why the Topic was created."),
-
-    /**
-     * APACHE-KAFKA-INTEGRATION-CONNECTOR-0017 - The {0} integration connector created the Topic {1} ({2}) for a new real-world topic using template {3} ({4})
-     */
-    TOPIC_CREATED_FROM_TEMPLATE("APACHE-KAFKA-INTEGRATION-CONNECTOR-0017",
-                                AuditLogRecordSeverityLevel.INFO,
-                                "The {0} integration connector created the Topic {1} ({2}) for a new real-world topic using template {3} ({4})",
-                                "The connector created the Topic as part of its monitoring of the topics in the event broker.  " +
-                                        "The template provides details of additional metadata that should also be attached to the new Topic element.  " +
-                                        "It was specified in the templateQualifiedName configuration property of the connector.",
-                                "No action is required.  This message is to record the reason why the Topic was created with the template."),
-
-    /**
-     * APACHE-KAFKA-INTEGRATION-CONNECTOR-0018 - The {0} integration connector has updated the Topic {1} ({2}) because the real-world topic changed
-     */
-    TOPIC_UPDATED("APACHE-KAFKA-INTEGRATION-CONNECTOR-0018",
-                  AuditLogRecordSeverityLevel.INFO,
-                  "The {0} integration connector has updated the Topic {1} ({2}) because the real-world topic changed",
-                  "The connector updated the Topic as part of its monitoring of the topics in the event broker.",
-                  "No action is required.  This message is to record the reason why the Topic was updated."),
+                  "No action is required.  This message is to record the reason why the Topic was created.",
+                  "https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/"),
 
     /**
      * APACHE-KAFKA-INTEGRATION-CONNECTOR-0019 - The {0} integration connector has deleted the Topic {1} ({2}) because the real-world topic is
@@ -127,27 +71,8 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                   AuditLogRecordSeverityLevel.INFO,
                   "The {0} integration connector has deleted the Topic {1} ({2}) because the real-world topic is no longer defined in the event broker",
                   "The connector removed the Topic as part of its monitoring of the topics in the event broker.",
-                  "No action is required.  This message is to record the reason why the Topic was removed."),
-
-    /**
-     * APACHE-KAFKA-INTEGRATION-CONNECTOR-0020 - The {0} integration connector has archived the Topic {1} ({2}) because the real-world topic
-     * is no longer stored in the event broker
-     */
-    TOPIC_ARCHIVED("APACHE-KAFKA-INTEGRATION-CONNECTOR-0020",
-                   AuditLogRecordSeverityLevel.INFO,
-                   "The {0} integration connector has archived the Topic {1} ({2}) because the real-world topic is no longer stored in the event broker",
-                   "The connector updated the Topic to reflect that is is now just a placeholder for an asset that no longer exists.  " +
-                           "Its presence is still needed in the metadata repository for lineage reporting.",
-                   "No action is required.  This message is to record the reason why the Topic was archived."),
-
-    /**
-     * APACHE-KAFKA-INTEGRATION-CONNECTOR-0021 - The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {2}
-     */
-    UNEXPECTED_EXCEPTION( "APACHE-KAFKA-INTEGRATION-CONNECTOR-0021",
-                         AuditLogRecordSeverityLevel.ERROR,
-                         "The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {2}",
-                         "The connector cannot catalog one or more topics.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                  "No action is required.  This message is to record the reason why the Topic was removed.",
+                  "https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/"),
 
     ;
 
@@ -156,13 +81,11 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
 
 
     /**
-     * The constructor for KafkaIntegrationConnectorAuditCode expects to be passed one of the enumeration rows defined in
-     * KafkaIntegrationConnectorAuditCode above.   For example:
-     *     KafkaIntegrationConnectorAuditCode   auditCode = KafkaIntegrationConnectorAuditCode.SERVER_NOT_AVAILABLE;
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique identifier for the message
      * @param severity - severity of the message
@@ -176,11 +99,37 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                                        String                      systemAction,
                                        String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for KafkaIntegrationConnectorAuditCode expects to be passed one of the enumeration rows defined in
+     * KafkaIntegrationConnectorAuditCode above.   For example:
+     *     KafkaIntegrationConnectorAuditCode   auditCode = KafkaIntegrationConnectorAuditCode.SERVER_NOT_AVAILABLE;
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    KafkaIntegrationConnectorAuditCode(String                      messageId,
+                                       AuditLogRecordSeverityLevel severity,
+                                       String                      message,
+                                       String                      systemAction,
+                                       String                      userAction,
+                                       String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -196,7 +145,8 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -213,7 +163,8 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -233,6 +184,7 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                        ", logMessage='" + logMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

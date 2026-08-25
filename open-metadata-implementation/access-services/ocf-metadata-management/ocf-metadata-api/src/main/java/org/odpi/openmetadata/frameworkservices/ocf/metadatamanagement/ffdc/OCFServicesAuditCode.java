@@ -29,7 +29,8 @@ public enum OCFServicesAuditCode implements AuditLogMessageSet
              "The Open Connector Framework (OCF) Metadata Management Service is initializing the connected asset services in a new server instance",
              "The local server has started up a new instance of the service which provides the metadata lookup services " +
                                  "for OCF Connectors.",
-             "No action is required.  This is part of the normal operation of the service."),
+             "No action is required.  This is part of the normal operation of the service.",
+             "https://egeria-project.org/services/ocf-metadata-management/"),
 
     /**
      * CONNECTED-ASSET-SERVICES-0003 - The Open Connector Framework (OCF) Metadata Management Service has initialized a new instance for server {0}
@@ -38,7 +39,8 @@ public enum OCFServicesAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.STARTUP,
              "The Open Connector Framework (OCF) Metadata Management Service has initialized a new instance for server {0}",
              "The service has completed initialization of a new server instance.",
-             "Verify that the service has started correctly."),
+             "Verify that the service has started correctly.",
+             "https://egeria-project.org/services/ocf-metadata-management/"),
 
     /**
      * CONNECTED-ASSET-SERVICES-0004 - The Open Connector Framework (OCF) Metadata Management Service is shutting down its instance of the connected asset services for server {0}
@@ -47,7 +49,8 @@ public enum OCFServicesAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.SHUTDOWN,
              "The Open Connector Framework (OCF) Metadata Management Service is shutting down its instance of the connected asset services for server {0}",
              "The local administrator has requested shut down of a server instance.",
-             "No action is required if the server is shutting down."),
+             "No action is required if the server is shutting down.",
+             "https://egeria-project.org/services/ocf-metadata-management/"),
 
     /**
      * CONNECTED-ASSET-SERVICES-0005 - he Open Connector Framework (OCF) Metadata Management Service cannot initialize a new instance of the connected asset services; error message is {0}
@@ -56,16 +59,8 @@ public enum OCFServicesAuditCode implements AuditLogMessageSet
                              AuditLogRecordSeverityLevel.ERROR,
             "The Open Connector Framework (OCF) Metadata Management Service cannot initialize a new instance of the connected asset services; error message is {0}",
             "The service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
-             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
-
-    /**
-     * OMAS-GOVERNANCE-ENGINE-0021 - Log message for asset {0} from governance service {1}: {2}
-     */
-    ASSET_AUDIT_LOG("CONNECTED-ASSET-SERVICES-0006",
-                    AuditLogRecordSeverityLevel.INFO,
-                    "Log message for asset {0} from governance service {1}: {2}",
-                            "A governance service has logged a message about an asset.",
-                            "Review the message to ensure no action is required."),
+             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.",
+             "https://egeria-project.org/services/ocf-metadata-management/"),
 
     ;
 
@@ -74,8 +69,28 @@ public enum OCFServicesAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
     
     
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    OCFServicesAuditCode(String                      messageId,
+                         AuditLogRecordSeverityLevel severity,
+                         String                      message,
+                         String                      systemAction,
+                         String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
 
     /**
      * The constructor for OCFServicesAuditCode expects to be passed one of the enumeration rows defined in
@@ -90,18 +105,22 @@ public enum OCFServicesAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     OCFServicesAuditCode(String                      messageId,
                          AuditLogRecordSeverityLevel severity,
                          String                      message,
                          String                      systemAction,
-                         String                      userAction)
+                         String                      userAction,
+                         String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -117,7 +136,8 @@ public enum OCFServicesAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -134,7 +154,8 @@ public enum OCFServicesAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -154,6 +175,7 @@ public enum OCFServicesAuditCode implements AuditLogMessageSet
                        ", logMessage='" + logMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

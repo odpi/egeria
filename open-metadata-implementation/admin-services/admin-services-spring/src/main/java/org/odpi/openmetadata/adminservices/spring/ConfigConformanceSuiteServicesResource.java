@@ -60,7 +60,7 @@ public class ConfigConformanceSuiteServicesResource
                description="Request that the conformance suite services are activated in this server to test the" +
                                    " support of the repository services running in the server named tutRepositoryServerName.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/guides/cts/overview/"))
+                                                   url="https://egeria-project.org/guides/cts/"))
 
     public VoidResponse enableRepositoryConformanceSuiteWorkbench(@PathVariable String                               serverName,
                                                                   @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
@@ -89,7 +89,7 @@ public class ConfigConformanceSuiteServicesResource
                description="Request that the conformance suite services are activated in this server to test the" +
                                    " performance of the repository services running in the server named tutRepositoryServerName.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/guides/cts/overview/"))
+                                                   url="https://egeria-project.org/guides/cts/"))
 
     public VoidResponse enableRepositoryPerformanceSuiteWorkbench(@PathVariable String                               serverName,
                                                                   @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
@@ -118,7 +118,7 @@ public class ConfigConformanceSuiteServicesResource
                description="Request that the conformance suite services are activated in this server to test the" +
                                    " support of the platform services running in the server named tutPlatformRootURL.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/guides/cts/overview/"))
+                                                   url="https://egeria-project.org/guides/cts/"))
 
     public VoidResponse enablePlatformConformanceSuiteWorkbench(@PathVariable String         serverName,
                                                                 @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
@@ -144,7 +144,7 @@ public class ConfigConformanceSuiteServicesResource
     @Operation(summary="disableRepositoryConformanceSuiteServices",
                description="Request that the repository conformance suite tests are deactivated in this server.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/guides/cts/overview/"))
+                                                   url="https://egeria-project.org/guides/cts/"))
 
     public VoidResponse disableRepositoryConformanceSuiteServices(@PathVariable String    serverName,
                                                                   @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
@@ -169,7 +169,7 @@ public class ConfigConformanceSuiteServicesResource
     @Operation(summary="disablePlatformConformanceSuiteServices",
                description="Request that the platform conformance suite tests are deactivated in this server.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/guides/cts/overview/"))
+                                                   url="https://egeria-project.org/guides/cts/"))
 
     public VoidResponse disablePlatformConformanceSuiteServices(@PathVariable String    serverName,
                                                                 @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
@@ -194,7 +194,7 @@ public class ConfigConformanceSuiteServicesResource
     @Operation(summary="disableAllConformanceSuiteWorkbenches",
                description="Request that all the conformance suite services are deactivated in this server.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/guides/cts/overview/"))
+                                                   url="https://egeria-project.org/guides/cts/"))
 
     public VoidResponse disableAllConformanceSuiteWorkbenches(@PathVariable String    serverName,
                                                               @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)

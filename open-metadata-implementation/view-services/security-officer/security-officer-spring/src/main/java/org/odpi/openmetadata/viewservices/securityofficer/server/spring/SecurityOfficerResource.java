@@ -307,7 +307,7 @@ public class SecurityOfficerResource
     @Operation(summary="linkResourcePermissions",
             description="Attach a security access control to the secrets collection that defines it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/secrets-collection"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkResourcePermissions(@PathVariable String serverName,
                                                 @PathVariable String secretsCollectionGUID,
@@ -338,7 +338,7 @@ public class SecurityOfficerResource
     @Operation(summary="detachResourcePermissions",
             description="Detach a security access control from the secrets collection that defined it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/secrets-collection"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachResourcePermissions(@PathVariable String serverName,
                                                   @PathVariable String secretsCollectionGUID,
@@ -369,7 +369,7 @@ public class SecurityOfficerResource
     @Operation(summary="linkSecretsCollectionSecurityList",
             description="Attach a security list to the secrets collection that lists it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/secrets-collection"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkSecretsCollectionSecurityList(@PathVariable String serverName,
                                                           @PathVariable String secretsCollectionGUID,
@@ -400,7 +400,7 @@ public class SecurityOfficerResource
     @Operation(summary="detachSecretsCollectionSecurityList",
             description="Detach a security list from the secrets collection that listed it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/secrets-collection"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachSecretsCollectionSecurityList(@PathVariable String serverName,
                                                             @PathVariable String secretsCollectionGUID,
@@ -431,7 +431,7 @@ public class SecurityOfficerResource
     @Operation(summary="linkUserAccount",
             description="Attach a user identity to the secrets collection that configures its account.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/secrets-collection"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkUserAccount(@PathVariable String serverName,
                                         @PathVariable String secretsCollectionGUID,
@@ -462,7 +462,7 @@ public class SecurityOfficerResource
     @Operation(summary="detachUserAccount",
             description="Detach a user identity from the secrets collection that configured its account.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/secrets-collection"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachUserAccount(@PathVariable String serverName,
                                           @PathVariable String secretsCollectionGUID,
@@ -582,7 +582,7 @@ public class SecurityOfficerResource
     @Operation(summary="setUserAccountProfile",
             description="Classify a secrets collection with a profile of the user accounts that it holds.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/secrets-collection"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setUserAccountProfile(@PathVariable String serverName,
                                               @PathVariable String secretsCollectionGUID,
@@ -611,7 +611,7 @@ public class SecurityOfficerResource
     @Operation(summary="clearUserAccountProfile",
             description="Remove the user account profile from a secrets collection.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/secrets-collection"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearUserAccountProfile(@PathVariable String serverName,
                                                 @PathVariable String secretsCollectionGUID,

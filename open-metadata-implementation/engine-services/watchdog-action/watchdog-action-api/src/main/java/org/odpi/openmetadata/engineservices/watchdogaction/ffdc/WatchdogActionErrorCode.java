@@ -34,7 +34,8 @@ public enum WatchdogActionErrorCode implements ExceptionMessageSet
                              "The Watchdog Action OMES detected an error during the start up of a specific server instance.  " +
                                      "No watchdog action services are available in the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  " +
-                                     "Once this is resolved, restart the server."),
+                                     "Once this is resolved, restart the server.",
+                                     "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     /**
      * OMES-WATCHDOG-ACTION-400-002 - The watchdog action service {0} linked to request type {1} can not be started.
@@ -52,20 +53,14 @@ public enum WatchdogActionErrorCode implements ExceptionMessageSet
                                       "watchdog action service's implementation has been deployed so the Watchdog Action OMES can load it.  If all this is " +
                                       "true this it is likely to be a code error in the watchdog action service in which case, " +
                                       "raise an issue with the author of the watchdog action service to get it fixed.  Once the cause is resolved, " +
-                                      "retry the monitoring request."),
-
-
-    NO_TARGET_NOTIFICATION_TYPE(400, "OMES-WATCHDOG-ACTION-400-003",
-                                "The watchdog action service {0} linked to request type {1} and engine action {2} can not be started because there is no asset action target supplied",
-                                "The monitoring request is not run and an error is recorded in the engine action.",
-                                "Retry the monitoring request and ensuring that an action target is included in the request."),
-
+                                      "retry the monitoring request.",
+                                      "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     NULL_REQUEST(400, "OMES-WATCHDOG-ACTION-400-004",
                     "The watchdog engine action {0} can not be started because there is no governance service context",
                     "The monitoring request is not run and an error is recorded in the engine action because the governance service is not set up property.",
-                    "This is an unexpected error, you may need to trace through the code to find out what has happened."),
-
+                    "This is an unexpected error, you may need to trace through the code to find out what has happened.",
+                    "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     ;
 
@@ -75,6 +70,22 @@ public enum WatchdogActionErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    WatchdogActionErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -85,14 +96,17 @@ public enum WatchdogActionErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    WatchdogActionErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    WatchdogActionErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -108,7 +122,8 @@ public enum WatchdogActionErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -125,7 +140,8 @@ public enum WatchdogActionErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -147,6 +163,7 @@ public enum WatchdogActionErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

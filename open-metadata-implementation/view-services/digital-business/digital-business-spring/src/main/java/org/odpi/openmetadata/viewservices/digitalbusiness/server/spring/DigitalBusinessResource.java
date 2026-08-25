@@ -246,7 +246,7 @@ public class DigitalBusinessResource
     @Operation(summary="setAgreementAsDataSharingAgreement",
             description="Classify an agreement to say that it governs the sharing of data.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/agreement"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse setAgreementAsDataSharingAgreement(@PathVariable String serverName,
                                                            @PathVariable String agreementGUID,
@@ -275,7 +275,7 @@ public class DigitalBusinessResource
     @Operation(summary="clearAgreementAsDataSharingAgreement",
             description="Remove the data sharing agreement designation from an agreement.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/agreement"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse clearAgreementAsDataSharingAgreement(@PathVariable String serverName,
                                                              @PathVariable String agreementGUID,

@@ -647,7 +647,7 @@ public class ProjectManagerResource
     @Operation(summary="addProjectClassification",
             description="Classify the project to indicate the approach and style of project based on its intended outcome.",
             externalDocs=@ExternalDocumentation(description="Projects",
-                    url="https://egeria-project.org/concepts/projects/"))
+                    url="https://egeria-project.org/concepts/project/"))
 
     public VoidResponse addProjectClassification(@PathVariable String                    serverName,
                                                 @PathVariable String                    projectGUID,
@@ -675,7 +675,7 @@ public class ProjectManagerResource
     @Operation(summary="clearProjectClassification",
             description="Remove the ProjectClassification classification from the project.",
             externalDocs=@ExternalDocumentation(description="Projects",
-                    url="https://egeria-project.org/concepts/projects/"))
+                    url="https://egeria-project.org/concepts/project/"))
 
     public VoidResponse clearProjectClassification(@PathVariable String                    serverName,
                                                    @PathVariable String projectGUID,

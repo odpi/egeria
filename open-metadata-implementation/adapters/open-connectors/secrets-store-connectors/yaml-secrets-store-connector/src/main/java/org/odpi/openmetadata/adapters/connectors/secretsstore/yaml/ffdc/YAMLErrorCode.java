@@ -31,7 +31,8 @@ public enum YAMLErrorCode implements ExceptionMessageSet
     UNEXPECTED_IO_EXCEPTION(500, "YAML-SECRETS-STORE-CONNECTOR-500-002",
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
              "The connector cannot save secrets to the file.",
-             "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+             "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+             "https://egeria-project.org/concepts/secrets-store-connector/"),
 
     ;
 
@@ -41,6 +42,22 @@ public enum YAMLErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    YAMLErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -51,14 +68,17 @@ public enum YAMLErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    YAMLErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    YAMLErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -74,7 +94,8 @@ public enum YAMLErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -91,7 +112,8 @@ public enum YAMLErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -113,6 +135,7 @@ public enum YAMLErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

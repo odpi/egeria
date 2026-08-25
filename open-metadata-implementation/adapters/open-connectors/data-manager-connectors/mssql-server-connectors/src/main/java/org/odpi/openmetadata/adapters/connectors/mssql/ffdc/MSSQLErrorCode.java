@@ -26,20 +26,13 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum MSSQLErrorCode implements ExceptionMessageSet
 {
     /**
-     * MSSQL-CONNECTOR-400-001 - Connection {0} has been configured without the URL to the database
-     */
-    NULL_URL(400, "MSSQL-CONNECTOR-400-001",
-                     "Connection {0} has been configured without the URL to the database",
-                     "The connector cannot start because the endpoint of its connection has a null address property.",
-                     "Update the connection's endpoint to include the connection string needed to connect to the desired database."),
-
-    /**
      * MSSQL-CONNECTOR-400-002 - Connection {0} has been configured without the embedded JDBC database connection
      */
     NO_DATABASE_CONNECTION(400, "MSSQL-CONNECTOR-400-002",
              "Connection {0} has been configured without the embedded JDBC database connection",
              "The connector cannot start because it does not have a connector to the database.",
-             "Update the connection to include the embedded connection needed to connect to the desired database."),
+             "Update the connection to include the embedded connection needed to connect to the desired database.",
+             "https://egeria-project.org/egeria-solutions/leveraging-mssql/overview/"),
 
     /**
      * MSSQL-CONNECTOR-500-001 - The {0} Microsoft SQL Server connector received an unexpected exception {1} during method {2}; the error message was: {3}
@@ -47,7 +40,8 @@ public enum MSSQLErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "MSSQL-CONNECTOR-500-001",
                          "The {0} Microsoft SQL Server connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot process the current request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/egeria-solutions/leveraging-mssql/overview/"),
 
     ;
 
@@ -56,6 +50,22 @@ public enum MSSQLErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    MSSQLErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -66,14 +76,17 @@ public enum MSSQLErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    MSSQLErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    MSSQLErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -89,7 +102,8 @@ public enum MSSQLErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -106,7 +120,8 @@ public enum MSSQLErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -128,6 +143,7 @@ public enum MSSQLErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

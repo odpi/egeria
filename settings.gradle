@@ -259,6 +259,7 @@ include(':open-metadata-resources:open-metadata-samples:sample-metadata:coco-met
 include(':open-metadata-resources:open-metadata-dev-utilities:guid-generator')
 include(':open-metadata-resources:open-metadata-dev-utilities:component-id-report')
 include(':open-metadata-resources:open-metadata-dev-utilities:report-utilities')
+include(':open-metadata-resources:open-metadata-dev-utilities:messages-and-codes')
 include(':open-metadata-resources:open-metadata-deployment')
 include(':open-metadata-test:open-metadata-ut')
 include(':open-metadata-test:open-metadata-bvt')

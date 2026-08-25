@@ -6,7 +6,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
 /**
- * The ProductManagerErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
+ * The BabbageErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the Kafka monitor integration connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  * The 5 fields in the enum are:
  * <ul>
@@ -31,7 +31,8 @@ public enum BabbageErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "BABBAGE-ANALYTICAL-ENGINE-500-001",
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot catalog one or more metadata elements.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
     ;
 
@@ -39,12 +40,7 @@ public enum BabbageErrorCode implements ExceptionMessageSet
 
 
     /**
-     * The constructor for ProductManagerErrorCode expects to be passed one of the enumeration rows defined in
-     * ProductManagerErrorCode above.   For example:
-     * <br><br>
-     *     ProductManagerErrorCode   errorCode = ProductManagerErrorCode.ERROR_SENDING_EVENT;
-     * <br><br>
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique identifier for the message
@@ -54,11 +50,34 @@ public enum BabbageErrorCode implements ExceptionMessageSet
      */
     BabbageErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for BabbageErrorCode expects to be passed one of the enumeration rows defined in
+     * BabbageErrorCode above.   For example:
+     * <br><br>
+     *     BabbageErrorCode   errorCode = BabbageErrorCode.UNEXPECTED_EXCEPTION;
+     * <br><br>
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique identifier for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    BabbageErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
+    {
         this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
                                                                 errorMessageId,
                                                                 errorMessage,
                                                                 systemAction,
-                                                                userAction);
+                                                                userAction,
+                                                                url);
     }
 
 

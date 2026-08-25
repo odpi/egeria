@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 
 
 /**
- * The OWFAuditCode is used to define the message content for the Audit Log.
+ * The OGFAuditCode is used to define the message content for the Audit Log.
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Identifier - to uniquely identify the message</li>
@@ -22,31 +22,34 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum OGFAuditCode implements AuditLogMessageSet
 {
     /**
-     * OPEN-WATCHDOG-0001 - The {0} service is issuing a notification to subscriber {1} of type {2} for notification type {3} (notification count = {4})
+     * OPEN-GOVERNANCE-ACTION-0001 - The {0} service is issuing a notification to subscriber {1} of type {2} for notification type {3} (notification count = {4})
      */
-    ISSUING_NOTIFICATION("OPEN-WATCHDOG-0001",
+    ISSUING_NOTIFICATION("OPEN-GOVERNANCE-ACTION-0001",
                              AuditLogRecordSeverityLevel.INFO,
                              "The {0} service is issuing a notification to subscriber {1} of type {2} for notification type {3} (notification count = {4})",
                              "The governance service attempts to notify the subscriber.",
-                             "Verify that this subscriber should be linked to this notification type.  If not, remove the subscriber from the notification type.  If this is a valid subscriber then verify that the notification was successful.  Error messages should be logged if there are any known failures."),
+                             "Verify that this subscriber should be linked to this notification type.  If not, remove the subscriber from the notification type.  If this is a valid subscriber then verify that the notification was successful.  Error messages should be logged if there are any known failures.",
+                             "https://egeria-project.org/frameworks/ogf/overview/"),
 
     /**
-     * OPEN-WATCHDOG-0002 - Subscriber {0} for notification type {1} is of a type {2}, but the {3} service only supports the following subscriber type(s): {4}
+     * OPEN-GOVERNANCE-ACTION-0002 - Subscriber {0} for notification type {1} is of a type {2}, but the {3} service only supports the following subscriber type(s): {4}
      */
-    WRONG_TYPE_OF_SUBSCRIBER("OPEN-WATCHDOG-0002",
+    WRONG_TYPE_OF_SUBSCRIBER("OPEN-GOVERNANCE-ACTION-0002",
                              AuditLogRecordSeverityLevel.ERROR,
                              "Subscriber {0} for notification type {1} is of a type {2}, but the {3} service only supports the following subscriber type(s): {4}",
                              "The governance service ignores this subscriber.",
-                             "Remove this subscriber from the notification type and replace it with a subscriber type that is supported."),
+                             "Remove this subscriber from the notification type and replace it with a subscriber type that is supported.",
+                             "https://egeria-project.org/frameworks/ogf/overview/"),
 
     /**
-     * OPEN-WATCHDOG-0003 - The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}
+     * OPEN-GOVERNANCE-ACTION-0003 - The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}
      */
-    UNEXPECTED_EXCEPTION("OPEN-WATCHDOG-0003",
+    UNEXPECTED_EXCEPTION("OPEN-GOVERNANCE-ACTION-0003",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The governance service cannot perform the requested governance action on one or more metadata elements in the metadata repository.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/frameworks/ogf/overview/"),
     ;
 
 
@@ -55,10 +58,11 @@ public enum OGFAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
 
 
     /**
-     * The constructor for OWFAuditCode expects to be passed one of the enumeration rows defined above.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -72,11 +76,34 @@ public enum OGFAuditCode implements AuditLogMessageSet
                  String                      systemAction,
                  String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for OGFAuditCode expects to be passed one of the enumeration rows defined above.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    OGFAuditCode(String                      messageId,
+                 AuditLogRecordSeverityLevel severity,
+                 String                      message,
+                 String                      systemAction,
+                 String                      userAction,
+                 String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -92,7 +119,8 @@ public enum OGFAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -109,7 +137,8 @@ public enum OGFAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -123,12 +152,13 @@ public enum OGFAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "OWFAuditCode{" +
+        return "OGFAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

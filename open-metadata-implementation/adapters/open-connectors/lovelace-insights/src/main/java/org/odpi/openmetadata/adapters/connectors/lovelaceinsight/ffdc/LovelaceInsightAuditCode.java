@@ -28,7 +28,8 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The organization insight service {0} received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot process the current request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
     /**
      * LOVELACE-INSIGHTS-0016 - The {0} governance action service received a {1} exception when it registered its completion status.
@@ -38,7 +39,8 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
                                     AuditLogRecordSeverityLevel.INFO,
                                     "The {0} governance action service received a {1} exception when it registered its completion status.  The exception's message is: {2}",
                                     "The governance action throws a GovernanceServiceException in the hope that the hosting server is able to clean up.",
-                                    "Review the exception messages that are logged about the same time as one of them will point to the root cause of the error."),
+                                    "Review the exception messages that are logged about the same time as one of them will point to the root cause of the error.",
+                                    "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
     /**
      * LOVELACE-INSIGHTS-0017 - The {0} governance action service received a {1} exception when it registered a listener with the
@@ -49,7 +51,8 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
                                 "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}",
                                 "The governance action service throws a GovernanceServiceException.",
                                 "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
-                                        "and follow its instructions."),
+                                        "and follow its instructions.",
+                                        "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
     /**
      * LOVELACE-INSIGHTS-0018 - The {0} governance action service has processed the {1} governance zone ({2})
@@ -58,7 +61,8 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
                               AuditLogRecordSeverityLevel.INFO,
                               "The {0} governance service has processed the {1} governance zone ({2})",
                               "The service will move on to the next governance zone until all have been processed.",
-                              "No action is required except to validate that each of the governance zones have been processed."),
+                              "No action is required except to validate that each of the governance zones have been processed.",
+                              "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
 
     /**
@@ -68,7 +72,8 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
                                    AuditLogRecordSeverityLevel.INFO,
                                    "The {0} governance action service has completed successfully",
                                    "The service is shutting down.",
-                                   "No action is required except to validate that the shutdown is occurring at an appropriate time."),
+                                   "No action is required except to validate that the shutdown is occurring at an appropriate time.",
+                                   "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
     ;
 
@@ -77,6 +82,26 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    LovelaceInsightAuditCode(String                      messageId,
+                             AuditLogRecordSeverityLevel severity,
+                             String                      message,
+                             String                      systemAction,
+                             String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -92,18 +117,22 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     LovelaceInsightAuditCode(String                      messageId,
                              AuditLogRecordSeverityLevel severity,
                              String                      message,
                              String                      systemAction,
-                             String                      userAction)
+                             String                      userAction,
+                             String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -119,7 +148,8 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -136,7 +166,8 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -156,6 +187,7 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

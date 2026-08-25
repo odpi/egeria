@@ -18,6 +18,12 @@ Also, feel free to extend them to match your specific deployment.
   Code starts with the components that are shipped with Egeria.  Update to include your
   connector implementation.
 
+* **[messages-and-codes](messages-and-codes)** - generates the [messages and codes](../../messages-and-codes)
+  documentation at the root of the repository.  It scans the Egeria source for the message sets that define
+  the messages used in Egeria's exceptions and audit log, and writes a markdown page for each one so that the
+  messages can be read and searched from GitHub.  The build runs it automatically, so the documentation stays
+  in step with the messages.
+
 * **[report-utilities](report-utilities)** - provide common formatting functions used in the reports.
 
 ----

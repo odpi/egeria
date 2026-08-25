@@ -6,7 +6,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
 /**
- * The ProductManagerErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
+ * The JacquardErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the Kafka monitor integration connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  * The 5 fields in the enum are:
  * <ul>
@@ -26,26 +26,14 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum JacquardErrorCode implements ExceptionMessageSet
 {
     /**
-     * JACQUARD-HARVESTER-400-001 - Integration connector {0} has been configured without the URL to the database
-     */
-    NULL_URL(400, "JACQUARD-HARVESTER-400-001",
-                     "Integration connector {0} has been configured without the URL to the database",
-                     "The connector is move to FAILED status and will not be called by the integration daemon until the configuration error has been corrected.",
-                     "The the database URL is configured in the integration connector's connection endpoint in the address property.  Typically it is the host name and port where the database is listening.  The connection is either found in the Integration Daemon's configuration, or, if the Integration Daemon is configured with integration groups, in the open metadata definition of the appropriate integration group."),
-
-    /**
      * JACQUARD-HARVESTER-400-002 - Integration connector {0} has been configured without a secrets connector
      */
     NO_SECRETS(400, "JACQUARD-HARVESTER-400-002",
               "Integration connector {0} has been configured without a secrets connector",
               "The connector is moved to FAILED status and will no longer be called to build open metadata products.",
               "Update the connection information for the connector to include an embedded SecretsConnector configured to point to the secret store/collection for use by the digital products when they are harvesting open metadata.  " +
-                      "The connection information is stored in the open metadata ecosystem. By default this is seeded from JacquardHarvesterContentPack.omarchive."),
-
-    UNPARSEABLE_LAST_UPDATE_DATE(400, "JACQUARD-HARVESTER-400-003",
-                                 "Integration connector {0} has discovered an invalid date ({1}) in row {2} of catalog target {3}  The error message was: {4}",
-                                 "The connector is moved to FAILED status and will no longer be called to build open metadata products.",
-                                 "Update the connection "),
+                      "The connection information is stored in the open metadata ecosystem. By default this is seeded from JacquardHarvesterContentPack.omarchive.",
+                      "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
     /**
      * JACQUARD-HARVESTER-500-001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}
@@ -53,7 +41,8 @@ public enum JacquardErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "JACQUARD-HARVESTER-500-001",
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot catalog one or more metadata elements.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
     ;
 
@@ -61,12 +50,7 @@ public enum JacquardErrorCode implements ExceptionMessageSet
 
 
     /**
-     * The constructor for ProductManagerErrorCode expects to be passed one of the enumeration rows defined in
-     * ProductManagerErrorCode above.   For example:
-     * <br><br>
-     *     ProductManagerErrorCode   errorCode = ProductManagerErrorCode.ERROR_SENDING_EVENT;
-     * <br><br>
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique identifier for the message
@@ -76,11 +60,34 @@ public enum JacquardErrorCode implements ExceptionMessageSet
      */
     JacquardErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for JacquardErrorCode expects to be passed one of the enumeration rows defined in
+     * JacquardErrorCode above.   For example:
+     * <br><br>
+     *     JacquardErrorCode   errorCode = JacquardErrorCode.NO_SECRETS;
+     * <br><br>
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique identifier for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    JacquardErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
+    {
         this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
                                                                 errorMessageId,
                                                                 errorMessage,
                                                                 systemAction,
-                                                                userAction);
+                                                                userAction,
+                                                                url);
     }
 
 

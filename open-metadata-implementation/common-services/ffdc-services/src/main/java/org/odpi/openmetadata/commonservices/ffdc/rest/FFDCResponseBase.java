@@ -51,6 +51,7 @@ public class FFDCResponseBase implements FFDCResponse
     private String[]            exceptionErrorMessageParameters = null;
     private String              exceptionSystemAction           = null;
     private String              exceptionUserAction             = null;
+    private String              exceptionURL             = null;
     private Map<String, Object> exceptionProperties             = null;
 
 
@@ -82,6 +83,7 @@ public class FFDCResponseBase implements FFDCResponse
             this.exceptionErrorMessageParameters = template.getExceptionErrorMessageParameters();
             this.exceptionSystemAction = template.getExceptionSystemAction();
             this.exceptionUserAction = template.getExceptionUserAction();
+            this.exceptionURL = template.getExceptionURL();
             this.exceptionProperties = template.getExceptionProperties();
         }
     }
@@ -359,6 +361,31 @@ public class FFDCResponseBase implements FFDCResponse
 
 
     /**
+     * Return the link to further reading about the component or concept behind the exception's message.  It
+     * comes from the message definition in the server that raised the exception and gives the caller
+     * somewhere to go for background on the situation.
+     *
+     * @return url; null if the message definition does not supply one
+     */
+    public String getExceptionURL()
+    {
+        return exceptionURL;
+    }
+
+
+    /**
+     * Set up the link to further reading about the component or concept behind the exception's message.
+     *
+     * @param exceptionURL url; null if the message definition does not supply one
+     */
+    public void setExceptionURL(String exceptionURL)
+    {
+        this.exceptionURL = exceptionURL;
+    }
+
+
+
+    /**
      * Return the additional properties stored by the exceptions.
      *
      * @return property map
@@ -413,6 +440,7 @@ public class FFDCResponseBase implements FFDCResponse
                 ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionURL='" + exceptionURL + '\'' +
                 ", exceptionProperties=" + exceptionProperties +
                 '}';
     }
@@ -445,6 +473,7 @@ public class FFDCResponseBase implements FFDCResponse
                 Arrays.equals(exceptionErrorMessageParameters, that.exceptionErrorMessageParameters) &&
                 Objects.equals(exceptionSystemAction, that.exceptionSystemAction) &&
                 Objects.equals(exceptionUserAction, that.exceptionUserAction) &&
+                Objects.equals(exceptionURL, that.exceptionURL) &&
                 Objects.equals(exceptionProperties, that.exceptionProperties);
     }
 
@@ -457,7 +486,7 @@ public class FFDCResponseBase implements FFDCResponse
     @Override
     public int hashCode()
     {
-        int result = Objects.hash(requestId, relatedHTTPCode, exceptionClassName, exceptionSubclassName, exceptionCausedBy, actionDescription, exceptionErrorMessage, exceptionErrorMessageId, exceptionSystemAction, exceptionUserAction, exceptionProperties);
+        int result = Objects.hash(requestId, relatedHTTPCode, exceptionClassName, exceptionSubclassName, exceptionCausedBy, actionDescription, exceptionErrorMessage, exceptionErrorMessageId, exceptionSystemAction, exceptionUserAction, exceptionURL, exceptionProperties);
         result = 31 * result + Arrays.hashCode(exceptionErrorMessageParameters);
         return result;
     }

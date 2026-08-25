@@ -37,7 +37,7 @@ import java.util.Date;
 @Tag(name="Metadata Access Server: Open Metadata Store Services",
      description="Provides generic open metadata retrieval and management services for Open Metadata Access Services (OMASs).",
      externalDocs=@ExternalDocumentation(description="Further Information",
-                                         url="https://egeria-project.org/services/omf-metadata-management/"))
+                                         url="https://egeria-project.org/services/framework-services/"))
 
 
 public class OpenMetadataStoreResource
@@ -432,7 +432,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="getMetadataElementByGUID",
             description="Retrieve the metadata element using its unique identifier.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public OpenMetadataElementResponse getMetadataElementByGUID(@PathVariable String  serverName,
                                                                 @PathVariable String  userId,
@@ -477,7 +477,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="getMetadataElementByGUID",
             description="Retrieve the metadata element using its unique identifier.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public OpenMetadataElementResponse getMetadataElementByGUID(@PathVariable String  serverName,
                                                                 @PathVariable String  userId,
@@ -507,7 +507,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="getMetadataElementHistory",
             description="Retrieve all the versions of an element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public OpenMetadataElementsResponse getMetadataElementHistory(@PathVariable String                 serverName,
                                                                   @PathVariable String                 userId,
@@ -538,7 +538,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="getClassificationHistory",
             description="Retrieve all the versions of an element's classification.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public AttachedClassificationsResponse getClassificationHistory(@PathVariable String                 serverName,
                                                                     @PathVariable String                 userId,
@@ -569,7 +569,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="findMetadataElementsWithString",
             description="Retrieve the metadata elements that contain the requested string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public OpenMetadataElementsResponse findMetadataElementsWithString(@PathVariable String                  serverName,
                                                                        @PathVariable String                  userId,
@@ -696,7 +696,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="getAllRelatedMetadataElements",
             description="Retrieve the metadata elements connected to the supplied element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public RelatedMetadataElementListResponse getAllRelatedMetadataElements(@PathVariable String  serverName,
                                                                             @PathVariable String  userId,
@@ -736,7 +736,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="getRelatedMetadataElements",
             description="Retrieve the metadata elements connected to the supplied element via a specific relationship type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public RelatedMetadataElementListResponse getRelatedMetadataElements(@PathVariable String  serverName,
                                                                          @PathVariable String  userId,
@@ -777,7 +777,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="getAllMetadataElementRelationships",
             description="Retrieve the relationships linking the supplied elements.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public OpenMetadataRelationshipListResponse getAllMetadataElementRelationships(@PathVariable String  serverName,
                                                                                    @PathVariable String  userId,
@@ -816,7 +816,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="getMetadataElementRelationships",
             description="Retrieve the relationships linking the supplied elements via a specific type of relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public OpenMetadataRelationshipListResponse getMetadataElementRelationships(@PathVariable String  serverName,
                                                                                 @PathVariable String  userId,
@@ -853,7 +853,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="findMetadataElements",
             description="Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public OpenMetadataElementsResponse findMetadataElements(@PathVariable String          serverName,
                                                              @PathVariable String          userId,
@@ -884,7 +884,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="countMetadataElements",
             description="Return a count of the metadata elements that match the supplied criteria.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public CountResponse countMetadataElements(@PathVariable String          serverName,
                                                @PathVariable String          userId,
@@ -939,7 +939,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="findRelationshipsBetweenMetadataElements",
             description="Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public OpenMetadataRelationshipListResponse findRelationshipsBetweenMetadataElements(@PathVariable String          serverName,
                                                                                          @PathVariable String          userId,
@@ -969,7 +969,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="countRelationshipsBetweenMetadataElements",
             description="Return a count of the relationships that match the requested conditions.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public CountResponse countRelationshipsBetweenMetadataElements(@PathVariable String          serverName,
                                                                    @PathVariable String          userId,
@@ -1000,7 +1000,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="getRelationshipByGUID",
             description="Retrieve the relationship using its unique identifier.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public OpenMetadataRelationshipResponse getRelationshipByGUID(@PathVariable String  serverName,
                                                                   @PathVariable String  userId,
@@ -1047,7 +1047,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="getRelationshipByGUID",
             description="Retrieve the relationship using its unique identifier.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     @Deprecated
     public OpenMetadataRelationshipResponse getRelationshipByGUID(@PathVariable String  serverName,
@@ -1077,7 +1077,7 @@ public class OpenMetadataStoreResource
     @Operation(summary="getRelationshipHistory",
             description="Retrieve all the versions of a relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/services/omf-metadata-management/"))
+                    url="https://egeria-project.org/services/framework-services/"))
 
     public OpenMetadataRelationshipListResponse getRelationshipHistory(@PathVariable String                 serverName,
                                                                        @PathVariable String                 userId,

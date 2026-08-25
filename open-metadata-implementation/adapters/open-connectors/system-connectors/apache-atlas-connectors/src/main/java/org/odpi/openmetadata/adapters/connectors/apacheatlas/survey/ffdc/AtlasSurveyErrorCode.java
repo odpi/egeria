@@ -6,7 +6,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
 /**
- * The AtlasDiscoveryErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
+ * The AtlasSurveyErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the Apache Atlas REST connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  * The 5 fields in the enum are:
  * <ul>
@@ -26,21 +26,13 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum AtlasSurveyErrorCode implements ExceptionMessageSet
 {
     /**
-     * APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-400-001 - The {0} Apache Atlas Discovery Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}
-     */
-    WRONG_REST_CONNECTOR(400, "APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-400-001",
-                     "The {0} Apache Atlas Survey Action Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
-                     "The connector cannot continue to profile Apache Atlas because it can not call its REST API.",
-                         "Use the details from the error message to determine the correct class of the connector to use.  It should be specified in the connector type of an embedded connection as part of the failing connector's Connection.  When the connection information has been corrected, restart the failing connector."),
-
-
-    /**
      * APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-400-002 - The root schema type for Apache Atlas Software Server {0} is of type {1} rather than {2}. Apache Atlas Survey Connector {3} is not able to continue with its schema analysis.  The existing schema type properties are {4}
      */
     WRONG_ROOT_SCHEMA_TYPE(400, "APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-400-002",
                            "The root schema type for Apache Atlas Software Server {0} is of type {1} rather than {2}. Apache Atlas Survey Connector {3} is not able to continue with its schema analysis.  The existing schema type properties are {4}",
                            "The connector cannot continue to define the schema for the Apache Atlas Server based on its defined types because it cannot understand the existing root schema type.",
-                           "Use the details from the error message to determine the origin and reason for the existing schema type.  If it is correct then disable the schema analysis of this survey action service.  It the existing root schema type should not be present, then delete it, and re-run the failed survey action service."),
+                           "Use the details from the error message to determine the origin and reason for the existing schema type.  If it is correct then disable the schema analysis of this survey action service.  It the existing root schema type should not be present, then delete it, and re-run the failed survey action service.",
+                           "https://egeria-project.org/concepts/survey-action-service/"),
 
     /**
      * APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-400-003 - The asset universe for Apache Atlas Software Server is null. Apache Atlas Survey Connector {0} is not able to continue with its schema analysis
@@ -48,7 +40,8 @@ public enum AtlasSurveyErrorCode implements ExceptionMessageSet
     MISSING_ASSET_UNIVERSE(400, "APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-400-003",
                            "The asset universe for Apache Atlas Software Server is null. Apache Atlas Survey Connector {0} is not able to continue with its schema analysis",
                            "The connector cannot continue to define the schema for the Apache Atlas Server based on its defined types because it cannot access the existing root schema type from the asset universe because it is null.",
-                           "Use the details from the error message to determine the asset universe being null.  Correct the error and re-run the failed survey action service."),
+                           "Use the details from the error message to determine the asset universe being null.  Correct the error and re-run the failed survey action service.",
+                           "https://egeria-project.org/concepts/survey-action-service/"),
 
     /**
      * APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-500-001 - The {0} Apache Atlas Survey Action connector received an unexpected exception {1} during method {2}; the error message was: {3}
@@ -56,8 +49,8 @@ public enum AtlasSurveyErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-500-001",
                          "The {0} Apache Atlas Survey Action connector received an unexpected {1} exception during method {2}; the error message was: {3}",
                          "The connector cannot continue to survey the Apache Atlas Server.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
-
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/survey-action-service/"),
 
     ;
 
@@ -66,6 +59,22 @@ public enum AtlasSurveyErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    AtlasSurveyErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -76,14 +85,17 @@ public enum AtlasSurveyErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    AtlasSurveyErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    AtlasSurveyErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -99,7 +111,8 @@ public enum AtlasSurveyErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -116,7 +129,8 @@ public enum AtlasSurveyErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -138,6 +152,7 @@ public enum AtlasSurveyErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

@@ -35,7 +35,8 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
                                "The system cannot create the requested connector type because the Connector Provider's class is failing to initialize in the JVM" +
                                        ".  This has resulted in an exception in the class loader.",
                                "Update the configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of " +
-                                       "the connection's connectorType. Then retry the request."),
+                                       "the connection's connectorType. Then retry the request.",
+                                       "https://egeria-project.org/concepts/connection/"),
 
     /**
      * CONNECTOR-CONFIGURATION-FACTORY-400-002 Connector Provider class name {0} does not inherit from 'org.odpi.openmetadata.frameworks.connectors.ConnectorProvider'
@@ -44,7 +45,8 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
                                "Connector Provider class name {0} does not inherit from 'org.odpi.openmetadata.frameworks.connectors.ConnectorProvider'",
                                "The system cannot create the requested connector type because the supplied Connector Provider class is not implemented correctly.",
                                "Update the configuration to include a valid connector provider in the connectorProviderClassName property of " +
-                                       "the connection's connectorType. Then retry the request."),
+                                       "the connection's connectorType. Then retry the request.",
+                                       "https://egeria-project.org/concepts/connection/"),
     ;
 
 
@@ -53,6 +55,22 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    ConnectorConfigurationFactoryErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -63,14 +81,17 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    ConnectorConfigurationFactoryErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    ConnectorConfigurationFactoryErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -86,7 +107,8 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -103,7 +125,8 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -125,6 +148,7 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

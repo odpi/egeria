@@ -22,23 +22,14 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum BaudotAuditCode implements AuditLogMessageSet
 {
     /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0001 - The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}
-     */
-    UNEXPECTED_EXCEPTION("BAUDOT-SUBSCRIPTION-MANAGER-0001",
-                         AuditLogRecordSeverityLevel.EXCEPTION,
-                         "The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector cannot provide notifications to subscribers.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
-
-    /**
      * BAUDOT-SUBSCRIPTION-MANAGER-0002 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where notifications are triggered by changes to its monitored resources.  {3} monitored resources are currently registered
      */
     MONITORED_RESOURCE_NOTIFICATION_TYPE( "BAUDOT-SUBSCRIPTION-MANAGER-0002",
                          AuditLogRecordSeverityLevel.INFO,
                          "The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where notifications are triggered by changes to its monitored resources.   {3} monitored resources are currently registered",
                          "The governance service monitors the events generated when open metadata elements change.  Notifications are sent if one of the monitored resources (or anything anchored from it) changes, unless another notification has been sent out within the minimumNotificationInterval.",
-                         "This notification pattern was selected because multipleNotificationsPermitted is set to true and notificationInterval is set to 0. Verify that this is the intended behaviour and that the correct elements are linked to this notification type using the MonitoredResource relationship."),
-
+                         "This notification pattern was selected because multipleNotificationsPermitted is set to true and notificationInterval is set to 0. Verify that this is the intended behaviour and that the correct elements are linked to this notification type using the MonitoredResource relationship.",
+                         "https://egeria-project.org/concepts/notification-type/"),
 
     /**
      * BAUDOT-SUBSCRIPTION-MANAGER-0003 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where only one notification is sent to each subscriber
@@ -47,7 +38,8 @@ public enum BaudotAuditCode implements AuditLogMessageSet
                               AuditLogRecordSeverityLevel.INFO,
                               "The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where only one notification is sent to each subscriber",
                               "The governance service sends a notification to each subscriber registered when the service starts up and then monitors for new subscribers in order to send them a notification.",
-                              "This notification pattern was selected because multipleNotificationsPermitted is set to false. Validate that this is the right pattern."),
+                              "This notification pattern was selected because multipleNotificationsPermitted is set to false. Validate that this is the right pattern.",
+                              "https://egeria-project.org/concepts/notification-type/"),
 
     /**
      * BAUDOT-SUBSCRIPTION-MANAGER-0005 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.  The next scheduled notification will be sent at {4}
@@ -56,58 +48,8 @@ public enum BaudotAuditCode implements AuditLogMessageSet
                       AuditLogRecordSeverityLevel.INFO,
                       "The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.  The next scheduled notification will be sent at {4}",
                       "The governance service sends a notification to each subscriber registered when the service starts up and then monitors for new subscribers in order to send them notifications.  Additional notifications are sent to each active subscriber every notification interval.",
-                      "This notification pattern was selected because multipleNotificationsPermitted is set to true and notificationInterval is greater than 0. Validate that this is the intended behaviour and the notification interval is appropriate."),
-
-    /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0009 - The {0} integration connector has stopped its monitoring of open metadata from server {1} on platform {2} and is shutting down
-     */
-    CONNECTOR_STOPPING("BAUDOT-SUBSCRIPTION-MANAGER-0009",
-                       AuditLogRecordSeverityLevel.INFO,
-                       "The {0} governance service has stopped its monitoring of open metadata from server {1} on platform {2} and is shutting down",
-                       "The connector is disconnecting.",
-                       "No action is required unless there are errors that follow indicating that there were problems shutting down."),
-    
-    /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0011 - The {0} integration connector is starting its harvesting of open metadata from server {1} on platform {2} into digital products
-     */
-    STARTING_CONNECTOR("BAUDOT-SUBSCRIPTION-MANAGER-0011",
-                       AuditLogRecordSeverityLevel.INFO,
-                       "The {0} governance service is starting its subscription management function from server {1} on platform {2}",
-                       "The connector is initializing subscription management for the Open Metadata Digital Product Catalog.",
-                       "Monitor the set up of the catalog and the switch over to monitoring."),
-
-    /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0016 - The {0} governance action service received a {1} exception when it registered its completion status.  
-     * The exception's message is: {2}
-     */
-    UNABLE_TO_SET_COMPLETION_STATUS("BAUDOT-SUBSCRIPTION-MANAGER-0016",
-                                    AuditLogRecordSeverityLevel.INFO,
-                                    "The {0} governance action service received a {1} exception when it registered its completion status.  The exception's message is: {2}",
-                                    "The governance action throws a GovernanceServiceException in the hope that the hosting server is able to clean up.",
-                                    "Review the exception messages that are logged about the same time as one of them will point to the root cause of the error."),
-
-    /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0017 - The {0} governance action service received a {1} exception when it registered a listener with the 
-     * governance context.  The exception's message is: {2}
-     */
-    UNABLE_TO_REGISTER_LISTENER("BAUDOT-SUBSCRIPTION-MANAGER-0017",
-                                AuditLogRecordSeverityLevel.INFO,
-                                "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}",
-                                "The governance action service throws a GovernanceServiceException.",
-                                "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
-                                        "and follow its instructions."),
-
-    /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0018 - The {0} governance action service has no targets to operate on
-     */
-    NO_TARGETS("BAUDOT-SUBSCRIPTION-MANAGER-0018",
-               AuditLogRecordSeverityLevel.ERROR,
-               "The {0} governance action service has no targets to operate on",
-               "The governance action service returns an INVALID completion status.",
-               "This is an error in the way that the governance action service has been called." +
-                       "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
-                       "or as part of a governance action process.  Then correct this approach so that an action target is set up."),
-
+                      "This notification pattern was selected because multipleNotificationsPermitted is set to true and notificationInterval is greater than 0. Validate that this is the intended behaviour and the notification interval is appropriate.",
+                      "https://egeria-project.org/concepts/notification-type/"),
 
     ;
 
@@ -116,6 +58,26 @@ public enum BaudotAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    BaudotAuditCode(String                      messageId,
+                    AuditLogRecordSeverityLevel severity,
+                    String                      message,
+                    String                      systemAction,
+                    String                      userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -131,18 +93,22 @@ public enum BaudotAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     BaudotAuditCode(String                      messageId,
                     AuditLogRecordSeverityLevel severity,
                     String                      message,
                     String                      systemAction,
-                    String                      userAction)
+                    String                      userAction,
+                    String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -158,7 +124,8 @@ public enum BaudotAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -175,7 +142,8 @@ public enum BaudotAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -195,6 +163,7 @@ public enum BaudotAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

@@ -26,7 +26,8 @@ public enum BaudotNotificationMessageSet implements MessageSet
     NEW_SUBSCRIBER("BAUDOT-SUBSCRIPTION-MANAGEMENT-0001",
                    "Welcome to your subscription for product subscription type: {0} ({1})",
                    "The subscription manager has received your subscription request.  New notifications will be sent each time the monitored resources associated with your subscription have changed until you unsubscribe.",
-                   "No specific action is required.  This message is to confirm that the subscription is in place.  You can unsubscribe from this subscription type using the subscription type guid supplied in the welcome message."),
+                   "No specific action is required.  This message is to confirm that the subscription is in place.  You can unsubscribe from this subscription type using the subscription type guid supplied in the welcome message.",
+                   "https://egeria-project.org/concepts/notification/"),
 
     /**
      * BAUDOT-SUBSCRIPTION-MANAGEMENT-0002 - The subscription for the following subscription type has been terminated: {0} ({1})
@@ -34,7 +35,8 @@ public enum BaudotNotificationMessageSet implements MessageSet
     CANCELLED_SUBSCRIBER("BAUDOT-SUBSCRIPTION-MANAGEMENT-0002",
               "The subscription for the following subscription type has been terminated: {0} ({1})",
               "The subscription manager has removed you from the subscriber list and no further notifications will be sent.",
-              "No specific action is required.  This message is to confirm the subscription has been cancelled. You may subscribe again at any time, using the subscription type guid supplied in the cancellation message."),
+              "No specific action is required.  This message is to confirm the subscription has been cancelled. You may subscribe again at any time, using the subscription type guid supplied in the cancellation message.",
+              "https://egeria-project.org/concepts/notification/"),
 
     /**
      * BAUDOT-SUBSCRIPTION-MANAGEMENT-0003 - The monitored {0} resource {1} ({2}) has changed for subscription type: {3} ({4})
@@ -42,7 +44,8 @@ public enum BaudotNotificationMessageSet implements MessageSet
     MONITORED_RESOURCE_CHANGED("BAUDOT-SUBSCRIPTION-MANAGEMENT-0003",
               "The monitored {0} resource {1} ({2}) has changed for subscription type: {3} ({4})",
               "The subscription manager has detected a change in one of the monitored resources for the subscription type and has sent this notification to inform you.",
-              "No specific action is required.  This message is to inform you of the change.  If you no longer which to receive these types of notifications, you can unsubscribe from this subscription type using the subscription type guid supplied in the welcome message."),
+              "No specific action is required.  This message is to inform you of the change.  If you no longer which to receive these types of notifications, you can unsubscribe from this subscription type using the subscription type guid supplied in the welcome message.",
+              "https://egeria-project.org/concepts/notification/"),
 
     /**
      * BAUDOT-SUBSCRIPTION-MANAGEMENT-0004 - Your subscription to subscription type {0} ({1}) has been triggered
@@ -50,7 +53,8 @@ public enum BaudotNotificationMessageSet implements MessageSet
     ONE_TIME_NOTIFICATION("BAUDOT-SUBSCRIPTION-MANAGEMENT-0004",
                           "Your subscription to {0} ({1}) has been triggered",
                           "The subscription manager has been requested to send this notification to you.  It is a one-time notification.",
-                          "No specific action is required.  This message is to inform you of the one-time notification."),
+                          "No specific action is required.  This message is to inform you of the one-time notification.",
+                          "https://egeria-project.org/concepts/notification/"),
 
 
     /**
@@ -59,7 +63,8 @@ public enum BaudotNotificationMessageSet implements MessageSet
     PERIODIC_NOTIFICATION("BAUDOT-SUBSCRIPTION-MANAGEMENT-0005",
                           "A regular notification for subscription type {0} ({1}) has been triggered.  It will trigger again in {2} milliseconds",
                           "The subscription manager has been requested to send this notification to you.  It is a periodic notification.",
-                          "No specific action is required.  This message is to inform you of the periodic notification."),
+                          "No specific action is required.  This message is to inform you of the periodic notification.",
+                          "https://egeria-project.org/concepts/notification/"),
 
     ;
 
@@ -67,11 +72,11 @@ public enum BaudotNotificationMessageSet implements MessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
 
 
     /**
-     * The constructor expects to be passed one of the enumeration rows defined above.   For example:
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique id for the message
      * @param message - text for the message
@@ -83,10 +88,32 @@ public enum BaudotNotificationMessageSet implements MessageSet
                                  String                      systemAction,
                                  String                      userAction)
     {
+        this(messageId, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor expects to be passed one of the enumeration rows defined above.   For example:
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId - unique id for the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    BaudotNotificationMessageSet(String                      messageId,
+                                 String                      message,
+                                 String                      systemAction,
+                                 String                      userAction,
+                                 String                      url)
+    {
         this.logMessageId = messageId;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -101,7 +128,8 @@ public enum BaudotNotificationMessageSet implements MessageSet
         return new MessageDefinition(logMessageId,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -117,7 +145,8 @@ public enum BaudotNotificationMessageSet implements MessageSet
         MessageDefinition messageDefinition = new MessageDefinition(logMessageId,
                                                                     logMessage,
                                                                     systemAction,
-                                                                    userAction);
+                                                                    userAction,
+                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -136,6 +165,7 @@ public enum BaudotNotificationMessageSet implements MessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

@@ -28,7 +28,8 @@ public enum GovernanceActionSamplesAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.DECISION,
                        "The {0} governance action service has verified that hospital {1} ({2}) is certified to supply data for project {3} ({4})",
                        "The service sets up the onboarding pipeline for this hospital.",
-                       "No specific action is required.  This message is to log that a verification check has taken place."),
+                       "No specific action is required.  This message is to log that a verification check has taken place.",
+                       "https://egeria-project.org/concepts/governance-action-service/"),
 
 
     /**
@@ -40,7 +41,8 @@ public enum GovernanceActionSamplesAuditCode implements AuditLogMessageSet
                "The governance action service returns an INVALID completion status.",
                "This is an error in the way that the governance action service has been called, " +
                                         "which could be a direct invocation through the initiateEngineAction() method, initiateGovernanceActionType() method" +
-                                        "or as part of a governance action process.  Identify which approach was used and add the required information as an action target to the invocation code.  Then rerun the request."),
+                                        "or as part of a governance action process.  Identify which approach was used and add the required information as an action target to the invocation code.  Then rerun the request.",
+                                        "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-SAMPLES-0003 - The {0} governance action service has not been passed a Unity Catalog (UC) catalog for the data lake
@@ -49,7 +51,8 @@ public enum GovernanceActionSamplesAuditCode implements AuditLogMessageSet
                     AuditLogRecordSeverityLevel.INFO,
                     "The {0} governance action service has not been passed a Unity Catalog (UC) catalog for the data lake",
                     "The governance action service is not able to set up the data lake for the clinical trial.",
-                    "Retry the request, but ensure that the action target for the catalog is supplied."),
+                    "Retry the request, but ensure that the action target for the catalog is supplied.",
+                    "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * The {0} governance action service was unable to create the landing area folder {1}
@@ -58,7 +61,8 @@ public enum GovernanceActionSamplesAuditCode implements AuditLogMessageSet
                     AuditLogRecordSeverityLevel.INFO,
                     "The {0} governance action service was unable to create the landing area directory {1}",
                     "The governance action service is not able to set up the landing area directory for the clinical trial.",
-                    "Add the landing area directory manually."),
+                    "Add the landing area directory manually.",
+                    "https://egeria-project.org/concepts/governance-action-service/"),
 
 
     /**
@@ -68,7 +72,8 @@ public enum GovernanceActionSamplesAuditCode implements AuditLogMessageSet
                       AuditLogRecordSeverityLevel.INFO,
                       "The {0} governance action service was unable to create the volume directory {1} for Unity Catalog Volume {2}",
                       "The governance action service is not able to set up the directory for a Unity Catalog Volume.",
-                      "Add the volume's directory manually."),
+                      "Add the volume's directory manually.",
+                      "https://egeria-project.org/concepts/governance-action-service/"),
 
 
     ;
@@ -78,13 +83,11 @@ public enum GovernanceActionSamplesAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
 
 
     /**
-     * The constructor for GovernanceActionSamplesAuditCode expects to be passed one of the enumeration rows defined in
-     * GovernanceActionSamplesAuditCode above.   For example:
-     *     GovernanceActionSamplesAuditCode   auditCode = GovernanceActionSamplesAuditCode.SERVER_NOT_AVAILABLE
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -98,11 +101,37 @@ public enum GovernanceActionSamplesAuditCode implements AuditLogMessageSet
                                      String                      systemAction,
                                      String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for GovernanceActionSamplesAuditCode expects to be passed one of the enumeration rows defined in
+     * GovernanceActionSamplesAuditCode above.   For example:
+     *     GovernanceActionSamplesAuditCode   auditCode = GovernanceActionSamplesAuditCode.SERVER_NOT_AVAILABLE
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    GovernanceActionSamplesAuditCode(String                      messageId,
+                                     AuditLogRecordSeverityLevel severity,
+                                     String                      message,
+                                     String                      systemAction,
+                                     String                      userAction,
+                                     String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -118,7 +147,8 @@ public enum GovernanceActionSamplesAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -135,7 +165,8 @@ public enum GovernanceActionSamplesAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -155,6 +186,7 @@ public enum GovernanceActionSamplesAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

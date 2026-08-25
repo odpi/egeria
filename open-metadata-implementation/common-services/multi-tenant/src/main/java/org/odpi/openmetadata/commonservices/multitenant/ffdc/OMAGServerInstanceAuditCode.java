@@ -29,7 +29,8 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
                                  "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open " +
                                          "metadata topic connection because the connector provider is incorrect.  The error message was {3}",
                                  "This is an internal error.  The access service is not using a valid connector provider.",
-                                 "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
+                                 "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve.",
+                                 "https://egeria-project.org/services/multi-tenant/"),
 
     /**
      * OMAG-MULTI-TENANT-0002 - Method {0} called on behalf of the {1} service cannot create a client-side open metadata topic connection because the topic name is not configured in the configuration for this service.
@@ -39,7 +40,8 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
                          "Method {0} called on behalf of the {1} service cannot create a client-side open " +
                                          "metadata topic connection because the topic name is not configured in the configuration for this service",
                          "This is a configuration error and an exception is sent to the requester.",
-                         "Correct the configuration of the access service to include the name of the topic."),
+                         "Correct the configuration of the access service to include the name of the topic.",
+                         "https://egeria-project.org/services/multi-tenant/"),
 
 
 
@@ -50,13 +52,11 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
 
 
     /**
-     * The constructor for OMAGServerInstanceAuditCode expects to be passed one of the enumeration rows defined in
-     * OMAGServerInstanceAuditCode above.   For example:
-     *     OMAGServerInstanceAuditCode   auditCode = OMAGServerInstanceAuditCode.SERVER_NOT_AVAILABLE;
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique identifier for the message
      * @param severity - severity of the message
@@ -70,11 +70,37 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
                                 String                      systemAction,
                                 String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for OMAGServerInstanceAuditCode expects to be passed one of the enumeration rows defined in
+     * OMAGServerInstanceAuditCode above.   For example:
+     *     OMAGServerInstanceAuditCode   auditCode = OMAGServerInstanceAuditCode.SERVER_NOT_AVAILABLE;
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    OMAGServerInstanceAuditCode(String                      messageId,
+                                AuditLogRecordSeverityLevel severity,
+                                String                      message,
+                                String                      systemAction,
+                                String                      userAction,
+                                String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -90,7 +116,8 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -107,7 +134,8 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }

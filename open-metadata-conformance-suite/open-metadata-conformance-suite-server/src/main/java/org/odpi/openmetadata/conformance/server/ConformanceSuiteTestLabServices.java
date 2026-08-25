@@ -480,6 +480,7 @@ public class ConformanceSuiteTestLabServices
         response.setExceptionErrorMessage(error.getReportedErrorMessage());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
+        response.setExceptionURL(error.getReportedURL());
     }
 
 
@@ -501,6 +502,7 @@ public class ConformanceSuiteTestLabServices
         response.setExceptionErrorMessage(error.getReportedErrorMessage());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
+        response.setExceptionURL(error.getReportedURL());
         response.setExceptionProperties(exceptionProperties);
     }
 

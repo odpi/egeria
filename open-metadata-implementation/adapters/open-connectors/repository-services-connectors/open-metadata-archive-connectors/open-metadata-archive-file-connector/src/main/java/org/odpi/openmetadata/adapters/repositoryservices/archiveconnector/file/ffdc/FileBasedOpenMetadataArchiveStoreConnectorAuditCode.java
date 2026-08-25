@@ -30,7 +30,8 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
                  "Validate that the file name is correct.  Look particularly for extraneous quotes, " +
                       "incorrect directory name (relative files are read from the perspective of the server's home directory) or incorrect characters.  " +
                       "Once the file name is corrected (either in the server's configuration or the command that loaded the archive) then retry the" +
-                      "mechanism that loads the archive."),
+                      "mechanism that loads the archive.",
+                      "https://egeria-project.org/concepts/open-metadata-archive-store-connector/"),
 
     /**
      * FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002 - Unable to open file {0}.  Message from {1} exception was {2}
@@ -40,7 +41,8 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
               "Unable to open file {0}.  Message from {1} exception was {2}",
               "The server is cannot open an open metadata archive store.",
               "Use the information from the exception to determine the cause of the error.  For example, is the filename correct?  " +
-                      "Does this runtime have permission to access the file?  Once the cause of the error is corrected, restart the caller."),
+                      "Does this runtime have permission to access the file?  Once the cause of the error is corrected, restart the caller.",
+                      "https://egeria-project.org/concepts/open-metadata-archive-store-connector/"),
 
     ;
 
@@ -49,13 +51,11 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
     
 
     /**
-     * The constructor for FileBasedOpenMetadataArchiveStoreConnectorAuditCode expects to be passed one of the enumeration rows defined in
-     * FileBasedOpenMetadataArchiveStoreConnectorAuditCode above.   For example:
-     *     FileBasedOpenMetadataArchiveStoreConnectorAuditCode   auditCode = FileBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE;
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId unique id for the message
      * @param severity severity of the message
@@ -69,11 +69,37 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
                                                         String                      systemAction,
                                                         String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for FileBasedOpenMetadataArchiveStoreConnectorAuditCode expects to be passed one of the enumeration rows defined in
+     * FileBasedOpenMetadataArchiveStoreConnectorAuditCode above.   For example:
+     *     FileBasedOpenMetadataArchiveStoreConnectorAuditCode   auditCode = FileBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE;
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId unique id for the message
+     * @param severity severity of the message
+     * @param message text for the message
+     * @param systemAction description of the action taken by the system when the condition happened
+     * @param userAction instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    FileBasedOpenMetadataArchiveStoreConnectorAuditCode(String                      messageId,
+                                                        AuditLogRecordSeverityLevel severity,
+                                                        String                      message,
+                                                        String                      systemAction,
+                                                        String                      userAction,
+                                                        String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -89,7 +115,8 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -106,7 +133,8 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -126,6 +154,7 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
                        ", logMessage='" + logMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

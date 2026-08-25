@@ -31,7 +31,8 @@ public enum ApacheKafkaErrorCode implements ExceptionMessageSet
     NULL_URL(400, "APACHE-KAFKA-REST-CONNECTOR-400-001",
                      "Apache Kafka Admin connector {0} has been configured without the URL to Apache Kafka",
                      "The connector cannot contact the Apache Kafka server.",
-                     "The Apache Kafka URL is configured in the Apache Kafka Admin connector's connection endpoint in the address property.  Typically it is the host name and port where Apache Kafka is listening.  The connection is either found in the Integration Daemon's configuration, or, if the Integration Daemon is configured with integration groups, in the open metadata definition of the appropriate integration group."),
+                     "The Apache Kafka URL is configured in the Apache Kafka Admin connector's connection endpoint in the address property.  Typically it is the host name and port where Apache Kafka is listening.  The connection is either found in the Integration Daemon's configuration, or, if the Integration Daemon is configured with integration groups, in the open metadata definition of the appropriate integration group.",
+                     "https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/"),
 
     /**
      * APACHE-KAFKA-REST-CONNECTOR-500-001 - The {0} Apache Kafka Admin connector received an unexpected exception {1} during method {2}; the error message was: {3}
@@ -39,7 +40,8 @@ public enum ApacheKafkaErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "APACHE-KAFKA-REST-CONNECTOR-500-001",
                          "The {0} Apache Kafka Admin connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot catalog one or more metadata elements.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/"),
 
     ;
 
@@ -48,6 +50,22 @@ public enum ApacheKafkaErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    ApacheKafkaErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -58,14 +76,17 @@ public enum ApacheKafkaErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    ApacheKafkaErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    ApacheKafkaErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -81,7 +102,8 @@ public enum ApacheKafkaErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -98,7 +120,8 @@ public enum ApacheKafkaErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -120,6 +143,7 @@ public enum ApacheKafkaErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

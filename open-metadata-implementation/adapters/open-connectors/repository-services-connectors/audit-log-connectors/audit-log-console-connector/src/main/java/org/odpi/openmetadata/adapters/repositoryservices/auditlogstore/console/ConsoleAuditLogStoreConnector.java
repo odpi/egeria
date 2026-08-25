@@ -7,11 +7,23 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreConnectorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 
+import java.util.List;
+
 /**
  * ConsoleAuditLogStoreConnector provides a connector implementation for a console (stdout) audit log.
  */
 public class ConsoleAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
 {
+    /**
+     * The severities that report a situation the reader may need to act on.  The link to further reading is
+     * only printed for these, so that it does not clutter the console during normal operation.
+     */
+    private static final List<String> PROBLEM_SEVERITIES = List.of(AuditLogRecordSeverityLevel.ERROR.getName(),
+                                                                   AuditLogRecordSeverityLevel.EXCEPTION.getName(),
+                                                                   AuditLogRecordSeverityLevel.ACTION.getName(),
+                                                                   AuditLogRecordSeverityLevel.SECURITY.getName());
+
+
     /**
      * Default constructor used by the connector provider.
      */
@@ -37,6 +49,12 @@ public class ConsoleAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBas
         if (super.isSupportedSeverity(logRecord))
         {
             System.out.println(logRecord.getTimeStamp() + " " + logRecord.getOriginator().getServerName() + " " + logRecord.getSeverity() + " " + logRecord.getMessageId() + " " + logRecord.getMessageText());
+
+            if ((logRecord.getMessageURL() != null) && (PROBLEM_SEVERITIES.contains(logRecord.getSeverity())))
+            {
+                System.out.println(logRecord.getTimeStamp() + " " + logRecord.getOriginator().getServerName() + " " + logRecord.getSeverity() + " " +
+                                           logRecord.getMessageId() + " Further reading: " + logRecord.getMessageURL());
+            }
 
             if (AuditLogRecordSeverityLevel.EXCEPTION.getName().equals(logRecord.getSeverity()))
             {

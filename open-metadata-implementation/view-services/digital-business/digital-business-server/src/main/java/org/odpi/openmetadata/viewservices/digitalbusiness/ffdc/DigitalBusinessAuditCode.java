@@ -28,7 +28,8 @@ public enum DigitalBusinessAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.STARTUP,
                          "The Digital Business Open Metadata View Service (OMVS) is initializing",
                          "The local server is initializing the Digital Business Open Metadata View Service. If the initialization is successful then audit message OMVS-DIGITAL-BUSINESS-0002 will be issued, if there were errors then they should be shown in the audit log. ",
-                         "No action is required. This is part of the normal operation of the Digital Business Open Metadata View Service."),
+                         "No action is required. This is part of the normal operation of the Digital Business Open Metadata View Service.",
+                         "https://egeria-project.org/services/omvs/digital-business/overview/"),
 
     /**
      * OMVS-DIGITAL-BUSINESS-0002 The Digital Business Open Metadata View Service (OMVS) is initialized
@@ -37,7 +38,8 @@ public enum DigitalBusinessAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.STARTUP,
                          "The Digital Business Open Metadata View Service (OMVS) is initialized",
                          "The Digital Business OMVS has completed initialization. Calls will be accepted by this service, if OMRS is also configured and the view server has been started. ",
-                         "No action is required.  This is part of the normal operation of the Digital Business Open Metadata View Service. Once the OMRS is configured and the server is started, Digital Business view service requests can be accepted."),
+                         "No action is required.  This is part of the normal operation of the Digital Business Open Metadata View Service. Once the OMRS is configured and the server is started, Digital Business view service requests can be accepted.",
+                         "https://egeria-project.org/services/omvs/digital-business/overview/"),
 
     /**
      * OMVS-DIGITAL-BUSINESS-0003 The Digital Business Open Metadata View Service (OMVS) is shutting down
@@ -46,7 +48,8 @@ public enum DigitalBusinessAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.SHUTDOWN,
                          "The Digital Business Open Metadata View Service (OMVS) is shutting down",
                          "The local server has requested shutdown of the Digital Business OMVS.",
-                         "No action is required. The operator should verify that shutdown was intended. This is part of the normal operation of the Digital Business OMVS."),
+                         "No action is required. The operator should verify that shutdown was intended. This is part of the normal operation of the Digital Business OMVS.",
+                         "https://egeria-project.org/services/omvs/digital-business/overview/"),
 
     /**
      * OMVS-DIGITAL-BUSINESS-0004 The Digital Business Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}
@@ -55,7 +58,8 @@ public enum DigitalBusinessAuditCode implements AuditLogMessageSet
                              AuditLogRecordSeverityLevel.EXCEPTION,
                          "The Digital Business Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}",
                          "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
-                         "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+                         "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.",
+                         "https://egeria-project.org/services/omvs/digital-business/overview/"),
 
     /**
      * OMVS-DIGITAL-BUSINESS-0005 The Digital Business Open Metadata View Service (OMVS) is shutting down server instance {0}
@@ -64,16 +68,9 @@ public enum DigitalBusinessAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.SHUTDOWN,
                          "The Digital Business Open Metadata View Service (OMVS) is shutting down server instance {0}",
                          "The local handler has requested shut down of the Digital Business OMVS.",
-                         "No action is required. This is part of the normal operation of the service."),
+                         "No action is required. This is part of the normal operation of the service.",
+                         "https://egeria-project.org/services/omvs/digital-business/overview/"),
 
-    /**
-     * OMVS-DIGITAL-BUSINESS-0006 The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}
-     */
-    UNEXPECTED_EXCEPTION("OMVS-DIGITAL-BUSINESS-0006",
-                         AuditLogRecordSeverityLevel.EXCEPTION,
-                         "The Open Metadata Service has generated an unexpected {0} exception during method {1}.  The message was: {2}",
-                         "The request returned an Exception.",
-                         "This is probably a logic error. Review the stack trace to identify where the error occurred and work to resolve the cause.")
     ;
 
     private final String                      logMessageId;
@@ -81,6 +78,26 @@ public enum DigitalBusinessAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
+
+
+   /**
+    * Constructor for the message definitions that have no page to link to.
+    *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+    */
+   DigitalBusinessAuditCode(String                      messageId,
+                          AuditLogRecordSeverityLevel severity,
+                          String                      message,
+                          String                      systemAction,
+                          String                      userAction)
+   {
+       this(messageId, severity, message, systemAction, userAction, null);
+   }
 
 
     /**
@@ -96,18 +113,22 @@ public enum DigitalBusinessAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+    * @param url link to a page that describes the component or concept behind
+    *            this message - null if there is no suitable page
      */
    DigitalBusinessAuditCode(String                      messageId,
                           AuditLogRecordSeverityLevel severity,
                           String                      message,
                           String                      systemAction,
-                          String                      userAction)
+                          String                      userAction,
+                          String                      url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -123,7 +144,8 @@ public enum DigitalBusinessAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -140,7 +162,8 @@ public enum DigitalBusinessAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -160,6 +183,7 @@ public enum DigitalBusinessAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 ", messageDefinition=" + getMessageDefinition() +
                 '}';
     }

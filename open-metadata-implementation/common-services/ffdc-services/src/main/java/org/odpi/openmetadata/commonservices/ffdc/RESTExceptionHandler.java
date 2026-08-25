@@ -341,6 +341,8 @@ public class RESTExceptionHandler
                                                                         parameterName,
                                                                         restResult.getExceptionProperties());
 
+        error.setReportedURL(restResult.getExceptionURL());
+
         log.error("Detected Invalid Parameter Exception in REST Response", error);
         throw error;
     }
@@ -383,6 +385,8 @@ public class RESTExceptionHandler
                                                                     restResult.getExceptionUserAction(),
                                                                     restResult.getExceptionCausedBy(),
                                                                     restResult.getExceptionProperties());
+
+        error.setReportedURL(restResult.getExceptionURL());
 
         log.error("Property Server Error Exception returned by REST Call", error);
         throw error;
@@ -441,6 +445,8 @@ public class RESTExceptionHandler
                                                                           restResult.getExceptionCausedBy(),
                                                                           userId,
                                                                           restResult.getExceptionProperties());
+
+        error.setReportedURL(restResult.getExceptionURL());
 
         log.error("User Not Authorized Exception", error);
         throw error;
@@ -535,6 +541,7 @@ public class RESTExceptionHandler
         response.setExceptionErrorMessageParameters(error.getReportedErrorMessageParameters());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
+        response.setExceptionURL(error.getReportedURL());
         response.setExceptionProperties(exceptionProperties);
     }
 
@@ -589,6 +596,7 @@ public class RESTExceptionHandler
             response.setExceptionErrorMessageParameters(messageDefinition.getMessageParams());
             response.setExceptionSystemAction(messageDefinition.getSystemAction());
             response.setExceptionUserAction(messageDefinition.getUserAction());
+            response.setExceptionURL(messageDefinition.getURL());
             response.setExceptionProperties(null);
 
 

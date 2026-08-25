@@ -31,7 +31,8 @@ public enum DocStoreErrorCode implements ExceptionMessageSet
     CONFIG_RETRIEVE_ALL_ERROR(400, "FILE-DOC-STORE-400-001",
                         "Unable to retrieve the configuration files; exception was {0} with message {1}, while attempting access file {2}",
                         "The system was unable to retrieve the configuration files.",
-                        "Review the full stack trace in the logs to troubleshoot further. Then retry the request."),
+                        "Review the full stack trace in the logs to troubleshoot further. Then retry the request.",
+                        "https://egeria-project.org/concepts/configuration-document-store-connector/"),
 
     /**
      * FILE-DOC-STORE-400-002 - Unable to retrieve the configuration files because the store template name {0}. It needs only 1 or 2 inserts that are in separate segments
@@ -39,7 +40,8 @@ public enum DocStoreErrorCode implements ExceptionMessageSet
     CONFIG_RETRIEVE_ALL_ERROR_INVALID_TEMPLATE(400, "FILE-DOC-STORE-400-002",
                                                        "Unable to retrieve the configuration files because the store template name {0}. It needs only 1 or 2 inserts that are in separate segments",
                                                        "The system was unable to retrieve the configuration files as the template was invalid.",
-                                                       "Either use the default store template or specify a valid template.")
+                                                       "Either use the default store template or specify a valid template.",
+                                                       "https://egeria-project.org/concepts/configuration-document-store-connector/")
     ;
 
     private final int    httpErrorCode;
@@ -47,6 +49,22 @@ public enum DocStoreErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    DocStoreErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -57,14 +75,17 @@ public enum DocStoreErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    DocStoreErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    DocStoreErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -80,7 +101,8 @@ public enum DocStoreErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -97,7 +119,8 @@ public enum DocStoreErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -119,6 +142,7 @@ public enum DocStoreErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

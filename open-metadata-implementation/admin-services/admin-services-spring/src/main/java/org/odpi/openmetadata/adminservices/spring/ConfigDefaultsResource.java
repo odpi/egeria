@@ -70,7 +70,7 @@ public class ConfigDefaultsResource
                                    " ServerURLRoot is used as a default value during the configuration of the server's subsystems." +
                                    " If it is updated after a subsystem is configured then the new value is ignored.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-the-server-url-root"))
+                                                   url="https://egeria-project.org/guides/admin/servers/by-server-type/configuring-a-metadata-access-store/#set-the-server-url-root"))
 
     public VoidResponse setServerRootURL(@PathVariable String         serverName,
                                          @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
@@ -109,7 +109,7 @@ public class ConfigDefaultsResource
                                    " When the event bus is configured, it is used only on future configuration.  It does not effect" +
                                    " existing configuration.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-up-the-default-event-bus"))
+                                                   url="https://egeria-project.org/guides/admin/servers/by-server-type/configuring-a-metadata-access-store/#set-up-the-default-event-bus"))
 
     public VoidResponse setEventBus(@PathVariable                   String              serverName,
                                     @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
@@ -137,7 +137,7 @@ public class ConfigDefaultsResource
     @Operation(summary="getEventBus",
                description="Return the current configuration for the event bus.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-up-the-default-event-bus"))
+                                                   url="https://egeria-project.org/guides/admin/servers/by-server-type/configuring-a-metadata-access-store/#set-up-the-default-event-bus"))
 
     public EventBusConfigResponse getEventBus(@PathVariable String serverName,
                                               @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)
@@ -163,7 +163,7 @@ public class ConfigDefaultsResource
     @Operation(summary="deleteEventBus",
                description="Delete the current configuration for the event bus.  This does not impact that existing configuration for the server, only future configuration requests.",
                externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/guides/admin/servers/configuring-a-metadata-access-store/#set-up-the-default-event-bus"))
+                                                   url="https://egeria-project.org/guides/admin/servers/by-server-type/configuring-a-metadata-access-store/#set-up-the-default-event-bus"))
 
     public VoidResponse deleteEventBus(@PathVariable String serverName,
                                        @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId)

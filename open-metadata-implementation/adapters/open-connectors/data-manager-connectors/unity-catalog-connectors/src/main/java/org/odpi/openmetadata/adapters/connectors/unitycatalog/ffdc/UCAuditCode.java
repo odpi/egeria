@@ -28,37 +28,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The Unity Catalog connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}",
                          "The connector cannot process the current request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
-
-    /**
-     * UNITY-CATALOG-CONNECTOR-0002 - The {0} connector cannot retrieve details of any catalogs for Unity Catalog Server {1} ({2})
-     */
-    NO_CATALOGS( "UNITY-CATALOG-CONNECTOR-0002",
-                       AuditLogRecordSeverityLevel.INFO,
-                       "The {0} connector cannot retrieve details of any catalogs for Unity Catalog Server {1} ({2})",
-                       "The connector terminates.",
-                       "Check that this server is a Unity Catalog (UC) Server.  If it is, ensure the permissions are set up so this connector can retrieve information from the server."),
-
-    /**
-     * UNITY-CATALOG-CONNECTOR-0003 - The {0} integration connector has catalogued data set {1} ({2})
-     */
-    CATALOGED_DATABASE( "UNITY-CATALOG-CONNECTOR-0003",
-                  AuditLogRecordSeverityLevel.INFO,
-                  "The {0} integration connector has catalogued data set {1} ({2})",
-                  "The integration connector looks for another database.",
-                  "This is an information message showing that the integration connector has found a new database."),
-
-
-    /**
-     * UNITY-CATALOG-CONNECTOR-0004 - he {0} integration connector is skipping data set {1} ({2}) because it is already catalogued
-     */
-    SKIPPING_DATABASE( "UNITY-CATALOG-CONNECTOR-0004",
-                        AuditLogRecordSeverityLevel.INFO,
-                        "The {0} integration connector is skipping data set {1} ({2}) because it is already catalogued",
-                        "The integration connector continues, looking for another database.",
-                        "This is an information message showing that the integration connector is working, but does not need to do any processing on this database."),
-
-
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0005 - A client-side exception was received from API call {0} to server {1} at {2}.  The error message was {3}
@@ -67,17 +38,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                                 AuditLogRecordSeverityLevel.EXCEPTION,
                                 "A client-side exception was received from API call {0} to server {1} at {2}.  The error message was {3}",
                                 "The server has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
-                                "Look for errors in the local server's console to understand and correct the source of the error."),
-
-    /**
-     * UNITY-CATALOG-CONNECTOR-0006 - The {0} OSS Unity Catalog Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}
-     */
-    WRONG_REST_CONNECTOR("UNITY-CATALOG-CONNECTOR-0006",
-                         AuditLogRecordSeverityLevel.ERROR,
-                         "The {0} OSS Unity Catalog Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
-                         "The connector cannot continue to profile Unity Catalog because it can not call its REST API.",
-                         "Use the details from the error message to determine the class of the connector.  " +
-                                 "Update the connector type associated with Unity Catalog's Connection in the metadata store."),
+                                "Look for errors in the local server's console to understand and correct the source of the error.",
+                                "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0007 - The {0} OSS Unity Catalog Connector has been supplied with a friendship connector with GUID {1}
@@ -86,7 +48,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                     AuditLogRecordSeverityLevel.INFO,
                     "The {0} Unity Catalog Connector has been supplied with a friendship connector with GUID {1}",
                     "The friendship connector is an integration connector that is able to synchronize the contents inside a Unity Catalog (UC) connector.  Therefore, they will cooperate to synchronize the contents of the Unity Catalog with the open metadata ecosystem.",
-                    "No action is required, this message is just to acknowledge that that the two integration connectors are going to collaborate to catalog the entire contents of Unity Catalog."),
+                    "No action is required, this message is just to acknowledge that that the two integration connectors are going to collaborate to catalog the entire contents of Unity Catalog.",
+                    "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0008 - The {0} OSS Unity Inside Catalog Synchronizer Connector only works with catalog targets
@@ -95,7 +58,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                     AuditLogRecordSeverityLevel.INFO,
                     "The {0} OSS Unity Inside Catalog Synchronizer Connector only works with catalog targets",
                     "The connector is ignoring the Unity Catalog (UC) server instance that are configured directly through its connection.",
-                    "Update the integration connector's configuration to use catalog targets."),
+                    "Update the integration connector's configuration to use catalog targets.",
+                    "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0009 - The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Unity Catalog Server Asset {3} for Unity Catalog (UC) {4}
@@ -104,7 +68,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                       AuditLogRecordSeverityLevel.INFO,
                       "The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Unity Catalog Server Asset {3} for Unity Catalog (UC) {4}",
                       "The connector has requested that its friendship connector starts to catalog a new Unity Catalog (UC) catalog.",
-                      "Verify that the cataloguing starts the next time that the friendship connector refreshes."),
+                      "Verify that the cataloguing starts the next time that the friendship connector refreshes.",
+                      "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0010 - The {0} Connector has detected a change in the identity of element {1}.  The original id was from {2} and now it is {3} in Unity Catalog (UC) {4}
@@ -113,7 +78,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                        AuditLogRecordSeverityLevel.ACTION,
                        "The {0} Connector has detected a change in the identity of element {1}.  The original id was from {2} and now it is {3} in Unity Catalog (UC) {4}",
                        "The connector will continue to synchronize metadata with Unity Catalog (UC).  This element will not be updated in with system and will remain out of sync.",
-                       "Verify that the element is being correctly synchronized.  It is possible that there are two different elements with the same name. Also investigate why this element changed in Unity Catalog when it is owned by the open metadata ecosystem.  It may be that the structure of the element was changed and the UC element was replaced to reflect the new data structure.  If this is a planned change then all is ok, if it is unexpected then take steps to repair the data source and prevent it happening again."),
+                       "Verify that the element is being correctly synchronized.  It is possible that there are two different elements with the same name. Also investigate why this element changed in Unity Catalog when it is owned by the open metadata ecosystem.  It may be that the structure of the element was changed and the UC element was replaced to reflect the new data structure.  If this is a planned change then all is ok, if it is unexpected then take steps to repair the data source and prevent it happening again.",
+                       "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0011 - The {0} Connector has detected a change in the open metadata that controls the definition of catalog {1} but cannot update the catalog in Unity Catalog (UC) at {2}
@@ -122,7 +88,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                  AuditLogRecordSeverityLevel.ACTION,
                  "The {0} Connector has detected a change in the open metadata that controls the definition of catalog {1} but cannot update the catalog in Unity Catalog (UC) at {2}",
                  "The connector will continue to synchronize metadata with Unity Catalog (UC).  However, this catalog's properties will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog uses the PATCH request which is not supported by Java.",
-                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source."),
+                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source.",
+                 "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0012 - The {0} Connector has detected a change in the open metadata that controls the definition of schema {1} but cannot update the schema in Unity Catalog (UC) at {2}
@@ -131,7 +98,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                  AuditLogRecordSeverityLevel.ACTION,
                  "The {0} Connector has detected a change in the open metadata that controls the definition of schema {1} but cannot update the schema in Unity Catalog (UC) at {2}",
                  "The connector will continue to synchronize metadata with Unity Catalog (UC).  However, this schema's properties will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog uses the PATCH request which is not supported by Java.",
-                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source."),
+                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source.",
+                 "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0013 - The {0} Connector has detected a change in the open metadata that controls the definition of table {1} but cannot update the table in Unity Catalog (UC) at {2}
@@ -140,7 +108,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                  AuditLogRecordSeverityLevel.ACTION,
                  "The {0} Connector has detected a change in the open metadata that controls the definition of table {1} but cannot update the table in Unity Catalog (UC) at {2}",
                  "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.  However, this table's properties will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog does not support an update request.",
-                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source."),
+                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source.",
+                 "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0014 - The {0} Connector has detected a change in the open metadata element {1} that controls the definition of volume {2} but cannot update the volume in Unity Catalog (UC) at {3}
@@ -149,7 +118,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                  AuditLogRecordSeverityLevel.ACTION,
                  "The {0} Connector has detected a change in the open metadata element {1} that controls the definition of volume {2} but cannot update the volume in Unity Catalog (UC) at {3}",
                  "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.  However, this volume's properties will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog does not support a full update request.",
-                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the volume in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source."),
+                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the volume in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source.",
+                 "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0015 - The {0} Connector has detected a change in the open metadata element {1} that controls the definition of function {2} but cannot update the function in Unity Catalog (UC) at {3}
@@ -158,7 +128,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                   AuditLogRecordSeverityLevel.ACTION,
                   "The {0} Connector has detected a change in the open metadata element {1} that controls the definition of function {2} but cannot update the function in Unity Catalog (UC) at {3}",
                   "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.  However, this function's properties will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog does not support a full update request.",
-                  "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the volume in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying called data sources."),
+                  "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the volume in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying called data sources.",
+                  "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0016 - The {0} Connector has detected that the open metadata element that controls the definition of element {1} in Unity Catalog (UC) at {2} has been deleted
@@ -167,25 +138,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                   AuditLogRecordSeverityLevel.INFO,
                   "The {0} Connector has detected that the open metadata element that controls the definition of element {1} in Unity Catalog (UC) at {2} has been deleted",
                   "The connector will delete the element in Unity Catalog (UC) catalog.",
-                  "Validate that the change in the open metadata ecosystem is intended.  If it is, no additional action is required.  If the element is still required, investigate what happened to the element in the open metadata ecosystem.   It may have moved zones or metadata collections or its security controls changed, making it invisible to the connector.  Or it may have been soft-deleted which means it can be restored."),
-
-    /**
-     * UNITY-CATALOG-CONNECTOR-0017 - The {0} Connector has called method {1} that is not implemented and so is not able to synchronize element {2} with the Unity Catalog (UC) at {3}
-     */
-    MISSING_METHOD("UNITY-CATALOG-CONNECTOR-0017",
-                  AuditLogRecordSeverityLevel.ACTION,
-                  "The {0} Connector has called method {1} that is not implemented and so is not able to synchronize element {2} with the Unity Catalog (UC) at {3}",
-                  "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.  However, the current element will remain unchanged and out of sync with the open metadata ecosystem.",
-                  "Update the connector code to implement this method."),
-
-    /**
-     *  UNITY-CATALOG-CONNECTOR-0018 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}
-     */
-    UNABLE_TO_REGISTER_LISTENER(" UNITY-CATALOG-CONNECTOR-0018",
-                                AuditLogRecordSeverityLevel.EXCEPTION,
-                                "The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}",
-                                "The connector continues to scan and synchronize metadata as configured.  Without the listener, updates to open metadata elements with only be synchronized to Unity Catalog during a refresh scan.",
-                                "The likely cause of this error is that the Asset Manager OMAS in the metadata access server used by the integration daemon is not configured to support topics.  This can be changed by reconfiguring the metadata access server to support topics.  A less likely cause is that the metadata access server has stopped running."),
+                  "Validate that the change in the open metadata ecosystem is intended.  If it is, no additional action is required.  If the element is still required, investigate what happened to the element in the open metadata ecosystem.   It may have moved zones or metadata collections or its security controls changed, making it invisible to the connector.  Or it may have been soft-deleted which means it can be restored.",
+                  "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0019 - The {0} governance action service has created a new {1} element called {2} ({3})
@@ -194,8 +148,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.INFO,
                         "The {0} governance action service has created a new {1} element called {2} ({3})",
                         "The governance action service returns an ACTIONED completion status.",
-                        "Ensure follow-on uses of the asset are successful."),
-
+                        "Ensure follow-on uses of the asset are successful.",
+                        "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0020 - The {0} governance action service has no technology type to work with
@@ -206,7 +160,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                        "The governance action service returns an INVALID completion status.",
                        "This is an error in the way that the governance action service has been called." +
                                "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
-                               "or as part of a governance action process.  Then correct this approach so that a technology type is set up in the request parameters."),
+                               "or as part of a governance action process.  Then correct this approach so that a technology type is set up in the request parameters.",
+                               "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0021 - The {0} governance action service has been passed a technology type of {1} which is not supported
@@ -217,7 +172,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                        "The governance action service ends with an INVALID completion status.",
                        "This is an error in the way that the governance action service has been called." +
                                "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
-                               "or as part of a governance action process.  Then correct this approach so that a supported technology type is set up in the request parameters."),
+                               "or as part of a governance action process.  Then correct this approach so that a supported technology type is set up in the request parameters.",
+                               "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0022 - The {0} governance action service has not been passed all the placeholder variables needed to create an element for technology type {1}; the missing placeholder variables are: {2}
@@ -228,8 +184,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                                "The governance action service ends with an INVALID completion status and this message.",
                                "This is an error in the way that the governance action service has been called." +
                                     "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
-                                    "or as part of a governance action process.  Then correct this approach so that the required placeholder properties are set up in the request parameters."),
-
+                                    "or as part of a governance action process.  Then correct this approach so that the required placeholder properties are set up in the request parameters.",
+                                    "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0023 - The {0} connector has detected a missing or invalid {1} property in method {2} - element is: {3}
@@ -238,7 +194,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                  AuditLogRecordSeverityLevel.ERROR,
                  "The {0} connector has detected a missing or invalid {1} property in method {2} - element is: {3}",
                  "The connector throws an exception to indicate that it should not continue.",
-                 "Check the templates that where used to create the element to be sure they include the correct value.  If the template is correct then check the element's history to discover which processing cleared the value, since this is where the problem was introduced.  Now decide if the test in the connector is incorrect, or the ."),
+                 "Check the templates that where used to create the element to be sure they include the correct value.  If the template is correct then check the element's history to discover which processing cleared the value, since this is where the problem was introduced.  Now decide if the test in the connector is incorrect, or the .",
+                 "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
      * UNITY-CATALOG-CONNECTOR-0024 - The {0} connector has detected that element {1} which should be of type {2} has bean properties of {3} rather than {4} in method {5} - element is {6}
@@ -247,7 +204,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                           AuditLogRecordSeverityLevel.ERROR,
                           "The {0} connector has detected that element {1} which should be of type {2} has bean properties of {3} rather than {4} in method {5} - element is {6}",
                           "The connector throws an exception to indicate that it should not continue since something has gone very wrong with the connector or Open Metadata Framework since the connector is expecting an element of a certain type, with bean properties that match that type, but the OMF has returned something different.",
-                          "Check that the type of element is that which was expected.  If not, this may be a connector logic problem, or another process may have created additional metadata that has confused the connector. Compare the element retrieved through the OMF with its stored value.  If the stored value is correct, then the problem is in the OMF converters.  If the stored value is not correct then look at the element's history to understand which processing caused the problem."),
+                          "Check that the type of element is that which was expected.  If not, this may be a connector logic problem, or another process may have created additional metadata that has confused the connector. Compare the element retrieved through the OMF with its stored value.  If the stored value is correct, then the problem is in the OMF converters.  If the stored value is not correct then look at the element's history to understand which processing caused the problem.",
+                          "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     ;
 
@@ -256,10 +214,11 @@ public enum UCAuditCode implements AuditLogMessageSet
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
 
 
     /**
-     * Constructor
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -273,11 +232,34 @@ public enum UCAuditCode implements AuditLogMessageSet
                 String                      systemAction,
                 String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * Constructor
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    UCAuditCode(String                      messageId,
+                AuditLogRecordSeverityLevel severity,
+                String                      message,
+                String                      systemAction,
+                String                      userAction,
+                String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -293,7 +275,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -310,7 +293,8 @@ public enum UCAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -330,6 +314,7 @@ public enum UCAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

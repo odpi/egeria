@@ -30,7 +30,7 @@ public class OpenMetadataAccessSecurityProvider extends OpenMetadataServerSecuri
     private static final String connectorQualifiedName = "Egeria:MetadataSecurity:OpenMetadataAccessSecurity";
     private static final String connectorDisplayName   = "Open Metadata Access Security Connector";
     private static final String connectorDescription   = "Connector supports the authorization of request to the Egeria services using the information from an embedded secrets store connector.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/metadata-security/open-metadata-access-security-connector/";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/";
 
     /*
      * Class of the connector.

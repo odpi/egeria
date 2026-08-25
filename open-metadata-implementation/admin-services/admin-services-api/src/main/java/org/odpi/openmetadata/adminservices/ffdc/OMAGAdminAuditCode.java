@@ -28,7 +28,8 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
               AuditLogRecordSeverityLevel.STARTUP,
               "The {0} service is being ignored in the startup of server {1} because it is not registered to this platform",
               "The configured service will not be available in the running server because the code to run the service is missing from the platform's classpath.",
-              "Determine if this service is needed in the server.  Remove it from the configuration is it is not.  If it is needed, add the jar file for the service into the platform's lib (or extra) directory to ensure it is picked up.  If the jar file is in the correct place then examine its implementation to ensure it registers with the runtime."),
+              "Determine if this service is needed in the server.  Remove it from the configuration is it is not.  If it is needed, add the jar file for the service into the platform's lib (or extra) directory to ensure it is picked up.  If the jar file is in the correct place then examine its implementation to ensure it registers with the runtime.",
+              "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-0208 - The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property
@@ -37,7 +38,8 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.ERROR,
                         "The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property",
                         "The access service has not been passed valid configuration in its option's map.",
-                        "Correct the configuration property and restart the server."),
+                        "Correct the configuration property and restart the server.",
+                        "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-0209 - The {0} Open Metadata Access Service (OMAS) is registering a listener with the enterprise OMRS Topic for server {1}
@@ -46,7 +48,8 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                              AuditLogRecordSeverityLevel.STARTUP,
                                              "The {0} Open Metadata Access Service (OMAS) is registering a listener with the enterprise OMRS Topic for server {1}",
                                              "The OMAS is registering to receive events from the open metadata repositories registered with the cohort.",
-                                             "This is part of the normal start up of an access service in a server."),
+                                             "This is part of the normal start up of an access service in a server.",
+                                             "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-0210 - The {0} Open Metadata Access Service (OMAS) cannot register a listener with the enterprise OMRS Topic for server {1} because it is null
@@ -55,7 +58,8 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.ERROR,
                         "The {0} Open Metadata Access Service (OMAS) cannot register a listener with the enterprise OMRS Topic for server {1} because it is null",
                         "The OMAS is registering to receive events from the open metadata repositories registered with the cohort but cannot because the enterprise OMRS topic is null.",
-                        "Review other error messages to determine why the connector to the enterprise topic is missing."),
+                        "Review other error messages to determine why the connector to the enterprise topic is missing.",
+                        "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-0211 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open metadata topic connector.
@@ -67,7 +71,8 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                 "The error message was {3}",
                         "The access service has not been passed valid configuration. The server where it is configured failed to start.",
                         "Use the information in the error message to determine the cause of the problem, then correct the failing configuration and" +
-                                " restart the server."),
+                                " restart the server.",
+                                "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-0212 - Method {0} called on behalf of the {1} service detected a {2} exception when creating an open
@@ -78,7 +83,8 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                  "Method {0} called on behalf of the {1} service detected a {2} exception when creating an open " +
                                          "metadata topic connection because the connector provider is incorrect.  The error message was {3}",
                                  "This is an internal error.  The access service is not using a valid connector provider.",
-                                 "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
+                                 "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve.",
+                                 "https://egeria-project.org/guides/admin/"),
 
 
     /**
@@ -90,7 +96,8 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
               "The view service has not been passed a list of asset types in the SupportedTypesForSearch property of the view services options.  " +
                       "This means it is providing access to all Assets irrespective of their type.",
               "No action is required if this view service should be giving access to all types of assets in the open metadata ecosystem.  " +
-                      "If this scope is too broad then set up a list of asset types in the SupportedTypesForSearch property for this view service."),
+                      "If this scope is too broad then set up a list of asset types in the SupportedTypesForSearch property for this view service.",
+                      "https://egeria-project.org/guides/admin/"),
 
     /**
      * OMAG-ADMIN-0217 - The {0} Open Metadata Access Service (OMAS) is supporting the following governance zones: {1}
@@ -100,7 +107,8 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                     "The {0} Open Metadata View Service (OMAS) is supporting the following asset types when searching: {1}",
                     "The view service was passed a list of asset types in the SupportedTypesForSearch property of the view services options.  " +
                             "This means it is only providing access to these types of Assets.",
-                    "Verify that these types are the right set for this service deployment."),
+                    "Verify that these types are the right set for this service deployment.",
+                    "https://egeria-project.org/guides/admin/"),
     ;
 
     private final String                     logMessageId;
@@ -108,6 +116,26 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
+    private final String                     url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     */
+    OMAGAdminAuditCode(String                     messageId,
+                       AuditLogRecordSeverityLevel severity,
+                       String                     message,
+                       String                     systemAction,
+                       String                     userAction)
+    {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
 
 
     /**
@@ -123,18 +151,22 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
     OMAGAdminAuditCode(String                     messageId,
                        AuditLogRecordSeverityLevel severity,
                        String                     message,
                        String                     systemAction,
-                       String                     userAction)
+                       String                     userAction,
+                       String                     url)
     {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -150,7 +182,8 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -167,7 +200,8 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }

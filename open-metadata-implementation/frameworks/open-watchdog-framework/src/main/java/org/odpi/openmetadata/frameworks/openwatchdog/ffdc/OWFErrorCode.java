@@ -33,7 +33,8 @@ public enum OWFErrorCode implements ExceptionMessageSet
     NULL_WATCHDOG_CONTEXT(400, "OPEN-WATCHDOG-400-001",
                           "No context supplied to the watchdog action service {0}",
                           "The watchdog action service is not able to determine which asset to analyze.",
-                          "This may be a configuration or a code error.  Look for other error messages and review the code of the watchdog action service.  Once the cause is resolved, retry the watchdog action request."),
+                          "This may be a configuration or a code error.  Look for other error messages and review the code of the watchdog action service.  Once the cause is resolved, retry the watchdog action request.",
+                          "https://egeria-project.org/frameworks/owf/overview/"),
 
 
     /**
@@ -42,7 +43,8 @@ public enum OWFErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "OPEN-WATCHDOG-500-001",
                          "Unexpected exception in watchdog action service {0} of type {1} detected by method {2}.  The error message was {3}",
                          "The watchdog action service failed during its operation.",
-                         "Look for other error messages and review the code of the watchdog action service.  Once the cause is resolved, retry the watchdog action request."),
+                         "Look for other error messages and review the code of the watchdog action service.  Once the cause is resolved, retry the watchdog action request.",
+                         "https://egeria-project.org/frameworks/owf/overview/"),
 
     ;
 
@@ -51,9 +53,10 @@ public enum OWFErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
 
     /**
-     * The constructor for OWFErrorCode expects to be passed one of the enumeration rows defined above.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique id for the message
@@ -63,11 +66,29 @@ public enum OWFErrorCode implements ExceptionMessageSet
      */
     OWFErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for OWFErrorCode expects to be passed one of the enumeration rows defined above.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    OWFErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
+    {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -83,7 +104,8 @@ public enum OWFErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -100,7 +122,8 @@ public enum OWFErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -122,6 +145,7 @@ public enum OWFErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

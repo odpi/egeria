@@ -37,7 +37,26 @@ public class ExceptionMessageDefinition extends MessageDefinition
      */
     public ExceptionMessageDefinition(int httpErrorCode, String messageId, String messageTemplate, String systemAction, String userAction)
     {
-        super(messageId, messageTemplate, systemAction, userAction);
+        this(httpErrorCode, messageId, messageTemplate, systemAction, userAction, null);
+    }
+
+
+    /**
+     * Constructor to save all the fixed values of a message, including a link to further reading.
+     * This is typically populated from an Enum message set.  The constructor passes most values to the
+     * super class and just retains the additional value for the exception.
+     *
+     * @param httpErrorCode the HTTP code that describes the nature of the error
+     * @param messageId unique identifier for the message
+     * @param messageTemplate text for the message
+     * @param systemAction description of the action taken by the system when the condition happened
+     * @param userAction instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind this message -
+     *            null if there is no suitable page.
+     */
+    public ExceptionMessageDefinition(int httpErrorCode, String messageId, String messageTemplate, String systemAction, String userAction, String url)
+    {
+        super(messageId, messageTemplate, systemAction, userAction, url);
 
         this.httpErrorCode        = httpErrorCode;
     }
@@ -69,6 +88,7 @@ public class ExceptionMessageDefinition extends MessageDefinition
                        ", messageParams=" + Arrays.toString(getMessageParams()) +
                        ", systemAction='" + getSystemAction() + '\'' +
                        ", userAction='" + getUserAction() + '\'' +
+                       ", url='" + getURL() + '\'' +
                        '}';
     }
 }

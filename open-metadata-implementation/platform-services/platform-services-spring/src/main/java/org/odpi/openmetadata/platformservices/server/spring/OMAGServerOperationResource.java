@@ -291,7 +291,7 @@ public class OMAGServerOperationResource
                                    "archive that is readable through the connector identified by the connection.  " +
                                    "It can be used with OMAG servers that are of type Cohort Member.",
                externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
-                    url="https://egeria-project.org/concepts/open-metadata-archives/"))
+                    url="https://egeria-project.org/concepts/open-metadata-archive/"))
 
     public VoidResponse addOpenMetadataArchiveFile(@PathVariable String serverName,
                                                    @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
@@ -319,7 +319,7 @@ public class OMAGServerOperationResource
                                    "archive that is readable through the connector identified by the connection.  " +
                                    "It can be used with OMAG servers that are of type Cohort Member.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
-                    url="https://egeria-project.org/concepts/open-metadata-archives/"))
+                    url="https://egeria-project.org/concepts/open-metadata-archive/"))
 
     public VoidResponse addOpenMetadataArchive(@PathVariable String     serverName,
                                                @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,

@@ -44,6 +44,7 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
     private String               exceptionErrorMessage = null;
     private String               exceptionSystemAction = null;
     private String               exceptionUserAction = null;
+    private String               exceptionURL = null;
     private Map<String, Object>  exceptionProperties = null;
 
     /**
@@ -68,6 +69,7 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
             this.exceptionErrorMessage = template.getExceptionErrorMessage();
             this.exceptionSystemAction = template.getExceptionSystemAction();
             this.exceptionUserAction = template.getExceptionUserAction();
+            this.exceptionURL = template.getExceptionURL();
             this.exceptionProperties = template.getExceptionProperties();
         }
     }
@@ -207,6 +209,29 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
 
 
     /**
+     * Return the link to further reading about the component or concept behind the exception's message.
+     *
+     * @return url; null if the message definition does not supply one
+     */
+    public String getExceptionURL()
+    {
+        return exceptionURL;
+    }
+
+
+    /**
+     * Set up the link to further reading about the component or concept behind the exception's message.
+     *
+     * @param exceptionURL url; null if the message definition does not supply one
+     */
+    public void setExceptionURL(String exceptionURL)
+    {
+        this.exceptionURL = exceptionURL;
+    }
+
+
+
+    /**
      * Return the additional properties stored by the exceptions.
      *
      * @return property map
@@ -254,6 +279,7 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionURL='" + exceptionURL + '\'' +
                 ", exceptionProperties=" + exceptionProperties +
                 '}';
     }

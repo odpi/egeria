@@ -31,7 +31,8 @@ public enum JDBCErrorCode implements ExceptionMessageSet
     NULL_URL(400, "JDBC-RESOURCE-CONNECTOR-400-001",
                      "Connection {0} has been configured without the URL to the database",
                      "The connector cannot start because the endpoint of its connection has a null address property.",
-                     "Update the connection's endpoint to include the connection string needed to connect to the desired database."),
+                     "Update the connection's endpoint to include the connection string needed to connect to the desired database.",
+                     "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     /**
      * JDBC-RESOURCE-CONNECTOR-400-002 - The JDBC resource connector for database {0} has been configured with an invalid DriverManager class name of {1} in its connection {2}: ClassNotFoundException message is {3}
@@ -39,7 +40,8 @@ public enum JDBCErrorCode implements ExceptionMessageSet
     BAD_DRIVER_MANAGER_CLASS(400, "JDBC-RESOURCE-CONNECTOR-400-002",
              "The JDBC resource connector for database {0} has been configured with an invalid DriverManager class name of {1} in its connection {2}: ClassNotFoundException message is {3}",
              "The connector fails to start.",
-             "Update the 'jdbcDriverManagerClassName' configuration property in this connector's connection.  This property is only needed for unusual databases.  It may also be worth trying the connector without this property to see if the driver is well known to your JDBC implementation."),
+             "Update the 'jdbcDriverManagerClassName' configuration property in this connector's connection.  This property is only needed for unusual databases.  It may also be worth trying the connector without this property to see if the driver is well known to your JDBC implementation.",
+             "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     /**
      * JDBC-RESOURCE-CONNECTOR-400-003 - Connection has been configured without the schema name of the database
@@ -47,7 +49,8 @@ public enum JDBCErrorCode implements ExceptionMessageSet
     NULL_SCHEMA_NAME(400, "JDBC-RESOURCE-CONNECTOR-400-003",
              "Connection has been configured without the schema name of the database",
              "The connector cannot start because the configuration properties have a null databaseSchema property.",
-             "Update the connection's configuration properties to include the schema name needed to connect to the desired database schema."),
+             "Update the connection's configuration properties to include the schema name needed to connect to the desired database schema.",
+             "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     /**
      * JDBC-RESOURCE-CONNECTOR-400-004 - The value supplied for column {0} contains a null (U+0000) character at position {1}; the value was being stored by method {2} in mapper {3}
@@ -55,7 +58,8 @@ public enum JDBCErrorCode implements ExceptionMessageSet
     NULL_CHARACTER_IN_VALUE(400, "JDBC-RESOURCE-CONNECTOR-400-004",
              "The value supplied for column {0} contains a null (U+0000) character at position {1}; the value was being stored by method {2} in mapper {3}",
              "The connector rejects the request rather than attempting to store the value.  A text column cannot hold a null character - PostgreSQL, for example, refuses the whole statement with \"null character not permitted\" - so the request would fail in the database anyway, with an error that says nothing about which property was at fault.",
-             "Remove the null character from the offending property value and retry the request.  A null character in a name, description or other text property is almost always a symptom of a fault further upstream - a C-style null-terminated string copied byte-for-byte, a fixed-width field padded with zero bytes, or binary content mislabelled as text - so it is worth correcting whatever produced the value rather than only the single property."),
+             "Remove the null character from the offending property value and retry the request.  A null character in a name, description or other text property is almost always a symptom of a fault further upstream - a C-style null-terminated string copied byte-for-byte, a fixed-width field padded with zero bytes, or binary content mislabelled as text - so it is worth correcting whatever produced the value rather than only the single property.",
+             "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     /**
      * JDBC-RESOURCE-CONNECTOR-500-001 - The JDBC resource connector for database {0} received an unexpected exception {1} during method {2}; the error message was: {3}
@@ -63,7 +67,8 @@ public enum JDBCErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "JDBC-RESOURCE-CONNECTOR-500-001",
                          "The JDBC resource connector for database {0} received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector cannot process the current request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/digital-resource-connector/"),
 
     /**
      * JDBC-RESOURCE-CONNECTOR-500-002 - The JDBC resource connector detected a missing value for column {0} during method {1} in mapper {2}
@@ -71,7 +76,8 @@ public enum JDBCErrorCode implements ExceptionMessageSet
     MISSING_DATABASE_VALUE(500, "JDBC-RESOURCE-CONNECTOR-500-002",
                            "The JDBC resource connector detected a missing value for column {0} during method {1} in mapper {2}",
                            "The connector cannot process the current request because of a missing value in the database.",
-                           "Investigate the contents of the database and the SQL requests used to populate it."),
+                           "Investigate the contents of the database and the SQL requests used to populate it.",
+                           "https://egeria-project.org/concepts/digital-resource-connector/"),
 
 
     /**
@@ -80,7 +86,8 @@ public enum JDBCErrorCode implements ExceptionMessageSet
     UNEXPECTED_SQL_EXCEPTION(500, "JDBC-RESOURCE-CONNECTOR-500-003",
                          "The JDBC resource connector for database {0} received an unexpected SQL exception from request \"{1}\" during method {2}; the error message was: {3}",
                          "The connector cannot process the current request because the database returned an unexpected error.",
-                         "Use the details from the SQL error message and the SQL request to determine the cause of the error and retry the request once it is resolved."),
+                         "Use the details from the SQL error message and the SQL request to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/concepts/digital-resource-connector/"),
 
 
     ;
@@ -90,6 +97,22 @@ public enum JDBCErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    JDBCErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -100,14 +123,17 @@ public enum JDBCErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    JDBCErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    JDBCErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -123,7 +149,8 @@ public enum JDBCErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -140,7 +167,8 @@ public enum JDBCErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -162,6 +190,7 @@ public enum JDBCErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

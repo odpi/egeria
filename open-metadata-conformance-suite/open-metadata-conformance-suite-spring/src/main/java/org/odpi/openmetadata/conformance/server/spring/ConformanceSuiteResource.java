@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name="Conformance Suite",
      description="The open metadata conformance suite provides a testing framework to help the developers integrate a specific technology into the open metadata ecosystem.",
-     externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/guides/cts/overview/"))
+     externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/guides/cts/"))
 
 
 public class ConformanceSuiteResource

@@ -21,25 +21,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
  */
 public enum OWFAuditCode implements AuditLogMessageSet
 {
-
-    /**
-     * OPEN-WATCHDOG-0001 - Subscriber {0} is of type {1} but watchdog action service {2} only supports the following subscriber type(s): {3}
-     */
-    WRONG_TYPE_OF_SUBSCRIBER("OPEN-WATCHDOG-0001",
-                             AuditLogRecordSeverityLevel.ERROR,
-                             "Subscriber {0} is of type {1} but watchdog action service {2} only supports the following subscriber type(s): {3}",
-                             "The watchdog action service ignores this subscriber.",
-                             "Remove this subscriber from the notification type and replace it with a subscriber type that is supported."),
-
-    /**
-     * OPEN-WATCHDOG-0002 - The {0} watchdog action service has been disconnected - either due to its own actions or a cancel request
-     */
-    DISCONNECT_DETECTED("OPEN-WATCHDOG-0002",
-                        AuditLogRecordSeverityLevel.INFO,
-                        "The {0} watchdog action service has been disconnected - either due to its own actions or a cancel request",
-                        "The watchdog action framework will attempt to stop the work of the watchdog action framework",
-                        "Monitor the shutdown of the watchdog action service."),
-
     /**
      * OPEN-WATCHDOG-ACTION-0003 - The watchdog action service {0} linked to request type {1} is processing asset {2} and ignoring the following notification type action targets: {3}
      */
@@ -47,7 +28,8 @@ public enum OWFAuditCode implements AuditLogMessageSet
                                 AuditLogRecordSeverityLevel.INFO,
                                 "The watchdog action service {0} linked to request type {1} for engine action {2} is ignoring the following notification type action targets: {3}",
                                 "The watchdog action service is only processing notification types connected to this service as action types if the activity status is either null, REQUESTED, APPROVED, IN_PROGRESS, or WAITING.  The other notification types are ignored.",
-                                "Validate that the activity status of the ignored notification types is correct."),
+                                "Validate that the activity status of the ignored notification types is correct.",
+                                "https://egeria-project.org/frameworks/owf/overview/"),
 
     ;
 
@@ -57,10 +39,11 @@ public enum OWFAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
 
 
     /**
-     * The constructor for OWFAuditCode expects to be passed one of the enumeration rows defined above.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -74,11 +57,34 @@ public enum OWFAuditCode implements AuditLogMessageSet
                  String                      systemAction,
                  String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for OWFAuditCode expects to be passed one of the enumeration rows defined above.
+     *
+     * @param messageId - unique id for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    OWFAuditCode(String                      messageId,
+                 AuditLogRecordSeverityLevel severity,
+                 String                      message,
+                 String                      systemAction,
+                 String                      userAction,
+                 String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -94,7 +100,8 @@ public enum OWFAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -111,7 +118,8 @@ public enum OWFAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -131,6 +139,7 @@ public enum OWFAuditCode implements AuditLogMessageSet
                 ", logMessage='" + logMessage + '\'' +
                 ", systemAction='" + systemAction + '\'' +
                 ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

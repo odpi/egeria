@@ -32,7 +32,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                                  "Within this engine service are one or more watchdog action engines that analyze the " +
                                  "content of assets on demand and create annotation metadata. The configuration for the " +
                                 "watchdog action engines is retrieved from the metadata server and the watchdog action engines are initialized.",
-                                "Verify that the start up sequence goes on to initialize the configured watchdog action engines."),
+                                "Verify that the start up sequence goes on to initialize the configured watchdog action engines.",
+                                "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     /**
      * OMES-WATCHDOG-ACTION-0012 - The Watchdog Action OMES cannot initialize a new instance of itself in server {0}; error message is {1}
@@ -41,7 +42,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                              AuditLogRecordSeverityLevel.ERROR,
                              "The Watchdog Action OMES cannot initialize a new instance of itself in server {0}; error message is {1}",
                              "The engine services detected an error during the start up of a specific engine host server instance.  Its watchdog action services are not available for the server.",
-                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.",
+                             "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     /**
      * OMES-WATCHDOG-ACTION-0014 - The Watchdog Action OMES in server {0} is shutting down
@@ -50,7 +52,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.SHUTDOWN,
                          "The Watchdog Action OMES in server {0} is shutting down",
                          "The local administrator has requested shut down of this engine service.",
-                         "Verify that this server is no longer needed and the shutdown is expected."),
+                         "Verify that this server is no longer needed and the shutdown is expected.",
+                         "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     /**
      * OMES-WATCHDOG-ACTION-0016 - The Watchdog Action OMES in server {0} has completed shutdown
@@ -59,7 +62,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                    AuditLogRecordSeverityLevel.SHUTDOWN,
                          "The Watchdog Action OMES in server {0} has completed shutdown",
                          "The local administrator has requested shut down of this engine service and the operation has completed.",
-                         "Verify that all configured watchdog action engines shut down successfully."),
+                         "Verify that all configured watchdog action engines shut down successfully.",
+                         "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     /**
      * OMES-WATCHDOG-ACTION-0017 - The watchdog action service {0} is starting with request type {1} in watchdog action engine {2} (guid={3})
@@ -68,7 +72,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                                    AuditLogRecordSeverityLevel.STARTUP,
                                    "The watchdog action service {0} is starting with request type {1} in watchdog action engine {2} (guid={3})",
                                    "A new watchdog request is being processed.",
-                                   "Verify that the watchdog action service ran to completion."),
+                                   "Verify that the watchdog action service ran to completion.",
+                                   "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     /**
      * OMES-WATCHDOG-ACTION-0018 - The watchdog action service {0} threw a {1} exception during the processing for request type {2} in watchdog action engine {3} (guid={4}). The error message was {5}
@@ -77,7 +82,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                                  AuditLogRecordSeverityLevel.EXCEPTION,
                                  "The watchdog action service {0} threw a {1} exception during the processing for request type {2} in watchdog action engine {3} (guid={4}). The error message was {5}",
                                  "A watchdog action service failed to complete the notification/actioning of a subscriber.",
-                                 "Review the exception to determine the cause of the error."),
+                                 "Review the exception to determine the cause of the error.",
+                                 "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     /**
      * OMES-WATCHDOG-ACTION-0019 - The watchdog action service {0} has completed request type {1} in {2} milliseconds
@@ -86,7 +92,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                                    AuditLogRecordSeverityLevel.SHUTDOWN,
                                    "The watchdog action service {0} has completed request type {1} in {2} milliseconds",
                                    "A monitoring request has completed.",
-                                   "It is possible to query the result of the monitoring request through Egeria's Open Metadata REST APIs."),
+                                   "It is possible to query the result of the monitoring request through Egeria's Open Metadata REST APIs.",
+                                   "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     /**
      * OMES-WATCHDOG-ACTION-0020 - The {0} governance action service for request type {1} is continuing to run in a background thread
@@ -96,17 +103,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                                        "The {0} watchdog action service for request type {1} is continuing to run in a background thread",
                                        "A watchdog action service has returned from the start() method without setting up the completion status prior to returning.",
                                        "Validate that this watchdog action service should still be running.  Typically you would expect a Watchdog action service to" +
-                                               "still be running at this stage because it will have registered a listener."),
-
-
-    /**
-     * OMES-WATCHDOG-ACTION-0021 - Watchdog Action OMES in server {0} cannot start any watchdog action engines
-     */
-    NO_WATCHDOG_ACTION_ENGINES_STARTED("OMES-WATCHDOG-ACTION-0021",
-                                     AuditLogRecordSeverityLevel.ERROR,
-                                     "Watchdog Action OMES in server {0} cannot start any watchdog action engines",
-                                     "The engine service is not able to run any monitoring requests.  It fails to start.",
-                                     "Add the configuration for at least one watchdog action engine to this engine service."),
+                                               "still be running at this stage because it will have registered a listener.",
+                                               "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     /**
      * OMES-WATCHDOG-ACTION-0022 - Watchdog action engine {0} cannot update the status for watchdog action service {1}.
@@ -116,20 +114,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                                AuditLogRecordSeverityLevel.EXCEPTION,
                                  "Watchdog action engine {0} cannot update the status for watchdog action service {1}.  The exception was {2} with error message {3}",
                                  "The server is not able to record the failed result for a monitoring watchdog request. The subscribers are not notified.",
-                                 "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the monitoring request."),
-
-    /**
-     * OMES-WATCHDOG-ACTION-0023 - Method {0} can not execute in the watchdog action engine {1} hosted by Watchdog Action OMES in server {2} because the associated " +
-     *                                 "watchdog action service properties are null
-     */
-    NULL_WATCHDOG_SERVICE( "OMES-WATCHDOG-ACTION-0023",
-                        AuditLogRecordSeverityLevel.ERROR,
-                        "Method {0} can not execute in the watchdog action engine {1} hosted by Watchdog Action OMES in server {2} because the associated " +
-                                "watchdog action service properties are null",
-                        "The monitoring request is not run and an error is returned to the caller.",
-                        "This may be an error in the watchdog action engine's logic or the Watchdog Action Framework (OWF) may have returned " +
-                                "invalid configuration.  Raise an issue to get help to fix it"),
-
+                                 "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the monitoring request.",
+                                 "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     /**
      * OMES-WATCHDOG-ACTION-0029 - The watchdog action service {0} linked to request type {1} can not be started.
@@ -149,7 +135,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                                       "watchdog action service's implementation has been deployed so the Watchdog Action OMES can load it.  If all this is " +
                                       "true this it is likely to be a code error in the watchdog action service in which case, " +
                                       "raise an issue with the author of the watchdog action service to get it fixed.  Once the cause is resolved, " +
-                                      "retry the monitoring request."),
+                                      "retry the monitoring request.",
+                                      "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     /**
      * OMES-GOVERNANCE-ACTION-0033 - The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}
@@ -158,8 +145,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The Watchdog Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}",
                          "The service cannot process the current request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
-
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
+                         "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 
     ;
 
@@ -169,13 +156,11 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
 
 
     /**
-     * The constructor for WatchdogActionAuditCode expects to be passed one of the enumeration rows defined in
-     * WatchdogActionAuditCode above.   For example:
-     *     WatchdogActionAuditCode   auditCode = WatchdogActionAuditCode.SERVER_SHUTDOWN;
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique identifier for the message
      * @param severity - severity of the message
@@ -189,11 +174,37 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                            String                      systemAction,
                            String                      userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for WatchdogActionAuditCode expects to be passed one of the enumeration rows defined in
+     * WatchdogActionAuditCode above.   For example:
+     *     WatchdogActionAuditCode   auditCode = WatchdogActionAuditCode.SERVER_SHUTDOWN;
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    WatchdogActionAuditCode(String                      messageId,
+                           AuditLogRecordSeverityLevel severity,
+                           String                      message,
+                           String                      systemAction,
+                           String                      userAction,
+                           String                      url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -209,7 +220,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -226,7 +238,8 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -246,6 +259,7 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                        ", logMessage='" + logMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

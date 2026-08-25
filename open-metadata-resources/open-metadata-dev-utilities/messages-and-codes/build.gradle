@@ -1,0 +1,56 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+plugins {
+    id 'application'
+}
+
+description = 'Generates the markdown documentation for the messages used in Egeria\'s exceptions and audit log.'
+
+java {
+    withJavadocJar()
+}
+
+application {
+    mainClass = 'org.odpi.openmetadata.reports.messages.MessagesAndCodesReport'
+}
+
+/*
+ * The message sets are read out of the source rather than off the class path, so the only inputs to the
+ * generator are the source files that could hold a message set.  Declaring them here lets gradle skip the
+ * task when none of them have changed.  Reading the source - rather than loading the classes - means this
+ * utility documents every message set in the repository without needing a dependency on each of the 100+
+ * modules that define one.
+ */
+def messageSetSources = fileTree(rootProject.projectDir) {
+    include '**/src/main/java/**/*ErrorCode.java'
+    include '**/src/main/java/**/*AuditCode.java'
+    include '**/src/main/java/**/*MessageSet.java'
+    include 'open-metadata-implementation/frameworks/audit-log-framework/src/main/java/**/AuditLogRecordSeverityLevel.java'
+    exclude '**/build/**'
+}
+
+def documentationDirectory = rootProject.layout.projectDirectory.dir('messages-and-codes')
+
+/*
+ * Regenerates the messages-and-codes documentation directory at the root of the repository.  The generated
+ * pages are checked in so that they can be read and searched from GitHub, and only the pages whose content
+ * has changed are rewritten - so a build that changes no messages leaves the working tree clean.
+ */
+tasks.register('generateMessageDocumentation', JavaExec) {
+    group = 'documentation'
+    description = 'Generates the messages-and-codes documentation from the message sets in the Egeria source.'
+
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.odpi.openmetadata.reports.messages.MessagesAndCodesReport'
+    args rootProject.projectDir.toString(), documentationDirectory.asFile.toString()
+
+    inputs.files(messageSetSources).withPropertyName('messageSets').withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(documentationDirectory).withPropertyName('documentation')
+}
+
+tasks.named('build') {
+    dependsOn 'generateMessageDocumentation'
+}

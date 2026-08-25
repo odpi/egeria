@@ -32,7 +32,8 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                  "Within this engine service are one or more repository governance engines that analyze the " +
                                  "content of assets on demand and create annotation metadata. The configuration for the " +
                                 "repository governance engines is retrieved from the metadata server and the repository governance engines are initialized.",
-                                "Verify that the start up sequence goes on to initialize the configured repository governance engines."),
+                                "Verify that the start up sequence goes on to initialize the configured repository governance engines.",
+                                "https://egeria-project.org/services/omes/repository-governance/overview/"),
 
     /**
      * OMES-REPOSITORY-GOVERNANCE-0012 - The Repository Governance OMES cannot initialize a new instance of itself in server {0}; error message is {1}
@@ -41,7 +42,8 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                              AuditLogRecordSeverityLevel.ERROR,
                              "The Repository Governance OMES cannot initialize a new instance of itself in server {0}; error message is {1}",
                              "The engine services detected an error during the start up of a specific engine host server instance.  Its repository governance services are not available for the server.",
-                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.",
+                             "https://egeria-project.org/services/omes/repository-governance/overview/"),
 
     /**
      * OMES-REPOSITORY-GOVERNANCE-0014 - The Repository Governance OMES in server {0} is shutting down
@@ -50,7 +52,8 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                     AuditLogRecordSeverityLevel.SHUTDOWN,
                     "The Repository Governance OMES in server {0} is shutting down",
                     "The local administrator has requested shut down of this engine service.",
-                    "Verify that this server is no longer needed and the shutdown is expected."),
+                    "Verify that this server is no longer needed and the shutdown is expected.",
+                    "https://egeria-project.org/services/omes/repository-governance/overview/"),
 
     /**
      * OMES-REPOSITORY-GOVERNANCE-0015 - The Repository Governance OMES in server {0} has completed shutdown
@@ -59,7 +62,8 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.SHUTDOWN,
                          "The Repository Governance OMES in server {0} has completed shutdown",
                          "The local administrator has requested shut down of this engine service and the operation has completed.",
-                         "Verify that all configured repository governance engines shut down successfully."),
+                         "Verify that all configured repository governance engines shut down successfully.",
+                         "https://egeria-project.org/services/omes/repository-governance/overview/"),
 
     /**
      * OMES-REPOSITORY-GOVERNANCE-0016 - The repository governance service {0} is starting with repository governance request type {1} in repository governance engine {2} (guid={3})
@@ -68,7 +72,8 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                            AuditLogRecordSeverityLevel.STARTUP,
                                            "The repository governance service {0} is starting with repository governance request type {1} in repository governance engine {2} (guid={3})",
                                            "A new repository governance request is being processed.",
-                                           "Verify that the repository governance service ran to completion."),
+                                           "Verify that the repository governance service ran to completion.",
+                                           "https://egeria-project.org/services/omes/repository-governance/overview/"),
 
     /**
      * OMES-REPOSITORY-GOVERNANCE-0017 - The repository governance service {0} for request type {1} is continuing to run in a background thread
@@ -78,8 +83,8 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                           "The repository governance service {0} for request type {1} is continuing to run in a background thread",
                                           "An repository governance service has returned from the start() method and without setting up the completion status prior to returning.  ",
                                           "Validate that this governance action service should still be running.  Typically you would expect an repository governance service to" +
-                                               "still be running at this stage because it will have registered a listener."),
-
+                                               "still be running at this stage because it will have registered a listener.",
+                                               "https://egeria-project.org/services/omes/repository-governance/overview/"),
 
     /**
      * OMES-REPOSITORY-GOVERNANCE-0018 - The repository governance service {0} threw a {1} exception during repository governance request 
@@ -89,7 +94,8 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                          AuditLogRecordSeverityLevel.EXCEPTION,
                                          "The repository governance service {0} threw a {1} exception during repository governance request type {2} in repository governance engine {3} (guid={4}). The error message was {5}",
                                          "A repository governance service failed to complete the maintenance of an repository governance.",
-                                         "Review the exception to determine the cause of the error."),
+                                         "Review the exception to determine the cause of the error.",
+                                         "https://egeria-project.org/services/omes/repository-governance/overview/"),
 
     /**
      * OMES-REPOSITORY-GOVERNANCE-0019 - The repository governance service {0} has completed repository governance request type {1} in {2} milliseconds
@@ -98,16 +104,8 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                            AuditLogRecordSeverityLevel.SHUTDOWN,
                                            "The repository governance service {0} has completed repository governance request type {1} in {2} milliseconds",
                                            "A repository governance request has completed.",
-                                           "It is possible to query the result of the repository governance request through the Governance Engine OMAS's REST API."),
-
-    /**
-     * OMES-REPOSITORY-GOVERNANCE-0020 - Repository Governance OMES in server {0} cannot start any repository governance engines
-     */
-    NO_REPOSITORY_GOVERNANCE_ENGINES_STARTED("OMES-REPOSITORY-GOVERNANCE-0020",
-                                             AuditLogRecordSeverityLevel.ERROR,
-                                             "Repository Governance OMES in server {0} cannot start any repository governance engines",
-                                             "The engine service is not able to run any repository governance requests.  It fails to start.",
-                                             "Add the configuration for at least one repository governance engine to this engine service."),
+                                           "It is possible to query the result of the repository governance request through the Governance Engine OMAS's REST API.",
+                                           "https://egeria-project.org/services/omes/repository-governance/overview/"),
 
     /**
      * OMES-REPOSITORY-GOVERNANCE-0021 - RepositoryGovernance engine {0} cannot update the status for repository governance service {1}.  
@@ -118,7 +116,8 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                  "RepositoryGovernance engine {0} cannot update the status for repository governance service {1}.  The exception was {2} with error " +
                                        "message {3}",
                                  "The server is not able to record the failed result for a repository governance request. The repository governance report status is not updated.",
-                                 "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the repository governance request."),
+                                 "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the repository governance request.",
+                                 "https://egeria-project.org/services/omes/repository-governance/overview/"),
 
     /**
      * OMES-REPOSITORY-GOVERNANCE-0029 - The repository governance service {0} linked to repository governance request type {1} can not be started.
@@ -138,7 +137,8 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                       "repository governance service's implementation has been deployed so the Repository Governance OMES can load it.  If all this is " +
                                       "true this it is likely to be a code error in the repository governance service in which case, " +
                                       "raise an issue with the author of the repository governance service to get it fixed.  Once the cause is resolved, " +
-                                      "retry the repository governance request."),
+                                      "retry the repository governance request.",
+                                      "https://egeria-project.org/services/omes/repository-governance/overview/"),
     ;
 
 
@@ -147,13 +147,11 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
     private final String                      logMessage;
     private final String                      systemAction;
     private final String                      userAction;
+    private final String                      url;
 
 
     /**
-     * The constructor for RepositoryGovernanceAuditCode expects to be passed one of the enumeration rows defined in
-     * RepositoryGovernanceAuditCode above.   For example:
-     *     RepositoryGovernanceAuditCode   auditCode = RepositoryGovernanceAuditCode.SERVER_SHUTDOWN;
-     * This will expand out to the 5 parameters shown below.
+     * Constructor for the message definitions that have no page to link to.
      *
      * @param messageId - unique identifier for the message
      * @param severity - severity of the message
@@ -167,11 +165,37 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                   String                     systemAction,
                                   String                     userAction)
     {
+        this(messageId, severity, message, systemAction, userAction, null);
+    }
+
+
+    /**
+     * The constructor for RepositoryGovernanceAuditCode expects to be passed one of the enumeration rows defined in
+     * RepositoryGovernanceAuditCode above.   For example:
+     *     RepositoryGovernanceAuditCode   auditCode = RepositoryGovernanceAuditCode.SERVER_SHUTDOWN;
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
+     */
+    RepositoryGovernanceAuditCode(String                     messageId,
+                                  AuditLogRecordSeverityLevel severity,
+                                  String                     message,
+                                  String                     systemAction,
+                                  String                     userAction,
+                                  String                     url)
+    {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -187,7 +211,8 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                              severity,
                                              logMessage,
                                              systemAction,
-                                             userAction);
+                                             userAction,
+                                             url);
     }
 
 
@@ -204,7 +229,8 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                                                                     severity,
                                                                                     logMessage,
                                                                                     systemAction,
-                                                                                    userAction);
+                                                                                    userAction,
+                                                                                    url);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -224,6 +250,7 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                        ", logMessage='" + logMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

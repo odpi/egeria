@@ -1113,7 +1113,7 @@ public class SolutionArchitectResource
     @Operation(summary="createDesignPattern",
             description="Create a new design pattern.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createDesignPattern(@PathVariable
                                             String                serverName,
@@ -1141,7 +1141,7 @@ public class SolutionArchitectResource
     @Operation(summary="createDesignPatternFromTemplate",
             description="Create a new design pattern using a template.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createDesignPatternFromTemplate(@PathVariable
                                                         String              serverName,
@@ -1170,7 +1170,7 @@ public class SolutionArchitectResource
     @Operation(summary="updateDesignPattern",
             description="Update an existing design pattern.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public BooleanResponse updateDesignPattern(@PathVariable
                                                String                   serverName,
@@ -1202,7 +1202,7 @@ public class SolutionArchitectResource
     @Operation(summary="linkNestedDesignPatterns",
             description="Link two design patterns together as parent and child.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkNestedDesignPatterns(@PathVariable
                                                  String                   serverName,
@@ -1236,7 +1236,7 @@ public class SolutionArchitectResource
     @Operation(summary="detachNestedDesignPatterns",
             description="Remove the link between two design patterns.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachNestedDesignPatterns(@PathVariable
                                                    String                      serverName,
@@ -1270,7 +1270,7 @@ public class SolutionArchitectResource
     @Operation(summary="linkSpecializedDesignPatterns",
             description="Link two design patterns together as general and specialized.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkSpecializedDesignPatterns(@PathVariable
                                                       String                   serverName,
@@ -1304,7 +1304,7 @@ public class SolutionArchitectResource
     @Operation(summary="detachSpecializedDesignPatterns",
             description="Remove the link between two design patterns.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachSpecializedDesignPatterns(@PathVariable
                                                         String                      serverName,
@@ -1338,7 +1338,7 @@ public class SolutionArchitectResource
     @Operation(summary="linkRelatedDesignPatterns",
             description="Link two design patterns together as related.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkRelatedDesignPatterns(@PathVariable
                                                   String                   serverName,
@@ -1372,7 +1372,7 @@ public class SolutionArchitectResource
     @Operation(summary="detachRelatedDesignPatterns",
             description="Remove the link between two design patterns.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachRelatedDesignPatterns(@PathVariable
                                                     String                      serverName,
@@ -1405,7 +1405,7 @@ public class SolutionArchitectResource
     @Operation(summary="deleteDesignPattern",
             description="Delete an existing design pattern.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse deleteDesignPattern(@PathVariable
                                             String                  serverName,
@@ -1435,7 +1435,7 @@ public class SolutionArchitectResource
     @Operation(summary="getDesignPatternsByName",
             description="Retrieve the list of design patterns with a matching name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getDesignPatternsByName(@PathVariable
                                                                     String            serverName,
@@ -1464,7 +1464,7 @@ public class SolutionArchitectResource
     @Operation(summary="getDesignPatternByGUID",
             description="Retrieve the design pattern with the matching unique identifier.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementResponse getDesignPatternByGUID(@PathVariable
                                                                   String         serverName,
@@ -1494,7 +1494,7 @@ public class SolutionArchitectResource
     @Operation(summary="findDesignPatterns",
             description="Retrieve the list of design patterns that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/design-pattern"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse findDesignPatterns(@PathVariable
                                                                String                  serverName,
@@ -1521,7 +1521,7 @@ public class SolutionArchitectResource
     @Operation(summary="createConceptModelElement",
             description="Create a concept model element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createConceptModelElement(@PathVariable String serverName,
                                                   @RequestBody (required = false)
@@ -1548,7 +1548,7 @@ public class SolutionArchitectResource
     @Operation(summary="createConceptModelElementFromTemplate",
             description="Create a new metadata element to represent a concept model element using an existing metadata element as a template.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public GUIDResponse createConceptModelElementFromTemplate(@PathVariable String serverName,
                                                               @RequestBody (required = false)
@@ -1576,7 +1576,7 @@ public class SolutionArchitectResource
     @Operation(summary="updateConceptModelElement",
             description="Update the properties of a concept model element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public BooleanResponse updateConceptModelElement(@PathVariable String serverName,
                                                      @PathVariable String conceptModelElementGUID,
@@ -1605,7 +1605,7 @@ public class SolutionArchitectResource
     @Operation(summary="deleteConceptModelElement",
             description="Delete a concept model element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse deleteConceptModelElement(@PathVariable String serverName,
                                                   @PathVariable String conceptModelElementGUID,
@@ -1633,7 +1633,7 @@ public class SolutionArchitectResource
     @Operation(summary="getConceptModelElementsByName",
             description="Returns the list of concept model elements with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse getConceptModelElementsByName(@PathVariable String serverName,
                                                                           @RequestBody (required = false)
@@ -1660,7 +1660,7 @@ public class SolutionArchitectResource
     @Operation(summary="findConceptModelElements",
             description="Retrieve the list of concept model element metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementsResponse findConceptModelElements(@PathVariable String serverName,
                                                                      @RequestBody (required = false)
@@ -1688,7 +1688,7 @@ public class SolutionArchitectResource
     @Operation(summary="getConceptModelElementByGUID",
             description="Return the properties of a specific concept model element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public OpenMetadataRootElementResponse getConceptModelElementByGUID(@PathVariable String serverName,
                                                                         @PathVariable String conceptModelElementGUID,
@@ -1718,7 +1718,7 @@ public class SolutionArchitectResource
     @Operation(summary="linkConceptDesign",
             description="Attach a concept model to the element whose concepts it describes.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkConceptDesign(@PathVariable String serverName,
                                           @PathVariable String elementGUID,
@@ -1749,7 +1749,7 @@ public class SolutionArchitectResource
     @Operation(summary="detachConceptDesign",
             description="Detach a concept model from the element whose concepts it described.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachConceptDesign(@PathVariable String serverName,
                                             @PathVariable String elementGUID,
@@ -1780,7 +1780,7 @@ public class SolutionArchitectResource
     @Operation(summary="linkConceptBeadRelationshipEnd",
             description="Attach a concept bead to one of the ends of a concept bead relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkConceptBeadRelationshipEnd(@PathVariable String serverName,
                                                        @PathVariable String conceptBeadRelationshipGUID,
@@ -1811,7 +1811,7 @@ public class SolutionArchitectResource
     @Operation(summary="detachConceptBeadRelationshipEnd",
             description="Detach a concept bead from one of the ends of a concept bead relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachConceptBeadRelationshipEnd(@PathVariable String serverName,
                                                          @PathVariable String conceptBeadRelationshipGUID,
@@ -1842,7 +1842,7 @@ public class SolutionArchitectResource
     @Operation(summary="linkTypedByConceptBead",
             description="Attach a concept bead attribute to the concept bead that acts as its type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkTypedByConceptBead(@PathVariable String serverName,
                                                @PathVariable String conceptBeadAttributeGUID,
@@ -1873,7 +1873,7 @@ public class SolutionArchitectResource
     @Operation(summary="detachTypedByConceptBead",
             description="Detach a concept bead attribute from the concept bead that acted as its type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachTypedByConceptBead(@PathVariable String serverName,
                                                  @PathVariable String conceptBeadAttributeGUID,
@@ -1904,7 +1904,7 @@ public class SolutionArchitectResource
     @Operation(summary="linkIsAConceptBead",
             description="Attach a concept bead to the concept bead that it inherits from.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkIsAConceptBead(@PathVariable String serverName,
                                            @PathVariable String inheritingBeadGUID,
@@ -1935,7 +1935,7 @@ public class SolutionArchitectResource
     @Operation(summary="detachIsAConceptBead",
             description="Detach a concept bead from the concept bead that it inherited from.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachIsAConceptBead(@PathVariable String serverName,
                                              @PathVariable String inheritingBeadGUID,
@@ -1966,7 +1966,7 @@ public class SolutionArchitectResource
     @Operation(summary="linkConceptBeadAttributeLink",
             description="Attach a concept bead attribute to its parent concept bead.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkConceptBeadAttributeLink(@PathVariable String serverName,
                                                      @PathVariable String conceptBeadGUID,
@@ -1997,7 +1997,7 @@ public class SolutionArchitectResource
     @Operation(summary="detachConceptBeadAttributeLink",
             description="Detach a concept bead attribute from its parent concept bead.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachConceptBeadAttributeLink(@PathVariable String serverName,
                                                        @PathVariable String conceptBeadGUID,
@@ -2028,7 +2028,7 @@ public class SolutionArchitectResource
     @Operation(summary="linkConceptBeadExtension",
             description="Attach a concept bead to a concept bead that extends it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse linkConceptBeadExtension(@PathVariable String serverName,
                                                  @PathVariable String extendedBeadGUID,
@@ -2059,7 +2059,7 @@ public class SolutionArchitectResource
     @Operation(summary="detachConceptBeadExtension",
             description="Detach a concept bead from a concept bead that extended it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/concept-model"))
+                    url="https://egeria-project.org/concepts/"))
 
     public VoidResponse detachConceptBeadExtension(@PathVariable String serverName,
                                                    @PathVariable String extendedBeadGUID,

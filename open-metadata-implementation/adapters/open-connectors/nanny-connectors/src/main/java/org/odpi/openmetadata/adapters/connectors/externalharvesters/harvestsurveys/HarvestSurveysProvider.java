@@ -32,7 +32,7 @@ public class HarvestSurveysProvider extends IntegrationConnectorProvider
     private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Catalog:HarvestSurveys";
     private static final String connectorDisplayName   = "Harvest Surveys Integration Connector";
     private static final String connectorDescription   = "Connector publishes insights about surveys found in an open metadata ecosystem.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/harvest-surveys/";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/";
 
     /*
      * Class of the connector.

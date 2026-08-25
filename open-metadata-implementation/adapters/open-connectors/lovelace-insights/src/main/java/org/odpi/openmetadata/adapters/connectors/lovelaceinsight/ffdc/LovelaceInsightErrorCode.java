@@ -34,7 +34,8 @@ public enum LovelaceInsightErrorCode implements ExceptionMessageSet
                                 "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}",
                                 "The governance action throws a GovernanceServiceException in the hope that the .",
                                 "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
-                                        "and follow its instructions."),
+                                        "and follow its instructions.",
+                                        "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
     /**
      * The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}
@@ -42,7 +43,8 @@ public enum LovelaceInsightErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "LOVELACE-INSIGHTS-500-004",
                                   "The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}",
                                   "The governance action returns an exception to the Governance Action Engine.",
-                                  "Use details from the error message to determine the cause of the error and retry the service call once it is resolved."),
+                                  "Use details from the error message to determine the cause of the error and retry the service call once it is resolved.",
+                                  "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
     ;
 
 
@@ -51,6 +53,22 @@ public enum LovelaceInsightErrorCode implements ExceptionMessageSet
     private final String errorMessage;
     private final String systemAction;
     private final String userAction;
+    private final String url;
+
+
+    /**
+     * Constructor for the message definitions that have no page to link to.
+     *
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
+     */
+    LovelaceInsightErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction, null);
+    }
 
 
     /**
@@ -61,14 +79,17 @@ public enum LovelaceInsightErrorCode implements ExceptionMessageSet
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
+     * @param url link to a page that describes the component or concept behind
+     *            this message - null if there is no suitable page
      */
-    LovelaceInsightErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    LovelaceInsightErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction, String url)
     {
         this.httpErrorCode = httpErrorCode;
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
         this.userAction = userAction;
+        this.url        = url;
     }
 
 
@@ -84,7 +105,8 @@ public enum LovelaceInsightErrorCode implements ExceptionMessageSet
                                               errorMessageId,
                                               errorMessage,
                                               systemAction,
-                                              userAction);
+                                              userAction,
+                                              url);
     }
 
 
@@ -101,7 +123,8 @@ public enum LovelaceInsightErrorCode implements ExceptionMessageSet
                                                                                       errorMessageId,
                                                                                       errorMessage,
                                                                                       systemAction,
-                                                                                      userAction);
+                                                                                      userAction,
+                                                                                      url);
 
         messageDefinition.setMessageParameters(params);
 
@@ -123,6 +146,7 @@ public enum LovelaceInsightErrorCode implements ExceptionMessageSet
                        ", errorMessage='" + errorMessage + '\'' +
                        ", systemAction='" + systemAction + '\'' +
                        ", userAction='" + userAction + '\'' +
+                       ", url='" + url + '\'' +
                        '}';
     }
 }

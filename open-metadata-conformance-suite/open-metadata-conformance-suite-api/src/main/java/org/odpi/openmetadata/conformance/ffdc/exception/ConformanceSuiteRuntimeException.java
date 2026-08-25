@@ -33,6 +33,7 @@ public class ConformanceSuiteRuntimeException extends RuntimeException
     private       String[]            reportedErrorMessageParameters;
     private final String              reportedSystemAction;
     private final String              reportedUserAction;
+    private String                    reportedURL;
     private       Throwable           reportedCaughtException          = null;
     private       String              reportedCaughtExceptionClassName = null;
     private       Map<String, Object> relatedProperties                = null;
@@ -77,6 +78,7 @@ public class ConformanceSuiteRuntimeException extends RuntimeException
         this.reportedErrorMessageParameters = messageDefinition.getMessageParams();
         this.reportedSystemAction = messageDefinition.getSystemAction();
         this.reportedUserAction = messageDefinition.getUserAction();
+        this.reportedURL = messageDefinition.getURL();
         this.relatedProperties = relatedProperties;
 
         this.validateCoreProperties();
@@ -129,6 +131,7 @@ public class ConformanceSuiteRuntimeException extends RuntimeException
         this.reportedErrorMessageParameters = messageDefinition.getMessageParams();
         this.reportedSystemAction = messageDefinition.getSystemAction();
         this.reportedUserAction = messageDefinition.getUserAction();
+        this.reportedURL = messageDefinition.getURL();
         this.reportedCaughtException = caughtError;
         this.reportedCaughtExceptionClassName = caughtError.getClass().getName();
         this.relatedProperties = relatedProperties;
@@ -352,6 +355,20 @@ public class ConformanceSuiteRuntimeException extends RuntimeException
 
 
     /**
+     * Return the link to further reading about the component or concept behind this exception's message.
+     * It comes from the message definition and gives the caller somewhere to go for background on the
+     * situation that caused the exception.
+     *
+     * @return url; null if the message definition does not supply one
+     */
+    public String getReportedURL()
+    {
+        return reportedURL;
+    }
+
+
+
+    /**
      * An exception that was caught and wrapped by this exception.  If a null is returned, then this exception is
      * either newly created and not the result of a previous exception or the exception occurred in a remote
      * server.  If the second situation is true then reportedCaughtExceptionClassName is set.
@@ -457,6 +474,7 @@ public class ConformanceSuiteRuntimeException extends RuntimeException
                        ", reportedErrorMessageParameters=" + Arrays.toString(reportedErrorMessageParameters) +
                        ", reportedSystemAction='" + reportedSystemAction + '\'' +
                        ", reportedUserAction='" + reportedUserAction + '\'' +
+                       ", reportedURL='" + reportedURL + '\'' +
                        ", reportedCaughtException=" + reportedCaughtException +
                        ", reportedCaughtExceptionClassName='" + reportedCaughtExceptionClassName + '\'' +
                        ", relatedProperties=" + relatedProperties +

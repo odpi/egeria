@@ -36,6 +36,7 @@ public class OMFRuntimeException extends RuntimeException
     private String[]            reportedErrorMessageParameters;
     private String              reportedSystemAction;
     private String              reportedUserAction;
+    private String              reportedURL;
     private Exception           reportedCaughtException = null;
     private String              reportedCaughtExceptionClassName = null;
     private Map<String, Object> relatedProperties = null;
@@ -80,6 +81,7 @@ public class OMFRuntimeException extends RuntimeException
         this.reportedErrorMessageParameters = messageDefinition.getMessageParams();
         this.reportedSystemAction = messageDefinition.getSystemAction();
         this.reportedUserAction = messageDefinition.getUserAction();
+        this.reportedURL = messageDefinition.getURL();
         this.relatedProperties = relatedProperties;
 
         this.validateCoreProperties();
@@ -132,6 +134,7 @@ public class OMFRuntimeException extends RuntimeException
         this.reportedErrorMessageParameters = messageDefinition.getMessageParams();
         this.reportedSystemAction = messageDefinition.getSystemAction();
         this.reportedUserAction = messageDefinition.getUserAction();
+        this.reportedURL = messageDefinition.getURL();
         this.reportedCaughtException = caughtError;
         this.reportedCaughtExceptionClassName = caughtError.getClass().getName();
         this.relatedProperties = relatedProperties;
@@ -211,6 +214,7 @@ public class OMFRuntimeException extends RuntimeException
             this.reportedErrorMessageParameters = template.getReportedErrorMessageParameters();
             this.reportedSystemAction = template.getReportedSystemAction();
             this.reportedUserAction = template.getReportedUserAction();
+            this.reportedURL = template.getReportedURL();
             this.reportedCaughtException = template.getReportedCaughtException();
             this.reportedCaughtExceptionClassName = template.getReportedCaughtExceptionClassName();
             this.relatedProperties = template.getRelatedProperties();
@@ -239,6 +243,7 @@ public class OMFRuntimeException extends RuntimeException
             this.reportedErrorMessageParameters = template.getReportedErrorMessageParameters();
             this.reportedSystemAction = template.getReportedSystemAction();
             this.reportedUserAction = template.getReportedUserAction();
+            this.reportedURL = template.getReportedURL();
             this.reportedCaughtException = template.getReportedCaughtException();
             this.reportedCaughtExceptionClassName = template.getReportedCaughtExceptionClassName();
             this.relatedProperties = template.getRelatedProperties();
@@ -384,6 +389,33 @@ public class OMFRuntimeException extends RuntimeException
 
 
     /**
+     * Return the link to further reading about the component or concept behind this exception's message.
+     * It comes from the message definition and gives the caller somewhere to go for background on the
+     * situation that caused the exception.
+     *
+     * @return url; null if the message definition does not supply one
+     */
+    public String getReportedURL()
+    {
+        return reportedURL;
+    }
+
+
+    /**
+     * Set up the link to further reading about the component or concept behind this exception's message.
+     * This is needed when an exception is rebuilt from a REST API response, because the message definition
+     * that supplied the link is only available in the server that raised the exception.
+     *
+     * @param reportedURL url; null if the message definition does not supply one
+     */
+    public void setReportedURL(String reportedURL)
+    {
+        this.reportedURL = reportedURL;
+    }
+
+
+
+    /**
      * An exception that was caught and wrapped by this exception.  If a null is returned, then this exception is
      * either newly created and not the result of a previous exception or the exception occurred in a remote
      * server.  If the second situation is true then reportedCaughtExceptionClassName is set.
@@ -489,6 +521,7 @@ public class OMFRuntimeException extends RuntimeException
                 ", reportedErrorMessageParameters=" + Arrays.toString(reportedErrorMessageParameters) +
                 ", reportedSystemAction='" + reportedSystemAction + '\'' +
                 ", reportedUserAction='" + reportedUserAction + '\'' +
+                ", reportedURL='" + reportedURL + '\'' +
                 ", reportedCaughtException=" + reportedCaughtException +
                 ", relatedProperties=" + relatedProperties +
                 '}';
