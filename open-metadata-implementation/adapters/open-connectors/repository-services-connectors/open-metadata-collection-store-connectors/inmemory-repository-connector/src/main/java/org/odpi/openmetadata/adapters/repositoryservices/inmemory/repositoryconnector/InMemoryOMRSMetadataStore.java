@@ -71,13 +71,23 @@ class InMemoryOMRSMetadataStore
 
 
     /**
-     * Determine is an instance was active between the from and to date.
+     * Determine whether a version of an instance was in effect at any point in the window being asked about.
+     * <br>
+     * The window is [fromTime, toTime): fromTime inclusive and toTime exclusive, as the metadata collection
+     * API defines them.  A version is in effect over [versionStartTime, versionEndTime) for the same reason -
+     * the next version begins at the instant this one is superseded, so the two must not both claim that
+     * instant.
+     * <br>
+     * So the version overlaps the window when it began before the window ended and had not already been
+     * superseded when the window began.  Both boundaries only matter when the times land on the same
+     * millisecond: rare against a database, routine against a store as quick as this one, which is why
+     * getting them wrong went unnoticed.
      *
-     * @param fromTime starting time
-     * @param toTime ending time
-     * @param instanceHeader instance version
-     * @param versionEndTime time when this version was superseded
-     * @return boolean flag - true means it is valid
+     * @param fromTime start of the window (inclusive); null means from the beginning of time
+     * @param toTime end of the window (exclusive); null means up to now
+     * @param instanceHeader the version being considered
+     * @param versionEndTime when this version was superseded; null means it is still the current version
+     * @return true if this version was in effect at some point during the window
      */
     static synchronized boolean checkInclusiveDate(Date                fromTime,
                                                    Date                toTime,
@@ -91,17 +101,18 @@ class InMemoryOMRSMetadataStore
             versionStartTime = instanceHeader.getCreateTime();
         }
 
+        /*
+         * toTime is exclusive, so a version that began at exactly that instant was not yet in effect
+         * during the window.
+         */
         if ((toTime != null) && (! toTime.after(versionStartTime)))
         {
-            /*
-             * "toTime" is exclusive, so a version that began at exactly that instant was not yet in
-             * effect during the window being asked about.  Testing with before() alone includes it, and
-             * that only shows when the two land in the same millisecond - which a store this quick does
-             * routinely.
-             */
             return false;
         }
 
+        /*
+         * Never superseded, so it is still in effect and remains so for the rest of the window.
+         */
         if (versionEndTime == null)
         {
             return true;
@@ -112,7 +123,11 @@ class InMemoryOMRSMetadataStore
             return true;
         }
 
-        return ! fromTime.after(versionEndTime);
+        /*
+         * fromTime is inclusive, so a version superseded at exactly that instant was already gone by the
+         * time the window opened - the version that replaced it is the one in effect from then on.
+         */
+        return versionEndTime.after(fromTime);
     }
 
 
