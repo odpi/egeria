@@ -137,7 +137,12 @@ public class StatusFVT
 
         String elementGUID = collectionClient.createCollection(newElementOptions, null, createProperties, null);
 
-        QueryFvtTestSupport.purgeElement(openMetadataStore, elementGUID);
+        /*
+         * This test is about what a search returns after a purge, so the purge itself has to have worked.
+         * The best-effort purgeElement() would report a failure and carry on, leaving the element merely
+         * soft-deleted - and the assertion below would then fail as though the search were at fault.
+         */
+        QueryFvtTestSupport.purgeElementOrFail(openMetadataStore, elementGUID);
 
         SearchProperties searchProperties = new SearchProperties();
         searchProperties.setConditions(propertyHelper.addStringProperty(null,
