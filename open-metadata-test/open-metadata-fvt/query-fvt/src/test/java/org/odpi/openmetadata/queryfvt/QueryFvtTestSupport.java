@@ -61,13 +61,19 @@ final class QueryFvtTestSupport
      * Permanently remove an element, regardless of the delete method the supplied client was set up
      * with.  Used both for the leftover-element cleanup pass and for tests to tidy up after themselves
      * once they no longer need the element (including ones that were only ever soft-deleted, to check
-     * status filtering, and now need to be fully removed).  Failures are swallowed - this is a
-     * best-effort cleanup operation, not something a test should fail on.
+     * status filtering, and now need to be fully removed).
+     * <br><br>
+     * A cleanup failure does not fail the test - but it is reported rather than discarded, and the caller
+     * is told whether the element actually went.  Silently ignoring a failed purge hides a broken purge:
+     * the element stays soft-deleted, a later query that includes every status finds it again, and the
+     * test fails somewhere else entirely with no sign of where the trouble started.  That is exactly how a
+     * genuine purge defect presented, and it cost a long time to trace back to here.
      * <br><br>
      * PURGE only succeeds on an element that is already soft-deleted (the classic OMRS lifecycle enforced
      * by the repository connector), so this soft-deletes the element first - best-effort, since it may
      * already be deleted (for example by an earlier failed run, or by a cascade delete from one of its own
-     * anchor/owner elements) - before purging it.
+     * anchor/owner elements) - before purging it.  Only the purge step's outcome is reported: the
+     * soft-delete failing is ordinary, the purge failing is not.
      * <br><br>
      * {@code forLineage} is set on both steps: an element left ARCHIVEd by a test (or a previous test's
      * LOOK_FOR_LINEAGE call) carries the Memento classification, and without forLineage=true it would be
@@ -76,9 +82,38 @@ final class QueryFvtTestSupport
      *
      * @param openMetadataStore store to delete through
      * @param elementGUID element to remove
+     * @return true if the element was purged
      */
-    static void purgeElement(OpenMetadataStore openMetadataStore,
-                             String            elementGUID)
+    static boolean purgeElement(OpenMetadataStore openMetadataStore,
+                                String            elementGUID)
+    {
+        try
+        {
+            purgeElementOrFail(openMetadataStore, elementGUID);
+
+            return true;
+        }
+        catch (Exception error)
+        {
+            System.err.println("query-fvt: could not purge element " + elementGUID + " - "
+                                       + error.getClass().getSimpleName() + ": " + error.getMessage());
+
+            return false;
+        }
+    }
+
+
+    /**
+     * Permanently remove an element, failing if it does not go.  This is the one to use where a test's
+     * assertions depend on the element having actually been removed, rather than where it is tidying up
+     * after itself.
+     *
+     * @param openMetadataStore store to delete through
+     * @param elementGUID element to remove
+     * @throws Exception the element could not be purged
+     */
+    static void purgeElementOrFail(OpenMetadataStore openMetadataStore,
+                                   String            elementGUID) throws Exception
     {
         try
         {
@@ -92,30 +127,28 @@ final class QueryFvtTestSupport
         }
         catch (Exception ignored)
         {
-            // Best-effort - see the method comment above for why this is expected to fail sometimes.
+            /*
+             * Ordinary: the element may already be deleted - see the note on purgeElement().  The purge
+             * below is the step that has to work.
+             */
         }
 
-        try
-        {
-            DeleteOptions purgeOptions = new DeleteOptions();
+        DeleteOptions purgeOptions = new DeleteOptions();
 
-            purgeOptions.setDeleteMethod(DeleteMethod.PURGE);
-            purgeOptions.setCascadedDelete(true);
-            purgeOptions.setForLineage(true);
+        purgeOptions.setDeleteMethod(DeleteMethod.PURGE);
+        purgeOptions.setCascadedDelete(true);
+        purgeOptions.setForLineage(true);
 
-            openMetadataStore.deleteMetadataElementInStore(elementGUID, purgeOptions);
-        }
-        catch (Exception ignored)
-        {
-            // Best-effort cleanup - nothing further can be done if this fails.
-        }
+        openMetadataStore.deleteMetadataElementInStore(elementGUID, purgeOptions);
     }
 
 
     /**
      * Permanently remove a relationship.  Used by tests that create their own relationships to tidy up after
-     * themselves, including ones that were only ever soft-deleted to check status filtering.  Failures are
-     * swallowed - this is a best-effort cleanup operation, not something a test should fail on.
+     * themselves, including ones that were only ever soft-deleted to check status filtering.
+     * <br><br>
+     * A cleanup failure does not fail the test, but it is reported rather than discarded - see the note on
+     * {@link #purgeElement(OpenMetadataStore, String)} for what a silently failed purge costs.
      * <br><br>
      * PURGE only succeeds on a relationship that is already soft-deleted (the classic OMRS lifecycle enforced
      * by the repository connector), so this soft-deletes the relationship first - best-effort, since it may
@@ -123,9 +156,37 @@ final class QueryFvtTestSupport
      *
      * @param openMetadataStore store to delete through
      * @param relationshipGUID relationship to remove
+     * @return true if the relationship was purged
      */
-    static void purgeRelationship(OpenMetadataStore openMetadataStore,
-                                  String            relationshipGUID)
+    static boolean purgeRelationship(OpenMetadataStore openMetadataStore,
+                                     String            relationshipGUID)
+    {
+        try
+        {
+            purgeRelationshipOrFail(openMetadataStore, relationshipGUID);
+
+            return true;
+        }
+        catch (Exception error)
+        {
+            System.err.println("query-fvt: could not purge relationship " + relationshipGUID + " - "
+                                       + error.getClass().getSimpleName() + ": " + error.getMessage());
+
+            return false;
+        }
+    }
+
+
+    /**
+     * Permanently remove a relationship, failing if it does not go.  Use this where a test's assertions
+     * depend on the relationship having actually been removed.
+     *
+     * @param openMetadataStore store to delete through
+     * @param relationshipGUID relationship to remove
+     * @throws Exception the relationship could not be purged
+     */
+    static void purgeRelationshipOrFail(OpenMetadataStore openMetadataStore,
+                                        String            relationshipGUID) throws Exception
     {
         try
         {
@@ -137,21 +198,16 @@ final class QueryFvtTestSupport
         }
         catch (Exception ignored)
         {
-            // Best-effort - see the method comment above for why this is expected to fail sometimes.
+            /*
+             * Ordinary: the relationship may already be deleted.  The purge below is the step that has to work.
+             */
         }
 
-        try
-        {
-            DeleteOptions purgeOptions = new DeleteOptions();
+        DeleteOptions purgeOptions = new DeleteOptions();
 
-            purgeOptions.setDeleteMethod(DeleteMethod.PURGE);
+        purgeOptions.setDeleteMethod(DeleteMethod.PURGE);
 
-            openMetadataStore.deleteRelationshipInStore(relationshipGUID, purgeOptions);
-        }
-        catch (Exception ignored)
-        {
-            // Best-effort cleanup - nothing further can be done if this fails.
-        }
+        openMetadataStore.deleteRelationshipInStore(relationshipGUID, purgeOptions);
     }
 
 
@@ -202,10 +258,26 @@ final class QueryFvtTestSupport
                 break;
             }
 
+            boolean anyPurgedThisPass = false;
+
             for (OpenMetadataElement element : found)
             {
-                purgeElement(openMetadataStore, element.getElementGUID());
-                purgedCount++;
+                if (purgeElement(openMetadataStore, element.getElementGUID()))
+                {
+                    purgedCount++;
+                    anyPurgedThisPass = true;
+                }
+            }
+
+            if (! anyPurgedThisPass)
+            {
+                /*
+                 * The same elements will come back on the next pass, so re-querying just repeats the same
+                 * failures.  purgeElement() has already reported why.
+                 */
+                System.err.println("query-fvt: leftover cleanup gave up - " + found.size()
+                                           + " element(s) could not be purged");
+                break;
             }
 
             emptyPassLimit--;
