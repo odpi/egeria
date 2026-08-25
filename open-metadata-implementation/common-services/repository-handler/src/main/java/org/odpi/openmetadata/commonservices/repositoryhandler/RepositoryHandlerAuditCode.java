@@ -120,6 +120,22 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
                            "Check that these are valid duplicates.",
                            "https://egeria-project.org/services/repository-handler/"),
 
+    /**
+     * OMAG-REPOSITORY-HANDLER-0015 - Conflicting values were found for classification(s) {0} while combining the peer duplicate entities {1}
+     * into entity {2} during method {3}
+     */
+    ENTITY_DEDUP_CLASSIFICATION_CONFLICT("OMAG-REPOSITORY-HANDLER-0015",
+                                         AuditLogRecordSeverityLevel.INFO,
+                                         "Conflicting values were found for classification(s) {0} while combining the peer duplicate entities {1} into entity {2} during method {3}",
+                                         "The deduplication process combines the classifications attached to each of the peer duplicate entities.  " +
+                                                 "Where the same classification is attached to more than one peer, but with different property values, " +
+                                                 "the most recently updated version of that classification is the one returned to the caller.  " +
+                                                 "The request continues using the selected classifications.",
+                                         "Review the classifications attached to the peer duplicate entities listed in the message.  If the differences " +
+                                                 "are not intentional, correct the classifications on the peer entities so that they agree, or create a " +
+                                                 "consolidated entity that holds the agreed values.",
+                                         "https://egeria-project.org/services/repository-handler/"),
+
     ;
 
     private final String                     logMessageId;

@@ -367,6 +367,7 @@ public class FFDCResponseBase implements FFDCResponse
      *
      * @return url; null if the message definition does not supply one
      */
+    @Override
     public String getExceptionURL()
     {
         return exceptionURL;
@@ -378,6 +379,7 @@ public class FFDCResponseBase implements FFDCResponse
      *
      * @param exceptionURL url; null if the message definition does not supply one
      */
+    @Override
     public void setExceptionURL(String exceptionURL)
     {
         this.exceptionURL = exceptionURL;
