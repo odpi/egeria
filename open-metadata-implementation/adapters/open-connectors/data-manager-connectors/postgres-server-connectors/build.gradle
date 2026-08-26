@@ -31,6 +31,12 @@ dependencies {
     testImplementation 'org.testng:testng'
 }
 
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
+}
+
 shadowJar {
     mainClassName = ''
     archiveClassifier = 'jar-with-dependencies'
