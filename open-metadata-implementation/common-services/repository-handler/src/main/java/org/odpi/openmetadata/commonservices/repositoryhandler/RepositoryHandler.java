@@ -9,11 +9,16 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyCondition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
@@ -78,6 +83,15 @@ public class RepositoryHandler
     /**
      * Return a flag to indicate whether the effectivity dates in the properties of an element indicate that the element is not
      * effective at the supplied effectiveTime.  If a null effectiveTime is supplied then it is assumed to be "any".
+     * <br>
+     * The window is half open - effective from the start date inclusive, up to but not including the end date - which is what
+     * the two properties say they mean: effectiveFromTime is "the date/time that this instance should start to be used" and
+     * effectiveToTime is "the date/time that this instance should no longer be used".  An instance is therefore in effect at
+     * its from date and out of effect at its to date.  An unset date is the open ended case at that end.
+     * <br>
+     * This matters beyond the single instant it describes, because the same window is now expressed as a repository query in
+     * getEffectivitySearchProperties() so that the rows can be excluded before they are paged.  The two have to agree, or the
+     * answer would depend on which of them happened to be applied.
      *
      * @param properties    properties from the element
      * @param effectiveTime time to measure effectivity against
@@ -102,7 +116,92 @@ public class RepositoryHandler
             return false;
         }
 
-        return ! ((properties.getEffectiveToTime() != null) && (effectiveTime.after(properties.getEffectiveToTime())));
+        return ! ((properties.getEffectiveToTime() != null) && (! effectiveTime.before(properties.getEffectiveToTime())));
+    }
+
+
+    /**
+     * Express the effectivity window as a repository query, so that instances which are not in effect are
+     * never returned rather than being returned and discarded.
+     * <br>
+     * The shape is dictated by the open ended cases.  An unset date means "no bound at this end", so each end
+     * is a nested group of "the date is unset OR it compares as required", and the two groups are combined
+     * with ALL.  Written as a flat set of conditions instead, an instance with no effectivity dates at all -
+     * which is most of them - would fail to match and vanish from every result.
+     * <br>
+     * The comparisons match isCorrectEffectiveTime() above: from is inclusive, to is exclusive.
+     *
+     * @param effectiveTime the time the caller wants results to be in effect at, or null for any
+     * @return search properties, or null when the caller did not ask for a particular time
+     */
+    private SearchProperties getEffectivitySearchProperties(Date effectiveTime)
+    {
+        if (effectiveTime == null)
+        {
+            return null;
+        }
+
+        List<PropertyCondition> conditions = new ArrayList<>();
+
+        conditions.add(this.getEffectivityBound(OpenMetadataProperty.EFFECTIVE_FROM_TIME.name,
+                                                PropertyComparisonOperator.LTE,
+                                                effectiveTime));
+        conditions.add(this.getEffectivityBound(OpenMetadataProperty.EFFECTIVE_TO_TIME.name,
+                                                PropertyComparisonOperator.GT,
+                                                effectiveTime));
+
+        SearchProperties searchProperties = new SearchProperties();
+
+        searchProperties.setConditions(conditions);
+        searchProperties.setMatchCriteria(MatchCriteria.ALL);
+
+        return searchProperties;
+    }
+
+
+    /**
+     * Build one end of the effectivity window: the date is unset, or it compares to the moment as required.
+     *
+     * @param propertyName header property holding the date
+     * @param operator how a date that is set should compare to the moment
+     * @param effectiveTime moment of interest
+     * @return a condition holding the nested "unset or compares" group
+     */
+    private PropertyCondition getEffectivityBound(String                     propertyName,
+                                                  PropertyComparisonOperator operator,
+                                                  Date                       effectiveTime)
+    {
+        PropertyCondition unset = new PropertyCondition();
+
+        unset.setProperty(propertyName);
+        unset.setOperator(PropertyComparisonOperator.IS_NULL);
+
+        PrimitivePropertyValue dateValue = new PrimitivePropertyValue();
+
+        dateValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+        dateValue.setPrimitiveValue(effectiveTime.getTime());
+
+        PropertyCondition compared = new PropertyCondition();
+
+        compared.setProperty(propertyName);
+        compared.setOperator(operator);
+        compared.setValue(dateValue);
+
+        List<PropertyCondition> eitherWay = new ArrayList<>();
+
+        eitherWay.add(unset);
+        eitherWay.add(compared);
+
+        SearchProperties nested = new SearchProperties();
+
+        nested.setConditions(eitherWay);
+        nested.setMatchCriteria(MatchCriteria.ANY);
+
+        PropertyCondition bound = new PropertyCondition();
+
+        bound.setNestedConditions(nested);
+
+        return bound;
     }
 
 
@@ -2988,6 +3087,9 @@ public class RepositoryHandler
      * @param asOfTime historical query time, or null for the present
      * @param sequencingPropertyName property to sequence on
      * @param sequencingOrder how the results should be ordered
+     * @param effectiveTime the time the results have to be in effect at, or null for any - expressed as a
+     *                      query condition so that instances outside their effectivity window are not
+     *                      returned at all, rather than returned and discarded after the page was chosen
      * @return retrieved relationships
      * @throws Exception problem talking to the repository
      */
@@ -3002,7 +3104,8 @@ public class RepositoryHandler
                                                               List<InstanceStatus> limitResultsByStatus,
                                                               Date                 asOfTime,
                                                               String               sequencingPropertyName,
-                                                              SequencingOrder      sequencingOrder) throws Exception
+                                                              SequencingOrder      sequencingOrder,
+                                                              Date                 effectiveTime) throws Exception
     {
         if ((attachmentEntityEnd != 1) && (attachmentEntityEnd != 2))
         {
@@ -3061,7 +3164,7 @@ public class RepositoryHandler
                                                     (end2EntityGUIDs.isEmpty() ? null : end2EntityGUIDs),
                                                     end2EntityTypeGUID,
                                                     EndMatchCriteria.BOTH,
-                                                    null,
+                                                    this.getEffectivitySearchProperties(effectiveTime),
                                                     startingFrom,
                                                     limitResultsByStatus,
                                                     asOfTime,
@@ -4814,7 +4917,8 @@ public class RepositoryHandler
                                                                                                        limitResultsByStatus,
                                                                                                        asOfTime,
                                                                                                        sequencingPropertyName,
-                                                                                                       sequencingOrder);
+                                                                                                       sequencingOrder,
+                                                                                                       effectiveTime);
 
                         accumulator.addRelationships(startingProxy, retrievingEntity.getGUID(), filterRelationshipsByEntityEnd(retrievedRelationships, retrievingEntity, attachmentEntityEnd, forDuplicateProcessing));
                     }
@@ -4847,7 +4951,8 @@ public class RepositoryHandler
                                                                                        limitResultsByStatus,
                                                                                        asOfTime,
                                                                                        sequencingPropertyName,
-                                                                                       sequencingOrder);
+                                                                                       sequencingOrder,
+                                                                                       effectiveTime);
 
                 if ((relationships == null) || (relationships.isEmpty()))
                 {
