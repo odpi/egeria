@@ -4628,7 +4628,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param endMatchCriteria criteria for matching the ends of the relationship.
      * @param relationship relationship to test
      * @return boolean property indicating whether the ends match
-     * @throws InvalidParameterException invalid search criteria
      */
     @Override
     public boolean verifyMatchingRelationshipEnds(List<String>     end1EntityGUIDs,
