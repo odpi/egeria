@@ -324,9 +324,9 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfiguredInSecurityCollections()" class="member-name-link">getConfiguredInSecurityCollections</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectedAssets()" class="member-name-link">getConnectedAssets</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectedResources()" class="member-name-link">getConnectedResources</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the assets reached through this connection.</div>
+<div class="block">Return the elements whose digital resources are reached through this connection.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnections()" class="member-name-link">getConnections</a>()</code></div>
@@ -1647,9 +1647,9 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConfiguredInSecurityCollections(java.util.List)" class="member-name-link">setConfiguredInSecurityCollections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;configuredInSecurityCollections)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectedAssets(java.util.List)" class="member-name-link">setConnectedAssets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;connectedAssets)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectedResources(java.util.List)" class="member-name-link">setConnectedResources</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;connectedResources)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the assets reached through this connection.</div>
+<div class="block">Set up the elements whose digital resources are reached through this connection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnections(java.util.List)" class="member-name-link">setConnections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;connections)</code></div>
@@ -4515,10 +4515,10 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </section>
 </li>
 <li>
-<section class="detail" id="getConnectedAssets()">
-<h3>getConnectedAssets</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</span>&nbsp;<span class="element-name">getConnectedAssets</span>()</div>
-<div class="block">Return the assets reached through this connection.</div>
+<section class="detail" id="getConnectedResources()">
+<h3>getConnectedResources</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</span>&nbsp;<span class="element-name">getConnectedResources</span>()</div>
+<div class="block">Return the elements whose digital resources are reached through this connection.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list</dd>
@@ -4526,13 +4526,13 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </section>
 </li>
 <li>
-<section class="detail" id="setConnectedAssets(java.util.List)">
-<h3>setConnectedAssets</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConnectedAssets</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;connectedAssets)</span></div>
-<div class="block">Set up the assets reached through this connection.</div>
+<section class="detail" id="setConnectedResources(java.util.List)">
+<h3>setConnectedResources</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConnectedResources</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;connectedResources)</span></div>
+<div class="block">Set up the elements whose digital resources are reached through this connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>connectedAssets</code> - list</dd>
+<dd><code>connectedResources</code> - list</dd>
 </dl>
 </section>
 </li>

@@ -233,12 +233,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a count of the entities that match the supplied criteria.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countRelationships(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)" class="member-name-link">countRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countRelationships(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)" class="member-name-link">countRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeGUIDs,
  boolean&nbsp;skipSubtypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end1EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end1EntityTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end2EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end2EntityTypeGUID,
  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">EndMatchCriteria</a>&nbsp;endMatchCriteria,
  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;matchProperties,
  int&nbsp;fromRelationshipElement,
@@ -376,12 +378,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of entities whose string-based property values match the search criteria.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findRelationships(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)" class="member-name-link">findRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findRelationships(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)" class="member-name-link">findRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeGUIDs,
  boolean&nbsp;skipSubtypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end1EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end1EntityTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end2EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end2EntityTypeGUID,
  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">EndMatchCriteria</a>&nbsp;endMatchCriteria,
  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;matchProperties,
  int&nbsp;fromRelationshipElement,
@@ -1877,7 +1881,12 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
 <dd><code>entityTypeGUID</code> - String unique identifier for the entity type of interest (null means any entity type).</dd>
 <dd><code>entitySubtypeGUIDs</code> - optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-                           include in the search results. Null means all subtypes.</dd>
+                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.</dd>
+<dd><code>skipSubtypes</code> - if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
+                     Since the remote repository's REST protocol only understands an inclusion list, this case
+                     is satisfied by requesting all subtypes from the remote repository and filtering out the
+                     excluded ones locally.</dd>
 <dd><code>searchProperties</code> - Optional list of entity property conditions to match.</dd>
 <dd><code>fromEntityElement</code> - not used - the count is not affected by paging.</dd>
 <dd><code>limitResultsByStatus</code> - By default, entities in all non-DELETED statuses are returned.  However, it is possible
@@ -1888,8 +1897,6 @@ loadScripts(document, 'script');</script>
 <dd><code>sequencingProperty</code> - not used - the count is not affected by sequencing.</dd>
 <dd><code>sequencingOrder</code> - not used - the count is not affected by sequencing.</dd>
 <dd><code>pageSize</code> - not used - the count is not affected by paging.</dd>
-<dd><code>skipSubtypes</code> - if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
-                      results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.</dd>
 <dt>Returns:</dt>
 <dd>the number of entities matching the supplied criteria.</dd>
 <dt>Throws:</dt>
@@ -2230,14 +2237,16 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findRelationships(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)">
+<section class="detail" id="findRelationships(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)">
 <h3>findRelationships</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Relationship.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Relationship</a>&gt;</span>&nbsp;<span class="element-name">findRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeGUIDs,
  boolean&nbsp;skipSubtypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end1EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end1EntityTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end2EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end2EntityTypeGUID,
  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">EndMatchCriteria</a>&nbsp;endMatchCriteria,
  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;matchProperties,
  int&nbsp;fromRelationshipElement,
@@ -2257,7 +2266,7 @@ loadScripts(document, 'script');</script>
  pages.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html#findRelationships(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)">findRelationships</a></code>&nbsp;in class&nbsp;<code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></code></dd>
+<dd><code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html#findRelationships(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)">findRelationships</a></code>&nbsp;in class&nbsp;<code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
 <dd><code>relationshipTypeGUID</code> - unique identifier (guid) for the relationship's type.  Null means all types
@@ -2271,7 +2280,15 @@ loadScripts(document, 'script');</script>
                      is satisfied by requesting all subtypes from the remote repository and filtering out the
                      excluded ones locally.</dd>
 <dd><code>end1EntityGUIDs</code> - optional list of entity guids used to match end 1 of the relationships.</dd>
+<dd><code>end1EntityTypeGUID</code> - optional unique identifier of the type that the entity at end 1 must
+                           belong to.  Subtypes of the named type match too.  This is independent of
+                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+                           asks for the relationships that start at any entity of that type.</dd>
 <dd><code>end2EntityGUIDs</code> - optional list of entity guids used to match end 2 of the relationships.</dd>
+<dd><code>end2EntityTypeGUID</code> - optional unique identifier of the type that the entity at end 2 must
+                           belong to.  Subtypes of the named type match too.  This is independent of
+                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+                           asks for the relationships that end at any entity of that type.</dd>
 <dd><code>endMatchCriteria</code> - criteria for matching the ends of the relationships.</dd>
 <dd><code>matchProperties</code> - Optional list of relationship property conditions to match.</dd>
 <dd><code>fromRelationshipElement</code> - the starting element number of the entities to return.
@@ -2304,14 +2321,16 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="countRelationships(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)">
+<section class="detail" id="countRelationships(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)">
 <h3>countRelationships</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">countRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeGUIDs,
  boolean&nbsp;skipSubtypes,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end1EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end1EntityTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end2EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end2EntityTypeGUID,
  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">EndMatchCriteria</a>&nbsp;endMatchCriteria,
  <a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;matchProperties,
  int&nbsp;fromRelationshipElement,
@@ -2332,15 +2351,30 @@ loadScripts(document, 'script');</script>
  REST operation.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html#countRelationships(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)">countRelationships</a></code>&nbsp;in class&nbsp;<code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></code></dd>
+<dd><code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html#countRelationships(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)">countRelationships</a></code>&nbsp;in class&nbsp;<code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
 <dd><code>relationshipTypeGUID</code> - unique identifier (guid) for the relationship's type.  Null means all types
                              (but may be slow so not recommended).</dd>
 <dd><code>relationshipSubtypeGUIDs</code> - optional list of the unique identifiers (guids) for subtypes of the
-                                 relationshipTypeGUID to include in the search results. Null means all subtypes.</dd>
+                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from)
+                                 the search results. Null means all subtypes.</dd>
+<dd><code>skipSubtypes</code> - if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs
+                     is null.
+                     Since the remote repository's REST protocol only understands an inclusion list, this case
+                     is satisfied by requesting all subtypes from the remote repository and filtering out the
+                     excluded ones locally.</dd>
 <dd><code>end1EntityGUIDs</code> - optional list of entity guids used to match end 1 of the relationships.</dd>
+<dd><code>end1EntityTypeGUID</code> - optional unique identifier of the type that the entity at end 1 must
+                           belong to.  Subtypes of the named type match too.  This is independent of
+                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+                           asks for the relationships that start at any entity of that type.</dd>
 <dd><code>end2EntityGUIDs</code> - optional list of entity guids used to match end 2 of the relationships.</dd>
+<dd><code>end2EntityTypeGUID</code> - optional unique identifier of the type that the entity at end 2 must
+                           belong to.  Subtypes of the named type match too.  This is independent of
+                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+                           asks for the relationships that end at any entity of that type.</dd>
 <dd><code>endMatchCriteria</code> - criteria for matching the ends of the relationships.</dd>
 <dd><code>matchProperties</code> - Optional list of relationship property conditions to match.</dd>
 <dd><code>fromRelationshipElement</code> - not used - the count is not affected by paging.</dd>
@@ -2352,8 +2386,6 @@ loadScripts(document, 'script');</script>
 <dd><code>sequencingProperty</code> - not used - the count is not affected by sequencing.</dd>
 <dd><code>sequencingOrder</code> - not used - the count is not affected by sequencing.</dd>
 <dd><code>pageSize</code> - not used - the count is not affected by paging.</dd>
-<dd><code>skipSubtypes</code> - if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
-                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.</dd>
 <dt>Returns:</dt>
 <dd>the number of relationships matching the supplied criteria.</dd>
 <dt>Throws:</dt>
