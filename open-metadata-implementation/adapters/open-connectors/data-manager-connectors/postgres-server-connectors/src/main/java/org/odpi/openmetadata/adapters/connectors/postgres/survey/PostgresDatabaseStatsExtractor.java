@@ -39,6 +39,31 @@ public class PostgresDatabaseStatsExtractor
 
 
     /**
+     * Convert PostgreSQL's raw pg_stats.n_distinct catalog value into an actual number-of-distinct-values
+     * estimate.  Per PostgreSQL's own documentation, a non-negative n_distinct is the estimated number of
+     * distinct values directly, but a NEGATIVE n_distinct is the negative of the ratio of distinct values
+     * to rows in the table - used for columns (such as primary keys, UUIDs and timestamps) where the number
+     * of distinct values scales with the size of the table.  Reading the raw catalog value directly as a
+     * count produces a nonsensical negative (or, once truncated to a long, zero) result for exactly these
+     * common, typically near-unique columns.
+     *
+     * @param rawDistinctStat  the raw value of pg_stats.n_distinct for the column
+     * @param tableRowCount    the table's live row-count estimate (pg_stat_user_tables.n_live_tup)
+     * @return estimated number of distinct values, never negative
+     */
+    static long calculateNumberOfDistinctValues(double rawDistinctStat,
+                                                 long   tableRowCount)
+    {
+        if (rawDistinctStat < 0)
+        {
+            return Math.round(-rawDistinctStat * tableRowCount);
+        }
+
+        return Math.round(rawDistinctStat);
+    }
+
+
+    /**
      * Retrieve statistics about each requested database.
      * This works if connected to either the postgres database or a user database.
      *
@@ -139,7 +164,7 @@ public class PostgresDatabaseStatsExtractor
                              java.sql.Connection databaseSQLConnection) throws SQLException
     {
         final String pg_tablesSQLCommand      = "select pg_stat_user_tables.relid,pg_stat_user_tables.schemaname,pg_tables.tablename, pg_tables.tableowner, pg_tables.hasindexes, pg_tables.hasrules, pg_tables.hastriggers, pg_tables.rowsecurity, pg_stat_user_tables.n_tup_ins, pg_stat_user_tables.n_tup_upd, pg_stat_user_tables.n_tup_del from pg_catalog.pg_statio_user_tables left outer join pg_catalog.pg_stat_user_tables on pg_stat_user_tables.schemaname = pg_statio_user_tables.schemaname and pg_stat_user_tables.relname = pg_statio_user_tables.relname left outer join pg_catalog.pg_tables on pg_stat_user_tables.schemaname = pg_tables.schemaname and pg_stat_user_tables.relname = pg_tables.tablename where (pg_catalog.pg_statio_user_tables.schemaname != 'pg_catalog') and (pg_catalog.pg_statio_user_tables.schemaname != 'information_schema') ;";
-        final String pg_columnStatsSQLCommand = "select pg_stats.schemaname, pg_stats.tablename, pg_statio_user_tables.relid, pg_stats.attname, pg_stats.avg_width, pg_stats.n_distinct, pg_stats.most_common_vals, pg_stats.most_common_freqs, pg_attribute.atttypid, pg_type.typname, pg_attribute.attnotnull from pg_catalog.pg_stats left outer join pg_catalog.pg_statio_user_tables on pg_stats.schemaname = pg_statio_user_tables.schemaname and pg_stats.tablename = pg_statio_user_tables.relname left outer join pg_catalog.pg_attribute on pg_statio_user_tables.relid = pg_attribute.attrelid and pg_stats.attname = pg_attribute.attname left outer join pg_type on pg_attribute.atttypid = pg_type.oid where (pg_stats.schemaname != 'pg_catalog') and (pg_stats.schemaname != 'information_schema') ;";
+        final String pg_columnStatsSQLCommand = "select pg_stats.schemaname, pg_stats.tablename, pg_statio_user_tables.relid, pg_stats.attname, pg_stats.avg_width, pg_stats.n_distinct, pg_stat_user_tables.n_live_tup, pg_stats.most_common_vals, pg_stats.most_common_freqs, pg_attribute.atttypid, pg_type.typname, pg_attribute.attnotnull from pg_catalog.pg_stats left outer join pg_catalog.pg_statio_user_tables on pg_stats.schemaname = pg_statio_user_tables.schemaname and pg_stats.tablename = pg_statio_user_tables.relname left outer join pg_catalog.pg_stat_user_tables on pg_stats.schemaname = pg_stat_user_tables.schemaname and pg_stats.tablename = pg_stat_user_tables.relname left outer join pg_catalog.pg_attribute on pg_statio_user_tables.relid = pg_attribute.attrelid and pg_stats.attname = pg_attribute.attname left outer join pg_type on pg_attribute.atttypid = pg_type.oid where (pg_stats.schemaname != 'pg_catalog') and (pg_stats.schemaname != 'information_schema') ;";
         final String pg_viewsSQLCommand       = "SELECT schemaname, viewname, viewowner, definition FROM pg_catalog.pg_views;";
         final String pg_matViewsSQLCommand    = "SELECT schemaname, matviewname, matviewowner, hasindexes, ispopulated, definition FROM pg_catalog.pg_matviews;";
 
@@ -167,7 +192,8 @@ public class PostgresDatabaseStatsExtractor
                         String  tableName              = resultSet.getString("tablename");
                         String  columnName             = resultSet.getString("attname");
                         int     averageColumnWidth     = resultSet.getInt("avg_width");
-                        long    numberOfDistinctValues = resultSet.getLong("n_distinct");
+                        long    numberOfDistinctValues = calculateNumberOfDistinctValues(resultSet.getDouble("n_distinct"),
+                                                                                          resultSet.getLong("n_live_tup"));
                         Array   mostCommonValues       = resultSet.getArray("most_common_vals");
                         Array   mostCommonFrequencies  = resultSet.getArray("most_common_freqs");
                         String  columnTypeName         = resultSet.getString("typname");
