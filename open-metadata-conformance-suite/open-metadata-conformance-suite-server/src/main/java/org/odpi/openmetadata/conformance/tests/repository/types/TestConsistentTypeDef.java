@@ -64,6 +64,7 @@ public class TestConsistentTypeDef extends RepositoryConformanceTestCase
      *
      * @throws Exception something went wrong with the test.
      */
+    @Override
     protected void run() throws Exception
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();

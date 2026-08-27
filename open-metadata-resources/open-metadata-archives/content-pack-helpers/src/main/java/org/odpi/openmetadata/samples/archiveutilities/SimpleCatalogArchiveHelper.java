@@ -4397,7 +4397,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(assetEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(connectionEntity);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(assetGUID + "_to_" + connectionGUID + "_asset_connection_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,

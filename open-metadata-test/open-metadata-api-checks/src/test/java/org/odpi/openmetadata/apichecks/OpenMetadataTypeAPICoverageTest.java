@@ -43,6 +43,14 @@ class OpenMetadataTypeAPICoverageTest
             "RoledRelationship",
 
             /*
+             * Deprecated in favour of ResourceConnection, which it now inherits from.  Existing instances
+             * are maintained through ConnectionHandler.linkResourceToConnection and
+             * detachResourceFromConnection, which name the supertype; new links are created as
+             * ResourceConnection.
+             */
+            "AssetConnection",
+
+            /*
              * Maintained through LineageHandler.linkLineage, which takes the relationship type name as a
              * parameter rather than naming each subtype - AssetHandler.getLineageRelationshipTypeNames()
              * lists them.  UltimateSource and UltimateDestination are normally derived by lineage tooling

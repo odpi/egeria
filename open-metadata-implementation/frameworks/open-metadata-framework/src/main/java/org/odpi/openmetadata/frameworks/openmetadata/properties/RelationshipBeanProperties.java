@@ -93,7 +93,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = APIRequestProperties.class, name = "APIRequestProperties"),
                 @JsonSubTypes.Type(value = APIResponseProperties.class, name = "APIResponseProperties"),
                 @JsonSubTypes.Type(value = ArchiveContentsProperties.class, name = "ArchiveContentsProperties"),
-                @JsonSubTypes.Type(value = AssetConnectionProperties.class, name = "AssetConnectionProperties"),
                 @JsonSubTypes.Type(value = SchemaProperties.class, name = "AssetSchemaTypeProperties"),
                 @JsonSubTypes.Type(value = AssignmentScopeProperties.class, name = "AssignmentScopeProperties"),
                 @JsonSubTypes.Type(value = AssociatedLogProperties.class, name = "AssociatedLogProperties"),

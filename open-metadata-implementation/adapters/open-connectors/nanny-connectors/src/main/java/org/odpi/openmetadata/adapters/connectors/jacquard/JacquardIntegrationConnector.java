@@ -1434,7 +1434,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
                     newElementOptions.setParentAtEnd1(true);
                     newElementOptions.setParentGUID(assetGUID);
-                    newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
+                    newElementOptions.setParentRelationshipTypeName(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName);
 
                     String connectionGUID = connectionClient.createConnection(newElementOptions,
                                                                               null,

@@ -5,19 +5,20 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.connections;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The AssetConnection relationship properties as a placeholder in case the relationship has properties added.
+ * The AssetConnection relationship properties.  This relationship is deprecated in favour of
+ * {@link ResourceConnectionProperties} which links a connection to any type of referenceable rather
+ * than just an asset.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetConnectionProperties extends RelationshipBeanProperties
+public class AssetConnectionProperties extends ResourceConnectionProperties
 {
     /**
      * Default constructor sets the Connection properties to null.

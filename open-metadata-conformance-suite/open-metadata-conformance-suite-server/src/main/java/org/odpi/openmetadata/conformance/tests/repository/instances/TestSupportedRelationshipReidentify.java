@@ -112,6 +112,7 @@ public class TestSupportedRelationshipReidentify extends RepositoryConformanceTe
      *
      * @throws Exception something went wrong with the test.
      */
+    @Override
     protected void run() throws Exception
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();

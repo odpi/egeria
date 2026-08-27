@@ -358,10 +358,10 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Create an AssetConnection relationship between an asset and its connection.
+     * Create a ResourceConnection relationship between an element and the connection to its digital resource.
      *
      * @param userId                 userId of the user making the request
-     * @param assetGUID       unique identifier of the asset
+     * @param elementGUID            unique identifier of the element
      * @param connectionGUID            unique identifier of the connection
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
@@ -369,25 +369,25 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkAssetToConnection(String                    userId,
-                                      String                    assetGUID,
-                                      String                    connectionGUID,
-                                      MakeAnchorOptions         makeAnchorOptions,
-                                      AssetConnectionProperties relationshipProperties) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
+    public void linkResourceToConnection(String                       userId,
+                                         String                       elementGUID,
+                                         String                       connectionGUID,
+                                         MakeAnchorOptions            makeAnchorOptions,
+                                         ResourceConnectionProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
     {
-        final String methodName            = "linkAssetToConnection";
-        final String end1GUIDParameterName = "assetGUID";
+        final String methodName            = "linkResourceToConnection";
+        final String end1GUIDParameterName = "elementGUID";
         final String end2GUIDParameterName = "connectionGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(assetGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(connectionGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
-                                                        assetGUID,
+                                                        OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         connectionGUID,
                                                         makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
@@ -395,34 +395,46 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Detach an asset from one of its connections.
+     * Detach an element from one of its connections.
      *
      * @param userId                 userId of the user making the request.
-     * @param assetGUID              unique identifier of the asset
+     * @param elementGUID            unique identifier of the element
      * @param connectionGUID          unique identifier of the connection
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachAssetFromConnection(String        userId,
-                                          String        assetGUID,
-                                          String        connectionGUID,
-                                          DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
+    public void detachResourceFromConnection(String        userId,
+                                             String        elementGUID,
+                                             String        connectionGUID,
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
-        final String methodName = "detachAssetFromConnection";
-        final String end1GUIDParameterName = "assetGUID";
+        final String methodName = "detachResourceFromConnection";
+        final String end1GUIDParameterName = "elementGUID";
         final String end2GUIDParameterName = "connectionGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(assetGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(connectionGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         connectionGUID,
+                                                        deleteOptions);
+
+        /*
+         * detachRelatedElementsInStore matches the relationship type exactly rather than by subtype, so a
+         * link created before ResourceConnection was introduced is not found by the call above.  Clearing
+         * the deprecated type as well keeps those older relationships removable through this method.  It
+         * is a no-op when there is no AssetConnection between the two elements.
+         */
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         connectionGUID,
                                                         deleteOptions);
     }

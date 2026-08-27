@@ -625,11 +625,11 @@ public class ConnectionMakerRESTServices extends TokenController
 
 
     /**
-     * Create an AssetConnection relationship between an asset and its connection.
+     * Create a ResourceConnection relationship between an element and the connection to its digital resource.
      *
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
-     * @param assetGUID       unique identifier of the asset
+     * @param elementGUID            unique identifier of the element
      * @param connectionGUID            unique identifier of the connection
      * @param requestBody  description of the relationship.
      *
@@ -638,13 +638,13 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkAssetToConnection(String                     serverName,
-                                              String                     urlMarker,
-                                              String                     assetGUID,
-                                              String                     connectionGUID,
-                                              NewRelationshipRequestBody requestBody)
+    public VoidResponse linkResourceToConnection(String                     serverName,
+                                                 String                     urlMarker,
+                                                 String                     elementGUID,
+                                                 String                     connectionGUID,
+                                                 NewRelationshipRequestBody requestBody)
     {
-        final String methodName = "linkAssetToConnection";
+        final String methodName = "linkResourceToConnection";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
@@ -662,34 +662,34 @@ public class ConnectionMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof AssetConnectionProperties properties)
+                if (requestBody.getProperties() instanceof ResourceConnectionProperties properties)
                 {
-                    handler.linkAssetToConnection(userId,
-                                                  assetGUID,
-                                                  connectionGUID,
-                                                  requestBody,
-                                                  properties);
+                    handler.linkResourceToConnection(userId,
+                                                     elementGUID,
+                                                     connectionGUID,
+                                                     requestBody,
+                                                     properties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.linkAssetToConnection(userId,
-                                                  assetGUID,
-                                                  connectionGUID,
-                                                  requestBody,
-                                                  null);
+                    handler.linkResourceToConnection(userId,
+                                                     elementGUID,
+                                                     connectionGUID,
+                                                     requestBody,
+                                                     null);
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(AssetConnectionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ResourceConnectionProperties.class.getName(), methodName);
                 }
             }
             else
             {
-                handler.linkAssetToConnection(userId,
-                                              assetGUID,
-                                              connectionGUID,
-                                              null,
-                                              null);
+                handler.linkResourceToConnection(userId,
+                                                 elementGUID,
+                                                 connectionGUID,
+                                                 null,
+                                                 null);
             }
         }
         catch (Throwable error)
@@ -703,12 +703,12 @@ public class ConnectionMakerRESTServices extends TokenController
 
 
     /**
-     * Detach an asset from one of its connections.
+     * Detach an element from one of its connections.
      *
      * @param serverName         name of called server
      * @param urlMarker  view service URL marker
-     * @param assetGUID       unique identifier of the asset
-     * @param connectionGUID            unique identifier of the IT profile
+     * @param elementGUID            unique identifier of the element
+     * @param connectionGUID            unique identifier of the connection
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -716,13 +716,13 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachAssetFromConnection(String                        serverName,
-                                                  String                        urlMarker,
-                                                  String                        assetGUID,
-                                                  String                        connectionGUID,
-                                                  DeleteRelationshipRequestBody requestBody)
+    public VoidResponse detachResourceFromConnection(String                        serverName,
+                                                     String                        urlMarker,
+                                                     String                        elementGUID,
+                                                     String                        connectionGUID,
+                                                     DeleteRelationshipRequestBody requestBody)
     {
-        final String methodName = "detachAssetFromConnection";
+        final String methodName = "detachResourceFromConnection";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
@@ -739,10 +739,10 @@ public class ConnectionMakerRESTServices extends TokenController
 
             ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
-            handler.detachAssetFromConnection(userId,
-                                              assetGUID,
-                                              connectionGUID,
-                                              requestBody);
+            handler.detachResourceFromConnection(userId,
+                                                 elementGUID,
+                                                 connectionGUID,
+                                                 requestBody);
         }
         catch (Throwable error)
         {

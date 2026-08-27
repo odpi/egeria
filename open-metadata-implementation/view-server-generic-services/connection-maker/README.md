@@ -15,7 +15,7 @@ The Connection Maker OMVS enables the caller to manage the definitions of connec
 * **Relationship Management**:
     * Linking connections to connector types and endpoints.
     * Managing embedded connections within other connections.
-    * Linking assets to connections to define how to access the asset.
+    * Linking elements to connections to define how to access a digital resource related to the element.
     * Linking endpoints to IT assets to represent where they are deployed.
 * **Discovery and Search**: Finding connections, connector types, and endpoints by name, network address, or through search strings.
 

@@ -392,7 +392,7 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
             connectionOptions.setAnchorGUID(databaseGUID);
             connectionOptions.setParentAtEnd1(true);
             connectionOptions.setParentGUID(databaseGUID);
-            connectionOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
+            connectionOptions.setParentRelationshipTypeName(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName);
 
             connectionProperties.setQualifiedName(qualifiedName + "_connection");
 

@@ -13908,10 +13908,6 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new ArchiveContentsProperties();
             }
-            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName))
-            {
-                relationshipBeanProperties = new AssetConnectionProperties();
-            }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new AssignmentScopeProperties();
@@ -14942,6 +14938,20 @@ public class OpenMetadataPropertyConverterBase
                 relationshipBeanProperties = new RequestForActionTargetProperties();
 
                 ((RequestForActionTargetProperties)relationshipBeanProperties).setActionTargetName(this.removeActionTargetName(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName))
+            {
+                if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName))
+                {
+                    relationshipBeanProperties = new AssetConnectionProperties();
+                }
+                else
+                {
+                    relationshipBeanProperties = new ResourceConnectionProperties();
+                }
+
+                ((ResourceConnectionProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((ResourceConnectionProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName))
             {
@@ -16067,6 +16077,10 @@ public class OpenMetadataPropertyConverterBase
                                     {
                                         beanProperties = new CataloguingActionProcessProperties();
                                     }
+                                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DELETING_ACTION_PROCESS.typeName))
+                                    {
+                                        beanProperties = new DeletingActionProcessProperties();
+                                    }
                                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EXPLORING_ACTION_PROCESS.typeName))
                                     {
                                         beanProperties = new ExploringActionProcessProperties();
@@ -16074,6 +16088,10 @@ public class OpenMetadataPropertyConverterBase
                                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName))
                                     {
                                         beanProperties = new ProvisioningActionProcessProperties();
+                                    }
+                                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SUBSCRIBING_ACTION_PROCESS.typeName))
+                                    {
+                                        beanProperties = new SubscribingActionProcessProperties();
                                     }
                                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName))
                                     {

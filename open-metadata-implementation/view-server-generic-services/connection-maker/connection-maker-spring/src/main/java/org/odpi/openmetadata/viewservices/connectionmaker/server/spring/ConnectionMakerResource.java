@@ -370,10 +370,11 @@ public class ConnectionMakerResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="linkAssetToConnection",
-            description="Attach an asset to a connection.",
+            description="Attach an asset to a connection.  Deprecated in favour of linkResourceToConnection.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/connection"))
 
+    @Deprecated
     public VoidResponse linkAssetToConnection(@PathVariable
                                               String                     serverName,
                                               @PathVariable String             urlMarker,
@@ -384,7 +385,7 @@ public class ConnectionMakerResource
                                               @RequestBody (required = false)
                                                   NewRelationshipRequestBody requestBody)
     {
-        return restAPI.linkAssetToConnection(serverName, urlMarker, assetGUID, connectionGUID, requestBody);
+        return restAPI.linkResourceToConnection(serverName, urlMarker, assetGUID, connectionGUID, requestBody);
     }
 
 
@@ -406,10 +407,11 @@ public class ConnectionMakerResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="detachAssetFromConnection",
-            description="Detach an asset from a connection.",
+            description="Detach an asset from a connection.  Deprecated in favour of detachResourceFromConnection.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/connection"))
 
+    @Deprecated
     public VoidResponse detachAssetFromConnection(@PathVariable
                                                   String                    serverName,
                                                   @PathVariable String             urlMarker,
@@ -420,7 +422,79 @@ public class ConnectionMakerResource
                                                   @RequestBody (required = false)
                                                       DeleteRelationshipRequestBody requestBody)
     {
-        return restAPI.detachAssetFromConnection(serverName, urlMarker, assetGUID, connectionGUID, requestBody);
+        return restAPI.detachResourceFromConnection(serverName, urlMarker, assetGUID, connectionGUID, requestBody);
+    }
+
+
+    /**
+     * Attach an element to the connection that accesses its digital resource.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param elementGUID            unique identifier of the element
+     * @param connectionGUID            unique identifier of the connection
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/connections/{connectionGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkResourceToConnection",
+            description="Attach an element to the connection that accesses its digital resource.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/connection"))
+
+    public VoidResponse linkResourceToConnection(@PathVariable
+                                                 String                     serverName,
+                                                 @PathVariable String             urlMarker,
+                                                 @PathVariable
+                                                 String elementGUID,
+                                                 @PathVariable
+                                                 String connectionGUID,
+                                                 @RequestBody (required = false)
+                                                     NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkResourceToConnection(serverName, urlMarker, elementGUID, connectionGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an element from the connection that accesses its digital resource.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param elementGUID            unique identifier of the element
+     * @param connectionGUID            unique identifier of the connection
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/connections/{connectionGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachResourceFromConnection",
+            description="Detach an element from the connection that accesses its digital resource.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/connection"))
+
+    public VoidResponse detachResourceFromConnection(@PathVariable
+                                                     String                    serverName,
+                                                     @PathVariable String             urlMarker,
+                                                     @PathVariable
+                                                     String elementGUID,
+                                                     @PathVariable
+                                                     String connectionGUID,
+                                                     @RequestBody (required = false)
+                                                         DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachResourceFromConnection(serverName, urlMarker, elementGUID, connectionGUID, requestBody);
     }
 
 
@@ -474,7 +548,7 @@ public class ConnectionMakerResource
      *  PropertyServerException    a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/assets/{assetGUID}/connections/{endpointGUID}/detach")
+    @PostMapping(path = "/assets/{assetGUID}/endpoints/{endpointGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="detachEndpointFromITAsset",

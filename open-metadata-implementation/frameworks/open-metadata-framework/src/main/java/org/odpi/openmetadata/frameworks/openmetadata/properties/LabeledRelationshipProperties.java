@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.Smar
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportOriginatorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportSubjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ResourceConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingSpecificationProperties;
@@ -113,6 +114,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ReportDependencyProperties.class, name = "ReportDependencyProperties"),
                 @JsonSubTypes.Type(value = ReportOriginatorProperties.class, name = "ReportOriginatorProperties"),
                 @JsonSubTypes.Type(value = ReportSubjectProperties.class, name = "ReportSubjectProperties"),
+                @JsonSubTypes.Type(value = ResourceConnectionProperties.class, name = "ResourceConnectionProperties"),
                 @JsonSubTypes.Type(value = ResourcePermissionsProperties.class, name = "ResourcePermissionsProperties"),
                 @JsonSubTypes.Type(value = RelatedContextEventProperties.class, name = "RelatedContextEventProperties"),
                 @JsonSubTypes.Type(value = RelatedDesignPatternProperties.class, name = "RelatedDesignPatternProperties"),

@@ -502,7 +502,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
             connectionOptions.setAnchorGUID(fileAssetGUID);
             connectionOptions.setParentAtEnd1(true);
             connectionOptions.setParentGUID(fileAssetGUID);
-            connectionOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
+            connectionOptions.setParentRelationshipTypeName(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName);
 
             connectionProperties.setQualifiedName(properties.getQualifiedName() + "_connection");
 

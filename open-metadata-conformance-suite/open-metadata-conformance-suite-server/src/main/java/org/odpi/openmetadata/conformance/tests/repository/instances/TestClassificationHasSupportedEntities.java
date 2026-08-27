@@ -60,6 +60,7 @@ public class TestClassificationHasSupportedEntities extends RepositoryConformanc
      *
      * @throws Exception something went wrong with the test.
      */
+    @Override
     protected void run() throws Exception
     {
         /*

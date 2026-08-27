@@ -19,10 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * RESTAPIPathUniquenessTest checks that no view service resource class maps the same HTTP verb and path
  * twice.
  * <br><br>
- * Spring refuses to create its request mapping when two methods claim the same verb and path, and the
- * whole application context then fails to start.  That is invisible at compile time: the duplicate
- * mappings are just two annotations with the same value.  Without this check the first sign of trouble is
- * a platform that will not boot, which is a long way from the line that caused it.
+ * Spring refuses to create its request mapping when two methods claim the same verb and path.  That is
+ * invisible at compile time: the duplicate mappings are just two annotations with the same value.
+ * <br><br>
+ * Path variable names do not take part in matching, so /assets/&#123;assetGUID&#125;/connections/&#123;connectionGUID&#125;
+ * and /assets/&#123;assetGUID&#125;/connections/&#123;endpointGUID&#125; are one and the same pattern to Spring.  A clash of
+ * that shape is worse than an exact duplicate, because the context still starts and every call to the
+ * path fails at runtime with an ambiguous-handler error instead.  The check therefore replaces each
+ * &#123;variable&#125; with a placeholder before comparing.
  * <br><br>
  * The same path under different verbs is legal and is used deliberately - for example the multi-language
  * service has both a POST and a GET on /elements/&#123;elementGUID&#125;/translations - so the check keys on
@@ -30,7 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class RESTAPIPathUniquenessTest
 {
-    private static final Pattern MAPPING = Pattern.compile("@(Post|Get|Put|Delete)Mapping\\(\\s*(?:path\\s*=\\s*)?\"([^\"]*)\"");
+    private static final Pattern MAPPING  = Pattern.compile("@(Post|Get|Put|Delete)Mapping\\(\\s*(?:path\\s*=\\s*)?\"([^\"]*)\"");
+    private static final Pattern VARIABLE = Pattern.compile("\\{[^}]*}");
 
 
     @Test
@@ -51,7 +56,8 @@ class RESTAPIPathUniquenessTest
 
             while (matcher.find())
             {
-                String mapping = matcher.group(1).toUpperCase() + " " + matcher.group(2);
+                String path    = VARIABLE.matcher(matcher.group(2)).replaceAll("{}");
+                String mapping = matcher.group(1).toUpperCase() + " " + path;
 
                 counts.merge(mapping, 1, Integer::sum);
             }

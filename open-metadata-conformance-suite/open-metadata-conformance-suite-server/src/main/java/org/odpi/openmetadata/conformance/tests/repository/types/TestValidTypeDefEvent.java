@@ -147,6 +147,7 @@ public class TestValidTypeDefEvent extends RepositoryConformanceTestCase
      *
      * @throws Exception something went wrong with the test.
      */
+    @Override
     protected void run() throws Exception
     {
         assertCondition((event != null),

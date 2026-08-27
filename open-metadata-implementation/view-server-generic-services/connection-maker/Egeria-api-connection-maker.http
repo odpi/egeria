@@ -32,6 +32,7 @@ Content-Type: application/json
 @endpointGUID=add guid here
 
 @assetGUID=add guid here
+@elementGUID=add guid here
 
 ###
 # @name createConnection
@@ -385,7 +386,7 @@ Content-Type: application/json
 
 ###
 # @name linkAssetToConnection
-# Attach an asset to a connection.
+# Attach an asset to a connection.  Deprecated in favour of linkResourceToConnection.
 #
 # @param assetGUID       unique identifier of the asset
 # @param connectionGUID            unique identifier of the connection
@@ -416,7 +417,7 @@ Content-Type: application/json
 
 ###
 # @name detachAssetFromConnection
-# Detach an asset from a connection.
+# Detach an asset from a connection.  Deprecated in favour of detachResourceFromConnection.
 #
 # @param assetGUID       unique identifier of the asset
 # @param connectionGUID            unique identifier of the connection
@@ -428,6 +429,67 @@ Content-Type: application/json
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/assets/{{assetGUID}}/connections/{{connectionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "cascadedDelete" : false,
+  "deleteMethod" : "LOOK_FOR_LINEAGE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkResourceToConnection
+# Attach an element to the connection that accesses its digital resource.
+#
+# @param elementGUID            unique identifier of the element
+# @param connectionGUID            unique identifier of the connection
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/elements/{{elementGUID}}/connections/{{connectionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ResourceConnectionProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachResourceFromConnection
+# Detach an element from the connection that accesses its digital resource.
+#
+# @param elementGUID            unique identifier of the element
+# @param connectionGUID            unique identifier of the connection
+# Request body provides  description of the relationship.
+#
+# Returns void or
+#  InvalidParameterException  one of the parameters is null or invalid.
+#  PropertyServerException    a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/elements/{{elementGUID}}/connections/{{connectionGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

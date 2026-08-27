@@ -280,7 +280,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
         {
             newRelatedElementOptions.setParentGUID(fileAssetGUID);
             newRelatedElementOptions.setParentAtEnd1(true);
-            newRelatedElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
+            newRelatedElementOptions.setParentRelationshipTypeName(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName);
 
             ConnectionProperties connectionProperties = new ConnectionProperties();
 
