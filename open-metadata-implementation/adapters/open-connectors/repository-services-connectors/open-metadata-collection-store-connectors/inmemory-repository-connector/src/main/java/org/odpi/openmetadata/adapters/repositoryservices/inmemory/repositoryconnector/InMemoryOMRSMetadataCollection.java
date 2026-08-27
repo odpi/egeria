@@ -968,6 +968,45 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
+     * Return the name of a type from its unique identifier, or null when no type was requested.
+     *
+     * @param typeGUID unique identifier of the type, or null
+     * @param parameterName name of the parameter that supplied it
+     * @return type name or null
+     */
+    private String getTypeNameFromGUID(String typeGUID,
+                                       String parameterName)
+    {
+        final String methodName = "getTypeNameFromGUID";
+
+        if (typeGUID == null)
+        {
+            return null;
+        }
+
+        try
+        {
+            TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, parameterName, typeGUID, methodName);
+
+            if (typeDef != null)
+            {
+                return typeDef.getName();
+            }
+        }
+        catch (Exception unknownType)
+        {
+            /*
+             * An unknown type matches nothing.  Returning the guid gives the caller an end constraint that
+             * no instance satisfies, which is the right answer for a type this repository does not hold.
+             */
+            return typeGUID;
+        }
+
+        return typeGUID;
+    }
+
+
+    /**
      * Return a list of relationships that match the requested conditions.  The results can be received as a series of
      * pages.
      *
@@ -980,7 +1019,15 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
      *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of the unique identifiers (guids) for entities that must be at end 1 of the relationship.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of the unique identifiers (guids) for entities that must be at end 2 of the relationship.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationship.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement the starting element number of the entities to return.
@@ -1014,7 +1061,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                  List<String>              relationshipSubtypeGUIDs,
                                                  boolean                   skipSubtypes,
                                                  List<String>              end1EntityGUIDs,
+                                                 String                    end1EntityTypeGUID,
                                                  List<String>              end2EntityGUIDs,
+                                                 String                    end2EntityTypeGUID,
                                                  EndMatchCriteria          endMatchCriteria,
                                                  SearchProperties          matchProperties,
                                                  int                       fromRelationshipElement,
@@ -1037,7 +1086,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                    relationshipTypeGUID,
                                                    relationshipSubtypeGUIDs,
                                                    end1EntityGUIDs,
+                                                   end1EntityTypeGUID,
                                                    end2EntityGUIDs,
+                                                   end2EntityTypeGUID,
                                                    endMatchCriteria,
                                                    matchProperties,
                                                    fromRelationshipElement,
@@ -1057,6 +1108,14 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         List<Relationship>         foundRelationships = new ArrayList<>();
         Map<String, Relationship>  relationshipStore = repositoryStore.timeWarpRelationshipStore(asOfTime);
 
+        /*
+         * The ends are constrained by type name rather than guid because that is what an instance carries,
+         * and because matching has to include subtypes - a relationship whose end is a subtype of the
+         * requested type belongs in the results.
+         */
+        String end1EntityTypeName = this.getTypeNameFromGUID(end1EntityTypeGUID, "end1EntityTypeGUID");
+        String end2EntityTypeName = this.getTypeNameFromGUID(end2EntityTypeGUID, "end2EntityTypeGUID");
+
         for (Relationship  relationship : relationshipStore.values())
         {
             if (relationship != null)
@@ -1064,7 +1123,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 if ((repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationshipSubtypeGUIDs, skipSubtypes, relationship)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties, relationship.getGUID(), relationship, relationship.getProperties())) &&
-                    (repositoryValidator.verifyMatchingRelationshipEnds(end1EntityGUIDs, end2EntityGUIDs, endMatchCriteria, relationship)))
+                    (repositoryValidator.verifyMatchingRelationshipEnds(end1EntityGUIDs,
+                                                                        end1EntityTypeName,
+                                                                        end2EntityGUIDs,
+                                                                        end2EntityTypeName,
+                                                                        endMatchCriteria,
+                                                                        relationship)))
                 {
                     foundRelationships.add(relationship);
                 }

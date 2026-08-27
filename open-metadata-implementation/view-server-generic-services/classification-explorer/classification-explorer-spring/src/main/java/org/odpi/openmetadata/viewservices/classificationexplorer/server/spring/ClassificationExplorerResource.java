@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.LevelIdentifierQuery
 import org.odpi.openmetadata.frameworks.openmetadata.search.SemanticAssignmentQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SecurityTagQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworkservices.omf.rest.FindRelationshipRequestBody;
 import org.odpi.openmetadata.frameworkservices.omf.rest.FindRequestBody;
 import org.odpi.openmetadata.viewservices.classificationexplorer.server.ClassificationExplorerRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -2880,7 +2881,7 @@ public class ClassificationExplorerResource
     public MetadataRelationshipSummariesResponse getRelationships(@PathVariable String                    serverName,
                                                                   @PathVariable String                        urlMarker,
                                                                   @RequestBody  (required = false)
-                                                                  ResultsRequestBody requestBody)
+                                                                  FindRelationshipRequestBody requestBody)
     {
         return restAPI.getRelationships(serverName, urlMarker, null, requestBody);
     }
@@ -2909,7 +2910,7 @@ public class ClassificationExplorerResource
                                                                   @PathVariable String                        urlMarker,
                                                                   @PathVariable String       relationshipTypeName,
                                                                   @RequestBody  (required = false)
-                                                                  ResultsRequestBody requestBody)
+                                                                  FindRelationshipRequestBody requestBody)
     {
         return restAPI.getRelationships(serverName, urlMarker, relationshipTypeName, requestBody);
     }

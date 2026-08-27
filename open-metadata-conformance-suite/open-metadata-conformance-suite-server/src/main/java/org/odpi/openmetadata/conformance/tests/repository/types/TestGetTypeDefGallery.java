@@ -171,10 +171,12 @@ public class TestGetTypeDefGallery extends RepositoryConformanceTestCase
             (repositoryConformanceWorkPad.getTestEntityTypes().isEmpty()))
         {
             /*
-             * Test all types.
+             * Every entity type is tested.  The relationship and classification types may still have been
+             * narrowed on their own, though, so they are filtered even here - otherwise naming them would
+             * quietly do nothing whenever the entity types were left open.
              */
-            typesForInstanceTesting = allTypeDefs;
-            splitUpTypeDefsForInstanceTests(allTypeDefs);
+            typesForInstanceTesting = narrowRelationshipAndClassificationTypes(allTypeDefs);
+            splitUpTypeDefsForInstanceTests(typesForInstanceTesting);
         }
         else
         {
@@ -186,6 +188,55 @@ public class TestGetTypeDefGallery extends RepositoryConformanceTestCase
         }
 
         super.setSuccessMessage(testCaseSuccessMessage);
+    }
+
+
+    /**
+     * Drop the relationship and classification types that the caller did not ask for, leaving every entity
+     * type in place.  Used when the entity types have been left open but the relationship or classification
+     * types have been named.
+     *
+     * @param typeDefs all the types the repository knows
+     * @return the types to test
+     */
+    private List<TypeDef> narrowRelationshipAndClassificationTypes(List<TypeDef> typeDefs)
+    {
+        List<String> requestedRelationshipTypes = repositoryConformanceWorkPad.getTestRelationshipTypes();
+        List<String> requestedClassificationTypes = repositoryConformanceWorkPad.getTestClassificationTypes();
+
+        boolean narrowRelationships = (requestedRelationshipTypes != null) && (! requestedRelationshipTypes.isEmpty());
+        boolean narrowClassifications = (requestedClassificationTypes != null) && (! requestedClassificationTypes.isEmpty());
+
+        if ((! narrowRelationships) && (! narrowClassifications))
+        {
+            return typeDefs;
+        }
+
+        List<TypeDef> results = new ArrayList<>();
+
+        for (TypeDef typeDef : typeDefs)
+        {
+            if (typeDef instanceof RelationshipDef)
+            {
+                if ((! narrowRelationships) || (requestedRelationshipTypes.contains(typeDef.getName())))
+                {
+                    results.add(typeDef);
+                }
+            }
+            else if (typeDef instanceof ClassificationDef)
+            {
+                if ((! narrowClassifications) || (requestedClassificationTypes.contains(typeDef.getName())))
+                {
+                    results.add(typeDef);
+                }
+            }
+            else
+            {
+                results.add(typeDef);
+            }
+        }
+
+        return results;
     }
 
 
@@ -266,12 +317,28 @@ public class TestGetTypeDefGallery extends RepositoryConformanceTestCase
         List<String> matchingEntityNames = new ArrayList<>(matchingTypes.keySet());
 
         /*
-         * Add the matching RelationshipDefs and ClassificationDefs
+         * Add the matching RelationshipDefs and ClassificationDefs.
+         *
+         * A relationship or classification can only be tested when the entity types it needs are in the run,
+         * so the checks on the ends and the valid entities below are not optional.  On top of that, the
+         * caller may name the relationship and classification types they want, which narrows the set further
+         * - naming a type whose entity types are absent still does not bring it into the run, because there
+         * would be nothing to attach it to.
          */
+        List<String> requestedRelationshipTypes = repositoryConformanceWorkPad.getTestRelationshipTypes();
+        List<String> requestedClassificationTypes = repositoryConformanceWorkPad.getTestClassificationTypes();
+
         for (TypeDef knownTypeDef : typeDefs)
         {
             if (knownTypeDef instanceof RelationshipDef relationshipDef)
             {
+                if ((requestedRelationshipTypes != null) &&
+                    (! requestedRelationshipTypes.isEmpty()) &&
+                    (! requestedRelationshipTypes.contains(knownTypeDef.getName())))
+                {
+                    continue;
+                }
+
                 /*
                  * Both ends need to match
                  */
@@ -283,6 +350,13 @@ public class TestGetTypeDefGallery extends RepositoryConformanceTestCase
             }
             else if (knownTypeDef instanceof ClassificationDef classificationDef)
             {
+                if ((requestedClassificationTypes != null) &&
+                    (! requestedClassificationTypes.isEmpty()) &&
+                    (! requestedClassificationTypes.contains(knownTypeDef.getName())))
+                {
+                    continue;
+                }
+
                 for (TypeDefLink validEntityDef : classificationDef.getValidEntityDefs())
                 {
                     if (matchingEntityNames.contains(validEntityDef.getName()))

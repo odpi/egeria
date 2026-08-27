@@ -1877,7 +1877,9 @@ public class MetadataExpertRESTServices extends TokenController
                                                                                               requestBody.getRelationshipTypeName(),
                                                                                               requestBody.getRelationshipSubtypeNames(),
                                                                                               requestBody.getEnd1EntityGUIDs(),
+                                                                                              requestBody.getEnd1EntityTypeName(),
                                                                                               requestBody.getEnd2EntityGUIDs(),
+                                                                                              requestBody.getEnd2EntityTypeName(),
                                                                                               requestBody.getEndMatchCriteria(),
                                                                                               requestBody.getSearchProperties(),
                                                                                               requestBody));
@@ -1938,7 +1940,9 @@ public class MetadataExpertRESTServices extends TokenController
                                                                                     requestBody.getRelationshipTypeName(),
                                                                                     requestBody.getRelationshipSubtypeNames(),
                                                                                     requestBody.getEnd1EntityGUIDs(),
+                                                                                    requestBody.getEnd1EntityTypeName(),
                                                                                     requestBody.getEnd2EntityGUIDs(),
+                                                                                    requestBody.getEnd2EntityTypeName(),
                                                                                     requestBody.getEndMatchCriteria(),
                                                                                     requestBody.getSearchProperties(),
                                                                                     requestBody));

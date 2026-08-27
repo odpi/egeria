@@ -39,6 +39,9 @@ public class TypeDefGallery extends TypeDefElementHeader
 
     /**
      * Set up the list of attribute type definitions and type definitions from the gallery.
+     *
+     * @param attributeTypeDefs list of attribute type definitions
+     * @param typeDefs list of type definitions
      */
     public TypeDefGallery(List<AttributeTypeDef> attributeTypeDefs,
                           List<TypeDef> typeDefs)

@@ -1100,9 +1100,13 @@ public class RepositoryHandler
      * @param externalSourceGUID            unique identifier (guid) for the external source, or null for local.
      * @param externalSourceName            unique name for the external source.
      * @param entityGUID                    entity to update
+     * @param entityGUIDParameterName       name of parameter supplying the GUID
+     * @param entityTypeName                unique name of the entity's type
      * @param existingEntityClassifications existing classifications retrieved from the repository
      * @param classifications               new/updated classifications for the entity
+     * @param forLineage                    the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing        the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime                 the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                    name of calling method
      *
      * @throws InvalidParameterException  problem with the GUID
@@ -1313,6 +1317,8 @@ public class RepositoryHandler
      *
      * @param userId             calling user
      * @param entityGUID         unique identity of the entity - if this entity is not known then an exception occurs
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeName     unique name of the entity's type
      * @param classificationName name of the classification
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
@@ -2956,6 +2962,116 @@ public class RepositoryHandler
 
 
     /**
+     * Retrieve the relationships of a type attached to an entity, asking the repository to apply the end
+     * constraint rather than applying it here afterwards.
+     * <br>
+     * getRelationshipsForEntity() can only say "attached to this entity", so which end the entity sits at,
+     * and which entity is at the other one, had to be sorted out after the rows came back.  That is a
+     * larger read than the question needs, and - because the repository has already applied paging by the
+     * time the sorting out happens - it hands back short pages while matches remain unseen.  A caller
+     * asking for twenty can be given five.
+     * <br>
+     * findRelationships() takes the ends as part of the query, so the page the repository returns is a page
+     * of answers.  It is used whenever the caller has said which end the entity is at; a request that will
+     * take either end still goes the old way, since one call cannot express "A at end 1 with B at end 2, or
+     * the reverse".
+     *
+     * @param userId calling user
+     * @param entityGUID the entity the relationships are attached to
+     * @param attachmentEntityGUID the entity that must be at the other end, or null for any
+     * @param attachmentEntityTypeGUID the type the entity at the other end must belong to, or null for any
+     * @param relationshipTypeGUID type of relationship required
+     * @param attachmentEntityEnd which end the attachment is at - 0 means either
+     * @param startingFrom initial position in the stored list
+     * @param pageSize maximum number of relationships to return
+     * @param limitResultsByStatus statuses to restrict the results to
+     * @param asOfTime historical query time, or null for the present
+     * @param sequencingPropertyName property to sequence on
+     * @param sequencingOrder how the results should be ordered
+     * @return retrieved relationships
+     * @throws Exception problem talking to the repository
+     */
+    private List<Relationship> getRelationshipsFromRepository(String               userId,
+                                                              String               entityGUID,
+                                                              String               attachmentEntityGUID,
+                                                              String               attachmentEntityTypeGUID,
+                                                              String               relationshipTypeGUID,
+                                                              int                  attachmentEntityEnd,
+                                                              int                  startingFrom,
+                                                              int                  pageSize,
+                                                              List<InstanceStatus> limitResultsByStatus,
+                                                              Date                 asOfTime,
+                                                              String               sequencingPropertyName,
+                                                              SequencingOrder      sequencingOrder) throws Exception
+    {
+        if ((attachmentEntityEnd != 1) && (attachmentEntityEnd != 2))
+        {
+            /*
+             * The entity may be at either end, which is not expressible as a single end-constrained query.
+             */
+            return metadataCollection.getRelationshipsForEntity(userId,
+                                                                entityGUID,
+                                                                relationshipTypeGUID,
+                                                                startingFrom,
+                                                                limitResultsByStatus,
+                                                                asOfTime,
+                                                                sequencingPropertyName,
+                                                                sequencingOrder,
+                                                                pageSize);
+        }
+
+        /*
+         * attachmentEntityEnd names the end the *attachment* is at, so the starting entity is at the other.
+         */
+        List<String> end1EntityGUIDs = new ArrayList<>();
+        List<String> end2EntityGUIDs = new ArrayList<>();
+
+        String end1EntityTypeGUID = null;
+        String end2EntityTypeGUID = null;
+
+        if (attachmentEntityEnd == 1)
+        {
+            end2EntityGUIDs.add(entityGUID);
+
+            if (attachmentEntityGUID != null)
+            {
+                end1EntityGUIDs.add(attachmentEntityGUID);
+            }
+
+            end1EntityTypeGUID = attachmentEntityTypeGUID;
+        }
+        else
+        {
+            end1EntityGUIDs.add(entityGUID);
+
+            if (attachmentEntityGUID != null)
+            {
+                end2EntityGUIDs.add(attachmentEntityGUID);
+            }
+
+            end2EntityTypeGUID = attachmentEntityTypeGUID;
+        }
+
+        return metadataCollection.findRelationships(userId,
+                                                    relationshipTypeGUID,
+                                                    null,
+                                                    false,
+                                                    (end1EntityGUIDs.isEmpty() ? null : end1EntityGUIDs),
+                                                    end1EntityTypeGUID,
+                                                    (end2EntityGUIDs.isEmpty() ? null : end2EntityGUIDs),
+                                                    end2EntityTypeGUID,
+                                                    EndMatchCriteria.BOTH,
+                                                    null,
+                                                    startingFrom,
+                                                    limitResultsByStatus,
+                                                    asOfTime,
+                                                    sequencingPropertyName,
+                                                    sequencingOrder,
+                                                    pageSize);
+    }
+
+
+    /**
      * Filter out the relationships where the entity used to retrieve the relationships is at the wrong end.
      *
      * @param receivedRelationships list of relationships retrieved from the repositories
@@ -3914,7 +4030,15 @@ public class RepositoryHandler
      * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
      *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
@@ -3941,7 +4065,9 @@ public class RepositoryHandler
                                                 List<String>          relationshipSubtypeGUIDs,
                                                 boolean               skipSubtypes,
                                                 List<String>          end1EntityGUIDs,
+                                                String                end1EntityTypeGUID,
                                                 List<String>          end2EntityGUIDs,
+                                                String                end2EntityTypeGUID,
                                                 EndMatchCriteria      endMatchCriteria,
                                                 SearchProperties      searchProperties,
                                                 List<InstanceStatus>  limitResultsByStatus,
@@ -3964,7 +4090,9 @@ public class RepositoryHandler
                                                                                     relationshipSubtypeGUIDs,
                                                                                     skipSubtypes,
                                                                                     end1EntityGUIDs,
+                                                                                    end1EntityTypeGUID,
                                                                                     end2EntityGUIDs,
+                                                                                    end2EntityTypeGUID,
                                                                                     endMatchCriteria,
                                                                                     searchProperties,
                                                                                     startingFrom,
@@ -4015,7 +4143,15 @@ public class RepositoryHandler
      * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
      *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
@@ -4036,7 +4172,9 @@ public class RepositoryHandler
                                    List<String>          relationshipSubtypeGUIDs,
                                    boolean               skipSubtypes,
                                    List<String>          end1EntityGUIDs,
+                                   String                end1EntityTypeGUID,
                                    List<String>          end2EntityGUIDs,
+                                   String                end2EntityTypeGUID,
                                    EndMatchCriteria      endMatchCriteria,
                                    SearchProperties      searchProperties,
                                    List<InstanceStatus>  limitResultsByStatus,
@@ -4057,7 +4195,9 @@ public class RepositoryHandler
                                                           relationshipSubtypeGUIDs,
                                                           skipSubtypes,
                                                           end1EntityGUIDs,
+                                                          end1EntityTypeGUID,
                                                           end2EntityGUIDs,
+                                                          end2EntityTypeGUID,
                                                           endMatchCriteria,
                                                           searchProperties,
                                                           0,
@@ -4453,6 +4593,150 @@ public class RepositoryHandler
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
+        return this.getRelationshipsByType(userId,
+                                           startingEntity,
+                                           startingEntityTypeName,
+                                           relationshipTypeGUID,
+                                           relationshipTypeName,
+                                           attachmentEntityEnd,
+                                           null,
+                                           limitResultsByStatus,
+                                           asOfTime,
+                                           callersSequencingOrder,
+                                           sequencingPropertyName,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           startingFrom,
+                                           pageSize,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+    /**
+     * Return the relationships of a type attached to an entity, optionally only those reaching a named
+     * entity at the other end.
+     * <br>
+     * Naming the entity at the other end lets the repository answer the question rather than answering a
+     * broader one and having the surplus discarded here - which matters most for paging, since a page
+     * filtered after the event is a short page rather than a page of answers.
+     *
+     * @param userId calling user
+     * @param startingEntity the entity the relationships are attached to
+     * @param startingEntityTypeName type of the starting entity
+     * @param relationshipTypeGUID type of relationship required
+     * @param relationshipTypeName type of relationship required
+     * @param attachmentEntityEnd which end the attachment is at - 0 means either
+     * @param attachmentEntityGUID the entity that must be at the other end, or null for any
+     * @param limitResultsByStatus statuses to restrict the results to
+     * @param asOfTime historical query time, or null for the present
+     * @param callersSequencingOrder how the results should be ordered
+     * @param sequencingPropertyName property to sequence on
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param startingFrom initial position in the stored list
+     * @param pageSize maximum number of relationships to return
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return retrieved relationships or null
+     * @throws InvalidParameterException a parameter is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException problem retrieving the relationships
+     */
+    public List<Relationship> getRelationshipsByType(String               userId,
+                                                     EntityDetail         startingEntity,
+                                                     String               startingEntityTypeName,
+                                                     String               relationshipTypeGUID,
+                                                     String               relationshipTypeName,
+                                                     int                  attachmentEntityEnd,
+                                                     String               attachmentEntityGUID,
+                                                     List<InstanceStatus> limitResultsByStatus,
+                                                     Date                 asOfTime,
+                                                     SequencingOrder      callersSequencingOrder,
+                                                     String               sequencingPropertyName,
+                                                     boolean              forLineage,
+                                                     boolean              forDuplicateProcessing,
+                                                     int                  startingFrom,
+                                                     int                  pageSize,
+                                                     Date                 effectiveTime,
+                                                     String               methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return this.getRelationshipsByType(userId,
+                                           startingEntity,
+                                           startingEntityTypeName,
+                                           relationshipTypeGUID,
+                                           relationshipTypeName,
+                                           attachmentEntityEnd,
+                                           attachmentEntityGUID,
+                                           null,
+                                           limitResultsByStatus,
+                                           asOfTime,
+                                           callersSequencingOrder,
+                                           sequencingPropertyName,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           startingFrom,
+                                           pageSize,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+    /**
+     * Return the relationships of a type attached to an entity, optionally only those reaching a named
+     * entity - or an entity of a named type - at the other end.
+     * <br>
+     * Constraining the far end lets the repository answer the question that was asked.  The type constraint
+     * matters most for paging: the caller asking for "the collections this element is a member of" would
+     * otherwise page through every membership and discard the ones reaching the wrong kind of entity, which
+     * returns short pages while matches sit unread beyond the page boundary.
+     *
+     * @param userId calling user
+     * @param startingEntity the entity the relationships are attached to
+     * @param startingEntityTypeName type of the starting entity
+     * @param relationshipTypeGUID type of relationship required
+     * @param relationshipTypeName type of relationship required
+     * @param attachmentEntityEnd which end the attachment is at - 0 means either
+     * @param attachmentEntityGUID the entity that must be at the other end, or null for any
+     * @param attachmentEntityTypeGUID the type the entity at the other end must belong to, or null for any
+     * @param limitResultsByStatus statuses to restrict the results to
+     * @param asOfTime historical query time, or null for the present
+     * @param callersSequencingOrder how the results should be ordered
+     * @param sequencingPropertyName property to sequence on
+     * @param forLineage is this part of a lineage request?
+     * @param forDuplicateProcessing is this part of duplicate processing?
+     * @param startingFrom start position for results
+     * @param pageSize maximum number of results
+     * @param effectiveTime effective time for the query
+     * @param methodName calling method
+     * @return list of relationships, or null if there are none
+     * @throws InvalidParameterException a parameter is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException problem retrieving the relationships
+     */
+    public List<Relationship> getRelationshipsByType(String               userId,
+                                                     EntityDetail         startingEntity,
+                                                     String               startingEntityTypeName,
+                                                     String               relationshipTypeGUID,
+                                                     String               relationshipTypeName,
+                                                     int                  attachmentEntityEnd,
+                                                     String               attachmentEntityGUID,
+                                                     String               attachmentEntityTypeGUID,
+                                                     List<InstanceStatus> limitResultsByStatus,
+                                                     Date                 asOfTime,
+                                                     SequencingOrder      callersSequencingOrder,
+                                                     String               sequencingPropertyName,
+                                                     boolean              forLineage,
+                                                     boolean              forDuplicateProcessing,
+                                                     int                  startingFrom,
+                                                     int                  pageSize,
+                                                     Date                 effectiveTime,
+                                                     String               methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
         final String localMethodName = "getRelationshipsByType";
 
         final String typeGUIDParameterName = "relationshipTypeGUID";
@@ -4519,15 +4803,18 @@ public class RepositoryHandler
 
                     try
                     {
-                        List<Relationship> retrievedRelationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                                                 retrievingEntity.getGUID(),
-                                                                                                                 relationshipTypeGUID,
-                                                                                                                 startingFrom,
-                                                                                                                 limitResultsByStatus,
-                                                                                                                 asOfTime,
-                                                                                                                 sequencingPropertyName,
-                                                                                                                 sequencingOrder,
-                                                                                                                 pageSize);
+                        List<Relationship> retrievedRelationships = this.getRelationshipsFromRepository(userId,
+                                                                                                       retrievingEntity.getGUID(),
+                                                                                                       attachmentEntityGUID,
+                                                                                                       attachmentEntityTypeGUID,
+                                                                                                       relationshipTypeGUID,
+                                                                                                       attachmentEntityEnd,
+                                                                                                       startingFrom,
+                                                                                                       pageSize,
+                                                                                                       limitResultsByStatus,
+                                                                                                       asOfTime,
+                                                                                                       sequencingPropertyName,
+                                                                                                       sequencingOrder);
 
                         accumulator.addRelationships(startingProxy, retrievingEntity.getGUID(), filterRelationshipsByEntityEnd(retrievedRelationships, retrievingEntity, attachmentEntityEnd, forDuplicateProcessing));
                     }
@@ -4549,15 +4836,18 @@ public class RepositoryHandler
         {
             try
             {
-                List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                                startingEntity.getGUID(),
-                                                                                                relationshipTypeGUID,
-                                                                                                startingFrom,
-                                                                                                limitResultsByStatus,
-                                                                                                asOfTime,
-                                                                                                sequencingPropertyName,
-                                                                                                sequencingOrder,
-                                                                                                pageSize);
+                List<Relationship> relationships = this.getRelationshipsFromRepository(userId,
+                                                                                       startingEntity.getGUID(),
+                                                                                       attachmentEntityGUID,
+                                                                                       attachmentEntityTypeGUID,
+                                                                                       relationshipTypeGUID,
+                                                                                       attachmentEntityEnd,
+                                                                                       startingFrom,
+                                                                                       pageSize,
+                                                                                       limitResultsByStatus,
+                                                                                       asOfTime,
+                                                                                       sequencingPropertyName,
+                                                                                       sequencingOrder);
 
                 if ((relationships == null) || (relationships.isEmpty()))
                 {
@@ -4605,6 +4895,8 @@ public class RepositoryHandler
      * @param userId calling userId
      * @param relationshipTypeGUID type of relationship required
      * @param relationshipTypeName type of relationship required
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param asOfTime Requests a historical query of the relationship.  Null means return the present values.
@@ -4720,12 +5012,26 @@ public class RepositoryHandler
                                              methodName,
                                              localMethodName);
 
+        /*
+         * The entity at the other end is part of the question, so it is pushed into the retrieval rather
+         * than used to discard rows afterwards - see the note in getRelationshipsFromRepository().
+         */
+        EntityDetail entity1Entity = this.getEntityByGUID(userId,
+                                                          entity1GUID,
+                                                          "entity1GUID",
+                                                          entity1TypeName,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime,
+                                                          methodName);
+
         List<Relationship>  entity1Relationships = this.getRelationshipsByType(userId,
-                                                                               entity1GUID,
+                                                                               entity1Entity,
                                                                                entity1TypeName,
                                                                                relationshipTypeGUID,
                                                                                relationshipTypeName,
                                                                                attachmentEntityEnd,
+                                                                               entity2GUID,
                                                                                limitResultsByStatus,
                                                                                asOfTime,
                                                                                sequencingOrder,
@@ -4849,12 +5155,17 @@ public class RepositoryHandler
          * Retrieve all relationships of requested type connected to the starting entity.
          * EffectiveTime is null to ensure all relationships are considered.
          */
+        /*
+         * The entity at the other end is part of the question, so the repository is told about it rather
+         * than being asked for every relationship this entity has and having the surplus dropped below.
+         */
         List<Relationship>  entity1Relationships = this.getRelationshipsByType(userId,
                                                                                entity1Entity,
                                                                                entity1TypeName,
                                                                                relationshipTypeGUID,
                                                                                relationshipTypeName,
                                                                                attachmentEntityEnd,
+                                                                               entity2GUID,
                                                                                limitResultsByStatus,
                                                                                asOfTime,
                                                                                sequencingOrder,
@@ -5036,6 +5347,11 @@ public class RepositoryHandler
      * @param entity2GUID  entity at end 2 GUID
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime     Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
      * @param forLineage                   the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -5364,6 +5680,11 @@ public class RepositoryHandler
      * @param startAtEnd1 is the starting entity at end 1 of the relationship
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime    Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing is this part of duplicate processing?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)

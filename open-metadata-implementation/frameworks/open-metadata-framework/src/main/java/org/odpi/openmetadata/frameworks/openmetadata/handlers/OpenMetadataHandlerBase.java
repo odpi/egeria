@@ -815,6 +815,75 @@ public class OpenMetadataHandlerBase
 
 
     /**
+     * Turn the classification filters carried on the query options into a classification search the
+     * repository can apply, so that a page of results is a page of answers.
+     * <br>
+     * This is the push-down that filterByClassifications() below describes itself as the last check for.
+     * Without it that check is the only one: the repository has already chosen the page by the time it
+     * runs, so anything it removes leaves a gap, and where a whole page carries the excluded
+     * classification the caller is handed an empty list.  That is not a lost result - the paging contract
+     * ends a traversal on a null, not on an empty or short page, so a caller that keeps asking still sees
+     * everything.  What it costs is the asking: the caller has to page through the whole set to collect
+     * the few it wanted, and pays for every batch that is filtered away.
+     * <br>
+     * Only one of the two filters can be expressed at a time, because a classification search carries a
+     * single match criteria and "must have these" cannot be combined with "must not have those".  When a
+     * caller asks for both, the required classifications are pushed down and the forbidden ones are left
+     * to the check below - no worse than before, and better for the common case where only one is set.
+     *
+     * @param queryOptions options supplied by the caller
+     * @return classification search, or null if no classification filtering was asked for
+     */
+    protected SearchClassifications getClassificationSearch(QueryOptions queryOptions)
+    {
+        if (queryOptions == null)
+        {
+            return null;
+        }
+
+        List<String>  classificationNames = queryOptions.getIncludeOnlyClassifiedElements();
+        MatchCriteria matchCriteria       = MatchCriteria.ALL;
+
+        if ((classificationNames == null) || (classificationNames.isEmpty()))
+        {
+            classificationNames = queryOptions.getSkipClassifiedElements();
+            matchCriteria       = MatchCriteria.NONE;
+        }
+
+        if ((classificationNames == null) || (classificationNames.isEmpty()))
+        {
+            return null;
+        }
+
+        List<ClassificationCondition> conditions = new ArrayList<>();
+
+        for (String classificationName : classificationNames)
+        {
+            if (classificationName != null)
+            {
+                ClassificationCondition condition = new ClassificationCondition();
+
+                condition.setName(classificationName);
+
+                conditions.add(condition);
+            }
+        }
+
+        if (conditions.isEmpty())
+        {
+            return null;
+        }
+
+        SearchClassifications searchClassifications = new SearchClassifications();
+
+        searchClassifications.setConditions(conditions);
+        searchClassifications.setMatchCriteria(matchCriteria);
+
+        return searchClassifications;
+    }
+
+
+    /**
      * The aim is to push down the filtering requirements to the repository as much as possible.  This
      * function is a last check to make sure the classification requirements have been fulfilled.
      *
@@ -2096,7 +2165,7 @@ public class OpenMetadataHandlerBase
                                                                                                  propertyHelper.getSearchPropertiesByName(propertyNames,
                                                                                                                                           name,
                                                                                                                                           propertyHelper.getExactMatchSearchOptions(queryOptions)),
-                                                                                                 null,
+                                                                                                 this.getClassificationSearch(queryOptions),
                                                                                                  queryOptions);
 
         return convertRootElements(userId,

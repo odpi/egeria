@@ -1209,7 +1209,11 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
      *                                 (or, if the queryOptions' skipSubtypes flag is true, exclude from) the search results.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.  Subtypes of
+     *                           the named type match too.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.  Subtypes of
+     *                           the named type match too.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param searchProperties Optional list of relationship property conditions to match.
      * @param queryOptions multiple options to control the query
@@ -1225,7 +1229,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                  String           relationshipTypeName,
                                                                                  List<String>     relationshipSubtypeNames,
                                                                                  List<String>     end1EntityGUIDs,
+                                                                                 String           end1EntityTypeName,
                                                                                  List<String>     end2EntityGUIDs,
+                                                                                 String           end2EntityTypeName,
                                                                                  EndMatchCriteria endMatchCriteria,
                                                                                  SearchProperties searchProperties,
                                                                                  QueryOptions     queryOptions) throws InvalidParameterException,
@@ -1243,7 +1249,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setRelationshipSubtypeNames(relationshipSubtypeNames);
         requestBody.setSearchProperties(searchProperties);
         requestBody.setEnd1EntityGUIDs(end1EntityGUIDs);
+        requestBody.setEnd1EntityTypeName(end1EntityTypeName);
         requestBody.setEnd2EntityGUIDs(end2EntityGUIDs);
+        requestBody.setEnd2EntityTypeName(end2EntityTypeName);
         requestBody.setEndMatchCriteria(endMatchCriteria);
 
         OpenMetadataRelationshipListResponse restResult = restClient.callOpenMetadataRelationshipListPostRESTCall(methodName,
@@ -1267,7 +1275,11 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
      *                                 (or, if the queryOptions' skipSubtypes flag is true, exclude from) the search results.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.  Subtypes of
+     *                           the named type match too.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.  Subtypes of
+     *                           the named type match too.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param searchProperties Optional list of relationship property conditions to match.
      * @param queryOptions multiple options to control the query
@@ -1283,7 +1295,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                           String           relationshipTypeName,
                                                           List<String>     relationshipSubtypeNames,
                                                           List<String>     end1EntityGUIDs,
+                                                          String           end1EntityTypeName,
                                                           List<String>     end2EntityGUIDs,
+                                                          String           end2EntityTypeName,
                                                           EndMatchCriteria endMatchCriteria,
                                                           SearchProperties searchProperties,
                                                           QueryOptions     queryOptions) throws InvalidParameterException,
@@ -1301,7 +1315,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setRelationshipSubtypeNames(relationshipSubtypeNames);
         requestBody.setSearchProperties(searchProperties);
         requestBody.setEnd1EntityGUIDs(end1EntityGUIDs);
+        requestBody.setEnd1EntityTypeName(end1EntityTypeName);
         requestBody.setEnd2EntityGUIDs(end2EntityGUIDs);
+        requestBody.setEnd2EntityTypeName(end2EntityTypeName);
         requestBody.setEndMatchCriteria(endMatchCriteria);
 
         CountResponse restResult = restClient.callCountPostRESTCall(methodName,
@@ -1463,6 +1479,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param replacementClassifications map of classification names to classification properties to include in the entity creation request. These override the template values.
      * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
      *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentRelationshipProperties properties to include in parent relationship
      *
      * @return unique identifier of the new metadata element
      *

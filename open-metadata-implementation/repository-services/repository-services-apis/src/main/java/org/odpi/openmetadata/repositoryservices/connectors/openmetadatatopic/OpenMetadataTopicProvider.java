@@ -44,6 +44,8 @@ public abstract class OpenMetadataTopicProvider extends OpenConnectorProviderBas
      * @param connectorClassName                   connector class name
      * @param recognizedConfigurationPropertyNames list of property names that the connector supports
      *                                             in the configuration properties.
+     * @param connectorInterfaces                  list of interfaces that the connector supports.
+     * @param expectedDataFormat                   description of the data format that the connector expects.
      */
     public OpenMetadataTopicProvider(OpenConnectorDefinition openConnectorDescription,
                                      String                  connectorClassName,

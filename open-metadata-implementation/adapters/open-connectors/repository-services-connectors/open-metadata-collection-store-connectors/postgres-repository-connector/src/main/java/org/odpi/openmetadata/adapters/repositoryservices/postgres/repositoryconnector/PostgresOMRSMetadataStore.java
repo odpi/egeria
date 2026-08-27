@@ -173,6 +173,7 @@ class PostgresOMRSMetadataStore
      * Return the entity proxy identified by the guid.
      *
      * @param guid - unique identifier
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @return entity proxy object
      * @throws RepositoryErrorException problem forming entity proxy
      */
@@ -755,7 +756,15 @@ class PostgresOMRSMetadataStore
      * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
      *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement the starting element number of the entities to return.
@@ -779,7 +788,9 @@ class PostgresOMRSMetadataStore
                                          List<String>              relationshipSubtypeGUIDs,
                                          boolean                   skipSubtypes,
                                          List<String>              end1EntityGUIDs,
+                                         String                    end1EntityTypeGUID,
                                          List<String>              end2EntityGUIDs,
+                                         String                    end2EntityTypeGUID,
                                          EndMatchCriteria          endMatchCriteria,
                                          SearchProperties          matchProperties,
                                          int                       fromRelationshipElement,
@@ -798,7 +809,7 @@ class PostgresOMRSMetadataStore
                                                      repositoryName);
 
         queryBuilder.setTypeGUID(relationshipTypeGUID, relationshipTypeGUIDParameterName, relationshipSubtypeGUIDs, skipSubtypes, relationshipSubtypeGUIDsParameterName);
-        queryBuilder.setRelationshipEndCriteria(end1EntityGUIDs, end2EntityGUIDs, endMatchCriteria);
+        queryBuilder.setRelationshipEndCriteria(end1EntityGUIDs, end1EntityTypeGUID, end2EntityGUIDs, end2EntityTypeGUID, endMatchCriteria);
         queryBuilder.setSearchProperties(matchProperties);
         queryBuilder.setLimitResultsByStatus(limitResultsByStatus);
         queryBuilder.setAsOfTime(asOfTime);
@@ -829,7 +840,15 @@ class PostgresOMRSMetadataStore
      * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
      *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
@@ -845,7 +864,9 @@ class PostgresOMRSMetadataStore
                             List<String>              relationshipSubtypeGUIDs,
                             boolean                   skipSubtypes,
                             List<String>              end1EntityGUIDs,
+                            String                    end1EntityTypeGUID,
                             List<String>              end2EntityGUIDs,
+                            String                    end2EntityTypeGUID,
                             EndMatchCriteria          endMatchCriteria,
                             SearchProperties          matchProperties,
                             List<InstanceStatus>      limitResultsByStatus,
@@ -860,7 +881,7 @@ class PostgresOMRSMetadataStore
                                                      repositoryName);
 
         queryBuilder.setTypeGUID(relationshipTypeGUID, relationshipTypeGUIDParameterName, relationshipSubtypeGUIDs, skipSubtypes, relationshipSubtypeGUIDsParameterName);
-        queryBuilder.setRelationshipEndCriteria(end1EntityGUIDs, end2EntityGUIDs, endMatchCriteria);
+        queryBuilder.setRelationshipEndCriteria(end1EntityGUIDs, end1EntityTypeGUID, end2EntityGUIDs, end2EntityTypeGUID, endMatchCriteria);
         queryBuilder.setSearchProperties(matchProperties);
         queryBuilder.setLimitResultsByStatus(limitResultsByStatus);
         queryBuilder.setAsOfTime(asOfTime);

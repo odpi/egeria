@@ -25,6 +25,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMem
 import org.odpi.openmetadata.frameworks.openmetadata.search.SecurityTagQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworkservices.omf.rest.FindRelationshipRequestBody;
 import org.odpi.openmetadata.frameworkservices.omf.rest.FindRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -5343,10 +5344,10 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    a problem reported in the open metadata server(s)
      */
-    public MetadataRelationshipSummariesResponse getRelationships(String             serverName,
-                                                                  String             urlMarker,
-                                                                  String             relationshipTypeName,
-                                                                  ResultsRequestBody requestBody)
+    public MetadataRelationshipSummariesResponse getRelationships(String                      serverName,
+                                                                  String                      urlMarker,
+                                                                  String                      relationshipTypeName,
+                                                                  FindRelationshipRequestBody requestBody)
     {
         final String methodName = "getRelationships";
 
@@ -5364,10 +5365,34 @@ public class ClassificationExplorerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
+            /*
+             * The request body is optional on this operation, and an absent body means "no criteria beyond
+             * the relationship type" rather than a bad request.
+             */
+            List<String>     end1EntityGUIDs    = null;
+            String           end1EntityTypeName = null;
+            List<String>     end2EntityGUIDs    = null;
+            String           end2EntityTypeName = null;
+            EndMatchCriteria endMatchCriteria   = null;
+
+            if (requestBody != null)
+            {
+                end1EntityGUIDs    = requestBody.getEnd1EntityGUIDs();
+                end1EntityTypeName = requestBody.getEnd1EntityTypeName();
+                end2EntityGUIDs    = requestBody.getEnd2EntityGUIDs();
+                end2EntityTypeName = requestBody.getEnd2EntityTypeName();
+                endMatchCriteria   = requestBody.getEndMatchCriteria();
+            }
+
             MetadataRelationshipSummaryList summaryList = handler.getRelationships(userId,
                                                                                    relationshipTypeName,
                                                                                    null,
                                                                                    null,
+                                                                                   end1EntityGUIDs,
+                                                                                   end1EntityTypeName,
+                                                                                   end2EntityGUIDs,
+                                                                                   end2EntityTypeName,
+                                                                                   endMatchCriteria,
                                                                                    requestBody,
                                                                                    methodName);
             if (summaryList != null)

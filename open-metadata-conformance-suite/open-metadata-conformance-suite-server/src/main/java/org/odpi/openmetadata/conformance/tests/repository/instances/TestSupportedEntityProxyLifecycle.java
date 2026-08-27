@@ -146,8 +146,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
      * into a reported conformance failure.
      *
      */
-    private Integer           pollCount   = 300;
-    private Integer           pollPeriod  = 100;   // milliseconds
+    private final Integer     pollCount;
+    private final Integer     pollPeriod;   // milliseconds
 
 
 
@@ -167,6 +167,11 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
               RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
 
         this.workPad              = workPad;
+        /*
+         * The configured budget, with the minimums the loops rely on applied as it is taken.
+         */
+        this.pollPeriod           = Math.max(workPad.getEventPollPeriod(), 100);
+        this.pollCount            = Math.max(workPad.getEventPollCount(), 1);
         this.relationshipDef      = relationshipDef;
         this.entityDefs           = entityDefs;
 
@@ -178,12 +183,6 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
         this.testTypeName = this.updateTestIdByType(relationshipDef.getName(),
                                                     testCaseId,
                                                     testCaseName);
-
-        /*
-         * Enforce minimum pollPeriod and pollCount.
-         */
-        this.pollPeriod = Math.max(this.pollPeriod, 100);
-        this.pollCount  = Math.max(this.pollCount, 1);
 
     }
 

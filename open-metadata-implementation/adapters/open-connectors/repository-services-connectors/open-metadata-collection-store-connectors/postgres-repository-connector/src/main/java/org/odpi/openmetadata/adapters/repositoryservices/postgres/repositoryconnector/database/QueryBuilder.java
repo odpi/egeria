@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database;
 
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc.PostgresErrorCode;
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.ColumnType;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryColumn;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryTable;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -38,7 +39,9 @@ public class QueryBuilder
     private String                relationshipEndGUID          = null;
 
     private List<String>          end1EntityGUIDs              = null;
+    private String                end1EntityTypeGUID           = null;
     private List<String>          end2EntityGUIDs              = null;
+    private String                end2EntityTypeGUID           = null;
     private EndMatchCriteria      endMatchCriteria             = null;
 
     private String                searchString                 = null;
@@ -243,6 +246,51 @@ public class QueryBuilder
         }
 
         return subSelect + "))) ";
+    }
+
+
+    /**
+     * Return a value in the form the target column needs.
+     * <br>
+     * Dates are the reason this exists, and the column matters.  A date is carried as epoch milliseconds:
+     * that is exactly what the attribute table holds, since property_value is text, so an ordinary property
+     * must be compared as the number it is stored as.  The header columns - effective_from_time and the
+     * rest - are real timestamp columns, and comparing a bigint against one of those is rejected outright
+     * ("date/time field value out of range") rather than simply not matching.
+     *
+     * @param propertyColumn the column being compared against
+     * @param propertyValue the value supplied in the search condition
+     * @return value ready to be placed in the SQL
+     */
+    private Object getSQLValue(String propertyColumn,
+                               Object propertyValue)
+    {
+        if ((propertyValue instanceof Long dateAsLong) && (this.isDateColumn(propertyColumn)))
+        {
+            return new java.sql.Timestamp(dateAsLong).toString();
+        }
+
+        return propertyValue;
+    }
+
+
+    /**
+     * Return whether the named column holds a timestamp.
+     *
+     * @param columnName column being compared against
+     * @return true if the column's declared type is a date
+     */
+    private boolean isDateColumn(String columnName)
+    {
+        for (RepositoryColumn repositoryColumn : RepositoryColumn.values())
+        {
+            if (repositoryColumn.getColumnName().equals(columnName))
+            {
+                return repositoryColumn.getColumnType() == ColumnType.DATE;
+            }
+        }
+
+        return false;
     }
 
 
@@ -547,6 +595,8 @@ public class QueryBuilder
 
         String propertyColumn = this.mapPropertyNameToColumn(leafPropertyName, RepositoryColumn.ATTRIBUTE_NAME.getColumnName());
 
+        propertyValue = this.getSQLValue(propertyColumn, propertyValue);
+
         if (propertyColumn.equals(RepositoryColumn.ATTRIBUTE_NAME.getColumnName()) || propertyColumn.equals(RepositoryColumn.PROPERTY_NAME.getColumnName()))
         {
             String propertyNameMatchClause = this.getPropertyNameMatchClause(propertyTableName,
@@ -771,109 +821,186 @@ public class QueryBuilder
      * Capture the criteria for matching the ends in a findRelationship search.
      *
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      */
     public void setRelationshipEndCriteria(List<String>     end1EntityGUIDs,
+                                           String           end1EntityTypeGUID,
                                            List<String>     end2EntityGUIDs,
+                                           String           end2EntityTypeGUID,
                                            EndMatchCriteria endMatchCriteria)
     {
-        this.end1EntityGUIDs = end1EntityGUIDs;
-        this.end2EntityGUIDs = end2EntityGUIDs;
-        this.endMatchCriteria = endMatchCriteria;
+        this.end1EntityGUIDs    = end1EntityGUIDs;
+        this.end1EntityTypeGUID = end1EntityTypeGUID;
+        this.end2EntityGUIDs    = end2EntityGUIDs;
+        this.end2EntityTypeGUID = end2EntityTypeGUID;
+        this.endMatchCriteria   = endMatchCriteria;
+    }
+
+
+    /**
+     * Return the SQL that restricts one end of a relationship to entities of a particular type.
+     * <br>
+     * The relationship row records the guid at each end but not the type of the entity there, so the type
+     * is tested by looking the entity up.  Subtypes are included, matching how a type is matched
+     * everywhere else: the stored type name carries the whole hierarchy, so an entity of a subtype
+     * contains the supertype's name.
+     *
+     * @param endColumnName the end guid column being constrained
+     * @param endEntityTypeGUID the type the entity at that end must be
+     * @param negate true when the caller asked for relationships that do NOT match
+     * @return SQL fragment
+     * @throws RepositoryErrorException the type is not known
+     */
+    private String getRelationshipEndTypeClause(String  endColumnName,
+                                                String  endEntityTypeGUID,
+                                                boolean negate) throws RepositoryErrorException
+    {
+        final String parameterName = "endEntityTypeGUID";
+
+        String membershipOperand = negate ? " not in (" : " in (";
+
+        return " (" + endColumnName + membershipOperand +
+                       "select " + RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.ENTITY.getTableName()) +
+                       " from " + RepositoryTable.ENTITY.getTableName() +
+                       " where (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null)" +
+                       " and (" + RepositoryColumn.TYPE_NAME.getColumnName() + " like '%:" +
+                       escapePropertyValue(getSafeLikePattern(this.lookUpTypeName(endEntityTypeGUID, parameterName))) +
+                       ":%'))) ";
+    }
+
+
+    /**
+     * Derive the SQL fragment that describes the criteria for one end of the relationship.  An end may be
+     * constrained by the entities allowed there, by the type of entity allowed there, by both, or by
+     * neither - and an unconstrained end matches anything, which is what lets a caller ask only about the
+     * type at one end and say nothing at all about the other.
+     * <br>
+     * When the criteria are negated, the negation applies to the end as a whole: the relationships wanted
+     * are the ones this end does <em>not</em> match, so the two parts are negated and joined with "or"
+     * rather than negated and joined with "and".  Negating them separately would exclude the relationships
+     * whose end is in the guid list <em>or</em> of that type, which is a different and larger set.
+     *
+     * @param endColumnName the column holding the entity guid for this end
+     * @param endEntityGUIDs the entities allowed at this end, or null for any
+     * @param endEntityTypeGUID the type allowed at this end, or null for any
+     * @param negate is this end's criteria negated?
+     * @return SQL fragment, or null if this end is not constrained
+     * @throws RepositoryErrorException the type is not known to this repository
+     */
+    private String getRelationshipEndClause(String       endColumnName,
+                                            List<String> endEntityGUIDs,
+                                            String       endEntityTypeGUID,
+                                            boolean      negate) throws RepositoryErrorException
+    {
+        String guidClause = null;
+
+        if (endEntityGUIDs != null)
+        {
+            String matchComparison  = negate ? " != " : " = ";
+            String guidMatchOperand = negate ? " and " : " or ";
+
+            StringBuilder guidBuilder = new StringBuilder(" (");
+
+            boolean firstGUID = true;
+
+            for (String endEntityGUID : endEntityGUIDs)
+            {
+                if (firstGUID)
+                {
+                    firstGUID = false;
+                }
+                else
+                {
+                    guidBuilder.append(guidMatchOperand);
+                }
+
+                guidBuilder.append(endColumnName);
+                guidBuilder.append(matchComparison);
+                guidBuilder.append("'");
+                guidBuilder.append(endEntityGUID);
+                guidBuilder.append("'");
+            }
+
+            guidBuilder.append(") ");
+
+            guidClause = guidBuilder.toString();
+        }
+
+        String typeClause = null;
+
+        if (endEntityTypeGUID != null)
+        {
+            typeClause = this.getRelationshipEndTypeClause(endColumnName, endEntityTypeGUID, negate);
+        }
+
+        if (guidClause == null)
+        {
+            return typeClause;
+        }
+
+        if (typeClause == null)
+        {
+            return guidClause;
+        }
+
+        return " (" + guidClause + (negate ? " or " : " and ") + typeClause + ") ";
     }
 
 
     /**
      * Derive the SQL fragment to describe the relationship end criteria.
      *
-     * @return SQL fragment or null if no criteria
+     * @return SQL fragment, never null - a space when there are no criteria
+     * @throws RepositoryErrorException a type named in the criteria is not known to this repository
      */
-    private String getRelationshipEndCriteriaClause()
+    private String getRelationshipEndCriteriaClause() throws RepositoryErrorException
     {
-        if (endMatchCriteria != null)
+        if (endMatchCriteria == null)
         {
-            String endMatchOperand = " and ";
-            String guidMatchOperand = " or ";
-            String matchComparison = " = ";
-
-            if (endMatchCriteria == EndMatchCriteria.ANY)
-            {
-                endMatchOperand = " or ";
-            }
-            else if (endMatchCriteria == EndMatchCriteria.NONE)
-            {
-                matchComparison = " != ";
-                guidMatchOperand = " and ";
-            }
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            if (end1EntityGUIDs != null)
-            {
-                stringBuilder.append(" (");
-
-                boolean firstEnd1GUID = true;
-
-                for (String end1EntityGUID : end1EntityGUIDs)
-                {
-                    if (firstEnd1GUID)
-                    {
-                        firstEnd1GUID = false;
-                    }
-                    else
-                    {
-                        stringBuilder.append(guidMatchOperand);
-                    }
-
-                    stringBuilder.append(RepositoryColumn.END_1_GUID.getColumnName());
-                    stringBuilder.append(matchComparison);
-                    stringBuilder.append("'");
-                    stringBuilder.append(end1EntityGUID);
-                    stringBuilder.append("'");
-                }
-
-                stringBuilder.append(") ");
-
-                if (end2EntityGUIDs != null)
-                {
-                    stringBuilder.append(endMatchOperand);
-                }
-            }
-
-            if (end2EntityGUIDs != null)
-            {
-                stringBuilder.append(" (");
-
-                boolean firstEnd2GUID = true;
-
-                for (String end2EntityGUID : end2EntityGUIDs)
-                {
-                    if (firstEnd2GUID)
-                    {
-                        firstEnd2GUID = false;
-                    }
-                    else
-                    {
-                        stringBuilder.append(guidMatchOperand);
-                    }
-
-                    stringBuilder.append(RepositoryColumn.END_2_GUID.getColumnName());
-                    stringBuilder.append(matchComparison);
-                    stringBuilder.append("'");
-                    stringBuilder.append(end2EntityGUID);
-                    stringBuilder.append("'");
-                }
-
-                stringBuilder.append(") ");
-            }
-
-            if (! stringBuilder.isEmpty())
-            {
-                return " and (" + stringBuilder + ") ";
-            }
-
             return " ";
+        }
+
+        boolean negate = (endMatchCriteria == EndMatchCriteria.NONE);
+
+        String end1Clause = this.getRelationshipEndClause(RepositoryColumn.END_1_GUID.getColumnName(),
+                                                          end1EntityGUIDs,
+                                                          end1EntityTypeGUID,
+                                                          negate);
+
+        String end2Clause = this.getRelationshipEndClause(RepositoryColumn.END_2_GUID.getColumnName(),
+                                                          end2EntityGUIDs,
+                                                          end2EntityTypeGUID,
+                                                          negate);
+
+        /*
+         * ANY asks for the relationships that either end matches.  BOTH asks for the ones both ends match.
+         * NONE asks for the ones neither end matches - and with each end already negated above, that is the
+         * ends joined with "and".
+         */
+        String endMatchOperand = (endMatchCriteria == EndMatchCriteria.ANY) ? " or " : " and ";
+
+        if ((end1Clause != null) && (end2Clause != null))
+        {
+            return " and (" + end1Clause + endMatchOperand + end2Clause + ") ";
+        }
+
+        if (end1Clause != null)
+        {
+            return " and (" + end1Clause + ") ";
+        }
+
+        if (end2Clause != null)
+        {
+            return " and (" + end2Clause + ") ";
         }
 
         return " ";
@@ -1084,17 +1211,31 @@ public class QueryBuilder
     {
         if ((matchClassifications != null) && (matchClassifications.getConditions() != null))
         {
+            if (matchClassifications.getMatchCriteria() == MatchCriteria.ALL)
+            {
+                /*
+                 * ALL is not expressible as one group of conditions over a single classification row: a row
+                 * names one classification, so "type_name like X and type_name like Y" can never be true and
+                 * the search returns nothing.  It is answered instead by one membership test per named
+                 * classification - see getClassificationSubSelectWhereClauses().
+                 */
+                return " ";
+            }
+
             StringBuilder stringBuilder  = new StringBuilder();
             StringBuilder conditionsBuilder = new StringBuilder();
             boolean       firstCondition  = true;
 
             /*
-             * MatchCriteria was previously ignored here: every named classification condition was
-             * unconditionally AND-ed onto the classification-table join, so a query naming two or
-             * more mutually exclusive classifications (e.g. ZoneMembership OR Confidentiality) always
-             * returned zero rows regardless of whether the caller asked for ALL, ANY, or NONE. Mirror
-             * the pattern used for property conditions in getPropertyComparisonFromPropertyConditions()
-             * (ANY -> "or", ALL -> "and") and wrap the whole group in "not (...)" for NONE.
+             * This clause selects the classification rows that name the classifications the caller asked
+             * about.  It is always the positive set - "rows for classification X" - because it is used as a
+             * sub-select of entity guids, and whether the caller wanted entities that carry those
+             * classifications or entities that do not is decided by how that membership is applied.  See
+             * isNegatedClassificationMatch().
+             * <br>
+             * Negating inside the sub-select does not express NONE.  "select the entities that have a
+             * classification which is not X" returns an entity carrying both X and Y - it has Y - and misses
+             * an entity carrying no classifications at all, which is the commonest case of not having X.
              */
             String matchOperand = " and ";
 
@@ -1108,10 +1249,6 @@ public class QueryBuilder
             {
                 if (classificationCondition != null)
                 {
-                    /*
-                     * Add in a type clause for the classification, even if the classification name is null to
-                     * make the construction of the SQL easier.
-                     */
                     if (firstCondition)
                     {
                         conditionsBuilder.append(" (");
@@ -1122,28 +1259,7 @@ public class QueryBuilder
                         conditionsBuilder.append(matchOperand);
                     }
 
-                    conditionsBuilder.append("(");
-                    conditionsBuilder.append(RepositoryColumn.TYPE_NAME.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()));
-                    conditionsBuilder.append(" like '%:");
-
-                    if (classificationCondition.getName() != null)
-                    {
-                        conditionsBuilder.append(classificationCondition.getName());
-                    }
-                    else
-                    {
-                        conditionsBuilder.append("%");
-                    }
-                    conditionsBuilder.append(":%' ");
-
-                    if (classificationCondition.getMatchProperties() != null)
-                    {
-                        conditionsBuilder.append(this.getSearchPropertiesClause(RepositoryTable.CLASSIFICATION.getTableName(),
-                                                                                RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
-                                                                                classificationCondition.getMatchProperties()));
-                    }
-
-                    conditionsBuilder.append(") ");
+                    conditionsBuilder.append(this.getSingleClassificationClause(classificationCondition));
                 }
             }
 
@@ -1152,10 +1268,6 @@ public class QueryBuilder
                 conditionsBuilder.append(") ");
 
                 stringBuilder.append(" and ");
-                if (matchClassifications.getMatchCriteria() == MatchCriteria.NONE)
-                {
-                    stringBuilder.append("not ");
-                }
                 stringBuilder.append(conditionsBuilder);
             }
 
@@ -1163,6 +1275,153 @@ public class QueryBuilder
         }
 
         return " ";
+    }
+
+
+    /**
+     * Return the SQL that selects the classification rows naming one classification.
+     *
+     * @param classificationCondition the classification asked about
+     * @return SQL fragment
+     * @throws RepositoryErrorException problem building the property conditions
+     */
+    private String getSingleClassificationClause(ClassificationCondition classificationCondition) throws RepositoryErrorException
+    {
+        StringBuilder conditionBuilder = new StringBuilder();
+
+        conditionBuilder.append("(");
+        conditionBuilder.append(RepositoryColumn.TYPE_NAME.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()));
+        conditionBuilder.append(" like '%:");
+
+        /*
+         * A condition with no name matches any classification, which keeps the SQL construction simple for a
+         * caller that only wants to constrain the classification's properties.
+         */
+        if (classificationCondition.getName() != null)
+        {
+            conditionBuilder.append(classificationCondition.getName());
+        }
+        else
+        {
+            conditionBuilder.append("%");
+        }
+        conditionBuilder.append(":%' ");
+
+        if (classificationCondition.getMatchProperties() != null)
+        {
+            conditionBuilder.append(this.getSearchPropertiesClause(RepositoryTable.CLASSIFICATION.getTableName(),
+                                                                    RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                                                                    classificationCondition.getMatchProperties()));
+        }
+
+        conditionBuilder.append(") ");
+
+        return conditionBuilder.toString();
+    }
+
+
+    /**
+     * Return the where clause for each sub-select needed to express the classification search.
+     * <br>
+     * ANY and NONE need one sub-select: the entities carrying any of the named classifications, either
+     * included or excluded.  ALL needs one per classification, because an entity carries each of them on a
+     * separate row and a single row cannot satisfy two names at once - which is why asking for two
+     * classifications used to return nothing at all.
+     *
+     * @return one where clause per sub-select; empty if there is no classification search
+     * @throws RepositoryErrorException problem building the conditions
+     */
+    public List<String> getClassificationSubSelectWhereClauses() throws RepositoryErrorException
+    {
+        List<String> whereClauses = new ArrayList<>();
+
+        if ((matchClassifications == null) || (matchClassifications.getConditions() == null))
+        {
+            /*
+             * No classification search - but this builder may still be carrying a
+             * limitResultsByClassification constraint, which lives in the same where clause and needs the
+             * same sub-select.  Returning nothing here drops that constraint silently, and a search that
+             * has quietly stopped filtering returns more than it should rather than failing.
+             */
+            whereClauses.add(this.getAsOfTimeWhereClause());
+
+            return whereClauses;
+        }
+
+        if (matchClassifications.getMatchCriteria() == MatchCriteria.ALL)
+        {
+            for (ClassificationCondition classificationCondition : matchClassifications.getConditions())
+            {
+                if (classificationCondition != null)
+                {
+                    /*
+                     * getAsOfTimeWhereClause() rather than just the asOfTime clause: it carries everything
+                     * else the sub-select needs - the status limit above all, without which a classification
+                     * that has been removed is still matched, since removing one soft-deletes the row rather
+                     * than ending its version.  For ALL it contributes no classification condition of its
+                     * own (see getSearchClassificationsClause()), so the single condition is added here.
+                     */
+                    whereClauses.add(this.getAsOfTimeWhereClause() + " and " + this.getSingleClassificationClause(classificationCondition));
+                }
+            }
+        }
+        else
+        {
+            whereClauses.add(this.getAsOfTimeWhereClause());
+        }
+
+        return whereClauses;
+    }
+
+
+    /**
+     * Return the complete SQL that restricts a query to the entities the classification search asks for.
+     * <br>
+     * The whole membership expression is built here rather than handing callers the pieces to assemble.
+     * The pieces are easy to assemble wrongly - each sub-select needs the base clauses as well as its own
+     * classification condition, ALL needs one membership test per classification while ANY and NONE need
+     * one in total, and NONE inverts the membership instead of the condition.  Getting any of those wrong
+     * does not fail: the query simply stops filtering, or filters on the wrong thing, and returns a
+     * plausible answer.
+     *
+     * @param entityGUIDColumn the qualified entity guid column the membership applies to
+     * @return SQL fragment, beginning with "and", or empty if there is no classification search
+     * @throws RepositoryErrorException problem building the conditions
+     */
+    public String getClassificationMembershipClause(String entityGUIDColumn) throws RepositoryErrorException
+    {
+        StringBuilder membershipBuilder = new StringBuilder();
+
+        String membershipOperand = this.isNegatedClassificationMatch() ? " not in (" : " in (";
+
+        for (String subSelectWhereClause : this.getClassificationSubSelectWhereClauses())
+        {
+            membershipBuilder.append(" and ")
+                             .append(entityGUIDColumn)
+                             .append(membershipOperand)
+                             .append("select ")
+                             .append(RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()))
+                             .append(" from ")
+                             .append(RepositoryTable.CLASSIFICATION.getTableName())
+                             .append(" where ")
+                             .append(subSelectWhereClause)
+                             .append(")");
+        }
+
+        return membershipBuilder.toString();
+    }
+
+
+    /**
+     * Return whether the caller asked for entities that do NOT carry the classifications named in the
+     * search.  The sub-select this builder produces always selects the entities that DO carry them, so a
+     * NONE request is served by excluding that set rather than by selecting a different one.
+     *
+     * @return true if the classification membership should be negated
+     */
+    public boolean isNegatedClassificationMatch()
+    {
+        return (matchClassifications != null) && (matchClassifications.getMatchCriteria() == MatchCriteria.NONE);
     }
 
 

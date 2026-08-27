@@ -14,7 +14,14 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -142,6 +149,156 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                     System.out.println("cts-fvt: " + propertyName + " is not a number ('" + value
                                                + "') - using " + defaultValue);
                 }
+            }
+        }
+
+        return defaultValue;
+    }
+
+
+    /**
+     * Remove the cohort registry stores of both servers, so that they join the cohort afresh.
+     * <br>
+     * The registry files live under {@code data/servers}, outside {@code build}, and outlive the run - which
+     * is what lets a server rejoin the cohort it already belongs to.  That is the right behaviour for a real
+     * deployment and the wrong one here, because a server that is already registered has no reason to
+     * exchange its type definitions again, and the workbench has test cases that exist only to observe that
+     * exchange.  A run against a registry left over from a previous run was measured recording 44 type
+     * definition events where a fresh one recorded 4092, and the event-driven test cases either never fired
+     * or failed waiting for what never arrived.
+     * <br>
+     * Removing the registries costs nothing else: the metadata collection ids are pinned, so each server
+     * rejoins as itself rather than as a stranger.
+     */
+    private static void clearDownCohortRegistries()
+    {
+        if (! Boolean.parseBoolean(getProperty("cts.fvt.repository.clear.down", "true")))
+        {
+            return;
+        }
+
+        for (String serverName : new String[]{ TUT_SERVER_NAME, CTS_SERVER_NAME })
+        {
+            File cohortDirectory = new File("data/servers/" + serverName + "/cohorts");
+
+            File[] registryFiles = cohortDirectory.listFiles();
+
+            if (registryFiles == null)
+            {
+                continue;
+            }
+
+            for (File registryFile : registryFiles)
+            {
+                if (registryFile.isFile())
+                {
+                    if (registryFile.delete())
+                    {
+                        System.out.println("cts-fvt: removed cohort registry " + registryFile.getPath()
+                                                   + " - the servers join the cohort afresh");
+                    }
+                    else
+                    {
+                        System.out.println("cts-fvt: could not remove cohort registry " + registryFile.getPath()
+                                                   + " - the servers will rejoin an existing cohort registration, and the"
+                                                   + " test cases that observe the type definition exchange may not fire");
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Drop the PostgreSQL repository's schema, so that the repository under test starts empty.
+     * <br>
+     * The workbench is written for a repository that starts empty - it creates the instances it needs and
+     * expects searches to see its own data.  The in-memory repository satisfies that by construction; a
+     * PostgreSQL one does not, because its schema outlives the run.  What accumulates is not small: a
+     * measured schema held 20322 entities and 255502 attribute values left over from previous runs, and
+     * every unbounded search in the workbench pays for them, which showed up as a run taking 2h36m where an
+     * equivalent one had taken 33 minutes.
+     * <br>
+     * This is done before the run rather than after it deliberately.  Clearing up afterwards leaves the
+     * debris behind whenever a run is killed or crashes - which is exactly when it is most likely to be left
+     * in a state the next run should not inherit.  Clearing beforehand makes the guarantee unconditional.
+     * Set cts.fvt.repository.clear.down to false to keep a repository for inspection after a run.
+     */
+    private static void clearDownRepositorySchema()
+    {
+        String schemaName = "repository_" + TUT_SERVER_NAME;
+
+        if (! Boolean.parseBoolean(getProperty("cts.fvt.repository.clear.down", "true")))
+        {
+            System.out.println("cts-fvt: leaving schema " + schemaName + " in place - cts.fvt.repository.clear.down is false."
+                                       + "  The workbench expects an empty repository, so a run against a schema holding"
+                                       + " previous results may report failures that say more about the leftovers than the repository.");
+            return;
+        }
+
+        try
+        {
+            JsonNode placeholders = new ObjectMapper().readTree(getProperty("platform.placeholder.variables", "{}"));
+
+            String databaseURL     = placeholders.path("repositoryDatabaseURL").asText(null);
+            String secretsStore    = placeholders.path("egeriaServersSecretsStore").asText(null);
+            String secretCollection = placeholders.path("repositorySecretCollectionName").asText(null);
+
+            if ((databaseURL == null) || (secretsStore == null) || (secretCollection == null))
+            {
+                System.out.println("cts-fvt: cannot clear schema " + schemaName
+                                           + " - the platform placeholder variables do not carry the database URL and secrets store location");
+                return;
+            }
+
+            /*
+             * The credentials come from the same secrets store the server itself is configured with, rather
+             * than being repeated here, so there is only one place to change them.
+             */
+            JsonNode secrets = new ObjectMapper(new YAMLFactory()).readTree(new File(secretsStore))
+                                       .path("secretsCollections").path(secretCollection).path("secrets");
+
+            String userId   = secrets.path("userId").asText(null);
+            String password = secrets.path("clearPassword").asText(null);
+
+            try (Connection connection = DriverManager.getConnection(databaseURL, userId, password);
+                 Statement statement = connection.createStatement())
+            {
+                statement.execute("drop schema if exists " + schemaName + " cascade");
+            }
+
+            System.out.println("cts-fvt: dropped schema " + schemaName + " - the repository under test starts empty");
+        }
+        catch (Exception error)
+        {
+            /*
+             * Reported rather than thrown: the run can still go ahead against whatever is there, and the
+             * conformance result is what matters.  The message says what was not done so that a slow run or
+             * an unexpected search result is not a mystery.
+             */
+            System.out.println("cts-fvt: could not clear schema " + schemaName + " (" + error.getClass().getSimpleName()
+                                       + ": " + error.getMessage() + ") - the run continues, but the repository under test"
+                                       + " is not empty and both its timings and its results may reflect that");
+        }
+    }
+
+
+    /**
+     * Return a setting from the platform's own configuration, or the supplied default when it is absent.
+     *
+     * @param propertyName name of the property
+     * @param defaultValue value to use when the property is not set
+     * @return configured value
+     */
+    private static String getProperty(String propertyName, String defaultValue)
+    {
+        if (platformContext != null)
+        {
+            String value = platformContext.getEnvironment().getProperty(propertyName);
+
+            if ((value != null) && (! value.isBlank()))
+            {
+                return value.trim();
             }
         }
 
@@ -321,18 +478,64 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         workbenchConfig.setMaxSearchResults(50);
 
         /*
-         * By default the workbench works through every entity type in the model, which is thorough and very
-         * slow - a measured run was still going after six hours.  Naming entity types in
-         * cts.fvt.workbench.entity.types scopes the run to those types instead, which is what makes this
-         * harness usable for checking a specific change rather than certifying the repository outright.
+         * The workbench works through every entity type in the model unless it is told otherwise, which is
+         * thorough and very slow - a measured run was still going after six hours.  So this harness ships
+         * with cts.fvt.workbench.entity.types set to a small set of types, making an ordinary run a quick
+         * check of a change; widening it, or emptying it to cover the whole model, is a deliberate act by
+         * whoever wants the fuller answer.  See the notes beside the setting in application.properties.
          */
         List<String> testEntityTypes = getListProperty("cts.fvt.workbench.entity.types");
 
         if (! testEntityTypes.isEmpty())
         {
-            System.out.println("cts-fvt: workbench scoped to entity types " + testEntityTypes);
+            System.out.println("cts-fvt: workbench scoped to entity types " + testEntityTypes
+                                       + " - set cts.fvt.workbench.entity.types to widen or empty it to test every type");
 
             workbenchConfig.setTestEntityTypes(testEntityTypes);
+        }
+        else
+        {
+            System.out.println("cts-fvt: workbench testing every entity type in the model - this takes many hours");
+        }
+
+        /*
+         * The relationship and classification types can be narrowed independently of the entity types.  They
+         * are otherwise derived: a relationship is tested when both of its ends are among the entity types in
+         * the run, and a classification when any of its valid entity types is - and because the entity types
+         * bring their supertypes with them, that derived set is much larger than the named entity types
+         * suggest.  Naming the relationship and classification types wanted is what keeps a scoped run short.
+         */
+        List<String> testRelationshipTypes = getListProperty("cts.fvt.workbench.relationship.types");
+
+        if (! testRelationshipTypes.isEmpty())
+        {
+            System.out.println("cts-fvt: workbench scoped to relationship types " + testRelationshipTypes);
+
+            workbenchConfig.setTestRelationshipTypes(testRelationshipTypes);
+        }
+
+        /*
+         * How long a test case waits for an event to propagate before deciding it is not coming.  The default
+         * matches the conformance suite's own, and is left alone deliberately: raising it on a machine where
+         * propagation is genuinely slow tells "not yet" apart from "never", but raising it by default would
+         * turn a visible timing sensitivity into an invisible one.
+         */
+        workbenchConfig.setEventPollCount((int) getLongProperty("cts.fvt.workbench.event.poll.count", 300));
+        workbenchConfig.setEventPollPeriod((int) getLongProperty("cts.fvt.workbench.event.poll.period.ms", 100));
+
+        System.out.println("cts-fvt: event propagation waits are "
+                                   + workbenchConfig.getEventPollCount() + " polls of "
+                                   + workbenchConfig.getEventPollPeriod() + "ms ("
+                                   + ((workbenchConfig.getEventPollCount() * workbenchConfig.getEventPollPeriod()) / 1000)
+                                   + "s)");
+
+        List<String> testClassificationTypes = getListProperty("cts.fvt.workbench.classification.types");
+
+        if (! testClassificationTypes.isEmpty())
+        {
+            System.out.println("cts-fvt: workbench scoped to classification types " + testClassificationTypes);
+
+            workbenchConfig.setTestClassificationTypes(testClassificationTypes);
         }
 
         configurationClient.enableRepositoryConformanceSuiteWorkbench(workbenchConfig);
@@ -383,8 +586,12 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
          * configuration at all: it needs no database, and it starts empty every time, so the schema and
          * credentials the PostgreSQL repository has to be told about have no counterpart here.
          */
+        clearDownCohortRegistries();
+
         if (REPOSITORY_KIND == RepositoryKind.POSTGRES)
         {
+            clearDownRepositorySchema();
+
             Map<String, Object> storageProperties = new HashMap<>();
 
             storageProperties.put("databaseURL", "~{repositoryDatabaseURL}~?currentSchema=repository_" + TUT_SERVER_NAME);

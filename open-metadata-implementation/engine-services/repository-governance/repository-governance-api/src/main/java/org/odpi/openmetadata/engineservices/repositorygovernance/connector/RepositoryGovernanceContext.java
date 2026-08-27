@@ -819,6 +819,17 @@ public abstract class RepositoryGovernanceContext
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
      *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -848,7 +859,9 @@ public abstract class RepositoryGovernanceContext
     public abstract List<Relationship> findRelationships(String                    relationshipTypeGUID,
                                                          List<String>              relationshipSubtypeGUIDs,
                                                          List<String>              end1EntityGUIDs,
+                                                         String                    end1EntityTypeGUID,
                                                          List<String>              end2EntityGUIDs,
+                                                         String                    end2EntityTypeGUID,
                                                          EndMatchCriteria          endMatchCriteria,
                                                          SearchProperties          matchProperties,
                                                          int                       fromRelationshipElement,

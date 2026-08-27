@@ -29,6 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SubtypeLimitedFindRequest extends TypeLimitedFindRequest
 {
     private List<String>             subtypeGUIDs = null;
+    private List<String>             excludeSubtypeGUIDs = null;
 
 
     /**
@@ -55,6 +56,12 @@ public class SubtypeLimitedFindRequest extends TypeLimitedFindRequest
             if (subtypes != null && !subtypes.isEmpty())
             {
                 this.subtypeGUIDs = new ArrayList<>(subtypes);
+            }
+
+            List<String> excludedSubtypes = template.getExcludeSubtypeGUIDs();
+            if (excludedSubtypes != null && !excludedSubtypes.isEmpty())
+            {
+                this.excludeSubtypeGUIDs = new ArrayList<>(excludedSubtypes);
             }
         }
     }
@@ -83,6 +90,36 @@ public class SubtypeLimitedFindRequest extends TypeLimitedFindRequest
 
 
     /**
+     * Return the subtypes to exclude from the results.  This is the counterpart of subtypeGUIDs, which names
+     * the only subtypes to include, and the two are mutually exclusive.
+     * <br>
+     * The exclusion list is carried in a field of its own rather than by qualifying subtypeGUIDs with a flag,
+     * because these request bodies ignore properties they do not recognise.  A server that predates this
+     * field ignores it and applies no subtype filter at all, which the caller can correct for itself.  Had
+     * the exclusion been expressed as a flag beside subtypeGUIDs, that same server would have ignored the
+     * flag and read the list as the subtypes to include - returning precisely the set that was meant to be
+     * excluded, which no caller could detect or correct.
+     *
+     * @return list of guids
+     */
+    public List<String> getExcludeSubtypeGUIDs()
+    {
+        return excludeSubtypeGUIDs;
+    }
+
+
+    /**
+     * Set up the subtypes to exclude from the results.
+     *
+     * @param excludeSubtypeGUIDs list of guids
+     */
+    public void setExcludeSubtypeGUIDs(List<String> excludeSubtypeGUIDs)
+    {
+        this.excludeSubtypeGUIDs = excludeSubtypeGUIDs;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -92,6 +129,7 @@ public class SubtypeLimitedFindRequest extends TypeLimitedFindRequest
     {
         return "SubtypeLimitedFindRequest{" +
                 "subtypeGUIDs=" + subtypeGUIDs +
+                ", excludeSubtypeGUIDs=" + excludeSubtypeGUIDs +
                 "} " + super.toString();
     }
 
@@ -119,7 +157,8 @@ public class SubtypeLimitedFindRequest extends TypeLimitedFindRequest
         }
         SubtypeLimitedFindRequest
                 that = (SubtypeLimitedFindRequest) objectToCompare;
-        return Objects.equals(getSubtypeGUIDs(), that.getSubtypeGUIDs());
+        return Objects.equals(getSubtypeGUIDs(), that.getSubtypeGUIDs())
+                && Objects.equals(getExcludeSubtypeGUIDs(), that.getExcludeSubtypeGUIDs());
     }
 
 
@@ -131,7 +170,7 @@ public class SubtypeLimitedFindRequest extends TypeLimitedFindRequest
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getSubtypeGUIDs());
+        return Objects.hash(super.hashCode(), getSubtypeGUIDs(), getExcludeSubtypeGUIDs());
     }
 
 }

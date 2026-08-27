@@ -356,12 +356,12 @@ public enum OMRSErrorCode implements ExceptionMessageSet
                                     "https://egeria-project.org/services/omrs/"),
 
     /**
-     * OMRS-REPOSITORY-400-042 - The endMatchCriteria {0} is specified on method {1} without any end guids
+     * OMRS-REPOSITORY-400-042 - The endMatchCriteria {0} is specified on method {1} without any end criteria
      */
     INVALID_FIND_RELATIONSHIP_END_CRITERIA(400, "OMRS-REPOSITORY-400-042",
-                                           "The endMatchCriteria {0} is specified on method {1} without any end guids",
+                                           "The endMatchCriteria {0} is specified on method {1} without any end criteria",
                                            "An exception is returned to the caller and no search request is initiated.",
-                                           "Either remove the endMatchCriteria or provide end guids.",
+                                           "Either remove the endMatchCriteria, or constrain an end - by the entity guids allowed there, by the type of entity allowed there, or by both.",
                                            "https://egeria-project.org/services/omrs/"),
 
     /**

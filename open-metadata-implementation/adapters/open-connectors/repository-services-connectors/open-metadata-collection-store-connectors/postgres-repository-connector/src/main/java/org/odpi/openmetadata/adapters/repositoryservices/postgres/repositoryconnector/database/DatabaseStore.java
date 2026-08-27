@@ -419,15 +419,10 @@ public class DatabaseStore implements AutoCloseable
             }
             else
             {
-                String sqlClassificationQuery =
-                        "select " + RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()) +
-                                " from " + RepositoryTable.CLASSIFICATION.getTableName() +
-                                " where " + classificationQueryBuilder.getAsOfTimeWhereClause();
-
                 entityRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
-                                                                   sqlEntityQuery + " and " +
-                                                                           RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.ENTITY.getTableName()) +
-                                                                           " in (" + sqlClassificationQuery + ")" +
+                                                                   sqlEntityQuery +
+                                                                           classificationQueryBuilder.getClassificationMembershipClause(
+                                                                                   RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.ENTITY.getTableName())) +
                                                                            entityQueryBuilder.getSequenceAndPaging(RepositoryTable.ENTITY.getTableName()),
                                                                    RepositoryTable.ENTITY.getColumnNameTypeMap());
             }
@@ -486,13 +481,9 @@ public class DatabaseStore implements AutoCloseable
             }
             else
             {
-                String sqlClassificationQuery =
-                        "select " + RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()) +
-                                " from " + RepositoryTable.CLASSIFICATION.getTableName() +
-                                " where " + classificationQueryBuilder.getAsOfTimeWhereClause();
-
                 return jdbcResourceConnector.countMatchingRows(jdbcConnection,
-                                                         sqlEntityQuery + " and " + entityGUIDColumn + " in (" + sqlClassificationQuery + ")");
+                                                              sqlEntityQuery +
+                                                                      classificationQueryBuilder.getClassificationMembershipClause(entityGUIDColumn));
             }
         }
         catch (PropertyServerException sqlException)
