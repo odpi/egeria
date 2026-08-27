@@ -2722,7 +2722,15 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
      *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of the unique identifiers (guids) for entities that must be at end 1 of the relationship.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of the unique identifiers (guids) for entities that must be at end 2 of the relationship.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationship.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement the starting element number of the entities to return.
@@ -2756,7 +2764,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                  List<String>              relationshipSubtypeGUIDs,
                                                  boolean                   skipSubtypes,
                                                  List<String>              end1EntityGUIDs,
+                                                 String                    end1EntityTypeGUID,
                                                  List<String>              end2EntityGUIDs,
+                                                 String                    end2EntityTypeGUID,
                                                  EndMatchCriteria          endMatchCriteria,
                                                  SearchProperties          matchProperties,
                                                  int                       fromRelationshipElement,
@@ -2779,7 +2789,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                    relationshipTypeGUID,
                                                    relationshipSubtypeGUIDs,
                                                    end1EntityGUIDs,
+                                                   end1EntityTypeGUID,
                                                    end2EntityGUIDs,
+                                                   end2EntityTypeGUID,
                                                    endMatchCriteria,
                                                    matchProperties,
                                                    fromRelationshipElement,
@@ -2800,7 +2812,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                               relationshipSubtypeGUIDs,
                                                               skipSubtypes,
                                                               end1EntityGUIDs,
+                                                              end1EntityTypeGUID,
                                                               end2EntityGUIDs,
+                                                              end2EntityTypeGUID,
                                                               endMatchCriteria,
                                                               matchProperties,
                                                               fromRelationshipElement,
@@ -2831,7 +2845,15 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
      *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement not used - the count is not affected by paging.
@@ -2861,7 +2883,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                     List<String>              relationshipSubtypeGUIDs,
                                     boolean                   skipSubtypes,
                                     List<String>              end1EntityGUIDs,
+                                    String                    end1EntityTypeGUID,
                                     List<String>              end2EntityGUIDs,
+                                    String                    end2EntityTypeGUID,
                                     EndMatchCriteria          endMatchCriteria,
                                     SearchProperties          matchProperties,
                                     int                       fromRelationshipElement,
@@ -2884,7 +2908,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                    relationshipTypeGUID,
                                                    relationshipSubtypeGUIDs,
                                                    end1EntityGUIDs,
+                                                   end1EntityTypeGUID,
                                                    end2EntityGUIDs,
+                                                   end2EntityTypeGUID,
                                                    endMatchCriteria,
                                                    matchProperties,
                                                    fromRelationshipElement,
@@ -2903,7 +2929,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                          relationshipSubtypeGUIDs,
                                                          skipSubtypes,
                                                          end1EntityGUIDs,
+                                                         end1EntityTypeGUID,
                                                          end2EntityGUIDs,
+                                                         end2EntityTypeGUID,
                                                          endMatchCriteria,
                                                          matchProperties,
                                                          fromRelationshipElement,

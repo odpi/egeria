@@ -1881,6 +1881,8 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * Validate the parameters for a retrieve multiple historical versions of an instance.
      *
      * @param userId unique identifier for requesting user.
+     * @param classificationName optional name of a classification whose history is wanted, rather than the
+     *                           history of the instance itself.  Null means the instance's own history.
      * @param guid String unique identifier for the relationship.
      * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
      * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
@@ -2274,7 +2276,15 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
      *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement the starting element number of the entities to return.
@@ -2303,7 +2313,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                         String                    relationshipTypeGUID,
                                                         List<String>              relationshipSubtypeGUIDs,
                                                         List<String>              end1EntityGUIDs,
+                                                        String                    end1EntityTypeGUID,
                                                         List<String>              end2EntityGUIDs,
+                                                        String                    end2EntityTypeGUID,
                                                         EndMatchCriteria          endMatchCriteria,
                                                         SearchProperties          matchProperties,
                                                         int                       fromRelationshipElement,
@@ -2329,9 +2341,17 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
          */
         super.basicRequestValidation(userId, methodName);
 
+        /*
+         * End match criteria only mean something when at least one end is actually constrained.  An end is
+         * constrained by the entities allowed there, by the type of entity allowed there, or by both - so
+         * the absence of guids is not on its own the absence of criteria, which is what this check used to
+         * assume before an end could be constrained by type alone.
+         */
         if ((endMatchCriteria != null) &&
                 ((end1EntityGUIDs == null) || (end1EntityGUIDs.isEmpty())) &&
-                ((end2EntityGUIDs == null) || (end2EntityGUIDs.isEmpty())))
+                (end1EntityTypeGUID == null) &&
+                ((end2EntityGUIDs == null) || (end2EntityGUIDs.isEmpty())) &&
+                (end2EntityTypeGUID == null))
         {
             throw new InvalidParameterException(OMRSErrorCode.INVALID_FIND_RELATIONSHIP_END_CRITERIA.getMessageDefinition(endMatchCriteria.getName(), methodName),
                                                 this.getClass().getName(),
@@ -3383,6 +3403,19 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
      *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -3415,7 +3448,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                  List<String>              relationshipSubtypeGUIDs,
                                                  boolean                   skipSubtypes,
                                                  List<String>              end1EntityGUIDs,
+                                                 String                    end1EntityTypeGUID,
                                                  List<String>              end2EntityGUIDs,
+                                                 String                    end2EntityTypeGUID,
                                                  EndMatchCriteria          endMatchCriteria,
                                                  SearchProperties          matchProperties,
                                                  int                       fromRelationshipElement,
@@ -3437,7 +3472,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                   relationshipTypeGUID,
                                                   relationshipSubtypeGUIDs,
                                                   end1EntityGUIDs,
+                                                  end1EntityTypeGUID,
                                                   end2EntityGUIDs,
+                                                  end2EntityTypeGUID,
                                                   endMatchCriteria,
                                                   matchProperties,
                                                   fromRelationshipElement,
@@ -3461,12 +3498,22 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * (for example, with a database COUNT query) should override this method.
      *
      * @param userId unique identifier for requesting user.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs is null.
      * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
      *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement not used - the count is not affected by paging.
@@ -3496,7 +3543,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                     List<String>              relationshipSubtypeGUIDs,
                                     boolean                   skipSubtypes,
                                     List<String>              end1EntityGUIDs,
+                                    String                    end1EntityTypeGUID,
                                     List<String>              end2EntityGUIDs,
+                                    String                    end2EntityTypeGUID,
                                     EndMatchCriteria          endMatchCriteria,
                                     SearchProperties          matchProperties,
                                     int                       fromRelationshipElement,
@@ -3516,7 +3565,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                   relationshipTypeGUID,
                                                   relationshipSubtypeGUIDs,
                                                   end1EntityGUIDs,
+                                                  end1EntityTypeGUID,
                                                   end2EntityGUIDs,
+                                                  end2EntityTypeGUID,
                                                   endMatchCriteria,
                                                   matchProperties,
                                                   fromRelationshipElement,
@@ -3534,7 +3585,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                    relationshipSubtypeGUIDs,
                                                                    skipSubtypes,
                                                                    end1EntityGUIDs,
+                                                                   end1EntityTypeGUID,
                                                                    end2EntityGUIDs,
+                                                                   end2EntityTypeGUID,
                                                                    endMatchCriteria,
                                                                    matchProperties,
                                                                    0,

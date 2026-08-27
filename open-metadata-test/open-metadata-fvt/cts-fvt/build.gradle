@@ -59,6 +59,11 @@ dependencies {
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
 
     // Clients used to configure and start the two servers
+    // Used by the harness itself to clear the repository schema before a run: the credentials come from the
+    // same YAML secrets store the server is configured with (jackson-databind is already declared below).
+    testImplementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    testRuntimeOnly 'org.postgresql:postgresql'
+
     testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
     testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
     // The admin services client's checked exceptions (InvalidParameterException and friends) are OCF

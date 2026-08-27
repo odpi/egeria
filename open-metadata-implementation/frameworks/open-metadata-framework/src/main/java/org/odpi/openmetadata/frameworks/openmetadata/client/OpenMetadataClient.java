@@ -1293,11 +1293,62 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
+    public OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String           userId,
+                                                                                String           relationshipTypeName,
+                                                                                List<String>     relationshipSubtypeNames,
+                                                                                List<String>     end1EntityGUIDs,
+                                                                                List<String>     end2EntityGUIDs,
+                                                                                EndMatchCriteria endMatchCriteria,
+                                                                                SearchProperties searchProperties,
+                                                                                QueryOptions     queryOptions) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException
+    {
+        return this.findRelationshipsBetweenMetadataElements(userId,
+                                                             relationshipTypeName,
+                                                             relationshipSubtypeNames,
+                                                             end1EntityGUIDs,
+                                                             null,
+                                                             end2EntityGUIDs,
+                                                             null,
+                                                             endMatchCriteria,
+                                                             searchProperties,
+                                                             queryOptions);
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested conditions, including the types of the entities
+     * that must be at each end.  The results can be received as a series of pages.
+     *
+     * @param userId caller's userId
+     * @param relationshipTypeName relationship's type.  Null means all types
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if the queryOptions' skipSubtypes flag is true, exclude from) the search results.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.  Subtypes of
+     *                           the named type match too.  It is independent of the end 1 guids: naming the type
+     *                           on its own asks for the relationships that start at any entity of that type.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.  Subtypes of
+     *                           the named type match too.  It is independent of the end 2 guids.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param searchProperties Optional list of relationship property conditions to match.
+     * @param queryOptions multiple options to control the query
+     *
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    @Override
     public  abstract OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String           userId,
                                                                                            String           relationshipTypeName,
                                                                                            List<String>     relationshipSubtypeNames,
                                                                                            List<String>     end1EntityGUIDs,
+                                                                                           String           end1EntityTypeName,
                                                                                            List<String>     end2EntityGUIDs,
+                                                                                           String           end2EntityTypeName,
                                                                                            EndMatchCriteria endMatchCriteria,
                                                                                            SearchProperties searchProperties,
                                                                                            QueryOptions     queryOptions) throws InvalidParameterException,
@@ -1326,11 +1377,63 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
+    public long countRelationshipsBetweenMetadataElements(String           userId,
+                                                          String           relationshipTypeName,
+                                                          List<String>     relationshipSubtypeNames,
+                                                          List<String>     end1EntityGUIDs,
+                                                          List<String>     end2EntityGUIDs,
+                                                          EndMatchCriteria endMatchCriteria,
+                                                          SearchProperties searchProperties,
+                                                          QueryOptions     queryOptions) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        return this.countRelationshipsBetweenMetadataElements(userId,
+                                                              relationshipTypeName,
+                                                              relationshipSubtypeNames,
+                                                              end1EntityGUIDs,
+                                                              null,
+                                                              end2EntityGUIDs,
+                                                              null,
+                                                              endMatchCriteria,
+                                                              searchProperties,
+                                                              queryOptions);
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions, including the types of the
+     * entities that must be at each end.  This has the same search semantics as
+     * findRelationshipsBetweenMetadataElements(), but returns the number of matching relationships rather
+     * than the relationships themselves.
+     *
+     * @param userId caller's userId
+     * @param relationshipTypeName relationship's type.  Null means all types
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if the queryOptions' skipSubtypes flag is true, exclude from) the search results.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.  Subtypes of
+     *                           the named type match too.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.  Subtypes of
+     *                           the named type match too.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param searchProperties Optional list of relationship property conditions to match.
+     * @param queryOptions multiple options to control the query
+     *
+     * @return the number of relationships matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    @Override
     public  abstract long countRelationshipsBetweenMetadataElements(String           userId,
                                                                     String           relationshipTypeName,
                                                                     List<String>     relationshipSubtypeNames,
                                                                     List<String>     end1EntityGUIDs,
+                                                                    String           end1EntityTypeName,
                                                                     List<String>     end2EntityGUIDs,
+                                                                    String           end2EntityTypeName,
                                                                     EndMatchCriteria endMatchCriteria,
                                                                     SearchProperties searchProperties,
                                                                     QueryOptions     queryOptions) throws InvalidParameterException,

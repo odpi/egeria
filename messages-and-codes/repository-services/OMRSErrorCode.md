@@ -56,7 +56,7 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 | [OMRS-REPOSITORY-400-039](#omrs-repository-400-039) | 400 | Incompatible TypeDef unique identifiers (name={0}, guid{1}) have been passed on a {2} request for instance {3} to open metadata repository {4} |
 | [OMRS-REPOSITORY-400-040](#omrs-repository-400-040) | 400 | Unexpected exception {0} occurred when comparing properties against a search string of {1} during the {2} operation from {3}. Error message was {4} |
 | [OMRS-REPOSITORY-400-041](#omrs-repository-400-041) | 400 | A null reference instance has been passed to repository {0} during the {1} in the {2} parameter |
-| [OMRS-REPOSITORY-400-042](#omrs-repository-400-042) | 400 | The endMatchCriteria {0} is specified on method {1} without any end guids |
+| [OMRS-REPOSITORY-400-042](#omrs-repository-400-042) | 400 | The endMatchCriteria {0} is specified on method {1} without any end criteria |
 | [OMRS-REPOSITORY-400-043](#omrs-repository-400-043) | 400 | A null entity proxy has been passed to repository {0} as the {1} parameter of the {2} operation |
 | [OMRS-REPOSITORY-400-044](#omrs-repository-400-044) | 400 | An entity proxy has been passed to repository {0} as the {1} parameter of the {2} operation which has the local repository as its home |
 | [OMRS-REPOSITORY-400-045](#omrs-repository-400-045) | 400 | A {0} request has been made to repository {1} for an instance {2} that is already deleted |
@@ -949,7 +949,7 @@ The reference instance comes from another server.  Look for errors in the audit 
 
 ### OMRS-REPOSITORY-400-042
 
-> The endMatchCriteria {0} is specified on method {1} without any end guids
+> The endMatchCriteria {0} is specified on method {1} without any end criteria
 
 |  |  |
 |---|---|
@@ -963,7 +963,7 @@ An exception is returned to the caller and no search request is initiated.
 
 **User action**
 
-Either remove the endMatchCriteria or provide end guids.
+Either remove the endMatchCriteria, or constrain an end - by the entity guids allowed there, by the type of entity allowed there, or by both.
 
 
 ----

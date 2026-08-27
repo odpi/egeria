@@ -33,6 +33,10 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private String                  tutOrganization             = null;
     private int                     maxSearchResults            = 50;
     private List<String>            testEntityTypes             = null;
+    private List<String>            testRelationshipTypes       = null;
+    private List<String>            testClassificationTypes     = null;
+    private int                     eventPollCount              = 300;
+    private int                     eventPollPeriod             = 100;
 
     private OMRSRepositoryConnector tutRepositoryConnector      = null;
 
@@ -94,6 +98,10 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
             this.tutServerName = configuration.getTutRepositoryServerName();
             this.maxSearchResults = configuration.getMaxSearchResults();
             this.testEntityTypes = configuration.getTestEntityTypes();
+            this.testRelationshipTypes = configuration.getTestRelationshipTypes();
+            this.testClassificationTypes = configuration.getTestClassificationTypes();
+            this.eventPollCount = configuration.getEventPollCount();
+            this.eventPollPeriod = configuration.getEventPollPeriod();
             super.tutName = this.tutServerName;
         }
     }
@@ -142,6 +150,50 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     public List<String> getTestEntityTypes()
     {
         return testEntityTypes;
+    }
+
+
+    /**
+     * Return the number of times a test case should poll while waiting for an event to propagate.
+     *
+     * @return number of polls
+     */
+    public int getEventPollCount()
+    {
+        return eventPollCount;
+    }
+
+
+    /**
+     * Return the interval in milliseconds between polls while waiting for an event to propagate.
+     *
+     * @return milliseconds
+     */
+    public int getEventPollPeriod()
+    {
+        return eventPollPeriod;
+    }
+
+
+    /**
+     * Return the list of relationship types to test, or null/empty for every available relationship type.
+     *
+     * @return list of relationship type names
+     */
+    public List<String> getTestRelationshipTypes()
+    {
+        return testRelationshipTypes;
+    }
+
+
+    /**
+     * Return the list of classification types to test, or null/empty for every available classification type.
+     *
+     * @return list of classification type names
+     */
+    public List<String> getTestClassificationTypes()
+    {
+        return testClassificationTypes;
     }
 
 
@@ -975,6 +1027,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
                 ", tutOrganization='" + tutOrganization + '\'' +
                 ", maxSearchResults=" + maxSearchResults +
                 ", testEntityTypes=" + testEntityTypes +
+                ", testRelationshipTypes=" + testRelationshipTypes +
+                ", testClassificationTypes=" + testClassificationTypes +
                 ", tutRepositoryConnector=" + tutRepositoryConnector +
                 ", localMetadataCollectionId='" + localMetadataCollectionId + '\'' +
                 ", localRepositoryConnector=" + localRepositoryConnector +

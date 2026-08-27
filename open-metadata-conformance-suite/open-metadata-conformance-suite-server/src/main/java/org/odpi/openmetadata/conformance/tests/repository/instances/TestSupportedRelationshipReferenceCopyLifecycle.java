@@ -108,8 +108,8 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
      * into a reported conformance failure.
      *
      */
-    private Integer           pollCount   = 300;
-    private Integer           pollPeriod  = 100;   // milliseconds
+    private final Integer     pollCount;
+    private final Integer     pollPeriod;   // milliseconds
 
     private List<EntityDetail>            createdEntitiesCTS               = new ArrayList<>();
     private List<EntityDetail>            createdEntityRefCopiesTUT        = new ArrayList<>();
@@ -136,6 +136,11 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
               RepositoryConformanceProfileRequirement.REFERENCE_COPY_STORAGE.getRequirementId());
 
         this.workPad              = workPad;
+        /*
+         * The configured budget, with the minimums the loops rely on applied as it is taken.
+         */
+        this.pollPeriod           = Math.max(workPad.getEventPollPeriod(), 100);
+        this.pollCount            = Math.max(workPad.getEventPollCount(), 1);
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
         this.relationshipDef      = relationshipDef;
         this.entityDefs           = entityDefs;
@@ -143,12 +148,6 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
         this.testTypeName = this.updateTestIdByType(relationshipDef.getName(),
                                                     testCaseId,
                                                     testCaseName);
-
-        /*
-         * Enforce minimum pollPeriod and pollCount.
-         */
-        this.pollPeriod = Math.max(this.pollPeriod, 100);
-        this.pollCount  = Math.max(this.pollCount, 1);
     }
 
 

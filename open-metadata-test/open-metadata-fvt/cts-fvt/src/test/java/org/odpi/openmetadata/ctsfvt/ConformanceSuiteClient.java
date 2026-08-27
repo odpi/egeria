@@ -5,11 +5,13 @@ package org.odpi.openmetadata.ctsfvt;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.odpi.openmetadata.conformance.beans.OpenMetadataConformanceTestLabResults;
 import org.odpi.openmetadata.conformance.beans.OpenMetadataConformanceTestLabSummary;
 import org.odpi.openmetadata.conformance.beans.OpenMetadataConformanceWorkbenchStatus;
 import org.odpi.openmetadata.conformance.beans.OpenMetadataTestCaseResult;
 import org.odpi.openmetadata.conformance.rest.TestCaseListReportResponse;
 import org.odpi.openmetadata.conformance.rest.TestCaseListResponse;
+import org.odpi.openmetadata.conformance.rest.TestLabReportResponse;
 import org.odpi.openmetadata.conformance.rest.TestLabSummaryResponse;
 import org.odpi.openmetadata.conformance.rest.WorkbenchStatusResponse;
 
@@ -121,6 +123,25 @@ class ConformanceSuiteClient
         List<OpenMetadataTestCaseResult> results = response.getTestCaseResults();
 
         return (results == null) ? List.of() : results;
+    }
+
+
+    /**
+     * Return the full conformance report - every workbench, profile and requirement, with the evidence
+     * recorded for each.
+     * <br>
+     * The evidence is where the timings live.  Each assertion records how long the repository call it made
+     * took, and the method it called, so the report already answers "where did the run spend its time"
+     * without anything extra having to be measured.
+     *
+     * @return full test lab results
+     * @throws Exception problem calling the conformance test server
+     */
+    OpenMetadataConformanceTestLabResults getConformanceReport() throws Exception
+    {
+        TestLabReportResponse response = call("/report", TestLabReportResponse.class);
+
+        return response.getTestLabResults();
     }
 
 

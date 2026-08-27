@@ -128,12 +128,68 @@ body as `text/plain`.
 Both, along with the platform's port (9450) and how long the harness waits for the workbench, are set in
 `src/test/resources/application.properties`.
 
-## Timing
+## Timing and scope
 
 A full repository workbench run works through every open metadata type against a real database, and it is
 slow. A measured run was still working steadily after **95 minutes**, having recorded over **5000 test
-cases** across 19 profiles — not stalled, just not finished. The default limit is therefore 6 hours
-(`cts.fvt.workbench.timeout.seconds`).
+cases** across 19 profiles — not stalled, just not finished. A later run against PostgreSQL was still going
+when it hit the **6 hour** limit (`cts.fvt.workbench.timeout.seconds`), having recorded **7923 test cases
+without a single failure** — so six hours is not enough to certify a repository outright, and a run that ends
+that way is out of time rather than non-conformant.
+
+Because of that, the suite does **not** run every type by default. `cts.fvt.workbench.entity.types` ships
+scoped to a small set of types, which makes an ordinary run a quick check of a change rather than an
+overnight job:
+
+```
+cts.fvt.workbench.entity.types=Process,LicenseType,GovernanceZone,ResourceProfileAnnotation
+```
+
+Those four are not an arbitrary sample. Between them they cover **every attribute type in the model** — the
+primitives, the enumerations, the arrays and the maps — so a short run still exercises each way a value can
+be stored, retrieved and matched, rather than being fast because it skips things.
+
+That coverage is the point, and it is what decides how much of the model a run needs to cover:
+
+* A repository that **maps open metadata onto a different schema of its own** has to be tested against every
+  type, because each type is a separate piece of mapping and a type that has never been exercised has never
+  been shown to map. Nothing short of the full model certifies one.
+* A **native** repository — the in-memory and PostgreSQL repositories here — stores every type the same way.
+  What varies between types is the *pattern*: the attribute types, and whether the value sits on an entity, a
+  relationship or a classification. Covering the patterns therefore gives the same assurance as covering the
+  types, at a fraction of the cost.
+
+So the default is aimed at the native repositories this repository ships. Reach for the full model when
+certifying a repository that maps to a foreign schema.
+
+Only entity types are named. The relationship and classification types follow from them:
+
+* the named types are matched, and so is every **supertype** of each of them;
+* a **relationship** type is tested when **both** of its ends are in that matched set;
+* a **classification** type is tested when **any** of its valid entity types is in it.
+
+Through that rule this list brings in the `License` and `AnnotationMatch` relationships and the `Anchors` and
+`ZoneMembershipProfile` classifications. It is worth keeping in mind when changing the list: because the
+supertypes come too, naming a type low in the hierarchy pulls `Referenceable` into the matched set, and with
+it every relationship whose two ends are both `Referenceable`.
+
+Widen it, or empty it, for a fuller answer — any `cts.fvt.*` setting can be overridden for a single run from
+the command line:
+
+```
+./gradlew :open-metadata-test:open-metadata-fvt:cts-fvt:test -PrunCtsFvtPostgres \
+    -Dcts.fvt.workbench.entity.types=Process,LicenseType,GovernanceZone,ResourceProfileAnnotation,Asset
+```
+
+Emptying it tests every entity type in the model. That is what certifying a repository means, and it is the
+only setting that certifies one — but give it an overnight window and raise the timeout to match:
+
+```
+./gradlew :open-metadata-test:open-metadata-fvt:cts-fvt:test -PrunCtsFvtPostgres \
+    -Dcts.fvt.workbench.entity.types= -Dcts.fvt.workbench.timeout.seconds=86400
+```
+
+The run prints which types it was scoped to, so a report is never ambiguous about what it covered.
 
 The harness prints the number of test cases recorded each time it checks, so a long run visibly moves. If it
 does hit the limit, the failure distinguishes the two cases, because they have nothing to do with each other:

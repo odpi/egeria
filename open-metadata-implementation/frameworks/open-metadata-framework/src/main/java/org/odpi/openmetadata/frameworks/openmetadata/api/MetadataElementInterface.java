@@ -391,6 +391,45 @@ public interface MetadataElementInterface
 
 
     /**
+     * Return a list of relationships that match the requested conditions, including the types of the entities
+     * that must be at each end.  The results can be received as a series of pages.
+     *
+     * @param userId                   caller's userId
+     * @param relationshipTypeName     relationship's type.  Null means all types
+     *                                 (but may be slow so not recommended).
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if the queryOptions' skipSubtypes flag is true, exclude from) the search results.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.  Subtypes
+     *                           of the named type match too.  It is independent of the end 1 guids: naming
+     *                           the type on its own asks for the relationships that start at any entity of
+     *                           that type.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.  Subtypes
+     *                           of the named type match too.  It is independent of the end 2 guids.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param searchProperties         Optional list of relationship property conditions to match.
+     * @param queryOptions             multiple options to control the query
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem accessing the metadata store
+     */
+    OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String           userId,
+                                                                          String           relationshipTypeName,
+                                                                          List<String>     relationshipSubtypeNames,
+                                                                          List<String>     end1EntityGUIDs,
+                                                                          String           end1EntityTypeName,
+                                                                          List<String>     end2EntityGUIDs,
+                                                                          String           end2EntityTypeName,
+                                                                          EndMatchCriteria endMatchCriteria,
+                                                                          SearchProperties searchProperties,
+                                                                          QueryOptions     queryOptions) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException;
+
+
+    /**
      * Return a count of the relationships that match the requested conditions.  This has the same search
      * semantics as findRelationshipsBetweenMetadataElements(), but returns the number of matching relationships
      * rather than the relationships themselves.
@@ -415,6 +454,47 @@ public interface MetadataElementInterface
                                                    List<String>     relationshipSubtypeNames,
                                                    List<String>     end1EntityGUIDs,
                                                    List<String>     end2EntityGUIDs,
+                                                   EndMatchCriteria endMatchCriteria,
+                                                   SearchProperties searchProperties,
+                                                   QueryOptions     queryOptions) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException;
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions, including the types of the
+     * entities that must be at each end.  This has the same search semantics as
+     * findRelationshipsBetweenMetadataElements(), but returns the number of matching relationships rather
+     * than the relationships themselves.
+     *
+     * @param userId                   caller's userId
+     * @param relationshipTypeName     relationship's type.  Null means all types
+     *                                 (but may be slow so not recommended).
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if the queryOptions' skipSubtypes flag is true, exclude from) the search results.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.  Subtypes
+     *                           of the named type match too.  It is independent of the end 1 guids: naming
+     *                           the type on its own asks for the relationships that start at any entity of
+     *                           that type.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.  Subtypes
+     *                           of the named type match too.  It is independent of the end 2 guids.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param searchProperties         Optional list of relationship property conditions to match.
+     * @param queryOptions             multiple options to control the query
+     * @return the number of relationships matching the supplied criteria.
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem accessing the metadata store
+     */
+    long countRelationshipsBetweenMetadataElements(String           userId,
+                                                   String           relationshipTypeName,
+                                                   List<String>     relationshipSubtypeNames,
+                                                   List<String>     end1EntityGUIDs,
+                                                   String           end1EntityTypeName,
+                                                   List<String>     end2EntityGUIDs,
+                                                   String           end2EntityTypeName,
                                                    EndMatchCriteria endMatchCriteria,
                                                    SearchProperties searchProperties,
                                                    QueryOptions     queryOptions) throws InvalidParameterException,
@@ -517,6 +597,7 @@ public interface MetadataElementInterface
      * effectivity dates.
      *
      * @param userId caller's userId
+     * @param metadataElementTypeName type name of the new metadata element
      * @param newElementOptions details of the element to create
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param properties properties of the new metadata element
@@ -546,6 +627,7 @@ public interface MetadataElementInterface
      * copied in this process.
      *
      * @param userId caller's userId
+     * @param metadataElementTypeName type name of the new metadata element
      * @param templateOptions details of the element to create
      * @param templateGUID the unique identifier of the existing element to copy
      * @param replacementProperties properties of the new metadata element.  These override the placeholder values
@@ -906,6 +988,7 @@ public interface MetadataElementInterface
      *                             related and the properties that can be associated with this relationship.
      * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param deleteOptions        options to control access to open metadata
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation

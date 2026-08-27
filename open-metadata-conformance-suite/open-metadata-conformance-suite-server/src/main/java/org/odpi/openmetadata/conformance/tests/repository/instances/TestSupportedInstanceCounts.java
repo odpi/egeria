@@ -1,0 +1,196 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.conformance.tests.repository.instances;
+
+import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
+import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
+import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Test that a repository's instance counts agree with what it returns from the equivalent search.
+ * <br>
+ * countEntities() and countRelationships() take the same criteria as their find() counterparts, and the code
+ * above the repository uses them to answer "how many" without pulling the instances back.  A count that
+ * disagrees with the search is worse than no count at all: it is used to size pages and to decide whether
+ * there is anything to fetch, so a wrong answer is acted upon rather than noticed.
+ * <br>
+ * The assertion is that the count is at least the number of instances this test created and matches what
+ * find() reports for the same criteria.  It is not an absolute number because the repository legitimately
+ * holds other instances of the type.
+ */
+public class TestSupportedInstanceCounts extends RepositoryConformanceTestCase
+{
+    private static final String testCaseId   = "repository-instance-counts";
+    private static final String testCaseName = "Repository instance counts test case";
+
+    private static final String assertion1    = testCaseId + "-01";
+    private static final String assertionMsg1 = " entity count includes the entities just created.";
+    private static final String assertion2    = testCaseId + "-02";
+    private static final String assertionMsg2 = " entity count agrees with the number of entities found.";
+
+    private final RepositoryConformanceWorkPad workPad;
+    private final EntityDef                    entityDef;
+    private final String                       testTypeName;
+
+    private final List<EntityDetail> createdEntities = new ArrayList<>();
+
+    private static final int INSTANCE_COUNT = 3;
+
+
+    /**
+     * Set up the test case.
+     *
+     * @param workPad place for parameters and results
+     * @param entityDef the entity type being counted
+     */
+    public TestSupportedInstanceCounts(RepositoryConformanceWorkPad workPad,
+                                       EntityDef                    entityDef)
+    {
+        super(workPad,
+              RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
+              RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
+
+        this.workPad   = workPad;
+        this.entityDef = entityDef;
+
+        this.testTypeName = this.updateTestIdByType(entityDef.getName(), testCaseId, testCaseName);
+    }
+
+
+    /**
+     * Run the test.
+     *
+     * @throws Exception something went wrong that the conformance suite could not handle
+     */
+    protected void run() throws Exception
+    {
+        OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
+
+        try
+        {
+            for (int i = 0; i < INSTANCE_COUNT; i++)
+            {
+                InstanceProperties entityProperties = this.getAllPropertiesForInstance(workPad.getLocalServerUserId(), entityDef);
+
+                createdEntities.add(metadataCollection.addEntity(workPad.getLocalServerUserId(),
+                                                                  entityDef.getGUID(),
+                                                                  entityProperties,
+                                                                  null,
+                                                                  null));
+            }
+        }
+        catch (FunctionNotSupportedException exception)
+        {
+            super.addNotSupportedAssertion(assertion1,
+                                           assertionMsg1,
+                                           RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
+            return;
+        }
+
+        try
+        {
+            long start = System.currentTimeMillis();
+            long count = metadataCollection.countEntities(workPad.getLocalServerUserId(),
+                                                          entityDef.getGUID(),
+                                                          null,
+                                                          false,
+                                                          null,
+                                                          0,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          0);
+            long elapsedTime = System.currentTimeMillis() - start;
+
+            verifyCondition((count >= INSTANCE_COUNT),
+                            assertion1,
+                            testTypeName + assertionMsg1,
+                            RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId(),
+                            "countEntities",
+                            elapsedTime);
+
+            /*
+             * The count and the search have to agree.  Both are asked for everything of this type, so the
+             * number found should be the number counted - anything else means one of them is applying a
+             * criterion the other is not.
+             */
+            List<EntityDetail> found = metadataCollection.findEntities(workPad.getLocalServerUserId(),
+                                                                        entityDef.getGUID(),
+                                                                        null,
+                                                                        false,
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0);
+
+            int foundCount = (found == null) ? 0 : found.size();
+
+            /*
+             * find() is limited by the page size the server allows, so the two can only be compared when the
+             * search was not truncated.
+             */
+            if (foundCount < super.getMaxSearchResults())
+            {
+                verifyCondition((count == foundCount),
+                                assertion2,
+                                testTypeName + assertionMsg2 + " (counted " + count + ", found " + foundCount + ")",
+                                RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
+                                RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
+            }
+        }
+        catch (FunctionNotSupportedException exception)
+        {
+            super.addNotSupportedAssertion(assertion1,
+                                           assertionMsg1,
+                                           RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
+                                           RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId());
+        }
+        finally
+        {
+            for (EntityDetail entity : createdEntities)
+            {
+                try
+                {
+                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    entity.getGUID());
+                }
+                catch (Exception ignored)
+                {
+                    /* best effort */
+                }
+
+                try
+                {
+                    metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                                   entity.getType().getTypeDefGUID(),
+                                                   entity.getType().getTypeDefName(),
+                                                   entity.getGUID());
+                }
+                catch (Exception ignored)
+                {
+                    /* best effort */
+                }
+            }
+        }
+
+        super.setSuccessMessage("Instance counts agree with the equivalent search");
+    }
+}

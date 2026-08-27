@@ -28,7 +28,9 @@ public class FindRelationshipRequestBody extends ResultsRequestBody
     private String           relationshipTypeName     = null;
     private List<String>     relationshipSubtypeNames = null;
     private List<String>     end1EntityGUIDs          = null;
+    private String           end1EntityTypeName       = null;
     private List<String>     end2EntityGUIDs          = null;
+    private String           end2EntityTypeName       = null;
     private EndMatchCriteria endMatchCriteria         = null;
     private SearchProperties searchProperties         = null;
 
@@ -57,7 +59,9 @@ public class FindRelationshipRequestBody extends ResultsRequestBody
             this.relationshipSubtypeNames = template.getRelationshipSubtypeNames();
             this.searchProperties         = template.getSearchProperties();
             this.end1EntityGUIDs          = template.getEnd1EntityGUIDs();
+            this.end1EntityTypeName       = template.getEnd1EntityTypeName();
             this.end2EntityGUIDs          = template.getEnd2EntityGUIDs();
+            this.end2EntityTypeName       = template.getEnd2EntityTypeName();
             this.endMatchCriteria         = template.getEndMatchCriteria();
         }
     }
@@ -164,6 +168,30 @@ public class FindRelationshipRequestBody extends ResultsRequestBody
 
 
     /**
+     * Return the name of the type that the entity at end 1 of the relationship must belong to.  Subtypes of
+     * the named type match too.  This is optional, and independent of the end 1 guids: naming the type on its
+     * own, with no guids, asks for the relationships that start at any entity of that type.
+     *
+     * @return type name
+     */
+    public String getEnd1EntityTypeName()
+    {
+        return end1EntityTypeName;
+    }
+
+
+    /**
+     * Set up the name of the type that the entity at end 1 of the relationship must belong to.
+     *
+     * @param end1EntityTypeName type name
+     */
+    public void setEnd1EntityTypeName(String end1EntityTypeName)
+    {
+        this.end1EntityTypeName = end1EntityTypeName;
+    }
+
+
+    /**
      * Return the list of entity guids used to match end 2 of the relationships.
      *
      * @return list of guids
@@ -182,6 +210,30 @@ public class FindRelationshipRequestBody extends ResultsRequestBody
     public void setEnd2EntityGUIDs(List<String> end2EntityGUIDs)
     {
         this.end2EntityGUIDs = end2EntityGUIDs;
+    }
+
+
+    /**
+     * Return the name of the type that the entity at end 2 of the relationship must belong to.  Subtypes of
+     * the named type match too.  This is optional, and independent of the end 2 guids: naming the type on its
+     * own, with no guids, asks for the relationships that end at any entity of that type.
+     *
+     * @return type name
+     */
+    public String getEnd2EntityTypeName()
+    {
+        return end2EntityTypeName;
+    }
+
+
+    /**
+     * Set up the name of the type that the entity at end 2 of the relationship must belong to.
+     *
+     * @param end2EntityTypeName type name
+     */
+    public void setEnd2EntityTypeName(String end2EntityTypeName)
+    {
+        this.end2EntityTypeName = end2EntityTypeName;
     }
 
 
@@ -220,7 +272,9 @@ public class FindRelationshipRequestBody extends ResultsRequestBody
                 "relationshipTypeName='" + relationshipTypeName + '\'' +
                 ", relationshipSubtypeNames=" + relationshipSubtypeNames +
                 ", end1EntityGUIDs=" + end1EntityGUIDs +
+                ", end1EntityTypeName='" + end1EntityTypeName + '\'' +
                 ", end2EntityGUIDs=" + end2EntityGUIDs +
+                ", end2EntityTypeName='" + end2EntityTypeName + '\'' +
                 ", endMatchCriteria=" + endMatchCriteria +
                 ", searchProperties=" + searchProperties +
                 "} " + super.toString();
@@ -242,7 +296,9 @@ public class FindRelationshipRequestBody extends ResultsRequestBody
         return Objects.equals(relationshipTypeName, that.relationshipTypeName) &&
                 Objects.equals(relationshipSubtypeNames, that.relationshipSubtypeNames) &&
                 Objects.equals(end1EntityGUIDs, that.end1EntityGUIDs) &&
+                Objects.equals(end1EntityTypeName, that.end1EntityTypeName) &&
                 Objects.equals(end2EntityGUIDs, that.end2EntityGUIDs) &&
+                Objects.equals(end2EntityTypeName, that.end2EntityTypeName) &&
                 endMatchCriteria == that.endMatchCriteria &&
                 Objects.equals(searchProperties, that.searchProperties);
     }
@@ -256,7 +312,7 @@ public class FindRelationshipRequestBody extends ResultsRequestBody
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), relationshipTypeName, relationshipSubtypeNames,
-                            end1EntityGUIDs, end2EntityGUIDs,
+                            end1EntityGUIDs, end1EntityTypeName, end2EntityGUIDs, end2EntityTypeName,
                             endMatchCriteria, searchProperties);
     }
 }

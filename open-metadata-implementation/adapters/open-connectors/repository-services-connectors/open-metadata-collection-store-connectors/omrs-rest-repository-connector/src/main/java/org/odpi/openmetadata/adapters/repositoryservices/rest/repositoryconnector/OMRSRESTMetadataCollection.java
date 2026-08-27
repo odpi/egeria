@@ -1193,6 +1193,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             return omrsClient.findEntities(userId,
                                            entityTypeGUID,
                                            entitySubtypeGUIDs,
+                                           false,
                                            searchProperties,
                                            fromEntityElement,
                                            limitResultsByStatus,
@@ -1204,13 +1205,16 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         }
 
         /*
-         * The remote repository's REST protocol only supports an inclusion list of subtypes, so an exclusion
-         * request is satisfied by retrieving all subtypes of entityTypeGUID and filtering out the excluded ones
-         * locally.
+         * An exclusion request is sent to the remote repository and filtered again here, and it needs to be
+         * both.  A repository that understands the exclusion has already applied it, and the filter below has
+         * nothing left to remove.  One that does not understand it ignores the field and applies no subtype
+         * filter at all, and the filter below is what makes the answer correct.  Neither case can be told from
+         * the other by looking at the results, which is why the filter stays rather than becoming conditional.
          */
         List<EntityDetail> retrievedEntities = omrsClient.findEntities(userId,
                                                                        entityTypeGUID,
-                                                                       null,
+                                                                       entitySubtypeGUIDs,
+                                                                       true,
                                                                        searchProperties,
                                                                        fromEntityElement,
                                                                        limitResultsByStatus,
@@ -1246,7 +1250,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
-     *                           include in the search results. Null means all subtypes.
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results. Null means all subtypes.
+     * @param skipSubtypes if true, entitySubtypeGUIDs is treated as the list of subtypes to exclude from the search
+     *                     results rather than the only subtypes to include.  Ignored if entitySubtypeGUIDs is null.
+     *                     Since the remote repository's REST protocol only understands an inclusion list, this case
+     *                     is satisfied by requesting all subtypes from the remote repository and filtering out the
+     *                     excluded ones locally.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param fromEntityElement not used - the count is not affected by paging.
      * @param limitResultsByStatus By default, entities in all non-DELETED statuses are returned.  However, it is possible
@@ -1317,6 +1326,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         return omrsClient.countEntities(userId,
                                         entityTypeGUID,
                                         entitySubtypeGUIDs,
+                                        false,
                                         searchProperties,
                                         fromEntityElement,
                                         limitResultsByStatus,
@@ -1693,7 +1703,15 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *                     is satisfied by requesting all subtypes from the remote repository and filtering out the
      *                     excluded ones locally.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement the starting element number of the entities to return.
@@ -1727,7 +1745,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                  List<String>              relationshipSubtypeGUIDs,
                                                  boolean                   skipSubtypes,
                                                  List<String>              end1EntityGUIDs,
+                                                 String                    end1EntityTypeGUID,
                                                  List<String>              end2EntityGUIDs,
+                                                 String                    end2EntityTypeGUID,
                                                  EndMatchCriteria          endMatchCriteria,
                                                  SearchProperties          matchProperties,
                                                  int                       fromRelationshipElement,
@@ -1752,8 +1772,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             return omrsClient.findRelationships(userId,
                                                 relationshipTypeGUID,
                                                 relationshipSubtypeGUIDs,
+                                                false,
                                                 end1EntityGUIDs,
+                                                end1EntityTypeGUID,
                                                 end2EntityGUIDs,
+                                                end2EntityTypeGUID,
                                                 endMatchCriteria,
                                                 matchProperties,
                                                 fromRelationshipElement,
@@ -1765,15 +1788,19 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         }
 
         /*
-         * The remote repository's REST protocol only supports an inclusion list of subtypes, so an exclusion
-         * request is satisfied by retrieving all subtypes of relationshipTypeGUID and filtering out the excluded
-         * ones locally.
+         * An exclusion request is sent to the remote repository and filtered again here, and it needs to be
+         * both - see the note on findEntities() above.  A repository that understands the exclusion has already
+         * applied it; one that does not has applied no subtype filter at all, and this filter is what makes the
+         * answer correct.
          */
         List<Relationship> retrievedRelationships = omrsClient.findRelationships(userId,
                                                                                   relationshipTypeGUID,
-                                                                                  null,
+                                                                                  relationshipSubtypeGUIDs,
+                                                                                  true,
                                                                                   end1EntityGUIDs,
+                                                                                  end1EntityTypeGUID,
                                                                                   end2EntityGUIDs,
+                                                                                  end2EntityTypeGUID,
                                                                                   endMatchCriteria,
                                                                                   matchProperties,
                                                                                   fromRelationshipElement,
@@ -1811,9 +1838,24 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
-     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     *                                 relationshipTypeGUID to include in (or, if skipSubtypes is true, exclude from)
+     *                                 the search results. Null means all subtypes.
+     * @param skipSubtypes if true, relationshipSubtypeGUIDs is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeGUIDs
+     *                     is null.
+     *                     Since the remote repository's REST protocol only understands an inclusion list, this case
+     *                     is satisfied by requesting all subtypes from the remote repository and filtering out the
+     *                     excluded ones locally.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement not used - the count is not affected by paging.
@@ -1843,7 +1885,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                     List<String>              relationshipSubtypeGUIDs,
                                     boolean                   skipSubtypes,
                                     List<String>              end1EntityGUIDs,
+                                    String                    end1EntityTypeGUID,
                                     List<String>              end2EntityGUIDs,
+                                    String                    end2EntityTypeGUID,
                                     EndMatchCriteria          endMatchCriteria,
                                     SearchProperties          matchProperties,
                                     int                       fromRelationshipElement,
@@ -1870,7 +1914,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                        relationshipSubtypeGUIDs,
                                                                        true,
                                                                        end1EntityGUIDs,
+                                                                       end1EntityTypeGUID,
                                                                        end2EntityGUIDs,
+                                                                       end2EntityTypeGUID,
                                                                        endMatchCriteria,
                                                                        matchProperties,
                                                                        fromRelationshipElement,
@@ -1889,8 +1935,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         return omrsClient.countRelationships(userId,
                                              relationshipTypeGUID,
                                              relationshipSubtypeGUIDs,
+                                             false,
                                              end1EntityGUIDs,
+                                             end1EntityTypeGUID,
                                              end2EntityGUIDs,
+                                             end2EntityTypeGUID,
                                              endMatchCriteria,
                                              matchProperties,
                                              fromRelationshipElement,

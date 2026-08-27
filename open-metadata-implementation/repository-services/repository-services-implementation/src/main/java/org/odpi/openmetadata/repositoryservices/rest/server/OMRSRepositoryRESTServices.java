@@ -1895,6 +1895,7 @@ public class OMRSRepositoryRESTServices
 
         String                entityTypeGUID               = null;
         List<String>          entitySubtypeGUIDs           = null;
+        boolean               skipSubtypes                 = false;
         SearchProperties      matchProperties              = null;
         int                   fromEntityElement            = 0;
         List<InstanceStatus>  limitResultsByStatus         = null;
@@ -1909,6 +1910,16 @@ public class OMRSRepositoryRESTServices
         {
             entityTypeGUID                    = requestBody.getTypeGUID();
             entitySubtypeGUIDs                = requestBody.getSubtypeGUIDs();
+            
+            /*
+             * An exclusion list arrives in a field of its own, so a request that carries one is asking for
+             * those subtypes to be left out rather than to be the only ones included.
+             */
+            if ((requestBody.getExcludeSubtypeGUIDs() != null) && (! requestBody.getExcludeSubtypeGUIDs().isEmpty()))
+            {
+                entitySubtypeGUIDs = requestBody.getExcludeSubtypeGUIDs();
+                skipSubtypes = true;
+            }
             matchProperties                   = requestBody.getMatchProperties();
             fromEntityElement                 = requestBody.getOffset();
             limitResultsByStatus              = requestBody.getLimitResultsByStatus();
@@ -1929,6 +1940,7 @@ public class OMRSRepositoryRESTServices
             List<EntityDetail>  entities = metadataCollection.findEntities(userId,
                                                                            entityTypeGUID,
                                                                            entitySubtypeGUIDs,
+                                                                           skipSubtypes,
                                                                            matchProperties,
                                                                            fromEntityElement,
                                                                            limitResultsByStatus,
@@ -1986,6 +1998,7 @@ public class OMRSRepositoryRESTServices
 
         String                    entityTypeGUID                    = null;
         List<String>              entitySubtypeGUIDs                = null;
+        boolean               skipSubtypes                 = false;
         SearchProperties          matchProperties                   = null;
         int                       fromEntityElement                 = 0;
         List<InstanceStatus>      limitResultsByStatus              = null;
@@ -2001,6 +2014,16 @@ public class OMRSRepositoryRESTServices
         {
             entityTypeGUID                    = requestBody.getTypeGUID();
             entitySubtypeGUIDs                = requestBody.getSubtypeGUIDs();
+            
+            /*
+             * An exclusion list arrives in a field of its own, so a request that carries one is asking for
+             * those subtypes to be left out rather than to be the only ones included.
+             */
+            if ((requestBody.getExcludeSubtypeGUIDs() != null) && (! requestBody.getExcludeSubtypeGUIDs().isEmpty()))
+            {
+                entitySubtypeGUIDs = requestBody.getExcludeSubtypeGUIDs();
+                skipSubtypes = true;
+            }
             matchProperties                   = requestBody.getMatchProperties();
             fromEntityElement                 = requestBody.getOffset();
             limitResultsByStatus              = requestBody.getLimitResultsByStatus();
@@ -2022,6 +2045,7 @@ public class OMRSRepositoryRESTServices
             long count = metadataCollection.countEntities(userId,
                                                           entityTypeGUID,
                                                           entitySubtypeGUIDs,
+                                                          skipSubtypes,
                                                           matchProperties,
                                                           fromEntityElement,
                                                           limitResultsByStatus,
@@ -2072,6 +2096,7 @@ public class OMRSRepositoryRESTServices
 
         String                    entityTypeGUID                    = null;
         List<String>              entitySubtypeGUIDs                = null;
+        boolean               skipSubtypes                 = false;
         SearchProperties          matchProperties                   = null;
         int                       fromEntityElement                 = 0;
         List<InstanceStatus>      limitResultsByStatus              = null;
@@ -2087,6 +2112,16 @@ public class OMRSRepositoryRESTServices
         {
             entityTypeGUID                    = requestBody.getTypeGUID();
             entitySubtypeGUIDs                = requestBody.getSubtypeGUIDs();
+            
+            /*
+             * An exclusion list arrives in a field of its own, so a request that carries one is asking for
+             * those subtypes to be left out rather than to be the only ones included.
+             */
+            if ((requestBody.getExcludeSubtypeGUIDs() != null) && (! requestBody.getExcludeSubtypeGUIDs().isEmpty()))
+            {
+                entitySubtypeGUIDs = requestBody.getExcludeSubtypeGUIDs();
+                skipSubtypes = true;
+            }
             matchProperties                   = requestBody.getMatchProperties();
             fromEntityElement                 = requestBody.getOffset();
             limitResultsByStatus              = requestBody.getLimitResultsByStatus();
@@ -2108,6 +2143,7 @@ public class OMRSRepositoryRESTServices
             List<EntityDetail>  entities = metadataCollection.findEntities(userId,
                                                                            entityTypeGUID,
                                                                            entitySubtypeGUIDs,
+                                                                           skipSubtypes,
                                                                            matchProperties,
                                                                            fromEntityElement,
                                                                            limitResultsByStatus,
@@ -2937,8 +2973,11 @@ public class OMRSRepositoryRESTServices
 
         String               relationshipTypeGUID     = null;
         List<String>         relationshipSubtypeGUIDs = null;
+        boolean               skipSubtypes                 = false;
         List<String>         end1EntityGUIDs          = null;
+        String               end1EntityTypeGUID       = null;
         List<String>         end2EntityGUIDs          = null;
+        String               end2EntityTypeGUID       = null;
         EndMatchCriteria     endMatchCriteria         = null;
         SearchProperties     matchProperties          = null;
         int                  fromRelationshipElement  = 0;
@@ -2953,8 +2992,20 @@ public class OMRSRepositoryRESTServices
         {
             relationshipTypeGUID              = requestBody.getTypeGUID();
             relationshipSubtypeGUIDs          = requestBody.getSubtypeGUIDs();
+            
+            /*
+             * An exclusion list arrives in a field of its own, so a request that carries one is asking for
+             * those subtypes to be left out rather than to be the only ones included.
+             */
+            if ((requestBody.getExcludeSubtypeGUIDs() != null) && (! requestBody.getExcludeSubtypeGUIDs().isEmpty()))
+            {
+                relationshipSubtypeGUIDs = requestBody.getExcludeSubtypeGUIDs();
+                skipSubtypes = true;
+            }
             end1EntityGUIDs                   = requestBody.getEnd1EntityGUIDs();
+            end1EntityTypeGUID                = requestBody.getEnd1EntityTypeGUID();
             end2EntityGUIDs                   = requestBody.getEnd2EntityGUIDs();
+            end2EntityTypeGUID                = requestBody.getEnd2EntityTypeGUID();
             endMatchCriteria                  = requestBody.getEndMatchCriteria();
             matchProperties                   = requestBody.getMatchProperties();
             fromRelationshipElement           = requestBody.getOffset();
@@ -2975,8 +3026,11 @@ public class OMRSRepositoryRESTServices
             List<Relationship>  relationships = metadataCollection.findRelationships(userId,
                                                                                      relationshipTypeGUID,
                                                                                      relationshipSubtypeGUIDs,
+                                                                                     skipSubtypes,
                                                                                      end1EntityGUIDs,
+                                                                                     end1EntityTypeGUID,
                                                                                      end2EntityGUIDs,
+                                                                                     end2EntityTypeGUID,
                                                                                      endMatchCriteria,
                                                                                      matchProperties,
                                                                                      fromRelationshipElement,
@@ -3034,8 +3088,11 @@ public class OMRSRepositoryRESTServices
 
         String               relationshipTypeGUID     = null;
         List<String>         relationshipSubtypeGUIDs = null;
+        boolean               skipSubtypes                 = false;
         List<String>         end1EntityGUIDs          = null;
+        String               end1EntityTypeGUID       = null;
         List<String>         end2EntityGUIDs          = null;
+        String               end2EntityTypeGUID       = null;
         EndMatchCriteria     endMatchCriteria         = null;
         SearchProperties     matchProperties          = null;
         int                  fromRelationshipElement  = 0;
@@ -3051,8 +3108,20 @@ public class OMRSRepositoryRESTServices
         {
             relationshipTypeGUID              = requestBody.getTypeGUID();
             relationshipSubtypeGUIDs          = requestBody.getSubtypeGUIDs();
+            
+            /*
+             * An exclusion list arrives in a field of its own, so a request that carries one is asking for
+             * those subtypes to be left out rather than to be the only ones included.
+             */
+            if ((requestBody.getExcludeSubtypeGUIDs() != null) && (! requestBody.getExcludeSubtypeGUIDs().isEmpty()))
+            {
+                relationshipSubtypeGUIDs = requestBody.getExcludeSubtypeGUIDs();
+                skipSubtypes = true;
+            }
             end1EntityGUIDs                   = requestBody.getEnd1EntityGUIDs();
+            end1EntityTypeGUID                = requestBody.getEnd1EntityTypeGUID();
             end2EntityGUIDs                   = requestBody.getEnd2EntityGUIDs();
+            end2EntityTypeGUID                = requestBody.getEnd2EntityTypeGUID();
             endMatchCriteria                  = requestBody.getEndMatchCriteria();
             matchProperties                   = requestBody.getMatchProperties();
             fromRelationshipElement           = requestBody.getOffset();
@@ -3074,8 +3143,11 @@ public class OMRSRepositoryRESTServices
             long count = metadataCollection.countRelationships(userId,
                                                                 relationshipTypeGUID,
                                                                 relationshipSubtypeGUIDs,
+                                                                skipSubtypes,
                                                                 end1EntityGUIDs,
+                                                                end1EntityTypeGUID,
                                                                 end2EntityGUIDs,
+                                                                end2EntityTypeGUID,
                                                                 endMatchCriteria,
                                                                 matchProperties,
                                                                 fromRelationshipElement,
@@ -3125,8 +3197,11 @@ public class OMRSRepositoryRESTServices
 
         String               relationshipTypeGUID     = null;
         List<String>         relationshipSubtypeGUIDs = null;
+        boolean               skipSubtypes                 = false;
         List<String>         end1EntityGUIDs          = null;
+        String               end1EntityTypeGUID       = null;
         List<String>         end2EntityGUIDs          = null;
+        String               end2EntityTypeGUID       = null;
         EndMatchCriteria     endMatchCriteria         = null;
         SearchProperties     matchProperties          = null;
         int                  fromRelationshipElement  = 0;
@@ -3142,8 +3217,20 @@ public class OMRSRepositoryRESTServices
         {
             relationshipTypeGUID              = requestBody.getTypeGUID();
             relationshipSubtypeGUIDs          = requestBody.getSubtypeGUIDs();
+            
+            /*
+             * An exclusion list arrives in a field of its own, so a request that carries one is asking for
+             * those subtypes to be left out rather than to be the only ones included.
+             */
+            if ((requestBody.getExcludeSubtypeGUIDs() != null) && (! requestBody.getExcludeSubtypeGUIDs().isEmpty()))
+            {
+                relationshipSubtypeGUIDs = requestBody.getExcludeSubtypeGUIDs();
+                skipSubtypes = true;
+            }
             end1EntityGUIDs                   = requestBody.getEnd1EntityGUIDs();
+            end1EntityTypeGUID                = requestBody.getEnd1EntityTypeGUID();
             end2EntityGUIDs                   = requestBody.getEnd2EntityGUIDs();
+            end2EntityTypeGUID                = requestBody.getEnd2EntityTypeGUID();
             endMatchCriteria                  = requestBody.getEndMatchCriteria();
             matchProperties                   = requestBody.getMatchProperties();
             fromRelationshipElement           = requestBody.getOffset();
@@ -3165,8 +3252,11 @@ public class OMRSRepositoryRESTServices
             List<Relationship>  relationships = metadataCollection.findRelationships(userId,
                                                                                      relationshipTypeGUID,
                                                                                      relationshipSubtypeGUIDs,
+                                                                                     skipSubtypes,
                                                                                      end1EntityGUIDs,
+                                                                                     end1EntityTypeGUID,
                                                                                      end2EntityGUIDs,
+                                                                                     end2EntityTypeGUID,
                                                                                      endMatchCriteria,
                                                                                      matchProperties,
                                                                                      fromRelationshipElement,
@@ -6362,6 +6452,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      * @param exceptionClassName class name of the exception to recreate
+     * @param exceptionProperties property map
      */
     private void captureCheckedException(OMRSAPIResponse         response,
                                          OMFCheckedExceptionBase error,

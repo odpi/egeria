@@ -115,6 +115,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param localServerSecretsStoreProvider secrets store connector for bearer token
      * @param localServerSecretsStoreLocation secrets store location for bearer token
      * @param localServerSecretsStoreCollection secrets store collection for bearer token
+     * @param auditLog                        logging destination
      *
      * @throws InvalidParameterException bad input parameters
      */
@@ -1521,9 +1522,38 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws FunctionNotSupportedException the repository does not support this optional method.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    /**
+     * Put the caller's subtype filter on the request in the field that carries its meaning.
+     * <br>
+     * An inclusion list goes in subtypeGUIDs; an exclusion list goes in excludeSubtypeGUIDs.  They are
+     * separate fields rather than one list qualified by a flag so that a server which predates the exclusion
+     * field ignores it and applies no subtype filter, rather than reading the list as the subtypes to
+     * include and returning exactly the set the caller asked to leave out.  The caller keeps its own filter
+     * for that case, and against a server that does understand the field that filter has nothing left to do.
+     *
+     * @param findRequestParameters request being built
+     * @param subtypeGUIDs the subtypes the caller named
+     * @param skipSubtypes whether those subtypes are the ones to exclude rather than the only ones to include
+     */
+    private void setSubtypeFilter(SubtypeLimitedFindRequest findRequestParameters,
+                                  List<String>              subtypeGUIDs,
+                                  boolean                   skipSubtypes)
+    {
+        if ((skipSubtypes) && (subtypeGUIDs != null) && (! subtypeGUIDs.isEmpty()))
+        {
+            findRequestParameters.setExcludeSubtypeGUIDs(subtypeGUIDs);
+        }
+        else
+        {
+            findRequestParameters.setSubtypeGUIDs(subtypeGUIDs);
+        }
+    }
+
+
     public List<EntityDetail> findEntities(String                    userId,
                                            String                    entityTypeGUID,
                                            List<String>              entitySubtypeGUIDs,
+                                           boolean                   skipSubtypes,
                                            SearchProperties          matchProperties,
                                            int                       fromEntityElement,
                                            List<InstanceStatus>      limitResultsByStatus,
@@ -1548,7 +1578,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
             EntityFindRequest findRequestParameters = new EntityFindRequest();
 
             findRequestParameters.setTypeGUID(entityTypeGUID);
-            findRequestParameters.setSubtypeGUIDs(entitySubtypeGUIDs);
+            setSubtypeFilter(findRequestParameters, entitySubtypeGUIDs, skipSubtypes);
             findRequestParameters.setMatchProperties(matchProperties);
             findRequestParameters.setOffset(fromEntityElement);
             findRequestParameters.setLimitResultsByStatus(limitResultsByStatus);
@@ -1568,7 +1598,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
             EntityHistoricalFindRequest findRequestParameters = new EntityHistoricalFindRequest();
 
             findRequestParameters.setTypeGUID(entityTypeGUID);
-            findRequestParameters.setSubtypeGUIDs(entitySubtypeGUIDs);
+            setSubtypeFilter(findRequestParameters, entitySubtypeGUIDs, skipSubtypes);
             findRequestParameters.setMatchProperties(matchProperties);
             findRequestParameters.setAsOfTime(asOfTime);
             findRequestParameters.setOffset(fromEntityElement);
@@ -1631,6 +1661,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     public long countEntities(String                    userId,
                               String                    entityTypeGUID,
                               List<String>              entitySubtypeGUIDs,
+                              boolean                   skipSubtypes,
                               SearchProperties          matchProperties,
                               int                       fromEntityElement,
                               List<InstanceStatus>      limitResultsByStatus,
@@ -1652,7 +1683,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         EntityHistoricalFindRequest findRequestParameters = new EntityHistoricalFindRequest();
 
         findRequestParameters.setTypeGUID(entityTypeGUID);
-        findRequestParameters.setSubtypeGUIDs(entitySubtypeGUIDs);
+        setSubtypeFilter(findRequestParameters, entitySubtypeGUIDs, skipSubtypes);
         findRequestParameters.setMatchProperties(matchProperties);
         findRequestParameters.setAsOfTime(asOfTime);
         findRequestParameters.setOffset(fromEntityElement);
@@ -2206,7 +2237,15 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
      *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement the starting element number of the entities to return.
@@ -2237,8 +2276,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     public  List<Relationship> findRelationships(String                    userId,
                                                  String                    relationshipTypeGUID,
                                                  List<String>              relationshipSubtypeGUIDs,
+                                                 boolean                   skipSubtypes,
                                                  List<String>              end1EntityGUIDs,
+                                                 String                    end1EntityTypeGUID,
                                                  List<String>              end2EntityGUIDs,
+                                                 String                    end2EntityTypeGUID,
                                                  EndMatchCriteria          endMatchCriteria,
                                                  SearchProperties          matchProperties,
                                                  int                       fromRelationshipElement,
@@ -2264,9 +2306,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
             RelationshipFindRequest findRequestParameters = new RelationshipFindRequest();
 
             findRequestParameters.setTypeGUID(relationshipTypeGUID);
-            findRequestParameters.setSubtypeGUIDs(relationshipSubtypeGUIDs);
+            setSubtypeFilter(findRequestParameters, relationshipSubtypeGUIDs, skipSubtypes);
             findRequestParameters.setEnd1EntityGUIDs(end1EntityGUIDs);
+            findRequestParameters.setEnd1EntityTypeGUID(end1EntityTypeGUID);
             findRequestParameters.setEnd2EntityGUIDs(end2EntityGUIDs);
+            findRequestParameters.setEnd2EntityTypeGUID(end2EntityTypeGUID);
             findRequestParameters.setEndMatchCriteria(endMatchCriteria);
             findRequestParameters.setMatchProperties(matchProperties);
             findRequestParameters.setOffset(fromRelationshipElement);
@@ -2287,9 +2331,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
             RelationshipHistoricalFindRequest findRequestParameters = new RelationshipHistoricalFindRequest();
 
             findRequestParameters.setTypeGUID(relationshipTypeGUID);
-            findRequestParameters.setSubtypeGUIDs(relationshipSubtypeGUIDs);
+            setSubtypeFilter(findRequestParameters, relationshipSubtypeGUIDs, skipSubtypes);
             findRequestParameters.setEnd1EntityGUIDs(end1EntityGUIDs);
+            findRequestParameters.setEnd1EntityTypeGUID(end1EntityTypeGUID);
             findRequestParameters.setEnd2EntityGUIDs(end2EntityGUIDs);
+            findRequestParameters.setEnd2EntityTypeGUID(end2EntityTypeGUID);
             findRequestParameters.setEndMatchCriteria(endMatchCriteria);
             findRequestParameters.setMatchProperties(matchProperties);
             findRequestParameters.setAsOfTime(asOfTime);
@@ -2328,7 +2374,15 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
      *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement not used - the count is not affected by paging.
@@ -2355,8 +2409,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     public  long countRelationships(String                    userId,
                                     String                    relationshipTypeGUID,
                                     List<String>              relationshipSubtypeGUIDs,
+                                    boolean                   skipSubtypes,
                                     List<String>              end1EntityGUIDs,
+                                    String                    end1EntityTypeGUID,
                                     List<String>              end2EntityGUIDs,
+                                    String                    end2EntityTypeGUID,
                                     EndMatchCriteria          endMatchCriteria,
                                     SearchProperties          matchProperties,
                                     int                       fromRelationshipElement,
@@ -2378,9 +2435,11 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         RelationshipHistoricalFindRequest findRequestParameters = new RelationshipHistoricalFindRequest();
 
         findRequestParameters.setTypeGUID(relationshipTypeGUID);
-        findRequestParameters.setSubtypeGUIDs(relationshipSubtypeGUIDs);
+        setSubtypeFilter(findRequestParameters, relationshipSubtypeGUIDs, skipSubtypes);
         findRequestParameters.setEnd1EntityGUIDs(end1EntityGUIDs);
+        findRequestParameters.setEnd1EntityTypeGUID(end1EntityTypeGUID);
         findRequestParameters.setEnd2EntityGUIDs(end2EntityGUIDs);
+        findRequestParameters.setEnd2EntityTypeGUID(end2EntityTypeGUID);
         findRequestParameters.setEndMatchCriteria(endMatchCriteria);
         findRequestParameters.setMatchProperties(matchProperties);
         findRequestParameters.setAsOfTime(asOfTime);
@@ -5731,6 +5790,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      *
      * @param methodName           name of the method being called
      * @param operationSpecificURL template of the URL for the REST API call, with place-holders for the parameters
+     * @param requestBody          properties for the request
      * @param params               a list of parameters that are slotted into the url template
      * @return EntitySummaryResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.

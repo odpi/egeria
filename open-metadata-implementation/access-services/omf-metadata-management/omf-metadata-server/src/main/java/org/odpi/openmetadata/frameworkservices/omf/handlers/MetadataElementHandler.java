@@ -87,6 +87,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId caller's userId
      * @param elementGUID unique identifier for the metadata element
+     * @param requestedTypeName type name from the caller
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
@@ -164,6 +165,30 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         }
 
         return typeName;
+    }
+
+
+    /**
+     * Set up a type GUID to use on the call.  If the caller passes a type name, it is used, otherwise
+     * OpenMetadataRoot is used.  If the type name is invalid an exception is thrown.
+     *
+     * @param requestedTypeName type name from the caller
+     * @throws InvalidParameterException bad type name
+     * @return type name to use with the repository
+     */
+    private String getOptionalEntityTypeGUID(String requestedTypeName) throws InvalidParameterException
+    {
+        if ((requestedTypeName == null) || (requestedTypeName.isBlank()))
+        {
+            /*
+             * No type was named for this end, so the end is not constrained by type.  This is not the same
+             * as naming OpenMetadataRoot - which getEntityTypeGUID() would substitute - because an end that
+             * carries no criteria at all takes no part in the ANY and NONE decisions.
+             */
+            return null;
+        }
+
+        return this.getEntityTypeGUID(requestedTypeName);
     }
 
 
@@ -485,6 +510,20 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         }
 
         /*
+         * The caller may have named the type of element they want at the far end.  Passing it to the
+         * repository means the relationships reaching anything else are never retrieved, rather than
+         * retrieved, paged and then discarded below.  It can only be pushed down when the end is known -
+         * with selectionEnd 0 the attachment may be at either end, which no single constraint expresses,
+         * so that case still relies on the filtering that follows.
+         */
+        String attachmentEntityTypeGUID = null;
+
+        if ((attachmentEntityTypeName != null) && (! attachmentEntityTypeName.isBlank()) && (selectionEnd != 0))
+        {
+            attachmentEntityTypeGUID = this.getEntityTypeGUID(attachmentEntityTypeName);
+        }
+
+        /*
          * Retrieve the relationships (no security calls)
          */
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
@@ -493,6 +532,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                     relationshipTypeGUID,
                                                                                     relationshipTypeName,
                                                                                     selectionEnd,
+                                                                                    null,
+                                                                                    attachmentEntityTypeGUID,
                                                                                     getInstanceStatuses(limitResultsByStatus),
                                                                                     asOfTime,
                                                                                     getSequencingOrder(sequencingOrder),
@@ -1499,7 +1540,11 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param skipSubtypes if true, relationshipSubtypeNames is treated as the list of subtypes to exclude from the
      *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeNames is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.  Subtypes
+     *                           of the named type match too.  It is independent of the end 1 guids.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.  Subtypes
+     *                           of the named type match too.  It is independent of the end 2 guids.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
@@ -1525,7 +1570,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                     List<String>        relationshipSubtypeNames,
                                                                                     boolean             skipSubtypes,
                                                                                     List<String>        end1EntityGUIDs,
+                                                                                    String              end1EntityTypeName,
                                                                                     List<String>        end2EntityGUIDs,
+                                                                                    String              end2EntityTypeName,
                                                                                     EndMatchCriteria    endMatchCriteria,
                                                                                     SearchProperties    searchProperties,
                                                                                     List<ElementStatus> limitResultsByStatus,
@@ -1548,7 +1595,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                     relationshipSubtypeNames,
                                                                     skipSubtypes,
                                                                     end1EntityGUIDs,
+                                                                    this.getOptionalEntityTypeGUID(end1EntityTypeName),
                                                                     end2EntityGUIDs,
+                                                                    this.getOptionalEntityTypeGUID(end2EntityTypeName),
                                                                     this.getEndMatchCriteria(endMatchCriteria),
                                                                     this.getSearchProperties(searchProperties),
                                                                     this.getInstanceStatuses(limitResultsByStatus),
@@ -1599,7 +1648,11 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param skipSubtypes if true, relationshipSubtypeNames is treated as the list of subtypes to exclude from the
      *                     search results rather than the only subtypes to include.  Ignored if relationshipSubtypeNames is null.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.  Subtypes
+     *                           of the named type match too.  It is independent of the end 1 guids.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.  Subtypes
+     *                           of the named type match too.  It is independent of the end 2 guids.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
@@ -1620,7 +1673,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                            List<String>        relationshipSubtypeNames,
                                                            boolean             skipSubtypes,
                                                            List<String>        end1EntityGUIDs,
+                                                           String              end1EntityTypeName,
                                                            List<String>        end2EntityGUIDs,
+                                                           String              end2EntityTypeName,
                                                            EndMatchCriteria    endMatchCriteria,
                                                            SearchProperties    searchProperties,
                                                            List<ElementStatus> limitResultsByStatus,
@@ -1639,7 +1694,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                          relationshipSubtypeNames,
                                          skipSubtypes,
                                          end1EntityGUIDs,
+                                         this.getOptionalEntityTypeGUID(end1EntityTypeName),
                                          end2EntityGUIDs,
+                                         this.getOptionalEntityTypeGUID(end2EntityTypeName),
                                          this.getEndMatchCriteria(endMatchCriteria),
                                          this.getSearchProperties(searchProperties),
                                          this.getInstanceStatuses(limitResultsByStatus),
@@ -2114,6 +2171,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param deepCopy is the a deepCopy (default = true)
+     * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
      *
      * @param methodName calling method
      *
@@ -3245,6 +3303,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *                          the individual properties specified on the request.
      * @param properties new properties for the relationship
      * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      * @param methodName calling method
      *

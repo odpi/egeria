@@ -608,7 +608,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
                                                                                       FunctionNotSupportedException,
                                                                                       UserNotAuthorizedException
     {
-        return repositoryServicesClient.findEntities(userId, entityTypeGUID, entitySubtypeGUIDs, matchProperties, fromEntityElement, limitResultsByStatus, matchClassifications, asOfTime, sequencingProperty, sequencingOrder, pageSize);
+        return repositoryServicesClient.findEntities(userId, entityTypeGUID, entitySubtypeGUIDs, false, matchProperties, fromEntityElement, limitResultsByStatus, matchClassifications, asOfTime, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -907,7 +907,15 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
      *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
      * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must
+     *                           belong to.  Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationships.
      * @param matchProperties Optional list of relationship property conditions to match.
      * @param fromRelationshipElement the starting element number of the entities to return.
@@ -938,7 +946,9 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
     public  List<Relationship> findRelationships(String               relationshipTypeGUID,
                                                  List<String>         relationshipSubtypeGUIDs,
                                                  List<String>         end1EntityGUIDs,
+                                                 String               end1EntityTypeGUID,
                                                  List<String>         end2EntityGUIDs,
+                                                 String               end2EntityTypeGUID,
                                                  EndMatchCriteria     endMatchCriteria,
                                                  SearchProperties     matchProperties,
                                                  int                  fromRelationshipElement,
@@ -957,8 +967,11 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
         return repositoryServicesClient.findRelationships(userId,
                                                           relationshipTypeGUID,
                                                           relationshipSubtypeGUIDs,
+                                                          false,
                                                           end1EntityGUIDs,
+                                                          end1EntityTypeGUID,
                                                           end2EntityGUIDs,
+                                                          end2EntityTypeGUID,
                                                           endMatchCriteria,
                                                           matchProperties,
                                                           fromRelationshipElement,

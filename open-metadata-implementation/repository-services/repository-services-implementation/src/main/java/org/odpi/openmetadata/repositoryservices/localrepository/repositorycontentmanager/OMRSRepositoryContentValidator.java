@@ -62,6 +62,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      *
      * @param sourceName source of the request (used for logging)
      * @param typeDefs list of TypeDefs.
+     * @param methodName calling method
      * @throws RepositoryErrorException a conflicting or invalid TypeDef has been returned
      */
     @Override
@@ -83,6 +84,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      *
      * @param sourceName source of the request (used for logging)
      * @param attributeTypeDefs list of AttributeTypeDefs.
+     * @param methodName calling method
      * @throws RepositoryErrorException a conflicting or invalid AttributeTypeDef has been returned
      */
     @Override
@@ -4150,6 +4152,18 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         if (category.equals(PRIMITIVE))
         {
             PrimitivePropertyValue ppv = (PrimitivePropertyValue) value;
+
+            if (ppv.getPrimitiveValue() == null)
+            {
+                /*
+                 * A property value that holds nothing has no numeric representation.  Every branch below
+                 * unboxes, so without this an unset value is a NullPointerException rather than "no value" -
+                 * and the header properties built further up can legitimately hold nothing, an instance that
+                 * has never been updated having no update time being the ordinary case.
+                 */
+                return null;
+            }
+
             return switch (ppv.getPrimitiveDefCategory())
             {
                 case OM_PRIMITIVE_TYPE_DATE,
@@ -4449,6 +4463,19 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     actualValue = instanceProperties.getPropertyValue(propertyName);
                 }
 
+                /*
+                 * The header properties above are wrapped into a PrimitivePropertyValue whether or not the
+                 * instance actually holds a value - an instance with open-ended effectivity has no
+                 * effectiveFromTime, an instance that has never been updated has no updateTime.  A wrapper
+                 * around nothing is not the same as a value, and leaving it in place makes IS_NULL false for
+                 * a property that is unset, which is the opposite of what the caller asked.
+                 */
+                if ((actualValue instanceof PrimitivePropertyValue actualPrimitive) &&
+                        (actualPrimitive.getPrimitiveValue() == null))
+                {
+                    actualValue = null;
+                }
+
                 BigDecimal testBD   = getNumericRepresentation(testValue);
                 BigDecimal actualBD = getNumericRepresentation(actualValue);
 
@@ -4589,29 +4616,110 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * Test that the ends of this relationship match the requested end guids and match criteria.
      *
      * @param end1EntityGUIDs optional list of the unique identifiers (guids) for entities that must be at end 1 of the relationship.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.
+     *                           Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of the unique identifiers (guids) for entities that must be at end 2 of the relationship.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.
+     *                           Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationship.
      * @param relationship relationship to test
      * @return boolean property indicating whether the ends match
      * @throws InvalidParameterException invalid search criteria
      */
     @Override
-    public boolean verifyMatchingRelationshipEnds(List<String> end1EntityGUIDs, List<String> end2EntityGUIDs, EndMatchCriteria endMatchCriteria, Relationship relationship) throws InvalidParameterException
+    public boolean verifyMatchingRelationshipEnds(List<String>     end1EntityGUIDs,
+                                                  String           end1EntityTypeName,
+                                                  List<String>     end2EntityGUIDs,
+                                                  String           end2EntityTypeName,
+                                                  EndMatchCriteria endMatchCriteria,
+                                                  Relationship     relationship)
     {
-        if (endMatchCriteria == EndMatchCriteria.ANY)
+        final String methodName = "verifyMatchingRelationshipEnds";
+
+        /*
+         * Each end can be constrained by the entities allowed there, by the type of entity allowed there,
+         * by both, or by neither.  Asking only about the type, with the guids left null, is a supported
+         * question - as is saying nothing at all about the other end.
+         *
+         * An end that carries no criteria is not "an end that matches everything": it is an end that was
+         * not asked about, and it takes no part in the decision.  The difference does not show up under
+         * BOTH, where ignoring an end and passing it look the same, but it decides the answer under the
+         * other two.  Treating an unasked end as a match would make ANY with one end constrained return
+         * every relationship, and NONE with one end constrained return none of them.
+         */
+        boolean end1Constrained = (end1EntityGUIDs != null) || (end1EntityTypeName != null);
+        boolean end2Constrained = (end2EntityGUIDs != null) || (end2EntityTypeName != null);
+
+        boolean end1Matches = end1Constrained
+                                      && ((end1EntityGUIDs == null) || (end1EntityGUIDs.contains(relationship.getEntityOneProxy().getGUID())))
+                                      && this.endEntityIsOfType(relationship.getMetadataCollectionName(),
+                                                                relationship.getEntityOneProxy(),
+                                                                end1EntityTypeName,
+                                                                methodName);
+
+        boolean end2Matches = end2Constrained
+                                      && ((end2EntityGUIDs == null) || (end2EntityGUIDs.contains(relationship.getEntityTwoProxy().getGUID())))
+                                      && this.endEntityIsOfType(relationship.getMetadataCollectionName(),
+                                                                relationship.getEntityTwoProxy(),
+                                                                end2EntityTypeName,
+                                                                methodName);
+
+        if ((! end1Constrained) && (! end2Constrained))
         {
-            return ((end1EntityGUIDs == null) || (end1EntityGUIDs.contains(relationship.getEntityOneProxy().getGUID())))
-                || ((end2EntityGUIDs == null) || (end2EntityGUIDs.contains(relationship.getEntityTwoProxy().getGUID())));
-        }
-        if (endMatchCriteria == EndMatchCriteria.BOTH)
-        {
-            return ((end1EntityGUIDs == null) || (end1EntityGUIDs.contains(relationship.getEntityOneProxy().getGUID())))
-                    && ((end2EntityGUIDs == null) || (end2EntityGUIDs.contains(relationship.getEntityTwoProxy().getGUID())));
+            /*
+             * Neither end was asked about, so the end criteria exclude nothing - whichever criteria were named.
+             */
+            return true;
         }
 
-        // EndMatchCriteria.NONE
-        return ((end1EntityGUIDs == null) || (! end1EntityGUIDs.contains(relationship.getEntityOneProxy().getGUID())))
-                && ((end2EntityGUIDs == null) || (! end2EntityGUIDs.contains(relationship.getEntityTwoProxy().getGUID())));
+        if (endMatchCriteria == EndMatchCriteria.ANY)
+        {
+            return end1Matches || end2Matches;
+        }
+
+        if (endMatchCriteria == EndMatchCriteria.BOTH)
+        {
+            return ((! end1Constrained) || end1Matches) && ((! end2Constrained) || end2Matches);
+        }
+
+        /*
+         * EndMatchCriteria.NONE - the relationships wanted are the ones left over when the relationships
+         * that match are taken away, so no constrained end may match.  An unconstrained end never matches,
+         * so it does not narrow the result.
+         */
+        return (! end1Matches) && (! end2Matches);
+    }
+
+
+    /**
+     * Return whether the entity at one end of a relationship is of the requested type, subtypes included.
+     *
+     * @param sourceName name of the caller, used in any error message
+     * @param endProxy the entity at that end
+     * @param endEntityTypeName the type it must be, or null if that end is not constrained by type
+     * @param methodName calling method
+     * @return true if the end is unconstrained or the entity is of that type
+     */
+    private boolean endEntityIsOfType(String      sourceName,
+                                      EntityProxy endProxy,
+                                      String      endEntityTypeName,
+                                      String      methodName)
+    {
+        if (endEntityTypeName == null)
+        {
+            return true;
+        }
+
+        if (endProxy == null)
+        {
+            return false;
+        }
+
+        return this.isATypeOf(sourceName, endProxy, endEntityTypeName, methodName);
     }
 
 

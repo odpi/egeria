@@ -516,6 +516,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param steward       Optional relationship property  to match
      * @param source       Optional relationship property  to match
      * @param queryOptions multiple options to control the query
+     * @param methodName   calling method
      *
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -2022,6 +2023,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param elementGUID unique identifier of the metadata element to link
      * @param scopeGUID identifier of the governance definition to link
      * @param makeAnchorOptions  options to control access to open metadata
+     * @param properties properties for the relationship
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2095,6 +2097,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param elementGUID unique identifier of the metadata element to link
      * @param glossaryTermGUID identifier of the glossary term to link
      * @param makeAnchorOptions  options to control access to open metadata
+     * @param properties properties for the relationship
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2239,6 +2242,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param elementGUID identifier of the governance definition to link
      * @param resourceGUID unique identifier of the metadata element to link
      * @param makeAnchorOptions  options to control access to open metadata
+     * @param properties properties for the relationship
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2303,6 +2307,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param elementGUID identifier of the governance definition to link
      * @param moreInformationGUID unique identifier of the metadata element to link
      * @param makeAnchorOptions  options to control access to open metadata
+     * @param properties properties for the relationship
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2677,6 +2682,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @param propertyValue value to search for
      * @param propertyNames which properties to look in
      * @param queryOptions multiple options to control the query
+     * @param methodName    calling method
      *
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -2889,6 +2895,62 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
+        return this.getRelationships(userId,
+                                     relationshipTypeName,
+                                     propertyValue,
+                                     propertyNames,
+                                     null,
+                                     null,
+                                     null,
+                                     null,
+                                     null,
+                                     queryOptions,
+                                     methodName);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name, optionally constrained by the entities
+     * at their ends, and with the requested value found in one of the relationship's properties specified.
+     * The value must match exactly.
+     * <br>
+     * Each end may be constrained by the entities allowed there, by the type of entity allowed there, by
+     * both, or by neither.  An end that carries no criteria is not asked about and takes no part in the
+     * match criteria decision.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName name of relationship
+     * @param propertyValue value to search for
+     * @param propertyNames which properties to look in
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to - subtypes
+     *                           of the named type match too
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to - subtypes
+     *                           of the named type match too
+     * @param endMatchCriteria criteria for matching the ends of the relationships
+     * @param queryOptions multiple options to control the query
+     * @param methodName  calling method
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public MetadataRelationshipSummaryList   getRelationships(String              userId,
+                                                              String              relationshipTypeName,
+                                                              String              propertyValue,
+                                                              List<String>        propertyNames,
+                                                              List<String>        end1EntityGUIDs,
+                                                              String              end1EntityTypeName,
+                                                              List<String>        end2EntityGUIDs,
+                                                              String              end2EntityTypeName,
+                                                              EndMatchCriteria    endMatchCriteria,
+                                                              QueryOptions        queryOptions,
+                                                              String              methodName) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
         SearchOptions searchOptions = new SearchOptions(queryOptions);
 
         searchOptions.setStartsWith(true);
@@ -2898,9 +2960,11 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         OpenMetadataRelationshipList relationshipList = openMetadataClient.findRelationshipsBetweenMetadataElements(userId,
                                                                                                                     relationshipTypeName,
                                                                                                                     null,
-                                                                                                                    null,
-                                                                                                                    null,
-                                                                                                                    null,
+                                                                                                                    end1EntityGUIDs,
+                                                                                                                    end1EntityTypeName,
+                                                                                                                    end2EntityGUIDs,
+                                                                                                                    end2EntityTypeName,
+                                                                                                                    endMatchCriteria,
                                                                                                                     propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, searchOptions),
                                                                                                                     queryOptions);
 

@@ -26,6 +26,10 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
     private String       tutRepositoryServerName = null;
     private int          maxSearchResults        = 50;
     private List<String> testEntityTypes         = null;
+    private List<String> testRelationshipTypes   = null;
+    private List<String> testClassificationTypes = null;
+    private int          eventPollCount          = 300;
+    private int          eventPollPeriod         = 100;
 
 
     /**
@@ -127,6 +131,107 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
 
 
     /**
+     * Return the number of times a test case polls while waiting for an event to be propagated and processed.
+     * Together with the poll period this sets how long a test waits before deciding the event is not coming.
+     * <br>
+     * The budget only costs anything when propagation does not happen - a loop that gets what it is waiting
+     * for leaves immediately - so it is set well above what a healthy cohort needs.  It is configurable
+     * because a repository that scans rather than indexes gets slower as a run goes on, and on a loaded
+     * machine that slowness reaches the point where the wait expires and ordinary delay is reported as a
+     * conformance failure.  Raising it on such a machine distinguishes "not yet" from "never"; the default
+     * is left where it is so that an ordinary run reports timing sensitivity rather than hiding it.
+     *
+     * @return number of polls
+     */
+    public int getEventPollCount()
+    {
+        return eventPollCount;
+    }
+
+
+    /**
+     * Set up the number of times a test case polls while waiting for an event.
+     *
+     * @param eventPollCount number of polls
+     */
+    public void setEventPollCount(int eventPollCount)
+    {
+        this.eventPollCount = eventPollCount;
+    }
+
+
+    /**
+     * Return the interval in milliseconds between polls while waiting for an event.
+     *
+     * @return milliseconds
+     */
+    public int getEventPollPeriod()
+    {
+        return eventPollPeriod;
+    }
+
+
+    /**
+     * Set up the interval in milliseconds between polls while waiting for an event.
+     *
+     * @param eventPollPeriod milliseconds
+     */
+    public void setEventPollPeriod(int eventPollPeriod)
+    {
+        this.eventPollPeriod = eventPollPeriod;
+    }
+
+
+    /**
+     * Return the list of relationship types to test.  If the value is null or empty then every relationship
+     * type whose two ends are both available for testing is used.  Naming types here narrows that set - the
+     * ends still have to be available, so naming a relationship whose ends are not among the entity types
+     * being tested does not bring it into the run.
+     *
+     * @return list of relationship type names
+     */
+    public List<String> getTestRelationshipTypes()
+    {
+        return testRelationshipTypes;
+    }
+
+
+    /**
+     * Set up the list of relationship types to test.
+     *
+     * @param testRelationshipTypes list of relationship type names (or null to test all available types)
+     */
+    public void setTestRelationshipTypes(List<String> testRelationshipTypes)
+    {
+        this.testRelationshipTypes = testRelationshipTypes;
+    }
+
+
+    /**
+     * Return the list of classification types to test.  If the value is null or empty then every
+     * classification type with a valid entity among those being tested is used.  Naming types here narrows
+     * that set - a classification still has to have a valid entity type in the run to be testable.
+     *
+     * @return list of classification type names
+     */
+    public List<String> getTestClassificationTypes()
+    {
+        return testClassificationTypes;
+    }
+
+
+    /**
+     * Set up the list of classification types to test.
+     *
+     * @param testClassificationTypes list of classification type names (or null to test all available types)
+     */
+    public void setTestClassificationTypes(List<String> testClassificationTypes)
+    {
+        this.testClassificationTypes = testClassificationTypes;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -137,6 +242,11 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
         return "ConformanceSuiteConfig{" +
                 "tutRepositoryServerName='" + tutRepositoryServerName + '\'' +
                 "maxSearchResults='" + maxSearchResults + '\'' +
+                ", testEntityTypes=" + testEntityTypes +
+                ", testRelationshipTypes=" + testRelationshipTypes +
+                ", testClassificationTypes=" + testClassificationTypes +
+                ", eventPollCount=" + eventPollCount +
+                ", eventPollPeriod=" + eventPollPeriod +
                 '}';
     }
 
@@ -160,7 +270,12 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
         }
         RepositoryConformanceWorkbenchConfig that = (RepositoryConformanceWorkbenchConfig) objectToCompare;
         return Objects.equals(getTutRepositoryServerName(), that.getTutRepositoryServerName())
-                && Objects.equals(getMaxSearchResults(), that.getMaxSearchResults());
+                && Objects.equals(getMaxSearchResults(), that.getMaxSearchResults())
+                && Objects.equals(getTestEntityTypes(), that.getTestEntityTypes())
+                && Objects.equals(getTestRelationshipTypes(), that.getTestRelationshipTypes())
+                && Objects.equals(getTestClassificationTypes(), that.getTestClassificationTypes())
+                && (getEventPollCount() == that.getEventPollCount())
+                && (getEventPollPeriod() == that.getEventPollPeriod());
     }
 
 
@@ -172,6 +287,8 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
     @Override
     public int hashCode()
     {
-        return Objects.hash(getTutRepositoryServerName(), getMaxSearchResults());
+        return Objects.hash(getTutRepositoryServerName(), getMaxSearchResults(), getTestEntityTypes(),
+                            getTestRelationshipTypes(), getTestClassificationTypes(),
+                            getEventPollCount(), getEventPollPeriod());
     }
 }

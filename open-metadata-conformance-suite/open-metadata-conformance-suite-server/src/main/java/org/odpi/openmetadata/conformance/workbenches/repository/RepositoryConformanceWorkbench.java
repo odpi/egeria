@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -183,6 +184,16 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
             List<TestSupportedEntitySearch> entitySearchTestCases = new ArrayList<>();
             List<TestSupportedRelationshipSearch> relationshipSearchTestCases = new ArrayList<>();
+            List<TestSupportedRelationshipEndCriteria> relationshipEndCriteriaTestCases = new ArrayList<>();
+            List<TestSupportedEntityClassificationSearch> entityClassificationSearchTestCases = new ArrayList<>();
+            Map<String, List<ClassificationDef>> classificationsByEntity = new HashMap<>();
+            Map<String, EntityDef>               entityDefsByName        = new HashMap<>();
+            List<TestSupportedInstanceCounts> instanceCountTestCases = new ArrayList<>();
+            List<TestSupportedEntitySubtypeSearch> entitySubtypeSearchTestCases = new ArrayList<>();
+            List<TestSupportedRelationshipSubtypeSearch> relationshipSubtypeSearchTestCases = new ArrayList<>();
+            Map<String, RelationshipDef>           relationshipDefsByName  = new HashMap<>();
+            List<TestSupportedExternalInstances> externalInstanceTestCases = new ArrayList<>();
+            List<TestSupportedEffectivityConditions> effectivityConditionTestCases = new ArrayList<>();
 
             Map<String, EntityDef> entityDefs = typeDefGalleryTestCase.getEntityDefs();
             List<RelationshipDef> relationshipDefs = typeDefGalleryTestCase.getRelationshipDefs();
@@ -295,6 +306,18 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
                     TestSupportedEntitySearch testEntitySearch = new TestSupportedEntitySearch(workPad, entityDef);
                     entitySearchTestCases.add(testEntitySearch);
+
+                    TestSupportedEntitySubtypeSearch testEntitySubtypeSearch = new TestSupportedEntitySubtypeSearch(workPad, entityDef, entityDefs);
+                    entitySubtypeSearchTestCases.add(testEntitySubtypeSearch);
+
+                    TestSupportedInstanceCounts testInstanceCounts = new TestSupportedInstanceCounts(workPad, entityDef);
+                    instanceCountTestCases.add(testInstanceCounts);
+
+                    TestSupportedExternalInstances testExternalInstances = new TestSupportedExternalInstances(workPad, entityDef);
+                    externalInstanceTestCases.add(testExternalInstances);
+
+                    TestSupportedEffectivityConditions testEffectivityConditions = new TestSupportedEffectivityConditions(workPad, entityDef);
+                    effectivityConditionTestCases.add(testEffectivityConditions);
                 }
             }
 
@@ -318,6 +341,11 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
                     TestSupportedRelationshipSearch testRelationshipSearch = new TestSupportedRelationshipSearch(workPad, entityDefs, relationshipDef);
                     relationshipSearchTestCases.add(testRelationshipSearch);
+
+                    TestSupportedRelationshipEndCriteria testRelationshipEndCriteria = new TestSupportedRelationshipEndCriteria(workPad, entityDefs, relationshipDef);
+                    relationshipEndCriteriaTestCases.add(testRelationshipEndCriteria);
+
+                    relationshipDefsByName.put(relationshipDef.getName(), relationshipDef);
                 }
             }
 
@@ -345,6 +373,14 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                                     new TestSupportedReferenceCopyClassificationLifecycle(workPad, entityDef, classificationDef);
 
                             referenceCopyClassificationTestCases.add(testReferenceCopyClassificationLifecycle);
+
+                            /*
+                             * Collected per entity type rather than per classification: the search test needs
+                             * to name more than one classification at a time to exercise ALL properly.
+                             */
+                            classificationsByEntity.computeIfAbsent(entityDef.getName(), name -> new ArrayList<>())
+                                                   .add(classificationDef);
+                            entityDefsByName.put(entityDef.getName(), entityDef);
                         }
                     }
                 }
@@ -417,6 +453,69 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             }
 
             for (TestSupportedRelationshipReidentify testCase : relationshipReidentifyTestCases)
+            {
+                testCase.executeTest();
+                testCase.cleanTest();
+            }
+
+            for (TestSupportedRelationshipEndCriteria testCase : relationshipEndCriteriaTestCases)
+            {
+                testCase.executeTest();
+                testCase.cleanTest();
+            }
+
+            for (Map.Entry<String, List<ClassificationDef>> entry : classificationsByEntity.entrySet())
+            {
+                entityClassificationSearchTestCases.add(
+                        new TestSupportedEntityClassificationSearch(workPad,
+                                                                    entityDefsByName.get(entry.getKey()),
+                                                                    entry.getValue()));
+            }
+
+            for (TestSupportedEntityClassificationSearch testCase : entityClassificationSearchTestCases)
+            {
+                testCase.executeTest();
+                testCase.cleanTest();
+            }
+
+            for (TestSupportedEntitySubtypeSearch testCase : entitySubtypeSearchTestCases)
+            {
+                testCase.executeTest();
+                testCase.cleanTest();
+            }
+
+            /*
+             * Built here rather than in the loop above because each one needs the completed map of the
+             * relationship types in the run, to find a subtype that is itself being tested.
+             */
+            if (relationshipDefs != null)
+            {
+                for (RelationshipDef relationshipDef : relationshipDefs)
+                {
+                    relationshipSubtypeSearchTestCases.add(
+                            new TestSupportedRelationshipSubtypeSearch(workPad, entityDefs, relationshipDef, relationshipDefsByName));
+                }
+            }
+
+            for (TestSupportedRelationshipSubtypeSearch testCase : relationshipSubtypeSearchTestCases)
+            {
+                testCase.executeTest();
+                testCase.cleanTest();
+            }
+
+            for (TestSupportedInstanceCounts testCase : instanceCountTestCases)
+            {
+                testCase.executeTest();
+                testCase.cleanTest();
+            }
+
+            for (TestSupportedExternalInstances testCase : externalInstanceTestCases)
+            {
+                testCase.executeTest();
+                testCase.cleanTest();
+            }
+
+            for (TestSupportedEffectivityConditions testCase : effectivityConditionTestCases)
             {
                 testCase.executeTest();
                 testCase.cleanTest();

@@ -24,6 +24,23 @@ plugins {
  */
 
 /*
+ * Modules whose javadoc is complete enough to hold the line.  For these, doclint's "missing" group is
+ * switched on and its findings fail the build, so a parameter cannot be added without documenting it.
+ *
+ * Everywhere else keeps the previous behaviour - doclint runs, but the "missing" group is disabled -
+ * because turning it on across the whole repository at once would fail on documentation debt that
+ * predates the check.  The intent is to clear that debt a module at a time and move each module into
+ * this list as it is cleared, rather than leave the check switched off everywhere for ever.
+ */
+ext.javadocStrictModules = [
+        // Empty for now.  The mechanism below is wired and proven, but no module is clean enough to hold
+        // the line yet: doclint's "missing" group also requires a comment on every member it can see, and
+        // repository-services-apis - the nearest candidate, and the one whose @param tags have been filled
+        // in - still reports 95 "no comment" warnings, mostly on private fields.  Clear a module's warnings,
+        // then add it here, and the check will keep it clear.
+]
+
+/*
  * Configuration for all projects - INCLUDING this one
  */
 allprojects {
@@ -92,7 +109,16 @@ subprojects {
         }
 
         tasks.withType(Javadoc).configureEach {
-            options.addStringOption('Xdoclint:-missing', '-quiet')
+            if (project.path in rootProject.javadocStrictModules) {
+                // Full doclint, including the "missing" group that catches an undocumented parameter,
+                // return value or exception.  -Werror turns those findings into a build failure rather
+                // than a warning scrolling past in the log, which is the only way they stay fixed.
+                options.addStringOption('Xdoclint:all', '-quiet')
+                options.addBooleanOption('Werror', true)
+            }
+            else {
+                options.addStringOption('Xdoclint:-missing', '-quiet')
+            }
         }
 
         // javadoc

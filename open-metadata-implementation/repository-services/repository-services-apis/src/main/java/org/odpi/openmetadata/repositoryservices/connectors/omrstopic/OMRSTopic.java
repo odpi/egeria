@@ -50,6 +50,7 @@ public interface OMRSTopic
      * Sends the supplied event to the topic.
      *
      * @param event OMRSRegistryEvent object containing the event properties.
+     * @return future that completes true once the event has been sent
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
     CompletableFuture<Boolean> sendRegistryEvent(OMRSRegistryEvent event) throws ConnectorCheckedException;

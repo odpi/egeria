@@ -1432,14 +1432,24 @@ public interface OMRSRepositoryValidator
      * Test that the ends of this relationship match the requested end guids and match criteria.
      *
      * @param end1EntityGUIDs optional list of the unique identifiers (guids) for entities that must be at end 1 of the relationship.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.
+     *                           Subtypes of the named type match too.  This is independent of
+     *                           end1EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that start at any entity of that type.
      * @param end2EntityGUIDs optional list of the unique identifiers (guids) for entities that must be at end 2 of the relationship.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.
+     *                           Subtypes of the named type match too.  This is independent of
+     *                           end2EntityGUIDs: supplying the type on its own, with the guids left null,
+     *                           asks for the relationships that end at any entity of that type.
      * @param endMatchCriteria criteria for matching the ends of the relationship.
      * @param relationship relationship to test
      * @return boolean property indicating whether the ends match
      * @throws InvalidParameterException invalid search criteria
      */
     boolean verifyMatchingRelationshipEnds(List<String>          end1EntityGUIDs,
+                                           String                end1EntityTypeName,
                                            List<String>          end2EntityGUIDs,
+                                           String                end2EntityTypeName,
                                            EndMatchCriteria      endMatchCriteria,
                                            Relationship          relationship) throws InvalidParameterException;
 

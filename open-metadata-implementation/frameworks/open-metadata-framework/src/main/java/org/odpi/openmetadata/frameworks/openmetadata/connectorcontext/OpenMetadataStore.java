@@ -32,6 +32,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * @param localServerName local server where this client is running - used for error handling
      * @param localServiceName local service that his connector is hosted by - used for error handling
      * @param connectorUserId the userId to use with all requests for open metadata
+     * @param connectorGUID      the unique identifier that represents this connector in open metadata
      * @param externalSourceGUID unique identifier of the software server capability for the source of metadata
      * @param externalSourceName unique name of the software server capability for the source of metadata
      * @param openMetadataClient client to access the open metadata store
@@ -682,6 +683,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
      * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
      *                           include in the search results. Null means all subtypes.
      * @param searchProperties Optional list of entity property conditions to match.
+     * @param matchClassifications Optional list of entity classifications to match.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -828,6 +830,55 @@ public class OpenMetadataStore extends ConnectorContextClientBase
 
 
     /**
+     * Return a list of relationships that match the requested conditions, including the types of the entities
+     * that must be at each end.  The results can be received as a series of pages.
+     *
+     * @param relationshipTypeName relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if the queryOptions' skipSubtypes flag is true, exclude from) the search results.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.  Subtypes of
+     *                           the named type match too.  It is independent of the end 1 guids: naming the type
+     *                           on its own asks for the relationships that start at any entity of that type.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.  Subtypes of
+     *                           the named type match too.  It is independent of the end 2 guids.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param searchProperties Optional list of relationship property conditions to match.
+     * @param queryOptions multiple options to control the query
+     *
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the connector is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
+                                                                                 List<String>     relationshipSubtypeNames,
+                                                                                 List<String>     end1EntityGUIDs,
+                                                                                 String           end1EntityTypeName,
+                                                                                 List<String>     end2EntityGUIDs,
+                                                                                 String           end2EntityTypeName,
+                                                                                 EndMatchCriteria endMatchCriteria,
+                                                                                 SearchProperties searchProperties,
+                                                                                 QueryOptions     queryOptions) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
+    {
+        return openMetadataClient.findRelationshipsBetweenMetadataElements(connectorUserId,
+                                                                           relationshipTypeName,
+                                                                           relationshipSubtypeNames,
+                                                                           end1EntityGUIDs,
+                                                                           end1EntityTypeName,
+                                                                           end2EntityGUIDs,
+                                                                           end2EntityTypeName,
+                                                                           endMatchCriteria,
+                                                                           searchProperties,
+                                                                           queryOptions);
+    }
+
+
+    /**
      * Return a count of the relationships that match the requested conditions.  This has the same search
      * semantics as findRelationshipsBetweenMetadataElements(), but returns the number of matching relationships
      * rather than the relationships themselves.
@@ -862,6 +913,57 @@ public class OpenMetadataStore extends ConnectorContextClientBase
                                                                             relationshipSubtypeNames,
                                                                             end1EntityGUIDs,
                                                                             end2EntityGUIDs,
+                                                                            endMatchCriteria,
+                                                                            searchProperties,
+                                                                            queryOptions);
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions, including the types of the
+     * entities that must be at each end.  This has the same search semantics as
+     * findRelationshipsBetweenMetadataElements(), but returns the number of matching relationships rather
+     * than the relationships themselves.
+     *
+     * @param relationshipTypeName relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if the queryOptions' skipSubtypes flag is true, exclude from) the search results.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.  Subtypes of
+     *                           the named type match too.  It is independent of the end 1 guids: naming the type
+     *                           on its own asks for the relationships that start at any entity of that type.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.  Subtypes of
+     *                           the named type match too.  It is independent of the end 2 guids.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param searchProperties Optional list of relationship property conditions to match.
+     * @param queryOptions multiple options to control the query
+     *
+     * @return the number of relationships matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the connector is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public long countRelationshipsBetweenMetadataElements(String           relationshipTypeName,
+                                                          List<String>     relationshipSubtypeNames,
+                                                          List<String>     end1EntityGUIDs,
+                                                          String           end1EntityTypeName,
+                                                          List<String>     end2EntityGUIDs,
+                                                          String           end2EntityTypeName,
+                                                          EndMatchCriteria endMatchCriteria,
+                                                          SearchProperties searchProperties,
+                                                          QueryOptions     queryOptions) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        return openMetadataClient.countRelationshipsBetweenMetadataElements(connectorUserId,
+                                                                            relationshipTypeName,
+                                                                            relationshipSubtypeNames,
+                                                                            end1EntityGUIDs,
+                                                                            end1EntityTypeName,
+                                                                            end2EntityGUIDs,
+                                                                            end2EntityTypeName,
                                                                             endMatchCriteria,
                                                                             searchProperties,
                                                                             queryOptions);
