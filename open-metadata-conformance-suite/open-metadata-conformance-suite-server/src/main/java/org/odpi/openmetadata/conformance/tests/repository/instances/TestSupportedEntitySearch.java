@@ -233,6 +233,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
      *
      * @throws Exception something went wrong with the test.
      */
+    @Override
     protected void run() throws Exception
     {
 
@@ -244,6 +245,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
      *
      * @throws Exception something went wrong with the test.
      */
+    @Override
     protected void run(TestPhase phase) throws Exception
     {
 

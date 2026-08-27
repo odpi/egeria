@@ -279,9 +279,9 @@ public class ConnectionClient extends ConnectorContextClientBase
 
 
     /**
-     * Create an AssetConnection relationship between an asset and its connection.
+     * Create a ResourceConnection relationship between an element and the connection to its digital resource.
      *
-     * @param assetGUID       unique identifier of the asset
+     * @param elementGUID            unique identifier of the element
      * @param connectionGUID            unique identifier of the connection
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
@@ -289,34 +289,34 @@ public class ConnectionClient extends ConnectorContextClientBase
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkAssetToConnection(String                    assetGUID,
-                                      String                    connectionGUID,
-                                      MakeAnchorOptions         metadataSourceOptions,
-                                      AssetConnectionProperties relationshipProperties) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
+    public void linkResourceToConnection(String                       elementGUID,
+                                         String                       connectionGUID,
+                                         MakeAnchorOptions            metadataSourceOptions,
+                                         ResourceConnectionProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
     {
-        connectionHandler.linkAssetToConnection(connectorUserId, assetGUID, connectionGUID, metadataSourceOptions, relationshipProperties);
+        connectionHandler.linkResourceToConnection(connectorUserId, elementGUID, connectionGUID, metadataSourceOptions, relationshipProperties);
     }
 
 
     /**
-     * Detach an asset from one of its connections.
+     * Detach an element from one of its connections.
      *
-     * @param assetGUID              unique identifier of the asset
+     * @param elementGUID            unique identifier of the element
      * @param connectionGUID          unique identifier of the connection
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachAssetFromConnection(String        assetGUID,
-                                          String        connectionGUID,
-                                          DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
+    public void detachResourceFromConnection(String        elementGUID,
+                                             String        connectionGUID,
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
-        connectionHandler.detachAssetFromConnection(connectorUserId, assetGUID, connectionGUID, deleteOptions);
+        connectionHandler.detachResourceFromConnection(connectorUserId, elementGUID, connectionGUID, deleteOptions);
     }
 
 

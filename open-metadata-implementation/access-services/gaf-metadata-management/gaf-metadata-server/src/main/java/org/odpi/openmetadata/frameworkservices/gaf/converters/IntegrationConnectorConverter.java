@@ -101,7 +101,7 @@ public class IntegrationConnectorConverter<B> extends OMFConverter<B>
                         {
                             if ((relationship != null) && (relationship.getType() != null))
                             {
-                                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName))
+                                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName))
                                 {
                                     String entityGUID = relationship.getEntityTwoProxy().getGUID();
 

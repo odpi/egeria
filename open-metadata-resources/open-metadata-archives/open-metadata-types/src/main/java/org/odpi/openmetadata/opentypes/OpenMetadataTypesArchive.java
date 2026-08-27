@@ -160,6 +160,7 @@ public class OpenMetadataTypesArchive
         update0010BaseModel();
         update0025Locations();
         update0112People();
+        update0205ConnectionLinkage();
         update0221DocumentStores();
         update0423SecurityDefinitions();
         update0505SchemaAttributes();
@@ -204,6 +205,88 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setUpdateMultiLink(true);
         typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0205ConnectionLinkage()
+    {
+        this.archiveBuilder.addRelationshipDef(getResourceConnectionRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateAssetConnectionRelationship());
+    }
+
+
+    /**
+     * ResourceConnection links any referenceable to the connection that describes how to create a connector
+     * that can access its digital resource.  It replaces AssetConnection so that elements that are not assets -
+     * such as software capabilities - can also be linked to a connection.
+     *
+     * @return relationship def
+     */
+    private RelationshipDef getResourceConnectionRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP,
+                                                                               this.archiveBuilder.getRelationshipDef(OpenMetadataType.LABELED_RELATIONSHIP.typeName),
+                                                                               ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "connectedResources";
+        final String                     end1AttributeDescription     = "Elements that describe the digital resource.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "resourceConnections";
+        final String                     end2AttributeDescription     = "Connections to the digital resource.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.CONNECTION.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+    /**
+     * AssetConnection becomes a subtype of ResourceConnection so that existing relationships continue to
+     * work.  It is deprecated in favour of ResourceConnection.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateAssetConnectionRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName));
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
 
         return typeDefPatch;
     }
@@ -955,6 +1038,8 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addEntityDef(getExploringActionProcessEntity());
         this.archiveBuilder.addEntityDef(getSurveyingActionProcessEntity());
         this.archiveBuilder.addEntityDef(getProvisioningActionProcessEntity());
+        this.archiveBuilder.addEntityDef(getDeletingActionProcessEntity());
+        this.archiveBuilder.addEntityDef(getSubscribingActionProcessEntity());
     }
 
 
@@ -1014,6 +1099,30 @@ public class OpenMetadataTypesArchive
     private EntityDef getProvisioningActionProcessEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.PROVISIONING_ACTION_PROCESS,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName));
+    }
+
+
+    /**
+     * DeletingActionProcess deletes requested metadata elements.
+     *
+     * @return entity def
+     */
+    private EntityDef getDeletingActionProcessEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DELETING_ACTION_PROCESS,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName));
+    }
+
+
+    /**
+     * SubscribingActionProcess creates a subscription to a digital resource.
+     *
+     * @return entity def
+     */
+    private EntityDef getSubscribingActionProcessEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SUBSCRIBING_ACTION_PROCESS,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName));
     }
 

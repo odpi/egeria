@@ -259,6 +259,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
      *
      * @throws Exception something went wrong with the test.
      */
+    @Override
     protected void run() throws Exception
     {
 
@@ -270,6 +271,7 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
      *
      * @throws Exception something went wrong with the test.
      */
+    @Override
     protected void run(TestPhase phase) throws Exception
     {
 

@@ -71,6 +71,7 @@ public class TestSupportedExternalInstances extends RepositoryConformanceTestCas
      *
      * @throws Exception something went wrong that the conformance suite could not handle
      */
+    @Override
     protected void run() throws Exception
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();

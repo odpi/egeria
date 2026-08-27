@@ -123,8 +123,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                          assetEntity,
                                                                          assetGUIDParameterName,
                                                                          OpenMetadataType.ASSET.typeName,
-                                                                         OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID,
-                                                                         OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
+                                                                         OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeGUID,
+                                                                         OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName,
                                                                          OpenMetadataType.CONNECTION.typeName,
                                                                          null,
                                                                          null,
@@ -301,7 +301,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                 {
                     if ((repositoryHelper.isTypeOf(serviceName,
                                                    relationship.getType().getTypeDefName(),
-                                                   OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName))
+                                                   OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName))
                             || (repositoryHelper.isTypeOf(serviceName,
                                                           relationship.getType().getTypeDefName(),
                                                           OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName))

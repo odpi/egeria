@@ -290,9 +290,9 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             /*
              * Area 2
              */
-            attributedMetadataElement.setConnectedAssets(super.getRelatedElements(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            attributedMetadataElement.setConnections(super.getRelatedElements(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            processedRelationshipTypes.add(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
+            attributedMetadataElement.setConnectedResources(super.getRelatedElements(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setConnections(super.getRelatedElements(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            processedRelationshipTypes.add(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setConnectorType(super.getRelatedElement(OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setEndpoint(super.getRelatedElement(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName, relatedMetadataElements, false));

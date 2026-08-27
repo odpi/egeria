@@ -23,8 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = AnalyticalActionProcessProperties.class, name = "AnalyticalActionProcessProperties"),
                 @JsonSubTypes.Type(value = CataloguingActionProcessProperties.class, name = "CataloguingActionProcessProperties"),
+                @JsonSubTypes.Type(value = DeletingActionProcessProperties.class, name = "DeletingActionProcessProperties"),
                 @JsonSubTypes.Type(value = ExploringActionProcessProperties.class, name = "ExploringActionProcessProperties"),
                 @JsonSubTypes.Type(value = ProvisioningActionProcessProperties.class, name = "ProvisioningActionProcessProperties"),
+                @JsonSubTypes.Type(value = SubscribingActionProcessProperties.class, name = "SubscribingActionProcessProperties"),
                 @JsonSubTypes.Type(value = SurveyingActionProcessProperties.class, name = "SurveyingActionProcessProperties"),
         })
 public class GovernanceActionProcessProperties extends GovernanceActionProperties

@@ -151,8 +151,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             Relationship relationshipToConnection = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                   assetEntity.getGUID(),
                                                                                                   assetEntity.getType().getTypeDefName(),
-                                                                                                  OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID,
-                                                                                                  OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
+                                                                                                  OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeGUID,
+                                                                                                  OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName,
                                                                                                   2,
                                                                                                   null,
                                                                                                   null,
@@ -328,7 +328,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                           OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName))
                             || (repositoryHelper.isTypeOf(serviceName,
                                                           relationship.getType().getTypeDefName(),
-                                                          OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName)))
+                                                          OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName)))
                     {
                         supplementaryRelationships.add(relationship);
                     }

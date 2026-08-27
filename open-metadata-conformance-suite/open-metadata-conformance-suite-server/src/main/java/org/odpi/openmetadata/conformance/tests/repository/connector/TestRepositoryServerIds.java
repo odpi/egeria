@@ -54,6 +54,7 @@ public class TestRepositoryServerIds extends RepositoryConformanceTestCase
      *
      * @throws Exception something went wrong with the test.
      */
+    @Override
     protected void run() throws Exception
     {
         OMRSRepositoryConnector  repositoryConnector = super.cohortRepositoryConnector;

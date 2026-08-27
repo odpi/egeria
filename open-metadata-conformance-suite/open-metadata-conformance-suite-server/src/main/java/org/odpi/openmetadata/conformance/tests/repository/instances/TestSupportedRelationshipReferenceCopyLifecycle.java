@@ -156,6 +156,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
      *
      * @throws Exception something went wrong with the test.
      */
+    @Override
     protected void run() throws Exception
     {
 

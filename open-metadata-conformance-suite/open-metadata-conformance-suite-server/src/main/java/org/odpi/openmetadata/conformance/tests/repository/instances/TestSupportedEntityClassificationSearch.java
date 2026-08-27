@@ -73,7 +73,7 @@ public class TestSupportedEntityClassificationSearch extends RepositoryConforman
      *
      * @param workPad place for parameters and results
      * @param entityDef the entity type to classify
-     * @param classificationDef the classification type being tested
+     * @param classificationDefs the classification types available; the first is the one being tested
      */
     public TestSupportedEntityClassificationSearch(RepositoryConformanceWorkPad workPad,
                                                    EntityDef                    entityDef,
@@ -99,6 +99,7 @@ public class TestSupportedEntityClassificationSearch extends RepositoryConforman
      *
      * @throws Exception something went wrong that the conformance suite could not handle
      */
+    @Override
     protected void run() throws Exception
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();

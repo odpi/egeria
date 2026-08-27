@@ -36,6 +36,7 @@ public class TestOpenMetadataOrigin extends OpenMetadataPlatformTestCase
      *
      * @throws Exception something went wrong with the test.
      */
+    @Override
     protected void run() throws Exception
     {
         final String urlTemplate = "/open-metadata/platform-services/users/" + workPad.getLocalServerUserId() +  "/server-platform/origin";

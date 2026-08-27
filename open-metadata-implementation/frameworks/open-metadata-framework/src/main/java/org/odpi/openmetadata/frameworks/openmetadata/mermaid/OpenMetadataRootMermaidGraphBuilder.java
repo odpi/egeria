@@ -310,7 +310,7 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
              */
             super.addRelatedElementSummary(openMetadataRootElement.getConnectorType(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummary(openMetadataRootElement.getEndpoint(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
-            super.addRelatedElementSummaries(openMetadataRootElement.getConnectedAssets(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getConnectedResources(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getConnections(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getEmbeddedConnections(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getParentConnections(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);

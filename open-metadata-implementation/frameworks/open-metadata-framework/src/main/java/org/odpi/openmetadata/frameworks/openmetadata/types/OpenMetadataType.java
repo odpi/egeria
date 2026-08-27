@@ -2101,6 +2101,16 @@ public enum OpenMetadataType
                                      EmbeddedConnectionProperties.class),
 
     /**
+     * Link between a metadata element and the connection to its digital resource.
+     */
+    RESOURCE_CONNECTION_RELATIONSHIP("b5ec1608-7415-4b06-b9fb-7a10591a3cd1",
+                                     "ResourceConnection",
+                                     OpenMetadataWikiPages.MODEL_0205_CONNECTION_LINKAGE,
+                                     "afb2db7e-a626-4339-998d-5af1b61b9d43",
+                                     "Link between a metadata element and the connection that describes how to create a connector to access its digital resource.",
+                                     ResourceConnectionProperties.class),
+
+    /**
      * Link between an asset and the connection to its digital resource.
      */
     ASSET_CONNECTION_RELATIONSHIP("c96593a5-9f42-41c8-82a0-16acafc77c44",
@@ -4417,6 +4427,26 @@ public enum OpenMetadataType
                              "71b48b95-de28-4986-be9e-e33bdf4a4637",
                              "A governance action process that is used to survey a digital resource to deeply understand its content and context.",
                              SurveyingActionProcessProperties.class),
+
+    /**
+     * A governance action process that deletes metadata elements.
+     */
+    DELETING_ACTION_PROCESS("c4b4d207-70be-4fd0-b78e-a84d5bf58391",
+                            "DeletingActionProcess",
+                            OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                            "49dfe212-e862-4ef2-9971-a6400f7f7a77",
+                            "A governance action process that is used to delete requested metadata elements.",
+                            DeletingActionProcessProperties.class),
+
+    /**
+     * A governance action process that creates a subscription.
+     */
+    SUBSCRIBING_ACTION_PROCESS("d3847402-c3ad-493e-946a-506205b765f8",
+                               "SubscribingActionProcess",
+                               OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                               "2771d39d-1b12-448d-b5ab-0adf8b078322",
+                               "A governance action process that is used to create a subscription to a digital resource.",
+                               SubscribingActionProcessProperties.class),
 
     /**
      * A description of a call to a governance engine that acts as a template when creating the appropriate engine action instance.
