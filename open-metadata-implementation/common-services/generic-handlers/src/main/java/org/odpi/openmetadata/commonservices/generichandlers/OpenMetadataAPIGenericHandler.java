@@ -692,8 +692,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                      methodName);
                 }
 
-
-                if (OpenMetadataType.ASSET.typeName.equals(anchorEntityType.getTypeDefName()))
+                if (repositoryHelper.isTypeOf(serviceName, anchorEntityType.getTypeDefName(), OpenMetadataType.ASSET.typeName))
                 {
                     if (isUpdate)
                     {

@@ -480,8 +480,8 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
         /*
          * Use the governance action type as a template to create the specific cancel process for the subscription.
          */
-        String cancelSubscriptionGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName() + "::" + subscriptionGUID,
+        String cancelSubscriptionGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.DELETING_ACTION_PROCESS.typeName,
+                                                                                                OpenMetadataType.DELETING_ACTION_PROCESS.typeName + "::" + ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName() + "::" + subscriptionGUID,
                                                                                                 ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName(),
                                                                                                 ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.description,
                                                                                                 GovernanceDomain.DATA_SHARING.getOrdinal(),

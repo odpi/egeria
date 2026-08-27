@@ -289,7 +289,7 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
          */
         if ((super.getCatalogTargetElement() != null) && (super.getCatalogTargetElement().getElementHeader() != null) &&
                 (super.getCatalogTargetElement().getElementHeader().getType() != null) &&
-                (OpenMetadataType.RELATIONAL_DATABASE.typeName.equals(super.getCatalogTargetElement().getElementHeader().getType().getTypeName())))
+                (propertyHelper.isTypeOf(super.getCatalogTargetElement().getElementHeader(), OpenMetadataType.RELATIONAL_DATABASE.typeName)))
         {
             return super.getCatalogTargetElement().getElementHeader().getGUID();
         }
