@@ -2842,7 +2842,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
     {
         String summary = "Delete the asset for " + technologyType.getDeployedImplementationType() + " using the same template properties that were used to create it.  This will delete all of the metadata anchored to the asset and relationships to other entities such as the catalog target relationships.";
 
-        String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+        String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.DELETING_ACTION_PROCESS.typeName,
                                                                    assetType + ":DeleteAssetWithTemplateGovernanceActionProcess",
                                                                    null,
                                                                    assetType + ":DeleteAsset",
@@ -2879,7 +2879,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
                                                                         processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                        OpenMetadataType.DELETING_ACTION_PROCESS.typeName,
                                                                         OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                         null,
                                                                         assetType + "::Delete Asset::Step1",

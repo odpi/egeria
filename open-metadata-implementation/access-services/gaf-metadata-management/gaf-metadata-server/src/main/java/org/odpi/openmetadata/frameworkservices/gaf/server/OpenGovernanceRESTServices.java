@@ -29,6 +29,7 @@ import org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusReques
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -286,14 +287,16 @@ public class OpenGovernanceRESTServices
 
             String processTypeName = governanceActionProcessGraph.getGovernanceActionProcess().getElementHeader().getType().getTypeName();
 
-            if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName.equals(processTypeName))
+            OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId,serverName,methodName);
+
+            if (repositoryHelper.isTypeOf(instanceHandler.getServiceName(), processTypeName, OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName))
             {
                 governanceActionProcessGraph.setFirstProcessStep(this.getFirstProcessStepElement(serverName,
                                                                                                  userId,
                                                                                                  processGUID,
                                                                                                  methodName));
             }
-            else if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName.equals(processTypeName))
+            else if (repositoryHelper.isTypeOf(instanceHandler.getServiceName(), processTypeName, OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName))
             {
                 governanceActionProcessGraph.setFirstProcessStep(this.getFirstEngineStepElement(serverName,
                                                                                                 userId,
@@ -309,7 +312,7 @@ public class OpenGovernanceRESTServices
 
                 processedGUIDs.add(firstProcessStepGUID);
 
-                if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName.equals(processTypeName))
+                if (repositoryHelper.isTypeOf(instanceHandler.getServiceName(), processTypeName, OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName))
                 {
                     getNextProcessSteps(userId,
                                         handler,
@@ -318,7 +321,7 @@ public class OpenGovernanceRESTServices
                                         processedGUIDs,
                                         invalidParameterHandler.getMaxPagingSize());
                 }
-                else if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName.equals(processTypeName))
+                else if (repositoryHelper.isTypeOf(instanceHandler.getServiceName(), processTypeName, OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName))
                 {
                     getNextEngineSteps(userId,
                                         engineActionHandler,

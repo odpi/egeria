@@ -1174,7 +1174,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_IDENTIFIER.getName(), productSubscriptionDefinition.getIdentifier() + "-" + productIdentifier);
             additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_DESCRIPTION.getName(), productSubscriptionDefinition.getDescription());
 
-            String governanceActionProcessGUID = integrationContext.createProcessFromGovernanceActionType(OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
+            String governanceActionProcessGUID = integrationContext.createProcessFromGovernanceActionType(OpenMetadataType.SUBSCRIBING_ACTION_PROCESS.typeName,
                                                                                                           processQualifiedName,
                                                                                                           "Create " + subscriptionName,
                                                                                                           productSubscriptionDefinition.getDescription() + "  Supply the requester (actor entity) as an action target called digitalSubscriptionRequester and the asset where the data is to be sent to as action target named destinationDataSet.",
