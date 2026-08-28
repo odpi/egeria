@@ -112,7 +112,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
                                                                                 OMAGConfigurationErrorException
     {
         final String methodName  = "getEngineHostServicesConfiguration";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/engine-host-services/configuration?delegatingUserId={1}";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/governance-engines?delegatingUserId={1}";
 
         EngineHostServicesResponse restResult = restClient.callEngineHostServicesGetRESTCall(methodName,
                                                                                              serverPlatformRootURL + urlTemplate,
@@ -126,6 +126,41 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
      * =============================================================
      * Configure server making maximum use of defaults
      */
+
+
+    /**
+     * Add one governance engine to the list this Engine Host OMAG Server runs, leaving any engines already
+     * configured in place.  An engine already configured under the same qualified name is replaced.
+     * <br>
+     * This is the call to use when building an engine host's configuration up engine by engine.
+     * {@link #setEngineHostServicesConfig(List)} replaces the whole list in one request, which is the more
+     * convenient shape - but it sends the list as the request body, and a Java {@code List} carries no element
+     * type at runtime, so Jackson writes each {@code EngineConfig} without the {@code "class"} discriminator
+     * that the receiving endpoint requires.  Sending one engine at a time avoids that: a request body that is
+     * a single object is serialized against its own class and keeps its type information.
+     *
+     * @param engine definition of the governance engine to add
+     *
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void addEngine(EngineConfig engine) throws UserNotAuthorizedException,
+                                                      InvalidParameterException,
+                                                      OMAGConfigurationErrorException
+    {
+        final String methodName    = "addEngine";
+        final String configName    = "engine";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/engine?delegatingUserId={1}";
+
+        invalidParameterHandler.validateObject(engine, configName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        engine,
+                                        serverName,
+                                        delegatingUserId);
+    }
 
 
     /**
@@ -143,7 +178,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
     {
         final String methodName    = "setEngineHostServicesConfig";
         final String configName    = "engineHostServicesConfig";
-        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/engine-host-services?delegatingUserId={1}";
+        final String urlTemplate   = "/open-metadata/admin-services/servers/{0}/governance-engines?delegatingUserId={1}";
 
         invalidParameterHandler.validateObject(engineHostServicesConfig, configName, methodName);
 
@@ -167,7 +202,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
                                                  OMAGConfigurationErrorException
     {
         final String methodName  = "clearEngineHostServices";
-        final String urlTemplate = "open-metadata/admin-services/servers/{0}/engine-host-services?delegatingUserId={1}";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/governance-engines?delegatingUserId={1}";
 
         restClient.callVoidDeleteRESTCall(methodName,
                                           serverPlatformRootURL + urlTemplate,

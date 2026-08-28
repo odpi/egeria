@@ -35,7 +35,10 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Date;
+import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Map;
 
 
@@ -240,6 +243,67 @@ public class SpringRESTClientConnector extends RESTClientConnector
         header.set( "Authorization", authHeader );
 
         return header;
+    }
+
+
+    /**
+     * Return the request body in a form that keeps its type information when it is turned into JSON.
+     * <br>
+     * A collection whose entries are all the same class is handed over as an array of that class instead.
+     * Java erases a collection's element type, so Jackson serializes the contents of a plain {@code List}
+     * against a declared type of {@code Object} and writes no type discriminator for them.  Where the
+     * receiving endpoint declares the element type - {@code List<EngineConfig>}, {@code List<Connection>} and
+     * the like - it then refuses the request: "Could not resolve subtype of ...: missing type id property
+     * 'class'".  An array carries its component type, so the discriminator is written.  The same object sent
+     * on its own has always worked, because at the root Jackson uses its runtime type, which is why this
+     * showed up only on the calls that send a collection, and showed up as a 400 from the server rather than
+     * as anything visibly wrong here.
+     * <br>
+     * Substituting an array, rather than serializing the body here and passing the result on, is deliberate.
+     * The message converter that writes this request is configured by Spring - dates are written as ISO text
+     * rather than numbers, among other things - and an ObjectMapper built here would not match it.  Handing
+     * back an array leaves that converter doing the serialization exactly as it did before; the only thing
+     * that changes is that it now knows the component type.
+     * <br>
+     * Anything else is returned untouched, including a collection holding a mixture of classes, one holding a
+     * null, and an empty one: none of those has a single component type to declare.  A map is untouched too.
+     * The same erasure applies to a map's values, but no endpoint declares a map whose value type needs a
+     * discriminator, and there is no equivalent of an array to give one - if such an endpoint is ever added,
+     * this is where it would have to be handled.
+     *
+     * @param requestBody the caller's request body, may be null
+     * @return the object to send
+     */
+    private Object getSerializableRequestBody(Object requestBody)
+    {
+        if (requestBody instanceof Collection<?> collection)
+        {
+            Class<?> elementType = null;
+
+            for (Object element : collection)
+            {
+                if (element == null)
+                {
+                    return requestBody;
+                }
+
+                if (elementType == null)
+                {
+                    elementType = element.getClass();
+                }
+                else if (! elementType.equals(element.getClass()))
+                {
+                    return requestBody;
+                }
+            }
+
+            if (elementType != null)
+            {
+                return collection.toArray((Object[]) Array.newInstance(elementType, collection.size()));
+            }
+        }
+
+        return requestBody;
     }
 
 
@@ -475,7 +539,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             if (headers.isEmpty())
             {
-                responseObject = restTemplate.postForObject(urlTemplate, requestBody, returnClass);
+                responseObject = restTemplate.postForObject(urlTemplate, getSerializableRequestBody(requestBody), returnClass);
             }
             else
             {
@@ -483,7 +547,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
                 if (requestBody != null)
                 {
-                    request = new HttpEntity<>(requestBody, headers);
+                    request = new HttpEntity<>(getSerializableRequestBody(requestBody), headers);
                 }
                 else
                 {
@@ -580,7 +644,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             if (headers.isEmpty())
             {
-                responseObject = restTemplate.postForObject(urlTemplate, requestBody, returnClass, params);
+                responseObject = restTemplate.postForObject(urlTemplate, getSerializableRequestBody(requestBody), returnClass, params);
             }
             else
             {
@@ -588,7 +652,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
                 if (requestBody != null)
                 {
-                    request = new HttpEntity<>(requestBody, headers);
+                    request = new HttpEntity<>(getSerializableRequestBody(requestBody), headers);
                 }
                 else
                 {
@@ -680,11 +744,11 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             if (httpHeaders == null)
             {
-                request = new HttpEntity<>(requestBody);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody));
             }
             else
             {
-                request = new HttpEntity<>(requestBody, httpHeaders);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody), httpHeaders);
             }
 
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, returnClass, params);
@@ -759,11 +823,11 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             if (httpHeaders == null)
             {
-                request = new HttpEntity<>(requestBody);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody));
             }
             else
             {
-                request = new HttpEntity<>(requestBody, httpHeaders);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody), httpHeaders);
             }
 
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, returnClass);
@@ -849,7 +913,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
                 if (requestBody != null)
                 {
-                    request = new HttpEntity<>(requestBody, headers);
+                    request = new HttpEntity<>(getSerializableRequestBody(requestBody), headers);
                 }
                 else
                 {
@@ -944,11 +1008,11 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             if (httpHeaders == null)
             {
-                request = new HttpEntity<>(requestBody);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody));
             }
             else
             {
-                request = new HttpEntity<>(requestBody, httpHeaders);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody), httpHeaders);
             }
 
             ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.DELETE, request, returnClass, params);
@@ -1029,11 +1093,11 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             if (httpHeaders == null)
             {
-                request = new HttpEntity<>(requestBody);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody));
             }
             else
             {
-                request = new HttpEntity<>(requestBody, httpHeaders);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody), httpHeaders);
             }
 
             ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PATCH, request, returnClass, params);
@@ -1119,13 +1183,13 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             if (headers.isEmpty())
             {
-                request = new HttpEntity<>(requestBody);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody));
             }
             else
             {
                 if (requestBody != null)
                 {
-                    request = new HttpEntity<>(requestBody, headers);
+                    request = new HttpEntity<>(getSerializableRequestBody(requestBody), headers);
                 }
                 else
                 {
@@ -1303,11 +1367,11 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             if (httpHeaders == null)
             {
-                request = new HttpEntity<>(requestBody);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody));
             }
             else
             {
-                request = new HttpEntity<>(requestBody, httpHeaders);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody), httpHeaders);
             }
 
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.DELETE, request, responseType, params);
@@ -1390,11 +1454,11 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             if (httpHeaders == null)
             {
-                request = new HttpEntity<>(requestBody);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody));
             }
             else
             {
-                request = new HttpEntity<>(requestBody, httpHeaders);
+                request = new HttpEntity<>(getSerializableRequestBody(requestBody), httpHeaders);
             }
 
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, responseType, params);
