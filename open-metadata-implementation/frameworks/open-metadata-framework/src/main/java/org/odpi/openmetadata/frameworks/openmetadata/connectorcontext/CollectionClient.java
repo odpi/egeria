@@ -1191,7 +1191,7 @@ public class CollectionClient extends ConnectorContextClientBase
     /**
      * Retrieve the digital products that match the search string and optional status.
      *
-     * @param searchString string to search for (may include RegExs)
+     * @param searchString string to search for
      * @param deploymentStatusList   optional status list
      * @param searchOptions   multiple options to control the query
      * @return list of action beans

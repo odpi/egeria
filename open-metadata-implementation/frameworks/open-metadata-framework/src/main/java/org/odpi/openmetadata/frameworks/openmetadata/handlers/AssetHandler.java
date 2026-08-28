@@ -2869,7 +2869,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * Retrieve the Processes that match the search string.
      *
      * @param userId       calling user
-     * @param searchString string to search for (may include RegExs)
+     * @param searchString string to search for
      * @param activityStatusList   optional  status list
      * @param suppliedSearchOptions           multiple options to control the query
      * @return list of action beans
@@ -3017,7 +3017,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * Retrieve the data assets that match the search string and optional content status.
      *
      * @param userId       calling user
-     * @param searchString string to search for (may include RegExs)
+     * @param searchString string to search for
      * @param contentStatus   optional  status
      * @param suppliedSearchOptions   multiple options to control the query
      * @return list of action beans
@@ -3129,7 +3129,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * Retrieve the data sets that match the search string and optional content status.
      *
      * @param userId       calling user
-     * @param searchString string to search for (may include RegExs)
+     * @param searchString string to search for
      * @param deploymentStatusList   optional status list
      * @param suppliedSearchOptions   multiple options to control the query
      * @return list of action beans
@@ -3435,10 +3435,10 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Locate string value in elements that are anchored to assets.  The search string may be a regEx.
+     * Locate string value in elements that are anchored to assets.
      *
      * @param userId calling user
-     * @param searchString value to search for (maybe regEx)
+     * @param searchString value to search for
      * @param searchOptions options to control the search
      * @return found elements organized by asset
      * @throws InvalidParameterException the searchString is invalid

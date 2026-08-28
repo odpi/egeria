@@ -1379,7 +1379,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     @Override
     public List<EntityDetail> findEntitiesByProperty(String               userId,
@@ -1707,7 +1706,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     @Override
     public  List<EntityDetail> findEntitiesByClassification(String               userId,
@@ -1784,8 +1782,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Return a list of entities whose string based property values match the search criteria.  The
-     * search criteria may include regex style wild cards.
+     * Return a list of entities whose string based property values match the search criteria.
      *
      * @param userId                       unique identifier for requesting user.
      * @param entityTypeGUID               GUID of the type of entity to search for. Null means all types will
@@ -1821,8 +1818,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws PagingErrorException          the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
-     * @see OMRSRepositoryHelper#getContainsRegex(String)
      */
     @Override
     public List<EntityDetail> findEntitiesByPropertyValue(String               userId,
@@ -2170,7 +2165,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     @Override
     public  List<Relationship> findRelationships(String               userId,
@@ -2425,7 +2419,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     @Override
     public  List<Relationship> findRelationshipsByProperty(String               userId,
@@ -2498,8 +2491,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Return a list of relationships whose string based property values match the search criteria.  The
-     * search criteria may include regex style wild cards.
+     * Return a list of relationships whose string based property values match the search criteria.
      *
      * @param userId                  unique identifier for requesting user.
      * @param relationshipTypeGUID    GUID of the type of entity to search for. Null means all types will
@@ -2533,8 +2525,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws PagingErrorException          the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
-     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
-     * @see OMRSRepositoryHelper#getContainsRegex(String)
      */
     @Override
     public  List<Relationship> findRelationshipsByPropertyValue(String               userId,

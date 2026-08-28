@@ -152,7 +152,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * Retrieve the digital products that match the search string and optional status.
      *
      * @param userId       calling user
-     * @param searchString string to search for (may include RegExs)
+     * @param searchString string to search for
      * @param deploymentStatusList   optional status list
      * @param suppliedSearchOptions   multiple options to control the query
      * @return list of action beans

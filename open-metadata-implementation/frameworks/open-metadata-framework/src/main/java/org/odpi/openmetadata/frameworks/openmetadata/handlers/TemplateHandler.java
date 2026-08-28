@@ -22,7 +22,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * TemplateManager provides specialist methods for managing templates

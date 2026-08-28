@@ -1361,7 +1361,7 @@ public class OpenMetadataStoreRESTServices
 
     /**
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * title, text, summary, identifier or description.
      * The breadth of the search is determined by the supplied anchorGUID.
      *
      * @param serverName name of the server instances for this request
@@ -1435,7 +1435,7 @@ public class OpenMetadataStoreRESTServices
 
     /**
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * title, text, summary, identifier, or description.
      * The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
      *
      * @param serverName name of the server instances for this request
@@ -1508,7 +1508,7 @@ public class OpenMetadataStoreRESTServices
 
     /**
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-     * title, text, summary, identifier, or description.  The search string is interpreted as a regular expression (RegEx).
+     * title, text, summary, identifier, or description.
      * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
      *
      * @param serverName name of the server instances for this request

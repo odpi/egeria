@@ -1141,7 +1141,7 @@ public class AssetClient extends ConnectorContextClientBase
     /**
      * Retrieve the Processes that match the search string.
      *
-     * @param searchString string to search for (may include RegExs)
+     * @param searchString string to search for
      * @param activityStatus   optional status list
      * @param suppliedSearchOptions           multiple options to control the query
      * @return list of action beans
@@ -1183,7 +1183,7 @@ public class AssetClient extends ConnectorContextClientBase
     /**
      * Retrieve the data assets that match the search string and optional content status.
      *
-     * @param searchString string to search for (may include RegExs)
+     * @param searchString string to search for
      * @param contentStatusList   optional status list
      * @param searchOptions   multiple options to control the query
      * @return list of action beans
@@ -1225,7 +1225,7 @@ public class AssetClient extends ConnectorContextClientBase
     /**
      * Retrieve the data sets that match the search string and optional content status.
      *
-     * @param searchString string to search for (may include RegExs)
+     * @param searchString string to search for
      * @param deploymentStatusList   optional status list
      * @param searchOptions   multiple options to control the query
      * @return list of action beans

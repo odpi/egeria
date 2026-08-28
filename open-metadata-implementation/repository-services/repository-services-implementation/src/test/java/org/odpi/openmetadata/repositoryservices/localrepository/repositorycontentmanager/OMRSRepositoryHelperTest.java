@@ -10,7 +10,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorExce
 import org.testng.annotations.Test;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 import static org.testng.Assert.*;
 

@@ -2372,8 +2372,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
-     * @param matchProperties list of properties used to narrow the search.  The property values may include
-     *                        regex style wild cards.
+     * @param matchProperties list of properties used to narrow the search.
      * @param matchCriteria Enum defining how the properties should be matched to the relationships in the repository.
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -3156,8 +3155,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Return a list of entities whose string based property values match the search criteria.  The
-     * search criteria may include regex style wild cards.
+     * Return a list of entities whose string based property values match the search criteria.
      *
      * @param userId                       unique identifier for requesting user.
      * @param entityTypeGUID               GUID of the type of entity to search for. Null means all types will
@@ -3676,8 +3674,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Return a list of relationships whose string based property values match the search criteria.  The
-     * search criteria may include regex style wild cards.
+     * Return a list of relationships whose string based property values match the search criteria.
      *
      * @param userId                  unique identifier for requesting user.
      * @param relationshipTypeGUID    GUID of the type of entity to search for. Null means all types will
