@@ -8630,7 +8630,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param resultTypeName unique value of the type that the results should match with
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
      * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
-     *                        RegEx partial match
+     *                         partial match
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
@@ -8868,7 +8868,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param resultTypeName unique value of the type that the results should match with
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
      * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
-     *                        RegEx partial match
+     *                         partial match
      * @param caseInsensitive set to true to have a case-insensitive exact match regular expression
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity

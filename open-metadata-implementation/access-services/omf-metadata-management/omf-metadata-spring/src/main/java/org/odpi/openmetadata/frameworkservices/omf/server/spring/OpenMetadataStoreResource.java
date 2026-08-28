@@ -581,7 +581,7 @@ public class OpenMetadataStoreResource
 
     /**
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-     * title, text, summary, identifier, or description.  The search string is interpreted as a regular expression (RegEx).
+     * title, text, summary, identifier, or description.
      * The breadth of the search is determined by the supplied anchorGUID.
      *
      * @param serverName name of the server instances for this request
@@ -598,7 +598,7 @@ public class OpenMetadataStoreResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsForAnchor",
-            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).  The breadth of the search is determined by the supplied anchorGUID.",
+            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The breadth of the search is determined by the supplied anchorGUID.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/features/anchor-management/overview/"))
 
@@ -613,7 +613,7 @@ public class OpenMetadataStoreResource
 
     /**
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * title, text, summary, identifier, or description.
      * The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
      *
      * @param serverName name of the server instances for this request
@@ -630,7 +630,7 @@ public class OpenMetadataStoreResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsInAnchorDomain",
-            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).  The breadth of the search is determined by the supplied domain name.",
+            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The breadth of the search is determined by the supplied domain name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/features/anchor-management/overview/"))
 
@@ -645,7 +645,7 @@ public class OpenMetadataStoreResource
 
     /**
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-     * title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+     * title, text, summary, identifier or description.
      * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
      *
      * @param serverName name of the server instances for this request
@@ -663,7 +663,7 @@ public class OpenMetadataStoreResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsInAnchorScope",
-            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).  The breadth of the search is determined by the supplied scope guid.",
+            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The breadth of the search is determined by the supplied scope guid.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/features/anchor-management/overview/"))
 

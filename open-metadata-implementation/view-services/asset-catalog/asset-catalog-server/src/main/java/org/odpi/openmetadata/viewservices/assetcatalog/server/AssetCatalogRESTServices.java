@@ -149,7 +149,7 @@ public class AssetCatalogRESTServices extends TokenController
 
     /**
      * Return a list of assets with the requested search string in their name, qualified name
-     * or description.  The search string is interpreted as a regular expression (RegEx).
+     * or description.
      *
      * @param serverName name of the server instances for this request
      * @param requestBody string to search for in text

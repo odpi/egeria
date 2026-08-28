@@ -2442,8 +2442,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Return a list of entities whose string based property values match the search criteria.  The
-     * search criteria may include regex style wild cards.
+     * Return a list of entities whose string based property values match the search criteria.
      *
      * @param userId                       unique identifier for requesting user.
      * @param entityTypeGUID               GUID of the type of entity to search for. Null means all types will
@@ -3032,8 +3031,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Return a list of relationships whose string based property values match the search criteria.  The
-     * search criteria may include regex style wild cards.
+     * Return a list of relationships whose string based property values match the search criteria.
      *
      * @param userId                  unique identifier for requesting user.
      * @param relationshipTypeGUID    GUID of the type of entity to search for. Null means all types will

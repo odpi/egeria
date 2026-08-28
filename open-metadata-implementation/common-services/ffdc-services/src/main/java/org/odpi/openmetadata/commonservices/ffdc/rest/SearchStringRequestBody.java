@@ -78,7 +78,7 @@ public class SearchStringRequestBody extends SearchOptions
     /**
      * Return the search request.
      *
-     * @return regEx expression
+     * @return value required
      */
     public String getSearchString()
     {
@@ -89,7 +89,7 @@ public class SearchStringRequestBody extends SearchOptions
     /**
      * Set up the search.
      *
-     * @param searchString regEx expression
+     * @param searchString value required
      */
     public void setSearchString(String searchString)
     {

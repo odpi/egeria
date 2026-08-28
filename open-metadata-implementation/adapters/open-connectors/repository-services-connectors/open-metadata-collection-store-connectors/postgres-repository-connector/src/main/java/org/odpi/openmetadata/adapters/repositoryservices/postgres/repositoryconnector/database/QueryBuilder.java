@@ -149,7 +149,7 @@ public class QueryBuilder
      * Set up the Java regular expression used to match against any of the String property values
      * within instances of the specified type(s).
      *
-     * @param searchString regex
+     * @param searchString desired value
      * @param startsWith true if the search should be for strings that start with the search string
      * @param endsWith true if the search should be for strings that end with the search string
      * @param ignoreCase true if the search should be case-insensitive

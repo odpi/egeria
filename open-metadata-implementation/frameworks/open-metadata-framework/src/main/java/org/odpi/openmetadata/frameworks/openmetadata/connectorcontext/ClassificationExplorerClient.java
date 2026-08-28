@@ -176,7 +176,7 @@ public class ClassificationExplorerClient extends ConnectorContextClientBase
     /**
      * Retrieve the authored elements that match the search string and optional content status.
      *
-     * @param searchString string to search for (may include RegExs)
+     * @param searchString string to search for
      * @param contentStatusList   optional status list
      * @param searchOptions   multiple options to control the query
      * @return list of action beans

@@ -131,7 +131,7 @@ public class AssetCatalogResource
 
 
     /**
-     * Locate string value in elements that are anchored to assets.  The search string may be a regEx.
+     * Locate string value in elements that are anchored to assets.
      *
      * @param serverName name of the server instances for this request
      * @param requestBody string to search for in text
@@ -145,7 +145,7 @@ public class AssetCatalogResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findInAssetDomain",
-            description="Locate string value in elements that are anchored to assets.  The search string is a regular expression (regEx).",
+            description="Locate string value in elements that are anchored to assets.",
             externalDocs=@ExternalDocumentation(description="Assets",
                     url="https://egeria-project.org/concepts/asset/"))
 

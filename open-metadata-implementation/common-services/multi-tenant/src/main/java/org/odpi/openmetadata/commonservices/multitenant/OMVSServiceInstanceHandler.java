@@ -5,7 +5,6 @@ package org.odpi.openmetadata.commonservices.multitenant;
 
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 
-import java.util.regex.Pattern;
 
 /**
  * OMVSServiceInstanceHandler retrieves information from the instance map for the
