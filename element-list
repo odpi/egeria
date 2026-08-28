@@ -102,6 +102,9 @@ org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadata
 org.odpi.openmetadata.adapters.connectors.liskov
 org.odpi.openmetadata.adapters.connectors.liskov.ffdc
 org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc
+org.odpi.openmetadata.adapters.connectors.mendel
+org.odpi.openmetadata.adapters.connectors.mendel.controls
+org.odpi.openmetadata.adapters.connectors.mendel.ffdc
 org.odpi.openmetadata.adapters.connectors.mssql.catalog
 org.odpi.openmetadata.adapters.connectors.mssql.controls
 org.odpi.openmetadata.adapters.connectors.mssql.ffdc
@@ -463,6 +466,7 @@ org.odpi.openmetadata.platformservices.server
 org.odpi.openmetadata.platformservices.server.spring
 org.odpi.openmetadata.reports
 org.odpi.openmetadata.reports.componentid
+org.odpi.openmetadata.reports.duplicates
 org.odpi.openmetadata.reports.messages
 org.odpi.openmetadata.repositoryservices.admin
 org.odpi.openmetadata.repositoryservices.archivemanager
