@@ -91,6 +91,15 @@ public enum IntegrationGroupDefinition
 
 
     /**
+     * Dynamic integration group supporting integration connectors that manage duplicate metadata elements.
+     */
+    MENDEL("4ec71f11-7246-4faf-bf69-49fbe33e38b3",
+             "Egeria:IntegrationGroup:Mendel",
+             "MendelIntegrationGroup",
+             "Dynamic integration group supporting integration connectors that manage duplicate metadata elements.",
+             ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * Dynamic integration group supporting integration connectors managing Data Hubs.
      */
     LISKOV("c7f37f8d-af7a-433d-86f8-153dae9577fd",

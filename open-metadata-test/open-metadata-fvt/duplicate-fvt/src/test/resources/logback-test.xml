@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--
+        Both servers send their audit log here through the SLF4J audit log destination, and it is written to
+        one file that can be read while a run is in progress.  That matters in this suite because most of what
+        it tests happens somewhere else: the test asks the integration daemon to refresh Mendel and then
+        checks the repository, and when an assertion fails the reason is in the integration daemon's audit log
+        - which duplicate links Mendel saw, which it validated (MENDEL-DUPLICATE-MANAGER-0004), which it
+        raised a to do for (0005), which classifications it retired (0006) and which clusters it consolidated
+        (0007).  Gradle buffers a test JVM's console output until the task ends, so on a run that is stuck the
+        console alone tells you nothing until it is too late.
+
+        The file-based audit log destination is deliberately not used: it writes one file per audit record.
+    -->
+    <appender name="AUDIT_LOG_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>build/duplicate-fvt-data/logs/audit.log</file>
+        <append>false</append>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.odpi.openmetadata.frameworks.auditlog" level="INFO" additivity="false">
+        <appender-ref ref="AUDIT_LOG_FILE" />
+    </logger>
+
+    <logger name="org.odpi.openmetadata.duplicatefvt" level="INFO" />
+
+
+    <root level="warn">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>

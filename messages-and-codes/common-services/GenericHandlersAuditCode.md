@@ -9,12 +9,11 @@ The GenericHandlersAuditCode is used to define the message content for the OMRS 
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 13 |
+| **Number of messages** | 15 |
 | **Message identifiers begin** | `OMAG-GENERIC-HANDLERS-` |
 | **Java class** | `org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode` |
 | **Module** | [open-metadata-implementation/common-services/generic-handlers](../../open-metadata-implementation/common-services/generic-handlers) |
 | **Source** | [GenericHandlersAuditCode.java](../../open-metadata-implementation/common-services/generic-handlers/src/main/java/org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersAuditCode.java) |
-| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 
 ## Messages
@@ -34,6 +33,8 @@ The GenericHandlersAuditCode is used to define the message content for the OMRS 
 | [OMAG-GENERIC-HANDLERS-0025](#omag-generic-handlers-0025) | INFO | Status changed from {0} to {1} for engine action {2} by governance engine with {3} userId |
 | [OMAG-GENERIC-HANDLERS-0027](#omag-generic-handlers-0027) | SHUTDOWN | Engine action {0} has been cancelled by user {1}, it was in {2} status before the cancel request |
 | [OMAG-GENERIC-HANDLERS-0028](#omag-generic-handlers-0028) | INFO | Method {0} was unable to receive list of entities due to a {1} exception with message {2} |
+| [OMAG-GENERIC-HANDLERS-0029](#omag-generic-handlers-0029) | INFO | Method {0} detected multiple {1} entities with a {2} of {3}; they have been linked with PeerDuplicateLink relationships with a status of DISCOVERED.  The entities are {4} |
+| [OMAG-GENERIC-HANDLERS-0030](#omag-generic-handlers-0030) | ERROR | Method {0} was unable to link the duplicate entities {1} with PeerDuplicateLink relationships due to a {2} exception with message {3} |
 
 ----
 
@@ -46,6 +47,7 @@ The GenericHandlersAuditCode is used to define the message content for the OMRS 
 | **Java constant** | `GenericHandlersAuditCode.UNABLE_TO_SET_ANCHORS` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}`, `{6}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -67,6 +69,7 @@ No specific action is required.  This message is to highlight that the retrieval
 | **Java constant** | `GenericHandlersAuditCode.UNABLE_TO_DELETE_UNANCHORED_BEAN` |
 | **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{5}`, `{6}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -88,6 +91,7 @@ This message is to highlight that an entity has lost its anchor, and a delete wa
 | **Java constant** | `GenericHandlersAuditCode.IGNORING_UNNECESSARY_ENTITY_UPDATE` |
 | **Severity** | TRACE - This is additional information on the operation of the server that may be of assistance in debugging a problem. It is not normally logged to any destination, but can be added when needed. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -109,6 +113,7 @@ Determine if the processing by Egeria is the most efficient way to detect if an 
 | **Java constant** | `GenericHandlersAuditCode.IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE` |
 | **Severity** | TRACE - This is additional information on the operation of the server that may be of assistance in debugging a problem. It is not normally logged to any destination, but can be added when needed. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -130,6 +135,7 @@ Determine if the processing by Egeria is the most efficient way to detect if an 
 | **Java constant** | `GenericHandlersAuditCode.IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE` |
 | **Severity** | TRACE - This is additional information on the operation of the server that may be of assistance in debugging a problem. It is not normally logged to any destination, but can be added when needed. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -151,6 +157,7 @@ Determine if the processing by Egeria is the most efficient way to detect if an 
 | **Java constant** | `GenericHandlersAuditCode.TEMPLATE_MAPPING_SUMMARY` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -172,6 +179,7 @@ Check that a complete mapping from the template to the new element is correct.
 | **Java constant** | `GenericHandlersAuditCode.INITIATE_ENGINE_ACTION` |
 | **Severity** | STARTUP - A new component is starting up. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}`, `{6}`, `{7}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -193,6 +201,7 @@ Validate that this engine action should be initialized.  If so, check that the G
 | **Java constant** | `GenericHandlersAuditCode.INITIATE_ENGINE_ACTION_FROM_PROCESS_STEP` |
 | **Severity** | STARTUP - A new component is starting up. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}`, `{6}`, `{7}`, `{8}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -214,6 +223,7 @@ Validate that this engine action should be initialized using this type.  If so, 
 | **Java constant** | `GenericHandlersAuditCode.ADD_ACTION_TARGETS` |
 | **Severity** | STARTUP - A new component is starting up. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -235,6 +245,7 @@ Validate that this action target should be added to the engine action.
 | **Java constant** | `GenericHandlersAuditCode.SUCCESSFUL_ACTION_CLAIM_REQUEST` |
 | **Severity** | STARTUP - A new component is starting up. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -256,6 +267,7 @@ Validate that only one of the governance engines successfully claims the engine 
 | **Java constant** | `GenericHandlersAuditCode.ENGINE_ACTION_STATUS_CHANGE` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -277,6 +289,7 @@ Validate that the status change is valid.
 | **Java constant** | `GenericHandlersAuditCode.ENGINE_ACTION_CANCELLED` |
 | **Severity** | SHUTDOWN - An existing component is shutting down. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -298,6 +311,7 @@ Monitor the shutdown of the request in the engine host.
 | **Java constant** | `GenericHandlersAuditCode.FAILED_TO_RETRIEVE_ENTITIES` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
@@ -306,6 +320,50 @@ The generic handlers were unable to perform a bulk retrieval of the entities.  T
 **User action**
 
 The bulk retrieval is more efficient.  However, one or more of the repositories in use may not support this request.  The individual retrieval still provides the same security protection - it is just slower to execute.
+
+
+----
+
+### OMAG-GENERIC-HANDLERS-0029
+
+> Method {0} detected multiple {1} entities with a {2} of {3}; they have been linked with PeerDuplicateLink relationships with a status of DISCOVERED.  The entities are {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `GenericHandlersAuditCode.DISCOVERED_DUPLICATES` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/features/duplicate-management/overview/> |
+
+**System action**
+
+The duplicate entities are linked together to record that they have been detected.  No KnownDuplicate classifications are added, and the status of the new relationships means that the retrieval processing continues to return the entities separately.  The original request fails because the server is unable to determine which of the entities to use.
+
+**User action**
+
+Review the linked entities.  If they are genuine duplicates, add the KnownDuplicate classification to each of them and move the status of the PeerDuplicateLink relationships to VALIDATED so that the retrieval processing combines them.  If they are not duplicates, remove the relationships and correct the duplicated name.
+
+
+----
+
+### OMAG-GENERIC-HANDLERS-0030
+
+> Method {0} was unable to link the duplicate entities {1} with PeerDuplicateLink relationships due to a {2} exception with message {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `GenericHandlersAuditCode.UNABLE_TO_MARK_DUPLICATES` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/duplicate-management/overview/> |
+
+**System action**
+
+The duplicate entities were detected but they have not been linked together, so there is no record of the detection in the open metadata ecosystem.  The original request still fails because the server is unable to determine which of the entities to use.
+
+**User action**
+
+Use the details of the exception to determine why the relationships could not be created.  The duplicates themselves are listed in the message and can be linked manually.
 
 
 ----

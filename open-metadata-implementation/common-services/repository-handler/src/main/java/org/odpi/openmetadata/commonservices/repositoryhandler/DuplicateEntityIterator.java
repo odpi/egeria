@@ -7,6 +7,8 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.StatusIdentifier;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -33,8 +35,13 @@ public class DuplicateEntityIterator
     private static final String peerDuplicateLink             = "PeerDuplicateLink";
     private static final String peerDuplicateLinkGUID         = "a94b2929-9e62-4b12-98ab-8ac45691e5bd";
 
-    private static final String statusPropertyName            = "statusIdentifier";
-    private static final int    statusThreshold               = 1;
+    /*
+     * A peer duplicate link, or a consolidated duplicate classification, is only acted on when a steward has
+     * validated it.  Any other status (proposed, imported, deprecated, obsolete ...) means the duplicates must
+     * not be merged on retrieval.
+     */
+    private static final String statusPropertyName            = OpenMetadataProperty.STATUS_IDENTIFIER.name;
+    private static final int    validatedStatus               = StatusIdentifier.VALIDATED.getOrdinal();
 
     private static final Logger log = LoggerFactory.getLogger(DuplicateEntityIterator.class);
 
@@ -239,19 +246,29 @@ public class DuplicateEntityIterator
                         {
                             if (classification != null)
                             {
-                                if (consolidatedDuplicate.equals(classification.getName()))
+                                /*
+                                 * Ignore any classification that is not active at this time.
+                                 */
+                                if (repositoryHandler.isCorrectEffectiveTime(classification.getProperties(), effectiveTime))
                                 {
-                                    if (errorHandler.validateStatus(statusPropertyName, 1, classification.getProperties(), methodName))
+                                    if (consolidatedDuplicate.equals(classification.getName()))
                                     {
-                                        log.debug("Valid consolidated entity: " + consolidatedEntity.getGUID() + " so making it the visible entity");
+                                        if (errorHandler.validateSpecificStatus(statusPropertyName, validatedStatus, classification.getProperties(), methodName))
+                                        {
+                                            log.debug("Valid consolidated entity: " + consolidatedEntity.getGUID() + " so making it the visible entity");
 
-                                        cachedEntity = consolidatedEntity;
-                                        deduplicationNeeded = false;
+                                            cachedEntity = consolidatedEntity;
+                                            deduplicationNeeded = false;
+                                        }
+                                        else
+                                        {
+                                            log.debug("Ignoring consolidated entity: " +  consolidatedEntity.getGUID() + " due to status setting");
+                                        }
                                     }
-                                    else
-                                    {
-                                        log.debug("Ignoring consolidated entity: " +  consolidatedEntity.getGUID() + " due to status setting");
-                                    }
+                                }
+                                else if (consolidatedDuplicate.equals(classification.getName()))
+                                {
+                                    log.debug("Ignoring consolidated entity: " +  consolidatedEntity.getGUID() + " due to effectivity dates on its ConsolidatedDuplicate classification");
                                 }
                             }
                         }
@@ -288,7 +305,7 @@ public class DuplicateEntityIterator
                         {
                             Relationship relationship = peerIterator.getNext();
 
-                            if (errorHandler.validateStatus(statusPropertyName, statusThreshold, relationship.getProperties(), methodName))
+                            if (errorHandler.validateSpecificStatus(statusPropertyName, validatedStatus, relationship.getProperties(), methodName))
                             {
                                 EntityProxy peerProxy = repositoryHandler.getOtherEnd(processingEntity.getGUID(), relationship);
 

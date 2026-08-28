@@ -10,6 +10,12 @@ Also, feel free to extend them to match your specific deployment.
 
 * **[guid-generator](guid-generator)** - generates random unique identifiers (GUIDs).
 
+* **[content-pack-duplicate-report](content-pack-duplicate-report)** - compares two versions of an open
+  metadata archive and reports the elements that keep their qualified name but change their unique
+  identifier.  Each of those becomes a duplicate pair in any repository that loads both versions, so this
+  says how much [duplicate management](https://egeria-project.org/features/duplicate-management/overview/)
+  work an upgrade creates for the people who already have the previous version loaded.
+
 * **[component-id-report](component-id-report)** - list the component ids in use in your Egeria deployment.  
   these component ids are used when registering with the audit log and are included in
   each audit log message from the component.  Using unique component ids helps to pinpoint

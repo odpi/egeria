@@ -30,6 +30,19 @@ import java.util.List;
 public class BabbageAnalyticalEngineTargetProcessor extends CatalogTargetProcessorBase
 {
     /**
+     * These are the statuses of an engine action that mean it is either running, or is on its way to running.
+     * An engine action only reaches IN_PROGRESS once the engine host has claimed it and started the governance
+     * service, so the earlier statuses must also be treated as "already requested" to avoid initiating a
+     * duplicate engine action for the same governance action type.
+     */
+    private static final List<ActivityStatus> liveActivityStatuses = List.of(ActivityStatus.REQUESTED,
+                                                                            ActivityStatus.APPROVED,
+                                                                            ActivityStatus.WAITING,
+                                                                            ActivityStatus.ACTIVATING,
+                                                                            ActivityStatus.IN_PROGRESS,
+                                                                            ActivityStatus.PAUSED);
+
+    /**
      * Constructor
      *
      * @param catalogTarget catalog target information
@@ -79,12 +92,12 @@ public class BabbageAnalyticalEngineTargetProcessor extends CatalogTargetProcess
             {
                 /*
                  * The catalog target is a governance action type.  Now check if there is an engine
-                 * action running that is spawned from this governance action type.
+                 * action running, or waiting to run, that is spawned from this governance action type.
                  */
                 AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.ENGINE_ACTION.typeName);
 
                 List<OpenMetadataRootElement> activeEngineActions = assetClient.findProcesses(governanceActionTypeProperties.getQualifiedName(),
-                                                                                              Collections.singletonList(ActivityStatus.IN_PROGRESS),
+                                                                                              liveActivityStatuses,
                                                                                               assetClient.getSearchOptions(0, 0));
 
                 if ((activeEngineActions == null) || activeEngineActions.isEmpty())

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.StatusIdentifier;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadataobservability.ffdc.OpenMetadataObservabilityAuditCode;
@@ -7532,6 +7533,164 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
+     * Record the entities that have been detected as duplicates because they share a name that should be unique.
+     * They are linked together with PeerDuplicateLink relationships with a status of DISCOVERED, and no
+     * classifications are added.  This means the duplicates are marked for a steward to review, but the
+     * deduplication processing continues to ignore them: it only combines entities that carry the KnownDuplicate
+     * classification and are linked with a VALIDATED PeerDuplicateLink relationship.
+     * The oldest entity is used as the origin (end 1) of each new relationship, matching the definition of the
+     * relationship's ends.  Pairs that are already linked are left alone so that repeated requests do not build
+     * up multiple relationships between the same entities.
+     * This is a best-effort operation.  The caller is about to throw an exception to report the duplicates and
+     * that exception must not be replaced by a failure to record them.
+     *
+     * @param userId calling user - used if this server has no local server userId defined
+     * @param retrievedEntities the entities that share the name
+     * @param resultTypeName type of the entities that were requested
+     * @param name the duplicated name
+     * @param namePropertyName the open metadata property that the name was matched on
+     * @param methodName calling method
+     */
+    private void markDetectedDuplicates(String             userId,
+                                        List<EntityDetail> retrievedEntities,
+                                        String             resultTypeName,
+                                        String             name,
+                                        String             namePropertyName,
+                                        String             methodName)
+    {
+        final String localMethodName = "markDetectedDuplicates";
+
+        /*
+         * Remove null and repeated entries, and order the entities so that the oldest is first.
+         */
+        List<EntityDetail> duplicateEntities = new ArrayList<>();
+        Set<String>        duplicateGUIDs    = new HashSet<>();
+
+        if (retrievedEntities != null)
+        {
+            for (EntityDetail entity : retrievedEntities)
+            {
+                /*
+                 * Both ends of a PeerDuplicateLink relationship must be a Referenceable.
+                 */
+                if ((entity != null) && (entity.getType() != null) &&
+                        (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName)) &&
+                        (duplicateGUIDs.add(entity.getGUID())))
+                {
+                    duplicateEntities.add(entity);
+                }
+            }
+        }
+
+        if (duplicateEntities.size() < 2)
+        {
+            return;
+        }
+
+        /*
+         * The oldest entity becomes the origin of each link.  Where two were created at the same moment -
+         * which is ordinary for elements that arrived in the same archive load - the identifier breaks the
+         * tie, so the same pair always links the same way round.  Without the tie-break the order can differ
+         * between calls, and a second link is created in the opposite direction to one that already exists.
+         */
+        duplicateEntities.sort(Comparator.comparing((EntityDetail entity) -> entity.getCreateTime(),
+                                                     Comparator.nullsLast(Comparator.naturalOrder()))
+                                          .thenComparing(EntityDetail::getGUID));
+
+        String       linkingUserId   = localServerUserId;
+        EntityDetail originEntity    = duplicateEntities.get(0);
+
+        if (linkingUserId == null)
+        {
+            linkingUserId = userId;
+        }
+
+        try
+        {
+            InstanceProperties relationshipProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                                                                  null,
+                                                                                                  OpenMetadataProperty.STATUS_IDENTIFIER.name,
+                                                                                                  StatusIdentifier.DISCOVERED.getOrdinal(),
+                                                                                                  localMethodName);
+
+            relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                  relationshipProperties,
+                                                                                  OpenMetadataProperty.SOURCE.name,
+                                                                                  serviceName + " running in server " + serverName,
+                                                                                  localMethodName);
+
+            relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                  relationshipProperties,
+                                                                                  OpenMetadataProperty.NOTES.name,
+                                                                                  "Detected by method " + methodName + " because these " + resultTypeName +
+                                                                                          " entities share a " + namePropertyName + " of " + name,
+                                                                                  localMethodName);
+
+            for (EntityDetail duplicateEntity : duplicateEntities)
+            {
+                if (! originEntity.getGUID().equals(duplicateEntity.getGUID()))
+                {
+                    /*
+                     * The existing relationships are retrieved with forDuplicateProcessing set to true because the
+                     * repository handler removes duplicate links from the results of a normal retrieval request.
+                     * A null effective time means that a link that is not effective now still counts as a marker.
+                     */
+                    List<Relationship> existingLinks = repositoryHandler.getRelationshipsBetweenEntities(linkingUserId,
+                                                                                                         originEntity.getGUID(),
+                                                                                                         resultTypeName,
+                                                                                                         duplicateEntity.getGUID(),
+                                                                                                         OpenMetadataType.PEER_DUPLICATE_LINK.typeGUID,
+                                                                                                         OpenMetadataType.PEER_DUPLICATE_LINK.typeName,
+                                                                                                         0,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                         null,
+                                                                                                         true,
+                                                                                                         true,
+                                                                                                         null,
+                                                                                                         localMethodName);
+
+                    if ((existingLinks == null) || (existingLinks.isEmpty()))
+                    {
+                        repositoryHandler.createRelationship(linkingUserId,
+                                                             OpenMetadataType.PEER_DUPLICATE_LINK.typeGUID,
+                                                             null,
+                                                             null,
+                                                             originEntity.getGUID(),
+                                                             duplicateEntity.getGUID(),
+                                                             relationshipProperties,
+                                                             localMethodName);
+                    }
+                }
+            }
+
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    GenericHandlersAuditCode.DISCOVERED_DUPLICATES.getMessageDefinition(methodName,
+                                                                                                        resultTypeName,
+                                                                                                        namePropertyName,
+                                                                                                        name,
+                                                                                                        duplicateGUIDs.toString()));
+            }
+        }
+        catch (Exception error)
+        {
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      GenericHandlersAuditCode.UNABLE_TO_MARK_DUPLICATES.getMessageDefinition(methodName,
+                                                                                                              duplicateGUIDs.toString(),
+                                                                                                              error.getClass().getName(),
+                                                                                                              error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
+    /**
      * Return the unique identifier of the entity that has the supplied unique name. An exception is thrown if
      * multiple entities are found with this name.
      *
@@ -7656,6 +7815,11 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         {
             return guid;
         }
+
+        /*
+         * Leave a marker for the steward that these entities have been detected as duplicates.
+         */
+        this.markDetectedDuplicates(userId, retrievedEntities, resultTypeName, name, namePropertyName, methodName);
 
         throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(resultTypeName,
                                                                                                                 name,
@@ -7793,6 +7957,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             return bean;
         }
 
+        /*
+         * Leave a marker for the steward that these entities have been detected as duplicates.
+         */
+        this.markDetectedDuplicates(userId, retrievedEntities, resultTypeName, name, namePropertyName, methodName);
 
         throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(resultTypeName,
                                                                                                                 name,

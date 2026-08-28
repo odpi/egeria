@@ -6,6 +6,7 @@
 This module provides both utilities for testing and the
 test cases themselves.
 
+* **[open-metadata-api-checks](open-metadata-api-checks)** - provides utilities that provide static analysis of the API.
 * **[open-metadata-ut](open-metadata-ut)** - provides utilities that help in the implementation of unit tests.
 * **[open-metadata-fvt](open-metadata-fvt)** - provides resources to run FVT (Functional verification testing).
 * **[open-metadata-bvt](open-metadata-bvt)** - runs BVT (Build verification testing) automatically as part

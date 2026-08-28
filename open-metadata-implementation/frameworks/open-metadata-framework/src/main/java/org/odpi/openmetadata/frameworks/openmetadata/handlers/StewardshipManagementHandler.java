@@ -3339,10 +3339,16 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                                        UserNotAuthorizedException,
                                                                                                                        PropertyServerException
     {
+        /*
+         * The ends follow the type: end 1 is the consolidatedDuplicateOrigin - one of the detected duplicates
+         * that supplied the properties - and end 2 is the consolidatedDuplicateResult, the element built from
+         * them.  The deduplication processing looks for the consolidated element at end 2, so a link built
+         * the other way round is never found and the duplicates go on being returned separately.
+         */
         openMetadataClient.createRelatedElementsInStore(userId,
                                                         OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK.typeName,
-                                                        elementGUID,
                                                         sourceElementGUID,
+                                                        elementGUID,
                                                         makeAnchorOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
     }
@@ -3368,17 +3374,21 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                  PropertyServerException
     {
         final String methodName            = "unlinkConsolidatedDuplicateFromSourceElement";
-        final String end1GUIDParameterName = "elementGUID";
-        final String end2GUIDParameterName = "sourceElementGUID";
+        final String end1GUIDParameterName = "sourceElementGUID";
+        final String end2GUIDParameterName = "elementGUID";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(sourceElementGUID, end2GUIDParameterName, methodName);
 
+        /*
+         * The ends match linkConsolidatedDuplicateToSourceElement: the source element is at end 1 and the
+         * consolidated result at end 2.
+         */
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK.typeName,
-                                                        elementGUID,
                                                         sourceElementGUID,
+                                                        elementGUID,
                                                         deleteOptions);
     }
 
