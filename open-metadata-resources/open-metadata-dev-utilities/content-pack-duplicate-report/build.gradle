@@ -1,0 +1,28 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+plugins {
+    id 'application'
+}
+
+dependencies {
+    /*
+     * The archives are read as JSON rather than loaded through the archive utilities.  The point of this
+     * utility is to compare archives from different releases, and an archive written by an older release may
+     * no longer deserialize into the current Java types - reading the JSON directly means any two archive
+     * files can be compared, whatever produced them.
+     */
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+}
+
+description = 'Reports the elements that two versions of an open metadata archive disagree about, and would therefore duplicate.'
+
+java {
+    withJavadocJar()
+}
+
+application {
+    mainClass = 'org.odpi.openmetadata.reports.duplicates.ContentPackDuplicateReport'
+}

@@ -1388,7 +1388,20 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                 instance.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
             }
 
-            if (instance.getInstanceProvenanceType() == InstanceProvenanceType.EXTERNAL_SOURCE)
+            /*
+             * An instance that this repository holds but does not master needs to record which repository is
+             * replicating it, because that is the only repository able to service an update to it.  The
+             * enterprise connector falls back to this value when it cannot find a connector for the
+             * instance's home metadata collection.
+             *
+             * As well as the instances mastered by an external technology, this covers the ones onboarded
+             * from an open metadata archive: a content pack has no live repository behind it, so without
+             * this an archive instance can be read but never maintained - which leaves the elements that
+             * arrive from successive releases of a content pack impossible to deduplicate.
+             */
+            if ((instance.getInstanceProvenanceType() == InstanceProvenanceType.EXTERNAL_SOURCE) ||
+                    (instance.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
+                    (instance.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE))
             {
                 if (instance.getReplicatedBy() == null)
                 {

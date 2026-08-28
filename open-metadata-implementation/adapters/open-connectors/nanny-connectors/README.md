@@ -30,6 +30,18 @@ In tribute to [Ada Lovelace](https://en.wikipedia.org/wiki/Ada_Lovelace)
 
 These are the services that are orchestrated by the Babbage Analytical Engine.  Each on performs a specific task.  They are implemented as [Governance Services](https://egeria-project.org/concepts/governance-service/) and store their analysis as classification on the appropriate open metadata element.
 
+## Mendel Automated Duplicate Manager
+
+In recognition of the work on genetics and inheritance by [Gregor Mendel](https://en.wikipedia.org/wiki/Gregor_Mendel) - the survivorship rules of [duplicate management](https://egeria-project.org/features/duplicate-management/overview/) decide which properties are inherited by the combined element in much the same way.
+
+The Mendel Automated Duplicate Manager is an integration connector that manages the duplicate links and classifications for the elements that are detected as potential duplicates.  It runs in its own integration group (`Egeria:IntegrationGroup:Mendel`) and each refresh makes three passes over the `PeerDuplicateLink` relationships in the open metadata ecosystem.
+
+* The links that are still waiting for a decision - the `DISCOVERED`, `PROPOSED` and `IMPORTED` ones.  Where the linked elements are a close enough match, the status of the link is moved to `VALIDATED` and the `KnownDuplicate` classification is added to both elements, which is the combination that causes the retrieval processing to combine them.  Where they are not a close enough match, a *to do* is created for a steward to make the decision.  The to dos are assigned to the `DuplicateMetadataSteward` person role, which the connector creates if it does not already exist.
+* The links that a steward has retired - the `DEPRECATED` and `OBSOLETE` ones.  Once none of an element's duplicate links are live, its `KnownDuplicate` classification is removed so that it is no longer combined with anything.
+* The clusters of validated duplicates.  Once a cluster reaches the size set by the `duplicateClusterSize` configuration property (3 by default), its members are combined into a single consolidated element.  The survivorship rules take the properties of the latest version, adding any property that only an earlier version supplies, and combine the members' relationships except where that would break the cardinality rules of the relationship's type - where the type only permits one, the latest member's relationship wins.
+
+Once the first refresh has worked through the duplicate links that were waiting for it, the connector also listens for open metadata events, so a new or updated duplicate link is reviewed as it occurs rather than waiting for the next refresh.  The retirement and consolidation passes stay on the refresh cycle because they depend on all of the duplicate links attached to an element, not just the one that changed.
+
 ## Jacquard Digital Product Loom
 
 In tribute to [Joseph Marie Jacquard](https://en.wikipedia.org/wiki/Joseph_Marie_Jacquard)

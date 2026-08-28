@@ -490,6 +490,39 @@ public class OpenMetadataStoreResource
 
 
     /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     * <br><br>
+     * The lookup fails if more than one element has the name, because the caller cannot be given an element
+     * that may not be the one they meant.  The server records the elements it could not choose between as
+     * discovered duplicates on the way out, so that a steward - or the automated duplicate manager - has
+     * something to resolve.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param requestBody unique name for the metadata element
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique name is null or not known.
+     *  UserNotAuthorizedException the caller is not able to access the element
+     *  PropertyServerException a problem accessing the metadata store, including more than one element having the name
+     */
+    @PostMapping(path = "/metadata-elements/by-unique-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getMetadataElementByUniqueName",
+            description="Retrieve the metadata element using its unique name (typically the qualified name).",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/framework-services/"))
+
+    public OpenMetadataElementResponse getMetadataElementByUniqueName(@PathVariable String                serverName,
+                                                                      @PathVariable String                userId,
+                                                                      @RequestBody  UniqueNameRequestBody requestBody)
+    {
+        return restAPI.getMetadataElementByUniqueName(serverName, userId, requestBody);
+    }
+
+
+    /**
      * Retrieve all the versions of an element.
      *
      * @param serverName name of the server to route the request to

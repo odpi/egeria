@@ -96,10 +96,10 @@ gradle/ @mandy-chessell
 .github/ @planetf1
 .m2/ @planetf1
 .gitignore @mandy-chessell
-.sonarcloud* @planetf1
 INFO.yaml @planetf1
 spotbugs* @planetf1
 CODEOWNERS @mandy-chessell
+SECURITY @mandy-chessell
 MAINTAINERS* @mandy-chessell
 CONTRIBUTOR* @mandy-chessell
 Egeria-Operations* @mandy-chessell
