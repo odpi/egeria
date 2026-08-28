@@ -56,6 +56,23 @@ property on the command line, shown against each suite below.
   It ships scoped to a small set of types so that an ordinary run is a check of a change rather than an
   overnight job. See [its README](cts-fvt) for what that scope covers and when to widen it.
 
+* **[postgres-fvt](postgres-fvt)** - tests the **PostgreSQL connectors** and the **PostgreSQL content pack**
+  that drives them. It does not call the connectors: it stands up the deployment they are designed to run in -
+  a metadata access store, an integration daemon, an engine host and a view server - and drives them the way
+  an operator would, by running the content pack's governance action processes through the **Automated
+  Curation API**.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:postgres-fvt:test -PrunPostgresFvt
+  ```
+
+  A second mode runs the same tests with **no event bus at all**, which is how the suite shows that an engine
+  host does not need one - it polls for the work it would otherwise be told about, and reacts a little later:
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:postgres-fvt:test -PrunPostgresFvtNoKafka
+  ```
+
 
 
 

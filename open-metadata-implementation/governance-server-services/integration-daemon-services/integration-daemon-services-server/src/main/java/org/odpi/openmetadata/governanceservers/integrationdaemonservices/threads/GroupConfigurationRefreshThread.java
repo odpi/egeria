@@ -92,56 +92,34 @@ public class GroupConfigurationRefreshThread implements Runnable
     {
         final String actionDescription = "Register configuration listener";
 
-        boolean  listenerRegistered = false;
-
-
         while (keepTrying)
         {
             /*
-             * First register a listener for the group's configuration.
+             * Listening for the group's configuration changes is attempted, but the daemon does not wait for
+             * it to succeed.
+             *
+             * This used to loop until the listener registered, which made an event bus a requirement: in a
+             * deployment with no Kafka there is no out topic to register against, so registration failed every
+             * time and this thread never reached the configuration retrieval below - the integration group
+             * stayed ASSIGNED and none of its connectors ever started.
+             *
+             * Events are what make the daemon notice a configuration change promptly.  The configuration
+             * itself is retrieved by asking, which is what the loop below does, so the group starts and runs
+             * either way.  Registration is retried on each pass, so an event bus that appears later is picked
+             * up without a restart.
              */
-            while ((! listenerRegistered) && (keepTrying))
-            {
-                try
-                {
-                    eventClient.registerListener(localServerUserId,
-                                                 new OpenGovernanceOutTopicListener(groupName,
-                                                                                    groupHandler,
-                                                                                    configurationClient,
-                                                                                    localServerUserId,
-                                                                                    auditLog));
-                    listenerRegistered = true;
-
-                    auditLog.logMessage(actionDescription,
-                                        IntegrationDaemonServicesAuditCode.CONFIGURATION_LISTENER_REGISTERED.getMessageDefinition(localServerName,
-                                                                                                                                  accessServiceServerName));
-                }
-                catch (UserNotAuthorizedException error)
-                {
-                    auditLog.logException(actionDescription,
-                                          IntegrationDaemonServicesAuditCode.SERVER_NOT_AUTHORIZED.getMessageDefinition(localServerName,
-                                                                                                                        accessServiceServerName,
-                                                                                                                        accessServiceRootURL,
-                                                                                                                        localServerUserId,
-                                                                                                                        error.getReportedErrorMessage()),
-                                          error);
-                    waitToRetry();
-                }
-                catch (Exception error)
-                {
-                    auditLog.logException(actionDescription,
-                                          IntegrationDaemonServicesAuditCode.NO_CONFIGURATION_LISTENER.getMessageDefinition(localServerName,
-                                                                                                                            accessServiceServerName,
-                                                                                                                            error.getClass().getName(),
-                                                                                                                            error.getMessage()),
-                                          error);
-
-                    waitToRetry();
-                }
-            }
+            boolean listenerRegistered = registerListener(true);
 
             while (keepTrying)
             {
+                if (! listenerRegistered)
+                {
+                    /*
+                     * Quietly, because this runs continuously: the first attempt has already been reported.
+                     */
+                    listenerRegistered = registerListener(false);
+                }
+
                 /*
                  * Request the configuration for the governance group.  If it fails just log the error but let the
                  * integration daemon server continue to start.  It is probably a temporary outage with the metadata server
@@ -174,6 +152,64 @@ public class GroupConfigurationRefreshThread implements Runnable
 
             waitToRetry();
         }
+    }
+
+
+    /**
+     * Try to register this group's listener on the metadata access server's out topic.
+     * <br>
+     * Failure is not fatal - see the note in {@link #run()} for why the group runs without it.
+     *
+     * @param reportFailure should a failure be recorded in the audit log?  True for the first attempt, so an
+     *                      operator can see that this group is working without events and why; false for the
+     *                      retries that follow, which would otherwise repeat the same message indefinitely
+     * @return true if the listener is registered
+     */
+    private boolean registerListener(boolean reportFailure)
+    {
+        final String actionDescription = "Register configuration listener";
+
+        try
+        {
+            eventClient.registerListener(localServerUserId,
+                                         new OpenGovernanceOutTopicListener(groupName,
+                                                                            groupHandler,
+                                                                            configurationClient,
+                                                                            localServerUserId,
+                                                                            auditLog));
+
+            auditLog.logMessage(actionDescription,
+                                IntegrationDaemonServicesAuditCode.CONFIGURATION_LISTENER_REGISTERED.getMessageDefinition(localServerName,
+                                                                                                                          accessServiceServerName));
+            return true;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            if (reportFailure)
+            {
+                auditLog.logException(actionDescription,
+                                      IntegrationDaemonServicesAuditCode.SERVER_NOT_AUTHORIZED.getMessageDefinition(localServerName,
+                                                                                                                    accessServiceServerName,
+                                                                                                                    accessServiceRootURL,
+                                                                                                                    localServerUserId,
+                                                                                                                    error.getReportedErrorMessage()),
+                                      error);
+            }
+        }
+        catch (Exception error)
+        {
+            if (reportFailure)
+            {
+                auditLog.logException(actionDescription,
+                                      IntegrationDaemonServicesAuditCode.NO_CONFIGURATION_LISTENER.getMessageDefinition(localServerName,
+                                                                                                                        accessServiceServerName,
+                                                                                                                        error.getClass().getName(),
+                                                                                                                        error.getMessage()),
+                                      error);
+            }
+        }
+
+        return false;
     }
 
 

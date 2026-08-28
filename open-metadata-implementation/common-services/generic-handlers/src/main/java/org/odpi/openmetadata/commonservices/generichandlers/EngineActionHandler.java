@@ -2667,6 +2667,39 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                     OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                                     properties,
                                                                                     methodName);
+                        /*
+                         * The request parameters this engine action ran with are carried forward to the next
+                         * step, with anything the governance service supplied on completion laid over the top.
+                         *
+                         * A governance service that has nothing to add says so by supplying nothing, and most
+                         * of them do.  Passing that straight on meant the next step started with no request
+                         * parameters at all - so a value given to the process when it was requested reached
+                         * the first step, survived only as long as each service happened to hand it on, and
+                         * was silently gone from there.  The visible version of this was a survey process
+                         * asked to write its report to a particular directory: the first two steps saw the
+                         * setting, the step that writes the report did not, and it used its default instead.
+                         *
+                         * Overlaying rather than replacing keeps a service able to add a parameter or change
+                         * one for the steps that follow it, which is what completion request parameters are
+                         * for - it just can no longer erase the rest by staying silent.
+                         */
+                        Map<String, String> onwardRequestParameters = new HashMap<>();
+
+                        Map<String, String> thisActionsRequestParameters = repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                                                     OpenMetadataProperty.REQUEST_PARAMETERS.name,
+                                                                                                                     engineActionEntity.getProperties(),
+                                                                                                                     methodName);
+
+                        if (thisActionsRequestParameters != null)
+                        {
+                            onwardRequestParameters.putAll(thisActionsRequestParameters);
+                        }
+
+                        if (callerRequestParameters != null)
+                        {
+                            onwardRequestParameters.putAll(callerRequestParameters);
+                        }
+
                         this.initiateNextEngineActions(userId,
                                                        engineActionGUID,
                                                        iscQualifiedName,
@@ -2676,7 +2709,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                        requesterUserId,
                                                        outputGuards,
                                                        newActionTargets,
-                                                       callerRequestParameters,
+                                                       onwardRequestParameters.isEmpty() ? null : onwardRequestParameters,
                                                        effectiveTime,
                                                        methodName);
                     }

@@ -140,6 +140,26 @@ public class EngineHostOperationalServices
                  * creates the topic connector, listens for incoming and then passes them to any registered listeners.  There are two listeners
                  * expected - one used by the engine host services to receive updates to the governance engine configuration and new engine actions.
                  * The other is used to receive new Watchdog events for registered Open Watchdog/Governance Action Services.
+                 *
+                 * The caller id identifies this listener to the out topic, and becomes the identity its event
+                 * consumer subscribes under.  It is the governance engine's qualified name rather than the
+                 * engine id, which is a fresh random value each time the server starts, and that mattered in
+                 * three ways.
+                 *
+                 * An identity that changes on every start is a new subscriber every time, with no record of
+                 * what it has already seen, so where it begins reading is decided afresh - and an engine whose
+                 * subscription is established a moment after an event was published never sees that event.
+                 * The symptom is an engine action sitting at APPROVED with an idle engine that is willing to
+                 * run it: always the first event that engine should have received, because from the second one
+                 * onwards the subscription is established.  A stable identity resumes where it left off.
+                 *
+                 * It also decides what happens when two engine hosts run the same governance engine.  Under
+                 * one identity they share the events between them, which is the intent - the engines divide
+                 * the work.  Under separate per-start identities both receive every event and then compete to
+                 * claim the same engine actions.
+                 *
+                 * And it can be read.  A subscriber named for the governance engine says which engine on which
+                 * server it belongs to; a random identifier says nothing.
                  */
                 OpenMetadataEventClient omfEventClient = new EgeriaOpenMetadataEventClient(governanceEngine.getOMAGServerName(),
                                                                                         governanceEngine.getOMAGServerPlatformRootURL(),
@@ -149,7 +169,7 @@ public class EngineHostOperationalServices
                                                                                         governanceEngine.getSecretsStoreCollection(),
                                                                                         maxPageSize,
                                                                                         auditLog,
-                                                                                        governanceEngine.getEngineId());
+                                                                                        governanceEngine.getEngineQualifiedName());
 
                 EgeriaOpenGovernanceEventClient gafEventClient = new EgeriaOpenGovernanceEventClient(governanceEngine.getOMAGServerName(),
                                                                                                      governanceEngine.getOMAGServerPlatformRootURL(),
@@ -159,7 +179,7 @@ public class EngineHostOperationalServices
                                                                                                      governanceEngine.getSecretsStoreCollection(),
                                                                                                      maxPageSize,
                                                                                                      auditLog,
-                                                                                                     governanceEngine.getEngineId());
+                                                                                                     governanceEngine.getEngineQualifiedName());
 
                 /*
                  * This thread is responsible for managing the retrieval of the engine definitions and registering the listener for events.

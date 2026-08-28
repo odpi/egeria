@@ -375,7 +375,7 @@ public class IntegrationDaemon
                                                                                                   PropertyServerException
     {
         final String   methodName = "getIntegrationGroupSummary";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon-services/integration-groups/{1}/summary?delegatingUserId={2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-groups/{1}/summary?delegatingUserId={2}";
 
         IntegrationGroupSummaryResponse restResult = restClient.callIntegrationGroupSummaryGetRESTCall(methodName,
                                                                                                        serverPlatformRootURL + urlTemplate,
@@ -400,7 +400,7 @@ public class IntegrationDaemon
                                                                                PropertyServerException
     {
         final String   methodName = "getIntegrationGroupSummaries";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon-services/integration-groups/summary?delegatingUserId={1}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-groups/summary?delegatingUserId={1}";
 
         IntegrationGroupSummariesResponse restResult = restClient.callIntegrationGroupSummariesGetRESTCall(methodName,
                                                                                                            serverPlatformRootURL + urlTemplate,
@@ -430,7 +430,7 @@ public class IntegrationDaemon
     {
         final String   methodName = "refreshConfig";
         final String   integrationGroupParameterName = "integrationGroupName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon-services/integration-groups/{1}/refresh-config?delegatingUserId={2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/integration-groups/{1}/refresh-config?delegatingUserId={2}";
 
         invalidParameterHandler.validateName(integrationGroupName, integrationGroupParameterName, methodName);
 

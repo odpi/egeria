@@ -36,6 +36,12 @@ import java.util.*;
  */
 public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandler<B>
 {
+    /*
+     * Number of relationships retrieved at a time when a delete cascades through an anchored graph.  See the
+     * note beside its use in deleteAnchoredBeanInRepository for why this is not the server's maximum page size.
+     */
+    private static final int cascadeTraversalPageSize = 100;
+
     private static final Logger log = LoggerFactory.getLogger(OpenMetadataAPIGenericHandler.class);
 
     /**
@@ -2840,7 +2846,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @throws UserNotAuthorizedException calling user is not authorize to issue this request
      */
     public void deleteIfAppropriatelyAnchoredEntity(String       anchorEntityGUID,
-                                                    List<String> deletedEntityGUIDs,
+                                                    Set<String>  deletedEntityGUIDs,
                                                     String       externalSourceGUID,
                                                     String       externalSourceName,
                                                     EntityProxy  potentialAnchoredEntity,
@@ -2853,6 +2859,23 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                     UserNotAuthorizedException
     {
         final String guidParameterName = "potentialAnchoredEntity";
+
+        /*
+         * An element that is already part of this delete is not looked at again.
+         *
+         * The linked element at the far end of a relationship is very often anchored to the element being
+         * deleted - the two are siblings in the same anchored graph - so the same element is reached from
+         * several directions, and without this guard it is processed once per relationship that leads to it.
+         * Termination then rests entirely on the element having already disappeared from the repository read
+         * below, which is not something to rely on: a soft-deleted element is still returned when the request
+         * is forLineage, and a purge leaves nothing behind to notice at all.  Checking the set that is already
+         * being maintained makes each element the responsibility of exactly one traversal, whichever reaches
+         * it first, and removes the repeated retrieve-and-discard for the rest.
+         */
+        if (deletedEntityGUIDs.contains(potentialAnchoredEntity.getGUID()))
+        {
+            return;
+        }
 
         /*
          * Only need to progress if anchor entity exists.
@@ -2896,6 +2919,331 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 }
             }
         }
+    }
+
+
+    /**
+     * Return one page of the elements anchored to the supplied element.
+     * <br>
+     * The Anchors classification records the element that its bearer is <b>directly or indirectly</b> anchored
+     * to, so a single query against {@code anchorGUID} returns the whole anchored set at any depth - there is
+     * no need to walk relationships to find it.
+     *
+     * @param userId calling user
+     * @param anchorGUID the anchor whose members are wanted
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param startingFrom paging start point
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return one page of anchored elements, null or empty when there are no more
+     * @throws UserNotAuthorizedException the user is not allowed to issue the query
+     * @throws PropertyServerException problem with the repository, including a repository that does not
+     * support searching by classification property
+     */
+    private List<EntityDetail> getAnchoredMembers(String  userId,
+                                                  String  anchorGUID,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  int     startingFrom,
+                                                  Date    effectiveTime,
+                                                  String  methodName) throws UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        PrimitivePropertyValue anchorGUIDValue = new PrimitivePropertyValue();
+
+        anchorGUIDValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        anchorGUIDValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+        anchorGUIDValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        anchorGUIDValue.setPrimitiveValue(anchorGUID);
+
+        PropertyCondition anchorGUIDCondition = new PropertyCondition();
+
+        anchorGUIDCondition.setProperty(OpenMetadataProperty.ANCHOR_GUID.name);
+        anchorGUIDCondition.setOperator(PropertyComparisonOperator.EQ);
+        anchorGUIDCondition.setValue(anchorGUIDValue);
+
+        SearchProperties classificationProperties = new SearchProperties();
+
+        classificationProperties.setConditions(Collections.singletonList(anchorGUIDCondition));
+        classificationProperties.setMatchCriteria(MatchCriteria.ALL);
+
+        ClassificationCondition classificationCondition = new ClassificationCondition();
+
+        classificationCondition.setName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+        classificationCondition.setMatchProperties(classificationProperties);
+
+        SearchClassifications searchClassifications = new SearchClassifications();
+
+        searchClassifications.setConditions(Collections.singletonList(classificationCondition));
+        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+
+        return repositoryHandler.findEntities(userId,
+                                              null,
+                                              null,
+                                              null,
+                                              null,
+                                              searchClassifications,
+                                              null,
+                                              null,
+                                              SequencingOrder.CREATION_DATE_RECENT,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              startingFrom,
+                                              cascadeTraversalPageSize,
+                                              effectiveTime,
+                                              methodName);
+    }
+
+
+    /**
+     * Delete everything anchored to the supplied element by asking for it directly, rather than by walking
+     * relationships to find it.
+     * <br>
+     * The Anchors classification names the element that its bearer is directly or indirectly anchored to, so
+     * one query returns the entire anchored set however deep the graph is.  That matters for two reasons.  It
+     * replaces a traversal whose cost was proportional to the number of <em>relationships</em> in the graph
+     * with one query per <em>anchor</em>.  And it removes the recursion: the traversal it replaces descends
+     * through the graph holding a page of relationships alive at every level, so the memory it needs grows
+     * with the depth of the graph, and a deep or wide anchored graph could exhaust the heap - which, before
+     * the Error handling was corrected, took the whole platform with it.
+     * <br>
+     * <b>Nested anchors.</b>  An element inside an anchored set can be an anchor in its own right, and
+     * anything anchored to <em>it</em> carries its GUID rather than the outer one.  Those are found without
+     * any extra queries: such an element is its own anchor, so its Anchors classification names itself, and
+     * the entities returned already carry their classifications.  Each one found is queued and its own
+     * subgraph retrieved in turn.
+     * <br>
+     * <b>Fallback.</b>  Searching by classification property is an optional repository capability - a
+     * repository proxy in front of a third-party store may not offer it.  If the first query cannot be run,
+     * this method reports that it could not be used and the caller falls back to the relationship traversal,
+     * which is the behaviour this has always had.  Once the first query succeeds the capability is proven, so
+     * later failures are real errors and are allowed to propagate rather than being hidden behind a silent
+     * change of strategy.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability that represents the external source
+     * @param externalSourceName name of the software capability that represents the external source
+     * @param anchorGUID the element being deleted, which is its own anchor
+     * @param cascadedDelete can the delete cascade to dependent elements?
+     * @param deletedEntityGUIDs entities that have already been deleted in this cascade
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return true if the anchored members were found and removed this way; false if the repository cannot
+     * answer the query and the caller should use the relationship traversal instead
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem removing the properties from the repositories
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request
+     */
+    private boolean deleteAnchoredMembersByQuery(String      userId,
+                                                 String      externalSourceGUID,
+                                                 String      externalSourceName,
+                                                 String      anchorGUID,
+                                                 boolean     cascadedDelete,
+                                                 Set<String> deletedEntityGUIDs,
+                                                 boolean     forLineage,
+                                                 boolean     forDuplicateProcessing,
+                                                 Date        effectiveTime,
+                                                 String      methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        final String memberGUIDParameterName = "anchoredMemberGUID";
+
+        List<EntityDetail> firstPage;
+
+        try
+        {
+            firstPage = this.getAnchoredMembers(userId, anchorGUID, forLineage, forDuplicateProcessing, 0, effectiveTime, methodName);
+        }
+        catch (Exception queryNotSupported)
+        {
+            log.debug("Anchored members of " + anchorGUID + " can not be retrieved by query (" +
+                              queryNotSupported.getClass().getName() + ": " + queryNotSupported.getMessage() +
+                              "); falling back to walking the relationships", queryNotSupported);
+            return false;
+        }
+
+        /*
+         * Anchors are discovered breadth-first and deleted depth-first.
+         *
+         * Nesting can go through any number of levels: an element anchored to this one can be an anchor
+         * itself, and so can an element anchored to that.  Each level is found by the same query, so
+         * discovery is a queue rather than a recursion, and it simply runs until nothing new is queued.
+         *
+         * Deletion runs the other way.  A nested anchor is recorded during discovery but deliberately not
+         * deleted then: the elements anchored to it are still to be found, and deleting an anchor before its
+         * members would break the rule the traversal has always followed - members first, anchor afterwards.
+         * Because discovery is breadth-first, walking the discovered anchors backwards visits the deepest
+         * first, which restores that order at every level.
+         */
+        Deque<String> anchorsToProcess  = new ArrayDeque<>();
+        Set<String>   anchorsProcessed  = new HashSet<>();
+        List<String>  nestedAnchorGUIDs = new ArrayList<>();
+
+        anchorsToProcess.add(anchorGUID);
+
+        List<EntityDetail> members = firstPage;
+
+        while (! anchorsToProcess.isEmpty())
+        {
+            String currentAnchorGUID = anchorsToProcess.poll();
+
+            if (! anchorsProcessed.add(currentAnchorGUID))
+            {
+                continue;
+            }
+
+            if (members == null)
+            {
+                members = this.getAnchoredMembers(userId, currentAnchorGUID, forLineage, forDuplicateProcessing, 0, effectiveTime, methodName);
+            }
+
+            while ((members != null) && (! members.isEmpty()))
+            {
+                boolean anyProcessed = false;
+
+                /*
+                 * Claim the whole page before deleting any of it.
+                 *
+                 * The members of one anchor are usually linked to each other, so removing the relationships of
+                 * the first one leads straight to its siblings.  Those siblings are anchored to the element
+                 * being deleted, so the traversal would happily delete them there and then - recursively, and
+                 * to whatever depth the graph happens to have, which is the behaviour this method exists to
+                 * replace.  Registering the page first means that traversal recognises them as already spoken
+                 * for and leaves them alone; each is then dealt with by the loop below, once, at this level.
+                 */
+                List<EntityDetail> claimedMembers = new ArrayList<>();
+
+                for (EntityDetail member : members)
+                {
+                    if ((member != null) && (! currentAnchorGUID.equals(member.getGUID())) && (deletedEntityGUIDs.add(member.getGUID())))
+                    {
+                        claimedMembers.add(member);
+                    }
+                }
+
+                for (EntityDetail member : claimedMembers)
+                {
+                    anyProcessed = true;
+
+                    AnchorIdentifiers memberAnchor = this.getAnchorsFromAnchorsClassification(member, methodName);
+
+                    if ((memberAnchor != null) && (member.getGUID().equals(memberAnchor.anchorGUID)))
+                    {
+                        /*
+                         * This member is its own anchor, so it has a subgraph of its own.  Queue it so that
+                         * subgraph is found, and leave the element itself until its members have gone.
+                         */
+                        anchorsToProcess.add(member.getGUID());
+                        nestedAnchorGUIDs.add(member.getGUID());
+                        continue;
+                    }
+
+                    /*
+                     * The member is removed through the standard single-element delete so that it keeps every
+                     * check and every event that a delete has always produced: the security verifier is called
+                     * for it, its own dependent relationships are validated, and its relationships are removed
+                     * individually before the entity itself.  What has changed is only how it was found.
+                     */
+                    this.deleteAnchoredBeanInRepository(userId,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        member.getGUID(),
+                                                        memberGUIDParameterName,
+                                                        member.getType().getTypeDefGUID(),
+                                                        member.getType().getTypeDefName(),
+                                                        cascadedDelete,
+                                                        null,
+                                                        null,
+                                                        currentAnchorGUID,
+                                                        deletedEntityGUIDs,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime,
+                                                        methodName);
+                }
+
+                if (! anyProcessed)
+                {
+                    /*
+                     * Nothing on this page was this traversal's to deal with - every entry was either the
+                     * anchor itself or already claimed.  Re-querying would return the same page for ever.
+                     */
+                    break;
+                }
+
+                /*
+                 * Deleting shrinks the result set, so the next page is read from the start rather than by
+                 * advancing an offset over a set that is moving underneath the query.  Any nested anchor
+                 * claimed above is still there, which is why a page of nothing but nested anchors ends the
+                 * loop through anyProcessed rather than being read again.
+                 */
+                members = this.getAnchoredMembers(userId, currentAnchorGUID, forLineage, forDuplicateProcessing, 0, effectiveTime, methodName);
+
+                if ((members != null) && (! members.isEmpty()))
+                {
+                    boolean somethingLeftToClaim = false;
+
+                    for (EntityDetail member : members)
+                    {
+                        if ((member != null) && (! deletedEntityGUIDs.contains(member.getGUID())))
+                        {
+                            somethingLeftToClaim = true;
+                            break;
+                        }
+                    }
+
+                    if (! somethingLeftToClaim)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            members = null;
+        }
+
+        /*
+         * The nested anchors, deepest first - see the note at the top of this loop.
+         */
+        for (int nestedAnchor = nestedAnchorGUIDs.size() - 1; nestedAnchor >= 0; nestedAnchor--)
+        {
+            String nestedAnchorGUID = nestedAnchorGUIDs.get(nestedAnchor);
+
+            EntityDetail nestedAnchorEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                nestedAnchorGUID,
+                                                                                memberGUIDParameterName,
+                                                                                OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                effectiveTime,
+                                                                                methodName);
+
+            if (nestedAnchorEntity != null)
+            {
+                this.deleteAnchoredBeanInRepository(userId,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
+                                                    nestedAnchorEntity.getGUID(),
+                                                    memberGUIDParameterName,
+                                                    nestedAnchorEntity.getType().getTypeDefGUID(),
+                                                    nestedAnchorEntity.getType().getTypeDefName(),
+                                                    cascadedDelete,
+                                                    null,
+                                                    null,
+                                                    anchorGUID,
+                                                    deletedEntityGUIDs,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime,
+                                                    methodName);
+            }
+        }
+
+        return true;
     }
 
 
@@ -2960,7 +3308,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                         effectiveTime,
                                                                         methodName);
 
-        List<String> deletedEntityGUIDs = new ArrayList<>();
+        /*
+         * A set rather than a list.  Every entity reached during the cascade is tested against this to decide
+         * whether it is anchored to something already being deleted, so a linear scan here made the whole
+         * traversal quadratic in the number of elements deleted - which is exactly the case that hurts, since
+         * it is the large deletes that are slow to begin with.  Insertion order is preserved so that the
+         * sequence remains readable when debugging.
+         */
+        Set<String> deletedEntityGUIDs = new LinkedHashSet<>();
         deletedEntityGUIDs.add(entity.getGUID());
 
         /*
@@ -2989,6 +3344,24 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         }
         else
         {
+            /*
+             * This entity is its own anchor, so anything anchored to it is being deleted with it.  Ask for
+             * those members directly - one query returns the whole anchored set, at any depth - rather than
+             * discovering them by descending through the relationships.  See deleteAnchoredMembersByQuery for
+             * why that matters and for what happens on a repository that cannot answer the query: it returns
+             * false, and the traversal below finds the members exactly as it always did.
+             */
+            this.deleteAnchoredMembersByQuery(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
+                                              entity.getGUID(),
+                                              cascadedDelete,
+                                              deletedEntityGUIDs,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime,
+                                              methodName);
+
             this.deleteAnchoredBeanInRepository(userId,
                                                 externalSourceGUID,
                                                 externalSourceName,
@@ -3142,7 +3515,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param validatingPropertyName name of property to verify - null if no verification is required
      * @param validatingPropertyValue value of property to verify
      * @param anchorEntityGUID unique identifier of the anchor entity
-     * @param deletedEntityGUIDs list of entities that have been deleted
+     * @param deletedEntityGUIDs entities that have already been deleted in this cascade
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -3162,7 +3535,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                String       validatingPropertyName,
                                                String       validatingPropertyValue,
                                                String       anchorEntityGUID,
-                                               List<String> deletedEntityGUIDs,
+                                               Set<String>  deletedEntityGUIDs,
                                                boolean      forLineage,
                                                boolean      forDuplicateProcessing,
                                                Date         effectiveTime,
@@ -3217,6 +3590,15 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
          * Retrieve the entities attached to this element.  Any entity that is anchored, directly or indirectly, to the anchor entity is deleted.
          * (This is why we explicitly delete the relationship to the parent element before calling this method).
          */
+        /*
+         * The page size is deliberately smaller than the server's maximum.  This traversal is recursive - the
+         * entity at the far end of each relationship may itself be anchored, and deleting it re-enters this
+         * method - so the iterator at every level of the recursion is holding a page of relationships, with
+         * their properties, for as long as the levels beneath it are running.  Sized at the server maximum,
+         * the memory held is (depth x maxPageSize) relationships, which is how a delete of a large anchored
+         * graph exhausts the heap.  A smaller page costs more round trips for the same total work and bounds
+         * what is held at each level.
+         */
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
                                                                                        invalidParameterHandler,
                                                                                        userId,
@@ -3232,7 +3614,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                        forLineage,
                                                                                        forDuplicateProcessing,
                                                                                        0,
-                                                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                                                       cascadeTraversalPageSize,
                                                                                        effectiveTime,
                                                                                        methodName);
 
@@ -9610,7 +9992,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                     null,
                                                     null,
                                                     attachedElementAnchorEntity.getGUID(),
-                                                    new ArrayList<>(),
+                                                    new LinkedHashSet<>(),
                                                     forLineage,
                                                     forDuplicateProcessing,
                                                     effectiveTime,
@@ -9652,7 +10034,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                     null,
                                                     null,
                                                     startingElementAnchorEntity.getGUID(),
-                                                    new ArrayList<>(),
+                                                    new LinkedHashSet<>(),
                                                     forLineage,
                                                     forDuplicateProcessing,
                                                     effectiveTime,

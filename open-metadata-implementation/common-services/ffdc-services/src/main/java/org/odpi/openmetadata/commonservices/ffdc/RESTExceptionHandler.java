@@ -633,14 +633,57 @@ public class RESTExceptionHandler
         else
         {
             /*
-             * An error exception or worse - this typically means that the JVM is in trouble and the platform
-             * can not safely continue.
+             * An Error rather than an Exception.  This used to end the JVM with System.exit, on the grounds
+             * that the JVM was in trouble and the platform could not safely continue.  It no longer does,
+             * because the cost of being wrong is severe and it usually was wrong:
+             *
+             *  - the OMAG Server Platform is a shared resource.  One request that runs out of heap, recurses
+             *    too deeply, or touches a connector whose jar is missing would take down every server running
+             *    on the platform, including servers belonging to other people and doing unrelated work;
+             *  - most Errors leave the JVM perfectly usable.  A StackOverflowError means one thread's stack
+             *    unwound.  A NoClassDefFoundError or any other LinkageError means one optional component is
+             *    not deployable - the rest of the platform is unaffected.  An AssertionError is a bug in one
+             *    code path.  None of these is a reason to stop serving every other request;
+             *  - even an OutOfMemoryError is usually survivable: the allocation that failed is abandoned and
+             *    its memory reclaimed.  Where it is not survivable, the JVM will fail again shortly and the
+             *    operator has an audit log entry saying what provoked it, rather than a process that vanished.
+             *
+             * So the Error is reported the way any other failure is - logged against this server, and
+             * returned to the caller who asked for the work.  That caller learns that its request failed,
+             * instead of losing the connection and having to guess.
              */
-            System.out.println("Throwable from " + methodName + " causing platform to exit");
-            log.error("Throwable from " + methodName + " causing platform to exit", error);
+            log.error("Error from " + methodName + " returned to the caller; the platform continues", error);
 
-            System.out.println(error.toString());
-            System.exit(-1);
+            String message = error.getMessage();
+
+            if (message == null)
+            {
+                message = error.getClass().getName();
+            }
+
+            ExceptionMessageDefinition messageDefinition = OMAGCommonErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                         methodName,
+                                                                                                                         message);
+
+            response.setRelatedHTTPCode(messageDefinition.getHttpErrorCode());
+            response.setExceptionClassName(PropertyServerException.class.getName());
+            response.setExceptionSubclassName(PropertyServerException.class.getName());
+            response.setExceptionCausedBy(error.getClass().getName());
+            response.setActionDescription(methodName);
+            response.setExceptionErrorMessage(messageFormatter.getFormattedMessage(messageDefinition));
+            response.setExceptionErrorMessageId(messageDefinition.getMessageId());
+            response.setExceptionErrorMessageParameters(messageDefinition.getMessageParams());
+            response.setExceptionSystemAction(messageDefinition.getSystemAction());
+            response.setExceptionUserAction(messageDefinition.getUserAction());
+            response.setExceptionURL(messageDefinition.getURL());
+            response.setExceptionProperties(null);
+
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      OMAGCommonAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(), methodName, message),
+                                      error);
+            }
         }
     }
 

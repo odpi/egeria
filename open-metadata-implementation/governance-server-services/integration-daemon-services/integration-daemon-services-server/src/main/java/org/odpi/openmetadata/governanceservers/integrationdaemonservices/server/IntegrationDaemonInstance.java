@@ -102,7 +102,7 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 
         if (handler == null)
         {
-            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_GROUP_NAME.getMessageDefinition(serverName, integrationGroupName),
+            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_GROUP_NAME.getMessageDefinition(integrationGroupName, serverName),
                                                 this.getClass().getName(),
                                                 serviceOperationName,
                                                 integrationGroupParameterName);
@@ -140,7 +140,7 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 
         if (handler == null)
         {
-            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_GROUP_NAME.getMessageDefinition(serverName, integrationGroupName),
+            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_GROUP_NAME.getMessageDefinition(integrationGroupName, serverName),
                                                 this.getClass().getName(),
                                                 serviceOperationName,
                                                 integrationGroupParameterName);

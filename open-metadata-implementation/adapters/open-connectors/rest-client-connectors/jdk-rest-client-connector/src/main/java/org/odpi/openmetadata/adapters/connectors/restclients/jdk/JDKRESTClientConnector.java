@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.restclients.jdk;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.RESTClientConnectorErrorCode;
@@ -31,6 +33,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
@@ -413,7 +416,7 @@ public class JDKRESTClientConnector extends RESTClientConnector
             }
             else
             {
-                bodyText    = objectMapper.writeValueAsString(requestBody);
+                bodyText    = this.serializeRequestBody(requestBody);
                 contentType = "application/json";
             }
 
@@ -505,6 +508,102 @@ public class JDKRESTClientConnector extends RESTClientConnector
                                        messageDefinition.getSystemAction(),
                                        messageDefinition.getUserAction(),
                                        error);
+    }
+
+
+    /**
+     * Serialize a request body to JSON.
+     * <br>
+     * Java erases the element type of a collection and the value type of a map, so Jackson serializes their
+     * contents against a declared type of {@code Object} and writes no type discriminator for them.  Where the
+     * receiving endpoint declares those types - {@code List<EngineConfig>}, {@code List<Connection>} and the
+     * like - it refuses the request: "Could not resolve subtype of ...: missing type id property 'class'".
+     * The same object sent on its own has always worked, because at the root Jackson uses its runtime type,
+     * which is why this showed up only on the calls that send a collection, and showed up as a 400 from the
+     * server rather than as anything visibly wrong at this end.
+     * <br>
+     * Serializing against the runtime type of the contents restores the discriminator.  Only a collection
+     * whose entries are all one class, or a map whose values are all one class, can be treated this way;
+     * anything else has no single type to declare and is serialized as it always was.
+     *
+     * @param requestBody object to serialize
+     * @return JSON
+     * @throws JsonProcessingException the request body can not be turned into JSON
+     */
+    private String serializeRequestBody(Object requestBody) throws JsonProcessingException
+    {
+        JavaType contentType = this.getDeclaredContentType(requestBody);
+
+        if (contentType != null)
+        {
+            return objectMapper.writerFor(contentType).writeValueAsString(requestBody);
+        }
+
+        return objectMapper.writeValueAsString(requestBody);
+    }
+
+
+    /**
+     * Work out the type to serialize a collection or map against, from the runtime classes of its contents.
+     *
+     * @param requestBody object about to be serialized, may be null
+     * @return the type to serialize against, or null when there is no single one
+     */
+    private JavaType getDeclaredContentType(Object requestBody)
+    {
+        if (requestBody instanceof Collection<?> collection)
+        {
+            Class<?> elementType = this.getCommonClass(collection);
+
+            if (elementType != null)
+            {
+                return objectMapper.getTypeFactory().constructCollectionType(Collection.class, elementType);
+            }
+        }
+        else if (requestBody instanceof Map<?, ?> map)
+        {
+            Class<?> keyType   = this.getCommonClass(map.keySet());
+            Class<?> valueType = this.getCommonClass(map.values());
+
+            if ((keyType != null) && (valueType != null))
+            {
+                return objectMapper.getTypeFactory().constructMapType(Map.class, keyType, valueType);
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the class shared by every entry, or null if they do not share one - which includes an empty
+     * collection, since there is nothing there to take a type from, and one holding a null.
+     *
+     * @param values values to inspect
+     * @return the common class, or null
+     */
+    private Class<?> getCommonClass(Collection<?> values)
+    {
+        Class<?> commonClass = null;
+
+        for (Object value : values)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            if (commonClass == null)
+            {
+                commonClass = value.getClass();
+            }
+            else if (! commonClass.equals(value.getClass()))
+            {
+                return null;
+            }
+        }
+
+        return commonClass;
     }
 
 

@@ -6555,14 +6555,44 @@ public class OMRSRepositoryRESTServices
         else
         {
             /*
-             * An error exception or worse - this typically means that the JVM is in trouble and the platform
-             * can not safely continue.
+             * An Error rather than an Exception.  This used to end the JVM with System.exit; it no longer
+             * does, because the OMAG Server Platform is a shared resource and one request should not be able
+             * to stop every server running on it.  Most Errors leave the JVM usable anyway - a
+             * StackOverflowError unwinds one thread's stack, a LinkageError means one optional component is
+             * not deployable - and even an OutOfMemoryError usually frees the memory it failed to allocate.
+             * The failure is reported to the caller and recorded here instead.  See the equivalent handling
+             * in RESTExceptionHandler.captureRuntimeExceptions.
              */
-            System.out.println("Throwable from " + methodName + " causing platform to exit");
-            log.error("Throwable from " + methodName + " causing platform to exit", error);
+            log.error("Error from " + methodName + " returned to the caller; the platform continues", error);
 
-            System.out.println(error.toString());
-            System.exit(-1);
+            String message = error.getMessage();
+
+            if (message == null)
+            {
+                message = error.getClass().getName();
+            }
+
+            ExceptionMessageDefinition messageDefinition = OMAGCommonErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                         methodName,
+                                                                                                                         message);
+
+            response.setRelatedHTTPCode(messageDefinition.getHttpErrorCode());
+            response.setExceptionClassName(PropertyServerException.class.getName());
+            response.setExceptionCausedBy(error.getClass().getName());
+            response.setActionDescription(methodName);
+            response.setExceptionErrorMessage(messageFormatter.getFormattedMessage(messageDefinition));
+            response.setExceptionErrorMessageId(messageDefinition.getMessageId());
+            response.setExceptionErrorMessageParameters(messageDefinition.getMessageParams());
+            response.setExceptionSystemAction(messageDefinition.getSystemAction());
+            response.setExceptionUserAction(messageDefinition.getUserAction());
+            response.setExceptionProperties(null);
+
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      OMAGCommonAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(), methodName, message),
+                                      error);
+            }
         }
     }
 
