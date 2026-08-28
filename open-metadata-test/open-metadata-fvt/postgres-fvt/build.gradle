@@ -1,0 +1,197 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module is a Functional Verification Test (FVT) suite for the **postgres-server-connectors** module -
+// the PostgreSQL server integration connector, the PostgreSQL server and database survey action services, and
+// the PostgreSQL tabular data set resource connectors - together with the **PostgreSQL core content pack**
+// that defines and drives them.
+//
+// Unlike its sibling suites, this one does not test an API surface by calling it directly.  It stands up the
+// deployment the connectors are designed to run in and then drives them the way an operator would:
+//
+//   * a **metadata access store** with a PostgreSQL local repository and its access services publishing to a
+//     real Apache Kafka broker - the out topics are how the governance servers below hear about configuration
+//     changes and new engine actions, so Kafka is not optional here;
+//   * an **integration daemon** configured with the PostgreSQLIntegrationGroup from the content pack, which is
+//     where the PostgreSQL Server Cataloguer runs;
+//   * an **engine host** configured with the PostgreSQLSurvey and PostgreSQLGovernance engines from the same
+//     content pack, which is where the survey and stewardship services run;
+//   * a **view server** running the Automated Curation OMVS, which is the API a curator uses to ask for any of
+//     this to happen.
+//
+// The tests then use the Automated Curation API to run the governance action processes the content pack
+// defines - create a PostgreSQL server asset from its catalog template, survey it, hand it to the cataloguer
+// as a catalog target, and delete it again - and check what actually arrived in the repository.  That makes
+// the suite a test of the whole chain: content pack -> view service -> engine host -> governance service ->
+// integration daemon -> integration connector -> repository.
+//
+// Like the other FVTs this is NOT part of the default build.  It only runs when explicitly requested:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:postgres-fvt:test -PrunPostgresFvt
+//
+// Database and Kafka connection details, the platform's own port, and how long the suite is prepared to wait
+// for a governance action or a connector refresh are all controlled from
+// src/test/resources/application.properties.
+
+dependencies {
+    // The OMAG Server Platform itself, run in-process via SpringApplication.run(...).
+    // user-authn is excluded: it wires in a login/token Spring Security chain that needs a real user
+    // directory and credentials, which this hermetic, no-auth platform does not set up.
+    testImplementation(project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')) {
+        exclude group: 'org.odpi.egeria', module: 'user-authn'
+    }
+
+    // Connectors needed to configure and run the four servers.  The Kafka connector is not optional here: the
+    // integration daemon and the engine host learn about their configuration, and about new engine actions,
+    // from the access services' out topics.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+
+    // The connectors under test, and the ones the content pack's governance action processes call on the way
+    // to them.  These have to be on the test runtime classpath because the integration daemon and the engine
+    // host instantiate them by class name from the connection stored in the repository - a missing one is not
+    // a compile failure, it is a connector that will not start.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
+    // The PostgreSQL "create and survey" process ends by writing the survey report out as a markdown document,
+    // and that step runs the report writer from here on the Core content pack's Stewardship engine.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:report-generating-connectors')
+
+    // Clients used to configure, start and drive the four servers
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+    testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-api')
+    testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
+    testImplementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-api')
+    testImplementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-client')
+
+    // Clients used to read the repository back and to follow an engine action to its conclusion.  The
+    // Automated Curation API starts the work; the open governance client is what says whether it finished.
+    testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+    testImplementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-client')
+    // The initiate-governance-action request bodies that the Automated Curation API takes live here, alongside
+    // the engine action beans it answers with.
+    testImplementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-api')
+
+    // Frameworks: element/property beans, the connector context the tests drive the repository through, the
+    // engine action beans, and the checked exceptions all of the above throw.
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-survey-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+
+    // The connectors under test.  This is on the *compile* classpath as well as the runtime one because the
+    // suite asserts against the connectors' own control definitions - placeholder names, configuration
+    // property names, annotation types - rather than repeating them as string literals that could drift.
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
+    // PostgresDeployedImplementationType - the technology types the pack is organised around - lives in the
+    // shared open-connectors module rather than in the PostgreSQL connector module itself.
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors')
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+
+    // The content pack definitions themselves.  The suite iterates them to work out what the PostgreSQL
+    // content pack is supposed to contain and then checks the repository against that, so adding a connector,
+    // an engine or a request type to the pack extends this suite's coverage without editing it.
+    testImplementation project(':open-metadata-resources:open-metadata-archives:core-content-pack')
+
+    // The Automated Curation view service's own request/response beans, so its REST API is driven with the
+    // types it actually publishes rather than hand-built JSON.
+    testImplementation project(':open-metadata-implementation:view-server-generic-services:automated-curation:automated-curation-server')
+    testImplementation project(':open-metadata-implementation:common-services:ffdc-services')
+
+    // In-process Spring Boot startup/shutdown, and the REST client used for the Automated Curation calls.
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+    testImplementation 'org.springframework:spring-core'
+
+    // A permit-all security filter chain is needed so that every request still gets an Authentication in the
+    // SecurityContext - the admin, platform and view service REST controllers all require one to be present
+    // even though this suite's platform has no real user directory configured.
+    testImplementation 'org.springframework.security:spring-security-config'
+    testImplementation 'org.springframework.security:spring-security-web'
+    testImplementation 'org.springframework.security:spring-security-core'
+
+    // Used to read the PostgreSQL credentials out of the same YAML secrets store the servers are configured
+    // with, rather than repeating them here.
+    testImplementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    // The suite creates and drops its own database and tables on the PostgreSQL server under test.
+    testImplementation 'org.postgresql:postgresql'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'PostgreSQL Server Connectors Functional Verification Tests (postgres-fvt)'
+
+test {
+    useJUnitPlatform()
+
+    // Optional, opt-in suite: it needs a reachable PostgreSQL server and stands up four servers, so it is
+    // skipped unless explicitly requested.  Two ways to ask for it:
+    //
+    //   -PrunPostgresFvt         the normal deployment - the access services publish to Apache Kafka, so a
+    //                            reachable broker is needed too, and the governance servers are told about
+    //                            each engine action as it is requested;
+    //   -PrunPostgresFvtNoKafka  no event bus at all - the access services are configured without out topics
+    //                            and no broker is needed.  Every test is still expected to pass: an engine
+    //                            host does not require an event bus, it just reacts a little later without
+    //                            one, and this is the run that says so.
+    onlyIf { project.hasProperty('runPostgresFvt') || project.hasProperty('runPostgresFvtNoKafka') }
+
+    // Single JVM fork - the tests share one running platform and its four servers, and are not designed to
+    // run concurrently against them.  Ordering matters too: the content pack has to be shown to have loaded
+    // before there is any point asking the governance servers to act on it.
+    maxParallelForks = 1
+    testLogging.showStandardStreams = true
+
+    // This one JVM holds four OMAG servers, a PostgreSQL repository and the content packs loaded into it, so
+    // Gradle's default test heap is not enough.  The clean-up pass is what actually runs out first: it purges
+    // whatever previous runs left behind, and a cascading delete of one server asset pulls in every survey
+    // report and annotation anchored beneath it.  A run that exhausts the heap does not fail tidily - the
+    // OutOfMemoryError surfaces inside the platform's own REST call and takes the platform down, so every test
+    // then fails with a connection refused that says nothing about the cause.
+    maxHeapSize = '2g'
+
+    // Any postgres.fvt.* setting can be overridden for a single run from the command line, e.g.
+    //
+    //   ./gradlew :open-metadata-test:open-metadata-fvt:postgres-fvt:test -PrunPostgresFvt \
+    //       -Dpostgres.fvt.engine.action.timeout.seconds=600
+    //
+    // Gradle does not pass its own system properties to the forked test JVM, so they are forwarded here.
+    // Spring's Environment reads system properties ahead of application.properties, so a value given this
+    // way wins for that run without editing the file.
+    systemProperties System.properties.findAll { it.key.toString().startsWith('postgres.fvt.') }
+
+    // Asking for both at once is refused rather than resolved to one of them: the two runs answer different
+    // questions, and a report that does not say which one it was is worth nothing.
+    if (project.hasProperty('runPostgresFvt') && project.hasProperty('runPostgresFvtNoKafka'))
+    {
+        throw new GradleException('Specify either -PrunPostgresFvt or -PrunPostgresFvtNoKafka, not both - one run ' +
+                                          'exercises the connectors with an event bus, the other without.')
+    }
+
+    if (project.hasProperty('runPostgresFvtNoKafka'))
+    {
+        systemProperty 'postgres.fvt.event.bus', 'none'
+    }
+}
+
+// Resolves logging conflicts between the various connectors pulled in by the platform chassis
+loggingCapabilities {
+    enforceLogback()
+}

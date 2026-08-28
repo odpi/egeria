@@ -19,6 +19,8 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.properties.Gov
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
 
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The GovernanceEngineHandler is responsible for running governance services on demand.  It is initialized
@@ -50,7 +52,17 @@ public abstract class GovernanceEngineHandler
 
     private final GovernanceServiceCacheMap  governanceServiceLookupTable = new GovernanceServiceCacheMap();
 
-    private Date lastRefreshTime = null;
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineHandler.class);
+
+    /*
+     * How long an engine's configuration is considered current for.  Refreshing it means re-reading the
+     * engine definition and every governance service registered with it, and the events that ask for it
+     * arrive in bursts - several at start-up alone - so it is deliberately not done on every request.
+     */
+    private static final long configurationRefreshIntervalMS = 1000L * 60L * 10L;
+
+    private Date lastRefreshTime        = null;
+    private Date lastServiceRefreshTime = null;
 
     /**
      * Create a client-side object for calling a governance engine.
@@ -187,11 +199,25 @@ public abstract class GovernanceEngineHandler
 
         if (lastRefreshTime != null)
         {
-            Date now = new Date();
-            long diff = now.getTime() - lastRefreshTime.getTime();
-            long tenMinutes = 1000 * 60 * 10;
-            if (diff < tenMinutes)
+            long diff = new Date().getTime() - lastRefreshTime.getTime();
+
+            if (diff < configurationRefreshIntervalMS)
             {
+                /*
+                 * The configuration was reloaded recently enough, so it is not read again - but engine actions
+                 * are not configuration, and the sweep that picks up the ones this engine has not started must
+                 * not be skipped along with it.
+                 *
+                 * That sweep is what makes the engine self-healing.  An engine action is created as REQUESTED
+                 * and moves to APPROVED a moment later; the out topic event announcing it is handled by
+                 * re-reading the action, and an engine that reads it in the instant before it is approved
+                 * simply does nothing - there is no retry, because nothing tells the engine to look again.
+                 * Behind the configuration throttle that miss lasted until the next configuration refresh fell
+                 * due, which is ten minutes at the earliest and, since the refresh thread sleeps far longer
+                 * than that between cycles, in practice much more.  The action sat at APPROVED with an engine
+                 * that was running, willing and idle.
+                 */
+                startMissedEngineActions();
                 return;
             }
         }
@@ -310,18 +336,22 @@ public abstract class GovernanceEngineHandler
     {
         final String methodName = "refreshServiceConfig";
 
-        if (lastRefreshTime != null)
+        /*
+         * Throttled on its own clock rather than the one refreshConfig uses.  The two answer different events -
+         * one governance service changing, against the whole engine definition being reloaded - and sharing a
+         * single timestamp meant either could silently suppress the other for ten minutes.
+         */
+        if (lastServiceRefreshTime != null)
         {
-            Date now = new Date();
-            long diff = now.getTime() - lastRefreshTime.getTime();
-            long tenMinutes = 1000 * 60 * 10;
-            if (diff < tenMinutes)
+            long diff = new Date().getTime() - lastServiceRefreshTime.getTime();
+
+            if (diff < configurationRefreshIntervalMS)
             {
                 return;
             }
         }
 
-        lastRefreshTime = new Date();
+        lastServiceRefreshTime = new Date();
 
         /*
          * Only process service events if the governance engine is known and matches the incoming request.
@@ -665,6 +695,19 @@ public abstract class GovernanceEngineHandler
                         (engineUserId.equals(latestEngineActionElement.getProcessingEngineUserId())))
                 {
                     cancelGovernanceService(engineActionGUID);
+                }
+                else
+                {
+                    /*
+                     * The action is for this engine but is not in a state this engine acts on - most often it
+                     * is still REQUESTED, because the event announcing it arrived before it was approved.
+                     * Nothing is done now and nothing further is scheduled; the action is picked up by
+                     * startMissedEngineActions the next time this engine is asked to refresh.  Recorded
+                     * because an engine action that quietly goes nowhere is otherwise indistinguishable from
+                     * one nobody ever heard about.
+                     */
+                    log.debug("Engine action " + engineActionGUID + " for engine " + governanceEngineName +
+                                      " was not started: its status is " + latestEngineActionElement.getActionStatus());
                 }
             }
         }
