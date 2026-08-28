@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataElemen
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.SpecificationPropertyConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -560,6 +561,58 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                serverName,
                                                                                                userId,
                                                                                                elementGUID);
+
+        return restResult.getElement();
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     * <br><br>
+     * The question is put to the server rather than answered here.  The server owns what an ambiguous unique
+     * name means: it fails the request, because it cannot know which element the caller meant, and records
+     * the elements it could not choose between as discovered duplicates so that a steward - or the automated
+     * duplicate manager - has something to resolve.  Working the answer out on this side from a search would
+     * produce the same failure while losing the record of it.
+     *
+     * @param userId caller's userId
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of the property to test - if null "qualifiedName" is used
+     * @param getOptions multiple options to control the query
+     *
+     * @return metadata element properties or null if not found
+     *
+     * @throws InvalidParameterException the unique name is null or not known.
+     * @throws UserNotAuthorizedException the caller is not able to access the element
+     * @throws PropertyServerException a problem accessing the metadata store, including more than one
+     *                                 element having the name
+     */
+    @Override
+    public OpenMetadataElement getMetadataElementByUniqueName(String     userId,
+                                                              String     uniqueName,
+                                                              String     uniquePropertyName,
+                                                              GetOptions getOptions) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        final String methodName        = "getMetadataElementByUniqueName";
+        final String nameParameterName = "uniqueName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/by-unique-name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
+
+        UniqueNameRequestBody requestBody = new UniqueNameRequestBody(getOptions);
+
+        requestBody.setName(uniqueName);
+        requestBody.setNameParameterName(nameParameterName);
+        requestBody.setNamePropertyName(uniquePropertyName == null ? OpenMetadataProperty.QUALIFIED_NAME.name : uniquePropertyName);
+
+        OpenMetadataElementResponse restResult = restClient.callOpenMetadataElementPostRESTCall(methodName,
+                                                                                                urlTemplate,
+                                                                                                requestBody,
+                                                                                                serverName,
+                                                                                                userId);
 
         return restResult.getElement();
     }

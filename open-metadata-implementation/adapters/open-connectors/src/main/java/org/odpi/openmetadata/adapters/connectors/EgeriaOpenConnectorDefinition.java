@@ -893,6 +893,17 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                          DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                                          DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
+    MENDEL_AUTOMATED_DUPLICATE_MANAGER(393,
+                                       "0cc9ef61-97aa-42ce-8387-653fdf0daf23",
+                                       "Egeria::IntegrationConnector::Mendel::AutomatedDuplicateManager",
+                                       "Mendel Automated Duplicate Manager Integration Connector",
+                                       "Connector manages the duplicate links and classifications for the elements that have been detected as duplicates.  It confirms the close matches, asks a steward to decide on the rest, retires the classifications of the duplicates that a steward has separated, and consolidates the clusters of confirmed duplicates.",
+                                       "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/nanny-connectors",
+                                       "org.odpi.openmetadata.adapters.connectors.mendel.MendelAutomatedDuplicateManagerProvider",
+                                       ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                       DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                       DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
+
     ZONE_MEMBERSHIP_PROFILER_LOVELACE_SERVICE(392,
                                            "d77f6c4c-abb7-4f1c-b839-fb41819ec9e1",
                                            "Egeria::GovernanceService::Verification::Lovelace::ZoneMembershipProfilerService",

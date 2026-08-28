@@ -181,6 +181,40 @@ public class RepositoryErrorHandler
 
 
     /**
+     * Return flag to indicate whether the properties contain the requested status value.  This is a stricter test than
+     * validateStatus() and is used where a specific status is required - for example, duplicate links and classifications
+     * are only acted on when a steward has explicitly validated them.
+     *
+     * @param statusPropertyName property name to test (or null to skip test)
+     * @param requiredStatus the only status value that is acceptable
+     * @param properties properties retrieved from the repositories
+     * @param methodName calling method
+     *
+     * @return true if no status property name is supplied or the property is set to the required status.
+     */
+    boolean validateSpecificStatus(String             statusPropertyName,
+                                   int                requiredStatus,
+                                   InstanceProperties properties,
+                                   String             methodName)
+    {
+        if (statusPropertyName != null)
+        {
+            /*
+             * A missing property returns zero, which only matches if zero is the required status.
+             */
+            int status = repositoryHelper.getIntProperty(serviceName,
+                                                         statusPropertyName,
+                                                         properties,
+                                                         methodName);
+
+            return (status == requiredStatus);
+        }
+
+        return true;
+    }
+
+
+    /**
      * Return flag indicating whether the new element is more recently updated than the original element.
      *
      * @param originalElement original element

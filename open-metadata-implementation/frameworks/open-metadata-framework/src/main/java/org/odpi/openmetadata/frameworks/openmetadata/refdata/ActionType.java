@@ -32,6 +32,11 @@ public enum ActionType implements OpenMetadataRefData
      */
     ACCESS_REQUEST (2, "Access Request", "A user has requested access to the linked resource.","requestedResource","3bdf2eed-1ed8-4e8d-b792-41371fc72d94", false),
 
+    /**
+     * Elements have been detected as potential duplicates and need a steward's decision.
+     */
+    DUPLICATE_REVIEW (3, "Duplicate Review", "Elements have been detected as potential duplicates and need a steward's decision.", "duplicateElement", "782c8613-184d-470d-949a-f7143c5929bd", false),
+
     ;
 
     private final int     ordinal;

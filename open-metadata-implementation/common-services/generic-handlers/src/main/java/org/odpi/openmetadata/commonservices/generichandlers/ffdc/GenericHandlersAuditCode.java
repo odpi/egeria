@@ -165,6 +165,39 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                                                "The individual retrieval still provides the same security protection - it is just slower to execute.",
                                                "https://egeria-project.org/services/generic-handlers/"),
 
+    /**
+     * OMAG-GENERIC-HANDLERS-0029 - Method {0} detected multiple {1} entities with a {2} of {3}; they have been linked
+     * with PeerDuplicateLink relationships with a status of DISCOVERED.  The entities are {4}
+     */
+    DISCOVERED_DUPLICATES("OMAG-GENERIC-HANDLERS-0029",
+                          AuditLogRecordSeverityLevel.INFO,
+                          "Method {0} detected multiple {1} entities with a {2} of {3}; they have been linked with PeerDuplicateLink " +
+                                  "relationships with a status of DISCOVERED.  The entities are {4}",
+                          "The duplicate entities are linked together to record that they have been detected.  No KnownDuplicate " +
+                                  "classifications are added, and the status of the new relationships means that the retrieval processing " +
+                                  "continues to return the entities separately.  The original request fails because the server is unable " +
+                                  "to determine which of the entities to use.",
+                          "Review the linked entities.  If they are genuine duplicates, add the KnownDuplicate classification to each of " +
+                                  "them and move the status of the PeerDuplicateLink relationships to VALIDATED so that the retrieval " +
+                                  "processing combines them.  If they are not duplicates, remove the relationships and correct the " +
+                                  "duplicated name.",
+                          "https://egeria-project.org/features/duplicate-management/overview/"),
+
+    /**
+     * OMAG-GENERIC-HANDLERS-0030 - Method {0} was unable to link the duplicate entities {1} with PeerDuplicateLink relationships
+     * due to a {2} exception with message {3}
+     */
+    UNABLE_TO_MARK_DUPLICATES("OMAG-GENERIC-HANDLERS-0030",
+                              AuditLogRecordSeverityLevel.ERROR,
+                              "Method {0} was unable to link the duplicate entities {1} with PeerDuplicateLink relationships due to a {2} " +
+                                      "exception with message {3}",
+                              "The duplicate entities were detected but they have not been linked together, so there is no record of the " +
+                                      "detection in the open metadata ecosystem.  The original request still fails because the server is " +
+                                      "unable to determine which of the entities to use.",
+                              "Use the details of the exception to determine why the relationships could not be created.  The duplicates " +
+                                      "themselves are listed in the message and can be linked manually.",
+                              "https://egeria-project.org/features/duplicate-management/overview/"),
+
     ;
 
     private final String                      logMessageId;

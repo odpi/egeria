@@ -12,6 +12,8 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMSecret
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductSolutionComponent;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.liskov.DataSharingHubManagerProvider;
+import org.odpi.openmetadata.adapters.connectors.mendel.MendelAutomatedDuplicateManagerProvider;
+import org.odpi.openmetadata.adapters.connectors.mendel.controls.MendelConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.db2luw.catalog.DB2LUWServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWConfigurationProperty;
@@ -620,6 +622,29 @@ public enum IntegrationConnectorDefinition
                               IntegrationGroupDefinition.BABBAGE,
                               ContentPackDefinition.CORE_CONTENT_PACK),
 
+    MENDEL_AUTOMATED_DUPLICATE_MANAGER("f5f0a1ba-1f24-4a9d-b96e-cb00fa89c1f5",
+                                       "MendelAutomatedDuplicateManagerIntegrationConnector",
+                                       "Manages the duplicate links and classifications for the elements that have been detected as duplicates.",
+                                       MendelAutomatedDuplicateManagerProvider.class.getName(),
+                                       "MendelAutomatedDuplicateManager",
+                                       "mendelnpa",
+                                       null,
+                                       null,
+                                       null,
+                                       getMendelConfigProperties(),
+                                       60*24, // 24 hours
+                                       null,
+                                       "2d499775-4a9c-45db-b07e-630aec9d6166",
+                                       "Automated Duplicate Manager",
+                                       "Reviews the duplicate links that have been detected in the open metadata ecosystem.  It confirms the close matches, asks a steward to decide on the rest, retires the classifications of the duplicates that a steward has separated, and consolidates the clusters of confirmed duplicates.",
+                                       true,
+                                       null,
+                                       null,
+                                       null,
+                                       null,
+                                       IntegrationGroupDefinition.MENDEL,
+                                       ContentPackDefinition.CORE_CONTENT_PACK),
+
     LISKOV_DATA_SHARING_HUB_MANAGER("a38e7f2b-a672-419e-95b4-d650d9bb5c92",
                                     "LiskovDataSharingHubManagerIntegrationConnector",
                                     "Manages the content of the data dictionary for a data sharing hub.",
@@ -673,6 +698,22 @@ public enum IntegrationConnectorDefinition
      *
      * @return map
      */
+    /**
+     * Return the configuration properties for the Mendel Automated Duplicate Manager.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getMendelConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(MendelConfigurationProperty.DUPLICATE_CLUSTER_SIZE.getName(),
+                                    MendelConfigurationProperty.DEFAULT_DUPLICATE_CLUSTER_SIZE);
+
+        return configurationProperties;
+    }
+
+
     private static Map<String, Object> getUCServerConfigProperties()
     {
         Map<String, Object> configurationProperties = new HashMap<>();

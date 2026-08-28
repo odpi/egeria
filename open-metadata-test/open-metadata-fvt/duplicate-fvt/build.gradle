@@ -1,0 +1,120 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module is a Functional Verification Test (FVT) suite for Egeria's **duplicate management**: the
+// deduplication that the repository handler performs on retrieval, the duplicate detection that the generic
+// handler performs when a unique name lookup finds more than one element, and the **Mendel Automated
+// Duplicate Manager** integration connector that manages the links and classifications the other two rely on.
+//
+// Duplicates cannot be created through the access services - they exist precisely because something got past
+// them - so this suite introduces them the way they arrive in the wild: through the repository layer, by
+// loading an open metadata archive whose entities deliberately share a qualified name.  The archive is built
+// by the suite itself (see DuplicateArchiveWriter) so the fixture is deterministic and no binary test data
+// needs to be checked in.
+//
+// The suite stands up the deployment duplicate management runs in:
+//
+//   * a **metadata access store** with a PostgreSQL local repository and its access services publishing to a
+//     real Apache Kafka broker - Mendel listens to the OMF out topic, so Kafka is not optional here;
+//   * an **integration daemon** configured with the MendelIntegrationGroup from the core content pack, which
+//     is where the Mendel Automated Duplicate Manager runs.
+//
+// The tests then drive Mendel's refresh explicitly (rather than waiting out its 24 hour interval) and check
+// what arrived in the repository, and they read elements back both normally and with forDuplicateProcessing
+// set, which is the switch that turns the deduplication off and shows the underlying duplicates.
+//
+// Like the other FVTs this is NOT part of the default build.  It only runs when explicitly requested:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:duplicate-fvt:test -PrunDuplicateFvt
+//
+// Database and Kafka connection details, the platform's own port, and how long the suite is prepared to wait
+// for a connector refresh are all controlled from src/test/resources/application.properties.
+
+dependencies {
+    // The OMAG Server Platform itself, run in-process via SpringApplication.run(...).
+    // user-authn is excluded: it wires in a login/token Spring Security chain that needs a real user
+    // directory and credentials, which this hermetic, no-auth platform does not set up.
+    testImplementation(project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')) {
+        exclude group: 'org.odpi.egeria', module: 'user-authn'
+    }
+
+    // Connectors needed to configure and run the two servers.  The Kafka connector is not optional here: the
+    // integration daemon learns about its configuration, and Mendel hears about new and updated duplicate
+    // links, from the access services' out topics.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+
+    // The connector under test.  This has to be on the test runtime classpath because the integration daemon
+    // instantiates it by class name from the connection stored in the repository - a missing one is not a
+    // compile failure, it is a connector that will not start.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')
+
+    // Building the duplicate archive that seeds the fixture.
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
+    testImplementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
+
+    // Clients used to configure, start and drive the two servers
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+    testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-api')
+    testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
+
+    // Clients used to read the repository back.
+    testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    // The Mendel connector's own definitions - the integration group and connector names the tests refer to,
+    // and the configuration property that sets the consolidation cluster size.
+    testImplementation project(':open-metadata-resources:open-metadata-archives:core-content-pack')
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors')
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')
+
+    // In-process Spring Boot startup/shutdown
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+
+    // A permit-all security filter chain is needed so that every request still gets an (anonymous)
+    // Authentication in the SecurityContext - the admin/platform REST controllers require one to be
+    // present even though this suite's platform has no real user directory configured.
+    testImplementation 'org.springframework.security:spring-security-config'
+    testImplementation 'org.springframework.security:spring-security-web'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Open Metadata Duplicate Management Functional Verification Tests (duplicate-fvt)'
+
+test {
+    useJUnitPlatform()
+
+    // Optional, opt-in suite: needs a reachable PostgreSQL server and Apache Kafka broker, and loads the core
+    // content pack, so it is skipped unless explicitly requested with -PrunDuplicateFvt.
+    onlyIf { project.hasProperty('runDuplicateFvt') }
+
+    // Single JVM fork - the tests share one running platform and two servers (see OMAGPlatformExtension) and
+    // are not designed to run concurrently against them.  Several of them also drive Mendel's refresh and then
+    // assert on what it did, which only works if nothing else is driving it at the same time.
+    maxParallelForks = 1
+    testLogging.showStandardStreams = true
+}
+
+// Resolves logging conflicts between the various connectors pulled in by the platform chassis
+loggingCapabilities {
+    enforceLogback()
+}
