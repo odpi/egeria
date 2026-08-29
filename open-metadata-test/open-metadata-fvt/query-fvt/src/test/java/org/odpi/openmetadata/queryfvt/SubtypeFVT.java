@@ -232,8 +232,17 @@ public class SubtypeFVT
 
                 List<OpenMetadataElement> page = openMetadataStore.findMetadataElements(null, null, queryOptions);
 
-                if ((page == null) || page.isEmpty())
+                if (page == null)
                 {
+                    /*
+                     * Null ends the results.  An empty list does not - it means this batch was entirely
+                     * filtered out, and the next one may still hold something.  That matters more here
+                     * than in most of this suite: this scan covers the whole repository's Collection
+                     * corpus rather than a handful of elements the test made itself, so a batch can
+                     * legitimately be emptied by the visibility filtering every search applies.  Stopping
+                     * on one would cut the scan short and leave the assertions below passing on a
+                     * fraction of the corpus.
+                     */
                     break;
                 }
 
