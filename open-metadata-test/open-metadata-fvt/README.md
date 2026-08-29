@@ -73,6 +73,27 @@ property on the command line, shown against each suite below.
   ./gradlew :open-metadata-test:open-metadata-fvt:postgres-fvt:test -PrunPostgresFvtNoKafka
   ```
 
+* **[duplicate-fvt](duplicate-fvt)** - tests **duplicate management**: the repository handler combining
+  confirmed duplicates on retrieval, the generic handler recording the duplicates it finds behind an
+  ambiguous unique name, and the **Mendel Automated Duplicate Manager** that validates, retires and
+  consolidates them. Duplicates cannot be created through the access services - they exist because something
+  got past them - so the suite introduces them the way they arrive in the wild, through the repository layer.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:duplicate-fvt:test -PrunDuplicateFvt
+  ```
+
+* **[subscription-fvt](subscription-fvt)** - tests the **Open Metadata Digital Product Catalog** by following
+  a consumer's journey through it: locate a digital product, find the subscriptions it offers, and subscribe
+  to one of them. Nothing in the suite creates a product - the **Jacquard Digital Product Loom** builds the
+  catalogue in an integration daemon, and the tests assert against the definitions Jacquard builds it from.
+  Each of the four subscription types is taken out separately, and a product family is subscribed to as well
+  as a single product, because a family subscription has to cover every product in the family.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:subscription-fvt:test -PrunSubscriptionFvt
+  ```
+
 
 
 
