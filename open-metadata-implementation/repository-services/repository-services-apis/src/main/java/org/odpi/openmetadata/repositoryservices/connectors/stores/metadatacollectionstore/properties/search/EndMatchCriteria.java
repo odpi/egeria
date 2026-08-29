@@ -33,9 +33,9 @@ public enum EndMatchCriteria
     ANY  (1, "Any",  "A match on any of the end guids in the relationship is good enough."),
 
     /**
-     * None - Return relationships where the guids at either end of the relationship match.
+     * None - Return relationships where the guids at neither end of the relationship match.
      */
-    NONE (2, "None", "Return relationships where the guids at either end of the relationship match");
+    NONE (2, "None", "Return relationships where the guids at neither end of the relationship match");
 
 
     private final int     ordinal;
