@@ -85,10 +85,18 @@ loadScripts(document, 'script');</script>
      version supplies is added, so nothing that a member knows about is lost.</li>
      <li>The qualified name is derived rather than inherited - the original with the ISO-8601 time of the
      merge appended - because a qualified name is unique and the members still hold theirs.</li>
+     <li>The classifications of all of the members are combined.  Where more than one member carries the same
+     classification, the one from the latest member wins.</li>
      <li>The relationships of all of the members are combined.  A relationship is skipped when adding it would
      break the cardinality rules of its type - and where two members conflict on a relationship that the type
      only permits one of, the one from the latest member wins.</li>
  </ul>
+ Wherever the survivorship rules have to choose - two members disagree on the value of a property or of a
+ classification, or the consolidated element can only carry one of two relationships - the losing value is
+ reported to the audit log so that a steward can see what the consolidated element left behind.  The same is
+ done for the content that can not be carried at all: a cluster whose members are of different types can hold
+ properties and classifications that the consolidated element's type does not allow.
+ <br><br>
  The consolidated element carries the ConsolidatedDuplicate classification with a status of VALIDATED, and is
  linked to each of its members with a ConsolidatedDuplicateLink relationship.  That combination causes the
  retrieval processing to return the consolidated element in place of the members.</div>

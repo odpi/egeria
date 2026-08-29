@@ -115,17 +115,49 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CONFLICTING_CLASSIFICATION" class="member-name-link">CONFLICTING_CLASSIFICATION</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">MENDEL-DUPLICATE-MANAGER-0013 - The {0} integration connector is discarding the {1} classification ({2}) from element {3}
+ because the more recently updated element {4} in the same cluster of duplicates carries the same classification with
+ different properties ({5})</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CONFLICTING_PROPERTY" class="member-name-link">CONFLICTING_PROPERTY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">MENDEL-DUPLICATE-MANAGER-0011 - The {0} integration connector is discarding the value ({1}) that element {2} supplies for
+ the {3} property, because the more recently updated element {4} in the same cluster of duplicates supplies ({5})</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CONFLICTING_RELATIONSHIP" class="member-name-link">CONFLICTING_RELATIONSHIP</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">MENDEL-DUPLICATE-MANAGER-0015 - The {0} integration connector is not copying the {1} relationship between elements {2} and {3}
+ onto consolidated element {4}, because the type only permits one relationship of this kind at the consolidated element's end
+ and a more recently updated member of the cluster has supplied it</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0008 - The {0} integration connector has stopped managing the duplicates in server {1} on platform {2} and is shutting down</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DUPLICATES_CONSOLIDATED" class="member-name-link">DUPLICATES_CONSOLIDATED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#DUPLICATES_CONSOLIDATED" class="member-name-link">DUPLICATES_CONSOLIDATED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0007 - The {0} integration connector has created consolidated element {1} from {2} duplicate {3} elements</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DUPLICATES_VALIDATED" class="member-name-link">DUPLICATES_VALIDATED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#DUPLICATES_VALIDATED" class="member-name-link">DUPLICATES_VALIDATED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0004 - The {0} integration connector has validated the duplicate link ({1}) between elements {2} and {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#INCOMPATIBLE_CLASSIFICATION" class="member-name-link">INCOMPATIBLE_CLASSIFICATION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">MENDEL-DUPLICATE-MANAGER-0014 - The {0} integration connector is discarding the {1} classification from element {2} because
+ it can not be attached to {3}, the type of the consolidated element</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INCOMPATIBLE_CLASSIFICATION_PROPERTY" class="member-name-link">INCOMPATIBLE_CLASSIFICATION_PROPERTY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">MENDEL-DUPLICATE-MANAGER-0016 - The {0} integration connector is discarding the {1} property ({2}) of the {3}
+ classification supplied by element {4} because it is not a property of that classification</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#INCOMPATIBLE_PROPERTY" class="member-name-link">INCOMPATIBLE_PROPERTY</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">MENDEL-DUPLICATE-MANAGER-0012 - The {0} integration connector is discarding the {1} property ({2}) supplied by element {3}
+ because it is not a property of {4}, the type of the consolidated element</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#LISTENER_REGISTERED" class="member-name-link">LISTENER_REGISTERED</a></code></div>
 <div class="col-last odd-row-color">
@@ -268,6 +300,56 @@ the order they are declared.</div>
 <h3>DUPLICATES_CONSOLIDATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></span>&nbsp;<span class="element-name">DUPLICATES_CONSOLIDATED</span></div>
 <div class="block">MENDEL-DUPLICATE-MANAGER-0007 - The {0} integration connector has created consolidated element {1} from {2} duplicate {3} elements</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CONFLICTING_PROPERTY">
+<h3>CONFLICTING_PROPERTY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></span>&nbsp;<span class="element-name">CONFLICTING_PROPERTY</span></div>
+<div class="block">MENDEL-DUPLICATE-MANAGER-0011 - The {0} integration connector is discarding the value ({1}) that element {2} supplies for
+ the {3} property, because the more recently updated element {4} in the same cluster of duplicates supplies ({5})</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCOMPATIBLE_PROPERTY">
+<h3>INCOMPATIBLE_PROPERTY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></span>&nbsp;<span class="element-name">INCOMPATIBLE_PROPERTY</span></div>
+<div class="block">MENDEL-DUPLICATE-MANAGER-0012 - The {0} integration connector is discarding the {1} property ({2}) supplied by element {3}
+ because it is not a property of {4}, the type of the consolidated element</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCOMPATIBLE_CLASSIFICATION_PROPERTY">
+<h3>INCOMPATIBLE_CLASSIFICATION_PROPERTY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></span>&nbsp;<span class="element-name">INCOMPATIBLE_CLASSIFICATION_PROPERTY</span></div>
+<div class="block">MENDEL-DUPLICATE-MANAGER-0016 - The {0} integration connector is discarding the {1} property ({2}) of the {3}
+ classification supplied by element {4} because it is not a property of that classification</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CONFLICTING_CLASSIFICATION">
+<h3>CONFLICTING_CLASSIFICATION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></span>&nbsp;<span class="element-name">CONFLICTING_CLASSIFICATION</span></div>
+<div class="block">MENDEL-DUPLICATE-MANAGER-0013 - The {0} integration connector is discarding the {1} classification ({2}) from element {3}
+ because the more recently updated element {4} in the same cluster of duplicates carries the same classification with
+ different properties ({5})</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCOMPATIBLE_CLASSIFICATION">
+<h3>INCOMPATIBLE_CLASSIFICATION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></span>&nbsp;<span class="element-name">INCOMPATIBLE_CLASSIFICATION</span></div>
+<div class="block">MENDEL-DUPLICATE-MANAGER-0014 - The {0} integration connector is discarding the {1} classification from element {2} because
+ it can not be attached to {3}, the type of the consolidated element</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CONFLICTING_RELATIONSHIP">
+<h3>CONFLICTING_RELATIONSHIP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></span>&nbsp;<span class="element-name">CONFLICTING_RELATIONSHIP</span></div>
+<div class="block">MENDEL-DUPLICATE-MANAGER-0015 - The {0} integration connector is not copying the {1} relationship between elements {2} and {3}
+ onto consolidated element {4}, because the type only permits one relationship of this kind at the consolidated element's end
+ and a more recently updated member of the cluster has supplied it</div>
 </section>
 </li>
 <li>
