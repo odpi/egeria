@@ -347,6 +347,20 @@ dependencyAnalysis {
                 severity('fail')
             }
         }
+
+        // Spring Boot starters are POM-only aggregators: they contribute no classes of their own, so
+        // dependency-analysis always reports them as unused.  They are exactly what the platform chassis
+        // is meant to declare - removing them would strip the runtime stack out of the server - so the
+        // advice is suppressed here rather than acted on.
+        project(':open-metadata-implementation:platform-chassis:platform-chassis-spring') {
+            onUnusedDependencies {
+                exclude('org.springframework.boot:spring-boot-starter-actuator',
+                        'org.springframework.boot:spring-boot-starter-tomcat',
+                        'org.springframework.boot:spring-boot-starter-validation',
+                        'org.springframework.boot:spring-boot-starter-web',
+                        'org.springframework.boot:spring-boot-starter-test')
+            }
+        }
     }
 }
 

@@ -18,7 +18,7 @@ pluginManagement {
         // problem when upgraded to version "9.0.0"
         id "io.freefair.aggregate-javadoc" version "6.6.3"
         // Checks for unnecessary dependencies
-        id("com.autonomousapps.dependency-analysis") version "1.32.0"
+        id("com.autonomousapps.dependency-analysis") version "3.19.1"
         // helps resolve log implementation clashes
         id 'dev.jacomet.logging-capabilities' version "0.11.1"
         // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
@@ -27,7 +27,7 @@ pluginManagement {
         id 'checkstyle'
         // This plugin needs to be kept in step with bom
         id 'org.springframework.boot' version '3.1.4'
-        id 'com.github.johnrengelman.shadow' version '8.1.1'
+        id 'com.gradleup.shadow' version '8.3.9'
         id 'com.github.psxpaul.execfork' version '0.2.2'
     }
 }

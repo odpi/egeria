@@ -5,7 +5,7 @@
 
 plugins {
     id 'application'
-    id "com.github.johnrengelman.shadow"
+    id "com.gradleup.shadow"
 }
 
 // Artifact names are taken from the directory by default, set in settings.gradle to override
@@ -31,7 +31,10 @@ dependencies {
     testImplementation 'org.testng:testng'
 }
 
+application {
+    mainClass = ''
+}
+
 shadowJar {
-    mainClassName = ''
     archiveClassifier = 'jar-with-dependencies'
 }
