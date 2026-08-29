@@ -103,13 +103,31 @@ subprojects {
 
         // Maven publishing (to public repo) requires we included source and javadoc jars
         java {
+            // Compile, test and javadoc with a JDK 21 toolchain that Gradle locates itself, rather than
+            // whatever JDK happens to be on JAVA_HOME.  Without this, building with an older JDK fails
+            // deep in javac with "release version 21 not supported"; with it, Gradle either finds an
+            // installed 21 or reports that no matching toolchain is available.
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(21)
+            }
+
             withSourcesJar()
             withJavadocJar()
         }
 
+        // JavaExec tasks - the archive writers, report generators and the application plugin's own 'run'
+        // task - do not pick up the toolchain from the java extension the way JavaCompile, Test and
+        // Javadoc do, so they have to be pointed at it explicitly.  Without this they run on whatever
+        // JAVA_HOME provides and fail with UnsupportedClassVersionError on class files built for 21.
+        tasks.withType(JavaExec).configureEach {
+            javaLauncher = javaToolchains.launcherFor {
+                languageVersion = JavaLanguageVersion.of(21)
+            }
+        }
+
         // compile flags
         tasks.withType(JavaCompile) {
-            options.release = 17
+            options.release = 21
             options.encoding = 'UTF-8'
             options.incremental = true
             options.failOnError = true
@@ -267,6 +285,11 @@ subprojects {
 // Whilst all modules have their own javadoc, we only build
 // an aggregate for the client and API modules plus the REST calls
 apply plugin: 'java'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 javadoc {
     include("**/api/*.java")
     include("**/client/*.java")
