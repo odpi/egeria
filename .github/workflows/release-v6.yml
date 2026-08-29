@@ -45,7 +45,7 @@ jobs:
         uses: actions/setup-java@v5.6.0
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
       # Just build but don't publish (yet)
       - name: build (no publish to maven central)
         uses: gradle/gradle-build-action@v3

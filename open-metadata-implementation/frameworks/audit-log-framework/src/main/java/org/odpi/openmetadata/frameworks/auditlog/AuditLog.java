@@ -281,7 +281,7 @@ public class AuditLog extends MessageFormatter
 
         logRecord.setOriginatorComponent(reportingComponent);
         logRecord.setActionDescription(actionDescription);
-        logRecord.setThreadId(Thread.currentThread().getId());
+        logRecord.setThreadId(Thread.currentThread().threadId());
         logRecord.setThreadName(Thread.currentThread().getName());
         logRecord.setRequestId(requestId.getRequestId());
 
