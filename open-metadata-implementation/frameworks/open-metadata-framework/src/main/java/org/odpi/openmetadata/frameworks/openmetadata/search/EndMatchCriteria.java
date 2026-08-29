@@ -34,9 +34,9 @@ public enum EndMatchCriteria implements OpenMetadataRefData
     ANY  (1, "Any",  "A match on any of the end guids in the relationship is good enough.", "e2b5bea9-8563-4ae4-908a-7e3b9d75da91"),
 
     /**
-     * None - Return relationships where the guids at either end of the relationship match.
+     * None - Return relationships where the guids at neither end of the relationship match.
      */
-    NONE (2, "None", "Return relationships where the guids at either end of the relationship match", "45438f73-9f7e-4476-83e1-dbf59d0f361c");
+    NONE (2, "None", "Return relationships where the guids at neither end of the relationship match", "45438f73-9f7e-4476-83e1-dbf59d0f361c");
 
 
     private final int     ordinal;
