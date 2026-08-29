@@ -352,7 +352,7 @@ public class FeedbackManagerResource
 
 
     /**
-     * Return the list of tags containing the supplied string in the text. The search string is a regular expression (RegEx).
+     * Return the list of tags containing the supplied string in the text.
      *
      * @param serverName name of the server instances for this request.
      * @param urlMarker  view service URL marker
@@ -381,7 +381,7 @@ public class FeedbackManagerResource
 
 
     /**
-     * Return the list of the calling user's private tags containing the supplied string in either the name or description.  The search string is a regular expression (RegEx).
+     * Return the list of the calling user's private tags containing the supplied string in either the name or description.
      *
      * @param serverName name of the server instances for this request.
      * @param urlMarker  view service URL marker
@@ -396,7 +396,7 @@ public class FeedbackManagerResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findMyTags",
-               description="Return the list of the calling user's private tags containing the supplied string in either the name or description.  The search string is a regular expression (RegEx).",
+               description="Return the list of the calling user's private tags containing the supplied string in either the name or description.",
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 

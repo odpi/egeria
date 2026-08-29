@@ -668,8 +668,7 @@ public abstract class RepositoryGovernanceContext
 
 
     /**
-     * Return a list of entities whose string based property values match the search criteria.  The
-     * search criteria may include regex style wild cards.
+     * Return a list of entities whose string based property values match the search criteria.
      *
      * @param entityTypeGUID GUID of the type of entity to search for. Null means all types will
      *                       be searched (could be slow so not recommended).
@@ -930,8 +929,7 @@ public abstract class RepositoryGovernanceContext
 
 
     /**
-     * Return a list of relationships whose string based property values match the search criteria.  The
-     * search criteria may include regex style wild cards.
+     * Return a list of relationships whose string based property values match the search criteria.
      *
      * @param relationshipTypeGUID GUID of the type of entity to search for. Null means all types will
      *                       be searched (could be slow so not recommended).

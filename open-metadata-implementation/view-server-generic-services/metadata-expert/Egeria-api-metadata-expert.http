@@ -549,7 +549,7 @@ Content-Type: application/json
 ###
 # @name findElementsInAnchorDomain
 # Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+# title, text, summary, identifier or description.
 # The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string/in-anchor-domain/{{anchorDomainName}}
 Authorization: Bearer {{token}}
@@ -572,7 +572,7 @@ Content-Type: application/json
 ###
 # @name findElementsInAnchorScope
 # Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
+# title, text, summary, identifier or description.
 # The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string/in-anchor-scope/{{anchorScopeGUID}}
 Authorization: Bearer {{token}}
