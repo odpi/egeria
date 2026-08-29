@@ -25,6 +25,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -95,8 +96,15 @@ public class PagingFVT
                                                                                          null,
                                                                                          queryOptions);
 
-                if ((page == null) || page.isEmpty())
+                if (page == null)
                 {
+                    /*
+                     * Null ends the results.  An empty list does not - it means this batch was entirely
+                     * filtered out, and the next one may still hold something (see
+                     * ClassificationFilterPagingFVT, which is built around exactly that case).  Nothing
+                     * in this test produces an empty page, but stopping on one here would still be
+                     * wrong: it is the anti-pattern that hides a defect rather than finding one.
+                     */
                     break;
                 }
 
@@ -205,8 +213,16 @@ public class PagingFVT
                                                                                            null,
                                                                                            pastTheEndOptions);
 
-            assertTrue((pastTheEnd == null) || pastTheEnd.isEmpty(),
-                       "Requesting a page entirely past the end of the results should return nothing");
+            /*
+             * Null specifically, rather than "null or empty".  This is the other half of the paging
+             * contract: a caller that correctly stops only on a null depends on the server actually
+             * producing one.  Were a page past the end to come back as an empty list instead, that caller
+             * would page on for ever.
+             */
+            assertNull(pastTheEnd,
+                       "Requesting a page entirely past the end of the results should return null, which is "
+                               + "what ends a traversal - an empty list means 'this batch held nothing', and a "
+                               + "caller that honours that would never stop");
         }
         finally
         {
