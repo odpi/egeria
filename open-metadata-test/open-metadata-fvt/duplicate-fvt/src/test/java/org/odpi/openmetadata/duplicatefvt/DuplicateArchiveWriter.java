@@ -197,7 +197,18 @@ class DuplicateArchiveWriter extends OMRSArchiveWriter
     {
         EntityDetail elementOne   = this.addElement(DuplicateFvtTestSupport.CLUSTER_GUID_ONE, DuplicateFvtTestSupport.CLUSTER_QUALIFIED_NAME, "Cluster member 1", true);
         EntityDetail elementTwo   = this.addElement(DuplicateFvtTestSupport.CLUSTER_GUID_TWO, DuplicateFvtTestSupport.CLUSTER_QUALIFIED_NAME, "Cluster member 2", true);
-        EntityDetail elementThree = this.addElement(DuplicateFvtTestSupport.CLUSTER_GUID_THREE, DuplicateFvtTestSupport.CLUSTER_QUALIFIED_NAME, "Cluster member 3", true);
+
+        /*
+         * Only the third member is classified.  A governance classification is something a steward attached to
+         * one of the duplicates and not to the others, so it has to survive the consolidation: the consolidated
+         * element stands in for every member, and a classification that only one member carried would otherwise
+         * be lost the moment the retrieval processing stopped returning that member.
+         */
+        EntityDetail elementThree = this.addElement(DuplicateFvtTestSupport.CLUSTER_GUID_THREE,
+                                                     DuplicateFvtTestSupport.CLUSTER_QUALIFIED_NAME,
+                                                     "Cluster member 3",
+                                                     true,
+                                                     this.getConfidentialityClassification());
 
         /*
          * A chain rather than a mesh - the cluster is the set of elements reachable through the validated
@@ -248,6 +259,26 @@ class DuplicateArchiveWriter extends OMRSArchiveWriter
                                     String  displayName,
                                     boolean knownDuplicate)
     {
+        return this.addElement(guid, qualifiedName, displayName, knownDuplicate, null);
+    }
+
+
+    /**
+     * Add one element to the archive, with a classification of its own on top of the duplicate management.
+     *
+     * @param guid unique identifier to give it - fixed, so that the tests can refer to it directly
+     * @param qualifiedName qualified name - deliberately shared with another element in most of the sets
+     * @param displayName something to tell the elements apart by in a failure message
+     * @param knownDuplicate should the KnownDuplicate classification be attached?
+     * @param extraClassification a classification of the element's own, or null if it has none
+     * @return the new entity, for use as the end of a duplicate link
+     */
+    private EntityDetail addElement(String         guid,
+                                    String         qualifiedName,
+                                    String         displayName,
+                                    boolean        knownDuplicate,
+                                    Classification extraClassification)
+    {
         InstanceProperties properties = this.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName);
 
         properties = this.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName);
@@ -263,6 +294,16 @@ class DuplicateArchiveWriter extends OMRSArchiveWriter
                                                                  InstanceStatus.ACTIVE));
         }
 
+        if (extraClassification != null)
+        {
+            if (classifications == null)
+            {
+                classifications = new ArrayList<>();
+            }
+
+            classifications.add(extraClassification);
+        }
+
         EntityDetail entity = archiveHelper.getEntityDetail(ELEMENT_TYPE_NAME,
                                                              guid,
                                                              properties,
@@ -272,6 +313,30 @@ class DuplicateArchiveWriter extends OMRSArchiveWriter
         archiveBuilder.addEntity(entity);
 
         return entity;
+    }
+
+
+    /**
+     * Build the governance classification that one of the cluster's members carries.
+     *
+     * @return classification ready to attach to an entity
+     */
+    private Classification getConfidentialityClassification()
+    {
+        InstanceProperties properties = new InstanceProperties();
+
+        PrimitivePropertyValue levelValue = new PrimitivePropertyValue();
+
+        levelValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
+        levelValue.setPrimitiveValue(DuplicateFvtTestSupport.CLUSTER_CONFIDENTIALITY_LEVEL);
+        levelValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
+        levelValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
+
+        properties.setProperty(OpenMetadataProperty.CONFIDENTIALITY_LEVEL.name, levelValue);
+
+        return archiveHelper.getClassification(OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
+                                                properties,
+                                                InstanceStatus.ACTIVE);
     }
 
 
