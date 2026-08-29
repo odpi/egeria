@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataMermaid
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SubtypesMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -1144,8 +1145,9 @@ public class OpenMetadataStoreRESTServices
 
         SearchProperties searchProperties = getOMRSSearchPropertiesByName(null, searchString, searchOptions);
 
-        SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorPropertyValue,
-                                                                                     anchorPropertyName);
+        SearchClassifications searchClassifications = addClassificationFilters(getAnchorSearchClassifications(anchorPropertyValue,
+                                                                                                              anchorPropertyName),
+                                                                                searchOptions);
 
         List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                    searchOptions.getMetadataElementTypeName(),
@@ -1215,7 +1217,7 @@ public class OpenMetadataStoreRESTServices
                                                                    searchOptions.getSkipSubtypes(),
                                                                    searchProperties,
                                                                    handler.getInstanceStatuses(searchOptions.getLimitResultsByStatus()),
-                                                                   null,
+                                                                   addClassificationFilters(null, searchOptions),
                                                                    searchOptions.getAsOfTime(),
                                                                    searchOptions.getSequencingProperty(),
                                                                    handler.getSequencingOrder(searchOptions.getSequencingOrder()),
@@ -1396,8 +1398,9 @@ public class OpenMetadataStoreRESTServices
             if (requestBody != null)
             {
                 SearchProperties      searchProperties = getOMRSSearchPropertiesByName(null, requestBody.getSearchString(), requestBody);
-                SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorGUID,
-                                                                                             OpenMetadataProperty.ANCHOR_GUID.name);
+                SearchClassifications searchClassifications = addClassificationFilters(getAnchorSearchClassifications(anchorGUID,
+                                                                                                                      OpenMetadataProperty.ANCHOR_GUID.name),
+                                                                                        requestBody);
 
                 List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                            requestBody.getMetadataElementTypeName(),
@@ -1469,8 +1472,9 @@ public class OpenMetadataStoreRESTServices
             if (requestBody != null)
             {
                 SearchProperties      searchProperties = getOMRSSearchPropertiesByName(null, requestBody.getSearchString(), requestBody);
-                SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorDomainName,
-                                                                                             OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name);
+                SearchClassifications searchClassifications = addClassificationFilters(getAnchorSearchClassifications(anchorDomainName,
+                                                                                                                      OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name),
+                                                                                        requestBody);
 
                 List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                            requestBody.getMetadataElementTypeName(),
@@ -1542,8 +1546,9 @@ public class OpenMetadataStoreRESTServices
             if (requestBody != null)
             {
                 SearchProperties      searchProperties = getOMRSSearchPropertiesByName(null, requestBody.getSearchString(), requestBody);
-                SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorScopeGUID,
-                                                                                             OpenMetadataProperty.ANCHOR_SCOPE_GUIDS.name);
+                SearchClassifications searchClassifications = addClassificationFilters(getAnchorSearchClassifications(anchorScopeGUID,
+                                                                                                                      OpenMetadataProperty.ANCHOR_SCOPE_GUIDS.name),
+                                                                                        requestBody);
 
                 List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                            requestBody.getMetadataElementTypeName(),
@@ -1705,6 +1710,92 @@ public class OpenMetadataStoreRESTServices
         }
 
         return null;
+    }
+
+
+    /**
+     * Add the caller's classification filters to the classification search that will be passed to the
+     * repository, so that a page of results is a page of answers.
+     * <br><br>
+     * skipClassifiedElements/includeOnlyClassifiedElements are carried on every search request body, but
+     * until they are expressed as part of the query the repository knows nothing about them: it chooses the
+     * page, and the filtering happens afterwards on whatever came back.  Nothing is lost that way - the
+     * paging contract ends a traversal on a null rather than on an empty or short page, so a caller that
+     * keeps asking still sees everything - but a caller that asks once, which is the usual shape of a
+     * "find the elements classified X" call, is handed whatever fraction of the first page happened to
+     * carry the classification.  That is commonly none of it, and an empty result is indistinguishable
+     * from "nothing matches".  Pushing the filter down makes the first page the answer.
+     * <br><br>
+     * Only one of the two filters can be pushed down at a time, because a classification search carries a
+     * single match criteria and "must have these" cannot be combined with "must not have those".  The
+     * required classifications win, and the forbidden ones are left to the post-retrieval check - no worse
+     * than before, and better for the common case where only one is set.  For the same reason
+     * skipClassifiedElements is not pushed down alongside an anchor search, whose own condition is already
+     * a "must have".
+     *
+     * @param suppliedSearchClassifications classification search the caller (or an anchor search) has
+     *                                      already built, or null if there is none
+     * @param queryOptions options supplied by the caller
+     * @return classification search to pass to the repository, or null if there is no classification filtering
+     */
+    private SearchClassifications addClassificationFilters(SearchClassifications suppliedSearchClassifications,
+                                                           QueryOptions          queryOptions)
+    {
+        if (queryOptions == null)
+        {
+            return suppliedSearchClassifications;
+        }
+
+        List<String>  classificationNames = queryOptions.getIncludeOnlyClassifiedElements();
+        MatchCriteria matchCriteria       = MatchCriteria.ALL;
+
+        if ((classificationNames == null) || (classificationNames.isEmpty()))
+        {
+            /*
+             * "Must not have" can only be pushed down when there is nothing else in the classification
+             * search, since it inverts the match criteria for the whole search.
+             */
+            if ((suppliedSearchClassifications != null) ||
+                    (queryOptions.getSkipClassifiedElements() == null) ||
+                    (queryOptions.getSkipClassifiedElements().isEmpty()))
+            {
+                return suppliedSearchClassifications;
+            }
+
+            classificationNames = queryOptions.getSkipClassifiedElements();
+            matchCriteria       = MatchCriteria.NONE;
+        }
+
+        List<ClassificationCondition> classificationConditions = new ArrayList<>();
+
+        if ((suppliedSearchClassifications != null) && (suppliedSearchClassifications.getConditions() != null))
+        {
+            classificationConditions.addAll(suppliedSearchClassifications.getConditions());
+        }
+
+        for (String classificationName : classificationNames)
+        {
+            if (classificationName != null)
+            {
+                ClassificationCondition classificationCondition = new ClassificationCondition();
+
+                classificationCondition.setName(classificationName);
+
+                classificationConditions.add(classificationCondition);
+            }
+        }
+
+        if (classificationConditions.isEmpty())
+        {
+            return suppliedSearchClassifications;
+        }
+
+        SearchClassifications searchClassifications = new SearchClassifications();
+
+        searchClassifications.setConditions(classificationConditions);
+        searchClassifications.setMatchCriteria(matchCriteria);
+
+        return searchClassifications;
     }
 
 
