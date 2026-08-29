@@ -21,7 +21,7 @@ A configuration store connector is needed by a
 Details of how to configure a configuration store connector in the
 OMAG Server Platform is found [here](https://egeria-project.org/guides/admin/configuring-the-omag-server-platform).
 If no connector is configured, the OMAG Server Platform uses
-the connector implemented in the **configuration-encrypted-file-store-connector**
+the connector implemented in the **configuration-file-store-connector**
 module as a default.
 
 Return to [open-connectors](..) module.

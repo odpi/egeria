@@ -9,7 +9,7 @@ pluginManagement {
         // releases
         mavenCentral()
         // snapshots
-        maven { url "https://central.sonatype.com/repository/maven-snapshots/" }
+        maven { url = uri("https://central.sonatype.com/repository/maven-snapshots/") }
         // Once you start using pluginManagement, you should explicitly add this, unless
         // you NEVER want to use this repository
         gradlePluginPortal()
@@ -74,7 +74,6 @@ include(':open-metadata-implementation:adapters:open-connectors:governance-actio
 include(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:lovelace-insights')
 include(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
-include(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector')
 include(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
 include(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')
 include(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
