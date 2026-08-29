@@ -5,7 +5,7 @@
 
 plugins {
     id 'application'
-    id "com.github.johnrengelman.shadow"
+    id "com.gradleup.shadow"
 }
 
 dependencies {
@@ -65,7 +65,10 @@ java {
     withJavadocJar()
 }
 
+application {
+    mainClass = 'org.odpi.openmetadata.reports.componentid.ComponentIdReport'
+}
+
 shadowJar {
-    mainClassName = 'org.odpi.openmetadata.reports.componentid.ComponentIdReport'
     archiveClassifier = 'jar-with-dependencies'
 }

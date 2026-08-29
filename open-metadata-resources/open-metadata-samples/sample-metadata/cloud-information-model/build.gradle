@@ -5,7 +5,7 @@
 
 plugins {
     id 'application'
-    id "com.github.johnrengelman.shadow"
+    id "com.gradleup.shadow"
 }
 
 dependencies {
@@ -33,8 +33,11 @@ test {
     scanForTestClasses = false
 }
 
+application {
+    mainClass = 'org.odpi.openmetadata.samples.archiveutilities.CocoArchivesWriter'
+}
+
 shadowJar {
-    mainClassName = 'org.odpi.openmetadata.samples.archiveutilities.CocoArchivesWriter'
     archiveClassifier = 'jar-with-dependencies'
 }
 

@@ -90,7 +90,9 @@ distributions {
             into('') {
                 // Describe the docker build script
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/docker-build" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('') {
                 from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/docker/platform" }
@@ -98,14 +100,18 @@ distributions {
                             include 'Dockerfile'
                             include 'dist/*'
                         }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('') {
                 from(rootProject.projectDir) {
                     include 'NOTICE'
                     include 'LICENSE'
                 }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform') {
                 // Ensure license and notice are included in the docker container
@@ -113,12 +119,16 @@ distributions {
                     include 'NOTICE'
                     include 'LICENSE'
                 }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly') {
                 // Describe the deployment layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/assembly" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform') {
                 from(rootProject.projectDir) {
@@ -126,7 +136,9 @@ distributions {
                     include 'keystore.p12'
                     include 'application.properties'
                 }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform') {
                 // OMAG Server Platform - new name consistent with documentation
@@ -134,42 +146,58 @@ distributions {
                 rename { String fileName ->
                     fileName.replace("platform-chassis-spring", "omag-server-platform")
                 }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform') {
                 // Identify how the platform is started
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/platform" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform/secrets') {
                 // Provide the secrets stores
                 from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/secrets" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform/loading-bay') {
                 // Describe the loading bay
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/loading-bay" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform/data') {
                 // Describe the data files
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/data" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform/data/servers') {
                 // Add all sample configs
                 from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/sample-configs" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform/logs') {
                 // Describe the log files
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/logs" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform/lib') {
                 // Describe connectors
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/lib" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform/lib') {
                 // All our connectors, plus discovery sample & the sample Coco security connectors
@@ -219,65 +247,89 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors').shadowJar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors').jar }
                 from { project(':open-metadata-resources:open-metadata-dev-utilities:report-utilities').jar }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform/extra') {
                 // Identify how to add new libs
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/extra" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform/landing-area') {
                 // Identify how to add new libs
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/landing-area" }
-                fileMode = 0666
+                filePermissions {
+                    unix('0666')
+                }
             }
             into('assembly/etc') {
                 // Describe the deployment layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/etc" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/etc') {
                 from(rootProject.projectDir) {
                     include 'logback.xml'
                 }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/etc/reports') {
                 // Describe the reports layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/reports" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/etc/reports') {
                 from { project(':open-metadata-resources:open-metadata-dev-utilities:component-id-report').shadowJar }
                 rename { String fileName ->
                     fileName.replace("-$rootProject.version-jar-with-dependencies", "")
                 }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/opt') {
                 // Describe the opt layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/opt" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/opt/sample-data') {
                 from { "$rootProject.projectDir/open-metadata-resources/open-metadata-samples/sample-data" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/opt/sample-data') {
                 // Describe the sample-data layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/sample-data" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/platform') {
                 from(rootProject.projectDir) {
                     include 'content-packs/*'
                 }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/opt/http-client-collections') {
                 // Describe the HTTP clients
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/http-client-collections" }
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
             into('assembly/opt/http-client-collections') {
                 from { "$rootProject.projectDir/open-metadata-implementation/admin-services" }
@@ -381,7 +433,9 @@ distributions {
 
 
 
-                fileMode = 0755
+                filePermissions {
+                    unix('0755')
+                }
             }
         }
     }
