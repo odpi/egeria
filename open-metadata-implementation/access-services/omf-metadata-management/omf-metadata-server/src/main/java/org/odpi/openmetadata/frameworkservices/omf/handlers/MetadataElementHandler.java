@@ -1361,6 +1361,43 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Return the end match criteria to use.
+     * <br>
+     * A caller that names the ends of the relationships it wants, but does not say how those ends should be
+     * matched, means all of them: BOTH.  Left as null the end criteria are dropped and the caller is handed
+     * every relationship of the requested type rather than the ones asked for - a wrong answer rather than
+     * an error.  Where no ends are named the criteria stay null, because the repository rejects a criteria
+     * that has no ends to apply to.
+     *
+     * @param endMatchCriteria criteria as supplied by the caller
+     * @param end1EntityGUIDs entities named at end 1
+     * @param end1EntityTypeName type required at end 1
+     * @param end2EntityGUIDs entities named at end 2
+     * @param end2EntityTypeName type required at end 2
+     * @return criteria to use
+     */
+    private EndMatchCriteria getDefaultedEndMatchCriteria(EndMatchCriteria endMatchCriteria,
+                                                          List<String>     end1EntityGUIDs,
+                                                          String           end1EntityTypeName,
+                                                          List<String>     end2EntityGUIDs,
+                                                          String           end2EntityTypeName)
+    {
+        if (endMatchCriteria != null)
+        {
+            return endMatchCriteria;
+        }
+
+        if (((end1EntityGUIDs != null) && (! end1EntityGUIDs.isEmpty())) || (end1EntityTypeName != null)
+                    || ((end2EntityGUIDs != null) && (! end2EntityGUIDs.isEmpty())) || (end2EntityTypeName != null))
+        {
+            return EndMatchCriteria.BOTH;
+        }
+
+        return null;
+    }
+
+
+    /**
      * Convert the omf matchCriteria to OMRS matchCriteria.
      *
      * @param omfEndMatchCriteria omf EndMatchCriteria
@@ -1598,7 +1635,11 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                     this.getOptionalEntityTypeGUID(end1EntityTypeName),
                                                                     end2EntityGUIDs,
                                                                     this.getOptionalEntityTypeGUID(end2EntityTypeName),
-                                                                    this.getEndMatchCriteria(endMatchCriteria),
+                                                                    this.getEndMatchCriteria(this.getDefaultedEndMatchCriteria(endMatchCriteria,
+                                                                                                                                end1EntityGUIDs,
+                                                                                                                                end1EntityTypeName,
+                                                                                                                                end2EntityGUIDs,
+                                                                                                                                end2EntityTypeName)),
                                                                     this.getSearchProperties(searchProperties),
                                                                     this.getInstanceStatuses(limitResultsByStatus),
                                                                     asOfTime,

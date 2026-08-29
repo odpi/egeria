@@ -9,7 +9,7 @@ The MendelAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 10 |
+| **Number of messages** | 16 |
 | **Message identifiers begin** | `MENDEL-DUPLICATE-MANAGER-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.mendel.ffdc.MendelAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/nanny-connectors](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors) |
@@ -28,6 +28,12 @@ The MendelAuditCode is used to define the message content for the Audit Log.
 | [MENDEL-DUPLICATE-MANAGER-0005](#mendel-duplicate-manager-0005) | INFO | The {0} integration connector has created to do {1} to request that a steward reviews the duplicate link ({2}) between elements {3} and {4} |
 | [MENDEL-DUPLICATE-MANAGER-0006](#mendel-duplicate-manager-0006) | INFO | The {0} integration connector has removed the KnownDuplicate classification from element {1} |
 | [MENDEL-DUPLICATE-MANAGER-0007](#mendel-duplicate-manager-0007) | INFO | The {0} integration connector has created consolidated element {1} from {2} duplicate {3} elements |
+| [MENDEL-DUPLICATE-MANAGER-0011](#mendel-duplicate-manager-0011) | DECISION | The {0} integration connector is discarding the value ({1}) that element {2} supplies for the {3} property, because the more recently updated element {4} in the same cluster of duplicates supplies ({5}) |
+| [MENDEL-DUPLICATE-MANAGER-0012](#mendel-duplicate-manager-0012) | DECISION | The {0} integration connector is discarding the {1} property ({2}) supplied by element {3} because it is not a property of {4}, the type of the consolidated element |
+| [MENDEL-DUPLICATE-MANAGER-0016](#mendel-duplicate-manager-0016) | DECISION | The {0} integration connector is discarding the {1} property ({2}) of the {3} classification supplied by element {4} because it is not a property of that classification |
+| [MENDEL-DUPLICATE-MANAGER-0013](#mendel-duplicate-manager-0013) | DECISION | The {0} integration connector is discarding the {1} classification ({2}) from element {3} because the more recently updated element {4} in the same cluster of duplicates carries the same classification with different properties ({5}) |
+| [MENDEL-DUPLICATE-MANAGER-0014](#mendel-duplicate-manager-0014) | DECISION | The {0} integration connector is discarding the {1} classification from element {2} because it can not be attached to {3}, the type of the consolidated element |
+| [MENDEL-DUPLICATE-MANAGER-0015](#mendel-duplicate-manager-0015) | DECISION | The {0} integration connector is not copying the {1} relationship between elements {2} and {3} onto consolidated element {4}, because the type only permits one relationship of this kind at the consolidated element's end and a more recently updated member of the cluster has supplied it |
 | [MENDEL-DUPLICATE-MANAGER-0009](#mendel-duplicate-manager-0009) | INFO | The {0} integration connector has registered a listener for open metadata events |
 | [MENDEL-DUPLICATE-MANAGER-0010](#mendel-duplicate-manager-0010) | ERROR | The {0} integration connector is unable to register a listener for open metadata events due to a {1} exception with message {2} |
 | [MENDEL-DUPLICATE-MANAGER-0008](#mendel-duplicate-manager-0008) | INFO | The {0} integration connector has stopped managing the duplicates in server {1} on platform {2} and is shutting down |
@@ -177,6 +183,132 @@ The cluster of validated duplicates has reached the size at which they are combi
 **User action**
 
 Review the consolidated element.  If it is not as expected, the survivorship rules can be adjusted by correcting the properties of the members, or the consolidation can be reversed by removing the consolidated element.
+
+
+----
+
+### MENDEL-DUPLICATE-MANAGER-0011
+
+> The {0} integration connector is discarding the value ({1}) that element {2} supplies for the {3} property, because the more recently updated element {4} in the same cluster of duplicates supplies ({5})
+
+|  |  |
+|---|---|
+| **Java constant** | `MendelAuditCode.CONFLICTING_PROPERTY` |
+| **Severity** | DECISION - A decision has been made related to the operation of the system. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+
+**System action**
+
+The consolidated element can only hold one value for a property, so it takes the value from the most recently updated member of the cluster.  The discarded value is still held by the member that supplied it, which is unchanged by the consolidation.
+
+**User action**
+
+Review the two values.  If the discarded value is the correct one, correct the member that supplied the surviving value, and delete the consolidated element so that it is rebuilt.  If the members should not have been combined at all, retire the duplicate links between them.
+
+
+----
+
+### MENDEL-DUPLICATE-MANAGER-0012
+
+> The {0} integration connector is discarding the {1} property ({2}) supplied by element {3} because it is not a property of {4}, the type of the consolidated element
+
+|  |  |
+|---|---|
+| **Java constant** | `MendelAuditCode.INCOMPATIBLE_PROPERTY` |
+| **Severity** | DECISION - A decision has been made related to the operation of the system. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The consolidated element takes its type from the most recently updated member of the cluster.  A property that only an earlier member's type defines has nowhere to go on the consolidated element, and storing it anyway would have the repository reject the consolidation.  The property is still held by the member that supplied it, which is unchanged by the consolidation.
+
+**User action**
+
+This occurs when the members of the cluster are of different types.  Review the members: if the discarded property matters, the cluster should be consolidated into the type that defines it, which means correcting the type of the members, or the members are not duplicates of each other and their duplicate links should be retired.
+
+
+----
+
+### MENDEL-DUPLICATE-MANAGER-0016
+
+> The {0} integration connector is discarding the {1} property ({2}) of the {3} classification supplied by element {4} because it is not a property of that classification
+
+|  |  |
+|---|---|
+| **Java constant** | `MendelAuditCode.INCOMPATIBLE_CLASSIFICATION_PROPERTY` |
+| **Severity** | DECISION - A decision has been made related to the operation of the system. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The classification is still copied to the consolidated element, but without this property.  Storing it anyway would have the repository reject the whole consolidation.  The property is still held by the member that supplied it, which is unchanged by the consolidation.
+
+**User action**
+
+A property that the classification's type does not define means the member was created against a different version of the open metadata types.  Review the member and remove or rename the property so that its classification matches the type in force.
+
+
+----
+
+### MENDEL-DUPLICATE-MANAGER-0013
+
+> The {0} integration connector is discarding the {1} classification ({2}) from element {3} because the more recently updated element {4} in the same cluster of duplicates carries the same classification with different properties ({5})
+
+|  |  |
+|---|---|
+| **Java constant** | `MendelAuditCode.CONFLICTING_CLASSIFICATION` |
+| **Severity** | DECISION - A decision has been made related to the operation of the system. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+
+**System action**
+
+Only one classification of each type can be attached to an element, so the consolidated element takes the classification from the most recently updated member of the cluster.  The discarded classification is still attached to the member that supplied it, which is unchanged by the consolidation.
+
+**User action**
+
+Review the two sets of classification properties.  If the discarded classification is the correct one, correct the member that supplied the surviving classification, and delete the consolidated element so that it is rebuilt.
+
+
+----
+
+### MENDEL-DUPLICATE-MANAGER-0014
+
+> The {0} integration connector is discarding the {1} classification from element {2} because it can not be attached to {3}, the type of the consolidated element
+
+|  |  |
+|---|---|
+| **Java constant** | `MendelAuditCode.INCOMPATIBLE_CLASSIFICATION` |
+| **Severity** | DECISION - A decision has been made related to the operation of the system. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The consolidated element takes its type from the most recently updated member of the cluster, and a classification is only valid for the types that its definition names.  Attaching it anyway would have the repository reject the consolidation.  The classification is still attached to the member that supplied it, which is unchanged by the consolidation.
+
+**User action**
+
+This occurs when the members of the cluster are of different types.  Review the members: if the discarded classification matters, the cluster should be consolidated into a type that it can be attached to, which means correcting the type of the members, or the members are not duplicates of each other and their duplicate links should be retired.
+
+
+----
+
+### MENDEL-DUPLICATE-MANAGER-0015
+
+> The {0} integration connector is not copying the {1} relationship between elements {2} and {3} onto consolidated element {4}, because the type only permits one relationship of this kind at the consolidated element's end and a more recently updated member of the cluster has supplied it
+
+|  |  |
+|---|---|
+| **Java constant** | `MendelAuditCode.CONFLICTING_RELATIONSHIP` |
+| **Severity** | DECISION - A decision has been made related to the operation of the system. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The consolidated element keeps the relationship from the most recently updated member of the cluster.  The relationship that is not copied is still in place on the member that supplied it, which is unchanged by the consolidation.
+
+**User action**
+
+Review the relationships of the members.  If the relationship that was not copied is the correct one, correct the member that supplied the surviving relationship, and delete the consolidated element so that it is rebuilt.
 
 
 ----

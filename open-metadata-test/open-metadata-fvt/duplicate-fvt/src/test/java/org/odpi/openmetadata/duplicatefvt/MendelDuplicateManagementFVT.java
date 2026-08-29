@@ -221,6 +221,24 @@ public class MendelDuplicateManagementFVT
                                                               OpenMetadataType.CONSOLIDATED_DUPLICATE_CLASSIFICATION.typeName),
                     "The consolidated element is missing its ConsolidatedDuplicate classification, so the retrieval processing will"
                             + " ignore it and go on returning the members separately");
+
+        /*
+         * Only one of the members carried the Confidentiality classification.  Once the cluster is consolidated
+         * that member is no longer returned, so a consolidated element without the classification means the
+         * steward's decision has been silently dropped.
+         */
+        assertTrue(DuplicateFvtTestSupport.hasClassification(consolidatedElement,
+                                                              OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName),
+                    "The consolidated element did not pick up the Confidentiality classification that cluster member "
+                            + DuplicateFvtTestSupport.CLUSTER_GUID_THREE + " carries");
+
+        /*
+         * The duplicate management classifications belong to the members, not to the element that replaces
+         * them - a consolidated element that claims to be a KnownDuplicate has nothing to be a duplicate of.
+         */
+        assertFalse(DuplicateFvtTestSupport.hasClassification(consolidatedElement,
+                                                               OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION.typeName),
+                     "The consolidated element picked up the KnownDuplicate classification from its members");
     }
 
 

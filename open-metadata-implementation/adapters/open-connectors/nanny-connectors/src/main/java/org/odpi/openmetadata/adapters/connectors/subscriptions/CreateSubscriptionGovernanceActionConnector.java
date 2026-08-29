@@ -36,6 +36,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -405,7 +406,15 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
         DigitalSubscriptionProperties digitalSubscriptionProperties = new DigitalSubscriptionProperties();
 
-        digitalSubscriptionProperties.setQualifiedName(OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName + "::" + subscriptionName + "::" + new Date());
+        /*
+         * The product is named as well as the subscription, because a subscription to a product family creates a
+         * nested subscription for each member and every one of them is created from the same subscription name
+         * and the same destination - so the name alone does not distinguish them.  The timestamp is an instant
+         * rather than a date because Date.toString() resolves only to the second, and the members of a family
+         * are created within the same second as each other.
+         */
+        digitalSubscriptionProperties.setQualifiedName(OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName + "::" + subscriptionName
+                                                               + "::" + productGUID + "::" + Instant.now());
         digitalSubscriptionProperties.setDisplayName(subscriptionName);
         digitalSubscriptionProperties.setIdentifier(subscriptionIdentifier);
         digitalSubscriptionProperties.setDescription(subscriptionDescription);

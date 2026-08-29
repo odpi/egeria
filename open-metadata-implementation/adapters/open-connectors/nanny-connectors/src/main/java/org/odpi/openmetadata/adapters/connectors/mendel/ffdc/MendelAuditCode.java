@@ -113,6 +113,112 @@ public enum MendelAuditCode implements AuditLogMessageSet
                             "https://egeria-project.org/features/duplicate-management/overview/"),
 
     /**
+     * MENDEL-DUPLICATE-MANAGER-0011 - The {0} integration connector is discarding the value ({1}) that element {2} supplies for
+     * the {3} property, because the more recently updated element {4} in the same cluster of duplicates supplies ({5})
+     */
+    CONFLICTING_PROPERTY("MENDEL-DUPLICATE-MANAGER-0011",
+                         AuditLogRecordSeverityLevel.DECISION,
+                         "The {0} integration connector is discarding the value ({1}) that element {2} supplies for the {3} property, " +
+                                 "because the more recently updated element {4} in the same cluster of duplicates supplies ({5})",
+                         "The consolidated element can only hold one value for a property, so it takes the value from the most " +
+                                 "recently updated member of the cluster.  The discarded value is still held by the member that " +
+                                 "supplied it, which is unchanged by the consolidation.",
+                         "Review the two values.  If the discarded value is the correct one, correct the member that supplied the " +
+                                 "surviving value, and delete the consolidated element so that it is rebuilt.  If the members should " +
+                                 "not have been combined at all, retire the duplicate links between them.",
+                         "https://egeria-project.org/features/duplicate-management/overview/"),
+
+    /**
+     * MENDEL-DUPLICATE-MANAGER-0012 - The {0} integration connector is discarding the {1} property ({2}) supplied by element {3}
+     * because it is not a property of {4}, the type of the consolidated element
+     */
+    INCOMPATIBLE_PROPERTY("MENDEL-DUPLICATE-MANAGER-0012",
+                          AuditLogRecordSeverityLevel.DECISION,
+                          "The {0} integration connector is discarding the {1} property ({2}) supplied by element {3} because it is " +
+                                  "not a property of {4}, the type of the consolidated element",
+                          "The consolidated element takes its type from the most recently updated member of the cluster.  A property " +
+                                  "that only an earlier member's type defines has nowhere to go on the consolidated element, and " +
+                                  "storing it anyway would have the repository reject the consolidation.  The property is still held " +
+                                  "by the member that supplied it, which is unchanged by the consolidation.",
+                          "This occurs when the members of the cluster are of different types.  Review the members: if the discarded " +
+                                  "property matters, the cluster should be consolidated into the type that defines it, which means " +
+                                  "correcting the type of the members, or the members are not duplicates of each other and their " +
+                                  "duplicate links should be retired.",
+                          "https://egeria-project.org/features/duplicate-management/overview/"),
+
+    /**
+     * MENDEL-DUPLICATE-MANAGER-0016 - The {0} integration connector is discarding the {1} property ({2}) of the {3}
+     * classification supplied by element {4} because it is not a property of that classification
+     */
+    INCOMPATIBLE_CLASSIFICATION_PROPERTY("MENDEL-DUPLICATE-MANAGER-0016",
+                                         AuditLogRecordSeverityLevel.DECISION,
+                                         "The {0} integration connector is discarding the {1} property ({2}) of the {3} classification " +
+                                                 "supplied by element {4} because it is not a property of that classification",
+                                         "The classification is still copied to the consolidated element, but without this property.  " +
+                                                 "Storing it anyway would have the repository reject the whole consolidation.  The " +
+                                                 "property is still held by the member that supplied it, which is unchanged by the " +
+                                                 "consolidation.",
+                                         "A property that the classification's type does not define means the member was created " +
+                                                 "against a different version of the open metadata types.  Review the member and " +
+                                                 "remove or rename the property so that its classification matches the type in force.",
+                                         "https://egeria-project.org/features/duplicate-management/overview/"),
+
+    /**
+     * MENDEL-DUPLICATE-MANAGER-0013 - The {0} integration connector is discarding the {1} classification ({2}) from element {3}
+     * because the more recently updated element {4} in the same cluster of duplicates carries the same classification with
+     * different properties ({5})
+     */
+    CONFLICTING_CLASSIFICATION("MENDEL-DUPLICATE-MANAGER-0013",
+                               AuditLogRecordSeverityLevel.DECISION,
+                               "The {0} integration connector is discarding the {1} classification ({2}) from element {3} because the " +
+                                       "more recently updated element {4} in the same cluster of duplicates carries the same " +
+                                       "classification with different properties ({5})",
+                               "Only one classification of each type can be attached to an element, so the consolidated element takes " +
+                                       "the classification from the most recently updated member of the cluster.  The discarded " +
+                                       "classification is still attached to the member that supplied it, which is unchanged by the " +
+                                       "consolidation.",
+                               "Review the two sets of classification properties.  If the discarded classification is the correct one, " +
+                                       "correct the member that supplied the surviving classification, and delete the consolidated " +
+                                       "element so that it is rebuilt.",
+                               "https://egeria-project.org/features/duplicate-management/overview/"),
+
+    /**
+     * MENDEL-DUPLICATE-MANAGER-0014 - The {0} integration connector is discarding the {1} classification from element {2} because
+     * it can not be attached to {3}, the type of the consolidated element
+     */
+    INCOMPATIBLE_CLASSIFICATION("MENDEL-DUPLICATE-MANAGER-0014",
+                                AuditLogRecordSeverityLevel.DECISION,
+                                "The {0} integration connector is discarding the {1} classification from element {2} because it can " +
+                                        "not be attached to {3}, the type of the consolidated element",
+                                "The consolidated element takes its type from the most recently updated member of the cluster, and a " +
+                                        "classification is only valid for the types that its definition names.  Attaching it anyway " +
+                                        "would have the repository reject the consolidation.  The classification is still attached to " +
+                                        "the member that supplied it, which is unchanged by the consolidation.",
+                                "This occurs when the members of the cluster are of different types.  Review the members: if the " +
+                                        "discarded classification matters, the cluster should be consolidated into a type that it can " +
+                                        "be attached to, which means correcting the type of the members, or the members are not " +
+                                        "duplicates of each other and their duplicate links should be retired.",
+                                "https://egeria-project.org/features/duplicate-management/overview/"),
+
+    /**
+     * MENDEL-DUPLICATE-MANAGER-0015 - The {0} integration connector is not copying the {1} relationship between elements {2} and {3}
+     * onto consolidated element {4}, because the type only permits one relationship of this kind at the consolidated element's end
+     * and a more recently updated member of the cluster has supplied it
+     */
+    CONFLICTING_RELATIONSHIP("MENDEL-DUPLICATE-MANAGER-0015",
+                             AuditLogRecordSeverityLevel.DECISION,
+                             "The {0} integration connector is not copying the {1} relationship between elements {2} and {3} onto " +
+                                     "consolidated element {4}, because the type only permits one relationship of this kind at the " +
+                                     "consolidated element's end and a more recently updated member of the cluster has supplied it",
+                             "The consolidated element keeps the relationship from the most recently updated member of the cluster.  " +
+                                     "The relationship that is not copied is still in place on the member that supplied it, which is " +
+                                     "unchanged by the consolidation.",
+                             "Review the relationships of the members.  If the relationship that was not copied is the correct one, " +
+                                     "correct the member that supplied the surviving relationship, and delete the consolidated element " +
+                                     "so that it is rebuilt.",
+                             "https://egeria-project.org/features/duplicate-management/overview/"),
+
+    /**
      * MENDEL-DUPLICATE-MANAGER-0009 - The {0} integration connector has registered a listener for open metadata events
      */
     LISTENER_REGISTERED("MENDEL-DUPLICATE-MANAGER-0009",

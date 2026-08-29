@@ -92,6 +92,13 @@ final class DuplicateFvtTestSupport
     static final String CLUSTER_LINK_GUID_TWO  = "cfe198c3-34b5-40af-93be-4e66ea61ca5a";
 
     /*
+     * A governance classification carried by exactly one of the cluster's members.  The consolidated element
+     * has to end up with it: it stands in for every member, so a classification that only one member carried
+     * is lost unless the consolidation copies it over.
+     */
+    static final int    CLUSTER_CONFIDENTIALITY_LEVEL = 3;
+
+    /*
      * Set 6 - two elements sharing a qualified name, already validated and classified, but too few of them
      * to reach the consolidation cluster size.  The repository handler combines these on retrieval and
      * Mendel leaves them alone, which makes them a stable fixture for the retrieval tests.
