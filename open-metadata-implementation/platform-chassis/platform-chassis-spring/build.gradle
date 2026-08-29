@@ -48,6 +48,9 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:admin-services:admin-services-spring')
     runtimeOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
     compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
+    // Used at runtime but reached only transitively - declared directly so the classpath is explicit
+    runtimeOnly 'org.hibernate.validator:hibernate-validator'
+    testRuntimeOnly 'org.opentest4j:opentest4j'
 
     // The following are only included at runtime for the full platform (ie adminChassisOnly is not set as a property)
     if (!project.hasProperty("adminChassisOnly")) {

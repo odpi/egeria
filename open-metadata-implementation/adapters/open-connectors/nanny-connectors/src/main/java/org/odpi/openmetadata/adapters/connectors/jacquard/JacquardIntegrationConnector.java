@@ -723,6 +723,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                  new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
                                                  collectionMembershipProperties);
             }
+
+            this.monitorMemberAssetForFamilies(productDefinition, productAssetGUID);
         }
 
         return productElement.getElementHeader().getGUID();
@@ -942,10 +944,21 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * subscription behaviour.  A customized governance action process for creating a subscription is also set up.
      * When this governance action process runs, it creates the subscription for the requesting
      * actor by linking them to the notification type.
+     * <br>
+     * Product families offer their subscription types in exactly the same way as a single product, because
+     * subscribing to a family is how a consumer takes out one subscription covering every product in it.  What
+     * differs is that a family has no asset of its own: its data is the data of its members.  So a family's
+     * subscription options are built without a source asset, and its notification type is linked to each
+     * member's asset as that member is catalogued - see {@link #monitorMemberAssetForFamilies}.
+     * <br>
+     * A product that is not a family and has no asset offers nothing, because there would be nothing to
+     * deliver.  Products in that state are ones whose connector has not been written yet: the definition
+     * describes the data the product would carry but names no connector provider to produce it.
      *
      * @param productDefinition description of product
      * @param productHeader unique identifier and type for the product
-     * @param productAssetGUID unique identifier for the asset that represents the product
+     * @param productAssetGUID unique identifier for the asset that represents the product, or null for a
+     *                         product family, which has no asset of its own
      * @param licenseTypeGUID unique identifier for the license type granted to the product subscribers
      * @param communityNoteLogGUID unique identifier of the community's note log
      * @param productManagerGUID unique identifier for the product manager
@@ -964,28 +977,39 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
     {
+        boolean isProductFamily = propertyHelper.isTypeOf(productHeader, OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName);
+
+        /*
+         * A product family has no asset of its own and still offers subscriptions, because its data is its
+         * members' data.  A product that is not a family and has no asset is a different case: it has nothing
+         * to deliver, so offering a subscription to it would promise a delivery that cannot happen.  That is
+         * the state of every product whose connector has not been written yet - the definition describes the
+         * data and names no connector provider to produce it.
+         */
+        if ((productAssetGUID == null) && (! isProductFamily))
+        {
+            return;
+        }
+
         if (productDefinition.getSubscriptionTypes() != null)
         {
             for (ProductSubscriptionDefinition productSubscriptionDefinition : productDefinition.getSubscriptionTypes())
             {
-                if (productAssetGUID != null)
-                {
-                    String notificationTypeGUID = addNotificationType(productSubscriptionDefinition,
-                                                                      productHeader,
-                                                                      productDefinition.getProductName(),
-                                                                      productAssetGUID,
-                                                                      communityNoteLogGUID,
-                                                                      productManagerGUID);
+                String notificationTypeGUID = addNotificationType(productSubscriptionDefinition,
+                                                                  productHeader,
+                                                                  productDefinition.getProductName(),
+                                                                  productAssetGUID,
+                                                                  communityNoteLogGUID,
+                                                                  productManagerGUID);
 
-                    addSubscriptionGovernanceActionProcess(productDefinition.getProductName(),
-                                                           productDefinition.getIdentifier(),
-                                                           productHeader.getGUID(),
-                                                           productAssetGUID,
-                                                           licenseTypeGUID,
-                                                           notificationTypeGUID,
-                                                           productSubscriptionDefinition,
-                                                           productManagerGUID);
-                }
+                addSubscriptionGovernanceActionProcess(productDefinition.getProductName(),
+                                                       productDefinition.getIdentifier(),
+                                                       productHeader.getGUID(),
+                                                       productAssetGUID,
+                                                       licenseTypeGUID,
+                                                       notificationTypeGUID,
+                                                       productSubscriptionDefinition,
+                                                       productManagerGUID);
             }
         }
     }
@@ -1051,11 +1075,15 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                             notificationTypeProperties,
                                                                                             null);
 
-            if ((productSubscriptionDefinition.getMultipleNotificationsPermitted()) && (productSubscriptionDefinition.getNotificationInterval() == 0))
+            if ((productAssetGUID != null) && (isResourceMonitored(productSubscriptionDefinition)))
             {
                 /*
                  * Only need to register the resource with notification types that use changes to the resource to determine
                  * when to issue a notification to the subscribers.
+                 *
+                 * A product family has no asset of its own here.  Its data is its members' data, so its members'
+                 * assets are linked to this notification type as each member is catalogued - see
+                 * monitorMemberAssetForFamilies().
                  */
                 MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
 
@@ -1195,13 +1223,21 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                            propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName()));
             actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName());
 
-            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                           governanceActionProcessGUID,
-                                                           productAssetGUID,
-                                                           null,
-                                                           null,
-                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_SOURCE.getName()));
-            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_SOURCE.getName());
+            /*
+             * A product family has no source asset of its own - the data it delivers is its members' data, and
+             * the create-subscription service reaches that by working through the family's members.  So the
+             * source is only named where there is one.
+             */
+            if (productAssetGUID != null)
+            {
+                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                               governanceActionProcessGUID,
+                                                               productAssetGUID,
+                                                               null,
+                                                               null,
+                                                               propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_SOURCE.getName()));
+                actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_SOURCE.getName());
+            }
 
             if (licenseTypeGUID != null)
             {
@@ -1324,6 +1360,97 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 }
             }
         }
+    }
+
+
+    /**
+     * Link one product's asset to the notification types of every family it belongs to, so that a family's
+     * subscribers hear about a change to any product in the family.
+     * <br>
+     * A family has no asset of its own, so this is the only way its notification types acquire anything to
+     * watch.  It is done as each member is catalogued rather than when the family is built, because a family
+     * is built before the products that belong to it - which is the same ordering the membership above
+     * already relies on.
+     * <br>
+     * Only the notification types that decide when to notify by watching a resource are linked.  The ones that
+     * notify on a fixed interval do not look at a resource at all, so giving them one would say something
+     * about the notification that is not true.
+     *
+     * @param productDefinition description of the member product
+     * @param productAssetGUID the member's asset, or null if it does not have one
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void monitorMemberAssetForFamilies(ProductDefinition productDefinition,
+                                               String            productAssetGUID) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        if (productAssetGUID == null)
+        {
+            return;
+        }
+
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+        GovernanceDefinitionClient   notificationTypeClient       = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.NOTIFICATION_TYPE.typeName);
+
+        for (ProductDefinition productFamily : productDefinition.getProductFamilies())
+        {
+            String productFamilyGUID = products.get(productFamily.getQualifiedName());
+
+            if ((productFamilyGUID == null) || (productFamily.getSubscriptionTypes() == null))
+            {
+                continue;
+            }
+
+            for (ProductSubscriptionDefinition productSubscriptionDefinition : productFamily.getSubscriptionTypes())
+            {
+                if (! isResourceMonitored(productSubscriptionDefinition))
+                {
+                    continue;
+                }
+
+                String notificationTypeQualifiedName = OpenMetadataType.NOTIFICATION_TYPE.typeName + "::" + productFamilyGUID
+                                                             + "::" + productFamily.getProductName() + "::"
+                                                             + productSubscriptionDefinition.getIdentifier();
+
+                OpenMetadataRootElement notificationTypeElement = classificationExplorerClient.getRootElementByUniqueName(notificationTypeQualifiedName,
+                                                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                          classificationExplorerClient.getGetOptions());
+
+                if (notificationTypeElement != null)
+                {
+                    MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
+
+                    monitoredResourceProperties.setLabel("product asset");
+                    monitoredResourceProperties.setDescription("This is the product asset that represents the data for the "
+                                                                       + productDefinition.getProductName() + " product, which is part of the "
+                                                                       + productFamily.getProductName() + " product family.");
+
+                    notificationTypeClient.linkMonitoredResource(notificationTypeElement.getElementHeader().getGUID(),
+                                                                  productAssetGUID,
+                                                                  new MakeAnchorOptions(notificationTypeClient.getMetadataSourceOptions()),
+                                                                  monitoredResourceProperties);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Return whether a subscription type decides when to notify its subscribers by watching a resource, rather
+     * than by a fixed interval.  Only the former has anything to monitor.
+     *
+     * @param productSubscriptionDefinition subscription type to ask about
+     * @return true if the subscription type watches a resource
+     */
+    private boolean isResourceMonitored(ProductSubscriptionDefinition productSubscriptionDefinition)
+    {
+        return (productSubscriptionDefinition.getMultipleNotificationsPermitted())
+                       && (productSubscriptionDefinition.getNotificationInterval() == 0);
     }
 
 

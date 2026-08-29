@@ -1,0 +1,170 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module is a Functional Verification Test (FVT) suite for the **Open Metadata Digital Product
+// Catalog** - the catalogue the Jacquard Digital Product Loom builds, the subscription options it offers,
+// and the create-subscription governance service that turns a consumer's request into a subscription.
+//
+// It follows one journey, the consumer's: locate a digital product, find the subscriptions it offers, and
+// subscribe to one of them.  Every step is driven the way a consumer's tooling would drive it, and nothing
+// in the catalogue is created by the tests - Jacquard builds all of it.
+//
+//   * a **metadata access store** with a PostgreSQL local repository and its access services publishing to a
+//     real Apache Kafka broker - the out topics are how the two governance servers below hear about
+//     configuration changes and new engine actions, so Kafka is not optional here;
+//   * an **integration daemon** configured with the Jacquard integration group from the products content
+//     pack, which is where the digital product catalogue comes from;
+//   * an **engine host** configured with the Egeria Governance and Egeria Watchdog engines, which is where
+//     the create-subscription service and the Baudot subscription manager run.
+//
+// There is no view server.  The Product Catalog OMVS - whose stated purpose is "searching a digital product
+// catalogue and subscribing to specific products" - currently publishes no endpoints, so the journey is
+// driven through the clients underneath it instead.
+//
+// Subscriptions deliver somewhere, so the suite catalogues real PostgreSQL objects as destinations from the
+// PostgreSQL content pack's templates: a table as a tabular data set for a single product, and a schema as a
+// tabular data set collection for a product family.
+//
+// Like the other FVTs this is NOT part of the default build.  It only runs when explicitly requested:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:subscription-fvt:test -PrunSubscriptionFvt
+//
+// Database and Kafka connection details, the platform's own port, and how long the suite is prepared to wait
+// for a governance action or a connector refresh are all controlled from
+// src/test/resources/application.properties.
+
+dependencies {
+    // The OMAG Server Platform itself, run in-process via SpringApplication.run(...).
+    // user-authn is excluded: it wires in a login/token Spring Security chain that needs a real user
+    // directory and credentials, which this hermetic, no-auth platform does not set up.
+    testImplementation(project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')) {
+        exclude group: 'org.odpi.egeria', module: 'user-authn'
+    }
+
+    // Connectors needed to configure and run the three servers.  The Kafka connector is not optional here:
+    // the integration daemon and the engine host learn about their configuration, and about new engine
+    // actions, from the access services' out topics.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+
+    // The generic governance services the subscription processes call on their way to creating a
+    // subscription.  These have to be on the test runtime classpath because the engine host instantiates
+    // them by class name from the connection stored in the repository - a missing one is not a compile
+    // failure, it is a governance service that will not start.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
+    // The products the catalogue offers are extracts of open metadata, read through the tabular data set
+    // resource connectors that Jacquard attaches to each product asset.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
+
+    // Clients used to configure, start and drive the three servers
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+    testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-api')
+    testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
+    testImplementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-api')
+    testImplementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-client')
+
+    // Clients used to walk the catalogue, ask for a subscription, and follow the resulting engine action to
+    // its conclusion.
+    testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+    testImplementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-client')
+    testImplementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-api')
+
+    // Frameworks: element/property beans, the connector context the tests read the repository through, the
+    // engine action beans, and the checked exceptions all of the above throw.
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+
+    // The catalogue's own definitions.  This is on the *compile* classpath because the suite asserts against
+    // them - which products exist, which subscription types each offers, what each type's service level
+    // objective and notification interval are - rather than repeating them as string literals that could
+    // drift from the connector that builds the catalogue.
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')
+    // The PostgreSQL destination templates and their placeholder definitions.
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
+    // PostgresDeployedImplementationType - which is what the destination templates' qualified names are
+    // built from - lives in the shared open-connectors module rather than in the PostgreSQL connector.
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors')
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+
+    // The content pack definitions, so the integration group and governance engines this suite configures
+    // are named from the pack's own definitions rather than as string literals.
+    testImplementation project(':open-metadata-resources:open-metadata-archives:core-content-pack')
+
+    testImplementation project(':open-metadata-implementation:common-services:ffdc-services')
+
+    // In-process Spring Boot startup and shutdown.
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+    testImplementation 'org.springframework:spring-core'
+
+    // A permit-all security filter chain is needed so that every request still gets an Authentication in the
+    // SecurityContext - the admin and platform REST controllers require one to be present even though this
+    // suite's platform has no real user directory configured.
+    testImplementation 'org.springframework.security:spring-security-config'
+    testImplementation 'org.springframework.security:spring-security-web'
+    testImplementation 'org.springframework.security:spring-security-core'
+
+    // Used to read the PostgreSQL credentials out of the same YAML secrets store the servers are configured
+    // with, rather than repeating them here.
+    testImplementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    // The suite creates and drops the schemas its subscriptions deliver into.
+    testImplementation 'org.postgresql:postgresql'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Digital Product Subscription Functional Verification Tests (subscription-fvt)'
+
+test {
+    useJUnitPlatform()
+
+    // Optional, opt-in suite: it needs a reachable PostgreSQL server and an Apache Kafka broker, and it
+    // stands up three servers, so it is skipped unless explicitly requested.
+    onlyIf { project.hasProperty('runSubscriptionFvt') }
+
+    // Single JVM fork - the tests share one running platform and its three servers, and are not designed to
+    // run concurrently against them.  Ordering matters too: the catalogue has to be shown to exist before
+    // there is any point asking for a subscription to something in it.
+    maxParallelForks = 1
+    testLogging.showStandardStreams = true
+
+    // This one JVM holds three OMAG servers, a PostgreSQL repository, and four content packs loaded into it.
+    // A run that exhausts the heap does not fail tidily - the OutOfMemoryError surfaces inside the platform's
+    // own REST call and takes the platform down, so every test then fails with a connection refused that says
+    // nothing about the cause.
+    maxHeapSize = '2g'
+
+    // Any subscription.fvt.* setting can be overridden for a single run from the command line, e.g.
+    //
+    //   ./gradlew :open-metadata-test:open-metadata-fvt:subscription-fvt:test -PrunSubscriptionFvt \
+    //       -Dsubscription.fvt.engine.action.timeout.seconds=600
+    //
+    // Gradle does not pass its own system properties to the forked test JVM, so they are forwarded here.
+    // Spring's Environment reads system properties ahead of application.properties, so a value given this
+    // way wins for that run without editing the file.
+    systemProperties System.properties.findAll { it.key.toString().startsWith('subscription.fvt.') }
+}
+
+// Resolves logging conflicts between the various connectors pulled in by the platform chassis
+loggingCapabilities {
+    enforceLogback()
+}

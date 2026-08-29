@@ -31,6 +31,9 @@ ext {
     jsonldVersion = '0.13.6'
     junitVersion = '4.13.2'
     junitjupiterVersion = '5.11.3'
+    opentest4jVersion = '1.3.0'
+    // JUnit Platform ships on its own version line - 1.x tracks jupiter 5.x
+    junitplatformVersion = '1.11.3'
     jwtVersion = '10.9.1'
     jwtApiVersion = '0.13.0'
     jwtImplVersion = '0.11.5'
@@ -97,7 +100,6 @@ dependencies {
         api("io.netty:netty-buffer:${nettyVersion}")
         api("io.netty:netty-transport:${nettyVersion}")
         api("io.netty:netty-resolver:${nettyVersion}")
-        api("io.swagger.core.v3:swagger-annotations:${swaggerVersion}")
         api("io.openlineage:openlineage-java:${openlineageVersion}")
         api("jakarta.validation:jakarta.validation-api:${jakartavalidationVersion}")
         api("javax.xml.bind:jaxb-api:${jaxbVersion}")
@@ -153,6 +155,8 @@ dependencies {
         api("org.junit.jupiter:junit-jupiter:${junitjupiterVersion}")
         api("org.junit.jupiter:junit-jupiter-api:${junitjupiterVersion}")
         api("org.junit.jupiter:junit-jupiter-engine:${junitjupiterVersion}")
+        api("org.junit.platform:junit-platform-launcher:${junitplatformVersion}")
+        api("org.opentest4j:opentest4j:${opentest4jVersion}")
         api("org.mockito:mockito-core:${mockitoVersion}")
         api("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
         api("org.hamcrest:hamcrest:${hamcrestVersion}")

@@ -72,6 +72,14 @@ subprojects {
         apply plugin: 'dev.jacomet.logging-capabilities'
         apply plugin: 'org.gradlex.java-ecosystem-capabilities'
 
+        // Checking of javaheaders for license & copyright.  This has to stay inside the guard above:
+        // it configures the extension added by the checkstyle plugin, and outside the guard it would be
+        // resolved from the root project instead - which Gradle 9 deprecates and Gradle 10 rejects.
+        checkstyle {
+            toolVersion = '10.7.0'
+            showViolations = true
+        }
+
         // Consistent dependencies, and exceptions
         dependencies {
             implementation platform(project(":bom"))
@@ -106,6 +114,10 @@ subprojects {
             options.incremental = true
             options.failOnError = true
             options.compilerArgs << "-Xlint:all" << "-Xmaxerrs" << "1000" << "-Xmaxwarns" << "1000"
+            // Retain method parameter names in the bytecode.  Spring needs them to bind REST request
+            // parameters; without this it falls back to LocalVariableTableParameterNameDiscoverer, which
+            // is deprecated for removal in Spring Framework 6.1.
+            options.compilerArgs << "-parameters"
         }
 
         tasks.withType(Javadoc).configureEach {
@@ -245,12 +257,6 @@ subprojects {
     task printAllDependencies(type: DependencyReportTask) {}
     task printSubDependencies(type: DependencyReportTask) {}
     task findDependency(type: DependencyInsightReportTask) {}
-
-    // Checking of javaheaders for license & copyright
-    checkstyle {
-        toolVersion = '10.7.0'
-        showViolations = true
-    }
 }
 
 
@@ -309,7 +315,10 @@ task codeCoverageReport(type: JacocoReport) {
     executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
     // Add all relevant sourcesets from the subprojects
     subprojects.each {
-        if (it.name != 'bom') {
+        // Only projects that actually apply the java plugin have a sourceSets container of their own.
+        // Asking the others for one used to fall through to their parent project, which Gradle 9
+        // deprecates and Gradle 10 rejects - and they have no source to report on in any case.
+        if (it.plugins.hasPlugin('java')) {
             sourceSets it.sourceSets.main
         }
     }
@@ -336,6 +345,20 @@ dependencyAnalysis {
         all {
             onAny {
                 severity('fail')
+            }
+        }
+
+        // Spring Boot starters are POM-only aggregators: they contribute no classes of their own, so
+        // dependency-analysis always reports them as unused.  They are exactly what the platform chassis
+        // is meant to declare - removing them would strip the runtime stack out of the server - so the
+        // advice is suppressed here rather than acted on.
+        project(':open-metadata-implementation:platform-chassis:platform-chassis-spring') {
+            onUnusedDependencies {
+                exclude('org.springframework.boot:spring-boot-starter-actuator',
+                        'org.springframework.boot:spring-boot-starter-tomcat',
+                        'org.springframework.boot:spring-boot-starter-validation',
+                        'org.springframework.boot:spring-boot-starter-web',
+                        'org.springframework.boot:spring-boot-starter-test')
             }
         }
     }

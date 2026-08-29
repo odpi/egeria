@@ -8,7 +8,7 @@ dependencies {
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-server')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-api')
     implementation 'org.springframework:spring-web'
-    implementation 'io.swagger.core.v3:swagger-annotations'
+    implementation 'io.swagger.core.v3:swagger-annotations-jakarta'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
