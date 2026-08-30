@@ -191,7 +191,28 @@ loadScripts(document, 'script');</script>
  been deleted or archived.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countAttachmentLinks(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">countAttachmentLinks</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countAttachmentLinks(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,java.util.Date,boolean,boolean,java.util.Date,boolean,java.lang.String)" class="member-name-link">countAttachmentLinks</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeNames,
+ boolean&nbsp;skipSubtypes,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end1EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end1EntityTypeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end2EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end2EntityTypeGUID,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">EndMatchCriteria</a>&nbsp;endMatchCriteria,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;searchProperties,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;pushDown,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a count of the relationships that match the supplied criteria.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countAttachmentLinks(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">countAttachmentLinks</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeNames,
  boolean&nbsp;skipSubtypes,
@@ -207,8 +228,25 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a count of the relationships that match the supplied criteria.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countEntities(java.lang.String,java.lang.String,java.util.List,boolean,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications,java.util.Date,boolean,boolean,java.util.Date,boolean,java.lang.String)" class="member-name-link">countEntities</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;metadataElementSubtypeNames,
+ boolean&nbsp;skipSubtypes,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;searchProperties,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/SearchClassifications.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchClassifications</a>&nbsp;searchClassifications,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;pushDown,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a count of the entities of the requested type that match the supplied criteria.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countEntities(java.lang.String,java.lang.String,java.util.List,boolean,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">countEntities</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -3333,6 +3371,74 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="countAttachmentLinks(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,java.util.Date,boolean,boolean,java.util.Date,boolean,java.lang.String)">
+<h3>countAttachmentLinks</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">countAttachmentLinks</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;relationshipSubtypeNames,
+ boolean&nbsp;skipSubtypes,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end1EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end1EntityTypeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;end2EntityGUIDs,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;end2EntityTypeGUID,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/EndMatchCriteria.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">EndMatchCriteria</a>&nbsp;endMatchCriteria,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;searchProperties,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;pushDown,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                          throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return a count of the relationships that match the supplied criteria.
+ <br><br>
+ The two ways of answering this do not always agree, and pushDown chooses between them.
+ <br><br>
+ With pushDown true the repository counts the matching rows itself.  That is fast - it never
+ materialises the relationships - but it is the count of what matches the search, not of what a caller
+ would be given: findAttachmentLinks() puts every relationship it retrieves through a visibility check
+ on the entities at both ends, and silently drops the ones whose anchor the caller cannot read.  Where
+ any matching relationship has an end like that, the count comes out higher than the list, which is
+ exactly the discrepancy this parameter exists to let a caller resolve.
+ <br><br>
+ With pushDown false the relationships are retrieved and counted, so the answer agrees with the list by
+ construction - at the cost of reading every one of them.  Speed or agreement: the caller decides which
+ matters for what they are doing.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>relationshipTypeName</code> - type of interest (null means any element type)</dd>
+<dd><code>relationshipSubtypeNames</code> - optional list of the names for subtypes of the requested type to include in
+                                 (or, if skipSubtypes is true, exclude from) the search results.</dd>
+<dd><code>skipSubtypes</code> - if true, relationshipSubtypeNames is treated as the list of subtypes to exclude from the
+                     search results rather than the only subtypes to include.</dd>
+<dd><code>end1EntityGUIDs</code> - optional list of entity guids used to match end 1 of the relationships.</dd>
+<dd><code>end1EntityTypeGUID</code> - optional unique identifier of the type that the entity at end 1 must belong to.</dd>
+<dd><code>end2EntityGUIDs</code> - optional list of entity guids used to match end 2 of the relationships.</dd>
+<dd><code>end2EntityTypeGUID</code> - optional unique identifier of the type that the entity at end 2 must belong to.</dd>
+<dd><code>endMatchCriteria</code> - criteria for matching the ends of the relationships.</dd>
+<dd><code>searchProperties</code> - Optional list of entity property conditions to match.</dd>
+<dd><code>limitResultsByStatus</code> - By default, relationships in all statuses (other than DELETE) are returned.</dd>
+<dd><code>asOfTime</code> - Requests a historical query of the entity.  Null means return the present values.</dd>
+<dd><code>forLineage</code> - used only when pushDown is false, where the retrieval applies it - the repository count
+                   does not.</dd>
+<dd><code>forDuplicateProcessing</code> - used only when pushDown is false, for the same reason.</dd>
+<dd><code>effectiveTime</code> - used only when pushDown is false, for the same reason.</dd>
+<dd><code>pushDown</code> - true to count in the repository, false to count what a retrieval would actually return</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Returns:</dt>
+<dd>the number of elements matching the supplied criteria.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters is invalid</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the elements</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getAttachedEntity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getAttachedEntity</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a></span>&nbsp;<span class="element-name">getAttachedEntity</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -4354,6 +4460,56 @@ loadScripts(document, 'script');</script>
 <dd><code>forLineage</code> - not used - accepted for call-site parity with findEntities().</dd>
 <dd><code>forDuplicateProcessing</code> - not used - accepted for call-site parity with findEntities().</dd>
 <dd><code>effectiveTime</code> - not used - accepted for call-site parity with findEntities().</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Returns:</dt>
+<dd>the number of elements matching the supplied criteria.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters is invalid</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the elements</dd>
+<dd><code><a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="countEntities(java.lang.String,java.lang.String,java.util.List,boolean,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications,java.util.Date,boolean,boolean,java.util.Date,boolean,java.lang.String)">
+<h3>countEntities</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">countEntities</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;metadataElementSubtypeNames,
+ boolean&nbsp;skipSubtypes,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/SearchProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchProperties</a>&nbsp;searchProperties,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/search/SearchClassifications.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">SearchClassifications</a>&nbsp;searchClassifications,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
+ boolean&nbsp;pushDown,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                   throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return a count of the entities of the requested type that match the supplied criteria.
+ <br><br>
+ pushDown chooses between two ways of answering, which do not always agree - see
+ <a href="#countAttachmentLinks(java.lang.String,java.lang.String,java.util.List,boolean,java.util.List,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)"><code>countAttachmentLinks(java.lang.String, java.lang.String, java.util.List&lt;java.lang.String&gt;, boolean, java.util.List&lt;java.lang.String&gt;, java.lang.String, java.util.List&lt;java.lang.String&gt;, java.lang.String, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties, java.util.List&lt;org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus&gt;, java.util.Date, boolean, boolean, java.util.Date, java.lang.String)</code></a> for the same choice on relationships, and the note on
+ <a href="#findEntities(java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,boolean,boolean,int,int,java.util.Date,java.lang.String)"><code>findEntities(java.lang.String, java.lang.String, java.util.List&lt;java.lang.String&gt;, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties, java.util.List&lt;org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus&gt;, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications, java.util.Date, java.lang.String, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder, boolean, boolean, int, int, java.util.Date, java.lang.String)</code></a> for what the difference consists of.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - the calling user</dd>
+<dd><code>metadataElementTypeName</code> - type of interest (null means any type)</dd>
+<dd><code>metadataElementSubtypeNames</code> - optional list of the subtypes of the metadataElementTypeName to
+                           include in (or, if skipSubtypes is true, exclude from) the search results.</dd>
+<dd><code>skipSubtypes</code> - if true, metadataElementSubtypeNames is treated as the list of subtypes to exclude
+                     rather than the only subtypes to include.</dd>
+<dd><code>searchProperties</code> - Optional list of entity property conditions to match.</dd>
+<dd><code>limitResultsByStatus</code> - By default, entities in all statuses (other than DELETE) are returned.</dd>
+<dd><code>searchClassifications</code> - Optional list of classifications to match.</dd>
+<dd><code>asOfTime</code> - Requests a historical query of the entity.  Null means return the present values.</dd>
+<dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
+<dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>pushDown</code> - true to count in the repository, false to count what a retrieval would actually return</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Returns:</dt>
 <dd>the number of elements matching the supplied criteria.</dd>
