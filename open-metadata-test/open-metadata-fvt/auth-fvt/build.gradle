@@ -61,11 +61,16 @@ dependencies {
 
 description = 'Open Metadata Authentication Functional Verification Tests (auth-fvt)'
 
+// The property is read here, at configuration time, rather than inside the onlyIf closure.  onlyIf is
+// evaluated during execution, and reaching for `project` then is unsupported with the configuration
+// cache.
+def runThisSuite = project.hasProperty('runAuthFvt')
+
 test {
     useJUnitPlatform()
 
     // Optional, opt-in suite - see the note at the top of this file.
-    onlyIf { project.hasProperty('runAuthFvt') }
+    onlyIf { runThisSuite }
 
     // Single JVM fork - the tests share one running platform (see OMAGPlatformExtension) and, more
     // importantly, they mutate a shared user directory file, so they must not run concurrently.

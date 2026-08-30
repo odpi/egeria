@@ -134,12 +134,17 @@ dependencies {
 
 description = 'Digital Product Subscription Functional Verification Tests (subscription-fvt)'
 
+// The property is read here, at configuration time, rather than inside the onlyIf closure.  onlyIf is
+// evaluated during execution, and reaching for `project` then is unsupported with the configuration
+// cache.
+def runThisSuite = project.hasProperty('runSubscriptionFvt')
+
 test {
     useJUnitPlatform()
 
     // Optional, opt-in suite: it needs a reachable PostgreSQL server and an Apache Kafka broker, and it
     // stands up three servers, so it is skipped unless explicitly requested.
-    onlyIf { project.hasProperty('runSubscriptionFvt') }
+    onlyIf { runThisSuite }
 
     // Single JVM fork - the tests share one running platform and its three servers, and are not designed to
     // run concurrently against them.  Ordering matters too: the catalogue has to be shown to exist before
