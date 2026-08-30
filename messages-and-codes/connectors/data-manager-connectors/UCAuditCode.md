@@ -184,7 +184,7 @@ The connector will continue to synchronize metadata with Unity Catalog (UC).  Ho
 
 **User action**
 
-Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source.
+Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the catalog in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source.
 
 
 ----
@@ -205,7 +205,7 @@ The connector will continue to synchronize metadata with Unity Catalog (UC).  Ho
 
 **User action**
 
-Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source.
+Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the schema in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source.
 
 
 ----

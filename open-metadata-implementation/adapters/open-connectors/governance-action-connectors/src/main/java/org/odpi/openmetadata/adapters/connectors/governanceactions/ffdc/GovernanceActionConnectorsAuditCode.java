@@ -87,8 +87,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                 "The exception is logged.  More messages may follow if follow on attempts are made to provision the file.  These can help to determine how to recover from this error.",
                                 "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                   "exception stack trace to determine why the connector is not able to access the directory and resolve that issue.  " +
-                                  "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
-                                  "connector in the integration daemon once the original cause of the error has been corrected.",
+                                  "Use the messages that were subsequently logged during the error handling to discover how to re-run the " +
+                                  "file provisioning service once the original cause of the error has been corrected.",
                                   "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
@@ -102,8 +102,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                            "This message contains the exception that was the original cause of the problem. If using the qualified name is not " +
                                    "working, use the information from the " +
                                    "exception stack trace to determine why the connector is not able to access the endpoint and resolve that issue.  " +
-                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
-                                   "connector in the integration daemon once the original cause of the error has been corrected.",
+                                   "Use the messages that were subsequently logged during the error handling to discover how to re-run the " +
+                                   "governance action service once the file path name on the attached endpoint has been corrected.",
                                    "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
@@ -224,7 +224,7 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
     NO_TARGETS("GOVERNANCE-ACTION-CONNECTORS-0018",
                AuditLogRecordSeverityLevel.ERROR,
                "The {0} governance action service has no targets to operate on",
-               "The governance action service returns an INVALID completion status.",
+               "The governance action service returns an INVALID completion status because it has nothing to work on.",
                "This is an error in the way that the governance action service has been called." +
                                         "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
                                         "or as part of a governance action process.  Then correct this approach so that an action target is set up.",
@@ -273,8 +273,8 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                            "The exception is logged.  More messages may follow if follow on attempts are made to initiate the process.  These can help to determine how to recover from this error.",
                            "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                    "exception stack trace to determine why the connector is not able to initiate the process and resolve that issue.  " +
-                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
-                                   "connector in the integration daemon once the original cause of the error has been corrected.",
+                                   "Use the messages that were subsequently logged during the error handling to discover how to re-run the " +
+                                   "governance action process once the original cause of the error has been corrected.",
                                    "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
@@ -384,7 +384,7 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
     MISSING_ACTION_TARGET("GOVERNANCE-ACTION-CONNECTORS-0033",
                AuditLogRecordSeverityLevel.ERROR,
                "The {0} governance action service has not been passed a {1} action target",
-               "The governance action service returns an INVALID completion status.",
+               "The governance action service returns an INVALID completion status because a required action target is missing.",
                "This is an error in the way that the governance action service has been called since a vital piece of information is missing." +
                        "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
                        "or as part of a governance action process.  Then correct this approach so that this action target is set up.",
@@ -396,7 +396,7 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
     NEW_ASSET_CREATED("GOVERNANCE-ACTION-CONNECTORS-0034",
                           AuditLogRecordSeverityLevel.INFO,
                           "The {0} governance action service has created a new {1} asset called {2} ({3})",
-                          "The governance action service returns an ACTIONED completion status.",
+                          "The governance action service returns an ACTIONED completion status once the new asset is catalogued.",
                           "Ensure follow-on uses of the asset are successful.",
                           "https://egeria-project.org/concepts/governance-action-service/"),
 
@@ -406,7 +406,7 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
     NEW_ASSET_DELETED("GOVERNANCE-ACTION-CONNECTORS-0035",
                       AuditLogRecordSeverityLevel.INFO,
                       "The {0} governance action service has deleted the {1} asset called {2} ({3})",
-                      "The governance action service returns an ACTIONED completion status.",
+                      "The governance action service returns an ACTIONED completion status once the asset has been removed from the catalog.",
                       "Ensure follow-on uses of the asset GUID are successful.",
                       "https://egeria-project.org/concepts/governance-action-service/"),
 

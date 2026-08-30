@@ -177,7 +177,7 @@ Stopping execution
 
 **User action**
 
-Consult logs for further details
+Consult the logs for the database transfer failure that caused the connector to exit, correct it, and refresh the connector.
 
 
 ----
@@ -198,7 +198,7 @@ Reading open metadata from the repository.
 
 **User action**
 
-Consult logs for further details
+Consult the logs for the error returned by the Metadata Access Server, and check that it is running and reachable.
 
 
 ----
@@ -219,7 +219,7 @@ Removing element in OMAS
 
 **User action**
 
-Consult logs for further details
+Consult the logs for the error returned while removing the element, and check whether it is still present in the Metadata Access Server.
 
 
 ----

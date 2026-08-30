@@ -22,3 +22,9 @@ description = 'Survey Action OMES API'
 java {
     withJavadocJar()
 }
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
+}
