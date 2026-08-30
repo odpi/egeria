@@ -9,7 +9,7 @@ The OSFAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 7 |
+| **Number of messages** | 8 |
 | **Message identifiers begin** | `OPEN-SURVEY-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.opensurvey.ffdc.OSFAuditCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-survey-framework](../../open-metadata-implementation/frameworks/open-survey-framework) |
@@ -28,6 +28,7 @@ The OSFAuditCode is used to define the message content for the Audit Log.
 | [OPEN-SURVEY-0006](#open-survey-0006) | ERROR | Asset {0} is of type {1} but survey action service {2} only supports the following asset type(s): {3} |
 | [OPEN-SURVEY-0007](#open-survey-0007) | ERROR | Asset {0} has a root schema of type {1} but survey action service {2} only supports the following root schema type(s): {3} |
 | [OPEN-SURVEY-0008](#open-survey-0008) | ERROR | The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached |
+| [OPEN-SURVEY-0009](#open-survey-0009) | ERROR | The {0} Survey Acton Service has been supplied with asset {1} which has no connection, so there is no way to reach the resource it describes |
 
 ----
 
@@ -174,6 +175,27 @@ The survey cannot continue since it cannot assess whether the data stored in the
 **User action**
 
 Update the asset to include the desired schema and re-run this survey.  If you want to discover the asset's schema then use a different survey service.
+
+
+----
+
+### OPEN-SURVEY-0009
+
+> The {0} Survey Acton Service has been supplied with asset {1} which has no connection, so there is no way to reach the resource it describes
+
+|  |  |
+|---|---|
+| **Java constant** | `OSFAuditCode.NO_ASSET_CONNECTOR` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+The survey cannot continue since it has no means of opening the resource to survey it.
+
+**User action**
+
+Check that the asset has a Connection attached to it, and that the connection is visible to the userId the survey is running under.  An asset catalogued without a connection - or one whose connection was not copied when the asset was created from a template - describes a resource that nothing can open.  Attach a connection to the asset and re-run this survey.
 
 
 ----

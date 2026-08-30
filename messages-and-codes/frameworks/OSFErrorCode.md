@@ -9,7 +9,7 @@ The OSF error code is used to define first failure data capture (FFDC) for error
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 7 |
+| **Number of messages** | 8 |
 | **Message identifiers begin** | `OPEN-SURVEY-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.opensurvey.ffdc.OSFErrorCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-survey-framework](../../open-metadata-implementation/frameworks/open-survey-framework) |
@@ -27,6 +27,7 @@ The OSF error code is used to define first failure data capture (FFDC) for error
 | [OPEN-SURVEY-400-005](#open-survey-400-005) | 400 | Asset {0} is of type {1} but survey action service {2} only supports the following asset type(s): {3} |
 | [OPEN-SURVEY-400-006](#open-survey-400-006) | 400 | The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3} |
 | [OPEN-SURVEY-400-007](#open-survey-400-007) | 400 | The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached |
+| [OPEN-SURVEY-400-008](#open-survey-400-008) | 400 | The {0} Survey Acton Service has been supplied with asset {1} which has no connection, so there is no way to reach the resource it describes |
 | [OPEN-SURVEY-500-001](#open-survey-500-001) | 500 | Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3} |
 
 ----
@@ -153,6 +154,27 @@ The survey cannot continue since it cannot assess whether the data stored in the
 **User action**
 
 Update the asset to include the desired schema and re-run this survey.  If you want to discover the asset's schema then use a different survey service.
+
+
+----
+
+### OPEN-SURVEY-400-008
+
+> The {0} Survey Acton Service has been supplied with asset {1} which has no connection, so there is no way to reach the resource it describes
+
+|  |  |
+|---|---|
+| **Java constant** | `OSFErrorCode.NO_ASSET_CONNECTOR` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+The survey cannot continue since it has no means of opening the resource to survey it.
+
+**User action**
+
+Check that the asset has a Connection attached to it, and that the connection is visible to the userId the survey is running under.  An asset catalogued without a connection - or one whose connection was not copied when the asset was created from a template - describes a resource that nothing can open.  Attach a connection to the asset and re-run this survey.
 
 
 ----

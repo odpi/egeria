@@ -14,6 +14,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -71,6 +73,91 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                              isReadOnly,
                                                              defaultAsOfTime,
                                                              jdbcResourceConnector);
+    }
+
+
+    /* ===================================================
+     * Group 2: Working with typedefs
+     */
+
+
+    /**
+     * Update one or more properties of the TypeDef.  The TypeDefPatch controls what types of updates
+     * are safe to make to the TypeDef.
+     * <br><br>
+     * The patch is applied to the type by the superclass.  What is added here is the effect the patch has on the
+     * instances already stored: each of them carries its type's supertype chain, denormalised into type_name when
+     * the row was written, and a search for a supertype is answered from that stored chain rather than from the
+     * type system.  A patch that gives a type a new supertype therefore leaves every existing instance of it
+     * answering searches for the hierarchy as it used to be - which is the opposite of the point of such a patch,
+     * since it is made precisely so that instances already stored start answering searches for the new supertype.
+     * The stored chains are brought up to date here.
+     * <br><br>
+     * Type archives are re-read at every server start, so a patch is re-applied - and so this repair re-run - on
+     * every start.  That is what fixes a repository whose instances were written before the patch first appeared:
+     * it does not need a migration step of its own.  The repair is written to be cheap when there is nothing to
+     * do, so a repository that is already correct pays only for one query per instance table.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDefPatch TypeDef patch describing change to TypeDef.
+     * @return updated TypeDef
+     * @throws InvalidParameterException the TypeDefPatch is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotKnownException the TypeDef can not be found in the metadata collection.
+     * @throws PatchErrorException the TypeDef can not be updated because there is a problem with the patch.
+     */
+    @Override
+    public TypeDef updateTypeDef(String       userId,
+                                 TypeDefPatch typeDefPatch) throws InvalidParameterException,
+                                                                   RepositoryErrorException,
+                                                                   TypeDefNotKnownException,
+                                                                   PatchErrorException
+    {
+        TypeDef updatedTypeDef = super.updateTypeDef(userId, typeDefPatch);
+
+        if ((typeDefPatch != null) && (typeDefPatch.getSuperType() != null) && (updatedTypeDef != null))
+        {
+            repositoryStore.repairSuperTypeChains(updatedTypeDef.getName(),
+                                                  this.getSuperTypeNames(typeDefPatch.getSuperType().getName()));
+        }
+
+        return updatedTypeDef;
+    }
+
+
+    /**
+     * Return the supertype chain a type gains from being given the named supertype - the supertype itself,
+     * followed by its own supertypes, outermost last.  This is the same order that
+     * RepositoryMapper.setUpTypeNameInRow() writes into type_name.
+     * <br><br>
+     * The supertype's own place in the hierarchy is read from the repository helper.  That is safe even though
+     * the patch being applied has not been cached yet: a patch changes where the patched type sits, not where its
+     * new supertype sits, so the helper's view of the supertype is the same before and after.
+     *
+     * @param superTypeName name of the new supertype
+     * @return the names to store after the patched type's own name
+     */
+    private List<String> getSuperTypeNames(String superTypeName)
+    {
+        List<String> superTypeNames = new ArrayList<>();
+
+        superTypeNames.add(superTypeName);
+
+        List<TypeDefLink> furtherSuperTypes = repositoryHelper.getSuperTypes(repositoryName, superTypeName);
+
+        if (furtherSuperTypes != null)
+        {
+            for (TypeDefLink furtherSuperType : furtherSuperTypes)
+            {
+                if ((furtherSuperType != null) && (furtherSuperType.getName() != null))
+                {
+                    superTypeNames.add(furtherSuperType.getName());
+                }
+            }
+        }
+
+        return superTypeNames;
     }
 
 
