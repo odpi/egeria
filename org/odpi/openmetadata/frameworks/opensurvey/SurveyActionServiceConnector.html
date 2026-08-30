@@ -269,37 +269,43 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Record that an asset does not have a schema.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/properties/surveyreports/ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameCountInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">writeNameCountInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;nameCounts,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwNoAssetConnector(org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore,java.lang.String)" class="member-name-link">throwNoAssetConnector</a><wbr>(<a href="SurveyAssetStore.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyAssetStore</a>&nbsp;assetStore,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create an inventory in a CSV File.</div>
+<div class="block">Report that the asset being surveyed has no connection, and stop the survey.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/properties/surveyreports/ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameDescriptionInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">writeNameDescriptionInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameCountInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">writeNameCountInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;nameDescriptions,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;nameCounts,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an inventory in a CSV File.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/properties/surveyreports/ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameListInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.List,java.lang.String)" class="member-name-link">writeNameListInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameDescriptionInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">writeNameDescriptionInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;names,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;nameDescriptions,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an inventory in a CSV File.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/properties/surveyreports/ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writePropertyListInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.List,java.util.List,java.lang.String)" class="member-name-link">writePropertyListInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameListInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.List,java.lang.String)" class="member-name-link">writeNameListInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;names,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an inventory in a CSV File.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/properties/surveyreports/ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writePropertyListInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.List,java.util.List,java.lang.String)" class="member-name-link">writePropertyListInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;propertyNames,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;propertyList,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an inventory in a CSV File.</div>
 </div>
 </div>
@@ -499,6 +505,34 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <dd><code><a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with repositories</dd>
 <dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - security problem</dd>
 <dd><code><a href="../connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - problem with connection</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="throwNoAssetConnector(org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore,java.lang.String)">
+<h3>throwNoAssetConnector</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwNoAssetConnector</span><wbr><span class="parameters">(<a href="SurveyAssetStore.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyAssetStore</a>&nbsp;assetStore,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                              throws <span class="exceptions"><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Report that the asset being surveyed has no connection, and stop the survey.
+ <br><br>
+ getConnectorToAsset() returns null - by contract - when the asset has no connection at all, rather than
+ failing.  A survey has no way to continue from there: the connector is how it reaches the resource the
+ asset describes.  Reporting it here, naming the asset, keeps the failure at the point where the cause is
+ still visible.  An asset can arrive in this state by being catalogued without a connection, or by being
+ created from a template whose connection was not copied with it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>assetStore</code> - the asset store that could not supply a connector</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - always - this method does not return</dd>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - invalid property</dd>
+<dd><code><a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem with repositories</dd>
+<dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - security problem</dd>
 </dl>
 </section>
 </li>

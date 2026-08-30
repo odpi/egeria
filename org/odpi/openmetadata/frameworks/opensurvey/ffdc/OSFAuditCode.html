@@ -141,20 +141,24 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="col-last even-row-color">
 <div class="block">OPEN-SURVEY-0005 - No information about the asset {0} has been returned from the asset store for survey action service {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_SCHEMA" class="member-name-link">NO_SCHEMA</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NO_ASSET_CONNECTOR" class="member-name-link">NO_ASSET_CONNECTOR</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OPEN-SURVEY-0009 - The {0} Survey Acton Service has been supplied with asset {1} which has no connection, so there is no way to reach the resource it describes</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NO_SCHEMA" class="member-name-link">NO_SCHEMA</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-SURVEY-0008 - The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REUSING_LOG_FILE" class="member-name-link">REUSING_LOG_FILE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#REUSING_LOG_FILE" class="member-name-link">REUSING_LOG_FILE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-SURVEY-0004 - The survey action service {0} is overriding log file {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#WRONG_TYPE_OF_ASSET" class="member-name-link">WRONG_TYPE_OF_ASSET</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#WRONG_TYPE_OF_ASSET" class="member-name-link">WRONG_TYPE_OF_ASSET</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-SURVEY-0006 - Asset {0} is of type {1} but survey action service {2} only supports the following asset type(s): {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-SURVEY-0002 - The {0} Survey Action Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}</div>
 </div>
 </div>
@@ -264,6 +268,13 @@ the order they are declared.</div>
 <h3>NO_SCHEMA</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OSFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.ffdc">OSFAuditCode</a></span>&nbsp;<span class="element-name">NO_SCHEMA</span></div>
 <div class="block">OPEN-SURVEY-0008 - The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_ASSET_CONNECTOR">
+<h3>NO_ASSET_CONNECTOR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OSFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.ffdc">OSFAuditCode</a></span>&nbsp;<span class="element-name">NO_ASSET_CONNECTOR</span></div>
+<div class="block">OPEN-SURVEY-0009 - The {0} Survey Acton Service has been supplied with asset {1} which has no connection, so there is no way to reach the resource it describes</div>
 </section>
 </li>
 </ul>
