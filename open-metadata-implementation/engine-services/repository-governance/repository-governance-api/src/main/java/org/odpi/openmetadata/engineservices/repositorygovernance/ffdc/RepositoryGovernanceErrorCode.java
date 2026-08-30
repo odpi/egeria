@@ -37,7 +37,7 @@ public enum RepositoryGovernanceErrorCode implements ExceptionMessageSet
      * Invalid configuration document - these errors need the server to be restarted to resolve.
      */
 
-    SERVICE_INSTANCE_FAILURE(400, "OMES-REPOSITORY-GOVERNANCE-400-008 ",
+    SERVICE_INSTANCE_FAILURE(400, "OMES-REPOSITORY-GOVERNANCE-400-008",
                              "The Repository Governance OMES are unable to initialize a new instance in server {0}; error message is {1}",
                              "The Repository Governance OMES detected an error during the start up of a specific server instance.  " +
                                      "No repository governance services are available in the server.",
@@ -56,7 +56,7 @@ public enum RepositoryGovernanceErrorCode implements ExceptionMessageSet
      * Errors when running requests
      */
 
-    INVALID_REPOSITORY_GOVERNANCE_SERVICE(400, "OMES-REPOSITORY-GOVERNANCE-400-022 ",
+    INVALID_REPOSITORY_GOVERNANCE_SERVICE(400, "OMES-REPOSITORY-GOVERNANCE-400-022",
              "The repository governance service {0} linked to repository governance request type {1} can not be started.  " +
                      "The {2} exception was returned with message {3}",
              "The repository governance request is not run and an error is returned to the caller.",

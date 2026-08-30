@@ -188,5 +188,16 @@ public class LogonFVT
 
         assertTrue(about.statusCode() < 400,
                    "The about endpoint should be reachable without a token, but returned " + about.statusCode());
+
+        // The API docs are permitAll too.  This also happens to be the only place in the whole test suite
+        // where springdoc is actually loaded and asked to produce anything - every other platform switches
+        // it off - so it doubles as the check that springdoc is in step with the Spring Boot version.
+        HttpResponse<String> apiDocs = AuthFvtTestSupport.get("/v3/api-docs", null);
+
+        assertEquals(200, apiDocs.statusCode(),
+                     "The OpenAPI document should be served without a token, but returned " +
+                             apiDocs.statusCode() + " with body: " + apiDocs.body());
+        assertTrue(apiDocs.body().contains("\"openapi\""),
+                   "The API docs endpoint should return an OpenAPI document");
     }
 }
