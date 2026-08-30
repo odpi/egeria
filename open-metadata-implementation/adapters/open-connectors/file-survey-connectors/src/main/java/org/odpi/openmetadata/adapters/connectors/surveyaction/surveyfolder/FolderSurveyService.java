@@ -118,6 +118,17 @@ public class FolderSurveyService extends SurveyActionServiceConnector
              * the cast will fail.
              */
             connector = assetStore.getConnectorToAsset();
+
+            if (connector == null)
+            {
+                /*
+                 * Checked before the cast, which succeeds on a null and leaves it to surface as a
+                 * NullPointerException from getFile() below - an error naming BasicFolderConnector, which
+                 * says nothing about the asset that is actually the problem.
+                 */
+                super.throwNoAssetConnector(assetStore, methodName);
+            }
+
             BasicFolderConnector assetConnector = (BasicFolderConnector)connector;
 
             File rootFolder = assetConnector.getFile();

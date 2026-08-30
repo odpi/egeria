@@ -98,6 +98,18 @@ public enum OSFAuditCode implements AuditLogMessageSet
               "Update the asset to include the desired schema and re-run this survey.  If you want to discover the asset's schema then use a different survey service.",
               "https://egeria-project.org/frameworks/osf/overview/"),
 
+    /**
+     * OPEN-SURVEY-0009 - The {0} Survey Acton Service has been supplied with asset {1} which has no connection, so there is no way to reach the resource it describes
+     */
+    NO_ASSET_CONNECTOR("OPEN-SURVEY-0009",
+                       AuditLogRecordSeverityLevel.ERROR,
+                       "The {0} Survey Acton Service has been supplied with asset {1} which has no connection, so there is no way to reach the resource it describes",
+                       "The survey cannot continue since it has no means of opening the resource to survey it.",
+                       "Check that the asset has a Connection attached to it, and that the connection is visible to the userId the survey is running under.  " +
+                               "An asset catalogued without a connection - or one whose connection was not copied when the asset was created from a template - " +
+                               "describes a resource that nothing can open.  Attach a connection to the asset and re-run this survey.",
+                       "https://egeria-project.org/frameworks/osf/overview/"),
+
     ;
 
 
