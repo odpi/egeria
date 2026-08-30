@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOp
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -170,6 +171,34 @@ final class FilesFvtTestSupport
     {
         return OpenMetadataType.FILE_FOLDER.typeName + "::" + getFileSystemName() + ":" + folder.getAbsolutePath();
     }
+
+
+    /**
+     * Return the qualified name the DataFolder catalog template gives a folder asset.
+     * <br>
+     * The same shape as the FileFolder one but a different type name, because a data folder is a different
+     * kind of thing - the directory is the data set, rather than a place individual files live.
+     *
+     * @param folder the folder on disk
+     * @return qualified name to search for
+     */
+    static String dataFolderAssetQualifiedName(File folder)
+    {
+        return OpenMetadataType.DATA_FOLDER.typeName + "::" + getFileSystemName() + ":" + folder.getAbsolutePath();
+    }
+
+
+    /**
+     * The type each file in the file-types folder should be catalogued as.
+     * <br>
+     * Taken from the content pack's own templates rather than written out as strings: DeployedImplementationType
+     * is what the pack builds each template from, and its associated type name is the type the template
+     * creates.  A rename in the model is then a compile failure here rather than a test asserting a type name
+     * that no longer exists.
+     */
+    static final Map<String, String> FILE_TYPE_EXPECTATIONS =
+            Map.of("measurements.csv", DeployedImplementationType.CSV_FILE.getAssociatedTypeName(),
+                   "settings.json",    DeployedImplementationType.JSON_FILE.getAssociatedTypeName());
 
 
     /**
@@ -366,7 +395,8 @@ final class FilesFvtTestSupport
     /**
      * The folders this suite builds, one per test that needs one of its own.
      */
-    static final List<String> FOLDER_PURPOSES = List.of("survey", "catalog", "template", "actions", "destination");
+    static final List<String> FOLDER_PURPOSES = List.of("survey", "catalog", "template", "actions", "destination",
+                                                        "datafolder", "filetypes", "watchdog");
 
     /**
      * Name of the folder nested inside each folder under test.

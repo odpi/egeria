@@ -107,18 +107,50 @@ type would not exercise that choice at all.
   file, or wrote the file without cataloguing it, would pass a test that looked in one place only. The three
   run in order and share a destination folder, because they are three stages of one story.
 
+* **[DataFolderActionsFVT](src/test/java/org/odpi/openmetadata/filesfvt/DataFolderActionsFVT.java)** — a data
+  folder through all three of its actions: `create-data-folder`, `catalog-data-folder`, `delete-data-folder`.
+  A `DataFolder` is not a `FileFolder` under another name — the directory *is* the data set, and the files
+  inside it are not catalogued separately — so the pack ships a separate template and separate actions, and
+  this says the second set works rather than assuming it does because the first does. The delete case is the
+  one that earns its place: `delete-data-folder` is given the template and the same placeholder values the
+  create used and derives the qualified name from them, so it is the only action here that has to work out
+  what it operates on. The test also checks the directory is **still on disk** afterwards — it removes the
+  catalogue entry, not the data, and a test that only checked the asset had gone would pass on a service that
+  deleted the user's files.
+
+* **[FileTypeCataloguingFVT](src/test/java/org/odpi/openmetadata/filesfvt/FileTypeCataloguingFVT.java)** — the
+  cataloguer picks a catalog template by the kind of file it found: a `.csv` arrives as a `CSVFile` and a
+  `.json` as a `JSONFile`, not as plain `DataFile`s. [templates-fvt](../templates-fvt) already creates an
+  element from every one of the pack's file templates directly; what is untested there, and tested here, is
+  the step before that — something has to *choose* the template. A file catalogued as the wrong type is not
+  wrong the way a missing asset is wrong; it is worse, because everything downstream that keys off the type
+  quietly stops applying. The expected types come from `DeployedImplementationType` rather than string
+  literals, so a rename in the model is a compile failure here.
+
+* **[NewFileWatchdogFVT](src/test/java/org/odpi/openmetadata/filesfvt/NewFileWatchdogFVT.java)** — starts
+  `watch-for-new-files-in-folder` on a folder and checks it is running. **This is a narrower claim than the
+  other tests make.** A watchdog does not complete: it starts, registers its interest, and stays running, so
+  waiting for a terminal status would time out on one that is working perfectly. What is asserted is that it
+  started and stayed started — which catches the failure this connector family has shown repeatedly, a
+  service that throws on start-up and so never watches anything. It does *not* show that the watchdog reacts
+  to a new file; see below.
+
 ## Still to add
 
-The four cataloguers other than the General Folder Cataloguer are checked as far as this suite honestly can -
-see `CataloguersFVT` for why cataloguing cannot be driven for them here. What is still uncovered:
+* **The watchdog's reaction.** `NewFileWatchdogFVT` shows the watchdog runs, not that it acts. Showing that
+  means cataloguing a new file inside the watched folder and waiting for the action the watchdog initiates in
+  response — a second engine action the test never requested and cannot name in advance. Worth having, and a
+  larger test than the one that is here.
 
-* the **CSV and data folder** actions - `create-data-folder`, `catalog-data-folder`, `delete-data-folder` -
-  which mirror the file folder ones already covered;
-* `watch-for-new-files-in-folder`, which is a watchdog rather than a one-shot action and needs a different
-  shape of test;
-* the twenty-odd **catalog templates** for individual file types, which
-  [templates-fvt](../templates-fvt) already creates elements from, but not through the governance actions
-  that choose between them.
+* **The file templates no governance action reaches.** `FileTypeCataloguingFVT` covers the types the folder
+  cataloguer chooses between for the files this suite writes. The pack ships around twenty templates in all —
+  Avro, Parquet, spreadsheets, source code, keystores and the rest — and the ones no action in this suite
+  drives are created directly by [templates-fvt](../templates-fvt) instead. Widening the tree to one file per
+  template would extend this suite's coverage to the choice as well as the creation.
+
+* **The other four cataloguers, driven through cataloguing.** `CataloguersFVT` checks all five are running,
+  and `FolderCatalogFVT` takes one of them all the way. The other four cannot be driven here without
+  inventing a configuration — see `CataloguersFVT` for why.
 
 ## Clean-up
 
