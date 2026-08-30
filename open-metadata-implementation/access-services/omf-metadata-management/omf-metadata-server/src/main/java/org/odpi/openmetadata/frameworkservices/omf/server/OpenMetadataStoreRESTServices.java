@@ -1217,7 +1217,13 @@ public class OpenMetadataStoreRESTServices
                                                                    searchOptions.getSkipSubtypes(),
                                                                    searchProperties,
                                                                    handler.getInstanceStatuses(searchOptions.getLimitResultsByStatus()),
-                                                                   addClassificationFilters(null, searchOptions),
+                                                                   /*
+                                                                    * Cast because the two addClassificationFilters()
+                                                                    * overloads differ only in a type whose simple name
+                                                                    * is the same in both packages - the unqualified
+                                                                    * name here is the repository services' one.
+                                                                    */
+                                                                   addClassificationFilters((SearchClassifications) null, searchOptions),
                                                                    searchOptions.getAsOfTime(),
                                                                    searchOptions.getSequencingProperty(),
                                                                    handler.getSequencingOrder(searchOptions.getSequencingOrder()),
@@ -1714,6 +1720,89 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
+     * Add the caller's classification filters to an OMF classification search.
+     * <br><br>
+     * The same merge as the OMRS-typed method below, for the two endpoints that take their classification
+     * search in the open metadata framework's own types rather than the repository services' ones -
+     * findMetadataElements() and countMetadataElements().  Without it those two ignore
+     * includeOnlyClassifiedElements/skipClassifiedElements entirely: unlike the search-string paths, nothing
+     * downstream of them filters on those options either, so a caller that sets one gets no filtering at all
+     * rather than filtering that happens too late.
+     * <br><br>
+     * The two are kept as separate methods rather than one converting to the other, because a conversion
+     * would be more code than the merge and would have to be maintained against both type sets.
+     *
+     * @param suppliedSearchClassifications classification search the caller supplied, or null
+     * @param queryOptions options supplied by the caller
+     * @return classification search to pass on, or null if there is no classification filtering
+     */
+    private org.odpi.openmetadata.frameworks.openmetadata.search.SearchClassifications addClassificationFilters(
+            org.odpi.openmetadata.frameworks.openmetadata.search.SearchClassifications suppliedSearchClassifications,
+            QueryOptions                                                               queryOptions)
+    {
+        if (queryOptions == null)
+        {
+            return suppliedSearchClassifications;
+        }
+
+        List<String> classificationNames = queryOptions.getIncludeOnlyClassifiedElements();
+
+        org.odpi.openmetadata.frameworks.openmetadata.search.MatchCriteria matchCriteria =
+                org.odpi.openmetadata.frameworks.openmetadata.search.MatchCriteria.ALL;
+
+        if ((classificationNames == null) || (classificationNames.isEmpty()))
+        {
+            /*
+             * "Must not have" can only be pushed down when there is nothing else in the classification
+             * search, since it inverts the match criteria for the whole search.
+             */
+            if ((suppliedSearchClassifications != null) ||
+                    (queryOptions.getSkipClassifiedElements() == null) ||
+                    (queryOptions.getSkipClassifiedElements().isEmpty()))
+            {
+                return suppliedSearchClassifications;
+            }
+
+            classificationNames = queryOptions.getSkipClassifiedElements();
+            matchCriteria       = org.odpi.openmetadata.frameworks.openmetadata.search.MatchCriteria.NONE;
+        }
+
+        List<org.odpi.openmetadata.frameworks.openmetadata.search.ClassificationCondition> classificationConditions = new ArrayList<>();
+
+        if ((suppliedSearchClassifications != null) && (suppliedSearchClassifications.getConditions() != null))
+        {
+            classificationConditions.addAll(suppliedSearchClassifications.getConditions());
+        }
+
+        for (String classificationName : classificationNames)
+        {
+            if (classificationName != null)
+            {
+                org.odpi.openmetadata.frameworks.openmetadata.search.ClassificationCondition classificationCondition =
+                        new org.odpi.openmetadata.frameworks.openmetadata.search.ClassificationCondition();
+
+                classificationCondition.setName(classificationName);
+
+                classificationConditions.add(classificationCondition);
+            }
+        }
+
+        if (classificationConditions.isEmpty())
+        {
+            return suppliedSearchClassifications;
+        }
+
+        org.odpi.openmetadata.frameworks.openmetadata.search.SearchClassifications searchClassifications =
+                new org.odpi.openmetadata.frameworks.openmetadata.search.SearchClassifications();
+
+        searchClassifications.setConditions(classificationConditions);
+        searchClassifications.setMatchCriteria(matchCriteria);
+
+        return searchClassifications;
+    }
+
+
+    /**
      * Add the caller's classification filters to the classification search that will be passed to the
      * repository, so that a page of results is a page of answers.
      * <br><br>
@@ -2097,7 +2186,7 @@ public class OpenMetadataStoreRESTServices
                                                                   requestBody.getSkipSubtypes(),
                                                                   requestBody.getSearchProperties(),
                                                                   requestBody.getLimitResultsByStatus(),
-                                                                  requestBody.getMatchClassifications(),
+                                                                  addClassificationFilters(requestBody.getMatchClassifications(), requestBody),
                                                                   requestBody.getAsOfTime(),
                                                                   requestBody.getSequencingProperty(),
                                                                   requestBody.getSequencingOrder(),
@@ -2168,7 +2257,7 @@ public class OpenMetadataStoreRESTServices
                                                                 requestBody.getSkipSubtypes(),
                                                                 requestBody.getSearchProperties(),
                                                                 requestBody.getLimitResultsByStatus(),
-                                                                requestBody.getMatchClassifications(),
+                                                                addClassificationFilters(requestBody.getMatchClassifications(), requestBody),
                                                                 requestBody.getAsOfTime(),
                                                                 requestBody.getForLineage(),
                                                                 requestBody.getForDuplicateProcessing(),

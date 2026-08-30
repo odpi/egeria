@@ -74,11 +74,12 @@ property on the command line, shown against each suite below.
   ```
 
 * **[files-fvt](files-fvt)** - tests the **file connectors** and the **Files content pack** that drives them:
-  the folder and file survey services, the folder cataloguers, and the file provisioning actions. Built the
-  same way as postgres-fvt - it stands up a metadata access store, an integration daemon, an engine host and a
-  view server, and drives them through the **Automated Curation API** rather than calling any connector
-  directly. It brings its own directory tree, so a survey of three files and a nested folder can be asserted
-  against exactly.
+  the folder and file survey services, the folder cataloguers, the file and folder governance actions, and the
+  catalog templates the cataloguer chooses between. Built the same way as postgres-fvt - it stands up a
+  metadata access store, an integration daemon, an engine host and a view server, and drives them through the
+  **Automated Curation API** rather than calling any connector directly. It brings its own directory tree, so
+  a survey of three files and a nested folder can be asserted against exactly, and a file catalogued as the
+  wrong type is a failure rather than a detail nobody looked at.
 
   ```
   ./gradlew :open-metadata-test:open-metadata-fvt:files-fvt:test -PrunFilesFvt

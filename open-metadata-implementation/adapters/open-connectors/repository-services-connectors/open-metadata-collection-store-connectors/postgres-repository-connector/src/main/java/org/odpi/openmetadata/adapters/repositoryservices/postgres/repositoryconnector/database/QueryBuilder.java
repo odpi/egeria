@@ -2205,55 +2205,6 @@ public class QueryBuilder
     }
 
 
-    /**
-     * Join the principle table with its associated attributes table.
-     *
-     * @param principleTable main table
-     * @param propertiesTableName name of attributes table
-     * @return the join part of the SQL query
-     */
-    public String getDistinctPropertyJoinQuery(RepositoryTable principleTable,
-                                               String          propertiesTableName)
-    {
-        StringBuilder clause = new StringBuilder("select distinct ");
-
-        boolean firstColumn = true;
-
-        for (String columnName : principleTable.getQualifiedColumnNames())
-        {
-            if (firstColumn)
-            {
-                firstColumn = false;
-            }
-            else
-            {
-                clause.append(", ");
-            }
-
-            clause.append(columnName);
-        }
-
-        clause.append(" from ");
-        clause.append(principleTable.getTableName());
-        clause.append(" left outer join ");
-        clause.append(propertiesTableName);
-        clause.append(" on ");
-        clause.append(RepositoryColumn.INSTANCE_GUID.getColumnName(principleTable.getTableName()));
-        clause.append(" = ");
-        clause.append(RepositoryColumn.INSTANCE_GUID.getColumnName(propertiesTableName));
-        clause.append(" and ");
-        clause.append(RepositoryColumn.VERSION.getColumnName(principleTable.getTableName()));
-        clause.append(" = ");
-        clause.append(RepositoryColumn.VERSION.getColumnName(propertiesTableName));
-
-        if (log.isDebugEnabled())
-        {
-            log.debug(this.toString());
-            log.debug(clause.toString());
-        }
-
-        return clause.toString();
-    }
 
 
     /**
