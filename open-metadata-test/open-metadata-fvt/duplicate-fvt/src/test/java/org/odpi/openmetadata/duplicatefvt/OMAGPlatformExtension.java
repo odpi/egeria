@@ -202,7 +202,17 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      */
     private void startPlatform()
     {
+        /*
+         * Allocate a free port before the platform starts, rather than binding a fixed one from
+         * application.properties.  A fixed port means a second checkout of Egeria running this same suite
+         * fails with PortInUseException, and the failure looks like a broken test rather than a clash.
+         * The port is passed in as a property so that ${server.port} in application.properties - notably
+         * the egeriaEndpoint placeholder, which becomes the server's own localServerURL - resolves to the
+         * port actually in use.
+         */
         SpringApplicationBuilder builder = new SpringApplicationBuilder(OMAGServerPlatform.class);
+
+        builder.properties(java.util.Map.of("server.port", Integer.toString(allocateFreePort())));
 
         builder.web(WebApplicationType.SERVLET);
 
@@ -718,4 +728,24 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
             platformContext.close();
         }
     }
+
+    /**
+     * Find a port that is free right now, so that concurrent test runs - in another checkout, or another
+     * suite - do not collide on a hard-coded one.
+     *
+     * @return a currently free TCP port
+     */
+    private static int allocateFreePort()
+    {
+        try (java.net.ServerSocket socket = new java.net.ServerSocket(0))
+        {
+            socket.setReuseAddress(true);
+            return socket.getLocalPort();
+        }
+        catch (java.io.IOException error)
+        {
+            throw new IllegalStateException("Could not allocate a free port for the test platform", error);
+        }
+    }
+
 }

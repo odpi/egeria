@@ -100,6 +100,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                 {
                     userDirectoryPath = copyUserDirectory();
                     startPlatform();
+                    confirmPlatformIsAnswering();
                     started = true;
                     context.getRoot().getStore(NAMESPACE).put(STORE_KEY, this);
                 }
@@ -169,7 +170,14 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         properties.put("app.description", "auth-fvt");
         properties.put("app.title", "auth-fvt");
         properties.put("scan.packages", "org.odpi.openmetadata.*");
-        properties.put("springdoc.api-docs.enabled", "false");
+        /*
+         * Every other test platform in the repository switches the API docs off.  This one leaves them on,
+         * because springdoc has to be kept in step with Spring Boot and nothing else would notice if it
+         * were not: its endpoints are in SecurityConfig's permitAll list, so checking they stay reachable
+         * is an authentication test as much as a documentation one.
+         */
+        properties.put("springdoc.api-docs.enabled", "true");
+        properties.put("springdoc.api-docs.path", "/v3/api-docs");
         properties.put("management.health.cassandra.enabled", "false");
         properties.put("management.health.redis.enabled", "false");
         properties.put("management.health.ldap.enabled", "false");
@@ -195,6 +203,39 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         int port = ((ServletWebServerApplicationContext) platformContext).getWebServer().getPort();
 
         platformURLRoot = "http://localhost:" + port;
+    }
+
+
+    /**
+     * Check that the platform this suite just started is the one answering on the port it reported, before
+     * any test runs.
+     * <br><br>
+     * This exists because of a run in which every test failed with a plain 404 - including endpoints that
+     * need no authentication at all - which reads as "authentication is broken" when it actually means the
+     * requests never reached this platform.  That run has not recurred and was not explained; if it happens
+     * again, this turns twelve confusing assertion failures into one clear message naming the cause.
+     *
+     * @throws Exception the platform is not answering as itself
+     */
+    private void confirmPlatformIsAnswering() throws Exception
+    {
+        java.net.http.HttpRequest request =
+                java.net.http.HttpRequest.newBuilder()
+                                         .uri(java.net.URI.create(platformURLRoot + "/open-metadata/platform-services/server-platform/origin"))
+                                         .GET()
+                                         .build();
+
+        java.net.http.HttpResponse<String> response =
+                java.net.http.HttpClient.newHttpClient()
+                                        .send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200)
+        {
+            throw new IllegalStateException(
+                    "The platform started on " + platformURLRoot + " but its origin endpoint answered " +
+                            response.statusCode() + " rather than 200, so something other than this suite's " +
+                            "platform is responding on that port.  Body: " + response.body());
+        }
     }
 
 
