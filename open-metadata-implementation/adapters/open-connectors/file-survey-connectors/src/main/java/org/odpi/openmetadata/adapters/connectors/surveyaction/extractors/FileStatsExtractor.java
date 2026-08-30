@@ -55,11 +55,13 @@ public class FileStatsExtractor
 
         ResourcePhysicalStatusAnnotationProperties measurementAnnotation = new ResourcePhysicalStatusAnnotationProperties();
 
-        measurementAnnotation.setAnnotationType(SurveyFileAnnotationType.MEASUREMENTS.getName());
-        measurementAnnotation.setSummary(SurveyFileAnnotationType.MEASUREMENTS.getSummary());
-        measurementAnnotation.setExplanation(SurveyFileAnnotationType.MEASUREMENTS.getExplanation());
-        measurementAnnotation.setExpression(SurveyFileAnnotationType.MEASUREMENTS.getExpression());
-        measurementAnnotation.setAnalysisStep(SurveyFileAnnotationType.MEASUREMENTS.getAnalysisStep());
+        /*
+         * setUpAnnotation() rather than the individual setters: it fills out the annotation's identity - the
+         * qualified name above all - as well as the descriptive fields.  Setting the descriptive fields alone
+         * leaves the annotation with no qualified name, and the annotation store refuses it with
+         * OPEN-METADATA-400-004, which fails the whole survey after the file has already been read.
+         */
+        surveyActionServiceConnector.setUpAnnotation(measurementAnnotation, SurveyFileAnnotationType.MEASUREMENTS);
         measurementAnnotation.setResourceCreateTime(fileClassification.getCreationTime());
         measurementAnnotation.setResourceUpdateTime(fileClassification.getLastModifiedTime());
         measurementAnnotation.setResourceLastAccessedTime(fileClassification.getLastAccessedTime());

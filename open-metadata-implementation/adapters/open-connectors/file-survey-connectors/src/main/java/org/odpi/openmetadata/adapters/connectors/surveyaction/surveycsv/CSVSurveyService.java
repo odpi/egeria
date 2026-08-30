@@ -232,10 +232,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
              */
             SchemaAnalysisAnnotationProperties schemaAnnotation = new SchemaAnalysisAnnotationProperties();
 
-            schemaAnnotation.setAnnotationType(SurveyFileAnnotationType.DERIVE_SCHEMA_FROM_DATA.getName());
-            schemaAnnotation.setSummary(SurveyFileAnnotationType.DERIVE_SCHEMA_FROM_DATA.getSummary());
-            schemaAnnotation.setExplanation(SurveyFileAnnotationType.DERIVE_SCHEMA_FROM_DATA.getExplanation());
-            schemaAnnotation.setAnalysisStep(SurveyFileAnnotationType.DERIVE_SCHEMA_FROM_DATA.getAnalysisStep());
+            super.setUpAnnotation(schemaAnnotation, SurveyFileAnnotationType.DERIVE_SCHEMA_FROM_DATA);
             schemaAnnotation.setSchemaName(schemaName);
             schemaAnnotation.setSchemaType(schemaType);
 
@@ -278,7 +275,11 @@ public class CSVSurveyService extends SurveyActionServiceConnector
 
                         ResourceProfileAnnotationProperties dataProfile = dataField.getDataProfileAnnotation();
 
-                        dataProfile.setAnnotationType("InspectDataValues");
+                        /*
+                         * One of these per column, so the column name is what tells them apart - see
+                         * setUpAnnotation(annotation, type, subjectName).
+                         */
+                        super.setUpAnnotation(dataProfile, "InspectDataValues", columnName);
                         dataProfile.setSummary("Iterate through values to determine values present and how often they appear.");
 
                         dataFields.put(position, dataField);
@@ -486,9 +487,15 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                  dataField.getDataFieldName());
 
-            elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                              OpenMetadataProperty.POSITION.name,
-                                                              dataField.getDataFieldPosition());
+            /*
+             * The column's position goes on the AttributeForSchema relationship below, not on the column
+             * itself.  "position" is defined by that relationship - and by the other relationships that order
+             * one element inside another - not by SchemaAttribute or any of its subtypes, so setting it here
+             * is refused by the repository with OMRS-REPOSITORY-400-028 and fails the whole survey.
+             */
+            ElementProperties relationshipProperties = propertyHelper.addIntProperty(null,
+                                                                                     OpenMetadataProperty.POSITION.name,
+                                                                                     dataField.getDataFieldPosition());
 
             Map<String, NewElementProperties> initialClassifications = new HashMap<>();
 
@@ -515,7 +522,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                                                                   newElementOptions,
                                                                   initialClassifications,
                                                                   new NewElementProperties(elementProperties),
-                                                                  null);
+                                                                  new NewElementProperties(relationshipProperties));
         }
 
         return null;

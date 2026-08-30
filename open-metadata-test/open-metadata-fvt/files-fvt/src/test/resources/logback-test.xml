@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--
+        All four servers send their audit log here through the SLF4J audit log destination, and it is written
+        to one file that can be read while a run is in progress.  That matters in this suite because most of
+        what it tests happens somewhere else: the test asks the view server to start a governance action and
+        then waits, and when the wait expires the reason is in the audit log of the engine host or the
+        integration daemon - whether the engine picked the action up, whether a connector could be built for
+        it, and what the connector said when it ran.  Gradle buffers a test JVM's console output until the
+        task ends, so on a run that is stuck the console alone tells you nothing until it is too late.
+
+        The file-based audit log destination is deliberately not used: it writes one file per audit record -
+        hundreds during the start-up of four servers alone.
+    -->
+    <appender name="AUDIT_LOG_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>build/files-fvt-data/logs/audit.log</file>
+        <append>false</append>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.odpi.openmetadata.frameworks.auditlog" level="INFO" additivity="false">
+        <appender-ref ref="AUDIT_LOG_FILE" />
+    </logger>
+
+    <logger name="org.odpi.openmetadata.filesfvt" level="INFO" />
+
+
+    <root level="warn">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>
