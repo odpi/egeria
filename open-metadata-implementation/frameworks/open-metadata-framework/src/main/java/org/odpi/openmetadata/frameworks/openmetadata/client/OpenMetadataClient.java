@@ -1266,12 +1266,44 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
+    public long countMetadataElements(String                userId,
+                                      SearchProperties      searchProperties,
+                                      SearchClassifications matchClassifications,
+                                      QueryOptions          queryOptions) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return this.countMetadataElements(userId, searchProperties, matchClassifications, queryOptions, true);
+    }
+
+
+    /**
+     * Return a count of the metadata elements that match the supplied criteria, choosing how the count is
+     * arrived at.
+     *
+     * @param userId caller's userId
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param matchClassifications Optional list of classifications to match.
+     * @param queryOptions multiple options to control the query
+     * @param pushDown when true (the default) the repository counts the matching rows itself, which is fast but
+     *                 counts what matches the search rather than what a caller would be given - the retrieval
+     *                 applies a visibility check and silently drops what the caller cannot read.  When false the
+     *                 elements are retrieved and counted, so the answer agrees with the list at the cost of
+     *                 reading every one of them.
+     *
+     * @return the number of elements matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    @Override
     public  abstract long countMetadataElements(String                userId,
                                                SearchProperties      searchProperties,
                                                SearchClassifications matchClassifications,
-                                               QueryOptions          queryOptions) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException;
+                                               QueryOptions          queryOptions,
+                                               boolean               pushDown) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
 
 
     /**
@@ -1427,6 +1459,59 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException a problem accessing the metadata store
      */
     @Override
+    public long countRelationshipsBetweenMetadataElements(String           userId,
+                                                          String           relationshipTypeName,
+                                                          List<String>     relationshipSubtypeNames,
+                                                          List<String>     end1EntityGUIDs,
+                                                          String           end1EntityTypeName,
+                                                          List<String>     end2EntityGUIDs,
+                                                          String           end2EntityTypeName,
+                                                          EndMatchCriteria endMatchCriteria,
+                                                          SearchProperties searchProperties,
+                                                          QueryOptions     queryOptions) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        return this.countRelationshipsBetweenMetadataElements(userId,
+                                                              relationshipTypeName,
+                                                              relationshipSubtypeNames,
+                                                              end1EntityGUIDs,
+                                                              end1EntityTypeName,
+                                                              end2EntityGUIDs,
+                                                              end2EntityTypeName,
+                                                              endMatchCriteria,
+                                                              searchProperties,
+                                                              queryOptions,
+                                                              true);
+    }
+
+
+    /**
+     * Return a count of the relationships that match the requested conditions, choosing how the count is
+     * arrived at.
+     *
+     * @param userId caller's userId
+     * @param relationshipTypeName relationship's type.  Null means all types
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeName optional name of the type that the entity at end 1 must belong to.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeName optional name of the type that the entity at end 2 must belong to.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param searchProperties Optional list of relationship property conditions to match.
+     * @param queryOptions multiple options to control the query
+     * @param pushDown when true (the default) the repository counts the matching rows itself, which is fast but
+     *                 counts what matches the search rather than what a caller would be given - the retrieval
+     *                 applies a visibility check and silently drops what the caller cannot read.  When false the
+     *                 elements are retrieved and counted, so the answer agrees with the list at the cost of
+     *                 reading every one of them.
+     *
+     * @return the number of relationships matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    @Override
     public  abstract long countRelationshipsBetweenMetadataElements(String           userId,
                                                                     String           relationshipTypeName,
                                                                     List<String>     relationshipSubtypeNames,
@@ -1436,9 +1521,10 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                                     String           end2EntityTypeName,
                                                                     EndMatchCriteria endMatchCriteria,
                                                                     SearchProperties searchProperties,
-                                                                    QueryOptions     queryOptions) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException;
+                                                                    QueryOptions     queryOptions,
+                                                                    boolean          pushDown) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException;
 
 
     /**

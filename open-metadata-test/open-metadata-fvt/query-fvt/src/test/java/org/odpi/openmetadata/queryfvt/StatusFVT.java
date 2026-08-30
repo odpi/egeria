@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -35,6 +36,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(OMAGPlatformExtension.class)
 public class StatusFVT
 {
+    /**
+     * Appended to the assertions that check a search found nothing.  Null is the end of a result set;
+     * an empty list means only that this batch was filtered out, so a caller that honours the paging
+     * contract keeps asking.  Accepting either here would let a regression from one to the other -
+     * which would make every such caller page for ever - pass unnoticed.
+     */
+    private static final String NOTHING_MEANS_NULL =
+            ".  A search that matches nothing returns null, not an empty list";
+
+
     @Test
     void softDeletedElementOnlyFoundWithStatusFilter() throws Exception
     {
@@ -78,8 +89,9 @@ public class StatusFVT
 
             List<OpenMetadataElement> afterDeleteDefault = openMetadataStore.findMetadataElements(searchProperties, null, defaultOptions);
 
-            assertTrue((afterDeleteDefault == null) || afterDeleteDefault.isEmpty(),
-                       "A default (active-only) query should no longer find the element once it has been soft-deleted");
+            assertNull(afterDeleteDefault,
+                       "A default (active-only) query should no longer find the element once it has been soft-deleted"
+                               + NOTHING_MEANS_NULL);
 
             QueryOptions activeOnlyOptions = new QueryOptions();
             activeOnlyOptions.setMetadataElementTypeName(OpenMetadataType.COLLECTION.typeName);
@@ -87,8 +99,9 @@ public class StatusFVT
 
             List<OpenMetadataElement> afterDeleteActiveOnly = openMetadataStore.findMetadataElements(searchProperties, null, activeOnlyOptions);
 
-            assertTrue((afterDeleteActiveOnly == null) || afterDeleteActiveOnly.isEmpty(),
-                       "Explicitly asking for ACTIVE-only should also no longer find the soft-deleted element");
+            assertNull(afterDeleteActiveOnly,
+                       "Explicitly asking for ACTIVE-only should also no longer find the soft-deleted element"
+                               + NOTHING_MEANS_NULL);
 
             QueryOptions deletedOnlyOptions = new QueryOptions();
             deletedOnlyOptions.setMetadataElementTypeName(OpenMetadataType.COLLECTION.typeName);
@@ -156,7 +169,8 @@ public class StatusFVT
 
         List<OpenMetadataElement> afterPurge = openMetadataStore.findMetadataElements(searchProperties, null, anyStatusOptions);
 
-        assertFalse((afterPurge != null) && (!afterPurge.isEmpty()),
-                    "A purged element should not be found even when every status is included in the search");
+        assertNull(afterPurge,
+                   "A purged element should not be found even when every status is included in the search"
+                           + NOTHING_MEANS_NULL);
     }
 }

@@ -184,8 +184,14 @@ final class TemplateCatalog
                                                                                                  searchClassifications,
                                                                                                  queryOptions);
 
-            if ((templateElements == null) || templateElements.isEmpty())
+            if (templateElements == null)
             {
+                /*
+                 * Null ends the results.  An empty list does not - it means this batch was entirely filtered
+                 * out, and the next one may still hold templates.  Stopping on one, or on a short page, would
+                 * silently shorten the catalogue, and every test driven from it would then pass while covering
+                 * only the templates that happened to be found before the traversal gave up.
+                 */
                 break;
             }
 
@@ -211,10 +217,6 @@ final class TemplateCatalog
                                             wereDeclared));
             }
 
-            if (templateElements.size() < PAGE_SIZE)
-            {
-                break;
-            }
         }
 
         templates.sort(Comparator.comparing(Template::templateName).thenComparing(Template::templateGUID));

@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -37,6 +38,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(OMAGPlatformExtension.class)
 public class AsOfTimeFVT
 {
+    /**
+     * Appended to the assertions that check a search found nothing.  Null is the end of a result set;
+     * an empty list means only that this batch was filtered out, so a caller that honours the paging
+     * contract keeps asking.  Accepting either here would let a regression from one to the other -
+     * which would make every such caller page for ever - pass unnoticed.
+     */
+    private static final String NOTHING_MEANS_NULL =
+            ".  A search that matches nothing returns null, not an empty list";
+
+
     @Test
     void asOfTimeReproducesHistoricalState() throws Exception
     {
@@ -121,8 +132,9 @@ public class AsOfTimeFVT
 
             List<OpenMetadataElement> afterDeleteResults = openMetadataStore.findMetadataElements(searchProperties, null, afterDeleteQueryOptions);
 
-            assertTrue((afterDeleteResults == null) || afterDeleteResults.isEmpty(),
-                       "A default (active-only) search as of a time after the delete should no longer find the element");
+            assertNull(afterDeleteResults,
+                       "A default (active-only) search as of a time after the delete should no longer find the element"
+                               + NOTHING_MEANS_NULL);
         }
         finally
         {
