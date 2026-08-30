@@ -27,7 +27,7 @@ pluginManagement {
         id 'checkstyle'
         // This plugin needs to be kept in step with bom
         id 'org.springframework.boot' version '3.5.16'
-        id 'com.gradleup.shadow' version '8.3.9'
+        id 'com.gradleup.shadow' version '9.6.1'
         id 'com.github.psxpaul.execfork' version '0.2.2'
     }
 }

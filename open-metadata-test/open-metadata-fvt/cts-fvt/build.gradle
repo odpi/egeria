@@ -103,12 +103,17 @@ dependencies {
 
 description = 'Open Metadata Conformance Suite Harness for the PostgreSQL and In-Memory Repositories (cts-fvt)'
 
+// The property is read here, at configuration time, rather than inside the onlyIf closure.  onlyIf is
+// evaluated during execution, and reaching for `project` then is unsupported with the configuration
+// cache.
+def runThisSuite = project.hasProperty('runCtsFvtPostgres') || project.hasProperty('runCtsFvtInMemory')
+
 test {
     useJUnitPlatform()
 
     // Optional, opt-in suite: every run needs a reachable Apache Kafka broker, and the PostgreSQL run needs
     // a reachable PostgreSQL server too, so it is skipped unless one of its two properties is given.
-    onlyIf { project.hasProperty('runCtsFvtPostgres') || project.hasProperty('runCtsFvtInMemory') }
+    onlyIf { runThisSuite }
 
     // Single JVM fork - the tests share one running platform and its two servers, and are not designed to
     // run concurrently against them.  No fixed timeout: a full repository workbench run works through
