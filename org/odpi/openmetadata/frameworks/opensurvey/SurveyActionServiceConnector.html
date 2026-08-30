@@ -253,7 +253,20 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up details of the asset to analyze and the results of any previous analysis.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,java.lang.String)" class="member-name-link">setUpAnnotation</a><wbr>(<a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotation,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationTypeName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the identity of an annotation whose type is not one of the AnnotationType constants.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,java.lang.String,java.lang.String)" class="member-name-link">setUpAnnotation</a><wbr>(<a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotation,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the identity of one of several annotations of the same type in a single survey.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType)" class="member-name-link">setUpAnnotation</a><wbr>(<a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotation,
  <a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -619,9 +632,9 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <li>
 <section class="detail" id="setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType)">
 <h3>setUpAnnotation</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUpAnnotation</span><wbr><span class="parameters">(<a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotation,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUpAnnotation</span><wbr><span class="parameters">(<a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotation,
  <a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType)</span>
-                        throws <span class="exceptions"><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+                     throws <span class="exceptions"><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Transfer common properties into an annotation.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -629,6 +642,56 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <dd><code>annotationType</code> - annotation type definition</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,java.lang.String)">
+<h3>setUpAnnotation</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUpAnnotation</span><wbr><span class="parameters">(<a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotation,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationTypeName)</span>
+                     throws <span class="exceptions"><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Set up the identity of an annotation whose type is not one of the AnnotationType constants.
+ <br><br>
+ This is the part of an annotation that a survey service cannot skip: an annotation with no qualified
+ name is refused by the annotation store with OPEN-METADATA-400-004, and the survey then fails as a
+ whole - after it has opened the resource and done the work.  Setting it in one place is what keeps that
+ from depending on each survey service remembering to.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>annotation</code> - annotation to fill out</dd>
+<dd><code>annotationTypeName</code> - name of the type of annotation</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the service is not authorized to access the survey report</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,java.lang.String,java.lang.String)">
+<h3>setUpAnnotation</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUpAnnotation</span><wbr><span class="parameters">(<a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotation,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectName)</span>
+                     throws <span class="exceptions"><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Set up the identity of one of several annotations of the same type in a single survey.
+ <br><br>
+ qualifiedName is a unique property, so two annotations cannot share one.  The report GUID and the
+ annotation type are not enough to tell apart several annotations of the same type in one report - and
+ the timestamp that follows them does not settle it either, since it is only accurate to the second and
+ a survey writes its annotations far faster than that.  A survey that profiles each column of a file
+ produces exactly that shape, and without something to tell the annotations apart the second one is
+ refused with OMAG-COMMON-409-001 and the survey fails.
+ <br><br>
+ subjectName is what the annotation is about - the column being profiled, say.  It belongs in the name
+ on its own merits: "InspectDataValues" repeated once per column says nothing about which column, where
+ "InspectDataValues::customer_id" does.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>annotation</code> - annotation to fill out</dd>
+<dd><code>annotationTypeName</code> - name of the type of annotation</dd>
+<dd><code>subjectName</code> - what this annotation is about, or null where the type occurs once in a report</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the service is not authorized to access the survey report</dd>
 </dl>
 </section>
 </li>
