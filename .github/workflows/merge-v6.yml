@@ -28,7 +28,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v5.6.0
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
       # Just build but don't publish (yet)
       - name: build (no publish to maven central)
