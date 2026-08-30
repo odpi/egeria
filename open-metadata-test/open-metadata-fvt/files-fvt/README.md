@@ -82,19 +82,43 @@ type would not exercise that choice at all.
   annotations on it. A survey that dies on a null connector still produces an engine action, so a test that
   only checked the action existed would pass while the thing under test was broken.
 
+* **[FileSurveyFVT](src/test/java/org/odpi/openmetadata/filesfvt/FileSurveyFVT.java)** - `survey-csv-file`
+  and `survey-data-file`, each against a file of the kind it is meant for, as separate cases so that a failure
+  names which service broke. The file assets are created straight from their catalog templates because the
+  Files pack ships no create-file action: files are meant to reach the catalogue through a cataloguer, which
+  is the next test.
+
+* **[FolderCatalogFVT](src/test/java/org/odpi/openmetadata/filesfvt/FolderCatalogFVT.java)** - hands a folder
+  to the General Folder Cataloguer as a catalog target and checks the files inside it are catalogued. Nothing
+  here calls the connector: the request goes to the view server, a governance service on the engine host
+  attaches the target, and the connector runs in the *integration daemon* - a third server. That arrangement
+  is as much what is being tested as the connector itself.
+
+* **[CataloguersFVT](src/test/java/org/odpi/openmetadata/filesfvt/CataloguersFVT.java)** - every integration
+  connector the pack ships is in the integration daemon and started. That is not a formality: a connector is
+  instantiated from a stored connection by class name, so one missing from the runtime classpath, or one whose
+  connection is wrong, does not fail the build - it fails inside a server, and is only visible in a status
+  report. The check reports the exception a stopped connector recorded, so a cataloguer that fell over on its
+  own missing directory does not look identical to one that is working.
+
+* **[FileActionsFVT](src/test/java/org/odpi/openmetadata/filesfvt/FileActionsFVT.java)** - the file
+  provisioning actions: `copy-file`, `move-file` and `delete-file`. Each case asserts against the file system
+  *and* the repository, because these services do both: a copy that catalogued an asset without writing the
+  file, or wrote the file without cataloguing it, would pass a test that looked in one place only. The three
+  run in order and share a destination folder, because they are three stages of one story.
+
 ## Still to add
 
-This suite covers the survey half of the Files content pack. The rest of what the pack ships is not yet
-exercised:
+The four cataloguers other than the General Folder Cataloguer are checked as far as this suite honestly can -
+see `CataloguersFVT` for why cataloguing cannot be driven for them here. What is still uncovered:
 
-* the **folder cataloguers** (`GENERAL_FOLDER_CATALOGUER`, `SAMPLE_DATA_CATALOGUER`, `CONTENT_PACK_CATALOGUER`,
-  `SECRETS_STORE_CATALOGUER`, `MAINTAIN_LAST_UPDATE_CATALOGUER`) as catalog targets on the integration daemon,
-  which is what postgres-fvt's `PostgresServerCatalogFVT` does for its cataloguer;
-* the **file survey** and **CSV survey** services, as distinct from the folder survey;
-* the **file governance actions** — copy, move and delete a file — and the folder delete actions;
+* the **CSV and data folder** actions - `create-data-folder`, `catalog-data-folder`, `delete-data-folder` -
+  which mirror the file folder ones already covered;
+* `watch-for-new-files-in-folder`, which is a watchdog rather than a one-shot action and needs a different
+  shape of test;
 * the twenty-odd **catalog templates** for individual file types, which
-  [templates-fvt](../templates-fvt) already creates elements from, but not through the governance actions that
-  choose between them.
+  [templates-fvt](../templates-fvt) already creates elements from, but not through the governance actions
+  that choose between them.
 
 ## Clean-up
 
