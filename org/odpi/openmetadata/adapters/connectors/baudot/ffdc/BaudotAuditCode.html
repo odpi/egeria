@@ -129,9 +129,17 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#MONITORED_RESOURCE_NOTIFICATION_TYPE" class="member-name-link">MONITORED_RESOURCE_NOTIFICATION_TYPE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CACHE_REFRESHED" class="member-name-link">CACHE_REFRESHED</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0013 - The {0} governance service refreshed its caches: {1} notification type(s) configured, {2} being monitored for the first time by this service</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MONITORED_RESOURCE_NOTIFICATION_TYPE" class="member-name-link">MONITORED_RESOURCE_NOTIFICATION_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0002 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where notifications are triggered by changes to its monitored resources.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NOTIFICATION_TYPE_NOT_STARTED" class="member-name-link">NOTIFICATION_TYPE_NOT_STARTED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0012 - The {0} governance service is not yet monitoring notification type {1} because it is planned to start at {2}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#ONE_TIME_NOTIFICATION_TYPE" class="member-name-link">ONE_TIME_NOTIFICATION_TYPE</a></code></div>
 <div class="col-last odd-row-color">
@@ -140,6 +148,10 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-first even-row-color"><code><a href="#PERIODIC_NOTIFICATION_TYPE" class="member-name-link">PERIODIC_NOTIFICATION_TYPE</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0005 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNREADABLE_NOTIFICATION_TYPE" class="member-name-link">UNREADABLE_NOTIFICATION_TYPE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0011 - The {0} governance service is not monitoring notification type {1} ({2}) because it could not be retrieved, or is not a notification type</div>
 </div>
 </div>
 </section>
@@ -220,6 +232,27 @@ the order they are declared.</div>
 <h3>PERIODIC_NOTIFICATION_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BaudotAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.baudot.ffdc">BaudotAuditCode</a></span>&nbsp;<span class="element-name">PERIODIC_NOTIFICATION_TYPE</span></div>
 <div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0005 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.  The next scheduled notification will be sent at {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNREADABLE_NOTIFICATION_TYPE">
+<h3>UNREADABLE_NOTIFICATION_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BaudotAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.baudot.ffdc">BaudotAuditCode</a></span>&nbsp;<span class="element-name">UNREADABLE_NOTIFICATION_TYPE</span></div>
+<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0011 - The {0} governance service is not monitoring notification type {1} ({2}) because it could not be retrieved, or is not a notification type</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NOTIFICATION_TYPE_NOT_STARTED">
+<h3>NOTIFICATION_TYPE_NOT_STARTED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BaudotAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.baudot.ffdc">BaudotAuditCode</a></span>&nbsp;<span class="element-name">NOTIFICATION_TYPE_NOT_STARTED</span></div>
+<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0012 - The {0} governance service is not yet monitoring notification type {1} because it is planned to start at {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CACHE_REFRESHED">
+<h3>CACHE_REFRESHED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="BaudotAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.baudot.ffdc">BaudotAuditCode</a></span>&nbsp;<span class="element-name">CACHE_REFRESHED</span></div>
+<div class="block">BAUDOT-SUBSCRIPTION-MANAGER-0013 - The {0} governance service refreshed its caches: {1} notification type(s) configured, {2} being monitored for the first time by this service</div>
 </section>
 </li>
 </ul>

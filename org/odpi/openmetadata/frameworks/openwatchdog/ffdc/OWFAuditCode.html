@@ -129,9 +129,17 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#IGNORING_NOTIFICATION_TYPES" class="member-name-link">IGNORING_NOTIFICATION_TYPES</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ACTION_TARGETS_READ" class="member-name-link">ACTION_TARGETS_READ</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">OPEN-WATCHDOG-ACTION-0005 - The watchdog action service {0} read {1} action target(s) of engine action {2}, of which {3} are notification types it will monitor</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#IGNORING_NOTIFICATION_TYPES" class="member-name-link">IGNORING_NOTIFICATION_TYPES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-WATCHDOG-ACTION-0003 - The watchdog action service {0} linked to request type {1} is processing asset {2} and ignoring the following notification type action targets: {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNABLE_TO_READ_ACTION_TARGETS" class="member-name-link">UNABLE_TO_READ_ACTION_TARGETS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-WATCHDOG-ACTION-0004 - The watchdog action service {0} could not read the action targets of engine action {1}; it is working from the {2} action target(s) it was started with.</div>
 </div>
 </div>
 </section>
@@ -198,6 +206,20 @@ the order they are declared.</div>
 <h3>IGNORING_NOTIFICATION_TYPES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">IGNORING_NOTIFICATION_TYPES</span></div>
 <div class="block">OPEN-WATCHDOG-ACTION-0003 - The watchdog action service {0} linked to request type {1} is processing asset {2} and ignoring the following notification type action targets: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNABLE_TO_READ_ACTION_TARGETS">
+<h3>UNABLE_TO_READ_ACTION_TARGETS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_READ_ACTION_TARGETS</span></div>
+<div class="block">OPEN-WATCHDOG-ACTION-0004 - The watchdog action service {0} could not read the action targets of engine action {1}; it is working from the {2} action target(s) it was started with.  The {3} exception message was: {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ACTION_TARGETS_READ">
+<h3>ACTION_TARGETS_READ</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">ACTION_TARGETS_READ</span></div>
+<div class="block">OPEN-WATCHDOG-ACTION-0005 - The watchdog action service {0} read {1} action target(s) of engine action {2}, of which {3} are notification types it will monitor</div>
 </section>
 </li>
 </ul>

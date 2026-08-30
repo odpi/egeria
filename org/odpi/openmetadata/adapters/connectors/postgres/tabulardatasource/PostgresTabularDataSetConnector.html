@@ -355,7 +355,12 @@ implements <a href="../../../../frameworks/connectors/tabulardatasets/WritableTa
 <h3>deleteRecord</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteRecord</span><wbr><span class="parameters">(long&nbsp;rowNumber)</span>
                   throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Remove the requested data record.  The first data record is record 0.</div>
+<div class="block">Remove the requested data record.  The first data record is record 0.
+ <br>
+ A table has no row numbers of its own, so the record at a position is the one at that offset when the
+ rows are put in a repeatable order - by the columns that identify a record where the table has them,
+ and by physical position where it does not.  That is the same order every other operation on this
+ connector sees, which is what makes "the record at position n" mean the same thing to all of them.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#deleteRecord(long)">deleteRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>

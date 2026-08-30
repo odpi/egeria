@@ -465,7 +465,12 @@ the order they are declared.</div>
 <h3>UNABLE_TO_SET_COMPLETION_STATUS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_SET_COMPLETION_STATUS</span></div>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0016 - The {0} governance action service received a {1} exception when it registered its completion status.  
- The exception's message is: {2}</div>
+ The exception message is: {2}
+ <br>
+ Note the absence of an apostrophe in "exception message".  An audit log message is formatted by
+ MessageFormat, where a single quote starts a quoted section and everything after it is taken literally -
+ so "the exception's message is: {2}" reports "the exceptions message is: {2}", losing the one thing the
+ message exists to say.</div>
 </section>
 </li>
 <li>
@@ -473,7 +478,7 @@ the order they are declared.</div>
 <h3>UNABLE_TO_REGISTER_LISTENER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_REGISTER_LISTENER</span></div>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0017 - The {0} governance action service received a {1} exception when it registered a listener with the 
- governance context.  The exception's message is: {2}</div>
+ governance context.  The exception message is: {2}</div>
 </section>
 </li>
 <li>
