@@ -49,6 +49,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SpecialCharacterFVT
 {
     /**
+     * Appended to the assertions that check a search found nothing.  Null is the end of a result set;
+     * an empty list means only that this batch was filtered out, so a caller that honours the paging
+     * contract keeps asking.  Accepting either here would let a regression from one to the other -
+     * which would make every such caller page for ever - pass unnoticed.
+     */
+    private static final String NOTHING_MEANS_NULL =
+            ".  A search that matches nothing returns null, not an empty list";
+
+
+    /**
      * A name with a single quote (apostrophe) in it - the character that has to be escaped when it is
      * embedded in a SQL literal, and must not be escaped when it is bound as a statement parameter.
      */
@@ -333,8 +343,8 @@ public class SpecialCharacterFVT
 
         List<OpenMetadataElement> results = openMetadataStore.findMetadataElements(searchProperties, null, queryOptions);
 
-        assertTrue((results == null) || (results.isEmpty()),
-                   "A search for a property name that does not exist should return nothing");
+        assertNull(results,
+                   "A search for a property name that does not exist should return nothing" + NOTHING_MEANS_NULL);
     }
 
 
