@@ -2131,6 +2131,11 @@ public class OpenMetadataStoreRESTServices
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
      * @param requestBody properties defining the search criteria
+     * @param pushDown when true (the default) the repository counts the matching rows itself, which is fast but
+     *                 counts what matches the search rather than what a caller would be given - the retrieval
+     *                 applies a visibility check to the elements it returns and silently drops what the caller
+     *                 cannot read.  When false the elements are retrieved and counted, so the answer agrees with
+     *                 the list at the cost of reading every one of them.
      *
      * @return the number of elements matching the supplied criteria; or
      *  InvalidParameterException one of the search parameters are is invalid
@@ -2139,6 +2144,7 @@ public class OpenMetadataStoreRESTServices
      */
     public CountResponse countMetadataElements(String          serverName,
                                                String          userId,
+                                               boolean         pushDown,
                                                FindRequestBody requestBody)
     {
         final String methodName = "countMetadataElements";
@@ -2167,6 +2173,7 @@ public class OpenMetadataStoreRESTServices
                                                                 requestBody.getForLineage(),
                                                                 requestBody.getForDuplicateProcessing(),
                                                                 requestBody.getEffectiveTime(),
+                                                                pushDown,
                                                                 methodName));
             }
             else
@@ -2504,6 +2511,11 @@ public class OpenMetadataStoreRESTServices
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
      * @param requestBody properties defining the search criteria
+     * @param pushDown when true (the default) the repository counts the matching rows itself, which is fast but
+     *                 counts what matches the search rather than what a caller would be given - the retrieval
+     *                 applies a visibility check to the elements it returns and silently drops what the caller
+     *                 cannot read.  When false the elements are retrieved and counted, so the answer agrees with
+     *                 the list at the cost of reading every one of them.
      *
      * @return the number of relationships matching the supplied criteria; or
      *  InvalidParameterException one of the search parameters are is invalid
@@ -2512,6 +2524,7 @@ public class OpenMetadataStoreRESTServices
      */
     public CountResponse countRelationshipsBetweenMetadataElements(String                      serverName,
                                                                    String                      userId,
+                                                                   boolean                     pushDown,
                                                                    FindRelationshipRequestBody requestBody)
     {
         final String methodName = "countRelationshipsBetweenMetadataElements";
@@ -2544,6 +2557,7 @@ public class OpenMetadataStoreRESTServices
                                                                                     requestBody.getForLineage(),
                                                                                     requestBody.getForDuplicateProcessing(),
                                                                                     requestBody.getEffectiveTime(),
+                                                                                    pushDown,
                                                                                     methodName));
             }
             else

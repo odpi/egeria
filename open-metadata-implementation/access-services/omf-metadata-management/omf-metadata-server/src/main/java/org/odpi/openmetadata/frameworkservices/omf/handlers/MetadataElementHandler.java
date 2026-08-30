@@ -22,7 +22,6 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -924,6 +923,63 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
+        return this.countMetadataElements(userId,
+                                          metadataElementTypeName,
+                                          metadataElementSubtypeName,
+                                          skipSubtypes,
+                                          searchProperties,
+                                          limitResultsByStatus,
+                                          searchClassifications,
+                                          asOfTime,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
+                                          true,
+                                          methodName);
+    }
+
+
+    /**
+     * Return a count of the metadata elements that match the supplied criteria.  This has the same search
+     * semantics as findMetadataElements().
+     *
+     * @param userId caller's userId
+     * @param metadataElementTypeName type of interest (null means any element type)
+     * @param metadataElementSubtypeName optional list of the subtypes of the metadataElementTypeName to
+     *                                   include in (or, if skipSubtypes is true, exclude from) the results.
+     * @param skipSubtypes if true, metadataElementSubtypeName lists the subtypes to exclude rather than include.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, elements in all statuses (other than DELETE) are returned.
+     * @param searchClassifications Optional list of classifications to match.
+     * @param asOfTime Requests a historical query of the element.  Null means return the present values.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime only include elements that are effective at this time
+     * @param pushDown true to count in the repository, false to count what a retrieval would actually return -
+     *                 see OpenMetadataAPIGenericHandler.countEntities() for what the two answers differ by
+     * @param methodName calling method
+     *
+     * @return the number of elements matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public long countMetadataElements(String                userId,
+                                      String                metadataElementTypeName,
+                                      List<String>          metadataElementSubtypeName,
+                                      boolean               skipSubtypes,
+                                      SearchProperties      searchProperties,
+                                      List<ElementStatus>   limitResultsByStatus,
+                                      SearchClassifications searchClassifications,
+                                      Date                  asOfTime,
+                                      boolean               forLineage,
+                                      boolean               forDuplicateProcessing,
+                                      Date                  effectiveTime,
+                                      boolean               pushDown,
+                                      String                methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
         return super.countEntities(userId,
                                    metadataElementTypeName,
                                    metadataElementSubtypeName,
@@ -935,6 +991,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                    forLineage,
                                    forDuplicateProcessing,
                                    effectiveTime,
+                                   pushDown,
                                    methodName);
     }
 
@@ -1699,9 +1756,11 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param searchProperties Optional list of relationship property conditions to match.
-     * @param forLineage not used - accepted for call-site parity with findRelationshipsBetweenMetadataElements().
-     * @param forDuplicateProcessing not used - accepted for call-site parity with findRelationshipsBetweenMetadataElements().
-     * @param effectiveTime not used - accepted for call-site parity with findRelationshipsBetweenMetadataElements().
+     * @param forLineage applied only when pushDown is false, where the retrieval uses it.
+     * @param forDuplicateProcessing applied only when pushDown is false, where the retrieval uses it.
+     * @param effectiveTime applied only when pushDown is false, where the retrieval uses it.
+     * @param pushDown true to count in the repository, false to count what a retrieval would actually return -
+     *                 see OpenMetadataAPIGenericHandler.countAttachmentLinks() for what the two answers differ by.
      * @param methodName calling method
      *
      * @return the number of relationships matching the supplied criteria.
@@ -1724,6 +1783,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                            boolean             forLineage,
                                                            boolean             forDuplicateProcessing,
                                                            Date                effectiveTime,
+                                                           boolean             pushDown,
                                                            String              methodName) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
@@ -1745,6 +1805,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                          forLineage,
                                          forDuplicateProcessing,
                                          effectiveTime,
+                                         pushDown,
                                          methodName);
     }
 

@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -41,6 +42,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(OMAGPlatformExtension.class)
 public class DeleteMethodFVT
 {
+    /**
+     * Appended to the assertions that check a search found nothing.  Null is the end of a result set;
+     * an empty list means only that this batch was filtered out, so a caller that honours the paging
+     * contract keeps asking.  Accepting either here would let a regression from one to the other -
+     * which would make every such caller page for ever - pass unnoticed.
+     */
+    private static final String NOTHING_MEANS_NULL =
+            ".  A search that matches nothing returns null, not an empty list";
+
+
     @Test
     void archiveMethodClassifiesElementAsMementoAndHidesFromDefaultSearch() throws Exception
     {
@@ -82,8 +93,8 @@ public class DeleteMethodFVT
 
             List<OpenMetadataElement> afterArchiveDefault = openMetadataStore.findMetadataElements(searchProperties, null, defaultOptions);
 
-            assertTrue((afterArchiveDefault == null) || afterArchiveDefault.isEmpty(),
-                       "A default (non-lineage) query should no longer find an archived element");
+            assertNull(afterArchiveDefault,
+                       "A default (non-lineage) query should no longer find an archived element" + NOTHING_MEANS_NULL);
 
             QueryOptions lineageOptions = new QueryOptions();
             lineageOptions.setMetadataElementTypeName(OpenMetadataType.COLLECTION.typeName);
@@ -158,8 +169,9 @@ public class DeleteMethodFVT
 
                 List<OpenMetadataElement> afterDeleteDefault = openMetadataStore.findMetadataElements(searchProperties, null, defaultOptions);
 
-                assertTrue((afterDeleteDefault == null) || afterDeleteDefault.isEmpty(),
-                           "A default (non-lineage) query should no longer find the element once LOOK_FOR_LINEAGE has archived it");
+                assertNull(afterDeleteDefault,
+                           "A default (non-lineage) query should no longer find the element once LOOK_FOR_LINEAGE has "
+                                   + "archived it" + NOTHING_MEANS_NULL);
 
                 QueryOptions lineageOptions = new QueryOptions();
                 lineageOptions.setMetadataElementTypeName(OpenMetadataType.COLLECTION.typeName);
@@ -223,8 +235,8 @@ public class DeleteMethodFVT
 
             List<OpenMetadataElement> afterDeleteDefault = openMetadataStore.findMetadataElements(searchProperties, null, defaultOptions);
 
-            assertTrue((afterDeleteDefault == null) || afterDeleteDefault.isEmpty(),
-                       "A default (active-only) query should no longer find the element");
+            assertNull(afterDeleteDefault,
+                       "A default (active-only) query should no longer find the element" + NOTHING_MEANS_NULL);
 
             QueryOptions deletedOnlyOptions = new QueryOptions();
             deletedOnlyOptions.setMetadataElementTypeName(OpenMetadataType.COLLECTION.typeName);
