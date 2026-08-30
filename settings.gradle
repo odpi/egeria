@@ -272,6 +272,7 @@ include(':open-metadata-test:open-metadata-fvt:cts-fvt')
 include(':open-metadata-test:open-metadata-fvt:postgres-fvt')
 include(':open-metadata-test:open-metadata-fvt:duplicate-fvt')
 include(':open-metadata-test:open-metadata-fvt:subscription-fvt')
+include(':open-metadata-test:open-metadata-fvt:auth-fvt')
 
 
 // These are not required if the project name == the directory name but are included for clarity - for example

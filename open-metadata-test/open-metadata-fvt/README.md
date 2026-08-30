@@ -94,6 +94,16 @@ property on the command line, shown against each suite below.
   ./gradlew :open-metadata-test:open-metadata-fvt:subscription-fvt:test -PrunSubscriptionFvt
   ```
 
+* **[auth-fvt](auth-fvt)** - exercises the platform's own **authentication**: logging on, the bearer token
+  that results, changing a password, and managing user accounts. It is the only suite that runs with
+  `user-authn` wired in and the real Spring Security filter chain active - every other suite here, and the
+  BVT, exclude it and run permit-all, which left the logon path with no automated coverage at all. It needs
+  no database and loads no archives, so it runs in well under a minute.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:auth-fvt:test -PrunAuthFvt
+  ```
+
 
 
 
