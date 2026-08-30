@@ -15,7 +15,11 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        // problem when upgraded to version "9.0.0"
+        // Held at 6.6.3 deliberately.  8.x and later refuse to apply to a project that also applies the
+        // java plugin ("The aggregate-javadoc plugin should not be used on a java project"), which the
+        // root project does for its own javadoc include list; 9.x drops the aggregateJavadoc task
+        // altogether.  6.6.3 is not compatible with the configuration cache, so the merge workflow runs
+        // aggregateJavadoc with --no-configuration-cache - see .github/workflows/merge-v6.yml.
         id "io.freefair.aggregate-javadoc" version "6.6.3"
         // Checks for unnecessary dependencies
         id("com.autonomousapps.dependency-analysis") version "3.19.1"
