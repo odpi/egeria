@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2" pages="13">
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" pages="13">
   <diagram name="unity-catalog" id="vskI-bIVPBTjREEiDPca">
     <mxGraphModel dx="1242" dy="806" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -3025,7 +3025,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="228W7Kl7pLp4p5ZWT2W0" name="demo-story-board">
-    <mxGraphModel dx="1234" dy="1986" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="969" dy="1826" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -3195,8 +3195,8 @@
         <mxCell id="jV0RjyiSIP-t5qhb2HTL-158" parent="1" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" value=":" vertex="1">
           <mxGeometry height="48" width="129" x="581" y="1718" as="geometry" />
         </mxCell>
-        <mxCell id="jV0RjyiSIP-t5qhb2HTL-159" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=5.5;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;" value="XTDB" vertex="1">
-          <mxGeometry height="124" width="126" x="548" y="1178" as="geometry" />
+        <mxCell id="jV0RjyiSIP-t5qhb2HTL-159" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=5.5;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;" value="Open Metadata&lt;div&gt;Repository&lt;/div&gt;" vertex="1">
+          <mxGeometry height="141" width="126" x="548" y="1161" as="geometry" />
         </mxCell>
         <mxCell id="rZ_vJRCvM3Y37t1e0dfT-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="UC 1&lt;div&gt;Server&lt;/div&gt;" vertex="1">
           <mxGeometry height="67" width="75" x="573.5" y="1219" as="geometry" />

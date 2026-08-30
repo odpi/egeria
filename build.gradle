@@ -11,10 +11,8 @@ plugins {
     id "io.freefair.aggregate-javadoc"
     // Checks for unnecessary dependencies
     id 'com.autonomousapps.dependency-analysis'
-    // helps resolve log implementation clashes
-    id 'dev.jacomet.logging-capabilities'
-    // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
-    id 'org.gradlex.java-ecosystem-capabilities'
+    // helps resolve log implementation clashes and the jakarta/javax capability splits
+    id 'org.gradlex.jvm-dependency-conflict-resolution'
     id 'checkstyle'
 }
 
@@ -69,8 +67,21 @@ subprojects {
         apply plugin: 'jacoco'
         apply plugin: 'checkstyle'
         apply plugin: 'com.autonomousapps.dependency-analysis'
-        apply plugin: 'dev.jacomet.logging-capabilities'
-        apply plugin: 'org.gradlex.java-ecosystem-capabilities'
+        apply plugin: 'org.gradlex.jvm-dependency-conflict-resolution'
+
+        jvmDependencyConflicts {
+            conflictResolution {
+                // Tomcat's embedded core bundles the Jakarta Servlet API classes, so it conflicts with the
+                // standalone jakarta.servlet-api jar that Spring Boot also puts on the classpath.  The
+                // plugin's default strategy for this capability is "highest version", and it maps
+                // tomcat-embed-core 10.1.x to servlet API 6.0 - so the standalone 6.1.0 jar wins and
+                // tomcat-embed-core is evicted.  That silently removes the servlet container the platform
+                // runs on: the build still succeeds and the packaged jar still starts, but it has no web
+                // server.  Tomcat has to win this one.
+                select(org.gradlex.jvm.dependency.conflict.detection.rules.CapabilityDefinition.JAKARTA_SERVLET_API,
+                       'org.apache.tomcat.embed:tomcat-embed-core')
+            }
+        }
 
         // Checking of javaheaders for license & copyright.  This has to stay inside the guard above:
         // it configures the extension added by the checkstyle plugin, and outside the guard it would be
@@ -417,18 +428,23 @@ build.dependsOn("buildHealth")
  */
 tasks.register('verifyRelease') {
     group = 'verification'
-    description = 'Runs what CI runs beyond `build`: the publication POMs and the platform distribution.'
+    description = 'Runs what CI runs: every module build and test, the publication POMs and the platform distribution.'
 
+    // Container projects - the ones that only group other modules - have no build file, so they have
+    // neither a build to run nor a publication to generate a POM for.
+    def realSubprojects = subprojects.findAll { it.buildFile.exists() }
+
+    // Every module's own build, not just the root's.  `dependsOn 'build'` alone resolves to the root
+    // project's build task, and the root has no source - so it runs nothing and every module's tests are
+    // skipped.  Naming the subproject task paths is what actually compiles and tests the code.
     dependsOn 'build'
-    // Container projects - the ones that only group other modules - have no build file and so no
-    // publication to generate a POM for.
-    dependsOn subprojects.findAll { it.buildFile.exists() }
-                         .collect { "${it.path}:generatePomFileForMavenmodulePublication" }
+    dependsOn realSubprojects.collect { "${it.path}:build" }
+    dependsOn realSubprojects.collect { "${it.path}:generatePomFileForMavenmodulePublication" }
     dependsOn ':open-metadata-distribution:omag-server-platform:assemble'
 
     doLast {
         logger.lifecycle('')
-        logger.lifecycle('verifyRelease: build, every publication POM, and the platform distribution are green.')
+        logger.lifecycle('verifyRelease: every module build and test, every publication POM, and the platform distribution are green.')
         logger.lifecycle('')
         logger.lifecycle('One thing cannot share this invocation - the aggregate-javadoc plugin is not')
         logger.lifecycle('compatible with the configuration cache (see the note in settings.gradle).')

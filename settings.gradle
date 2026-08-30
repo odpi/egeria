@@ -23,10 +23,12 @@ pluginManagement {
         id "io.freefair.aggregate-javadoc" version "6.6.3"
         // Checks for unnecessary dependencies
         id("com.autonomousapps.dependency-analysis") version "3.19.1"
-        // helps resolve log implementation clashes
-        id 'dev.jacomet.logging-capabilities' version "0.11.1"
-        // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
-        id 'org.gradlex.java-ecosystem-capabilities' version "1.5.3"
+        // Declares capabilities for well-known JVM libraries so that Gradle can detect when two
+        // artifacts provide the same classes - the jakarta/javax splits, and the competing SLF4J
+        // implementations - and resolves those conflicts.  Version 2 of this plugin replaced both
+        // 'org.gradlex.java-ecosystem-capabilities' and 'dev.jacomet.logging-capabilities', which are
+        // discontinued; the logging DSL now lives under jvmDependencyConflicts.logging.
+        id 'org.gradlex.jvm-dependency-conflict-resolution' version "2.5"
         // Docs don't recommend specifying a version for checkstyle
         id 'checkstyle'
         // This plugin needs to be kept in step with bom
