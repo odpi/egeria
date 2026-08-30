@@ -37,7 +37,7 @@ ext {
     jaxbVersion = '2.3.1'
     jsonldVersion = '0.13.6'
     junitVersion = '4.13.2'
-    junitjupiterVersion = '5.11.3'
+    junitjupiterVersion = '6.1.3'
     opentest4jVersion = '1.3.0'
     // JUnit Platform ships on its own version line - 1.x tracks jupiter 5.x
     junitplatformVersion = '1.11.3'
