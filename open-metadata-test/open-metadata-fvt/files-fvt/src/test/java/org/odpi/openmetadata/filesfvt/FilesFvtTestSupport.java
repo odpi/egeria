@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOp
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -141,6 +142,20 @@ final class FilesFvtTestSupport
 
 
     /**
+     * Return the folder the file provisioning actions copy and move files into.
+     * <br>
+     * Kept apart from the folders the other tests work on so that a file arriving in it is unambiguous: it
+     * got there because an action put it there, not because this suite wrote it at start-up.
+     *
+     * @return the destination folder, which prepareTreeUnderTest() has already created
+     */
+    static File destinationFolderUnderTest()
+    {
+        return new File(getDataDirectory(), folderUnderTestName("destination"));
+    }
+
+
+    /**
      * Return the qualified name the FileFolder catalog template gives a folder asset, so that a test can look
      * the asset up by the name the template chose rather than by the GUID it happened to be given.
      * <br>
@@ -156,6 +171,34 @@ final class FilesFvtTestSupport
     {
         return OpenMetadataType.FILE_FOLDER.typeName + "::" + getFileSystemName() + ":" + folder.getAbsolutePath();
     }
+
+
+    /**
+     * Return the qualified name the DataFolder catalog template gives a folder asset.
+     * <br>
+     * The same shape as the FileFolder one but a different type name, because a data folder is a different
+     * kind of thing - the directory is the data set, rather than a place individual files live.
+     *
+     * @param folder the folder on disk
+     * @return qualified name to search for
+     */
+    static String dataFolderAssetQualifiedName(File folder)
+    {
+        return OpenMetadataType.DATA_FOLDER.typeName + "::" + getFileSystemName() + ":" + folder.getAbsolutePath();
+    }
+
+
+    /**
+     * The type each file in the file-types folder should be catalogued as.
+     * <br>
+     * Taken from the content pack's own templates rather than written out as strings: DeployedImplementationType
+     * is what the pack builds each template from, and its associated type name is the type the template
+     * creates.  A rename in the model is then a compile failure here rather than a test asserting a type name
+     * that no longer exists.
+     */
+    static final Map<String, String> FILE_TYPE_EXPECTATIONS =
+            Map.of("measurements.csv", DeployedImplementationType.CSV_FILE.getAssociatedTypeName(),
+                   "settings.json",    DeployedImplementationType.JSON_FILE.getAssociatedTypeName());
 
 
     /**
@@ -325,6 +368,18 @@ final class FilesFvtTestSupport
             writeFile(new File(folder, "notes.txt"), "Notes written by the files-fvt suite.\n");
             writeFile(new File(folder, "settings.json"), "{\"suite\": \"files-fvt\", \"purpose\": \"" + purpose + "\"}\n");
 
+            if ("actions".equals(purpose))
+            {
+                /*
+                 * One file per provisioning action, because each of them consumes the file it is given -
+                 * move takes it away and delete removes it - so sharing one would make the cases depend on
+                 * the order they ran in.
+                 */
+                writeFile(new File(folder, "to-copy.txt"), "Copied by the files-fvt suite.\n");
+                writeFile(new File(folder, "to-move.txt"), "Moved by the files-fvt suite.\n");
+                writeFile(new File(folder, "to-delete.txt"), "Deleted by the files-fvt suite.\n");
+            }
+
             File nestedFolder = new File(folder, NESTED_FOLDER_NAME);
 
             if (! nestedFolder.mkdirs() && ! nestedFolder.isDirectory())
@@ -340,7 +395,8 @@ final class FilesFvtTestSupport
     /**
      * The folders this suite builds, one per test that needs one of its own.
      */
-    static final List<String> FOLDER_PURPOSES = List.of("survey", "catalog", "template");
+    static final List<String> FOLDER_PURPOSES = List.of("survey", "catalog", "template", "actions", "destination",
+                                                        "datafolder", "filetypes", "watchdog");
 
     /**
      * Name of the folder nested inside each folder under test.
