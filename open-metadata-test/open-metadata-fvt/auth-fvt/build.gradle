@@ -1,0 +1,80 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module is a Functional Verification Test (FVT) suite for the platform's own authentication:
+// logging on, the bearer token that results, changing a password, and managing user accounts.
+//
+// It is the only suite in the repository that runs with user-authn wired in.  Every other FVT suite, and
+// the BVT, deliberately exclude it and install a permit-all filter chain so they can run hermetically -
+// which leaves the login and token chain with no automated coverage at all, even though it ships in every
+// platform and is the first thing a user meets.  That chain is also built on the parts of Spring Security
+// that move most between releases, so it is exactly what wants covering before a Spring upgrade.
+//
+// Unlike query-fvt this suite needs no external database and loads no archives: it runs an in-memory
+// repository, so it is quick.  It is still opt-in, because it is a functional suite rather than part of
+// the default build:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:auth-fvt:test -PrunAuthFvt
+
+dependencies {
+    // The platform itself, run in-process.  Note that - unlike every other test suite - user-authn is
+    // NOT excluded here.  It is the component under test.
+    testImplementation project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')
+
+    // Connectors needed to configure and run a metadata access store server backed by the in-memory
+    // repository, plus the YAML secrets store that holds the user directory this suite logs in against.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:metadata-security-connectors:open-metadata-access-security-connector')
+
+    // Clients used to configure and start the server the token is then used against
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+
+    // Beans for the user account payloads exchanged with the platform security API
+    testImplementation project(':open-metadata-implementation:common-services:ffdc-services')
+    testImplementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+
+    // In-process Spring Boot startup/shutdown
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+
+    // Reading and writing the user directory YAML directly, to check what the platform persisted
+    testImplementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Open Metadata Authentication Functional Verification Tests (auth-fvt)'
+
+test {
+    useJUnitPlatform()
+
+    // Optional, opt-in suite - see the note at the top of this file.
+    onlyIf { project.hasProperty('runAuthFvt') }
+
+    // Single JVM fork - the tests share one running platform (see OMAGPlatformExtension) and, more
+    // importantly, they mutate a shared user directory file, so they must not run concurrently.
+    maxParallelForks = 1
+    timeout = java.time.Duration.ofMinutes(10)
+    testLogging.showStandardStreams = true
+}
+
+// Resolves logging conflicts between the various connectors pulled in by the platform chassis
+loggingCapabilities {
+    enforceLogback()
+}
