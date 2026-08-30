@@ -36,5 +36,10 @@ jobs:
           days-before-stale: 60
           days-before-close: 20
           exempt-issue-labels: 'pinned'
-          exempt-pr-labels: 'pinned'
+          # 'dependencies' is the label dependabot puts on its own pull requests.  Without this exemption
+          # the stale bot closes them, and closing a dependabot PR tells dependabot not to offer that
+          # version again - so the dependency silently freezes.  That is how actions/upload-artifact sat
+          # at 4.4.0 for a year: dependabot offered 5.0.0, 6.0.0 and 7.0.0, each superseded by the next
+          # harmlessly, and then closed #9048 (7.0.1) after 82 days with nothing left to supersede it.
+          exempt-pr-labels: 'pinned,dependencies'
           operations-per-run: 30
