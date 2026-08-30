@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefi
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularDataCollection;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
@@ -129,19 +130,44 @@ public class ProvisionTabularDataSetGovernanceActionConnector extends GeneralGov
         {
             try
             {
-                ReadableTabularDataSource sourceConnector      = (ReadableTabularDataSource) governanceContext.getConnectorForAsset(sourceMetadataElement.getElementGUID());
-                WritableTabularDataSource destinationConnector = (WritableTabularDataSource) governanceContext.getConnectorForAsset(sourceMetadataElement.getElementGUID());
+                Connector sourceAssetConnector      = governanceContext.getConnectorForAsset(sourceMetadataElement.getElementGUID());
+                Connector destinationAssetConnector = governanceContext.getConnectorForAsset(destinationMetadataElement.getElementGUID());
+
+                /*
+                 * A connector is built by the connector broker and handed over unstarted - starting it is the
+                 * caller's job, and it is where the connector reads its own configuration.  Using one without
+                 * starting it means every value it should have read is still unset: the table name is null, and
+                 * the first request that needs it fails complaining about a null parameter rather than about a
+                 * connector that was never started.
+                 */
+                sourceAssetConnector.start();
+                destinationAssetConnector.start();
+
+                ReadableTabularDataSource sourceConnector      = (ReadableTabularDataSource) sourceAssetConnector;
+                WritableTabularDataSource destinationConnector = (WritableTabularDataSource) destinationAssetConnector;
 
                 long sourceRecordCount = sourceConnector.getRecordCount();
-                long destinationRecordCount = destinationConnector.getRecordCount();
 
+                /*
+                 * A destination that holds many tables has to be told which one this data belongs in before it
+                 * can be asked anything about it.  Counting its records first asks a collection for the size of
+                 * a table it has not been given the name of, which fails rather than answering zero.
+                 */
                 if (destinationConnector instanceof TabularDataCollection tabularDataCollection)
                 {
                     tabularDataCollection.setTableName(sourceConnector.getTableName(),
                                                        sourceConnector.getTableDescription());
                 }
 
+                /*
+                 * The destination is given the source's shape before it is asked what it holds.  Describing it
+                 * is what creates the table where there is not one yet, so counting first asks about a table
+                 * that need not exist - and a destination that has never been delivered to is exactly the
+                 * normal case for a new subscription.
+                 */
                 destinationConnector.setColumnDescriptions(sourceConnector.getColumnDescriptions());
+
+                long destinationRecordCount = destinationConnector.getRecordCount();
 
                 if (sourceRecordCount >= destinationRecordCount)
                 {

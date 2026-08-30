@@ -33,22 +33,22 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
 
     /**
      * LOVELACE-INSIGHTS-0016 - The {0} governance action service received a {1} exception when it registered its completion status.
-     * The exception's message is: {2}
+     * The exception message is: {2}
      */
     UNABLE_TO_SET_COMPLETION_STATUS("LOVELACE-INSIGHTS-0016",
                                     AuditLogRecordSeverityLevel.INFO,
-                                    "The {0} governance action service received a {1} exception when it registered its completion status.  The exception's message is: {2}",
+                                    "The {0} governance action service received a {1} exception when it registered its completion status.  The exception message is: {2}",
                                     "The governance action throws a GovernanceServiceException in the hope that the hosting server is able to clean up.",
                                     "Review the exception messages that are logged about the same time as one of them will point to the root cause of the error.",
                                     "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
     /**
      * LOVELACE-INSIGHTS-0017 - The {0} governance action service received a {1} exception when it registered a listener with the
-     * governance context.  The exception's message is: {2}
+     * governance context.  The exception message is: {2}
      */
     UNABLE_TO_REGISTER_LISTENER("LOVELACE-INSIGHTS-0017",
                                 AuditLogRecordSeverityLevel.INFO,
-                                "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}",
+                                "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2}",
                                 "The governance action service throws a GovernanceServiceException.",
                                 "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
                                         "and follow its instructions.",

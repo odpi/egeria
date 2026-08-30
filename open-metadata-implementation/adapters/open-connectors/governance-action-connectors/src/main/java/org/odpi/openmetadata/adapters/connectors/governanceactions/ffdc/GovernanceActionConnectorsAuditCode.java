@@ -197,22 +197,27 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0016 - The {0} governance action service received a {1} exception when it registered its completion status.  
-     * The exception's message is: {2}
+     * The exception message is: {2}
+     * <br>
+     * Note the absence of an apostrophe in "exception message".  An audit log message is formatted by
+     * MessageFormat, where a single quote starts a quoted section and everything after it is taken literally -
+     * so "the exception's message is: {2}" reports "the exceptions message is: {2}", losing the one thing the
+     * message exists to say.
      */
     UNABLE_TO_SET_COMPLETION_STATUS("GOVERNANCE-ACTION-CONNECTORS-0016",
                                     AuditLogRecordSeverityLevel.INFO,
-                       "The {0} governance action service received a {1} exception when it registered its completion status.  The exception's message is: {2}",
+                       "The {0} governance action service received a {1} exception when it registered its completion status.  The exception message is: {2}",
                        "The governance action throws a GovernanceServiceException in the hope that the hosting server is able to clean up.",
                        "Review the exception messages that are logged about the same time as one of them will point to the root cause of the error.",
                        "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0017 - The {0} governance action service received a {1} exception when it registered a listener with the 
-     * governance context.  The exception's message is: {2}
+     * governance context.  The exception message is: {2}
      */
     UNABLE_TO_REGISTER_LISTENER("GOVERNANCE-ACTION-CONNECTORS-0017",
                                 AuditLogRecordSeverityLevel.INFO,
-                                    "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}",
+                                    "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2}",
                                     "The governance action service throws a GovernanceServiceException.",
                                     "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
                                             "and follow its instructions.",

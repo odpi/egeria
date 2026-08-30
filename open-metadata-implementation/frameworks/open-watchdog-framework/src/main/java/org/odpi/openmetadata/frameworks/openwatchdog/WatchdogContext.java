@@ -27,6 +27,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
 import org.odpi.openmetadata.frameworks.opengovernance.handlers.NotificationHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openwatchdog.ffdc.OWFAuditCode;
 
 import java.util.*;
@@ -262,6 +266,94 @@ public class WatchdogContext extends ConnectorContextBase
      * @throws UserNotAuthorizedException problem updating action target status
      * @throws PropertyServerException problem updating action target status
      */
+    /**
+     * Return the action targets the engine action has <b>now</b>, rather than the ones it had when this
+     * service was started.
+     * <br>
+     * A watchdog is long-running and is given work by having action targets attached to its engine action
+     * while it runs - which is how a notification type created after the watchdog started reaches it.  The
+     * list passed to the constructor is a snapshot taken at start-up, so a watchdog that read only that would
+     * never see any of them: it would monitor whatever existed when it began and nothing afterwards, for the
+     * life of the engine action.
+     * <br>
+     * If the current targets cannot be read - the repository is unreachable, say - the start-up list is
+     * returned rather than nothing, so a transient failure narrows what the watchdog sees rather than
+     * stopping it.
+     *
+     * @return action targets
+     */
+    private List<ActionTargetElement> getCurrentActionTargets()
+    {
+        final String methodName = "getCurrentActionTargets";
+
+        if (engineActionGUID == null)
+        {
+            return actionTargetElements;
+        }
+
+        try
+        {
+            RelatedMetadataElementList relatedElements = openMetadataStore.getRelatedMetadataElements(engineActionGUID,
+                                                                                                      1,
+                                                                                                      OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                                                                      new QueryOptions());
+
+            if ((relatedElements == null) || (relatedElements.getElementList() == null))
+            {
+                return actionTargetElements;
+            }
+
+            List<ActionTargetElement> currentActionTargets = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedElement : relatedElements.getElementList())
+            {
+                if (relatedElement != null)
+                {
+                    ActionTargetElement actionTargetElement = new ActionTargetElement();
+
+                    actionTargetElement.setActionTargetGUID(relatedElement.getElement().getElementGUID());
+                    actionTargetElement.setActionTargetRelationshipGUID(relatedElement.getRelationshipGUID());
+                    actionTargetElement.setActionTargetName(propertyHelper.getStringProperty(watchdogActionServiceName,
+                                                                                              OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                              relatedElement.getRelationshipProperties(),
+                                                                                              methodName));
+                    /*
+                     * The status is deliberately left unset.  A null status is already read as "not started
+                     * yet" by the caller, which is what a freshly attached action target is, and which makes
+                     * it claim the target - the same thing it would do for one attached at start-up.
+                     */
+                    actionTargetElement.setTargetElement(relatedElement.getElement());
+
+                    currentActionTargets.add(actionTargetElement);
+                }
+            }
+
+            return currentActionTargets;
+        }
+        catch (Exception error)
+        {
+            /*
+             * Reported rather than swallowed.  Falling back to the start-up list keeps the service running,
+             * but where that list is empty - which it is for a service whose work is all given to it after it
+             * starts - the service then monitors nothing at all, and does so silently.  That is
+             * indistinguishable from having nothing to do unless this is said out loud.
+             */
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      OWFAuditCode.UNABLE_TO_READ_ACTION_TARGETS.getMessageDefinition(watchdogActionServiceName,
+                                                                                                       engineActionGUID,
+                                                                                                       Integer.toString((actionTargetElements == null) ? 0 : actionTargetElements.size()),
+                                                                                                       error.getClass().getName(),
+                                                                                                       error.getMessage()),
+                                      error);
+            }
+
+            return actionTargetElements;
+        }
+    }
+
+
     public List<ActionTargetElement> getNotificationTypesFromActionTargets() throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
@@ -275,9 +367,11 @@ public class WatchdogContext extends ConnectorContextBase
         List<ActionTargetElement> notificationTargetElements = new ArrayList<>();
         List<String>              ignoredNotificationTypes = new ArrayList<>();
 
-        if (actionTargetElements != null)
+        List<ActionTargetElement> currentActionTargets = this.getCurrentActionTargets();
+
+        if (currentActionTargets != null)
         {
-            for (ActionTargetElement actionTargetElement : actionTargetElements)
+            for (ActionTargetElement actionTargetElement : currentActionTargets)
             {
                 if (actionTargetElement != null)
                 {
@@ -318,9 +412,38 @@ public class WatchdogContext extends ConnectorContextBase
                                                                                                   engineActionGUID,
                                                                                                   ignoredNotificationTypes.toString()));
             }
+
+            /*
+             * Said on every pass, because the interesting number is usually zero and a service that is
+             * monitoring nothing otherwise looks exactly like one with nothing to report.
+             */
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    OWFAuditCode.ACTION_TARGETS_READ.getMessageDefinition(watchdogActionServiceName,
+                                                                                           Integer.toString(currentActionTargets.size()),
+                                                                                           engineActionGUID,
+                                                                                           Integer.toString(notificationTargetElements.size())));
+            }
         }
 
         return notificationTargetElements;
+    }
+
+
+    /**
+     * Return the unique identifier of the engine action that triggered this watchdog action service.
+     * <br>
+     * A watchdog is given the notification types it is responsible for as action targets of this engine
+     * action, and more can be attached to it while the watchdog is running.  A watchdog that wants to react to
+     * that - rather than waiting until its next refresh - needs to recognise an event about its own engine
+     * action, which means knowing this identifier.
+     *
+     * @return string guid
+     */
+    public String getEngineActionGUID()
+    {
+        return engineActionGUID;
     }
 
 

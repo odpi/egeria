@@ -31,6 +31,26 @@ public enum OWFAuditCode implements AuditLogMessageSet
                                 "Validate that the activity status of the ignored notification types is correct.",
                                 "https://egeria-project.org/frameworks/owf/overview/"),
 
+    /**
+     * OPEN-WATCHDOG-ACTION-0004 - The watchdog action service {0} could not read the action targets of engine action {1}; it is working from the {2} action target(s) it was started with.  The {3} exception message was: {4}
+     */
+    UNABLE_TO_READ_ACTION_TARGETS("OPEN-WATCHDOG-ACTION-0004",
+                                  AuditLogRecordSeverityLevel.EXCEPTION,
+                                  "The watchdog action service {0} could not read the action targets of engine action {1}; it is working from the {2} action target(s) it was started with.  The {3} exception message was: {4}",
+                                  "The watchdog action service continues with the action targets it already has, which may be none.  Work given to it since it started is invisible to it until this call succeeds.",
+                                  "This is usually a sign that the metadata access server is unreachable or overloaded.  Check the metadata access server, and check whether this message repeats - a service that reports it on every refresh is monitoring nothing.",
+                                  "https://egeria-project.org/frameworks/owf/overview/"),
+
+    /**
+     * OPEN-WATCHDOG-ACTION-0005 - The watchdog action service {0} read {1} action target(s) of engine action {2}, of which {3} are notification types it will monitor
+     */
+    ACTION_TARGETS_READ("OPEN-WATCHDOG-ACTION-0005",
+                        AuditLogRecordSeverityLevel.INFO,
+                        "The watchdog action service {0} read {1} action target(s) of engine action {2}, of which {3} are notification types it will monitor",
+                        "The watchdog action service monitors the notification types listed in its action targets.",
+                        "No action is required.  This message says what the service is monitoring; a count of zero means it has been given nothing to do, which is worth investigating if subscriptions are not being serviced.",
+                        "https://egeria-project.org/frameworks/owf/overview/"),
+
     ;
 
 

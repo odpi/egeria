@@ -22,8 +22,8 @@ The LovelaceInsightAuditCode is used to define the message content for the Audit
 | Message Id | Severity | Message |
 |---|---|---|
 | [LOVELACE-INSIGHTS-0001](#lovelace-insights-0001) | EXCEPTION | The organization insight service {0} received an unexpected exception {1} during method {2}; the error message was: {3} |
-| [LOVELACE-INSIGHTS-0016](#lovelace-insights-0016) | INFO | The {0} governance action service received a {1} exception when it registered its completion status.  The exception's message is: {2} |
-| [LOVELACE-INSIGHTS-0017](#lovelace-insights-0017) | INFO | The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2} |
+| [LOVELACE-INSIGHTS-0016](#lovelace-insights-0016) | INFO | The {0} governance action service received a {1} exception when it registered its completion status.  The exception message is: {2} |
+| [LOVELACE-INSIGHTS-0017](#lovelace-insights-0017) | INFO | The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2} |
 | [LOVELACE-INSIGHTS-0018](#lovelace-insights-0018) | INFO | The {0} governance service has processed the {1} governance zone ({2}) |
 | [LOVELACE-INSIGHTS-0038](#lovelace-insights-0038) | INFO | The {0} governance action service has completed successfully |
 
@@ -52,7 +52,7 @@ Use the details from the error message to determine the cause of the error and r
 
 ### LOVELACE-INSIGHTS-0016
 
-> The {0} governance action service received a {1} exception when it registered its completion status.  The exception's message is: {2}
+> The {0} governance action service received a {1} exception when it registered its completion status.  The exception message is: {2}
 
 |  |  |
 |---|---|
@@ -73,7 +73,7 @@ Review the exception messages that are logged about the same time as one of them
 
 ### LOVELACE-INSIGHTS-0017
 
-> The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}
+> The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2}
 
 |  |  |
 |---|---|

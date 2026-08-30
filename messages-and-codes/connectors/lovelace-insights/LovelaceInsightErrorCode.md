@@ -21,14 +21,14 @@ The LovelaceInsightErrorCode is used to define first failure data capture (FFDC)
 
 | Message Id | HTTP Code | Message |
 |---|---|---|
-| [LOVELACE-INSIGHTS-500-003](#lovelace-insights-500-003) | 500 | The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2} |
+| [LOVELACE-INSIGHTS-500-003](#lovelace-insights-500-003) | 500 | The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2} |
 | [LOVELACE-INSIGHTS-500-004](#lovelace-insights-500-004) | 500 | The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2} |
 
 ----
 
 ### LOVELACE-INSIGHTS-500-003
 
-> The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}
+> The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2}
 
 |  |  |
 |---|---|

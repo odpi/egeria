@@ -50,6 +50,35 @@ public enum BaudotAuditCode implements AuditLogMessageSet
                       "The governance service sends a notification to each subscriber registered when the service starts up and then monitors for new subscribers in order to send them notifications.  Additional notifications are sent to each active subscriber every notification interval.",
                       "This notification pattern was selected because multipleNotificationsPermitted is set to true and notificationInterval is greater than 0. Validate that this is the intended behaviour and the notification interval is appropriate.",
                       "https://egeria-project.org/concepts/notification-type/"),
+    /**
+     * BAUDOT-SUBSCRIPTION-MANAGER-0011 - The {0} governance service is not monitoring notification type {1} ({2}) because it could not be retrieved, or is not a notification type
+     */
+    UNREADABLE_NOTIFICATION_TYPE("BAUDOT-SUBSCRIPTION-MANAGER-0011",
+                                 AuditLogRecordSeverityLevel.ERROR,
+                                 "The {0} governance service is not monitoring notification type {1} ({2}) because it could not be retrieved, or is not a notification type",
+                                 "The notification type is skipped.  Its subscribers receive nothing.",
+                                 "Check that the element named as an action target of this service is a notification type, and that this service's userId can read it.",
+                                 "https://egeria-project.org/concepts/notification-type/"),
+
+    /**
+     * BAUDOT-SUBSCRIPTION-MANAGER-0012 - The {0} governance service is not yet monitoring notification type {1} because it is planned to start at {2}
+     */
+    NOTIFICATION_TYPE_NOT_STARTED("BAUDOT-SUBSCRIPTION-MANAGER-0012",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The {0} governance service is not yet monitoring notification type {1} because it is planned to start at {2}",
+                                  "The notification type is skipped until its planned start date has passed.",
+                                  "No action is required if the start date is intended.  A notification type whose subscribers are waiting for data has the wrong start date.",
+                                  "https://egeria-project.org/concepts/notification-type/"),
+
+    /**
+     * BAUDOT-SUBSCRIPTION-MANAGER-0013 - The {0} governance service refreshed its caches: {1} notification type(s) configured, {2} being monitored for the first time by this service
+     */
+    CACHE_REFRESHED("BAUDOT-SUBSCRIPTION-MANAGER-0013",
+                    AuditLogRecordSeverityLevel.INFO,
+                    "The {0} governance service refreshed its caches: {1} notification type(s) configured, {2} being monitored for the first time by this service",
+                    "The service monitors the notification types it has been given and notifies their subscribers.",
+                    "No action is required.  A refresh that reports zero notification types is monitoring nothing, and subscriptions to any product will not be delivered.",
+                    "https://egeria-project.org/concepts/notification-type/"),
 
     ;
 

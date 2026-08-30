@@ -381,8 +381,8 @@ public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConne
 
             recordValues.add(propertyDetails.getPropertyName());
             recordValues.add(propertyDetails.getDescription());
-            recordValues.add(Long.toString(propertyDetails.getCreateTime().getTime()));
-            recordValues.add(Long.toString(propertyDetails.getUpdateTime().getTime()));
+            recordValues.add(propertyDetails.getCreateTime().toInstant().toString());
+            recordValues.add(propertyDetails.getUpdateTime().toInstant().toString());
             recordValues.add(propertyDetails.getDataType());
             recordValues.add(propertyDetails.getExample());
 

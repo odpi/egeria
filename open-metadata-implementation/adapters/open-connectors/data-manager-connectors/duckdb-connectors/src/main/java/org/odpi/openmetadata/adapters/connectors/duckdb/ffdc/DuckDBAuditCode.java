@@ -92,11 +92,11 @@ public enum DuckDBAuditCode implements AuditLogMessageSet
                                "https://egeria-project.org/egeria-solutions/leveraging-duckdb/overview/"),
 
     /**
-     * DUCKDB-CONNECTOR-0008 - The {0} connector was unable to query DuckDB's {1} federation metadata for database {2}; the error message was: {3}
+     * DUCKDB-CONNECTOR-0008 - The {0} connector was unable to query the DuckDB {1} federation metadata for database {2}; the error message was: {3}
      */
     FEDERATION_QUERY_FAILED("DUCKDB-CONNECTOR-0008",
                             AuditLogRecordSeverityLevel.INFO,
-                            "The {0} connector was unable to query DuckDB's {1} federation metadata for database {2}; the error message was: {3}",
+                            "The {0} connector was unable to query the DuckDB {1} federation metadata for database {2}; the error message was: {3}",
                             "The connector skips federation discovery processing for this database and continues with the rest of its processing.",
                             "This may not be an error - it is expected for a version of DuckDB that does not support this table function, or for a database that does not use DuckDB's federation capabilities.  If federation metadata is expected, verify that the DuckDB version in use supports it.",
                             "https://egeria-project.org/egeria-solutions/leveraging-duckdb/overview/"),

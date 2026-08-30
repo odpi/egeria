@@ -420,7 +420,7 @@ public class OpenMetadataAttributesForTypesDataSetConnector extends OpenMetadata
                 else if (ProductDataFieldDefinition.CREATE_TIME.getDisplayName().equals(tabularColumnDescription.columnName()))
                 {
                     Date createTime = attributeDetails.getCreateTime();
-                    recordValues.add(Long.toString(createTime.getTime()));
+                    recordValues.add(createTime.toInstant().toString());
                 }
                 else if (ProductDataFieldDefinition.UPDATE_TIME.getDisplayName().equals(tabularColumnDescription.columnName()))
                 {
@@ -430,7 +430,7 @@ public class OpenMetadataAttributesForTypesDataSetConnector extends OpenMetadata
                     {
                         updateTime = attributeDetails.getCreateTime();
                     }
-                    recordValues.add(Long.toString(updateTime.getTime()));
+                    recordValues.add(updateTime.toInstant().toString());
                 }
                 else
                 {
