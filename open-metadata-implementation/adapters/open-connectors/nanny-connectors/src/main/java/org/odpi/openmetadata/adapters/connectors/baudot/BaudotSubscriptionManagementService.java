@@ -72,14 +72,15 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
             while (! completed)
             {
                 /*
-                 * Set up the caches. Begin by extracting the notification types from the action targets.
-                 * Once the caches are set up, send out first time (monitor resources), periodic and
-                 * onte-time notifications.
-                 */
-                Date nextCacheRefresh = refreshCaches();
-
-                /*
-                 * Start listening once the caches have been refreshed.
+                 * Listening starts before the first cache refresh, not after it.
+                 *
+                 * The notification types this service is responsible for are attached to its engine action by
+                 * whoever started it, and that happens while this service is starting - so the two race.
+                 * Refreshing first and then listening loses every notification type attached in between: the
+                 * refresh does not see them because they are not there yet, and the listener does not see them
+                 * because it does not exist yet.  They would then go unmonitored until the next scheduled
+                 * refresh, an hour later.  Listening first means anything missed by the refresh arrives as an
+                 * event, and anything seen by both is simply refreshed twice.
                  */
                 if (! listenerRegistered)
                 {
@@ -92,6 +93,13 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                                                      null);
                     listenerRegistered = true;
                 }
+
+                /*
+                 * Set up the caches. Begin by extracting the notification types from the action targets.
+                 * Once the caches are set up, send out first time (monitor resources), periodic and
+                 * onte-time notifications.
+                 */
+                Date nextCacheRefresh = refreshCaches();
 
                 /*
                  * Wait for the next time the caches need to be refreshed.
@@ -189,6 +197,9 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
          */
         List<ActionTargetElement> notificationTypeTargetElements = watchdogContext.getNotificationTypesFromActionTargets();
 
+        int monitoredNotificationTypeCount = 0;
+        int newNotificationTypeCount       = 0;
+
         if ((notificationTypeTargetElements != null) && (! notificationTypeTargetElements.isEmpty()))
         {
             /*
@@ -205,12 +216,26 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                      */
                     OpenMetadataRootElement notificationTypeElement = watchdogContext.getNotificationType(actionTargetElement.getActionTargetGUID());
 
-                    if ((notificationTypeElement != null) && (notificationTypeElement.getProperties() instanceof NotificationTypeProperties notificationTypeProperties))
+                    if ((notificationTypeElement == null) || (! (notificationTypeElement.getProperties() instanceof NotificationTypeProperties)))
                     {
+                        auditLog.logMessage(methodName,
+                                            BaudotAuditCode.UNREADABLE_NOTIFICATION_TYPE.getMessageDefinition(watchdogActionServiceName,
+                                                                                                               actionTargetElement.getActionTargetName(),
+                                                                                                               actionTargetElement.getActionTargetGUID()));
+                    }
+                    else if (notificationTypeElement.getProperties() instanceof NotificationTypeProperties notificationTypeProperties)
+                    {
+                        monitoredNotificationTypeCount ++;
+
                         /*
                          * Refresh the cache
                          */
                         boolean firstNotification = notificationTypeMap.setNotificationType(notificationTypeElement, watchdogContext);
+
+                        if (firstNotification)
+                        {
+                            newNotificationTypeCount ++;
+                        }
 
                         /*
                          * The notification type has been successfully retrieved from open metadata.  It is
@@ -225,7 +250,14 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                         /*
                          * Only process notification types that have started
                          */
-                        if ((notificationTypeProperties.getPlannedStartDate() == null) || new Date().after(notificationTypeProperties.getPlannedStartDate()))
+                        if ((notificationTypeProperties.getPlannedStartDate() != null) && (! new Date().after(notificationTypeProperties.getPlannedStartDate())))
+                        {
+                            auditLog.logMessage(methodName,
+                                                BaudotAuditCode.NOTIFICATION_TYPE_NOT_STARTED.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                   notificationTypeProperties.getDisplayName(),
+                                                                                                                   notificationTypeProperties.getPlannedStartDate().toString()));
+                        }
+                        else
                         {
                             if ((notificationTypeProperties.getPlannedCompletionDate() != null) && (new Date().after(notificationTypeProperties.getPlannedCompletionDate())))
                             {
@@ -370,6 +402,16 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
             }
         }
 
+        /*
+         * Said on every refresh.  The counts are what tell an operator whether this service is doing anything:
+         * a subscription that is never delivered looks the same from outside as one that has not been asked
+         * for, and the difference is visible here and nowhere else.
+         */
+        auditLog.logMessage(methodName,
+                            BaudotAuditCode.CACHE_REFRESHED.getMessageDefinition(watchdogActionServiceName,
+                                                                                  Integer.toString(monitoredNotificationTypeCount),
+                                                                                  Integer.toString(newNotificationTypeCount)));
+
         return nextCacheRefresh;
     }
 
@@ -508,9 +550,37 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                         }
                     }
                     else if ((propertyHelper.isTypeOf(event.getElementHeader(), OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName)) &&
-                            (event.getEndOneElementHeader().getGUID().equals(watchdogContext.getConnectorGUID())))
+                            (event.getEventType() == OpenMetadataEventType.NEW_ELEMENT_CREATED) &&
+                            (event.getEndOneElementHeader().getGUID().equals(watchdogContext.getEngineActionGUID())))
                     {
-                        this.refreshCaches();
+                        /*
+                         * A new notification type has been attached to this watchdog's engine action, so the caches
+                         * are rebuilt rather than left until the next scheduled refresh - but only if this is a
+                         * notification type the caches do not already hold.
+                         *
+                         * Notification types are attached in a burst, one event each, and a refresh reads every
+                         * action target this engine action has.  Refreshing for each event in the burst therefore
+                         * costs the square of the number of notification types in requests to the metadata store,
+                         * which is enough to exhaust its connections and leave the refresh unable to read
+                         * anything at all.  Refreshing only for a type that is not yet cached collapses the burst
+                         * to a handful of refreshes, because each one picks up everything attached so far.
+                         *
+                         * Only an action target being attached counts.  Refreshing on any change to one would
+                         * not terminate: a refresh claims each of its action targets by updating the status on
+                         * the relationship, and each of those updates is itself an event about an action target
+                         * of this engine action.
+                         *
+                         * The identifier compared here is the engine action's, because that is what an action target
+                         * relationship joins the notification type to.  Comparing the connector's instead means this
+                         * never matches: a notification type created after the last refresh stays uncached, and every
+                         * subscriber event for it is then dropped by the checks above - so a subscription taken out
+                         * against a newly built catalogue would wait until the next refresh, an hour later, before
+                         * anything was delivered.
+                         */
+                        if (notificationTypeMap.getNotificationType(event.getEndTwoElementHeader().getGUID()) == null)
+                        {
+                            this.refreshCaches();
+                        }
                     }
                 }
             }
@@ -808,9 +878,21 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
             {
                 NotificationType notificationType = new NotificationType(openMetadataRootElement, watchdogContext);
 
-                notificationTypeMap.put(notificationType.getNotificationTypeGUID(), notificationType);
+                /*
+                 * "First" means the first time this subscription manager has seen this notification type, not
+                 * the first time anything ever has.  It decides whether the notification type's interpretation
+                 * is reported, and - for a notification type driven by changes to a monitored resource -
+                 * whether its subscribers are welcomed, which is what makes the first delivery happen.
+                 *
+                 * Answering it from the notification count held in open metadata makes it mean "first time
+                 * ever": the count survives the manager that wrote it, so after a restart every existing
+                 * notification type looks like one that has already been dealt with.  Its subscribers are then
+                 * never welcomed again, and a subscription taken out after that restart is never delivered.
+                 */
+                NotificationType knownNotificationType = notificationTypeMap.put(notificationType.getNotificationTypeGUID(),
+                                                                                  notificationType);
 
-                return notificationType.notificationCount == 0;
+                return knownNotificationType == null;
             }
 
             return false;

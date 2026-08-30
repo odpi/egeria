@@ -264,7 +264,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
      */
     GOVERNANCE_SERVICE_NO_CONFIG("ENGINE-HOST-SERVICES-0030",
                                  AuditLogRecordSeverityLevel.INFO,
-                                "Failed to refresh configuration for governance engine {0}'s registered governance service {1}, registered with the " +
+                                "Failed to refresh configuration for the governance service {1} registered with governance engine {0}, registered with the " +
                                         " properties {2}.  The exception was {3} with error message {4}",
                                 "The governance engine cannot process governance request types for the failed governance service.",
                                 "Review the error messages and resolve the cause of the problem.  " +

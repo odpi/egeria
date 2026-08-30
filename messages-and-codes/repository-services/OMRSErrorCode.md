@@ -82,7 +82,7 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 | [OMRS-REPOSITORY-400-065](#omrs-repository-400-065) | 400 | Method {0} cannot accept the new type definition {1} from {2} because it has a header version of {3} which is greater than this repository can support ({4}) |
 | [OMRS-REPOSITORY-400-066](#omrs-repository-400-066) | 400 | Method {0} cannot accept the new {1} instance from {2} with guid {3} and type {4} because it has a header version of {5} which is greater than this repository can support ({6}) |
 | [OMRS-REPOSITORY-400-067](#omrs-repository-400-067) | 400 | Method {0} has detected invalid version values in TypeDef patch from {1}. The updateToVersion {2} is less than the applyToVersion {3}.  This is the contents of the patch {4} |
-| [OMRS-REPOSITORY-400-068](#omrs-repository-400-068) | 400 | Method {0} has detected that a TypeDef patch from {1} is for a future level from the active TypeDef.  The applyToVersion is {2} and the active TypeDef's version is {3}. This is the contents of the patch {4} |
+| [OMRS-REPOSITORY-400-068](#omrs-repository-400-068) | 400 | Method {0} has detected that a TypeDef patch from {1} is for a future level from the active TypeDef.  The applyToVersion is {2} and the active TypeDef version is {3}. This is the contents of the patch {4} |
 | [OMRS-REPOSITORY-400-069](#omrs-repository-400-069) | 400 | Method {0} has detected that a TypeDef patch from {1} has the mandatory field {2} set to null which is invalid. This is the contents of the patch {3} |
 | [OMRS-REPOSITORY-400-070](#omrs-repository-400-070) | 400 | Method {0} has detected that a TypeDef patch from {1} attempts to change the type of property {2} from {3} to {4}. This is the contents of the patch {5} |
 | [OMRS-REPOSITORY-400-071](#omrs-repository-400-071) | 400 | The Open Metadata Repository Services (OMRS) has been called to initialize with no audit log destinations defined for server {0} |
@@ -1495,7 +1495,7 @@ Correct the source of the patch and then try reloading it.
 
 ### OMRS-REPOSITORY-400-068
 
-> Method {0} has detected that a TypeDef patch from {1} is for a future level from the active TypeDef.  The applyToVersion is {2} and the active TypeDef's version is {3}. This is the contents of the patch {4}
+> Method {0} has detected that a TypeDef patch from {1} is for a future level from the active TypeDef.  The applyToVersion is {2} and the active TypeDef version is {3}. This is the contents of the patch {4}
 
 |  |  |
 |---|---|

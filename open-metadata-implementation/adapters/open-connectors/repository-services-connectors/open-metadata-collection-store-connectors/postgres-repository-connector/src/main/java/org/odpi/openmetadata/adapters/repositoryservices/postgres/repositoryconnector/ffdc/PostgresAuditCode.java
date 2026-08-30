@@ -51,11 +51,11 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                                  "https://egeria-project.org/concepts/repository-connector/"),
 
     /**
-     * POSTGRES-REPOSITORY-CONNECTOR-0007 - The PostgreSQL repository connector {0} has is using a default 'asOfTime' for queries of: {1}
+     * POSTGRES-REPOSITORY-CONNECTOR-0007 - The PostgreSQL repository connector {0} has is using a default asOfTime for queries of: {1}
      */
     DEFAULT_AS_OF_TIME("POSTGRES-REPOSITORY-CONNECTOR-0007",
                       AuditLogRecordSeverityLevel.STARTUP,
-                      "The PostgreSQL repository connector {0} has is using a default 'asOfTime' for queries of: {1}",
+                      "The PostgreSQL repository connector {0} has is using a default asOfTime for queries of: {1}",
                       "All queries that do not explicitly specify an asOfTime will use this value.  A value of null means it will use the current time.  This value is changed using the 'defaultAsOfTime' configuration property.",
                       "Check that this is the intended value.  Typically it is only changed from its default value of null for audits that are focused on a particular moment in time.",
                       "https://egeria-project.org/concepts/repository-connector/"),

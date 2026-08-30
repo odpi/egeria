@@ -406,17 +406,17 @@ public class OpenMetadataTypesDataSetConnector extends OpenMetadataDataSetConnec
                 }
                 else if (ProductDataFieldDefinition.CREATE_TIME.getDisplayName().equals(tabularColumnDescription.columnName()))
                 {
-                    recordValues.add(Long.toString(openMetadataTypeDef.getCreateTime().getTime()));
+                    recordValues.add(openMetadataTypeDef.getCreateTime().toInstant().toString());
                 }
                 else if (ProductDataFieldDefinition.UPDATE_TIME.getDisplayName().equals(tabularColumnDescription.columnName()))
                 {
                     if (openMetadataTypeDef.getUpdateTime() != null)
                     {
-                        recordValues.add(Long.toString(openMetadataTypeDef.getUpdateTime().getTime()));
+                        recordValues.add(openMetadataTypeDef.getUpdateTime().toInstant().toString());
                     }
                     else
                     {
-                        recordValues.add(Long.toString(openMetadataTypeDef.getCreateTime().getTime()));
+                        recordValues.add(openMetadataTypeDef.getCreateTime().toInstant().toString());
                     }
                     recordValues.add(openMetadataTypeDef.getStatus().getName());
                 }

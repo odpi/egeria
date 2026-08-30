@@ -24,7 +24,7 @@ The PostgresAuditCode is used to define the message content for the Audit Log.
 | [POSTGRES-REPOSITORY-CONNECTOR-0001](#postgres-repository-connector-0001) | EXCEPTION | The PostgreSQL repository connector {0} received an unexpected {1} exception during method {2}; the error message was: {3} |
 | [POSTGRES-REPOSITORY-CONNECTOR-0002](#postgres-repository-connector-0002) | STARTUP | The PostgreSQL repository connector {0} is connecting to database {1} |
 | [POSTGRES-REPOSITORY-CONNECTOR-0003](#postgres-repository-connector-0003) | STARTUP | The PostgreSQL repository connector {0} is validating the schema definitions for schema {1} |
-| [POSTGRES-REPOSITORY-CONNECTOR-0007](#postgres-repository-connector-0007) | STARTUP | The PostgreSQL repository connector {0} has is using a default 'asOfTime' for queries of: {1} |
+| [POSTGRES-REPOSITORY-CONNECTOR-0007](#postgres-repository-connector-0007) | STARTUP | The PostgreSQL repository connector {0} has is using a default asOfTime for queries of: {1} |
 | [POSTGRES-REPOSITORY-CONNECTOR-0008](#postgres-repository-connector-0008) | STARTUP | The PostgreSQL repository connector {0} is using a repository mode of: {1} |
 
 ----
@@ -94,7 +94,7 @@ Check for errors in configuring the schema.
 
 ### POSTGRES-REPOSITORY-CONNECTOR-0007
 
-> The PostgreSQL repository connector {0} has is using a default 'asOfTime' for queries of: {1}
+> The PostgreSQL repository connector {0} has is using a default asOfTime for queries of: {1}
 
 |  |  |
 |---|---|

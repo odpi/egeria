@@ -25,6 +25,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 public class ConnectedAssetClientBase extends ConnectedAssetClient
 {
 
+
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     private final OCFRESTClient ocfRESTClient;
@@ -314,12 +315,19 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
         {
             Connector connector = this.getConnectorForConnection(connection, methodName);
 
-            if ((auditLog != null) && (connector instanceof AuditLoggingComponent auditLoggingComponent))
+            /*
+             * The caller's audit log is used where one was supplied, and this client's own where it was not.
+             * A connector with no audit log at all reports its problems by throwing from inside its own error
+             * handling, which loses the problem it was trying to report.
+             */
+            AuditLog connectorAuditLog = (auditLog != null) ? auditLog : this.auditLog;
+
+            if ((connectorAuditLog != null) && (connector instanceof AuditLoggingComponent auditLoggingComponent))
             {
                 /*
                  * This set up the connector to log messages in the integration connector's audit log.
                  */
-                auditLoggingComponent.setAuditLog(auditLog);
+                auditLoggingComponent.setAuditLog(connectorAuditLog);
             }
 
             return connector;

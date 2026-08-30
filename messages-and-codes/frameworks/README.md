@@ -20,9 +20,9 @@ This directory documents 116 messages in 11 message sets.  Return to the [messag
 | [OIFErrorCode](OIFErrorCode.md) | Exception messages | `OIF-CONNECTOR-` | 7 | <https://egeria-project.org/frameworks/oif/overview/> |
 | [OMFAuditCode](OMFAuditCode.md) | Audit log messages | `OPEN-METADATA-` | 12 | <https://egeria-project.org/frameworks/omf/overview/> |
 | [OMFErrorCode](OMFErrorCode.md) | Exception messages | `OPEN-METADATA-` | 31 | <https://egeria-project.org/frameworks/omf/overview/> |
-| [OSFAuditCode](OSFAuditCode.md) | Audit log messages | `OPEN-SURVEY-` | 8 | <https://egeria-project.org/frameworks/osf/overview/> |
-| [OSFErrorCode](OSFErrorCode.md) | Exception messages | `OPEN-SURVEY-` | 8 | <https://egeria-project.org/frameworks/osf/overview/> |
-| [OWFAuditCode](OWFAuditCode.md) | Audit log messages | `OPEN-WATCHDOG-ACTION-` | 1 | <https://egeria-project.org/frameworks/owf/overview/> |
+| [OSFAuditCode](OSFAuditCode.md) | Audit log messages | `OPEN-SURVEY-` | 7 | <https://egeria-project.org/frameworks/osf/overview/> |
+| [OSFErrorCode](OSFErrorCode.md) | Exception messages | `OPEN-SURVEY-` | 7 | <https://egeria-project.org/frameworks/osf/overview/> |
+| [OWFAuditCode](OWFAuditCode.md) | Audit log messages | `OPEN-WATCHDOG-ACTION-` | 3 | <https://egeria-project.org/frameworks/owf/overview/> |
 | [OWFErrorCode](OWFErrorCode.md) | Exception messages | `OPEN-WATCHDOG-` | 2 | <https://egeria-project.org/frameworks/owf/overview/> |
 
 
