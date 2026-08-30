@@ -36,7 +36,7 @@ body:
         - [ ] Check security scans (ie owasp dependency check)
 
         Generate a release image for testing
-        - [ ] Start [Release](https://github.com/odpi/egeria/actions/workflows/release-v5.yml) pipeline manually to generate container image and stage artifacts on maven central.  Remember to select the release branch rather than `main`.
+        - [ ] Start [Release](https://github.com/odpi/egeria/actions/workflows/release-v6.yml) pipeline manually to generate container image and stage artifacts on maven central.  Remember to select the release branch rather than `main`.
 
 
         Updating the Helm Charts (egeria-charts repo)
@@ -58,7 +58,6 @@ body:
         - [ ] Check and validate [CTS results](https://egeria-project.org/guides/operations/kubernetes/charts/cts/)
           - CTS using in-memory
           - CTS using graph
-          - CTS using xtdb
 
         Final Docs
         - [ ] Update release notes in [egeria-docs](https://github.com/odpi/egeria-docs/tree/main/site/docs/release-notes)

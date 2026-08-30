@@ -101,6 +101,8 @@ test {
 }
 
 // Resolves logging conflicts between the various connectors pulled in by the platform chassis
-loggingCapabilities {
-    enforceLogback()
+jvmDependencyConflicts {
+    logging {
+        enforceLogback()
+    }
 }

@@ -17,20 +17,20 @@ jobs:
     if: startsWith(github.repository,'odpi/')
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: gradle/wrapper-validation-action@v3
       - name: Set up JDK
         uses: actions/setup-java@v6.0.0
         with:
           distribution: 'temurin'
           java-version: '21'
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@v3
+      # setup-gradle validates the Gradle wrapper checksums itself - validate-wrappers
+      # defaults to true - which is why there is no separate wrapper-validation step.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6.3.0
         with:
           # Only cache for main build
           cache-read-only: true
-          arguments: |
-            build
-            --scan
+      - name: Build with Gradle
+        run: ./gradlew build --scan
       - name: Upload Test coverage report
         uses: actions/upload-artifact@v4.4.0
         with:

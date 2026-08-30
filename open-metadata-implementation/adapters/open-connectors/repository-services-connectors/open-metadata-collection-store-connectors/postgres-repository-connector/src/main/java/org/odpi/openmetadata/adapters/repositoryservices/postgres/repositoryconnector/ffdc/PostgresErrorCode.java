@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 
 /**
  * The PostgresErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
- * XTDB as an OMRS Metadata Repository.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
+ * PostgreSQL as an OMRS Metadata Repository.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  * <br><br>
  * The 5 fields in the enum are:
  * <ul>

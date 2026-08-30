@@ -98,7 +98,10 @@ dependencies {
         api("org.apache.commons:commons-collections4:${collections4Version}")
         api("org.apache.commons:commons-lang3:${lang3Version}")
         api("org.apache.kafka:kafka-clients:${kafkaVersion}")
-        //TODO May need to exclude tomcat-annotations-api
+        // tomcat-annotations-api no longer needs excluding.  It carries the same classes as
+        // jakarta.annotation-api, and the capability rules applied in the root build.gradle now resolve
+        // that conflict in favour of jakarta.annotation-api - so tomcat-annotations-api is off every
+        // classpath in this build.
         api("org.codehaus.plexus:plexus-utils:${plexusVersion}")
         api("org.duckdb:duckdb_jdbc:${duckdbJdbcVersion}")
         api("org.postgresql:postgresql:${postgresVersion}")

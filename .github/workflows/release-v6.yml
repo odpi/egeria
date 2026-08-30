@@ -26,7 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
         name: Checkout source
-      - uses: gradle/wrapper-validation-action@v3
       # Prep for docker builds
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -46,12 +45,15 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-      # Just build but don't publish (yet)
-      - name: build (no publish to maven central)
-        uses: gradle/gradle-build-action@v3
+      # setup-gradle validates the Gradle wrapper checksums itself - validate-wrappers
+      # defaults to true - which is why there is no separate wrapper-validation step.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6.3.0
         with:
           cache-read-only: false
-          arguments: build
+      # Just build but don't publish (yet)
+      - name: build (no publish to maven central)
+        run: ./gradlew build
       # egeria-configure needs to install utilities
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -71,10 +73,7 @@ jobs:
           context: ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz
           platforms: linux/amd64,linux/arm64
       - name: build and publish to maven central
-        uses: gradle/gradle-build-action@v3
-        with:
-          cache-read-only: false
-          arguments: build publish -Dorg.gradle.parallel=false -Dorg.gradle.caching=false
+        run: ./gradlew build publish -Dorg.gradle.parallel=false -Dorg.gradle.caching=false
         # Import secrets needed for code signing and distribution
         env:
           OSSRH_GPG_KEYID: ${{ secrets.OSSRH_GPG_KEYID }}
