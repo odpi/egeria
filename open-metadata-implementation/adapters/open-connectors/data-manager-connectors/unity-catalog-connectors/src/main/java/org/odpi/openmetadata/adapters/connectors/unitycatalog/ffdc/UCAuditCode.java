@@ -88,7 +88,7 @@ public enum UCAuditCode implements AuditLogMessageSet
                  AuditLogRecordSeverityLevel.ACTION,
                  "The {0} Connector has detected a change in the open metadata that controls the definition of catalog {1} but cannot update the catalog in Unity Catalog (UC) at {2}",
                  "The connector will continue to synchronize metadata with Unity Catalog (UC).  However, this catalog's properties will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog uses the PATCH request which is not supported by Java.",
-                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source.",
+                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the catalog in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source.",
                  "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**
@@ -98,7 +98,7 @@ public enum UCAuditCode implements AuditLogMessageSet
                  AuditLogRecordSeverityLevel.ACTION,
                  "The {0} Connector has detected a change in the open metadata that controls the definition of schema {1} but cannot update the schema in Unity Catalog (UC) at {2}",
                  "The connector will continue to synchronize metadata with Unity Catalog (UC).  However, this schema's properties will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog uses the PATCH request which is not supported by Java.",
-                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source.",
+                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the schema in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source.",
                  "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
     /**

@@ -184,7 +184,7 @@ The exception is logged.  More messages may follow if follow on attempts are mad
 
 **User action**
 
-This message contains the exception that was the original cause of the problem. Use the information from the exception stack trace to determine why the connector is not able to access the directory and resolve that issue.  Use the messages that where subsequently logged during the error handling to discover how to restart the connector in the integration daemon once the original cause of the error has been corrected.
+This message contains the exception that was the original cause of the problem. Use the information from the exception stack trace to determine why the connector is not able to access the directory and resolve that issue.  Use the messages that were subsequently logged during the error handling to discover how to re-run the file provisioning service once the original cause of the error has been corrected.
 
 
 ----
@@ -205,7 +205,7 @@ The governance action connector will use the qualified name of the asset as the 
 
 **User action**
 
-This message contains the exception that was the original cause of the problem. If using the qualified name is not working, use the information from the exception stack trace to determine why the connector is not able to access the endpoint and resolve that issue.  Use the messages that where subsequently logged during the error handling to discover how to restart the connector in the integration daemon once the original cause of the error has been corrected.
+This message contains the exception that was the original cause of the problem. If using the qualified name is not working, use the information from the exception stack trace to determine why the connector is not able to access the endpoint and resolve that issue.  Use the messages that were subsequently logged during the error handling to discover how to re-run the governance action service once the file path name on the attached endpoint has been corrected.
 
 
 ----
@@ -411,7 +411,7 @@ This is likely to be a configuration error.  Review the description of the excep
 
 **System action**
 
-The governance action service returns an INVALID completion status.
+The governance action service returns an INVALID completion status because it has nothing to work on.
 
 **User action**
 
@@ -499,7 +499,7 @@ The exception is logged.  More messages may follow if follow on attempts are mad
 
 **User action**
 
-This message contains the exception that was the original cause of the problem. Use the information from the exception stack trace to determine why the connector is not able to initiate the process and resolve that issue.  Use the messages that where subsequently logged during the error handling to discover how to restart the connector in the integration daemon once the original cause of the error has been corrected.
+This message contains the exception that was the original cause of the problem. Use the information from the exception stack trace to determine why the connector is not able to initiate the process and resolve that issue.  Use the messages that were subsequently logged during the error handling to discover how to re-run the governance action process once the original cause of the error has been corrected.
 
 
 ----
@@ -726,7 +726,7 @@ Check that the integration connector is able to contact the server and the catal
 
 **System action**
 
-The governance action service returns an INVALID completion status.
+The governance action service returns an INVALID completion status because a required action target is missing.
 
 **User action**
 
@@ -747,7 +747,7 @@ This is an error in the way that the governance action service has been called s
 
 **System action**
 
-The governance action service returns an ACTIONED completion status.
+The governance action service returns an ACTIONED completion status once the new asset is catalogued.
 
 **User action**
 
@@ -768,7 +768,7 @@ Ensure follow-on uses of the asset are successful.
 
 **System action**
 
-The governance action service returns an ACTIONED completion status.
+The governance action service returns an ACTIONED completion status once the asset has been removed from the catalog.
 
 **User action**
 

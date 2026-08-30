@@ -77,7 +77,7 @@ public enum DuckDBAuditCode implements AuditLogMessageSet
     ATTACHED_SOURCE_FOUND("DUCKDB-CONNECTOR-0006",
                           AuditLogRecordSeverityLevel.INFO,
                           "The {0} connector discovered that DuckDB Database {1} has an attached source called {2} of type {3}",
-                          "The connector records this as a federation relationship for the DuckDB database.",
+                          "The connector records the attached database as a federation relationship for the DuckDB database.",
                           "No specific action is required.  This is an information message describing a database that has been ATTACH-ed to the surveyed/catalogued DuckDB database.",
                           "https://egeria-project.org/egeria-solutions/leveraging-duckdb/overview/"),
 
@@ -87,7 +87,7 @@ public enum DuckDBAuditCode implements AuditLogMessageSet
     EXTERNAL_FILE_SOURCE_FOUND("DUCKDB-CONNECTOR-0007",
                                AuditLogRecordSeverityLevel.INFO,
                                "The {0} connector discovered that DuckDB Database {1} has a view called {2} that scans an external {3} resource at {4}",
-                               "The connector records this as a federation relationship for the DuckDB database.",
+                               "The connector records the external resource scanned by the view as a federation relationship for the DuckDB database.",
                                "No specific action is required.  This is an information message describing an external file, or object-store, resource that is scanned by a view in the surveyed/catalogued DuckDB database.",
                                "https://egeria-project.org/egeria-solutions/leveraging-duckdb/overview/"),
 

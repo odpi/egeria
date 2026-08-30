@@ -155,7 +155,7 @@ Verify that the cataloguing starts the next time that the friendship connector r
 
 **System action**
 
-The connector records this as a federation relationship for the DuckDB database.
+The connector records the attached database as a federation relationship for the DuckDB database.
 
 **User action**
 
@@ -176,7 +176,7 @@ No specific action is required.  This is an information message describing a dat
 
 **System action**
 
-The connector records this as a federation relationship for the DuckDB database.
+The connector records the external resource scanned by the view as a federation relationship for the DuckDB database.
 
 **User action**
 

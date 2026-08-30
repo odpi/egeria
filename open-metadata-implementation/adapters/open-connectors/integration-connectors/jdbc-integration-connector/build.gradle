@@ -28,3 +28,9 @@ dependencies {
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
+}
