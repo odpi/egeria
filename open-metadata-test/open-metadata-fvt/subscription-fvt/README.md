@@ -97,17 +97,34 @@ A product **family** also has no asset and *does* offer subscriptions.  The two 
 a family's data is its members' data, and its subscription delivers by way of them.  That distinction is
 asserted rather than left implicit, because it is one guard in Jacquard away from being lost.
 
-### The catalogue is rebuilt on every run
+### The catalogue is reused unless it has to be rebuilt
 
 Jacquard reuses a catalogue it finds: a product already in the repository is not rebuilt, and neither are its
 subscription options.  That is right for a running deployment and wrong for a suite that tests how the
 catalogue gets built - a change would be invisible, and the tests that check what is *absent* would go on
 passing against options that should no longer be offered.
 
-So the suite purges the products, with their anchored notification types, options and assets, before Jacquard
-starts.  The folders, communities and glossary terms they are organised into are anchored elsewhere and are
-reused.  Rebuilding all 47 products is most of the suite's run time - about 12 minutes rather than 3 - which
-is the price of the result describing this version of Jacquard rather than whichever one ran last.
+Building it is also most of the suite's run time.  Jacquard creates 47 products and 181 notification types
+and offers no way to ask for fewer, so a full rebuild takes tens of minutes and puts enough load on an
+FVT-sized deployment - one engine host, one integration daemon, a shared PostgreSQL server - that runs start
+failing for reasons that have nothing to do with subscriptions.
+
+So the suite **reuses an existing catalogue by default**, and rebuilds only when it has to:
+
+| Situation | What happens |
+|---|---|
+| Products are missing from the catalogue | Built by the refresh - a partial catalogue is never tested against |
+| The catalogue is complete | Reused; Jacquard is still refreshed, which is what starts the subscription manager |
+| `-Dsubscription.fvt.rebuild.catalogue=true` | Purged and rebuilt from scratch |
+
+Jacquard is refreshed on every run even when nothing needs building, because refreshing is also what activates
+the **Baudot Subscription Manager**.  A run that skips it has no subscription manager at all: subscriptions are
+taken out and nothing ever delivers them.
+
+That is a deliberate trade.  A run that reuses the catalogue is testing subscriptions, not catalogue
+construction: Jacquard reuses what it finds, so a change to *how* products or their subscription options are
+built is invisible until the catalogue is rebuilt.  **Ask for a rebuild after changing Jacquard**, and expect
+that run to take considerably longer.
 
 ### Why each subscription type is tested separately
 

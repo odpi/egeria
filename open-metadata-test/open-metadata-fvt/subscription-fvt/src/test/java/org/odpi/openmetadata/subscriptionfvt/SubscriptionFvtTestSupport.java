@@ -29,6 +29,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -332,10 +333,9 @@ final class SubscriptionFvtTestSupport
      * Make sure the destination schemas this suite subscribes into are there, holding exactly what this run
      * expects.
      * <br>
-     * One schema is created for each destination a test needs, and the product destinations get a table
-     * inside theirs, because a tabular data set is catalogued from a table that exists.  A family
-     * destination is the schema itself, so it is left empty: the products in the family are what would fill
-     * it.
+     * One empty schema is created for each destination a test needs.  The tables are deliberately not created:
+     * a subscription's destination table is created by the provisioning, with the columns the product it
+     * delivers actually has, so anything put there first would simply be a table with the wrong shape.
      * <br>
      * The <b>schemas</b> are always dropped and rebuilt, so a run always starts from the same contents.  The
      * <b>database</b> is only created if it is not already there, because creating one needs the CREATEDB
@@ -374,13 +374,11 @@ final class SubscriptionFvtTestSupport
             }
 
             /*
-             * Only the product destinations get a table.  A family's destination is the schema itself.
+             * The schemas are left empty.  A destination table is created by the provisioning with the columns
+             * the product actually has, so a table put here first would only be one with the wrong columns -
+             * which is worse than none, because the provisioning would then try to describe columns that its
+             * table does not have.
              */
-            for (ProductSubscriptionDefinition subscriptionType : ProductSubscriptionDefinition.values())
-            {
-                statement.execute("create table " + destinationSchemaName(destinationPurpose(subscriptionType)) + "."
-                                          + destinationTableName() + " (id integer primary key, description varchar(80))");
-            }
         }
 
         System.out.println("subscription-fvt: prepared " + allDestinationSchemaNames().size()
@@ -488,10 +486,19 @@ final class SubscriptionFvtTestSupport
      * <br>
      * Jacquard reuses whatever it finds: a product that is already in the repository is not rebuilt, and
      * neither are its subscription options.  That is right for a running deployment and wrong for a test of
-     * how the catalogue gets built - a change to that would be invisible here, and, worse, this suite would
-     * assert against a catalogue produced by whatever version of Jacquard happened to run last.  The tests
-     * that check what is <em>absent</em> from the catalogue are the ones that show it: an option that should
-     * no longer be offered goes on being offered for ever.
+     * how the catalogue gets built - a change to that would be invisible here, and the tests that check what
+     * is <em>absent</em> would go on passing against options that should no longer be offered.
+     * <br>
+     * Rebuilding is nevertheless <b>off by default</b>, because building the whole catalogue is most of this
+     * suite's run time - it is 47 products and 181 notification types, and Jacquard offers no way to ask for
+     * fewer.  A run that rebuilds takes tens of minutes rather than about ten, and puts enough load on an
+     * FVT-sized deployment to start failing for reasons that have nothing to do with subscriptions.
+     * <br>
+     * So the default is to reuse the catalogue, and {@link #ensureCatalogueBuilt()} rebuilds anyway if what is
+     * there does not match the definitions.  Ask for a rebuild explicitly - with
+     * {@code -Dsubscription.fvt.rebuild.catalogue=true} - after changing how the catalogue is built.  That is
+     * a deliberate trade of one risk for another: a run that reuses the catalogue is testing subscriptions,
+     * not catalogue construction.
      * <br>
      * Products are purged with their anchored content, which takes the notification types, subscription
      * options and product assets with them.  The folders, communities, glossary terms and governance
@@ -501,11 +508,18 @@ final class SubscriptionFvtTestSupport
      */
     static void clearCatalogue() throws Exception
     {
+        if (! OMAGPlatformExtension.getBooleanProperty("subscription.fvt.rebuild.catalogue", false))
+        {
+            System.out.println("subscription-fvt: reusing the existing product catalogue.  Set"
+                                       + " subscription.fvt.rebuild.catalogue to rebuild it - needed after a change to"
+                                       + " how the catalogue is built, because Jacquard reuses what it finds.");
+            return;
+        }
+
         if (! OMAGPlatformExtension.getBooleanProperty("subscription.fvt.clear.down", true))
         {
             System.out.println("subscription-fvt: leaving the existing product catalogue in place -"
-                                       + " subscription.fvt.clear.down is false.  Jacquard will reuse it rather than"
-                                       + " rebuilding it, so the tests will describe the run that built it.");
+                                       + " subscription.fvt.clear.down is false.");
             return;
         }
 
@@ -555,18 +569,58 @@ final class SubscriptionFvtTestSupport
             return;
         }
 
+        OpenMetadataStore       openMetadataStore  = ConnectorContextFactory.newContext().getOpenMetadataStore();
+        ProductDefinitionEnum[] productDefinitions = ProductDefinitionEnum.values();
+
+        /*
+         * Jacquard is refreshed even when the catalogue is already complete, and that is not wasted work:
+         * refreshing is also what activates the Baudot Subscription Manager, so a run that skips it has no
+         * subscription manager at all - subscriptions are taken out and nothing ever delivers them.  Where
+         * the products already exist Jacquard finds each one and moves on, which is far cheaper than building
+         * them.
+         */
+        if (catalogueIsComplete(openMetadataStore, productDefinitions))
+        {
+            System.out.println("subscription-fvt: the product catalogue is already complete - refreshing Jacquard to"
+                                       + " start the subscription manager, but not rebuilding it");
+        }
+
         OMAGPlatformExtension.getIntegrationDaemonClient()
                              .refreshConnector(IntegrationConnectorDefinition.PRODUCT_HARVESTER.getConnectorName());
-
-        OpenMetadataStore openMetadataStore = ConnectorContextFactory.newContext().getOpenMetadataStore();
-
-        ProductDefinitionEnum[] productDefinitions = ProductDefinitionEnum.values();
 
         waitForElement(openMetadataStore,
                        productDefinitions[productDefinitions.length - 1].getQualifiedName(),
                        "Jacquard finished building the digital product catalogue");
 
         catalogueBuilt = true;
+    }
+
+
+    /**
+     * Return whether every product Jacquard defines is already in the repository.
+     * <br>
+     * This is what makes reusing a catalogue safe enough to be the default: a catalogue that is missing
+     * anything is rebuilt whether or not a rebuild was asked for.  It cannot tell that an existing product is
+     * <em>stale</em> - that is what {@code subscription.fvt.rebuild.catalogue} is for.
+     *
+     * @param openMetadataStore store to read through
+     * @param productDefinitions the products Jacquard defines
+     * @return true if all of them are catalogued
+     * @throws Exception problem reading the repository
+     */
+    private static boolean catalogueIsComplete(OpenMetadataStore       openMetadataStore,
+                                               ProductDefinitionEnum[] productDefinitions) throws Exception
+    {
+        for (ProductDefinitionEnum productDefinition : productDefinitions)
+        {
+            if (openMetadataStore.getMetadataElementByUniqueName(productDefinition.getQualifiedName(),
+                                                                 OpenMetadataProperty.QUALIFIED_NAME.name) == null)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
@@ -636,6 +690,15 @@ final class SubscriptionFvtTestSupport
             resultSet.next();
 
             return resultSet.getLong(1);
+        }
+        catch (SQLException tableNotThere)
+        {
+            /*
+             * A destination table that does not exist yet holds no rows.  It is created by the provisioning
+             * when it first delivers, so its absence is the normal state of a subscription that has not been
+             * delivered to - a test waiting for delivery has to be able to ask before that has happened.
+             */
+            return 0;
         }
     }
 

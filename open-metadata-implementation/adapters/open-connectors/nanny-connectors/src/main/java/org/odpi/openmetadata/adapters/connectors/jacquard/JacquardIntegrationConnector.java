@@ -940,6 +940,49 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
+     * Hand a notification type to the Baudot Subscription Manager, so that it monitors it and notifies its
+     * subscribers.
+     * <br>
+     * Where the manager is not running yet the notification type is held until it is - the manager is started
+     * by this connector, and the products are built either side of that.
+     *
+     * @param notificationTypeGUID the notification type to be monitored
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void registerWithSubscriptionManager(String notificationTypeGUID) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        if (baudotEngineActionGUID != null)
+        {
+            AssetClient assetClient = integrationContext.getAssetClient();
+
+            ActionTargetProperties actionTargetProperties = new ActionTargetProperties();
+
+            actionTargetProperties.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
+
+            assetClient.addActionTarget(baudotEngineActionGUID,
+                                        notificationTypeGUID,
+                                        assetClient.getMakeAnchorOptions(false),
+                                        actionTargetProperties);
+        }
+        else // save for when Baudot is running
+        {
+            NewActionTarget notificationTarget = new NewActionTarget();
+
+            notificationTarget.setActionTargetGUID(notificationTypeGUID);
+            notificationTarget.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
+
+            notificationWatchdogTargets.add(notificationTarget);
+        }
+    }
+
+
+    /**
      * Set up a product's subscription types.  These are governance types configured with an appropriate
      * subscription behaviour.  A customized governance action process for creating a subscription is also set up.
      * When this governance action process runs, it creates the subscription for the requesting
@@ -1118,37 +1161,24 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, productManagerGUID, makeAnchorOptions, notificationSubscriberProperties);
             }
 
-            /*
-             * Save details of the notification type so that it is processed by the Baudot Subscription Manager.
-             */
-            NewActionTarget notificationTarget = new NewActionTarget();
-
-            notificationTarget.setActionTargetGUID(notificationTypeGUID);
-            notificationTarget.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
-
-            if (baudotEngineActionGUID != null)
-            {
-                AssetClient assetClient = integrationContext.getAssetClient();
-
-                ActionTargetProperties actionTargetProperties = new ActionTargetProperties();
-
-                actionTargetProperties.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
-
-                assetClient.addActionTarget(baudotEngineActionGUID,
-                                            notificationTypeGUID,
-                                            assetClient.getMakeAnchorOptions(false),
-                                            actionTargetProperties);
-            }
-            else // save for when Baudot is running
-            {
-                notificationWatchdogTargets.add(notificationTarget);
-            }
+            this.registerWithSubscriptionManager(notificationTypeGUID);
 
             return notificationTypeGUID;
         }
         else
         {
-            return notificationTypeElement.getElementHeader().getGUID();
+            /*
+             * The notification type is already catalogued, and it still has to be handed to the subscription
+             * manager.  The manager is a new engine action every time this connector starts, and an engine
+             * action only knows about the action targets attached to it - so a restart against a catalogue
+             * that is already built would otherwise leave the manager with nothing to monitor, and every
+             * subscription to every existing product would quietly stop being delivered.
+             */
+            String notificationTypeGUID = notificationTypeElement.getElementHeader().getGUID();
+
+            this.registerWithSubscriptionManager(notificationTypeGUID);
+
+            return notificationTypeGUID;
         }
     }
 

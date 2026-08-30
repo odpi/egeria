@@ -597,11 +597,11 @@ public enum OMRSErrorCode implements ExceptionMessageSet
 
     /**
      * OMRS-REPOSITORY-400-068 - Method {0} has detected that a TypeDef patch from {1} is for a future level from the active TypeDef.
-     * The applyToVersion is {2} and the active TypeDef's version is {3}. This is the contents of the patch {4}
+     * The applyToVersion is {2} and the active TypeDef version is {3}. This is the contents of the patch {4}
      */
     INCOMPATIBLE_PATCH_VERSION(400, "OMRS-REPOSITORY-400-068",
             "Method {0} has detected that a TypeDef patch from {1} is for a future level from the active TypeDef.  The applyToVersion is {2} " +
-                                  "and the active TypeDef's version is {3}. This is the contents of the patch {4}",
+                                  "and the active TypeDef version is {3}. This is the contents of the patch {4}",
             "The system cannot process the patch because it is for a future version of the type.  This means there is at least one missing " +
                                        "patch that needs to be applied first",
             "Locate and load the previous versions of the patch and then try reloading this one.",

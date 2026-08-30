@@ -21,14 +21,14 @@ The ConnectorConfigurationFactoryErrorCode is used to define first failure data 
 
 | Message Id | HTTP Code | Message |
 |---|---|---|
-| [CONNECTOR-CONFIGURATION-FACTORY-400-001](#connector-configuration-factory-400-001) | 400 | Connector Provider class name {0} (or a dependent library class) is not available to this runtime. Check that the appropriate jar files are included in the runtime classpath (often specified via the 'loader.path' option); also check that the loader.path value is correct. Class loader exception was {1} with message {2} |
+| [CONNECTOR-CONFIGURATION-FACTORY-400-001](#connector-configuration-factory-400-001) | 400 | Connector Provider class name {0} (or a dependent library class) is not available to this runtime. Check that the appropriate jar files are included in the runtime classpath (often specified via the loader.path option); also check that the loader.path value is correct. Class loader exception was {1} with message {2} |
 | [CONNECTOR-CONFIGURATION-FACTORY-400-002](#connector-configuration-factory-400-002) | 400 | Connector Provider class name {0} does not inherit from 'org.odpi.openmetadata.frameworks.connectors.ConnectorProvider' |
 
 ----
 
 ### CONNECTOR-CONFIGURATION-FACTORY-400-001
 
-> Connector Provider class name {0} (or a dependent library class) is not available to this runtime. Check that the appropriate jar files are included in the runtime classpath (often specified via the 'loader.path' option); also check that the loader.path value is correct. Class loader exception was {1} with message {2}
+> Connector Provider class name {0} (or a dependent library class) is not available to this runtime. Check that the appropriate jar files are included in the runtime classpath (often specified via the loader.path option); also check that the loader.path value is correct. Class loader exception was {1} with message {2}
 
 |  |  |
 |---|---|

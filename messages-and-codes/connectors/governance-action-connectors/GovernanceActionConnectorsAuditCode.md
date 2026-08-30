@@ -35,8 +35,8 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 | [GOVERNANCE-ACTION-CONNECTORS-0013](#governance-action-connectors-0013) | INFO | The {0} governance action service detected that asset {1} has no endpoint linked to connection {2} |
 | [GOVERNANCE-ACTION-CONNECTORS-0014](#governance-action-connectors-0014) | ERROR | The {0} governance action service detected that asset {1} has a linked connection {2} with {3} linked endpoints which is not valid: {4} |
 | [GOVERNANCE-ACTION-CONNECTORS-0015](#governance-action-connectors-0015) | INFO | The {0} governance action service detected that the endpoint {1} linked to connection {2} for asset {3} has no networkAddressProperty |
-| [GOVERNANCE-ACTION-CONNECTORS-0016](#governance-action-connectors-0016) | INFO | The {0} governance action service received a {1} exception when it registered its completion status.  The exception's message is: {2} |
-| [GOVERNANCE-ACTION-CONNECTORS-0017](#governance-action-connectors-0017) | INFO | The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2} |
+| [GOVERNANCE-ACTION-CONNECTORS-0016](#governance-action-connectors-0016) | INFO | The {0} governance action service received a {1} exception when it registered its completion status.  The exception message is: {2} |
+| [GOVERNANCE-ACTION-CONNECTORS-0017](#governance-action-connectors-0017) | INFO | The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2} |
 | [GOVERNANCE-ACTION-CONNECTORS-0018](#governance-action-connectors-0018) | ERROR | The {0} governance action service has no targets to operate on |
 | [GOVERNANCE-ACTION-CONNECTORS-0019](#governance-action-connectors-0019) | INFO | The {0} governance action service has publishZones set to null |
 | [GOVERNANCE-ACTION-CONNECTORS-0020](#governance-action-connectors-0020) | INFO | The {0} governance action service is publishing asset {1} to the following zones: {2} |
@@ -359,7 +359,7 @@ The governance action service will log the GOVERNANCE-ACTION-CONNECTORS-0006 mes
 
 ### GOVERNANCE-ACTION-CONNECTORS-0016
 
-> The {0} governance action service received a {1} exception when it registered its completion status.  The exception's message is: {2}
+> The {0} governance action service received a {1} exception when it registered its completion status.  The exception message is: {2}
 
 |  |  |
 |---|---|
@@ -380,7 +380,7 @@ Review the exception messages that are logged about the same time as one of them
 
 ### GOVERNANCE-ACTION-CONNECTORS-0017
 
-> The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}
+> The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2}
 
 |  |  |
 |---|---|

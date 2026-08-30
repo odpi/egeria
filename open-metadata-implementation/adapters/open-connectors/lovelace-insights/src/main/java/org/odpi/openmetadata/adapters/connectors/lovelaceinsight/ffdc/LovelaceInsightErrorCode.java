@@ -28,10 +28,10 @@ public enum LovelaceInsightErrorCode implements ExceptionMessageSet
 {
 
     /**
-     * The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}
+     * The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2}
      */
     UNABLE_TO_REGISTER_LISTENER(500, "LOVELACE-INSIGHTS-500-003",
-                                "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception's message is: {2}",
+                                "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2}",
                                 "The governance action throws a GovernanceServiceException in the hope that the .",
                                 "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
                                         "and follow its instructions.",

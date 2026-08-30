@@ -39,7 +39,7 @@ The EngineHostServicesAuditCode is used to define the message content for the OM
 | [ENGINE-HOST-SERVICES-0027](#engine-host-services-0027) | STARTUP | The engine host services has registered the configuration listener for server {0} and governance engine {1}.  It will receive configuration updates from metadata access server {2} |
 | [ENGINE-HOST-SERVICES-0028](#engine-host-services-0028) | INFO | All governance service configuration is being refreshed for governance engine {0} |
 | [ENGINE-HOST-SERVICES-0029](#engine-host-services-0029) | INFO | All governance service configuration has been refreshed in governance engine {0} |
-| [ENGINE-HOST-SERVICES-0030](#engine-host-services-0030) | INFO | Failed to refresh configuration for governance engine {0}'s registered governance service {1}, registered with the  properties {2}.  The exception was {3} with error message {4} |
+| [ENGINE-HOST-SERVICES-0030](#engine-host-services-0030) | INFO | Failed to refresh configuration for the governance service {1} registered with governance engine {0}, registered with the  properties {2}.  The exception was {3} with error message {4} |
 | [ENGINE-HOST-SERVICES-0031](#engine-host-services-0031) | ERROR | Failed to refresh configuration for governance engine {0}.  The exception was {1} with error message {2} |
 | [ENGINE-HOST-SERVICES-0033](#engine-host-services-0033) | SHUTDOWN | Engine action {0} running governance service {1} for governance engine {2} with request type {3} has recorded completion status of {4} and output guards of {5}.  Next engine action is given request parameters called {6} and action targets of {7}.  The completion message was {8} |
 | [ENGINE-HOST-SERVICES-0034](#engine-host-services-0034) | EXCEPTION | Failed to execute engine action for governance engine {0}.  The exception was {1} with error message {2} |
@@ -432,7 +432,7 @@ No action is required as long as all the expected governance services are loaded
 
 ### ENGINE-HOST-SERVICES-0030
 
-> Failed to refresh configuration for governance engine {0}'s registered governance service {1}, registered with the  properties {2}.  The exception was {3} with error message {4}
+> Failed to refresh configuration for the governance service {1} registered with governance engine {0}, registered with the  properties {2}.  The exception was {3} with error message {4}
 
 |  |  |
 |---|---|

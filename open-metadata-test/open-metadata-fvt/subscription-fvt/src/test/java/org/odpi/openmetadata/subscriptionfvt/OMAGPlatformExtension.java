@@ -285,6 +285,8 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
             try
             {
+                stageSecretsStore();
+
                 startPlatform();
 
                 PlatformServicesClient platformServicesClient = getPlatformServicesClient();
@@ -342,6 +344,103 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                 throw error;
             }
         }
+    }
+
+
+    /**
+     * Put a secrets store where the connectors expect to find it, with its token exchanges removed.
+     * <br>
+     * Two things have to be dealt with.  The content pack's connector definitions and catalog templates name
+     * their secrets store as {@code secrets/egeria-servers.omsecrets} - a path relative to the working
+     * directory of whatever is running them, which here is this module's directory rather than a server's.
+     * And the shipped store obtains most of its identities by POSTing to {@code https://localhost:7443/api/token},
+     * a platform that does not exist in a hermetic test run.
+     * <br>
+     * Both matter for the same reason.  A connector that cannot read its secrets never learns the user
+     * identity it should call open metadata as, so it builds its client with a null user and fails on its
+     * first query - which arrives as a complaint about a null userId rather than about a missing secret.
+     * <br>
+     * So the file is copied to where the definitions look for it, and every collection that authenticates by
+     * token is rewritten to supply the same user identity directly.  This platform has no user directory and
+     * no authentication, so a bearer token would have nothing to prove; the identity is the part that is
+     * actually needed.  The definitions themselves are left alone - the path and the collection names are what
+     * the content pack ships, and a suite that rewrote those would be testing something other than what is
+     * shipped.
+     *
+     * @throws Exception the secrets store could not be staged, which is fatal - every connector needs it
+     */
+    private void stageSecretsStore() throws Exception
+    {
+        File sharedSecrets = new File(SubscriptionFvtTestSupport.getSecretsStoreLocation());
+
+        if (! sharedSecrets.isFile())
+        {
+            throw new IllegalStateException("The shared secrets store " + sharedSecrets.getAbsolutePath()
+                                                    + " is missing.  Point subscription.fvt.server.secrets.store at it.");
+        }
+
+        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+
+        @SuppressWarnings("unchecked")
+        Map<String, Object> secretsStore = yamlMapper.readValue(sharedSecrets, Map.class);
+
+        Object collections = secretsStore.get("secretsCollections");
+
+        if (collections instanceof Map<?, ?> collectionMap)
+        {
+            for (Object collection : collectionMap.values())
+            {
+                if (collection instanceof Map<?, ?> collectionProperties)
+                {
+                    replaceTokenExchangeWithUserId(collectionProperties);
+                }
+            }
+        }
+
+        File stagedSecrets = new File("secrets", sharedSecrets.getName());
+
+        if (stagedSecrets.getParentFile().mkdirs())
+        {
+            System.out.println("subscription-fvt: created " + stagedSecrets.getParentFile().getAbsolutePath()
+                                       + " for the connectors' secrets store");
+        }
+
+        yamlMapper.writeValue(stagedSecrets, secretsStore);
+    }
+
+
+    /**
+     * Turn one collection's token exchange into the user identity it would have authenticated as.
+     *
+     * @param collectionProperties one secrets collection, modified in place
+     */
+    @SuppressWarnings("unchecked")
+    private void replaceTokenExchangeWithUserId(Map<?, ?> collectionProperties)
+    {
+        Object tokenAPI = collectionProperties.get("tokenAPI");
+
+        if (! (tokenAPI instanceof Map<?, ?> tokenProperties))
+        {
+            return;
+        }
+
+        Object requestBody = tokenProperties.get("requestBody");
+
+        if (requestBody instanceof Map<?, ?> requestProperties)
+        {
+            Object userId = requestProperties.get("userId");
+
+            if (userId != null)
+            {
+                Map<String, Object> secrets = new HashMap<>();
+
+                secrets.put("userId", userId);
+
+                ((Map<String, Object>) collectionProperties).put("secrets", secrets);
+            }
+        }
+
+        ((Map<String, Object>) collectionProperties).remove("tokenAPI");
     }
 
 
