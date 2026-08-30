@@ -22,8 +22,8 @@ The RepositoryGovernanceErrorCode error code is used to define first failure dat
 | Message Id | HTTP Code | Message |
 |---|---|---|
 | [OMES-REPOSITORY-GOVERNANCE-400-001](#omes-repository-governance-400-001) | 400 | No repository governance context supplied to the repository governance service {0} |
-| [OMES-REPOSITORY-GOVERNANCE-400-008 ](#omes-repository-governance-400-008-) | 400 | The Repository Governance OMES are unable to initialize a new instance in server {0}; error message is {1} |
-| [OMES-REPOSITORY-GOVERNANCE-400-022 ](#omes-repository-governance-400-022-) | 400 | The repository governance service {0} linked to repository governance request type {1} can not be started.  The {2} exception was returned with message {3} |
+| [OMES-REPOSITORY-GOVERNANCE-400-008](#omes-repository-governance-400-008) | 400 | The Repository Governance OMES are unable to initialize a new instance in server {0}; error message is {1} |
+| [OMES-REPOSITORY-GOVERNANCE-400-022](#omes-repository-governance-400-022) | 400 | The repository governance service {0} linked to repository governance request type {1} can not be started.  The {2} exception was returned with message {3} |
 | [OMES-REPOSITORY-GOVERNANCE-500-001](#omes-repository-governance-500-001) | 500 | Unexpected {0} exception in repository governance service {1} of type {2} detected by method {3}.  The error message was {4} |
 
 ----
@@ -49,7 +49,7 @@ This may be a configuration or, more likely a code error in the repository gover
 
 ----
 
-### OMES-REPOSITORY-GOVERNANCE-400-008 
+### OMES-REPOSITORY-GOVERNANCE-400-008
 
 > The Repository Governance OMES are unable to initialize a new instance in server {0}; error message is {1}
 
@@ -70,7 +70,7 @@ Review the error message and any other reported failures to determine the cause 
 
 ----
 
-### OMES-REPOSITORY-GOVERNANCE-400-022 
+### OMES-REPOSITORY-GOVERNANCE-400-022
 
 > The repository governance service {0} linked to repository governance request type {1} can not be started.  The {2} exception was returned with message {3}
 

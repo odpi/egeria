@@ -698,7 +698,12 @@ Content-Type: application/json
 
 ###
 
-@governanceEngineName=AssetSurvey
+# A governance action type is registered under "<governanceEngineName>::<requestType>" - the engine that runs
+# it, two colons, then the request type.  "FileSurvey::survey-folder", not "survey-folder", and not a single
+# colon.  Anything else is answered with OMAG-GENERIC-HANDLERS-400-013, "the name is not recognized", which
+# does not say what it wanted instead.  Use getGovernanceActionTypes above to list the names a server has.
+
+@governanceEngineName=FileSurvey
 
 ###
 # @name initiateEngineAction
@@ -763,7 +768,7 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "AssetSurvey:survey-folder",
+  "governanceActionTypeQualifiedName": "FileSurvey::survey-folder",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
@@ -781,7 +786,7 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "AssetSurvey:survey-kafka-server",
+  "governanceActionTypeQualifiedName": "ApacheKafkaSurvey::survey-kafka-server",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
@@ -799,7 +804,7 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "AssetSurvey:survey-postgres-server",
+  "governanceActionTypeQualifiedName": "PostgreSQLSurvey::survey-postgres-server",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
@@ -817,7 +822,7 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "AssetSurvey:survey-postgres-database",
+  "governanceActionTypeQualifiedName": "PostgreSQLSurvey::survey-postgres-database",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
@@ -830,7 +835,7 @@ Content-Type: application/json
 # Full request body for initiateGovernanceActionType
 #{
 #    "class" : "InitiateGovernanceActionTypeRequestBody",
-#    "governanceActionTypeQualifiedName": "AssetSurvey:survey-folder",
+#    "governanceActionTypeQualifiedName": "FileSurvey::survey-folder",
 #    "requestParameters": {
 #        "parameterName1" : "parameterValue1",
 #        "parameterName2" : "parameterValue2"

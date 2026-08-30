@@ -5,7 +5,7 @@
 
 plugins {
     id 'application'
-    id "com.github.johnrengelman.shadow"
+    id "com.gradleup.shadow"
 }
 
 dependencies {
@@ -32,8 +32,11 @@ test {
     scanForTestClasses = false
 }
 
+application {
+    mainClass = 'org.odpi.openmetadata.archiveutilities.bigglossaries.BigGlossariesArchiveWriter'
+}
+
 shadowJar {
-    mainClassName = 'org.odpi.openmetadata.archiveutilities.bigglossaries.BigGlossariesArchiveWriter'
     archiveClassifier = 'jar-with-dependencies'
 }
 

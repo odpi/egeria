@@ -11,9 +11,15 @@ description = 'Egeria BOM (Bill of materials). Egeria provides the standards, fr
 
 apply plugin: 'java-platform'
 
+// Required so that this platform can import another platform (the Spring Boot BOM, below).  It also
+// switches off the plugin's check that no plain dependencies are declared here - so take care that the
+// dependencies block below contains only constraints and platform imports.
+javaPlatform {
+    allowDependencies()
+}
+
 // Assign variables for any constraints
 ext {
-    classmateVersion = '1.5.1'
     collections4Version = '4.4'
     commonscodecVersion = '1.22.0'
 
@@ -24,13 +30,13 @@ ext {
     findbugsVersion = '3.0.2'
     hamcrestVersion = '3.0'
     hibernatevalidatorVersion = '8.0.5.Final'
-    jacksonVersion = '2.15.0'
     jacksonDatabindVersion = '2.22.1'
     jakartavalidationVersion = '3.1.0'
     jaxbVersion = '2.3.1'
     jsonldVersion = '0.13.6'
     junitVersion = '4.13.2'
-    junitjupiterVersion = '5.11.3'
+    opentest4jVersion = '1.3.0'
+    // JUnit Platform ships on its own version line - 1.x tracks jupiter 5.x
     jwtVersion = '10.9.1'
     jwtApiVersion = '0.13.0'
     jwtImplVersion = '0.11.5'
@@ -41,51 +47,47 @@ ext {
     logbackVersion = '1.6.2'
     lettuceVersion = '7.6.0.RELEASE'
     openlineageVersion = '1.52.0'
-    //      TODO: Held as data engine breaks
-    mockitoVersion = '4.11.0'
-    mssqlVersion = '12.8.1.jre11'
-    oracleJdbcVersion = '23.5.0.24.07'
     plexusVersion = '4.0.2'
     postgresVersion = '42.7.13' // already there
-    hikariVersion = '5.1.0'
     nettyVersion = '4.2.17.Final'
     prometheusVersion = '1.17.0'
     jakartaServletVersion = '6.1.0'
-    slf4jVersion = '2.0.6'
     snappyVersion = '1.1.10.7'
 
     // This must be kept in step with the version of the springboot plugin in settings.gradle
-    springbootVersion = '3.1.4'
+    springbootVersion = '3.5.16'
 
-    springdataVersion = '3.0.3'
-    springsecurityVersion = '6.1.4'
     testngVersion = '7.10.2'
     swaggerVersion = '2.2.52'
-    springwebVersion = '6.0.6'
-    tomcatVersion = '10.1.13'
     log4jVersion = '2.26.1'
 //    TODO: log4jVersion = '2.24.3' Monday - doesn't build'
     jacksonjdk8Version = '2.22.1'
 //    TODO: jacksonjdk8Version = '2.18.2'monday - failed at runtime
-    springdocStarterVersion = '2.2.0'
+    springdocStarterVersion = '2.8.17'
     snakeYamlVersion = '2.5'
 }
 
 dependencies {
+    /*
+     * Import the Spring Boot BOM rather than hand-picking versions for Spring, Tomcat and everything else
+     * Boot manages.  Before this, Egeria pinned each Spring artifact separately and the pins had drifted
+     * out of step with each other - Boot 3.1.4 alongside Spring Framework 6.0.6 and Spring Data 3.0.3,
+     * which belong to different Boot releases.  With the BOM imported, one springbootVersion decides the
+     * whole set and they cannot disagree again.
+     *
+     * Egeria's own constraints below still win where they name a HIGHER version than Boot does - Gradle
+     * resolves version conflicts by taking the highest - so the deliberate forward pins (for example the
+     * ones held ahead of Boot to pick up CVE fixes) are unaffected by this import.
+     */
+    api(platform("org.springframework.boot:spring-boot-dependencies:${springbootVersion}"))
+
     constraints {
         api("ch.qos.logback:logback-classic:${logbackVersion}")
         api("ch.qos.logback:logback-core:${logbackVersion}")
         api("com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}")
-        api("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
-        api("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
-        api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}")
-        api("com.fasterxml:classmate:${classmateVersion}")
         api("com.github.jsonld-java:jsonld-java:${jsonldVersion}")
         api("com.google.code.findbugs:jsr305:${findbugsVersion}")
         api("com.ibm.db2:jcc:${db2JdbcVersion}")
-        api("com.microsoft.sqlserver:mssql-jdbc:${mssqlVersion}")
-        api("com.oracle.database.jdbc:ojdbc11:${oracleJdbcVersion}")
-        api("com.zaxxer:HikariCP:${hikariVersion}")
         api("commons-codec:commons-codec:${commonscodecVersion}")
         api("commons-io:commons-io:${commonsioVersion}")
         api("com.nimbusds:nimbus-jose-jwt:${jwtVersion}")
@@ -97,45 +99,16 @@ dependencies {
         api("io.netty:netty-buffer:${nettyVersion}")
         api("io.netty:netty-transport:${nettyVersion}")
         api("io.netty:netty-resolver:${nettyVersion}")
-        api("io.swagger.core.v3:swagger-annotations:${swaggerVersion}")
         api("io.openlineage:openlineage-java:${openlineageVersion}")
         api("jakarta.validation:jakarta.validation-api:${jakartavalidationVersion}")
         api("javax.xml.bind:jaxb-api:${jaxbVersion}")
         api("org.apache.commons:commons-collections4:${collections4Version}")
         api("org.apache.commons:commons-lang3:${lang3Version}")
         api("org.apache.kafka:kafka-clients:${kafkaVersion}")
-        api("org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}")
         //TODO May need to exclude tomcat-annotations-api
         api("org.codehaus.plexus:plexus-utils:${plexusVersion}")
         api("org.duckdb:duckdb_jdbc:${duckdbJdbcVersion}")
         api("org.postgresql:postgresql:${postgresVersion}")
-        api("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
-        api("org.slf4j:slf4j-api:${slf4jVersion}")
-        api("org.springframework.boot:spring-boot-autoconfigure:${springbootVersion}")
-        api("org.springframework.boot:spring-boot:${springbootVersion}")
-        api("org.springframework.boot:spring-boot-starter-web:${springbootVersion}")
-        api("org.springframework.boot:spring-boot-starter-validation:${springbootVersion}")
-        api("org.springframework.data:spring-data-commons:${springdataVersion}")
-        api("org.springframework.boot:spring-boot-test:${springbootVersion}")
-        api("org.springframework.boot:spring-boot-starter-test:${springbootVersion}")
-        api("org.springframework.boot:spring-boot-starter-security:${springbootVersion}")
-        api("org.springframework.boot:spring-boot-starter-data-redis:${springbootVersion}")
-        api("org.springframework.boot:spring-boot-starter-actuator:${springbootVersion}")
-        api("org.springframework.boot:spring-boot-starter-oauth2-resource-server:${springbootVersion}")
-        api("org.springframework.security:spring-security-config:${springsecurityVersion}")
-        api("org.springframework.security:spring-security-core:${springsecurityVersion}")
-        api("org.springframework.security:spring-security-ldap:${springsecurityVersion}")
-        api("org.springframework.security:spring-security-web:${springsecurityVersion}")
-        api("org.springframework.security:spring-security-oauth2-jose:${springsecurityVersion}")
-        api("org.springframework:spring-aop:${springwebVersion}")
-        api("org.springframework:spring-beans:${springwebVersion}")
-        api("org.springframework:spring-context:${springwebVersion}")
-        api("org.springframework:spring-expression:${springwebVersion}")
-        api("org.springframework:spring-test:${springwebVersion}")
-        api("org.springframework:spring-web:${springwebVersion}")
-        api("org.springframework:spring-webmvc:${springwebVersion}")
-        api("org.springframework:spring-tx:${springwebVersion}")
-        api("org.springframework:spring-core:${springwebVersion}")
         api("jakarta.servlet:jakarta.servlet-api:${jakartaServletVersion}")
         api("org.hibernate:hibernate-validator:${hibernatevalidatorVersion}")
         api("org.apache.logging.log4j:log4j-api:${log4jVersion}")
@@ -150,11 +123,7 @@ dependencies {
         api("io.jsonwebtoken:jjwt-impl:${jwtImplVersion}")
         api("io.jsonwebtoken:jjwt-jackson:${jwtJacksonVersion}")
         api("junit:junit:${junitVersion}")
-        api("org.junit.jupiter:junit-jupiter:${junitjupiterVersion}")
-        api("org.junit.jupiter:junit-jupiter-api:${junitjupiterVersion}")
-        api("org.junit.jupiter:junit-jupiter-engine:${junitjupiterVersion}")
-        api("org.mockito:mockito-core:${mockitoVersion}")
-        api("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
+        api("org.opentest4j:opentest4j:${opentest4jVersion}")
         api("org.hamcrest:hamcrest:${hamcrestVersion}")
         api("org.yaml:snakeyaml:${snakeYamlVersion}")
 
@@ -238,10 +207,18 @@ publishing {
 
             }
             // Override the project name & description for the pom based on properties set in the child working-build.gradle (hard to default & required for maven central)
+            //
+            // Both values are read here, at configuration time.  withXml is applied while the task runs,
+            // and reaching for `project` then is unsupported with the configuration cache - it fails the
+            // task and leaves a zero-length pom, which is easy to miss because this task is not part of
+            // `build`.
+            def pomDescription = project.description
+            def pomName = project.name
+
             pom.withXml {
                 // NOTE - this subproject is similar to the root project in maven, in that it defines the BOM
-                asNode().appendNode('description', "${project.description}")
-                asNode().appendNode('name', "${project.name}")
+                asNode().appendNode('description', pomDescription)
+                asNode().appendNode('name', pomName)
             }
         }
     }

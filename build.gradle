@@ -72,6 +72,14 @@ subprojects {
         apply plugin: 'dev.jacomet.logging-capabilities'
         apply plugin: 'org.gradlex.java-ecosystem-capabilities'
 
+        // Checking of javaheaders for license & copyright.  This has to stay inside the guard above:
+        // it configures the extension added by the checkstyle plugin, and outside the guard it would be
+        // resolved from the root project instead - which Gradle 9 deprecates and Gradle 10 rejects.
+        checkstyle {
+            toolVersion = '10.7.0'
+            showViolations = true
+        }
+
         // Consistent dependencies, and exceptions
         dependencies {
             implementation platform(project(":bom"))
@@ -95,17 +103,39 @@ subprojects {
 
         // Maven publishing (to public repo) requires we included source and javadoc jars
         java {
+            // Compile, test and javadoc with a JDK 21 toolchain that Gradle locates itself, rather than
+            // whatever JDK happens to be on JAVA_HOME.  Without this, building with an older JDK fails
+            // deep in javac with "release version 21 not supported"; with it, Gradle either finds an
+            // installed 21 or reports that no matching toolchain is available.
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(21)
+            }
+
             withSourcesJar()
             withJavadocJar()
         }
 
+        // JavaExec tasks - the archive writers, report generators and the application plugin's own 'run'
+        // task - do not pick up the toolchain from the java extension the way JavaCompile, Test and
+        // Javadoc do, so they have to be pointed at it explicitly.  Without this they run on whatever
+        // JAVA_HOME provides and fail with UnsupportedClassVersionError on class files built for 21.
+        tasks.withType(JavaExec).configureEach {
+            javaLauncher = javaToolchains.launcherFor {
+                languageVersion = JavaLanguageVersion.of(21)
+            }
+        }
+
         // compile flags
         tasks.withType(JavaCompile) {
-            options.release = 17
+            options.release = 21
             options.encoding = 'UTF-8'
             options.incremental = true
             options.failOnError = true
             options.compilerArgs << "-Xlint:all" << "-Xmaxerrs" << "1000" << "-Xmaxwarns" << "1000"
+            // Retain method parameter names in the bytecode.  Spring needs them to bind REST request
+            // parameters; without this it falls back to LocalVariableTableParameterNameDiscoverer, which
+            // is deprecated for removal in Spring Framework 6.1.
+            options.compilerArgs << "-parameters"
         }
 
         tasks.withType(Javadoc).configureEach {
@@ -198,9 +228,25 @@ subprojects {
                             }
                         }
                         // Override the project name & description for the pom based on properties set in the child build.gradle (hard to default & required for maven central)
+                        //
+                        // Both values are captured during configuration rather than read inside withXml,
+                        // which is applied while the task runs - reaching for `project` then is
+                        // unsupported with the configuration cache and leaves a zero-length pom.  That is
+                        // easy to miss, because POM generation is not part of `build`.
+                        //
+                        // The description has to be taken in afterEvaluate: this block is configured from
+                        // the root project's subprojects {} closure, which runs before each module's own
+                        // build.gradle has set its description.
+                        def pomName = project.name
+                        def pomDescription = null
+
+                        project.afterEvaluate {
+                            pomDescription = project.description
+                        }
+
                         pom.withXml {
-                            asNode().appendNode('name', "${project.name}")
-                            asNode().appendNode('description', "${project.description}")
+                            asNode().appendNode('name', pomName)
+                            asNode().appendNode('description', pomDescription)
                         }
                     }
                 }
@@ -245,12 +291,6 @@ subprojects {
     task printAllDependencies(type: DependencyReportTask) {}
     task printSubDependencies(type: DependencyReportTask) {}
     task findDependency(type: DependencyInsightReportTask) {}
-
-    // Checking of javaheaders for license & copyright
-    checkstyle {
-        toolVersion = '10.7.0'
-        showViolations = true
-    }
 }
 
 
@@ -261,6 +301,11 @@ subprojects {
 // Whilst all modules have their own javadoc, we only build
 // an aggregate for the client and API modules plus the REST calls
 apply plugin: 'java'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 javadoc {
     include("**/api/*.java")
     include("**/client/*.java")
@@ -309,7 +354,10 @@ task codeCoverageReport(type: JacocoReport) {
     executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
     // Add all relevant sourcesets from the subprojects
     subprojects.each {
-        if (it.name != 'bom') {
+        // Only projects that actually apply the java plugin have a sourceSets container of their own.
+        // Asking the others for one used to fall through to their parent project, which Gradle 9
+        // deprecates and Gradle 10 rejects - and they have no source to report on in any case.
+        if (it.plugins.hasPlugin('java')) {
             sourceSets it.sourceSets.main
         }
     }
@@ -338,8 +386,55 @@ dependencyAnalysis {
                 severity('fail')
             }
         }
+
+        // Spring Boot starters are POM-only aggregators: they contribute no classes of their own, so
+        // dependency-analysis always reports them as unused.  They are exactly what the platform chassis
+        // is meant to declare - removing them would strip the runtime stack out of the server - so the
+        // advice is suppressed here rather than acted on.
+        project(':open-metadata-implementation:platform-chassis:platform-chassis-spring') {
+            onUnusedDependencies {
+                exclude('org.springframework.boot:spring-boot-starter-actuator',
+                        'org.springframework.boot:spring-boot-starter-tomcat',
+                        'org.springframework.boot:spring-boot-starter-validation',
+                        'org.springframework.boot:spring-boot-starter-web',
+                        'org.springframework.boot:spring-boot-starter-test')
+            }
+        }
     }
 }
 
 // Always run dependency check for every regular build
 build.dependsOn("buildHealth")
+
+/*
+ * `build` is not everything CI runs.  The merge and release workflows also generate the publication POMs,
+ * assemble the distribution and build the aggregate javadoc site, and none of those is reachable from
+ * `build` - so a green local build has repeatedly hidden breakage in them.  Three times during the 6.2
+ * toolchain work: the packaged jar's launcher, POM generation producing zero-length files, and the
+ * aggregate javadoc.
+ *
+ * `./gradlew verifyRelease` runs the parts that can share one invocation, and names the one that cannot.
+ */
+tasks.register('verifyRelease') {
+    group = 'verification'
+    description = 'Runs what CI runs beyond `build`: the publication POMs and the platform distribution.'
+
+    dependsOn 'build'
+    // Container projects - the ones that only group other modules - have no build file and so no
+    // publication to generate a POM for.
+    dependsOn subprojects.findAll { it.buildFile.exists() }
+                         .collect { "${it.path}:generatePomFileForMavenmodulePublication" }
+    dependsOn ':open-metadata-distribution:omag-server-platform:assemble'
+
+    doLast {
+        logger.lifecycle('')
+        logger.lifecycle('verifyRelease: build, every publication POM, and the platform distribution are green.')
+        logger.lifecycle('')
+        logger.lifecycle('One thing cannot share this invocation - the aggregate-javadoc plugin is not')
+        logger.lifecycle('compatible with the configuration cache (see the note in settings.gradle).')
+        logger.lifecycle('Run it separately before a release:')
+        logger.lifecycle('')
+        logger.lifecycle('    ./gradlew aggregateJavadoc --no-configuration-cache')
+        logger.lifecycle('')
+    }
+}

@@ -73,6 +73,22 @@ property on the command line, shown against each suite below.
   ./gradlew :open-metadata-test:open-metadata-fvt:postgres-fvt:test -PrunPostgresFvtNoKafka
   ```
 
+* **[files-fvt](files-fvt)** - tests the **file connectors** and the **Files content pack** that drives them:
+  the folder and file survey services, the folder cataloguers, the file and folder governance actions, and the
+  catalog templates the cataloguer chooses between. Built the same way as postgres-fvt - it stands up a
+  metadata access store, an integration daemon, an engine host and a view server, and drives them through the
+  **Automated Curation API** rather than calling any connector directly. It brings its own directory tree, so
+  a survey of three files and a nested folder can be asserted against exactly, and a file catalogued as the
+  wrong type is a failure rather than a detail nobody looked at.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:files-fvt:test -PrunFilesFvt
+  ./gradlew :open-metadata-test:open-metadata-fvt:files-fvt:test -PrunFilesFvtNoKafka
+  ```
+
+  Its platform binds to an **ephemeral port** (`server.port=0`) rather than pinning one, so a run cannot
+  collide with a dev platform, with a sibling suite, or with another checkout running this same suite.
+
 * **[duplicate-fvt](duplicate-fvt)** - tests **duplicate management**: the repository handler combining
   confirmed duplicates on retrieval, the generic handler recording the duplicates it finds behind an
   ambiguous unique name, and the **Mendel Automated Duplicate Manager** that validates, retires and
@@ -92,6 +108,16 @@ property on the command line, shown against each suite below.
 
   ```
   ./gradlew :open-metadata-test:open-metadata-fvt:subscription-fvt:test -PrunSubscriptionFvt
+  ```
+
+* **[auth-fvt](auth-fvt)** - exercises the platform's own **authentication**: logging on, the bearer token
+  that results, changing a password, and managing user accounts. It is the only suite that runs with
+  `user-authn` wired in and the real Spring Security filter chain active - every other suite here, and the
+  BVT, exclude it and run permit-all, which left the logon path with no automated coverage at all. It needs
+  no database and loads no archives, so it runs in well under a minute.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:auth-fvt:test -PrunAuthFvt
   ```
 
 

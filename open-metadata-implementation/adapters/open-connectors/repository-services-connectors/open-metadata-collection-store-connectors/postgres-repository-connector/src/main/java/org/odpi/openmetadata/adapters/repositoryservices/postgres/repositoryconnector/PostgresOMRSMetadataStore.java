@@ -434,6 +434,29 @@ class PostgresOMRSMetadataStore
 
 
     /**
+     * Bring the stored supertype chains of a type up to date after a patch has moved it in the type hierarchy.
+     * See DatabaseStore.repairSuperTypeChains() for what is rewritten and why.
+     *
+     * @param typeName the type whose supertypes have changed
+     * @param superTypeChain the type's new supertypes, outermost last
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    void repairSuperTypeChains(String       typeName,
+                               List<String> superTypeChain) throws RepositoryErrorException
+    {
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            int repairCount = databaseStore.repairSuperTypeChains(typeName, superTypeChain);
+
+            if (repairCount > 0)
+            {
+                databaseStore.commit();
+            }
+        }
+    }
+
+
+    /**
      * Return a count of the entities that match the supplied criteria.  This has the same search semantics as
      * findEntities(), but issues an efficient database COUNT query rather than fetching and mapping every
      * matching row.

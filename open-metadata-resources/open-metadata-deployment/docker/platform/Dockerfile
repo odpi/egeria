@@ -10,12 +10,12 @@
 # See readme in source tree or on docker hub for more info
 
 # Based on RedHat UBI image.
-# https://catalog.redhat.com/software/containers/ubi9/openjdk-17-runtime/61ee7d45384a3eb331996bee
+# https://catalog.redhat.com/software/containers/ubi9/openjdk-21-runtime
 
 # This can be switched to the runtime image for a smaller footprint image
 # However the JDK debugging tools will be lost, which are helpful in monitoring & undersanding performance/resource issues
-#FROM registry.access.redhat.com/ubi9/openjdk-17-runtime
-FROM registry.access.redhat.com/ubi9/openjdk-17
+#FROM registry.access.redhat.com/ubi9/openjdk-21-runtime
+FROM registry.access.redhat.com/ubi9/openjdk-21
 
 ARG version=6.2-SNAPSHOT
 ARG VCS_REF=unknown
@@ -29,7 +29,7 @@ ENV version=${version}
 # Labels from https://github.com/opencontainers/image-spec/blob/master/annotations.md#pre-defined-annotation-keys (with additions prefixed ext)
 LABEL org.opencontainers.image.vendor="ODPi" \
       org.opencontainers.image.title="Egeria OMAG Server Platform" \
-      org.opencontainers.image.description="Common image for Egeria's OMAG Server Platform runtime. Based on RedHat UBI 8 openjdk-17 image." \
+      org.opencontainers.image.description="Common image for Egeria's OMAG Server Platform runtime. Based on RedHat UBI 9 openjdk-21 image." \
       org.opencontainers.image.url="https://egeria-project.org/" \
       org.opencontainers.image.source="$VCS_ORIGIN" \
       org.opencontainers.image.authors="Egeria project community" \

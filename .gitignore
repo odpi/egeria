@@ -88,6 +88,9 @@ openmetadata_cts_summary.json
 profile-details/*.json
 test-case-details/*.json
 
+# Test results
+open-metadata-test/open-metadata-fvt/files-fvt/surveys/**
+
 # Dynamic data used by egeria
 data/**
 

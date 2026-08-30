@@ -51,15 +51,21 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.junit.jupiter:junit-jupiter-params'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Open Metadata Build Verification Tests (BVT)'
 
+// The property is read here, at configuration time, rather than inside the onlyIf closure.  onlyIf is
+// evaluated during execution, and reaching for `project` then is unsupported with the configuration
+// cache.
+def skipThisSuite = project.hasProperty('skipBvt')
+
 test {
     useJUnitPlatform()
-    onlyIf { !project.hasProperty('skipBvt') }
+    onlyIf { ! skipThisSuite }
 
     // This suite starts an in-process platform and exercises the repository through it - keep it
     // to a single JVM fork and give it enough headroom to complete comfortably inside the 5 minute budget.

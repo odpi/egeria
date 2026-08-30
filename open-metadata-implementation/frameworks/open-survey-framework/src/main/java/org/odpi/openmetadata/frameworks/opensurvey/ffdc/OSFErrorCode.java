@@ -86,6 +86,17 @@ public enum OSFErrorCode implements ExceptionMessageSet
                             "https://egeria-project.org/frameworks/osf/overview/"),
 
     /**
+     * OPEN-SURVEY-400-008 - The {0} Survey Acton Service has been supplied with asset {1} which has no connection, so there is no way to reach the resource it describes
+     */
+    NO_ASSET_CONNECTOR(400, "OPEN-SURVEY-400-008",
+                       "The {0} Survey Acton Service has been supplied with asset {1} which has no connection, so there is no way to reach the resource it describes",
+                       "The survey cannot continue since it has no means of opening the resource to survey it.",
+                       "Check that the asset has a Connection attached to it, and that the connection is visible to the userId the survey is running under.  " +
+                               "An asset catalogued without a connection - or one whose connection was not copied when the asset was created from a template - " +
+                               "describes a resource that nothing can open.  Attach a connection to the asset and re-run this survey.",
+                       "https://egeria-project.org/frameworks/osf/overview/"),
+
+    /**
      * OPEN-SURVEY-500-001 - Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}
      */
     UNEXPECTED_EXCEPTION(500, "OPEN-SURVEY-500-001",

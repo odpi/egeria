@@ -93,6 +93,118 @@ public class DatabaseStore implements AutoCloseable
 
 
     /**
+     * Rewrite the stored supertype chains of a type whose place in the type hierarchy has changed.
+     * <br><br>
+     * Every instance row carries its type's supertype chain, denormalised into type_name as
+     * ":Type:Super:Super:" when the row is written (see RepositoryMapper.setUpTypeNameInRow()), and a search
+     * for a supertype matches against it with "type_name like '%:Super:%'" (see QueryBuilder.getTypeClause()).
+     * That makes a search for a supertype fast, but it also freezes the hierarchy as it stood when each row was
+     * written.  When a TypeDefPatch gives a type a new supertype - which is how a type that was defined
+     * standalone is later brought under a more general one, so that existing instances answer searches for the
+     * new supertype - the rows already written keep the old chain and stay invisible to exactly the searches the
+     * patch was meant to make them visible to.  This rewrites them.
+     * <br><br>
+     * The rewrite is driven off the distinct chains actually stored rather than off the type system, because the
+     * patched type may appear in the chain of any number of its own subtypes as well as in its own rows, and
+     * everything after it in a chain is by definition its supertypes - so replacing the remainder of the chain
+     * after the patched type's own name is correct wherever the type appears.  Rows whose chain already matches
+     * are left alone, which is what makes this cheap to run on every server start: on a repository that is
+     * already correct it issues one small query per table and no updates at all.
+     * <br><br>
+     * Every version of a row is rewritten, not just the current one, so that historical (asOfTime) queries see
+     * the same hierarchy as queries against the present.
+     *
+     * @param typeName the type whose supertypes have changed
+     * @param superTypeChain the type's new supertypes, outermost last, each followed by a colon - empty if the
+     *                       type no longer has any
+     * @return number of distinct chains rewritten, across all the instance tables
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    public int repairSuperTypeChains(String       typeName,
+                                     List<String> superTypeChain) throws RepositoryErrorException
+    {
+        final String methodName = "repairSuperTypeChains";
+
+        String marker = ":" + typeName + ":";
+
+        StringBuilder newSuffixBuilder = new StringBuilder();
+
+        for (String superTypeName : superTypeChain)
+        {
+            newSuffixBuilder.append(superTypeName).append(":");
+        }
+
+        String newSuffix    = newSuffixBuilder.toString();
+        int    repairCount  = 0;
+
+        for (RepositoryTable repositoryTable : new RepositoryTable[]{RepositoryTable.ENTITY,
+                                                                     RepositoryTable.RELATIONSHIP,
+                                                                     RepositoryTable.CLASSIFICATION})
+        {
+            String tableName      = repositoryTable.getTableName();
+            String typeNameColumn = RepositoryColumn.TYPE_NAME.getColumnName();
+
+            String selectChains = "select distinct " + typeNameColumn + " from " + tableName +
+                    " where " + typeNameColumn + " like '%" + marker + "%';";
+
+            /*
+             * Only the one column is selected, so only the one column may be described - getMatchingRows()
+             * reads every column the map names out of the result set, and the table's full map would have it
+             * looking for columns this query never asked for.
+             */
+            Map<String, Integer> typeNameColumnMap = new HashMap<>();
+
+            typeNameColumnMap.put(typeNameColumn, RepositoryColumn.TYPE_NAME.getColumnType().getJdbcType());
+
+            try
+            {
+                List<Map<String, JDBCDataValue>> rows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                              selectChains,
+                                                                                              typeNameColumnMap);
+
+                if (rows == null)
+                {
+                    continue;
+                }
+
+                for (Map<String, JDBCDataValue> row : rows)
+                {
+                    String storedChain = baseMapper.getStringPropertyFromColumn(typeNameColumn, row, true);
+
+                    if (storedChain == null)
+                    {
+                        continue;
+                    }
+
+                    String requiredChain = storedChain.substring(0, storedChain.indexOf(marker) + marker.length()) + newSuffix;
+
+                    if (! requiredChain.equals(storedChain))
+                    {
+                        jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                              "update " + tableName +
+                                                                      " set " + typeNameColumn + " = '" + requiredChain + "'" +
+                                                                      " where " + typeNameColumn + " = '" + storedChain + "';");
+                        repairCount++;
+                    }
+                }
+            }
+            catch (PropertyServerException sqlException)
+            {
+                throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                               sqlException.getClass().getName(),
+                                                                                                               methodName,
+                                                                                                               sqlException.getMessage()),
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   sqlException);
+            }
+        }
+
+        return repairCount;
+    }
+
+
+    /**
      * Extract the repository control table from the database schema.  This is used to validate that the
      * server is using the correct repository.
      *

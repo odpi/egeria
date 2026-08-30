@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database;
 
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc.PostgresErrorCode;
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLColumn;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.ColumnType;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryColumn;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryTable;
@@ -1742,48 +1743,137 @@ public class QueryBuilder
 
 
     /**
-     * Return the ORDER BY fragment.  Notice that ordering by property is currently ignored
+     * Return the ORDER BY fragment.
+     * <br><br>
+     * Whatever the caller asked to sort by, the fragment always ends with the principle table's primary key
+     * (see getUniqueOrderClause()).  Sorting by the requested column alone is not enough once the query is
+     * paged: none of the columns a caller can sequence on - creation time, update time, a property value -
+     * is unique, and each page is a separate execution of "order by ... limit ... offset ...", not a
+     * server-side cursor.  Rows that tie on the sort column may therefore be ordered differently by each
+     * execution, so an element can move between offset windows from one page fetch to the next and be
+     * returned twice, or skipped entirely, while the traversal still terminates normally.  Appending the
+     * primary key makes the ordering a deterministic total order, which is what makes the offsets line up.
+     * <br><br>
+     * This matters most for the broad searches - a whole base type such as Referenceable - where thousands
+     * of elements bulk-loaded from an archive share the same creation timestamp, and for a
+     * sequencingProperty that is null for an entire type (every element ties at the null position).
      *
+     * @param principleTableName main table that the ordering will occur on
      * @return sequencing
      */
     private String getSequencingOrder(String principleTableName)
     {
-        if (sequencingOrder != null)
+        if (sequencingOrder == null)
         {
-            switch (sequencingOrder)
+            return " ";
+        }
+
+        String sortExpression = null;
+        String sortDirection  = "asc";
+
+        switch (sequencingOrder)
+        {
+            case ANY, CREATION_DATE_RECENT ->
             {
-                case ANY, CREATION_DATE_RECENT ->
-                {
-                    return " order by " + RepositoryColumn.CREATE_TIME.getColumnName(principleTableName) + " desc ";
-                }
-                case CREATION_DATE_OLDEST ->
-                {
-                    return " order by " + RepositoryColumn.CREATE_TIME.getColumnName(principleTableName) + " asc ";
-                }
-                case LAST_UPDATE_RECENT ->
-                {
-                    return " order by " + RepositoryColumn.UPDATE_TIME.getColumnName(principleTableName) + " desc ";
-                }
-                case LAST_UPDATE_OLDEST ->
-                {
-                    return " order by " + RepositoryColumn.UPDATE_TIME.getColumnName(principleTableName) + " asc ";
-                }
-                case GUID ->
-                {
-                    return " order by " + RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) + " asc ";
-                }
-                case PROPERTY_DESCENDING ->
-                {
-                    return " order by " + this.getSequencingPropertyOrderClause(principleTableName) + " desc ";
-                }
-                case PROPERTY_ASCENDING ->
-                {
-                    return " order by " + this.getSequencingPropertyOrderClause(principleTableName) + " asc ";
-                }
+                sortExpression = RepositoryColumn.CREATE_TIME.getColumnName(principleTableName);
+                sortDirection  = "desc";
+            }
+            case CREATION_DATE_OLDEST ->
+            {
+                sortExpression = RepositoryColumn.CREATE_TIME.getColumnName(principleTableName);
+            }
+            case LAST_UPDATE_RECENT ->
+            {
+                sortExpression = RepositoryColumn.UPDATE_TIME.getColumnName(principleTableName);
+                sortDirection  = "desc";
+            }
+            case LAST_UPDATE_OLDEST ->
+            {
+                sortExpression = RepositoryColumn.UPDATE_TIME.getColumnName(principleTableName);
+            }
+            case GUID ->
+            {
+                /*
+                 * The primary key begins with instance_guid, so the tie-breaker below already is exactly
+                 * the ordering being asked for - and is a total order on its own.
+                 */
+            }
+            case PROPERTY_DESCENDING ->
+            {
+                sortExpression = this.getSequencingPropertyOrderClause(principleTableName);
+                sortDirection  = "desc";
+            }
+            case PROPERTY_ASCENDING ->
+            {
+                sortExpression = this.getSequencingPropertyOrderClause(principleTableName);
             }
         }
 
-        return " ";
+        StringBuilder orderByClause = new StringBuilder(" order by ");
+
+        if (sortExpression != null)
+        {
+            orderByClause.append(sortExpression).append(" ").append(sortDirection).append(", ");
+        }
+
+        orderByClause.append(this.getUniqueOrderClause(principleTableName)).append(" ");
+
+        return orderByClause.toString();
+    }
+
+
+    /**
+     * Return the SQL fragment that orders by the principle table's primary key, which is the value that
+     * turns any of the orderings above into a deterministic total order.  The primary key is used rather
+     * than instance_guid alone because it is the definition of a unique row for the table being paged:
+     * (instance_guid, version) for the entity and relationship tables, and (instance_guid,
+     * classification_name, version) for the classification table, where one instance_guid legitimately has
+     * a row per classification.
+     * <br><br>
+     * The direction is always ascending.  Which way the tie-break runs makes no difference to whether the
+     * paging is correct - only that every execution of the query resolves the tie the same way.
+     *
+     * @param principleTableName main table that the ordering will occur on
+     * @return SQL fragment listing the sort columns - does not include "order by"
+     */
+    private String getUniqueOrderClause(String principleTableName)
+    {
+        StringBuilder uniqueOrderClause = new StringBuilder();
+
+        for (RepositoryTable repositoryTable : RepositoryTable.values())
+        {
+            if (repositoryTable.getTableName().equals(principleTableName))
+            {
+                boolean firstColumn = true;
+
+                for (PostgreSQLColumn primaryKeyColumn : repositoryTable.getPrimaryKeys())
+                {
+                    if (firstColumn)
+                    {
+                        firstColumn = false;
+                    }
+                    else
+                    {
+                        uniqueOrderClause.append(", ");
+                    }
+
+                    uniqueOrderClause.append(principleTableName).append(".").append(primaryKeyColumn.getColumnName()).append(" asc");
+                }
+
+                break;
+            }
+        }
+
+        if (uniqueOrderClause.isEmpty())
+        {
+            /*
+             * An unrecognized table - every table this class queries has instance_guid, so it is the safest
+             * value to fall back to, and an incomplete tie-break is still better than none.
+             */
+            uniqueOrderClause.append(RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName)).append(" asc");
+        }
+
+        return uniqueOrderClause.toString();
     }
 
 
@@ -2115,55 +2205,6 @@ public class QueryBuilder
     }
 
 
-    /**
-     * Join the principle table with its associated attributes table.
-     *
-     * @param principleTable main table
-     * @param propertiesTableName name of attributes table
-     * @return the join part of the SQL query
-     */
-    public String getDistinctPropertyJoinQuery(RepositoryTable principleTable,
-                                               String          propertiesTableName)
-    {
-        StringBuilder clause = new StringBuilder("select distinct ");
-
-        boolean firstColumn = true;
-
-        for (String columnName : principleTable.getQualifiedColumnNames())
-        {
-            if (firstColumn)
-            {
-                firstColumn = false;
-            }
-            else
-            {
-                clause.append(", ");
-            }
-
-            clause.append(columnName);
-        }
-
-        clause.append(" from ");
-        clause.append(principleTable.getTableName());
-        clause.append(" left outer join ");
-        clause.append(propertiesTableName);
-        clause.append(" on ");
-        clause.append(RepositoryColumn.INSTANCE_GUID.getColumnName(principleTable.getTableName()));
-        clause.append(" = ");
-        clause.append(RepositoryColumn.INSTANCE_GUID.getColumnName(propertiesTableName));
-        clause.append(" and ");
-        clause.append(RepositoryColumn.VERSION.getColumnName(principleTable.getTableName()));
-        clause.append(" = ");
-        clause.append(RepositoryColumn.VERSION.getColumnName(propertiesTableName));
-
-        if (log.isDebugEnabled())
-        {
-            log.debug(this.toString());
-            log.debug(clause.toString());
-        }
-
-        return clause.toString();
-    }
 
 
     /**

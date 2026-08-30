@@ -9,16 +9,20 @@ pluginManagement {
         // releases
         mavenCentral()
         // snapshots
-        maven { url "https://central.sonatype.com/repository/maven-snapshots/" }
+        maven { url = uri("https://central.sonatype.com/repository/maven-snapshots/") }
         // Once you start using pluginManagement, you should explicitly add this, unless
         // you NEVER want to use this repository
         gradlePluginPortal()
     }
     plugins {
-        // problem when upgraded to version "9.0.0"
+        // Held at 6.6.3 deliberately.  8.x and later refuse to apply to a project that also applies the
+        // java plugin ("The aggregate-javadoc plugin should not be used on a java project"), which the
+        // root project does for its own javadoc include list; 9.x drops the aggregateJavadoc task
+        // altogether.  6.6.3 is not compatible with the configuration cache, so the merge workflow runs
+        // aggregateJavadoc with --no-configuration-cache - see .github/workflows/merge-v6.yml.
         id "io.freefair.aggregate-javadoc" version "6.6.3"
         // Checks for unnecessary dependencies
-        id("com.autonomousapps.dependency-analysis") version "1.32.0"
+        id("com.autonomousapps.dependency-analysis") version "3.19.1"
         // helps resolve log implementation clashes
         id 'dev.jacomet.logging-capabilities' version "0.11.1"
         // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
@@ -26,8 +30,8 @@ pluginManagement {
         // Docs don't recommend specifying a version for checkstyle
         id 'checkstyle'
         // This plugin needs to be kept in step with bom
-        id 'org.springframework.boot' version '3.1.4'
-        id 'com.github.johnrengelman.shadow' version '8.1.1'
+        id 'org.springframework.boot' version '3.5.16'
+        id 'com.gradleup.shadow' version '9.6.1'
         id 'com.github.psxpaul.execfork' version '0.2.2'
     }
 }
@@ -74,7 +78,6 @@ include(':open-metadata-implementation:adapters:open-connectors:governance-actio
 include(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:lovelace-insights')
 include(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
-include(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector')
 include(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
 include(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')
 include(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
@@ -271,8 +274,10 @@ include(':open-metadata-test:open-metadata-fvt:client-fvt')
 include(':open-metadata-test:open-metadata-fvt:templates-fvt')
 include(':open-metadata-test:open-metadata-fvt:cts-fvt')
 include(':open-metadata-test:open-metadata-fvt:postgres-fvt')
+include(':open-metadata-test:open-metadata-fvt:files-fvt')
 include(':open-metadata-test:open-metadata-fvt:duplicate-fvt')
 include(':open-metadata-test:open-metadata-fvt:subscription-fvt')
+include(':open-metadata-test:open-metadata-fvt:auth-fvt')
 
 
 // These are not required if the project name == the directory name but are included for clarity - for example

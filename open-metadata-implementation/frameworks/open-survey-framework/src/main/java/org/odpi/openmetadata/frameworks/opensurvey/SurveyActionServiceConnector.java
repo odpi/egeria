@@ -182,6 +182,17 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
          */
         Connector connector = assetStore.getConnectorToAsset();
 
+        if (connector == null)
+        {
+            /*
+             * Checked before the cast below, which would otherwise succeed on a null and leave the null to
+             * surface as a NullPointerException the first time the survey used the connector - naming a
+             * connector class the caller has never heard of, a long way from the asset that is actually
+             * the problem.
+             */
+            throwNoAssetConnector(assetStore, methodName);
+        }
+
         if (expectedConnectorClass.isInstance(connector))
         {
             connector.start();
@@ -202,6 +213,42 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
                                                                                                       connector.getClass().getName(),
                                                                                                       expectedConnectorClass.getName(),
                                                                                                       assetStore.getAssetGUID()),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+
+    /**
+     * Report that the asset being surveyed has no connection, and stop the survey.
+     * <br><br>
+     * getConnectorToAsset() returns null - by contract - when the asset has no connection at all, rather than
+     * failing.  A survey has no way to continue from there: the connector is how it reaches the resource the
+     * asset describes.  Reporting it here, naming the asset, keeps the failure at the point where the cause is
+     * still visible.  An asset can arrive in this state by being catalogued without a connection, or by being
+     * created from a template whose connection was not copied with it.
+     *
+     * @param assetStore the asset store that could not supply a connector
+     * @param methodName calling method
+     * @throws ConnectorCheckedException always - this method does not return
+     * @throws InvalidParameterException invalid property
+     * @throws PropertyServerException problem with repositories
+     * @throws UserNotAuthorizedException security problem
+     */
+    protected void throwNoAssetConnector(SurveyAssetStore assetStore,
+                                         String           methodName) throws ConnectorCheckedException,
+                                                                             InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        surveyContext.recordCompletionStatus(SurveyActionGuard.SURVEY_INVALID.getCompletionStatus(),
+                                             Collections.singletonList(SurveyActionGuard.SURVEY_INVALID.getName()),
+                                             null,
+                                             null,
+                                             OSFAuditCode.NO_ASSET_CONNECTOR.getMessageDefinition(surveyActionServiceName,
+                                                                                                   assetStore.getAssetGUID()));
+
+        throw new ConnectorCheckedException(OSFErrorCode.NO_ASSET_CONNECTOR.getMessageDefinition(surveyActionServiceName,
+                                                                                                  assetStore.getAssetGUID()),
                                             this.getClass().getName(),
                                             methodName);
     }
@@ -290,6 +337,18 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
         {
             RelatedMetadataElementSummary rootSchemaType = assetElement.getSchemaType();
 
+            if (rootSchemaType == null)
+            {
+                /*
+                 * The asset has no schema type yet, which is the ordinary state of a data file that has been
+                 * catalogued but not yet surveyed - deriving the schema is what the caller is about to do.
+                 * Null is what this method returns for "there is not one", and every caller already handles
+                 * it by creating one; without this check the same situation arrives as a NullPointerException
+                 * on the next line instead, and fails the survey.
+                 */
+                return null;
+            }
+
             if (propertyHelper.isTypeOf(rootSchemaType.getRelatedElement().getElementHeader(), schemaTypeName))
             {
                 return surveyContext.getSchemaTypeClient(schemaTypeName).getSchemaTypeByGUID(rootSchemaType.getRelatedElement().getElementHeader().getGUID(), null);
@@ -367,18 +426,66 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * @param annotation       output annotation
      * @param annotationType   annotation type definition
      */
-    protected void setUpAnnotation(AnnotationProperties annotation,
-                                   AnnotationType       annotationType) throws UserNotAuthorizedException
+    public void setUpAnnotation(AnnotationProperties annotation,
+                                AnnotationType       annotationType) throws UserNotAuthorizedException
     {
-        String surveyReportGUID = surveyContext.getAnnotationStore().getSurveyReportGUID();
+        this.setUpAnnotation(annotation, annotationType.getName());
 
-        annotation.setQualifiedName(surveyReportGUID + "::" + annotationType.getName() + "::" + new Date());
-        annotation.setDisplayName(annotationType.getName() + " for survey report " + surveyReportGUID);
-        annotation.setAnnotationType(annotationType.getName());
         annotation.setAnalysisStep(annotationType.getAnalysisStep());
         annotation.setSummary(annotationType.getSummary());
         annotation.setExplanation(annotationType.getExplanation());
         annotation.setExpression(annotationType.getExpression());
+    }
+
+
+    /**
+     * Set up the identity of an annotation whose type is not one of the AnnotationType constants.
+     * <br><br>
+     * This is the part of an annotation that a survey service cannot skip: an annotation with no qualified
+     * name is refused by the annotation store with OPEN-METADATA-400-004, and the survey then fails as a
+     * whole - after it has opened the resource and done the work.  Setting it in one place is what keeps that
+     * from depending on each survey service remembering to.
+     *
+     * @param annotation annotation to fill out
+     * @param annotationTypeName name of the type of annotation
+     * @throws UserNotAuthorizedException the service is not authorized to access the survey report
+     */
+    public void setUpAnnotation(AnnotationProperties annotation,
+                                String               annotationTypeName) throws UserNotAuthorizedException
+    {
+        this.setUpAnnotation(annotation, annotationTypeName, null);
+    }
+
+
+    /**
+     * Set up the identity of one of several annotations of the same type in a single survey.
+     * <br><br>
+     * qualifiedName is a unique property, so two annotations cannot share one.  The report GUID and the
+     * annotation type are not enough to tell apart several annotations of the same type in one report - and
+     * the timestamp that follows them does not settle it either, since it is only accurate to the second and
+     * a survey writes its annotations far faster than that.  A survey that profiles each column of a file
+     * produces exactly that shape, and without something to tell the annotations apart the second one is
+     * refused with OMAG-COMMON-409-001 and the survey fails.
+     * <br><br>
+     * subjectName is what the annotation is about - the column being profiled, say.  It belongs in the name
+     * on its own merits: "InspectDataValues" repeated once per column says nothing about which column, where
+     * "InspectDataValues::customer_id" does.
+     *
+     * @param annotation annotation to fill out
+     * @param annotationTypeName name of the type of annotation
+     * @param subjectName what this annotation is about, or null where the type occurs once in a report
+     * @throws UserNotAuthorizedException the service is not authorized to access the survey report
+     */
+    public void setUpAnnotation(AnnotationProperties annotation,
+                                String               annotationTypeName,
+                                String               subjectName) throws UserNotAuthorizedException
+    {
+        String surveyReportGUID = surveyContext.getAnnotationStore().getSurveyReportGUID();
+        String qualifier        = (subjectName == null) ? "" : "::" + subjectName;
+
+        annotation.setQualifiedName(surveyReportGUID + "::" + annotationTypeName + qualifier + "::" + new Date());
+        annotation.setDisplayName(annotationTypeName + qualifier + " for survey report " + surveyReportGUID);
+        annotation.setAnnotationType(annotationTypeName);
     }
 
 

@@ -49,6 +49,14 @@ dependencies {
     runtimeOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
     compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
 
+    // For PackagedPlatformSmokeTest - this module had no tests at all before it
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // Used at runtime but reached only transitively - declared directly so the classpath is explicit
+    runtimeOnly 'org.hibernate.validator:hibernate-validator'
+    testRuntimeOnly 'org.opentest4j:opentest4j'
+
     // The following are only included at runtime for the full platform (ie adminChassisOnly is not set as a property)
     if (!project.hasProperty("adminChassisOnly")) {
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:actor-manager:actor-manager-spring')
@@ -113,8 +121,16 @@ dependencies {
 description = 'OMAG Server Platform Chassis for Spring'
 
 bootJar {
+    // PropertiesLauncher rather than the default JarLauncher, because it honours -Dloader.path - which is
+    // how the platform picks up connector jars at runtime: 'lib' holds the connectors built here, and
+    // 'extra' is where connectors from outside this build are dropped in.
+    //
+    // Spring Boot 3.2 moved the loader classes from org.springframework.boot.loader to
+    // org.springframework.boot.loader.launch.  The old name leaves a jar whose manifest names a class that
+    // is not in it, which fails at startup with ClassNotFoundException and cannot be caught by any test
+    // that starts the platform in-process rather than from the packaged jar.
     manifest {
-        attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+        attributes 'Main-Class': 'org.springframework.boot.loader.launch.PropertiesLauncher'
     }
 }
 
@@ -126,8 +142,21 @@ java {
     withJavadocJar()
 }
 
+// PackagedPlatformSmokeTest starts the boot jar as a separate process, which is the only place in the
+// whole repository where the packaged artefact is exercised - everything else starts the platform
+// in-process and so never sees its manifest, launcher or loader classes.  The jar path is resolved here,
+// at configuration time, so the test task stays compatible with the configuration cache.
 test {
     useJUnitPlatform()
+
+    dependsOn tasks.named('bootJar')
+
+    systemProperty 'platform.boot.jar', tasks.named('bootJar').get().archiveFile.get().asFile.absolutePath
+
+    // Starting a real platform takes appreciably longer than a unit test, but not long enough to warrant
+    // making this opt-in: a smoke test nobody is obliged to run would not have caught the launcher class
+    // that this test exists because of.
+    timeout = java.time.Duration.ofMinutes(6)
 }
 
 // See https://stackoverflow.com/questions/61197984/bootjar-mavenjar-artifact-wasnt-produced-by-this-build

@@ -6367,7 +6367,140 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
+        return this.countAttachmentLinks(userId,
+                                         relationshipTypeName,
+                                         relationshipSubtypeNames,
+                                         skipSubtypes,
+                                         end1EntityGUIDs,
+                                         end1EntityTypeGUID,
+                                         end2EntityGUIDs,
+                                         end2EntityTypeGUID,
+                                         endMatchCriteria,
+                                         searchProperties,
+                                         limitResultsByStatus,
+                                         asOfTime,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         true,
+                                         methodName);
+    }
+
+
+    /**
+     * Return a count of the relationships that match the supplied criteria.
+     * <br><br>
+     * The two ways of answering this do not always agree, and pushDown chooses between them.
+     * <br><br>
+     * With pushDown true the repository counts the matching rows itself.  That is fast - it never
+     * materialises the relationships - but it is the count of what matches the search, not of what a caller
+     * would be given: findAttachmentLinks() puts every relationship it retrieves through a visibility check
+     * on the entities at both ends, and silently drops the ones whose anchor the caller cannot read.  Where
+     * any matching relationship has an end like that, the count comes out higher than the list, which is
+     * exactly the discrepancy this parameter exists to let a caller resolve.
+     * <br><br>
+     * With pushDown false the relationships are retrieved and counted, so the answer agrees with the list by
+     * construction - at the cost of reading every one of them.  Speed or agreement: the caller decides which
+     * matters for what they are doing.
+     *
+     * @param userId caller's userId
+     * @param relationshipTypeName type of interest (null means any element type)
+     * @param relationshipSubtypeNames optional list of the names for subtypes of the requested type to include in
+     *                                 (or, if skipSubtypes is true, exclude from) the search results.
+     * @param skipSubtypes if true, relationshipSubtypeNames is treated as the list of subtypes to exclude from the
+     *                     search results rather than the only subtypes to include.
+     * @param end1EntityGUIDs optional list of entity guids used to match end 1 of the relationships.
+     * @param end1EntityTypeGUID optional unique identifier of the type that the entity at end 1 must belong to.
+     * @param end2EntityGUIDs optional list of entity guids used to match end 2 of the relationships.
+     * @param end2EntityTypeGUID optional unique identifier of the type that the entity at end 2 must belong to.
+     * @param endMatchCriteria criteria for matching the ends of the relationships.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param forLineage used only when pushDown is false, where the retrieval applies it - the repository count
+     *                   does not.
+     * @param forDuplicateProcessing used only when pushDown is false, for the same reason.
+     * @param effectiveTime used only when pushDown is false, for the same reason.
+     * @param pushDown true to count in the repository, false to count what a retrieval would actually return
+     * @param methodName calling method
+     *
+     * @return the number of elements matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public long countAttachmentLinks(String                userId,
+                                     String                relationshipTypeName,
+                                     List<String>          relationshipSubtypeNames,
+                                     boolean               skipSubtypes,
+                                     List<String>          end1EntityGUIDs,
+                                     String                end1EntityTypeGUID,
+                                     List<String>          end2EntityGUIDs,
+                                     String                end2EntityTypeGUID,
+                                     EndMatchCriteria      endMatchCriteria,
+                                     SearchProperties      searchProperties,
+                                     List<InstanceStatus>  limitResultsByStatus,
+                                     Date                  asOfTime,
+                                     boolean               forLineage,
+                                     boolean               forDuplicateProcessing,
+                                     Date                  effectiveTime,
+                                     boolean               pushDown,
+                                     String                methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
         invalidParameterHandler.validateUserId(userId, methodName);
+
+        if (! pushDown)
+        {
+            /*
+             * Count what findAttachmentLinks() would actually hand back, by paging through it.  This costs a
+             * read of every matching relationship, and of the entities at their ends, which is what the
+             * repository count exists to avoid - but it is the only way to return a number that agrees with
+             * the list.
+             */
+            long count     = 0;
+            int  startFrom = 0;
+            int  pageSize  = invalidParameterHandler.getMaxPagingSize();
+
+            while (true)
+            {
+                List<Relationship> page = this.findAttachmentLinks(userId,
+                                                                    relationshipTypeName,
+                                                                    relationshipSubtypeNames,
+                                                                    skipSubtypes,
+                                                                    end1EntityGUIDs,
+                                                                    end1EntityTypeGUID,
+                                                                    end2EntityGUIDs,
+                                                                    end2EntityTypeGUID,
+                                                                    endMatchCriteria,
+                                                                    searchProperties,
+                                                                    limitResultsByStatus,
+                                                                    asOfTime,
+                                                                    null,
+                                                                    SequencingOrder.GUID,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+                if (page == null)
+                {
+                    /*
+                     * Null ends the traversal.  An empty list does not - it means this batch was entirely
+                     * removed by the visibility check, and the next one may still hold something.
+                     */
+                    break;
+                }
+
+                count     += page.size();
+                startFrom += pageSize;
+            }
+
+            return count;
+        }
 
         String relationshipTypeGUID = null;
 
@@ -8716,7 +8849,113 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
+        return this.countEntities(userId,
+                                  metadataElementTypeName,
+                                  metadataElementSubtypeNames,
+                                  skipSubtypes,
+                                  searchProperties,
+                                  limitResultsByStatus,
+                                  searchClassifications,
+                                  asOfTime,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  effectiveTime,
+                                  true,
+                                  methodName);
+    }
+
+
+    /**
+     * Return a count of the entities of the requested type that match the supplied criteria.
+     * <br><br>
+     * pushDown chooses between two ways of answering, which do not always agree - see
+     * {@link #countAttachmentLinks} for the same choice on relationships, and the note on
+     * {@link #findEntities} for what the difference consists of.
+     *
+     * @param userId the calling user
+     * @param metadataElementTypeName type of interest (null means any type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                           include in (or, if skipSubtypes is true, exclude from) the search results.
+     * @param skipSubtypes if true, metadataElementSubtypeNames is treated as the list of subtypes to exclude
+     *                     rather than the only subtypes to include.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.
+     * @param searchClassifications Optional list of classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param pushDown true to count in the repository, false to count what a retrieval would actually return
+     * @param methodName calling method
+     *
+     * @return the number of elements matching the supplied criteria.
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException a problem accessing the metadata store
+     */
+    public long countEntities(String                userId,
+                              String                metadataElementTypeName,
+                              List<String>          metadataElementSubtypeNames,
+                              boolean               skipSubtypes,
+                              SearchProperties      searchProperties,
+                              List<InstanceStatus>  limitResultsByStatus,
+                              SearchClassifications searchClassifications,
+                              Date                  asOfTime,
+                              boolean               forLineage,
+                              boolean               forDuplicateProcessing,
+                              Date                  effectiveTime,
+                              boolean               pushDown,
+                              String                methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
         invalidParameterHandler.validateUserId(userId, methodName);
+
+        if (! pushDown)
+        {
+            /*
+             * Count what findEntities() would actually hand back, by paging through it.  This costs a read of
+             * every matching entity, which is what the repository count exists to avoid - but it is the only
+             * way to return a number that agrees with the list.
+             */
+            long count     = 0;
+            int  startFrom = 0;
+            int  pageSize  = invalidParameterHandler.getMaxPagingSize();
+
+            while (true)
+            {
+                List<EntityDetail> page = this.findEntities(userId,
+                                                             metadataElementTypeName,
+                                                             metadataElementSubtypeNames,
+                                                             skipSubtypes,
+                                                             searchProperties,
+                                                             limitResultsByStatus,
+                                                             searchClassifications,
+                                                             asOfTime,
+                                                             null,
+                                                             SequencingOrder.GUID,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             startFrom,
+                                                             pageSize,
+                                                             effectiveTime,
+                                                             methodName);
+
+                if (page == null)
+                {
+                    /*
+                     * Null ends the traversal.  An empty list does not - it means this batch was entirely
+                     * removed by the visibility check, and the next one may still hold something.
+                     */
+                    break;
+                }
+
+                count     += page.size();
+                startFrom += pageSize;
+            }
+
+            return count;
+        }
 
         String typeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 

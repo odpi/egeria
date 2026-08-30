@@ -28,7 +28,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v5.6.0
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
       # Just build but don't publish (yet)
       - name: build (no publish to maven central)
@@ -42,7 +42,12 @@ jobs:
         uses: gradle/gradle-build-action@v3
         with:
           cache-read-only: false
-          arguments: aggregateJavadoc
+          # The configuration cache is on by default for this build, but the aggregate-javadoc plugin is
+          # held at 6.6.3 and is not compatible with it - it holds Task references, which the cache cannot
+          # serialise.  See the note in settings.gradle for why the plugin cannot simply be upgraded.
+          arguments: |
+            aggregateJavadoc
+            --no-configuration-cache
       - name: publish aggregate javadoc
         if: ${{ github.ref == 'refs/heads/main'}}
         uses: JamesIves/github-pages-deploy-action@v4

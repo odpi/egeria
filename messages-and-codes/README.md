@@ -266,8 +266,8 @@ Every message identifier begins with a prefix that names the component that rais
 | `OPEN-METADATA-` | Exception messages | 31 | [OMFErrorCode](frameworks/OMFErrorCode.md) |
 | `OPEN-METADATA-ACCESS-SECURITY-` | Audit log messages | 1 | [MetadataSecurityAuditCode](connectors/metadata-security-connectors/MetadataSecurityAuditCode.md) |
 | `OPEN-METADATA-SECURITY-` | Audit log messages | 26 | [OpenMetadataSecurityAuditCode](common-services/OpenMetadataSecurityAuditCode.md) |
-| `OPEN-SURVEY-` | Audit log messages | 7 | [OSFAuditCode](frameworks/OSFAuditCode.md) |
-| `OPEN-SURVEY-` | Exception messages | 7 | [OSFErrorCode](frameworks/OSFErrorCode.md) |
+| `OPEN-SURVEY-` | Audit log messages | 8 | [OSFAuditCode](frameworks/OSFAuditCode.md) |
+| `OPEN-SURVEY-` | Exception messages | 8 | [OSFErrorCode](frameworks/OSFErrorCode.md) |
 | `OPEN-WATCHDOG-` | Exception messages | 2 | [OWFErrorCode](frameworks/OWFErrorCode.md) |
 | `OPEN-WATCHDOG-ACTION-` | Audit log messages | 3 | [OWFAuditCode](frameworks/OWFAuditCode.md) |
 | `ORACLE-CONNECTOR-` | Audit log messages | 6 | [OracleAuditCode](connectors/data-manager-connectors/OracleAuditCode.md) |

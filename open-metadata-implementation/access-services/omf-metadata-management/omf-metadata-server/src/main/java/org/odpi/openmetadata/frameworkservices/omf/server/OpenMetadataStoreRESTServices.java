@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataMermaid
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SubtypesMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -1144,8 +1145,9 @@ public class OpenMetadataStoreRESTServices
 
         SearchProperties searchProperties = getOMRSSearchPropertiesByName(null, searchString, searchOptions);
 
-        SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorPropertyValue,
-                                                                                     anchorPropertyName);
+        SearchClassifications searchClassifications = addClassificationFilters(getAnchorSearchClassifications(anchorPropertyValue,
+                                                                                                              anchorPropertyName),
+                                                                                searchOptions);
 
         List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                    searchOptions.getMetadataElementTypeName(),
@@ -1215,7 +1217,13 @@ public class OpenMetadataStoreRESTServices
                                                                    searchOptions.getSkipSubtypes(),
                                                                    searchProperties,
                                                                    handler.getInstanceStatuses(searchOptions.getLimitResultsByStatus()),
-                                                                   null,
+                                                                   /*
+                                                                    * Cast because the two addClassificationFilters()
+                                                                    * overloads differ only in a type whose simple name
+                                                                    * is the same in both packages - the unqualified
+                                                                    * name here is the repository services' one.
+                                                                    */
+                                                                   addClassificationFilters((SearchClassifications) null, searchOptions),
                                                                    searchOptions.getAsOfTime(),
                                                                    searchOptions.getSequencingProperty(),
                                                                    handler.getSequencingOrder(searchOptions.getSequencingOrder()),
@@ -1396,8 +1404,9 @@ public class OpenMetadataStoreRESTServices
             if (requestBody != null)
             {
                 SearchProperties      searchProperties = getOMRSSearchPropertiesByName(null, requestBody.getSearchString(), requestBody);
-                SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorGUID,
-                                                                                             OpenMetadataProperty.ANCHOR_GUID.name);
+                SearchClassifications searchClassifications = addClassificationFilters(getAnchorSearchClassifications(anchorGUID,
+                                                                                                                      OpenMetadataProperty.ANCHOR_GUID.name),
+                                                                                        requestBody);
 
                 List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                            requestBody.getMetadataElementTypeName(),
@@ -1469,8 +1478,9 @@ public class OpenMetadataStoreRESTServices
             if (requestBody != null)
             {
                 SearchProperties      searchProperties = getOMRSSearchPropertiesByName(null, requestBody.getSearchString(), requestBody);
-                SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorDomainName,
-                                                                                             OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name);
+                SearchClassifications searchClassifications = addClassificationFilters(getAnchorSearchClassifications(anchorDomainName,
+                                                                                                                      OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name),
+                                                                                        requestBody);
 
                 List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                            requestBody.getMetadataElementTypeName(),
@@ -1542,8 +1552,9 @@ public class OpenMetadataStoreRESTServices
             if (requestBody != null)
             {
                 SearchProperties      searchProperties = getOMRSSearchPropertiesByName(null, requestBody.getSearchString(), requestBody);
-                SearchClassifications searchClassifications = getAnchorSearchClassifications(anchorScopeGUID,
-                                                                                             OpenMetadataProperty.ANCHOR_SCOPE_GUIDS.name);
+                SearchClassifications searchClassifications = addClassificationFilters(getAnchorSearchClassifications(anchorScopeGUID,
+                                                                                                                      OpenMetadataProperty.ANCHOR_SCOPE_GUIDS.name),
+                                                                                        requestBody);
 
                 List<EntityDetail> anchoredEntities = handler.findEntities(userId,
                                                                            requestBody.getMetadataElementTypeName(),
@@ -1705,6 +1716,175 @@ public class OpenMetadataStoreRESTServices
         }
 
         return null;
+    }
+
+
+    /**
+     * Add the caller's classification filters to an OMF classification search.
+     * <br><br>
+     * The same merge as the OMRS-typed method below, for the two endpoints that take their classification
+     * search in the open metadata framework's own types rather than the repository services' ones -
+     * findMetadataElements() and countMetadataElements().  Without it those two ignore
+     * includeOnlyClassifiedElements/skipClassifiedElements entirely: unlike the search-string paths, nothing
+     * downstream of them filters on those options either, so a caller that sets one gets no filtering at all
+     * rather than filtering that happens too late.
+     * <br><br>
+     * The two are kept as separate methods rather than one converting to the other, because a conversion
+     * would be more code than the merge and would have to be maintained against both type sets.
+     *
+     * @param suppliedSearchClassifications classification search the caller supplied, or null
+     * @param queryOptions options supplied by the caller
+     * @return classification search to pass on, or null if there is no classification filtering
+     */
+    private org.odpi.openmetadata.frameworks.openmetadata.search.SearchClassifications addClassificationFilters(
+            org.odpi.openmetadata.frameworks.openmetadata.search.SearchClassifications suppliedSearchClassifications,
+            QueryOptions                                                               queryOptions)
+    {
+        if (queryOptions == null)
+        {
+            return suppliedSearchClassifications;
+        }
+
+        List<String> classificationNames = queryOptions.getIncludeOnlyClassifiedElements();
+
+        org.odpi.openmetadata.frameworks.openmetadata.search.MatchCriteria matchCriteria =
+                org.odpi.openmetadata.frameworks.openmetadata.search.MatchCriteria.ALL;
+
+        if ((classificationNames == null) || (classificationNames.isEmpty()))
+        {
+            /*
+             * "Must not have" can only be pushed down when there is nothing else in the classification
+             * search, since it inverts the match criteria for the whole search.
+             */
+            if ((suppliedSearchClassifications != null) ||
+                    (queryOptions.getSkipClassifiedElements() == null) ||
+                    (queryOptions.getSkipClassifiedElements().isEmpty()))
+            {
+                return suppliedSearchClassifications;
+            }
+
+            classificationNames = queryOptions.getSkipClassifiedElements();
+            matchCriteria       = org.odpi.openmetadata.frameworks.openmetadata.search.MatchCriteria.NONE;
+        }
+
+        List<org.odpi.openmetadata.frameworks.openmetadata.search.ClassificationCondition> classificationConditions = new ArrayList<>();
+
+        if ((suppliedSearchClassifications != null) && (suppliedSearchClassifications.getConditions() != null))
+        {
+            classificationConditions.addAll(suppliedSearchClassifications.getConditions());
+        }
+
+        for (String classificationName : classificationNames)
+        {
+            if (classificationName != null)
+            {
+                org.odpi.openmetadata.frameworks.openmetadata.search.ClassificationCondition classificationCondition =
+                        new org.odpi.openmetadata.frameworks.openmetadata.search.ClassificationCondition();
+
+                classificationCondition.setName(classificationName);
+
+                classificationConditions.add(classificationCondition);
+            }
+        }
+
+        if (classificationConditions.isEmpty())
+        {
+            return suppliedSearchClassifications;
+        }
+
+        org.odpi.openmetadata.frameworks.openmetadata.search.SearchClassifications searchClassifications =
+                new org.odpi.openmetadata.frameworks.openmetadata.search.SearchClassifications();
+
+        searchClassifications.setConditions(classificationConditions);
+        searchClassifications.setMatchCriteria(matchCriteria);
+
+        return searchClassifications;
+    }
+
+
+    /**
+     * Add the caller's classification filters to the classification search that will be passed to the
+     * repository, so that a page of results is a page of answers.
+     * <br><br>
+     * skipClassifiedElements/includeOnlyClassifiedElements are carried on every search request body, but
+     * until they are expressed as part of the query the repository knows nothing about them: it chooses the
+     * page, and the filtering happens afterwards on whatever came back.  Nothing is lost that way - the
+     * paging contract ends a traversal on a null rather than on an empty or short page, so a caller that
+     * keeps asking still sees everything - but a caller that asks once, which is the usual shape of a
+     * "find the elements classified X" call, is handed whatever fraction of the first page happened to
+     * carry the classification.  That is commonly none of it, and an empty result is indistinguishable
+     * from "nothing matches".  Pushing the filter down makes the first page the answer.
+     * <br><br>
+     * Only one of the two filters can be pushed down at a time, because a classification search carries a
+     * single match criteria and "must have these" cannot be combined with "must not have those".  The
+     * required classifications win, and the forbidden ones are left to the post-retrieval check - no worse
+     * than before, and better for the common case where only one is set.  For the same reason
+     * skipClassifiedElements is not pushed down alongside an anchor search, whose own condition is already
+     * a "must have".
+     *
+     * @param suppliedSearchClassifications classification search the caller (or an anchor search) has
+     *                                      already built, or null if there is none
+     * @param queryOptions options supplied by the caller
+     * @return classification search to pass to the repository, or null if there is no classification filtering
+     */
+    private SearchClassifications addClassificationFilters(SearchClassifications suppliedSearchClassifications,
+                                                           QueryOptions          queryOptions)
+    {
+        if (queryOptions == null)
+        {
+            return suppliedSearchClassifications;
+        }
+
+        List<String>  classificationNames = queryOptions.getIncludeOnlyClassifiedElements();
+        MatchCriteria matchCriteria       = MatchCriteria.ALL;
+
+        if ((classificationNames == null) || (classificationNames.isEmpty()))
+        {
+            /*
+             * "Must not have" can only be pushed down when there is nothing else in the classification
+             * search, since it inverts the match criteria for the whole search.
+             */
+            if ((suppliedSearchClassifications != null) ||
+                    (queryOptions.getSkipClassifiedElements() == null) ||
+                    (queryOptions.getSkipClassifiedElements().isEmpty()))
+            {
+                return suppliedSearchClassifications;
+            }
+
+            classificationNames = queryOptions.getSkipClassifiedElements();
+            matchCriteria       = MatchCriteria.NONE;
+        }
+
+        List<ClassificationCondition> classificationConditions = new ArrayList<>();
+
+        if ((suppliedSearchClassifications != null) && (suppliedSearchClassifications.getConditions() != null))
+        {
+            classificationConditions.addAll(suppliedSearchClassifications.getConditions());
+        }
+
+        for (String classificationName : classificationNames)
+        {
+            if (classificationName != null)
+            {
+                ClassificationCondition classificationCondition = new ClassificationCondition();
+
+                classificationCondition.setName(classificationName);
+
+                classificationConditions.add(classificationCondition);
+            }
+        }
+
+        if (classificationConditions.isEmpty())
+        {
+            return suppliedSearchClassifications;
+        }
+
+        SearchClassifications searchClassifications = new SearchClassifications();
+
+        searchClassifications.setConditions(classificationConditions);
+        searchClassifications.setMatchCriteria(matchCriteria);
+
+        return searchClassifications;
     }
 
 
@@ -2006,7 +2186,7 @@ public class OpenMetadataStoreRESTServices
                                                                   requestBody.getSkipSubtypes(),
                                                                   requestBody.getSearchProperties(),
                                                                   requestBody.getLimitResultsByStatus(),
-                                                                  requestBody.getMatchClassifications(),
+                                                                  addClassificationFilters(requestBody.getMatchClassifications(), requestBody),
                                                                   requestBody.getAsOfTime(),
                                                                   requestBody.getSequencingProperty(),
                                                                   requestBody.getSequencingOrder(),
@@ -2040,6 +2220,11 @@ public class OpenMetadataStoreRESTServices
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
      * @param requestBody properties defining the search criteria
+     * @param pushDown when true (the default) the repository counts the matching rows itself, which is fast but
+     *                 counts what matches the search rather than what a caller would be given - the retrieval
+     *                 applies a visibility check to the elements it returns and silently drops what the caller
+     *                 cannot read.  When false the elements are retrieved and counted, so the answer agrees with
+     *                 the list at the cost of reading every one of them.
      *
      * @return the number of elements matching the supplied criteria; or
      *  InvalidParameterException one of the search parameters are is invalid
@@ -2048,6 +2233,7 @@ public class OpenMetadataStoreRESTServices
      */
     public CountResponse countMetadataElements(String          serverName,
                                                String          userId,
+                                               boolean         pushDown,
                                                FindRequestBody requestBody)
     {
         final String methodName = "countMetadataElements";
@@ -2071,11 +2257,12 @@ public class OpenMetadataStoreRESTServices
                                                                 requestBody.getSkipSubtypes(),
                                                                 requestBody.getSearchProperties(),
                                                                 requestBody.getLimitResultsByStatus(),
-                                                                requestBody.getMatchClassifications(),
+                                                                addClassificationFilters(requestBody.getMatchClassifications(), requestBody),
                                                                 requestBody.getAsOfTime(),
                                                                 requestBody.getForLineage(),
                                                                 requestBody.getForDuplicateProcessing(),
                                                                 requestBody.getEffectiveTime(),
+                                                                pushDown,
                                                                 methodName));
             }
             else
@@ -2413,6 +2600,11 @@ public class OpenMetadataStoreRESTServices
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
      * @param requestBody properties defining the search criteria
+     * @param pushDown when true (the default) the repository counts the matching rows itself, which is fast but
+     *                 counts what matches the search rather than what a caller would be given - the retrieval
+     *                 applies a visibility check to the elements it returns and silently drops what the caller
+     *                 cannot read.  When false the elements are retrieved and counted, so the answer agrees with
+     *                 the list at the cost of reading every one of them.
      *
      * @return the number of relationships matching the supplied criteria; or
      *  InvalidParameterException one of the search parameters are is invalid
@@ -2421,6 +2613,7 @@ public class OpenMetadataStoreRESTServices
      */
     public CountResponse countRelationshipsBetweenMetadataElements(String                      serverName,
                                                                    String                      userId,
+                                                                   boolean                     pushDown,
                                                                    FindRelationshipRequestBody requestBody)
     {
         final String methodName = "countRelationshipsBetweenMetadataElements";
@@ -2453,6 +2646,7 @@ public class OpenMetadataStoreRESTServices
                                                                                     requestBody.getForLineage(),
                                                                                     requestBody.getForDuplicateProcessing(),
                                                                                     requestBody.getEffectiveTime(),
+                                                                                    pushDown,
                                                                                     methodName));
             }
             else

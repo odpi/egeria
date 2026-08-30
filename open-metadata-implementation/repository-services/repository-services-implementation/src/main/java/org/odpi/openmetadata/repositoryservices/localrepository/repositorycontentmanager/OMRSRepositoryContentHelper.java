@@ -2281,22 +2281,43 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             return null;
         }
 
-        // If there is no sequencing order, or it is defined as 'ANY', there is no sorting to do
-        if (sequencingOrder != null && !sequencingOrder.equals(SequencingOrder.ANY))
+        /*
+         * Every ordering ends with the instance's GUID, so that the result is a deterministic total order.
+         * The columns a caller can sequence on - creation time, update time, a property value - are none of
+         * them unique, and the results are paged: a page is a subList of this list, and the caller asks for
+         * the next one in a separate call that sorts the set again.  Rows that tie would otherwise be free
+         * to come back in a different order each time, and an instance could move between pages and be
+         * returned twice, or skipped, while the traversal terminated normally.
+         *
+         * That includes the case where nothing was asked for, or ANY was: the caller not caring which order
+         * they are given still needs each page to agree with the last.
+         */
+        if ((sequencingOrder == null) || sequencingOrder.equals(SequencingOrder.ANY))
         {
-            if (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING) || sequencingOrder.equals(SequencingOrder.PROPERTY_DESCENDING))
-            {
-                // If the sequencing is property-based, handover to the property comparator
-                fullResults.sort((one, two) -> this.compareProperties(one.getProperties(),
-                                                                      two.getProperties(),
-                                                                      sequencingProperty,
-                                                                      sequencingOrder));
-            }
-            else
-            {
-                // Otherwise, handover to the instance comparator
-                fullResults.sort((one, two) -> OMRSRepositoryContentHelper.compareInstances(one, two, sequencingOrder));
-            }
+            fullResults.sort(OMRSRepositoryContentHelper::compareGUIDs);
+        }
+        else if (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING) || sequencingOrder.equals(SequencingOrder.PROPERTY_DESCENDING))
+        {
+            // If the sequencing is property-based, handover to the property comparator
+            fullResults.sort((one, two) ->
+                             {
+                                 int sortResult = this.compareProperties(one.getProperties(),
+                                                                          two.getProperties(),
+                                                                          sequencingProperty,
+                                                                          sequencingOrder);
+
+                                 return (sortResult != 0) ? sortResult : compareGUIDs(one, two);
+                             });
+        }
+        else
+        {
+            // Otherwise, handover to the instance comparator
+            fullResults.sort((one, two) ->
+                             {
+                                 int sortResult = OMRSRepositoryContentHelper.compareInstances(one, two, sequencingOrder);
+
+                                 return (sortResult != 0) ? sortResult : compareGUIDs(one, two);
+                             });
         }
 
         if ((fromElement == 0) && (pageSize > fullResultsSize))
@@ -2351,22 +2372,43 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             return null;
         }
 
-        // If there is no sequencing order, or it is defined as 'ANY', there is no sorting to do
-        if (sequencingOrder != null && !sequencingOrder.equals(SequencingOrder.ANY))
+        /*
+         * Every ordering ends with the instance's GUID, so that the result is a deterministic total order.
+         * The columns a caller can sequence on - creation time, update time, a property value - are none of
+         * them unique, and the results are paged: a page is a subList of this list, and the caller asks for
+         * the next one in a separate call that sorts the set again.  Rows that tie would otherwise be free
+         * to come back in a different order each time, and an instance could move between pages and be
+         * returned twice, or skipped, while the traversal terminated normally.
+         *
+         * That includes the case where nothing was asked for, or ANY was: the caller not caring which order
+         * they are given still needs each page to agree with the last.
+         */
+        if ((sequencingOrder == null) || sequencingOrder.equals(SequencingOrder.ANY))
         {
-            if (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING) || sequencingOrder.equals(SequencingOrder.PROPERTY_DESCENDING))
-            {
-                // If the sequencing is property-based, handover to the property comparator
-                fullResults.sort((one, two) -> this.compareProperties(one.getProperties(),
-                                                                      two.getProperties(),
-                                                                      sequencingProperty,
-                                                                      sequencingOrder));
-            }
-            else
-            {
-                // Otherwise, handover to the instance comparator
-                fullResults.sort((one, two) -> OMRSRepositoryContentHelper.compareInstances(one, two, sequencingOrder));
-            }
+            fullResults.sort(OMRSRepositoryContentHelper::compareGUIDs);
+        }
+        else if (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING) || sequencingOrder.equals(SequencingOrder.PROPERTY_DESCENDING))
+        {
+            // If the sequencing is property-based, handover to the property comparator
+            fullResults.sort((one, two) ->
+                             {
+                                 int sortResult = this.compareProperties(one.getProperties(),
+                                                                          two.getProperties(),
+                                                                          sequencingProperty,
+                                                                          sequencingOrder);
+
+                                 return (sortResult != 0) ? sortResult : compareGUIDs(one, two);
+                             });
+        }
+        else
+        {
+            // Otherwise, handover to the instance comparator
+            fullResults.sort((one, two) ->
+                             {
+                                 int sortResult = OMRSRepositoryContentHelper.compareInstances(one, two, sequencingOrder);
+
+                                 return (sortResult != 0) ? sortResult : compareGUIDs(one, two);
+                             });
         }
 
         if ((fromElement == 0) && (pageSize == 0 || pageSize > fullResultsSize))
@@ -2380,6 +2422,34 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
           toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
         }
         return new ArrayList<>(fullResults.subList(fromElement, toIndex));
+    }
+
+
+    /**
+     * Compare two instances by their GUID.  This is the tie-break that makes an ordering a total order: a
+     * GUID is present and unique on every instance, whatever its type and whatever it is being sorted by.
+     *
+     * @param one the first instance
+     * @param two the second instance
+     * @return sort result
+     */
+    private static int compareGUIDs(InstanceHeader one,
+                                    InstanceHeader two)
+    {
+        String guidOne = (one == null) ? null : one.getGUID();
+        String guidTwo = (two == null) ? null : two.getGUID();
+
+        if (guidOne == null)
+        {
+            return (guidTwo == null) ? 0 : -1;
+        }
+
+        if (guidTwo == null)
+        {
+            return 1;
+        }
+
+        return guidOne.compareTo(guidTwo);
     }
 
 

@@ -905,6 +905,11 @@ public class OpenMetadataStoreResource
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
      * @param requestBody properties defining the search criteria
+     * @param pushDown when true (the default) the repository counts the matching rows itself, which is fast but
+     *                 counts what matches the search rather than what a caller would be given - the retrieval
+     *                 applies a visibility check and silently drops what the caller cannot read.  When false the
+     *                 elements are retrieved and counted, so the answer agrees with the list at the cost of
+     *                 reading every one of them.
      *
      * @return the number of elements matching the supplied criteria; or
      *  InvalidParameterException one of the search parameters are is invalid
@@ -921,10 +926,12 @@ public class OpenMetadataStoreResource
 
     public CountResponse countMetadataElements(@PathVariable String          serverName,
                                                @PathVariable String          userId,
+                                               @RequestParam (required = false, defaultValue = "true")
+                                                             boolean         pushDown,
                                                @RequestBody (required = false)
                                                              FindRequestBody requestBody)
     {
-        return restAPI.countMetadataElements(serverName, userId, requestBody);
+        return restAPI.countMetadataElements(serverName, userId, pushDown, requestBody);
     }
 
 
@@ -990,6 +997,11 @@ public class OpenMetadataStoreResource
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
      * @param requestBody properties defining the search criteria
+     * @param pushDown when true (the default) the repository counts the matching rows itself, which is fast but
+     *                 counts what matches the search rather than what a caller would be given - the retrieval
+     *                 applies a visibility check and silently drops what the caller cannot read.  When false the
+     *                 elements are retrieved and counted, so the answer agrees with the list at the cost of
+     *                 reading every one of them.
      *
      * @return the number of relationships matching the supplied criteria; or
      *  InvalidParameterException one of the search parameters are is invalid
@@ -1006,9 +1018,11 @@ public class OpenMetadataStoreResource
 
     public CountResponse countRelationshipsBetweenMetadataElements(@PathVariable String          serverName,
                                                                    @PathVariable String          userId,
+                                                                   @RequestParam (required = false, defaultValue = "true")
+                                                                                 boolean         pushDown,
                                                                    @RequestBody  FindRelationshipRequestBody requestBody)
     {
-        return restAPI.countRelationshipsBetweenMetadataElements(serverName, userId, requestBody);
+        return restAPI.countRelationshipsBetweenMetadataElements(serverName, userId, pushDown, requestBody);
     }
 
 

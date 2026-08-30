@@ -1229,12 +1229,18 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     public long countMetadataElements(String                userId,
                                      SearchProperties      searchProperties,
                                      SearchClassifications matchClassifications,
-                                     QueryOptions          queryOptions) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+                                     QueryOptions          queryOptions,
+                                     boolean               pushDown) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName = "countMetadataElements";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/by-search-conditions/count";
+
+        /*
+         * pushDown is a query parameter rather than a field of the request body, so it is written into the URL
+         * here.  It is a boolean, so there is nothing to escape.
+         */
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/by-search-conditions/count?pushDown=" + pushDown;
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -1353,12 +1359,18 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                           String           end2EntityTypeName,
                                                           EndMatchCriteria endMatchCriteria,
                                                           SearchProperties searchProperties,
-                                                          QueryOptions     queryOptions) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
+                                                          QueryOptions     queryOptions,
+                                                          boolean          pushDown) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String methodName = "countRelationshipsBetweenMetadataElements";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/relationships/by-search-conditions/count";
+
+        /*
+         * pushDown is a query parameter rather than a field of the request body, so it is written into the URL
+         * here.  It is a boolean, so there is nothing to escape.
+         */
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/relationships/by-search-conditions/count?pushDown=" + pushDown;
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
