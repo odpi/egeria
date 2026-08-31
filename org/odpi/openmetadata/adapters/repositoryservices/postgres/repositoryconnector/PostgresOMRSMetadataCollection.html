@@ -706,6 +706,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update one or more properties of the TypeDef.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#verifyStoredTypeHierarchy(java.lang.String)" class="member-name-link">verifyStoredTypeHierarchy</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Bring the stored supertype chains into line with the type system.</div>
+</div>
 </div>
 </div>
 </div>
@@ -766,6 +771,36 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="verifyStoredTypeHierarchy(java.lang.String)">
+<h3>verifyStoredTypeHierarchy</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">verifyStoredTypeHierarchy</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span></div>
+<div class="block">Bring the stored supertype chains into line with the type system.
+ <br><br>
+ This repository writes each instance's supertype chain onto the instance and answers searches for a
+ supertype from what it wrote, so a type that has moved in the hierarchy since an instance was stored
+ leaves that instance answering for the hierarchy as it used to be.  The chains are checked - and rewritten
+ where they are wrong - at every server start, once the types are loaded.
+ <br><br>
+ The check is driven off the difference between the chains that are stored and the chains the type system
+ now describes, so it needs no record of which types have moved.  <a href="#updateTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch)"><code>updateTypeDef(java.lang.String, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch)</code></a> repairs the type
+ a patch has just moved, which covers the server that applies the patch; this covers every other case -
+ a repository that applied the patch under a build without the repair in it, instances that arrived from a
+ cohort member on a different level of the types, or a restored dump.  The patch route cannot: a patch is
+ applied only while the repository is still on the version it applies to, so once applied it never runs
+ again.
+ <br><br>
+ A failure here is reported and swallowed.  A repository that cannot check itself is a repository whose
+ searches for recently moved supertypes may be incomplete, which is worth reporting - but it is not a
+ reason to refuse to start a server that otherwise works.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html#verifyStoredTypeHierarchy(java.lang.String)">verifyStoredTypeHierarchy</a></code>&nbsp;in class&nbsp;<code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - unique identifier for requesting server</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="updateTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch)">
 <h3>updateTypeDef</h3>

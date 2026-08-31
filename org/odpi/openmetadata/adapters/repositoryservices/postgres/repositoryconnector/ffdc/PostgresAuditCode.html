@@ -145,6 +145,14 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="col-last odd-row-color">
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-0002 - The PostgreSQL repository connector {0} is connecting to database {1}</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#SUPERTYPE_CHAIN_CHECK_FAILED" class="member-name-link">SUPERTYPE_CHAIN_CHECK_FAILED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-0010 - The PostgreSQL repository connector {0} could not check its stored supertype chains; the {1} exception was: {2}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SUPERTYPE_CHAINS_REPAIRED" class="member-name-link">SUPERTYPE_CHAINS_REPAIRED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-0009 - The PostgreSQL repository connector {0} has brought {1} stored supertype chain(s) into line with the current open metadata types</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-0001 - The PostgreSQL repository connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}</div>
@@ -242,6 +250,20 @@ the order they are declared.</div>
 <h3>REPOSITORY_MODE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc">PostgresAuditCode</a></span>&nbsp;<span class="element-name">REPOSITORY_MODE</span></div>
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-0008 - The PostgreSQL repository connector {0} is using a repository mode of: {1}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SUPERTYPE_CHAINS_REPAIRED">
+<h3>SUPERTYPE_CHAINS_REPAIRED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc">PostgresAuditCode</a></span>&nbsp;<span class="element-name">SUPERTYPE_CHAINS_REPAIRED</span></div>
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-0009 - The PostgreSQL repository connector {0} has brought {1} stored supertype chain(s) into line with the current open metadata types</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SUPERTYPE_CHAIN_CHECK_FAILED">
+<h3>SUPERTYPE_CHAIN_CHECK_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc">PostgresAuditCode</a></span>&nbsp;<span class="element-name">SUPERTYPE_CHAIN_CHECK_FAILED</span></div>
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-0010 - The PostgreSQL repository connector {0} could not check its stored supertype chains; the {1} exception was: {2}</div>
 </section>
 </li>
 </ul>

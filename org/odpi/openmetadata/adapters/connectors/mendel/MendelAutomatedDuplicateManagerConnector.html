@@ -104,16 +104,21 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a>
 implements <a href="../../../frameworks/openmetadata/events/OpenMetadataEventListener.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventListener</a></span></div>
 <div class="block">MendelAutomatedDuplicateManagerConnector manages the duplicate links and classifications that drive the
- deduplication of open metadata elements on retrieval.  Each refresh makes three passes over the
+ deduplication of open metadata elements on retrieval.  Each refresh makes four passes over the
  PeerDuplicateLink relationships in the open metadata ecosystem.
  <ul>
      <li>The links that no steward has ruled on yet - the DISCOVERED, PROPOSED and IMPORTED ones.  Where the
      linked elements are a close enough match, the link is moved to VALIDATED and the KnownDuplicate
      classification is added to both elements, which is the combination that causes the retrieval processing to
      combine them.  The rest are passed to a person appointed to the DuplicateMetadataSteward role via a to do.</li>
-     <li>The links that a steward has retired - the DEPRECATED and OBSOLETE ones.  The KnownDuplicate
-     classification is removed from an element once none of its duplicate links are live, so that the element
-     stops being combined with anything.</li>
+     <li>The validated links that this connector decided itself, told apart from a steward's by the userId in
+     their updatedBy.  A close match can stop being one - a qualified name is corrected, say - and nothing else
+     revisits a validated link, so a link whose grounds have gone is retired.  A steward's decision is never
+     reconsidered.</li>
+     <li>The links that have been retired - the DEPRECATED and OBSOLETE ones.  The KnownDuplicate
+     classification is removed from an element once it is no longer deduplicated by any route - no live peer
+     link and no consolidated cluster to be reached through - so that the element stops being combined with
+     anything.</li>
      <li>The clusters of validated peer duplicates.  Once a cluster reaches the configured size, its members are
      consolidated into a single element using the survivorship rules in
      <a href="MendelDuplicateConsolidator.html" title="class in org.odpi.openmetadata.adapters.connectors.mendel"><code>MendelDuplicateConsolidator</code></a>.</li>

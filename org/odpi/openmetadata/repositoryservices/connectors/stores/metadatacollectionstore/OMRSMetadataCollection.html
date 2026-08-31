@@ -1054,10 +1054,16 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Verify that a definition of an AttributeTypeDef is either new or matches the definition already stored.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#verifyTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef)" class="member-name-link">verifyTypeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#verifyStoredTypeHierarchy(java.lang.String)" class="member-name-link">verifyStoredTypeHierarchy</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Verify that what this repository has stored is consistent with the type system, and bring it up to date
+ where it is not.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#verifyTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef)" class="member-name-link">verifyTypeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&nbsp;typeDef)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Verify that a definition of a TypeDef is either new or matches the definition already stored.</div>
 </div>
 </div>
@@ -1230,6 +1236,29 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dd>String  metadata collection id.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - a problem communicating with the metadata repository.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="verifyStoredTypeHierarchy(java.lang.String)">
+<h3>verifyStoredTypeHierarchy</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">verifyStoredTypeHierarchy</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span></div>
+<div class="block">Verify that what this repository has stored is consistent with the type system, and bring it up to date
+ where it is not.  This is called once at server start-up, after the type archives have been processed and
+ before the repository serves any request, so an implementation may rely on the repository helper holding
+ the current types.
+ <br><br>
+ It exists for the repositories that denormalise part of the type system into their stored instances -
+ a supertype chain written onto each row, say - because such a repository answers type questions from what
+ it wrote rather than from the types as they are now, and a type that moves in the hierarchy leaves every
+ instance written before the move answering for the hierarchy as it used to be.  A repository that reads
+ the type system directly has nothing to do here, which is why this does nothing by default.
+ <br><br>
+ Problems are the implementation's to report and survive: a repository that cannot check itself should
+ still start.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - unique identifier for requesting server</dd>
 </dl>
 </section>
 </li>

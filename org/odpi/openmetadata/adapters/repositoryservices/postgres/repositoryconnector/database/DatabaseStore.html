@@ -296,56 +296,59 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="block">Remove (purge) a relationship from the repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#repairSuperTypeChains(java.lang.String,java.util.List)" class="member-name-link">repairSuperTypeChains</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;superTypeChain)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#repairSuperTypeChains()" class="member-name-link">repairSuperTypeChains</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Rewrite the stored supertype chains of a type whose place in the type hierarchy has changed.</div>
+<div class="block">Rewrite every stored supertype chain that no longer matches the type system.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveEntitiesByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveEntitiesByProperties</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;entityQueryBuilder,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#repairSuperTypeChains(java.lang.String,java.util.List)" class="member-name-link">repairSuperTypeChains</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;superTypeChain)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveEntitiesByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveEntitiesByProperties</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;entityQueryBuilder,
  <a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;classificationQueryBuilder,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This query is issued against the entity table and the entity attribute table.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveRelationships(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveRelationships</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;queryBuilder,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveRelationships(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveRelationships</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;queryBuilder,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This query is issued against the relationship table.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveRelationshipsByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveRelationshipsByProperties</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;queryBuilder,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveRelationshipsByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveRelationshipsByProperties</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;queryBuilder,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This query is issued against the relationship table and the relationship attribute table.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveClassification(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ClassificationMapper)" class="member-name-link">saveClassification</a><wbr>(<a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a>&nbsp;classificationMapper)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveClassification(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ClassificationMapper)" class="member-name-link">saveClassification</a><wbr>(<a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a>&nbsp;classificationMapper)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Maintain a classification within the entity.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveControlTable(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ControlMapper)" class="member-name-link">saveControlTable</a><wbr>(<a href="../mappers/ControlMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ControlMapper</a>&nbsp;controlMapper)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveControlTable(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ControlMapper)" class="member-name-link">saveControlTable</a><wbr>(<a href="../mappers/ControlMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ControlMapper</a>&nbsp;controlMapper)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Save the control table row to the database.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePreviousClassificationVersionEndTime(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ClassificationMapper,java.util.Date)" class="member-name-link">updatePreviousClassificationVersionEndTime</a><wbr>(<a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a>&nbsp;classificationMapper,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;versionEndTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the version end date in an entity's classification to the database.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePreviousEntityVersionEndTime(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.EntityMapper,java.util.Date)" class="member-name-link">updatePreviousEntityVersionEndTime</a><wbr>(<a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a>&nbsp;entityMapper,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePreviousClassificationVersionEndTime(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ClassificationMapper,java.util.Date)" class="member-name-link">updatePreviousClassificationVersionEndTime</a><wbr>(<a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a>&nbsp;classificationMapper,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;versionEndTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the version end date in an entity to the database.</div>
+<div class="block">Update the version end date in an entity's classification to the database.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePreviousRelationshipVersionEndTime(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.RelationshipMapper,java.util.Date)" class="member-name-link">updatePreviousRelationshipVersionEndTime</a><wbr>(<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&nbsp;relationshipMapper,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePreviousEntityVersionEndTime(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.EntityMapper,java.util.Date)" class="member-name-link">updatePreviousEntityVersionEndTime</a><wbr>(<a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a>&nbsp;entityMapper,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;versionEndTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the version end date in an entity to the database.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePreviousRelationshipVersionEndTime(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.RelationshipMapper,java.util.Date)" class="member-name-link">updatePreviousRelationshipVersionEndTime</a><wbr>(<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&nbsp;relationshipMapper,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;versionEndTime)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the version end date in a relationship to the database.</div>
 </div>
 </div>
@@ -392,40 +395,43 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="repairSuperTypeChains()">
+<h3>repairSuperTypeChains</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">repairSuperTypeChains</span>()
+                          throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">Rewrite every stored supertype chain that no longer matches the type system.
+ <br><br>
+ This is the unconditional form of <a href="#repairSuperTypeChains(java.lang.String,java.util.List)"><code>repairSuperTypeChains(String, List)</code></a>, and it is what a server
+ runs at start-up.  It is driven off the difference between what is stored and what the type system now
+ says, so it needs no knowledge of which types have moved: the patch that moved a type is only how the
+ type arrived at its current shape, not the record of what that shape is.  That also means it repairs
+ chains that went stale for reasons a patch never sees - rows written by an older build, a restored dump,
+ or reference copies that arrived from a cohort member on a different level of the types.
+ <br><br>
+ Only the distinct chains are examined, not the rows: there is one per type in use, so this is a handful
+ of small queries however large the repository is.  A repository that is already correct issues one query
+ per instance table and no updates at all.
+ <br><br>
+ A chain whose own type is no longer in the type system is left alone.  Its correct shape is unknowable -
+ the type is gone - and rewriting it from an empty supertype list would strip a chain that is probably
+ still right.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>number of distinct chains rewritten, across all the instance tables</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="repairSuperTypeChains(java.lang.String,java.util.List)">
 <h3>repairSuperTypeChains</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">repairSuperTypeChains</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;superTypeChain)</span>
                           throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
-<div class="block">Rewrite the stored supertype chains of a type whose place in the type hierarchy has changed.
- <br><br>
- Every instance row carries its type's supertype chain, denormalised into type_name as
- ":Type:Super:Super:" when the row is written (see RepositoryMapper.setUpTypeNameInRow()), and a search
- for a supertype matches against it with "type_name like '%:Super:%'" (see QueryBuilder.getTypeClause()).
- That makes a search for a supertype fast, but it also freezes the hierarchy as it stood when each row was
- written.  When a TypeDefPatch gives a type a new supertype - which is how a type that was defined
- standalone is later brought under a more general one, so that existing instances answer searches for the
- new supertype - the rows already written keep the old chain and stay invisible to exactly the searches the
- patch was meant to make them visible to.  This rewrites them.
- <br><br>
- The rewrite is driven off the distinct chains actually stored rather than off the type system, because the
- patched type may appear in the chain of any number of its own subtypes as well as in its own rows, and
- everything after it in a chain is by definition its supertypes - so replacing the remainder of the chain
- after the patched type's own name is correct wherever the type appears.  Rows whose chain already matches
- are left alone, which is what makes this cheap to run on every server start: on a repository that is
- already correct it issues one small query per table and no updates at all.
- <br><br>
- Every version of a row is rewritten, not just the current one, so that historical (asOfTime) queries see
- the same hierarchy as queries against the present.</div>
 <dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>typeName</code> - the type whose supertypes have changed</dd>
-<dd><code>superTypeChain</code> - the type's new supertypes, outermost last, each followed by a colon - empty if the
-                       type no longer has any</dd>
-<dt>Returns:</dt>
-<dd>number of distinct chains rewritten, across all the instance tables</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database</dd>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code></dd>
 </dl>
 </section>
 </li>
