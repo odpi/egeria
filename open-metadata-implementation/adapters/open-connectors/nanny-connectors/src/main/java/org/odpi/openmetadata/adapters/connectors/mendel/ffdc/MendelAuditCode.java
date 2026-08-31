@@ -251,6 +251,26 @@ public enum MendelAuditCode implements AuditLogMessageSet
                        "No action is required unless there are errors that follow indicating that there were problems shutting down.",
                        "https://egeria-project.org/features/duplicate-management/overview/"),
 
+    /**
+     * MENDEL-DUPLICATE-MANAGER-0017 - The {0} integration connector has retired the duplicate link {1} between {2} and {3} because the elements are no longer a close match
+     */
+    OWN_VALIDATION_WITHDRAWN("MENDEL-DUPLICATE-MANAGER-0017",
+                             AuditLogRecordSeverityLevel.INFO,
+                             "The {0} integration connector has retired the duplicate link {1} between {2} and {3} because the elements are no longer a close match",
+                             "The connector validated this link itself, on the grounds that the two elements were of the same type and shared a qualified name.  That is no longer true, so the grounds have gone and the link is moved to DEPRECATED.  The elements stop being combined on retrieval once neither has a link that is still in force.",
+                             "No action is required.  Review the link if the two elements really are duplicates - a steward can validate it again, and this connector will not overrule that decision.",
+                             "https://egeria-project.org/features/duplicate-management/overview/"),
+
+    /**
+     * MENDEL-DUPLICATE-MANAGER-0018 - The {0} integration connector has retired the duplicate link {1}, and {2} or {3} belongs to a consolidated cluster that now rests on less evidence
+     */
+    CONSOLIDATED_CLUSTER_WEAKENED("MENDEL-DUPLICATE-MANAGER-0018",
+                                  AuditLogRecordSeverityLevel.ACTION,
+                                  "The {0} integration connector has retired the duplicate link {1}, and {2} or {3} belongs to a consolidated cluster that now rests on less evidence",
+                                  "The cluster is not broken up: its members go on being reached through the element that replaced them, and they keep the KnownDuplicate classification that makes that happen.  Only the pairwise evidence behind the cluster has been withdrawn.",
+                                  "Review the cluster.  If its members are still duplicates of each other, nothing needs doing.  If they are not, remove the consolidated element and its ConsolidatedDuplicateLink relationships; the members then stop being combined once none of their duplicate links are live.",
+                                  "https://egeria-project.org/features/duplicate-management/overview/"),
+
     ;
 
     private final String                      logMessageId;

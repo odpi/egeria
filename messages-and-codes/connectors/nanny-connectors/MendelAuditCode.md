@@ -9,7 +9,7 @@ The MendelAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 16 |
+| **Number of messages** | 18 |
 | **Message identifiers begin** | `MENDEL-DUPLICATE-MANAGER-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.mendel.ffdc.MendelAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/nanny-connectors](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors) |
@@ -37,6 +37,8 @@ The MendelAuditCode is used to define the message content for the Audit Log.
 | [MENDEL-DUPLICATE-MANAGER-0009](#mendel-duplicate-manager-0009) | INFO | The {0} integration connector has registered a listener for open metadata events |
 | [MENDEL-DUPLICATE-MANAGER-0010](#mendel-duplicate-manager-0010) | ERROR | The {0} integration connector is unable to register a listener for open metadata events due to a {1} exception with message {2} |
 | [MENDEL-DUPLICATE-MANAGER-0008](#mendel-duplicate-manager-0008) | INFO | The {0} integration connector has stopped managing the duplicates in server {1} on platform {2} and is shutting down |
+| [MENDEL-DUPLICATE-MANAGER-0017](#mendel-duplicate-manager-0017) | INFO | The {0} integration connector has retired the duplicate link {1} between {2} and {3} because the elements are no longer a close match |
+| [MENDEL-DUPLICATE-MANAGER-0018](#mendel-duplicate-manager-0018) | ACTION | The {0} integration connector has retired the duplicate link {1}, and {2} or {3} belongs to a consolidated cluster that now rests on less evidence |
 
 ----
 
@@ -372,6 +374,48 @@ The connector is disconnecting.
 **User action**
 
 No action is required unless there are errors that follow indicating that there were problems shutting down.
+
+
+----
+
+### MENDEL-DUPLICATE-MANAGER-0017
+
+> The {0} integration connector has retired the duplicate link {1} between {2} and {3} because the elements are no longer a close match
+
+|  |  |
+|---|---|
+| **Java constant** | `MendelAuditCode.OWN_VALIDATION_WITHDRAWN` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The connector validated this link itself, on the grounds that the two elements were of the same type and shared a qualified name.  That is no longer true, so the grounds have gone and the link is moved to DEPRECATED.  The elements stop being combined on retrieval once neither has a link that is still in force.
+
+**User action**
+
+No action is required.  Review the link if the two elements really are duplicates - a steward can validate it again, and this connector will not overrule that decision.
+
+
+----
+
+### MENDEL-DUPLICATE-MANAGER-0018
+
+> The {0} integration connector has retired the duplicate link {1}, and {2} or {3} belongs to a consolidated cluster that now rests on less evidence
+
+|  |  |
+|---|---|
+| **Java constant** | `MendelAuditCode.CONSOLIDATED_CLUSTER_WEAKENED` |
+| **Severity** | ACTION - Action is required by the administrator. At a minimum, the situation needs to be investigated and if necessary, corrective action taken. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The cluster is not broken up: its members go on being reached through the element that replaced them, and they keep the KnownDuplicate classification that makes that happen.  Only the pairwise evidence behind the cluster has been withdrawn.
+
+**User action**
+
+Review the cluster.  If its members are still duplicates of each other, nothing needs doing.  If they are not, remove the consolidated element and its ConsolidatedDuplicateLink relationships; the members then stop being combined once none of their duplicate links are live.
 
 
 ----

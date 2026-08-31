@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassifi
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties;
@@ -49,16 +50,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * MendelAutomatedDuplicateManagerConnector manages the duplicate links and classifications that drive the
- * deduplication of open metadata elements on retrieval.  Each refresh makes three passes over the
+ * deduplication of open metadata elements on retrieval.  Each refresh makes four passes over the
  * PeerDuplicateLink relationships in the open metadata ecosystem.
  * <ul>
  *     <li>The links that no steward has ruled on yet - the DISCOVERED, PROPOSED and IMPORTED ones.  Where the
  *     linked elements are a close enough match, the link is moved to VALIDATED and the KnownDuplicate
  *     classification is added to both elements, which is the combination that causes the retrieval processing to
  *     combine them.  The rest are passed to a person appointed to the DuplicateMetadataSteward role via a to do.</li>
- *     <li>The links that a steward has retired - the DEPRECATED and OBSOLETE ones.  The KnownDuplicate
- *     classification is removed from an element once none of its duplicate links are live, so that the element
- *     stops being combined with anything.</li>
+ *     <li>The validated links that this connector decided itself, told apart from a steward's by the userId in
+ *     their updatedBy.  A close match can stop being one - a qualified name is corrected, say - and nothing else
+ *     revisits a validated link, so a link whose grounds have gone is retired.  A steward's decision is never
+ *     reconsidered.</li>
+ *     <li>The links that have been retired - the DEPRECATED and OBSOLETE ones.  The KnownDuplicate
+ *     classification is removed from an element once it is no longer deduplicated by any route - no live peer
+ *     link and no consolidated cluster to be reached through - so that the element stops being combined with
+ *     anything.</li>
  *     <li>The clusters of validated peer duplicates.  Once a cluster reaches the configured size, its members are
  *     consolidated into a single element using the survivorship rules in
  *     {@link MendelDuplicateConsolidator}.</li>
@@ -81,6 +87,25 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
     /**
      * The role that receives the to dos for the duplicates that this connector can not resolve on its own.
      */
+    /*
+     * Recorded in the notes of every link this connector validates itself, so that the grounds for the decision
+     * are on the link rather than only in this code.
+     */
+    private static final String closeMatchExplanation =
+            "Validated automatically: the two elements are of exactly the same type, that type is a Referenceable, " +
+                    "and they have the same qualifiedName - so they describe the same thing.  A pairing that does not " +
+                    "meet all three tests is referred to a steward instead.";
+
+    /*
+     * Recorded in the notes of every link this connector withdraws, replacing the grounds it recorded when it
+     * validated the link.
+     */
+    private static final String withdrawnExplanation =
+            "Withdrawn automatically: this connector validated the link because the two elements were of exactly " +
+                    "the same type, that type is a Referenceable, and they had the same qualifiedName.  That is no " +
+                    "longer true, so the grounds for the decision have gone.  A steward who believes the elements are " +
+                    "duplicates can validate the link again; this connector reconsiders only its own decisions.";
+
     private static final String stewardRoleName          = "DuplicateMetadataSteward";
     private static final String stewardRoleQualifiedName = OpenMetadataType.PERSON_ROLE.typeName + "::" + stewardRoleName;
     private static final String stewardRoleDescription   = "Decides whether elements that have been detected as potential duplicates " +
@@ -165,6 +190,7 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
             if (! duplicateLinks.isEmpty())
             {
                 this.reviewUndecidedLinks(duplicateLinks);
+                this.reconsiderOwnValidations(duplicateLinks);
                 this.removeRetiredClassifications(duplicateLinks);
                 this.consolidateValidatedClusters(duplicateLinks);
             }
@@ -534,9 +560,36 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
         OpenMetadataStore            openMetadataStore            = integrationContext.getOpenMetadataStore();
         ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
+        /*
+         * The status is what the retrieval processing acts on.  The rest is for whoever reads the link later:
+         * a steward looking at a pair of combined elements can see that the decision was this connector's
+         * rather than a person's, and on what grounds - which is the difference between a decision that can be
+         * revisited mechanically and one that cannot.  The steward is recorded as this connector's own userId,
+         * which is also what lands in the link's updatedBy.
+         */
         ElementProperties properties = propertyHelper.addIntProperty(null,
                                                                      OpenMetadataProperty.STATUS_IDENTIFIER.name,
                                                                      StatusIdentifier.VALIDATED.getOrdinal());
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                       OpenMetadataProperty.STEWARD.name,
+                                                       integrationContext.getMyUserId());
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                       OpenMetadataProperty.STEWARD_TYPE_NAME.name,
+                                                       OpenMetadataType.USER_IDENTITY.typeName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                       OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
+                                                       OpenMetadataProperty.USER_ID.name);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                       OpenMetadataProperty.SOURCE.name,
+                                                       connectorName);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                       OpenMetadataProperty.NOTES.name,
+                                                       closeMatchExplanation);
 
         UpdateOptions updateOptions = openMetadataStore.getUpdateOptions(true);
 
@@ -645,14 +698,210 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
 
 
     /* ==============================================================================
-     * Pass two - the duplicate links that a steward has retired.
+     * Pass two - the links this connector validated itself, whose grounds may since have gone.
      */
 
 
     /**
-     * Remove the KnownDuplicate classification from the elements whose duplicate links have all been retired.
-     * The classification is only removed when none of the element's other duplicate links are live, because a
-     * single live link is enough to mean the element is still combined with something.
+     * Withdraw the validations this connector made itself where the grounds for them no longer hold.
+     * <p>
+     * A close match is validated automatically, and from then on the two elements are combined on retrieval.  The
+     * grounds can disappear afterwards - the usual way is a qualified name being corrected, which is what a pair
+     * that only ever shared a name by mistake looks like once the mistake is fixed.  Nothing else revisits a
+     * validated link, so without this the two elements stay combined for ever on the strength of a match that no
+     * longer exists.
+     * <p>
+     * Only this connector's own validations are reconsidered.  A steward's decision is a judgement this connector
+     * is not entitled to overturn - a steward may well validate a pair that was never a close match, and that is
+     * the normal case rather than an exception.  The two are told apart by the link's updatedBy: this connector
+     * writes the link under its own userId, so a link updated by anyone else was ruled on by somebody else.
+     * <p>
+     * The link is moved to DEPRECATED rather than deleted, which leaves the decision visible and reversible: a
+     * steward can see what was withdrawn and why, and validate it again if the pair really are duplicates.  The
+     * KnownDuplicate classifications are not touched here - removeRetiredClassifications() takes them off once
+     * the element is no longer deduplicated by any route, which is the same rule that applies when a steward
+     * retires a link.
+     * <p>
+     * An element that has been consolidated is not a special case here.  Retiring the link records that the
+     * pairwise evidence has gone; it does not break up the cluster, because the members go on being reached
+     * through the element that replaced them until a steward removes the consolidation.  A message is raised so
+     * that the steward knows the cluster now rests on less than it did.
+     *
+     * @param duplicateLinks all of the duplicate links in the open metadata ecosystem
+     */
+    private void reconsiderOwnValidations(List<OpenMetadataRelationship> duplicateLinks)
+    {
+        final String methodName = "reconsiderOwnValidations";
+
+        for (OpenMetadataRelationship duplicateLink : duplicateLinks)
+        {
+            if (this.getStatusIdentifier(duplicateLink) != StatusIdentifier.VALIDATED.getOrdinal())
+            {
+                continue;
+            }
+
+            if (! this.isOwnValidation(duplicateLink))
+            {
+                continue;
+            }
+
+            OpenMetadataElementStub endOne = duplicateLink.getElementAtEnd1();
+            OpenMetadataElementStub endTwo = duplicateLink.getElementAtEnd2();
+
+            if ((endOne == null) || (endTwo == null))
+            {
+                continue;
+            }
+
+            if (this.isCloseMatch(endOne, endOne.getUniqueName(), endTwo, endTwo.getUniqueName()))
+            {
+                /*
+                 * The grounds still hold.
+                 */
+                continue;
+            }
+
+            try
+            {
+                this.retireDuplicateLink(duplicateLink);
+
+                auditLog.logMessage(methodName,
+                                    MendelAuditCode.OWN_VALIDATION_WITHDRAWN.getMessageDefinition(connectorName,
+                                                                                                   duplicateLink.getRelationshipGUID(),
+                                                                                                   endOne.getGUID(),
+                                                                                                   endTwo.getGUID()));
+
+                /*
+                 * Retiring the link does not break up a consolidated cluster - the members go on being reached
+                 * through the element that replaced them - but the evidence that justified the cluster has just
+                 * become weaker, and only a steward can decide what that means for it.
+                 */
+                if (this.isConsolidated(endOne) || this.isConsolidated(endTwo))
+                {
+                    auditLog.logMessage(methodName,
+                                        MendelAuditCode.CONSOLIDATED_CLUSTER_WEAKENED.getMessageDefinition(connectorName,
+                                                                                                            duplicateLink.getRelationshipGUID(),
+                                                                                                            endOne.getGUID(),
+                                                                                                            endTwo.getGUID()));
+                }
+            }
+            catch (Exception error)
+            {
+                /*
+                 * One duplicate link that can not be processed must not stop the rest being reconsidered.
+                 */
+                auditLog.logException(methodName,
+                                      MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                error.getClass().getName(),
+                                                                                                methodName,
+                                                                                                error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
+    /**
+     * Determine whether this connector was the one that last ruled on a duplicate link.  The connector writes its
+     * decisions under its own userId, so that is what updatedBy holds for a link it validated - and anything else
+     * means a steward, or another service, has had the last word on it.
+     * <p>
+     * A link that has never been updated is not this connector's: it is a detected link that nothing has ruled on,
+     * and this pass only looks at validated ones anyway.
+     *
+     * @param duplicateLink the duplicate link
+     * @return flag - true means this connector made the decision that stands on this link
+     */
+    private boolean isOwnValidation(OpenMetadataRelationship duplicateLink)
+    {
+        if ((duplicateLink.getVersions() == null) || (duplicateLink.getVersions().getUpdatedBy() == null))
+        {
+            return false;
+        }
+
+        return duplicateLink.getVersions().getUpdatedBy().equals(integrationContext.getMyUserId());
+    }
+
+
+    /**
+     * Determine whether an element has been consolidated - that is, whether a consolidated element has been created
+     * to stand for the cluster this element belongs to.  The members of a cluster do not carry a classification
+     * saying so; what they carry is a ConsolidatedDuplicateLink to the element that replaced them.
+     *
+     * @param element element to test
+     * @return flag - true means the element belongs to a consolidated cluster
+     * @throws Exception the retrieval failed - reported by the caller
+     */
+    private boolean isConsolidated(OpenMetadataElementStub element) throws Exception
+    {
+        OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+
+        RelatedMetadataElementList consolidatedLinks = openMetadataStore.getRelatedMetadataElements(element.getGUID(),
+                                                                                                    0,
+                                                                                                    OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK.typeName,
+                                                                                                    this.getRawQueryOptions(0));
+
+        return (consolidatedLinks != null) &&
+                       (consolidatedLinks.getElementList() != null) &&
+                       (! consolidatedLinks.getElementList().isEmpty());
+    }
+
+
+    /**
+     * Move a duplicate link to DEPRECATED, and record the reason on the link.
+     * <p>
+     * The status is also written back onto the copy of the link that this refresh is working from, so that the
+     * passes that follow - the one that strips the classifications from elements whose links are all retired, and
+     * the one that builds clusters out of the validated links - see the decision that has just been made rather
+     * than the state the link was retrieved in.
+     *
+     * @param duplicateLink the duplicate link to retire
+     * @throws Exception the update failed - reported by the caller
+     */
+    private void retireDuplicateLink(OpenMetadataRelationship duplicateLink) throws Exception
+    {
+        OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+
+        ElementProperties properties = propertyHelper.addIntProperty(null,
+                                                                     OpenMetadataProperty.STATUS_IDENTIFIER.name,
+                                                                     StatusIdentifier.DEPRECATED.getOrdinal());
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                       OpenMetadataProperty.NOTES.name,
+                                                       withdrawnExplanation);
+
+        UpdateOptions updateOptions = openMetadataStore.getUpdateOptions(true);
+
+        updateOptions.setForDuplicateProcessing(true);
+
+        this.setOwningMetadataCollection(updateOptions, duplicateLink);
+
+        openMetadataStore.updateRelatedElementsInStore(duplicateLink.getRelationshipGUID(), updateOptions, properties);
+
+        duplicateLink.setRelationshipProperties(propertyHelper.addIntProperty(duplicateLink.getRelationshipProperties(),
+                                                                              OpenMetadataProperty.STATUS_IDENTIFIER.name,
+                                                                              StatusIdentifier.DEPRECATED.getOrdinal()));
+    }
+
+
+    /* ==============================================================================
+     * Pass three - the duplicate links that a steward has retired.
+     */
+
+
+    /**
+     * Remove the KnownDuplicate classification from the elements that are no longer combined with anything.
+     * <p>
+     * The classification is what the retrieval processing gates all of its deduplication on - both the peer
+     * duplicates and, for an element that has been consolidated, the redirect to the element that replaced its
+     * cluster.  So it may only come off an element that is not deduplicated by either route: no live
+     * PeerDuplicateLink, and no ConsolidatedDuplicateLink.
+     * <p>
+     * Taking it off an element that still has a ConsolidatedDuplicateLink would silently detach that element from
+     * its consolidated cluster - it would start returning itself while the rest of the cluster still returned the
+     * consolidated element, which continues to carry the content merged from it.  Whether a cluster should be
+     * broken up is a steward's decision, made by removing the consolidation, not a side effect of retiring the
+     * pairwise evidence that first justified it.
      *
      * @param duplicateLinks all of the duplicate links in the open metadata ecosystem
      */
@@ -690,6 +939,15 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
             {
                 try
                 {
+                    if (this.isConsolidated(candidateElement))
+                    {
+                        /*
+                         * The element is still reached through its consolidated cluster, so it is still a duplicate
+                         * of something even though none of its peer links are live.
+                         */
+                        continue;
+                    }
+
                     ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
                     MetadataSourceOptions metadataSourceOptions = classificationExplorerClient.getMetadataSourceOptions();
@@ -719,7 +977,7 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
 
 
     /* ==============================================================================
-     * Pass three - the clusters of validated peer duplicates.
+     * Pass four - the clusters of validated peer duplicates.
      */
 
 

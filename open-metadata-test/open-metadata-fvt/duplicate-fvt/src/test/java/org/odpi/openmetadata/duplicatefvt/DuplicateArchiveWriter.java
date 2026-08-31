@@ -51,14 +51,24 @@ import java.util.List;
  *     <li><b>Set 4 - validated cluster</b>: three elements sharing a qualified name, already linked with
  *     VALIDATED links and classified as KnownDuplicate.  The repository handler combines these on retrieval,
  *     and Mendel consolidates them once the cluster reaches its configured size.</li>
+ *     <li><b>Set 8 - withdrawn</b>: two elements sharing a qualified name with a DISCOVERED link, like set 2.
+ *     The test corrects one of the names after Mendel has validated the pair, so that the grounds for the
+ *     connector's own decision disappear and it has to withdraw it.</li>
+ *     <li><b>Set 9 - held cluster</b>: three elements already validated, so the first refresh consolidates
+ *     them.  The test then retires the link holding the third member on, which leaves a consolidated member
+ *     with no live peer link - the case where the KnownDuplicate classification has to stay put.</li>
  *     <li><b>Set 5 - retired</b>: two elements classified as KnownDuplicate whose only link has been
  *     DEPRECATED by a steward.  Mendel removes the classifications.</li>
  * </ul>
  */
 class DuplicateArchiveWriter extends OMRSArchiveWriter
 {
-    private static final String ARCHIVE_GUID        = "e4d5a5da-9d3b-4a5b-9e08-6de5e42f5f5e";
-    private static final String ARCHIVE_NAME        = "DuplicateFvtArchive";
+    /*
+     * Package visible: the fixture instances are owned by this archive, so a test that changes one has to name
+     * it as the external source of the change.  See DuplicateFvtTestSupport.archiveOwnedUpdateOptions().
+     */
+    static final String ARCHIVE_GUID        = "e4d5a5da-9d3b-4a5b-9e08-6de5e42f5f5e";
+    static final String ARCHIVE_NAME        = "DuplicateFvtArchive";
     private static final String ARCHIVE_DESCRIPTION = "Elements that deliberately share a qualified name, used by the duplicate-fvt test suite.";
     private static final String ORIGINATOR_NAME     = "Egeria duplicate-fvt";
     private static final String ARCHIVE_VERSION     = "1.0";
@@ -128,6 +138,8 @@ class DuplicateArchiveWriter extends OMRSArchiveWriter
         this.addValidatedCluster();
         this.addSmallValidatedCluster();
         this.addRetiredPair();
+        this.addWithdrawnPair();
+        this.addConsolidatedRetirementCluster();
 
         File parentDirectory = archiveFile.getParentFile();
 
@@ -242,6 +254,49 @@ class DuplicateArchiveWriter extends OMRSArchiveWriter
         EntityDetail elementTwo = this.addElement(DuplicateFvtTestSupport.RETIRED_GUID_TWO, DuplicateFvtTestSupport.RETIRED_QUALIFIED_NAME_TWO, "Retired duplicate 2", true);
 
         this.addDuplicateLink(DuplicateFvtTestSupport.RETIRED_LINK_GUID, elementOne, elementTwo, StatusIdentifier.DEPRECATED.getOrdinal());
+    }
+
+
+    /**
+     * Set 8 - two elements sharing a qualified name, linked as discovered duplicates.  Identical to set 2 in
+     * the archive, and it starts the same way: Mendel validates the pair on the first refresh.  What makes it
+     * a different fixture is what the test then does to it - one of the names is corrected, which takes away
+     * the grounds Mendel decided on, and the connector has to notice on its next refresh.
+     * <p>
+     * It is a separate set from the close match pair because that one has to stay validated for the test that
+     * checks validation, and because two elements cannot both keep and lose a shared name.
+     */
+    private void addWithdrawnPair()
+    {
+        EntityDetail elementOne = this.addElement(DuplicateFvtTestSupport.WITHDRAWN_GUID_ONE, DuplicateFvtTestSupport.WITHDRAWN_QUALIFIED_NAME, "Withdrawn match 1", false);
+        EntityDetail elementTwo = this.addElement(DuplicateFvtTestSupport.WITHDRAWN_GUID_TWO, DuplicateFvtTestSupport.WITHDRAWN_QUALIFIED_NAME, "Withdrawn match 2", false);
+
+        this.addDuplicateLink(DuplicateFvtTestSupport.WITHDRAWN_LINK_GUID, elementOne, elementTwo, StatusIdentifier.DISCOVERED.getOrdinal());
+    }
+
+
+    /**
+     * Set 9 - three elements that a steward has already confirmed are the same thing, so that the first
+     * refresh consolidates them.  The test then retires the link that holds the third member on, leaving that
+     * member with no live peer link but still part of a consolidated cluster.
+     * <p>
+     * That is the state in which the KnownDuplicate classification must stay put: it is what the retrieval
+     * processing gates on before it follows the ConsolidatedDuplicateLink, so taking it off would detach this
+     * one member from a cluster the other members are still in.  A separate set from set 4, because breaking
+     * a link in that one would stop it being the stable consolidated cluster the other tests read.
+     */
+    private void addConsolidatedRetirementCluster()
+    {
+        EntityDetail elementOne   = this.addElement(DuplicateFvtTestSupport.HELD_CLUSTER_GUID_ONE, DuplicateFvtTestSupport.HELD_CLUSTER_QUALIFIED_NAME, "Held cluster member 1", true);
+        EntityDetail elementTwo   = this.addElement(DuplicateFvtTestSupport.HELD_CLUSTER_GUID_TWO, DuplicateFvtTestSupport.HELD_CLUSTER_QUALIFIED_NAME, "Held cluster member 2", true);
+        EntityDetail elementThree = this.addElement(DuplicateFvtTestSupport.HELD_CLUSTER_GUID_THREE, DuplicateFvtTestSupport.HELD_CLUSTER_QUALIFIED_NAME, "Held cluster member 3", true);
+
+        /*
+         * A chain, so that retiring the second link is enough to leave member three with no live peer link
+         * while members one and two still have each other.
+         */
+        this.addDuplicateLink(DuplicateFvtTestSupport.HELD_CLUSTER_LINK_GUID_ONE, elementOne, elementTwo, StatusIdentifier.VALIDATED.getOrdinal());
+        this.addDuplicateLink(DuplicateFvtTestSupport.HELD_CLUSTER_LINK_GUID_TWO, elementTwo, elementThree, StatusIdentifier.VALIDATED.getOrdinal());
     }
 
 

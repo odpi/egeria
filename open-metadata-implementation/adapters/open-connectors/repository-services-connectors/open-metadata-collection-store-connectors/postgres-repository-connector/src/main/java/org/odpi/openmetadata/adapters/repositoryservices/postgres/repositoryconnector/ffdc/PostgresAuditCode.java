@@ -70,6 +70,26 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                        "Check that this is the intended value.  Typically it is only changed from its default value of read-write for situations where you do not want any changes to be made to the metadata in the repository.",
                        "https://egeria-project.org/concepts/repository-connector/"),
 
+    /**
+     * POSTGRES-REPOSITORY-CONNECTOR-0009 - The PostgreSQL repository connector {0} has brought {1} stored supertype chain(s) into line with the current open metadata types
+     */
+    SUPERTYPE_CHAINS_REPAIRED("POSTGRES-REPOSITORY-CONNECTOR-0009",
+                              AuditLogRecordSeverityLevel.STARTUP,
+                              "The PostgreSQL repository connector {0} has brought {1} stored supertype chain(s) into line with the current open metadata types",
+                              "Each instance carries its type's supertype chain, written when the instance was stored, and searches for a supertype are answered from it.  Instances written before a type was moved in the hierarchy still held the hierarchy as it used to be, so they did not answer searches for the type's new supertypes.  They have been rewritten and now do.",
+                              "No action is required.  This message is expected the first time a server starts after a type has been given a new supertype, and is not issued by a repository that is already up to date.",
+                              "https://egeria-project.org/concepts/repository-connector/"),
+
+    /**
+     * POSTGRES-REPOSITORY-CONNECTOR-0010 - The PostgreSQL repository connector {0} could not check its stored supertype chains; the {1} exception was: {2}
+     */
+    SUPERTYPE_CHAIN_CHECK_FAILED("POSTGRES-REPOSITORY-CONNECTOR-0010",
+                                 AuditLogRecordSeverityLevel.ERROR,
+                                 "The PostgreSQL repository connector {0} could not check its stored supertype chains; the {1} exception was: {2}",
+                                 "The server continues to start.  Any instance whose stored supertype chain is out of date stays invisible to searches for the supertypes it gained, until a later start completes this check.",
+                                 "Use the details in the message to work out why the repository could not be read or written, then restart the server.",
+                                 "https://egeria-project.org/concepts/repository-connector/"),
+
     ;
 
     private final String                      logMessageId;

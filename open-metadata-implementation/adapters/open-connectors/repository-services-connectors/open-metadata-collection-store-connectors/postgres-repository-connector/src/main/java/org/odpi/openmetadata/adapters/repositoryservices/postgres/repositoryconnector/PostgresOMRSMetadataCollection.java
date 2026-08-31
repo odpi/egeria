@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector;
 
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSDynamicTypeMetadataCollectionBase;
@@ -73,6 +74,58 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                              isReadOnly,
                                                              defaultAsOfTime,
                                                              jdbcResourceConnector);
+    }
+
+
+    /**
+     * Bring the stored supertype chains into line with the type system.
+     * <br><br>
+     * This repository writes each instance's supertype chain onto the instance and answers searches for a
+     * supertype from what it wrote, so a type that has moved in the hierarchy since an instance was stored
+     * leaves that instance answering for the hierarchy as it used to be.  The chains are checked - and rewritten
+     * where they are wrong - at every server start, once the types are loaded.
+     * <br><br>
+     * The check is driven off the difference between the chains that are stored and the chains the type system
+     * now describes, so it needs no record of which types have moved.  {@link #updateTypeDef} repairs the type
+     * a patch has just moved, which covers the server that applies the patch; this covers every other case -
+     * a repository that applied the patch under a build without the repair in it, instances that arrived from a
+     * cohort member on a different level of the types, or a restored dump.  The patch route cannot: a patch is
+     * applied only while the repository is still on the version it applies to, so once applied it never runs
+     * again.
+     * <br><br>
+     * A failure here is reported and swallowed.  A repository that cannot check itself is a repository whose
+     * searches for recently moved supertypes may be incomplete, which is worth reporting - but it is not a
+     * reason to refuse to start a server that otherwise works.
+     *
+     * @param userId unique identifier for requesting server
+     */
+    @Override
+    public void verifyStoredTypeHierarchy(String userId)
+    {
+        final String methodName = "verifyStoredTypeHierarchy";
+
+        try
+        {
+            int repairCount = repositoryStore.repairSuperTypeChains();
+
+            if ((repairCount > 0) && (auditLog != null))
+            {
+                auditLog.logMessage(methodName,
+                                    PostgresAuditCode.SUPERTYPE_CHAINS_REPAIRED.getMessageDefinition(repositoryName,
+                                                                                                      Integer.toString(repairCount)));
+            }
+        }
+        catch (Exception error)
+        {
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      PostgresAuditCode.SUPERTYPE_CHAIN_CHECK_FAILED.getMessageDefinition(repositoryName,
+                                                                                                           error.getClass().getName(),
+                                                                                                           error.getMessage()),
+                                      error);
+            }
+        }
     }
 
 
