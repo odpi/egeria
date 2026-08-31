@@ -6,6 +6,8 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.odpi.openmetadata.adminservices.client.ConformanceTestServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.MetadataAccessStoreConfigurationClient;
+import org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryConformanceWorkbenchConfig;
 import org.odpi.openmetadata.platformchassis.springboot.OMAGServerPlatform;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
@@ -98,6 +100,37 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      * Pinning the id means the server rejoins as itself every time.
      */
     private static final String CTS_METADATA_COLLECTION_ID = REPOSITORY_KIND.getCtsMetadataCollectionId();
+
+    /**
+     * Fixed local server ids for the two servers.
+     * <br>
+     * These are not cosmetic either, and what they fix is a race rather than an identity clash.  A server's
+     * local server id is its Apache Kafka {@code group.id}, and the platform generates a fresh UUID for it
+     * whenever the configuration document does not name one - which, because this harness clears the
+     * configuration at the start of every run, used to mean a brand new consumer group every time.  Kafka
+     * gives a group it has never seen before {@code auto.offset.reset=latest}, and nothing in Egeria sets
+     * that property, so such a consumer starts reading at the *end* of the topic.
+     * <br>
+     * The conformance test server is started first and asks the cohort for registration information
+     * exactly once ({@code OMRS-AUDIT-0062}).  If the technology under test publishes its registration
+     * before that consumer has been assigned its partition - a window of a second or two - the conformance
+     * server reads past it and never learns the technology under test exists.  The workbench then waits for
+     * a member that has, as far as it is concerned, never registered, and the run fails at the start-up
+     * timeout having recorded no test cases at all.  It is a genuine coin toss: the two repositories were
+     * run in turn on the same machine and the in-memory run won the race while the PostgreSQL run lost it.
+     * <br>
+     * Pinning the ids makes the consumer group survive across runs, so from the second run onwards it has a
+     * committed offset to resume from and the registration cannot be skipped.  The first run against a
+     * cohort whose topics do not yet exist still races; re-running it is enough.
+     */
+    private static final String TUT_SERVER_ID = REPOSITORY_KIND.getTutServerId();
+
+    /**
+     * The conformance test server's fixed local server id - see {@link #TUT_SERVER_ID}.  This is the one
+     * that matters most, because this is the server whose consumer has to have joined before the other
+     * server registers.
+     */
+    private static final String CTS_SERVER_ID = REPOSITORY_KIND.getCtsServerId();
 
     /**
      * The open metadata type definitions.  The technology under test needs the types loaded before the
@@ -462,11 +495,20 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         configurationClient.clearOMAGServerConfig();
 
         configurationClient.setServerUserId(USER_ID);
+        /*
+         * Unlike the sibling FVT suites, the secrets store named here is not just something
+         * setBasicServerProperties insists on: it is read.  A server that has one gets a secrets store
+         * connection embedded into every remote cohort member's connection by
+         * OMRSEnterpriseConnectorManager before a connector is built for it, so it is on the path the
+         * workbench takes to reach the technology under test - and it is the path the defect described in
+         * this module's README was found on.  It therefore names a file that exists; see
+         * ctsFvtSecretsStore in application.properties.
+         */
         configurationClient.setBasicServerProperties("Egeria cts-fvt conformance test server",
                                                      "Runs the repository workbench against " + TUT_SERVER_NAME + ".",
                                                      USER_ID,
                                                      "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider",
-                                                     "build/cts-fvt-data/secrets.omsecrets",
+                                                     "~{ctsFvtSecretsStore}~",
                                                      "cts-fvt",
                                                      platformURLRoot,
                                                      100);
@@ -555,6 +597,34 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
          * collection id can only be pinned afterwards.
          */
         configurationClient.setLocalMetadataCollectionId(CTS_METADATA_COLLECTION_ID);
+
+        pinLocalServerId(configurationClient, CTS_SERVER_ID);
+    }
+
+
+    /**
+     * Pin a server's local server id, so that the Apache Kafka consumer group it uses for the cohort
+     * topics is the same one from run to run.
+     * <br>
+     * There is no administration services call for this - the id is a field of the configuration document
+     * that the platform fills in with a random UUID on first start up if it is still null - so the
+     * document is read back, stamped and written again.  That is safe to do here: the configuration
+     * document is returned to a client unresolved, with its {@code ~{...}~} placeholders still in it
+     * (placeholders are resolved on the start-up path, into a copy), so writing it back does not freeze
+     * this run's values into it.
+     *
+     * @param configurationClient client for the server being configured
+     * @param localServerId the id to pin
+     * @throws Exception any problem configuring the server is fatal to the whole run
+     */
+    private void pinLocalServerId(OMAGServerConfigurationClient configurationClient,
+                                  String                        localServerId) throws Exception
+    {
+        OMAGServerConfig serverConfig = configurationClient.getOMAGServerConfig();
+
+        serverConfig.setLocalServerId(localServerId);
+
+        configurationClient.setOMAGServerConfig(serverConfig);
     }
 
 
@@ -586,7 +656,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                                                      REPOSITORY_KIND.getTutServerDescription(),
                                                      USER_ID,
                                                      "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider",
-                                                     "build/cts-fvt-data/secrets.omsecrets",
+                                                     "~{ctsFvtSecretsStore}~",
                                                      "cts-fvt",
                                                      platformURLRoot,
                                                      100);
@@ -631,6 +701,8 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
         configurationClient.addStartUpOpenMetadataArchiveFile(typesArchive.getAbsolutePath());
         configurationClient.setLocalMetadataCollectionId(TUT_METADATA_COLLECTION_ID);
+
+        pinLocalServerId(configurationClient, TUT_SERVER_ID);
     }
 
 
