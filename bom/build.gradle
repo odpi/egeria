@@ -43,7 +43,6 @@ ext {
     logbackVersion = '1.6.3'
     lettuceVersion = '7.7.0.RELEASE'
     openlineageVersion = '1.52.0'
-    plexusVersion = '4.1.0'
     postgresVersion = '42.7.13' // already there
     nettyVersion = '4.2.17.Final'
     prometheusVersion = '1.17.1'
@@ -102,7 +101,6 @@ dependencies {
         // jakarta.annotation-api, and the capability rules applied in the root build.gradle now resolve
         // that conflict in favour of jakarta.annotation-api - so tomcat-annotations-api is off every
         // classpath in this build.
-        api("org.codehaus.plexus:plexus-utils:${plexusVersion}")
         api("org.duckdb:duckdb_jdbc:${duckdbJdbcVersion}")
         api("org.postgresql:postgresql:${postgresVersion}")
         api("jakarta.servlet:jakarta.servlet-api:${jakartaServletVersion}")
