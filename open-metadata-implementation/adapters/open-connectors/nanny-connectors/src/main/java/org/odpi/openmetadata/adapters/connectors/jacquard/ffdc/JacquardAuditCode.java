@@ -191,6 +191,16 @@ public enum JacquardAuditCode implements AuditLogMessageSet
                                    "No action is required beyond patience as this process can take 10+ minutes depending on how many digital products you have.  This message is to indicate that Jacquard has embarked on a potentially large piece of work.",
                                    "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
+    /**
+     * JACQUARD-HARVESTER-0024 - The {0} integration connector has linked its solution component {1} ({2}) to the equivalent solution component {3} as a validated duplicate
+     */
+    LINKING_DUPLICATE_SOLUTION_COMPONENTS("JACQUARD-HARVESTER-0024",
+                                          AuditLogRecordSeverityLevel.INFO,
+                                          "The {0} integration connector has linked its solution component {1} ({2}) to the equivalent solution component {3} as a validated duplicate",
+                                          "The connector has found another solution component with the same display name as one of its own solution components.  The two components are linked with a validated PeerDuplicateLink relationship and both are classified as KnownDuplicate so that the retrieval processing combines them.",
+                                          "No action is required.  This message is for monitoring the alignment of the Open Metadata Digital Product Catalog's solution blueprint with the solution components supplied by the content packs.",
+                                          "https://egeria-project.org/features/duplicate-management/overview/"),
+
     ;
 
     private final String                      logMessageId;

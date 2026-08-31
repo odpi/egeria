@@ -29,6 +29,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
@@ -63,8 +64,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.Soluti
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -3014,6 +3019,27 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         String blueprintGUID = findSolutionBlueprint(ProductSolutionBlueprint.ALL, newElementOptions);
 
+        SolutionComponentClient solutionComponentClient = integrationContext.getSolutionComponentClient();
+        Map<String, String>     qualifiedNameToGUIDMap  = new HashMap<>();
+
+        /*
+         * Once this connector's solution components are linked as duplicates of the equivalent components from the
+         * content packs, every request that names one of them has to set forDuplicateProcessing.  Without it, the
+         * request is resolved to the surviving element of the duplicate cluster, and this connector ends up
+         * maintaining the content pack's component rather than its own.
+         */
+        QueryOptions componentQueryOptions = solutionComponentClient.getQueryOptions();
+
+        componentQueryOptions.setForDuplicateProcessing(true);
+
+        UpdateOptions componentUpdateOptions = solutionComponentClient.getUpdateOptions(true);
+
+        componentUpdateOptions.setForDuplicateProcessing(true);
+
+        MakeAnchorOptions componentLinkOptions = new MakeAnchorOptions(solutionComponentClient.getMetadataSourceOptions());
+
+        componentLinkOptions.setForDuplicateProcessing(true);
+
         if (blueprintGUID != null)
         {
             /*
@@ -3025,8 +3051,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
             newElementOptions.setParentAtEnd1(true);
 
-            SolutionComponentClient solutionComponentClient = integrationContext.getSolutionComponentClient();
-            Map<String, String>     qualifiedNameToGUIDMap  = new HashMap<>();
             Set<String> newSolutionComponentQNames = new HashSet<>();
 
             /*
@@ -3053,7 +3077,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 /*
                  * Has the component already been defined?
                  */
-                List<OpenMetadataRootElement> solutionComponents = solutionComponentClient.getSolutionComponentsByName(componentQualifiedName, null);
+                List<OpenMetadataRootElement> solutionComponents = solutionComponentClient.getSolutionComponentsByName(componentQualifiedName, componentQueryOptions);
 
                 if (solutionComponents != null)
                 {
@@ -3065,7 +3089,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                              * Component already exists
                              */
                             componentGUID = solutionComponent.getElementHeader().getGUID();
-                            solutionComponentClient.updateSolutionComponent(componentGUID, solutionComponentClient.getUpdateOptions(true), solutionComponentProperties);
+                            solutionComponentClient.updateSolutionComponent(componentGUID, componentUpdateOptions, solutionComponentProperties);
                             break;
                         }
                     }
@@ -3110,7 +3134,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
                     solutionComponentClient.linkSolutionLinkingWire(qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent1().getQualifiedName()),
                                                                     qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent2().getQualifiedName()),
-                                                                    new MakeAnchorOptions(solutionComponentClient.getMetadataSourceOptions()),
+                                                                    componentLinkOptions,
                                                                     solutionLinkingWireProperties);
 
                     auditLog.logMessage(methodName,
@@ -3135,7 +3159,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
                 solutionComponentClient.linkSolutionComponentActor(productRoles.get(solutionComponentActor.getSolutionRole().getQualifiedName()),
                                                                    qualifiedNameToGUIDMap.get(solutionComponentActor.getSolutionComponent().getQualifiedName()),
-                                                                   new MakeAnchorOptions(solutionComponentClient.getMetadataSourceOptions()),
+                                                                   componentLinkOptions,
                                                                    solutionComponentActorProperties);
 
                 auditLog.logMessage(methodName,
@@ -3170,7 +3194,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                         {
                             collectionClient.addToCollection(nestedBlueprintGUID,
                                                              qualifiedNameToGUIDMap.get(solutionComponentDefinition.getQualifiedName()),
-                                                             null,
+                                                             componentLinkOptions,
                                                              null);
                         }
                     }
@@ -3189,7 +3213,256 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             }
         }
 
+        /*
+         * The solution components described by the content packs cover the same components as this connector's
+         * blueprint.  They are linked as duplicates so that the retrieval processing combines them.  This runs on
+         * every start - including the starts where the blueprint was already in the repository - because the
+         * blueprint may well have been created by a build that did not have this processing in it.
+         */
+        this.linkDuplicateSolutionComponents(qualifiedNameToGUIDMap, componentQueryOptions);
+
         return blueprintGUID;
+    }
+
+
+    /**
+     * Link the solution components created by this connector to the equivalent solution components that come from
+     * the content packs.  Two solution components are equivalent if they have the same display name.  Each pairing
+     * is described by a PeerDuplicateLink relationship with a status identifier of VALIDATED, and both ends are
+     * classified as a KnownDuplicate.  Both the relationship and the classifications are needed before the retrieval
+     * processing combines the components.  Any of these that are already in place are left alone.
+     *
+     * @param qualifiedNameToGUIDMap map of this connector's solution component qualified names to their unique
+     *                               identifiers - a component that is missing from the map is identified by its
+     *                               qualified name
+     * @param queryOptions options for retrieving the components - must have forDuplicateProcessing set
+     */
+    private void linkDuplicateSolutionComponents(Map<String, String> qualifiedNameToGUIDMap,
+                                                 QueryOptions        queryOptions)
+    {
+        final String methodName = "linkDuplicateSolutionComponents";
+
+        SolutionComponentClient      solutionComponentClient      = integrationContext.getSolutionComponentClient();
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+
+        for (ProductSolutionComponent solutionComponentDefinition : ProductSolutionComponent.values())
+        {
+            /*
+             * Pairing up the duplicates is housekeeping that runs alongside the product catalog.  A component that
+             * cannot be paired up is reported and skipped: the rest of the components are still processed, and the
+             * catalog is still built.
+             */
+            try
+            {
+                List<OpenMetadataRootElement> matchingComponents = solutionComponentClient.getSolutionComponentsByName(solutionComponentDefinition.getDisplayName(),
+                                                                                                                       queryOptions);
+
+                if (matchingComponents == null)
+                {
+                    continue;
+                }
+
+                /*
+                 * Separate this connector's component from its peers.  The map holds the components that this start
+                 * created or refreshed; the qualified name identifies the component on the starts where the blueprint
+                 * was already in the repository - typically because it was built by an earlier release of this
+                 * connector.  The query also matches on qualifiedName and identifier, so only the components whose
+                 * display name matches are duplicates.
+                 */
+                String                        mappedComponentGUID         = qualifiedNameToGUIDMap.get(solutionComponentDefinition.getQualifiedName());
+                String                        jacquardComponentGUID       = null;
+                ElementHeader                 jacquardComponentHeader     = null;
+                List<OpenMetadataRootElement> peerComponents              = new ArrayList<>();
+                boolean                       jacquardComponentClassified = false;
+
+                for (OpenMetadataRootElement matchingComponent : matchingComponents)
+                {
+                    if ((matchingComponent != null) &&
+                            (matchingComponent.getElementHeader() != null) &&
+                            (matchingComponent.getProperties() instanceof SolutionComponentProperties solutionComponentProperties) &&
+                            (solutionComponentDefinition.getDisplayName().equals(solutionComponentProperties.getDisplayName())))
+                    {
+                        if ((matchingComponent.getElementHeader().getGUID().equals(mappedComponentGUID)) ||
+                                (solutionComponentDefinition.getQualifiedName().equals(solutionComponentProperties.getQualifiedName())))
+                        {
+                            jacquardComponentGUID       = matchingComponent.getElementHeader().getGUID();
+                            jacquardComponentHeader     = matchingComponent.getElementHeader();
+                            jacquardComponentClassified = (matchingComponent.getElementHeader().getKnownDuplicate() != null);
+                        }
+                        else
+                        {
+                            peerComponents.add(matchingComponent);
+                        }
+                    }
+                }
+
+                if ((jacquardComponentGUID == null) || (peerComponents.isEmpty()))
+                {
+                    /*
+                     * This connector has no component with this display name, or its component is the only one.
+                     */
+                    continue;
+                }
+
+                for (OpenMetadataRootElement peerComponent : peerComponents)
+                {
+                    String        peerComponentGUID   = peerComponent.getElementHeader().getGUID();
+                    ElementHeader peerComponentHeader = peerComponent.getElementHeader();
+
+                    /*
+                     * The peer comes from a content pack, so this repository does not own it.  Its own metadata
+                     * collection has to be named on the requests that change it.
+                     */
+                    MakeAnchorOptions peerOptions = this.getDuplicateOptions(classificationExplorerClient, peerComponentHeader);
+
+                    /*
+                     * The links that are already in place are not recreated.
+                     */
+                    if (! this.isLinkedAsPeerDuplicate(peerComponent, jacquardComponentGUID))
+                    {
+                        PeerDuplicateLinkProperties peerDuplicateLinkProperties = new PeerDuplicateLinkProperties();
+
+                        peerDuplicateLinkProperties.setStatusIdentifier(StatusIdentifier.VALIDATED.getOrdinal());
+                        peerDuplicateLinkProperties.setSteward(integrationContext.getMyUserId());
+                        peerDuplicateLinkProperties.setStewardTypeName(OpenMetadataType.USER_IDENTITY.typeName);
+                        peerDuplicateLinkProperties.setStewardPropertyName(OpenMetadataProperty.USER_ID.name);
+                        peerDuplicateLinkProperties.setSource(connectorName);
+                        peerDuplicateLinkProperties.setNotes("The solution components have the same display name (" +
+                                                                     solutionComponentDefinition.getDisplayName() +
+                                                                     ") and so describe the same part of the Open Metadata Digital Product Catalog.");
+
+                        classificationExplorerClient.linkElementsAsPeerDuplicates(jacquardComponentGUID,
+                                                                                  peerComponentGUID,
+                                                                                  peerDuplicateLinkProperties,
+                                                                                  peerOptions);
+
+                        auditLog.logMessage(methodName,
+                                            JacquardAuditCode.LINKING_DUPLICATE_SOLUTION_COMPONENTS.getMessageDefinition(connectorName,
+                                                                                                                         solutionComponentDefinition.getDisplayName(),
+                                                                                                                         jacquardComponentGUID,
+                                                                                                                         peerComponentGUID));
+                    }
+
+                    if (peerComponentHeader.getKnownDuplicate() == null)
+                    {
+                        classificationExplorerClient.setKnownDuplicateClassification(peerComponentGUID, null, peerOptions);
+                    }
+                }
+
+                if (! jacquardComponentClassified)
+                {
+                    classificationExplorerClient.setKnownDuplicateClassification(jacquardComponentGUID,
+                                                                                 null,
+                                                                                 this.getDuplicateOptions(classificationExplorerClient, jacquardComponentHeader));
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                  error.getClass().getName(),
+                                                                                                  methodName + "(" + solutionComponentDefinition.getDisplayName() + ")",
+                                                                                                  error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
+    /**
+     * Return the options to use when linking or classifying a solution component as a duplicate.
+     * <p>
+     * forDuplicateProcessing is set so that the request attaches to the individual component rather than to the
+     * surviving element of a duplicate cluster, and the metadata collection that owns the component is named where
+     * this repository does not own it.  The components that this connector is pairing up with come from the content
+     * packs, so most of them are owned elsewhere - without naming their owner, every request to link or classify
+     * them is refused.
+     *
+     * @param classificationExplorerClient client that the request is made through
+     * @param elementHeader header of the element being changed
+     * @return options
+     */
+    private MakeAnchorOptions getDuplicateOptions(ClassificationExplorerClient classificationExplorerClient,
+                                                  ElementControlHeader         elementHeader)
+    {
+        MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions(classificationExplorerClient.getMetadataSourceOptions());
+
+        makeAnchorOptions.setForDuplicateProcessing(true);
+
+        this.setOwningMetadataCollection(makeAnchorOptions, elementHeader);
+
+        return makeAnchorOptions;
+    }
+
+
+    /**
+     * Name the metadata collection that owns an instance as the external source of an update.  Nothing is set for
+     * an instance that this repository owns - naming an external source for a local instance would wrongly record
+     * it as belonging to somebody else.
+     *
+     * @param metadataSourceOptions options to fill in
+     * @param elementHeader header of the instance being changed
+     */
+    private void setOwningMetadataCollection(MetadataSourceOptions metadataSourceOptions,
+                                             ElementControlHeader  elementHeader)
+    {
+        if ((elementHeader != null) && (elementHeader.getOrigin() != null))
+        {
+            ElementOriginCategory originCategory = elementHeader.getOrigin().getOriginCategory();
+
+            if ((originCategory != null) && (originCategory != ElementOriginCategory.LOCAL_COHORT))
+            {
+                metadataSourceOptions.setExternalSourceGUID(elementHeader.getOrigin().getHomeMetadataCollectionId());
+                metadataSourceOptions.setExternalSourceName(elementHeader.getOrigin().getHomeMetadataCollectionName());
+            }
+        }
+    }
+
+
+    /**
+     * Determine whether a solution component is already linked to the supplied element with a PeerDuplicateLink
+     * relationship.  The relationships came back with the component, so no further retrieval is needed.
+     *
+     * @param solutionComponent component to test
+     * @param peerGUID unique identifier of the element that it may be linked to
+     * @return boolean flag
+     */
+    private boolean isLinkedAsPeerDuplicate(OpenMetadataRootElement solutionComponent,
+                                            String                  peerGUID)
+    {
+        /*
+         * The duplicate link is symmetric, so the peer may be at either end.
+         */
+        return this.containsElement(solutionComponent.getPeerDuplicateOrigin(), peerGUID) ||
+                       this.containsElement(solutionComponent.getPeerDuplicatePartner(), peerGUID);
+    }
+
+
+    /**
+     * Determine whether a list of related elements includes a particular element.
+     *
+     * @param relatedElements list of related elements - may be null
+     * @param elementGUID unique identifier of the element to look for
+     * @return boolean flag
+     */
+    private boolean containsElement(List<RelatedMetadataElementSummary> relatedElements,
+                                    String                             elementGUID)
+    {
+        if (relatedElements != null)
+        {
+            for (RelatedMetadataElementSummary relatedElement : relatedElements)
+            {
+                if ((relatedElement != null) &&
+                        (relatedElement.getRelatedElement() != null) &&
+                        (relatedElement.getRelatedElement().getElementHeader() != null) &&
+                        (elementGUID.equals(relatedElement.getRelatedElement().getElementHeader().getGUID())))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 

@@ -934,6 +934,19 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
+     * Ask the real repository to check what it has stored against the type system.  The local repository holds
+     * no instances of its own - it is a wrapper - so there is nothing here to verify but the real one's.
+     *
+     * @param userId unique identifier for requesting server
+     */
+    @Override
+    public void verifyStoredTypeHierarchy(String userId)
+    {
+        realMetadataCollection.verifyStoredTypeHierarchy(userId);
+    }
+
+
+    /**
      * Update one or more properties of the TypeDef.  The TypeDefPatch controls what types of updates
      * are safe to make to the TypeDef.
      *

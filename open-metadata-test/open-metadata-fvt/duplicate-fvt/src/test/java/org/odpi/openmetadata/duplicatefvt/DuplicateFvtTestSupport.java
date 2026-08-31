@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRela
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipList;
 import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
@@ -109,6 +110,27 @@ final class DuplicateFvtTestSupport
     static final String SMALL_CLUSTER_LINK_GUID      = "da460400-dbdf-4fad-a083-6ce2d7233bd4";
 
     /*
+     * Set 8 - two elements sharing a qualified name, linked as discovered duplicates.  Mendel validates them
+     * on the first refresh; the test then corrects one of the names, which takes the grounds away.
+     */
+    static final String WITHDRAWN_QUALIFIED_NAME     = QUALIFIED_NAME_PREFIX + "Withdrawn";
+    static final String WITHDRAWN_CORRECTED_NAME     = QUALIFIED_NAME_PREFIX + "Withdrawn:corrected";
+    static final String WITHDRAWN_GUID_ONE           = "5f2f7a1b-88a8-4a1e-9a0e-2c7b6a5f4d31";
+    static final String WITHDRAWN_GUID_TWO           = "c3d9b0e4-6a71-4f2c-9d55-8e1a0b4c7f62";
+    static final String WITHDRAWN_LINK_GUID          = "0a4e6c58-2b3d-4f19-8c07-d5e2a9b1f483";
+
+    /*
+     * Set 9 - three elements already validated, so that they are consolidated on the first refresh.  The test
+     * then retires the second link, leaving member three consolidated but with no live peer link.
+     */
+    static final String HELD_CLUSTER_QUALIFIED_NAME = QUALIFIED_NAME_PREFIX + "HeldCluster";
+    static final String HELD_CLUSTER_GUID_ONE       = "b1c47d92-0e5a-4b83-9f26-7a3c8d150e44";
+    static final String HELD_CLUSTER_GUID_TWO       = "4e8f01a7-c962-4d35-8b1e-63f0a2d97c58";
+    static final String HELD_CLUSTER_GUID_THREE     = "9d206b3f-45e8-4c71-a0d9-1f7b5e83c206";
+    static final String HELD_CLUSTER_LINK_GUID_ONE  = "72a3e5c1-8d40-4b96-bf27-0c6e94a1d385";
+    static final String HELD_CLUSTER_LINK_GUID_TWO  = "e60d4b27-1a93-4f58-8c31-b7d2f5e08a49";
+
+    /*
      * Set 5 - two classified elements whose only link a steward has retired.
      */
     static final String RETIRED_QUALIFIED_NAME_ONE = QUALIFIED_NAME_PREFIX + "Retired:one";
@@ -138,7 +160,12 @@ final class DuplicateFvtTestSupport
                                                                SMALL_CLUSTER_GUID_ONE,
                                                                SMALL_CLUSTER_GUID_TWO,
                                                                RETIRED_GUID_ONE,
-                                                               RETIRED_GUID_TWO);
+                                                               RETIRED_GUID_TWO,
+                                                               WITHDRAWN_GUID_ONE,
+                                                               WITHDRAWN_GUID_TWO,
+                                                               HELD_CLUSTER_GUID_ONE,
+                                                               HELD_CLUSTER_GUID_TWO,
+                                                               HELD_CLUSTER_GUID_THREE);
 
 
     private DuplicateFvtTestSupport()
@@ -161,6 +188,31 @@ final class DuplicateFvtTestSupport
         queryOptions.setPageSize(MAX_PAGE_SIZE);
 
         return queryOptions;
+    }
+
+
+    /**
+     * Return update options for changing one of the fixture's own instances.
+     * <p>
+     * The fixture is loaded from an archive, so the repository does not own it - it holds it on behalf of the
+     * archive's metadata collection, and will only accept a change made on that collection's behalf.  That is
+     * the same thing Mendel has to do to manage duplicates that arrive in a content pack, and it is why the
+     * fixture is archive-owned rather than local: a locally owned fixture would let a bug in that handling
+     * through.
+     *
+     * @return update options naming the archive as the source of the change, with the duplicates shown as
+     *         they are rather than combined
+     */
+    static UpdateOptions archiveOwnedUpdateOptions()
+    {
+        UpdateOptions updateOptions = new UpdateOptions();
+
+        updateOptions.setMergeUpdate(true);
+        updateOptions.setForDuplicateProcessing(true);
+        updateOptions.setExternalSourceGUID(DuplicateArchiveWriter.ARCHIVE_GUID);
+        updateOptions.setExternalSourceName(DuplicateArchiveWriter.ARCHIVE_NAME);
+
+        return updateOptions;
     }
 
 

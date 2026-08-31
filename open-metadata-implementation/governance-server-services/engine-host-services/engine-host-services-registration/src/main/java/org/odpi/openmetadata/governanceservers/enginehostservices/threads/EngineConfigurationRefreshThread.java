@@ -15,9 +15,6 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.listener.OpenM
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * EngineConfigurationRefreshThread is the class responsible for establishing the listener for configuration
  * updates for a specific governance engine.  It runs as a separate thread in a number of phases,
@@ -98,12 +95,8 @@ public class EngineConfigurationRefreshThread implements Runnable
     {
         final String actionDescription = "Retrieve governance engine configuration";
 
-        List<String>  configToRetrieve;
-
         while (keepTrying)
         {
-            configToRetrieve = new ArrayList<>(engineHandlers.getGovernanceEngineNames());
-
             /*
              * Listening for events is attempted, but the engine does not wait for it to succeed.
              *
@@ -120,56 +113,53 @@ public class EngineConfigurationRefreshThread implements Runnable
              */
             boolean listenerRegistered = registerListeners(true);
 
-            while ((!configToRetrieve.isEmpty()) && (keepTrying))
+            /*
+             * There is one of these threads per governance engine configured on this server, and it is
+             * responsible for its own engine only - the one named by engineConfig.  This used to loop over
+             * every engine name on the server while refreshing engineConfig on each pass, which refreshed
+             * this thread's engine once per configured engine and, when the refresh failed, reported the
+             * failure against whichever other engine the loop happened to be on.  An operator reading the
+             * audit log was sent to an engine that had nothing wrong with it.
+             */
+            boolean configRetrieved = false;
+
+            while ((! configRetrieved) && (keepTrying))
             {
-                List<String>  configFailed = new ArrayList<>();
-
-                for (String governanceEngineName : configToRetrieve)
+                /*
+                 * Request the configuration for the governance engine.  If it fails just log the error but let the
+                 * engine host server continue to start.  It is probably a temporary outage with the metadata server
+                 * which can be resolved later.
+                 */
+                try
                 {
-                    if (governanceEngineName != null)
+                    GovernanceEngineHandler governanceEngineHandler = engineHandlers.getGovernanceEngineHandler(engineConfig);
+
+                    if (governanceEngineHandler != null)
                     {
+                        governanceEngineHandler.refreshConfig();
+
                         /*
-                         * Request the configuration for the governance engine.  If it fails just log the error but let the
-                         * engine host server continue to start.  It is probably a temporary outage with the metadata server
-                         * which can be resolved later.
+                         * Restart any services that were incomplete when the engine host shutdown.
                          */
-                        try
-                        {
-                            GovernanceEngineHandler governanceEngineHandler = engineHandlers.getGovernanceEngineHandler(engineConfig);
+                        governanceEngineHandler.restartServices(governanceEngineHandler.getGovernanceEngineElement());
 
-                            if (governanceEngineHandler != null)
-                            {
-                                governanceEngineHandler.refreshConfig();
-
-                                /*
-                                 * Restart any services that were incomplete when the engine host shutdown.
-                                 */
-                                governanceEngineHandler.restartServices(governanceEngineHandler.getGovernanceEngineElement());
-
-                                /*
-                                 * Claim any approved engine actions
-                                 */
-                                governanceEngineHandler.startMissedEngineActions();
-                            }
-                        }
-                        catch (Exception error)
-                        {
-                            auditLog.logException(actionDescription,
-                                                  EngineHostServicesAuditCode.GOVERNANCE_ENGINE_NO_CONFIG.getMessageDefinition(governanceEngineName,
-                                                                                                                               error.getClass().getName(),
-                                                                                                                               error.getMessage()),
-                                                  error.toString(),
-                                                  error);
-
-                            configFailed.add(governanceEngineName);
-                        }
+                        /*
+                         * Claim any approved engine actions
+                         */
+                        governanceEngineHandler.startMissedEngineActions();
                     }
+
+                    configRetrieved = true;
                 }
-
-                configToRetrieve = configFailed;
-
-                if (! configToRetrieve.isEmpty())
+                catch (Exception error)
                 {
+                    auditLog.logException(actionDescription,
+                                          EngineHostServicesAuditCode.GOVERNANCE_ENGINE_NO_CONFIG.getMessageDefinition(engineConfig.getEngineQualifiedName(),
+                                                                                                                       error.getClass().getName(),
+                                                                                                                       error.getMessage()),
+                                          error.toString(),
+                                          error);
+
                     waitToRetry();
                 }
             }
@@ -205,30 +195,24 @@ public class EngineConfigurationRefreshThread implements Runnable
                     listenerRegistered = registerListeners(false);
                 }
 
-                for (String governanceEngineName : engineHandlers.getGovernanceEngineNames())
+                try
                 {
-                    if (governanceEngineName != null)
-                    {
-                        try
-                        {
-                            GovernanceEngineHandler governanceEngineHandler = engineHandlers.getGovernanceEngineHandler(engineConfig);
+                    GovernanceEngineHandler governanceEngineHandler = engineHandlers.getGovernanceEngineHandler(engineConfig);
 
-                            if (governanceEngineHandler != null)
-                            {
-                                governanceEngineHandler.refreshConfig();
-                            }
-                        }
-                        catch (Exception error)
-                        {
-                            /*
-                             * Logged at debug rather than as an audit log entry: this runs continuously, so a
-                             * problem that persisted would fill the audit log with the same message.  Anything
-                             * missed is still waiting and the next pass tries again.
-                             */
-                            log.debug("Keeping governance engine " + governanceEngineName + " current failed: " +
-                                              error.getClass().getName() + " " + error.getMessage(), error);
-                        }
+                    if (governanceEngineHandler != null)
+                    {
+                        governanceEngineHandler.refreshConfig();
                     }
+                }
+                catch (Exception error)
+                {
+                    /*
+                     * Logged at debug rather than as an audit log entry: this runs continuously, so a
+                     * problem that persisted would fill the audit log with the same message.  Anything
+                     * missed is still waiting and the next pass tries again.
+                     */
+                    log.debug("Keeping governance engine " + engineConfig.getEngineQualifiedName() + " current failed: " +
+                                      error.getClass().getName() + " " + error.getMessage(), error);
                 }
 
                 waitForNextSweep();
