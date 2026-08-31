@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -676,16 +675,23 @@ public class ConnectorConfigurationFactory
                 connectorTypeJavaClassName = connectorProviderClassName;
             }
 
-            if (configurationProperties == null)
-            {
-                configurationProperties = new HashMap<>();
-            }
+            /*
+             * The caller's properties are copied rather than added to.  One map is commonly used to build
+             * several connections - a cohort's registration, types and instances topics are all built from the
+             * same one - while the values stamped in below belong to one connection each.  Adding them to the
+             * caller's map let the first connection built decide what every later one got, because the tests
+             * below then found the property already set: all three cohort topics ended up sharing whichever
+             * id was generated first.
+             */
+            Map<String, Object> connectionProperties = (configurationProperties == null)
+                                                               ? new HashMap<>()
+                                                               : new HashMap<>(configurationProperties);
 
             if (eventDirection != null)
             {
-                if (configurationProperties.get(OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME) == null)
+                if (connectionProperties.get(OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME) == null)
                 {
-                    configurationProperties.put(OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME, eventDirection);
+                    connectionProperties.put(OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME, eventDirection);
                 }
             }
 
@@ -693,9 +699,9 @@ public class ConnectorConfigurationFactory
              * The serverId is used to set the default topic.id (though this could be overridden in the consumer configuration)
              * retrieve from the default if needed.
              */
-            if (StringUtils.isEmpty((String) configurationProperties.get("local.server.id")))
+            if (StringUtils.isEmpty((String) connectionProperties.get("local.server.id")))
             {
-                configurationProperties.put("local.server.id", serverId);
+                connectionProperties.put("local.server.id", serverId);
             }
 
             Connection connection = new Connection();
@@ -703,7 +709,7 @@ public class ConnectorConfigurationFactory
             connection.setDisplayName("Kafka Event Bus Connection");
             connection.setEndpoint(endpoint);
             connection.setConnectorType(getConnectorType(connectorTypeJavaClassName));
-            connection.setConfigurationProperties(configurationProperties);
+            connection.setConfigurationProperties(connectionProperties);
 
             return connection;
         }
@@ -812,9 +818,39 @@ public class ConnectorConfigurationFactory
 
 
     /**
+     * Return the identifier a server uses to consume one of a cohort's topics.  It becomes the connector's
+     * local.server.id, and from there the Apache Kafka group.id.
+     * <br><br>
+     * It is built from the server's name, the cohort's name and the topic's category so that it is three
+     * things at once: the same on every restart, so a server resumes its own consumer group instead of
+     * creating a new one and starting at auto.offset.reset; different for every server, so two members of a
+     * cohort never share a group and starve each other of a single-partition topic; and different for each
+     * of a cohort's three topics, so their consumers are independent.  A generated identifier satisfies only
+     * the second of those.
+     *
+     * @param localServerName name of the server that will consume the topic
+     * @param cohortName name of the cohort the topic belongs to
+     * @param topicCategory which of the cohort's topics - Registration, Types or Instances
+     * @return caller id for the topic's connection
+     */
+    private String getCohortTopicCallerId(String localServerName,
+                                          String cohortName,
+                                          String topicCategory)
+    {
+        if (localServerName == null)
+        {
+            return cohortName + "." + topicCategory;
+        }
+
+        return localServerName + "." + cohortName + "." + topicCategory;
+    }
+
+
+    /**
      * Return the connection for the registration OMRS topic for the named cohort.
      *
      * @param cohortName   name of the cohort
+     * @param localServerName name of the server that will consume the topic - part of its caller id
      * @param configurationProperties name value property pairs for the topic connection
      * @param eventBusConnectorProvider class name of the event bus connector's provider
      * @param topicURLRoot root name for the topic URL
@@ -822,6 +858,7 @@ public class ConnectorConfigurationFactory
      * @return Connection object
      */
     public Connection getDefaultRegistrationCohortOMRSTopicConnection(String              cohortName,
+                                                                      String              localServerName,
                                                                       Map<String, Object> configurationProperties,
                                                                       String              eventBusConnectorProvider,
                                                                       String              topicURLRoot,
@@ -835,7 +872,7 @@ public class ConnectorConfigurationFactory
                                                         eventSource,
                                                         eventBusConnectorProvider,
                                                         topicURLRoot,
-                                                        UUID.randomUUID().toString(),
+                                                        getCohortTopicCallerId(localServerName, cohortName, "Registration"),
                                                         eventBusConfigurationProperties);
     }
 
@@ -844,6 +881,7 @@ public class ConnectorConfigurationFactory
      * Return the connection for the registration OMRS topic for the named cohort.
      *
      * @param cohortName   name of the cohort
+     * @param localServerName name of the server that will consume the topic - part of its caller id
      * @param configurationProperties name value property pairs for the topic connection
      * @param eventBusConnectorProvider class name of the event bus connector's provider
      * @param topicURLRoot root name for the topic URL
@@ -851,6 +889,7 @@ public class ConnectorConfigurationFactory
      * @return Connection object
      */
     public Connection getDefaultTypesCohortOMRSTopicConnection(String              cohortName,
+                                                                      String              localServerName,
                                                                Map<String, Object> configurationProperties,
                                                                String              eventBusConnectorProvider,
                                                                String              topicURLRoot,
@@ -864,7 +903,7 @@ public class ConnectorConfigurationFactory
                                                         eventSource,
                                                         eventBusConnectorProvider,
                                                         topicURLRoot,
-                                                        UUID.randomUUID().toString(),
+                                                        getCohortTopicCallerId(localServerName, cohortName, "Types"),
                                                         eventBusConfigurationProperties);
     }
 
@@ -873,18 +912,18 @@ public class ConnectorConfigurationFactory
      * Return the connection for the single OMRS topic for the named cohort.
      *
      * @param cohortName   name of the cohort
+     * @param localServerName name of the server that will consume the topic - part of its caller id
      * @param configurationProperties name value property pairs for the topic connection
      * @param eventBusConnectorProvider class name of the event bus connector's provider
      * @param topicURLRoot root name for the topic URL
-     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
      * @param eventBusConfigurationProperties name value property pairs for the event bus connection
      * @return Connection object
      */
     public Connection getDefaultInstancesCohortOMRSTopicConnection(String              cohortName,
+                                                                   String              localServerName,
                                                                    Map<String, Object> configurationProperties,
                                                                    String              eventBusConnectorProvider,
                                                                    String              topicURLRoot,
-                                                                   String              serverId,
                                                                    Map<String, Object> eventBusConfigurationProperties)
     {
         String topicName = defaultCohortTopicConnectorRootName + cohortName + defaultInstancesOMRSTopicLeafName;
@@ -895,7 +934,7 @@ public class ConnectorConfigurationFactory
                                                         eventSource,
                                                         eventBusConnectorProvider,
                                                         topicURLRoot,
-                                                        serverId,
+                                                        getCohortTopicCallerId(localServerName, cohortName, "Instances"),
                                                         eventBusConfigurationProperties);
     }
 
