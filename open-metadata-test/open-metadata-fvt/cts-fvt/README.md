@@ -78,23 +78,37 @@ to; with no token to find, the REST client connector sets no authorization heade
 unauthenticated, which is what this platform expects. What the file changes is that the store *resolves* —
 the connection is built and read rather than failing on a missing file.
 
-Both servers also have their **local server id** pinned, alongside the metadata collection ids. That id is
-the servers' Apache Kafka `group.id`, and the platform generates a fresh UUID for it whenever the
-configuration document does not name one — which, because this harness clears the configuration at the start
-of every run, used to mean a brand new consumer group every time. Kafka gives a group it has never seen
-`auto.offset.reset=latest`, and nothing in Egeria sets that property, so such a consumer starts reading at
-the *end* of the topic.
+Both servers also have their **local server id** pinned, alongside the metadata collection ids — but be
+clear about what that does and does not achieve today, because it is less than it looks.
 
-That is a race, and it is the one way this harness fails without anything being wrong. The conformance test
-server starts first and asks the cohort for registration information exactly once (`OMRS-AUDIT-0062`). If the
-technology under test publishes its registration before that consumer has been assigned its partition — a
-window of a second or two — the conformance server reads straight past it and never learns the technology
-under test exists. The workbench then waits for a member that, as far as it is concerned, never registered,
-and the run fails at the start-up timeout having recorded no test cases at all. It really is a coin toss: run
-in turn on one machine, the in-memory run won the race by three seconds and the PostgreSQL run lost it by
-one, with identical code. Pinning the ids makes the consumer group survive across runs, so from the second
-run onwards there is a committed offset to resume from and the registration cannot be skipped. The very
-first run against a cohort whose topics do not yet exist still races; re-running it is enough.
+That id becomes a server's Apache Kafka `group.id`, and a consumer group Kafka has never seen starts at
+`auto.offset.reset=latest`. The conformance test server starts first and asks the cohort for registration
+information exactly once (`OMRS-AUDIT-0062`); if the technology under test publishes its registration before
+that consumer is reading, the registration is stepped over and there is no second ask. The workbench then
+waits for a member that, as far as it is concerned, never registered, and the run fails at the start-up
+timeout having recorded no test cases at all.
+
+**Pinning does not currently reach the cohort topics.** `ConnectorConfigurationFactory` builds the cohort's
+registration and types topic connections with a freshly generated UUID rather than the server's id, and
+stamps whichever id it generates first into the properties map the other cohort connections are built from —
+so all three get a new group on every configuration whatever this harness pins, and the pinned id shows up
+only on the enterprise topic. Two things follow: the race is still present, and the id named here never
+appears on the broker. Both are open defects, not harness settings; see the notes below.
+
+What *is* fixed is a narrower defect in `KafkaOpenMetadataEventConsumer`. On first partition assignment it
+rewinds to the connector's start time, but only when `offsetsForTimes` finds a message there; when it returns
+null it used to do nothing, leaving the consumer with no resolved position, so `auto.offset.reset` settled it
+at the first fetch instead — at wherever the end of the log had moved to by then, stepping over anything
+published in between. It now pins the end as it stands at assignment. That closes one window; it does not on
+its own make a run reliable.
+
+So a run can still lose the race, and re-running is the remedy. When it happens the harness says so
+precisely — no test cases recorded rather than a timeout — and the check worth making is whether the
+conformance test server logged any `OMRS-AUDIT-8006` at all. None means it never received a cohort event.
+`logback-test.xml` turns the Kafka consumer's own logging up to `INFO` for this reason: every branch of that
+rewind decision, including the handler that gives up on it, logs at `INFO`, so at Egeria's default `warn`
+root level the whole mechanism is invisible and a missed registration is indistinguishable from one that was
+never sent.
 
 ## What it asserts
 
