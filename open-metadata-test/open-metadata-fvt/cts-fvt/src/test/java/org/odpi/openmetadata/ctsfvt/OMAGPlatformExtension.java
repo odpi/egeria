@@ -119,9 +119,22 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      * timeout having recorded no test cases at all.  It is a genuine coin toss: the two repositories were
      * run in turn on the same machine and the in-memory run won the race while the PostgreSQL run lost it.
      * <br>
-     * Pinning the ids makes the consumer group survive across runs, so from the second run onwards it has a
-     * committed offset to resume from and the registration cannot be skipped.  The first run against a
-     * cohort whose topics do not yet exist still races; re-running it is enough.
+     * <b>Pinning does not currently reach the cohort topics, so it does not fix the race.</b>
+     * {@code ConnectorConfigurationFactory} builds the cohort's registration and types topic connections
+     * with a freshly generated UUID rather than the server's id, and stamps whichever id it generates first
+     * into the properties map the other cohort connections are built from - so all three get a new consumer
+     * group on every configuration whatever is pinned here, and the id named below reaches only the
+     * enterprise topic.  The outward sign is that it never appears on the broker at all.  Those are open
+     * defects in the connector configuration, not settings of this harness.
+     * <br>
+     * What the ids do achieve today is a stable identity for the enterprise topic, and they are the right
+     * thing to pin once the defects above are fixed.  Until then a run can still lose the race, and
+     * re-running is the remedy.
+     * <br>
+     * <b>These have to be pinned before the cohort is added.</b>  {@code addCohortRegistration} builds the
+     * cohort's topic connections there and then, from whatever {@code localServerId} the configuration
+     * document holds at that moment, so pinning afterwards would leave them with the wrong id however
+     * correct the field looks in the finished document.
      */
     private static final String TUT_SERVER_ID = REPOSITORY_KIND.getTutServerId();
 
@@ -496,6 +509,9 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         configurationClient.clearOMAGServerConfig();
 
         configurationClient.setServerUserId(USER_ID);
+
+        pinLocalServerId(configurationClient, CTS_SERVER_ID);
+
         /*
          * Unlike the sibling FVT suites, the secrets store named here is not just something
          * setBasicServerProperties insists on: it is read.  A server that has one gets a secrets store
@@ -598,8 +614,6 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
          * collection id can only be pinned afterwards.
          */
         configurationClient.setLocalMetadataCollectionId(CTS_METADATA_COLLECTION_ID);
-
-        pinLocalServerId(configurationClient, CTS_SERVER_ID);
     }
 
 
@@ -653,6 +667,9 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         configurationClient.clearOMAGServerConfig();
 
         configurationClient.setServerUserId(USER_ID);
+
+        pinLocalServerId(configurationClient, TUT_SERVER_ID);
+
         configurationClient.setBasicServerProperties("Egeria cts-fvt technology under test",
                                                      REPOSITORY_KIND.getTutServerDescription(),
                                                      USER_ID,
@@ -702,8 +719,6 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
         configurationClient.addStartUpOpenMetadataArchiveFile(typesArchive.getAbsolutePath());
         configurationClient.setLocalMetadataCollectionId(TUT_METADATA_COLLECTION_ID);
-
-        pinLocalServerId(configurationClient, TUT_SERVER_ID);
     }
 
 
