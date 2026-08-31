@@ -8,13 +8,10 @@
  * Plugin management - ie version specs - are in settings.gradle
  */
 plugins {
-    id "io.freefair.aggregate-javadoc"
     // Checks for unnecessary dependencies
     id 'com.autonomousapps.dependency-analysis'
-    // helps resolve log implementation clashes
-    id 'dev.jacomet.logging-capabilities'
-    // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
-    id 'org.gradlex.java-ecosystem-capabilities'
+    // helps resolve log implementation clashes and the jakarta/javax capability splits
+    id 'org.gradlex.jvm-dependency-conflict-resolution'
     id 'checkstyle'
 }
 
@@ -69,8 +66,21 @@ subprojects {
         apply plugin: 'jacoco'
         apply plugin: 'checkstyle'
         apply plugin: 'com.autonomousapps.dependency-analysis'
-        apply plugin: 'dev.jacomet.logging-capabilities'
-        apply plugin: 'org.gradlex.java-ecosystem-capabilities'
+        apply plugin: 'org.gradlex.jvm-dependency-conflict-resolution'
+
+        jvmDependencyConflicts {
+            conflictResolution {
+                // Tomcat's embedded core bundles the Jakarta Servlet API classes, so it conflicts with the
+                // standalone jakarta.servlet-api jar that Spring Boot also puts on the classpath.  The
+                // plugin's default strategy for this capability is "highest version", and it maps
+                // tomcat-embed-core 10.1.x to servlet API 6.0 - so the standalone 6.1.0 jar wins and
+                // tomcat-embed-core is evicted.  That silently removes the servlet container the platform
+                // runs on: the build still succeeds and the packaged jar still starts, but it has no web
+                // server.  Tomcat has to win this one.
+                select(org.gradlex.jvm.dependency.conflict.detection.rules.CapabilityDefinition.JAKARTA_SERVLET_API,
+                       'org.apache.tomcat.embed:tomcat-embed-core')
+            }
+        }
 
         // Checking of javaheaders for license & copyright.  This has to stay inside the guard above:
         // it configures the extension added by the checkstyle plugin, and outside the guard it would be
@@ -298,54 +308,86 @@ subprojects {
  * Additional aggregate tasks run only at parent
  */
 
-// Whilst all modules have their own javadoc, we only build
-// an aggregate for the client and API modules plus the REST calls
+/*
+ * The aggregate javadoc site - one set of pages covering every module, published to GitHub Pages by the
+ * merge workflow (see .github/workflows/merge-v6.yml).
+ *
+ * This used to be produced by io.freefair.aggregate-javadoc, which was pinned at 6.6.3 because its later
+ * versions either refuse to apply to a project that also applies the java plugin (8.x) or drop the
+ * aggregateJavadoc task altogether (9.x).  6.6.3 holds Task references, which the configuration cache
+ * cannot serialise, so the merge workflow had to run this step with --no-configuration-cache.
+ *
+ * Aggregating directly needs no plugin.  It needs two things the root project did not have until now:
+ * a resolvable configuration of its own for the classpath - resolving another project's configuration
+ * during execution is what the configuration cache forbids - and the same logging capability resolution
+ * the subprojects apply, because collecting every module's dependencies in one place brings the competing
+ * SLF4J implementations together.
+ *
+ * The site documents every module, deliberately.  A `javadoc { include(...) }` block used to sit here
+ * under a comment saying the aggregate covered only the client and API modules, but it configured the
+ * root project's own javadoc task - and the root has no src/main/java, so that task is NO-SOURCE and the
+ * includes never applied to anything.  The published site has always covered the whole repository, and
+ * that is the intended behaviour, so nothing filters the source below.
+ */
 apply plugin: 'java'
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
-javadoc {
-    include("**/api/*.java")
-    include("**/client/*.java")
-    include("**/clients/*.java")
-    include("**/properties/*.java")
-    include("**/metadataelements/*.java")
-    include("**/metadataelement/*.java")
-    include("**/events/*.java")
-    include("**/rest/*.java")
-    include("**/exceptions/*.java")
-    include("**/beans/*.java")
-    include("**/ffdc/*.java")
-    include("**/configuration/*.java")
-    include("**/configuration/registration/*.java")
-    include("**/store/*.java")
-    include("**/connectors/*.java")
-    include("**/adminservices/*.java")
-    include("**/connector/*.java")
-    include("**/frameworks/*.java")
-    include("**/context/*.java")
-    include("**/contextmanager/*.java")
-    include("**/graph/*.java")
-    include("**/model/*.java")
-    include("**/ffdc/*.java")
-    include("**/omrstopic/*.java")
-    include("**/openmetadatatopic/*.java")
-    include("**/archivestore/*.java")
-    include("**/auditlogstore/*.java")
-    include("**/cohortregistrystore/*.java")
-    include("**/repositoryconnector/*.java")
-    include("**/repositoryeventmapper/*.java")
-    include("**/metadatacollectionstore/*.java")
-    include("**/metadatacollectionstore/properties/instances/*.java")
-    include("**/metadatacollectionstore/properties/typedefs/*.java")
-    include("**/metadatacollectionstore/properties/search/*.java")
-    include("**/metadatacollectionstore/utilities/*.java")
-    include("**/archiveutilities/*.java")
-    include("**/metadatasecurity/*.java")
-    include("**/spring/*.java")
-    include("**/frameworks/**/*.java")
+
+jvmDependencyConflicts {
+    logging {
+        // Every module's dependencies meet on the aggregate classpath, so the SLF4J binding conflict that
+        // the subprojects resolve individually has to be resolved here too.
+        enforceLogback()
+    }
+    conflictResolution {
+        // As in the subprojects - Tomcat has to win the servlet API capability, or it is substituted away.
+        select(org.gradlex.jvm.dependency.conflict.detection.rules.CapabilityDefinition.JAKARTA_SERVLET_API,
+               'org.apache.tomcat.embed:tomcat-embed-core')
+    }
+}
+
+configurations {
+    aggregateJavadocClasspath {
+        canBeConsumed = false
+        canBeResolved = true
+        description = 'The compile classpath of every module, for the aggregate javadoc.'
+    }
+}
+
+// Container projects - the ones that only group other modules - have no build file and nothing to document.
+def documentedProjects = subprojects.findAll { it.buildFile.exists() && it.name != 'bom' }
+
+dependencies {
+    documentedProjects.each { aggregateJavadocClasspath project(it.path) }
+}
+
+tasks.register('aggregateJavadoc', Javadoc) {
+    group = 'documentation'
+    description = 'Builds one javadoc site covering every module.'
+
+    // Reading each module's source set here, at configuration time, is the same pattern codeCoverageReport
+    // already uses.  It is the classpath that has to come from this project's own configuration.
+    documentedProjects.each { subProject ->
+        subProject.plugins.withId('java') {
+            source subProject.sourceSets.main.allJava
+        }
+    }
+    classpath = configurations.aggregateJavadocClasspath
+    destinationDir = file("${layout.buildDirectory.get().asFile}/docs/javadoc")
+
+    options {
+        addBooleanOption('html5', true)
+        // Deliberately NOT the subprojects' PUBLIC member level.  The aggregate site has always been
+        // built at javadoc's default - protected - and dropping to PUBLIC loses the pages for protected
+        // nested classes such as ConnectorBase.ProtectedConnection.
+        setMemberLevel JavadocMemberLevel.PROTECTED
+        // As in the subprojects: doclint runs, but its "missing" group stays off while the documentation
+        // debt that predates the check is cleared module by module.
+        addStringOption('Xdoclint:-missing', '-quiet')
+    }
 }
 
 // Jacoco reporting -- from gradle docs
@@ -413,28 +455,32 @@ build.dependsOn("buildHealth")
  * toolchain work: the packaged jar's launcher, POM generation producing zero-length files, and the
  * aggregate javadoc.
  *
- * `./gradlew verifyRelease` runs the parts that can share one invocation, and names the one that cannot.
+ * `./gradlew verifyRelease` runs all of them in one invocation.
  */
 tasks.register('verifyRelease') {
     group = 'verification'
-    description = 'Runs what CI runs beyond `build`: the publication POMs and the platform distribution.'
+    description = 'Runs what CI runs: every module build and test, the publication POMs, the aggregate javadoc and the platform distribution.'
 
+    // Container projects - the ones that only group other modules - have no build file, so they have
+    // neither a build to run nor a publication to generate a POM for.
+    def realSubprojects = subprojects.findAll { it.buildFile.exists() }
+
+    // Every module's own build, not just the root's.  `dependsOn 'build'` alone resolves to the root
+    // project's build task, and the root has no source - so it runs nothing and every module's tests are
+    // skipped.  Naming the subproject task paths is what actually compiles and tests the code.
     dependsOn 'build'
-    // Container projects - the ones that only group other modules - have no build file and so no
-    // publication to generate a POM for.
-    dependsOn subprojects.findAll { it.buildFile.exists() }
-                         .collect { "${it.path}:generatePomFileForMavenmodulePublication" }
+    dependsOn realSubprojects.collect { "${it.path}:build" }
+    dependsOn realSubprojects.collect { "${it.path}:generatePomFileForMavenmodulePublication" }
     dependsOn ':open-metadata-distribution:omag-server-platform:assemble'
+    // The aggregate javadoc is what the merge workflow publishes to GitHub Pages.  It used to need its
+    // own invocation with --no-configuration-cache; now that it is built directly rather than by the
+    // freefair plugin, it can share this one.
+    dependsOn 'aggregateJavadoc'
 
     doLast {
         logger.lifecycle('')
-        logger.lifecycle('verifyRelease: build, every publication POM, and the platform distribution are green.')
-        logger.lifecycle('')
-        logger.lifecycle('One thing cannot share this invocation - the aggregate-javadoc plugin is not')
-        logger.lifecycle('compatible with the configuration cache (see the note in settings.gradle).')
-        logger.lifecycle('Run it separately before a release:')
-        logger.lifecycle('')
-        logger.lifecycle('    ./gradlew aggregateJavadoc --no-configuration-cache')
+        logger.lifecycle('verifyRelease: every module build and test, every publication POM, the aggregate')
+        logger.lifecycle('javadoc and the platform distribution are green.')
         logger.lifecycle('')
     }
 }

@@ -44,18 +44,25 @@ public class PackagedPlatformSmokeTest
     private static final String JAR_PROPERTY = "platform.boot.jar";
 
     /**
-     * Logged by Spring once it has loaded the manifest's Start-Class and begun starting the application.
+     * Logged by Tomcat once the embedded servlet container has started inside the packaged jar.
      * <br><br>
-     * Reaching this line is the whole point of the test: it can only happen if the manifest's Main-Class
-     * resolved, the packaged loader classes ran, the nested BOOT-INF jars were readable, and the
-     * Start-Class loaded from them.  That is the entire packaging chain.
+     * Reaching this line is the whole point of the test.  It can only happen if the manifest's Main-Class
+     * resolved, the packaged loader classes ran, the nested BOOT-INF jars were readable, the Start-Class
+     * loaded from them, <em>and</em> the servlet container the platform serves its REST APIs from was
+     * present and able to start.  That covers the entire packaging chain.
      * <br><br>
-     * The test deliberately does not wait for the platform to become <em>ready</em>. The boot jar alone
-     * cannot get that far: a working platform also needs the metadata security and configuration store
+     * It deliberately waits for Tomcat rather than for Spring's earlier "Starting OMAGServerPlatform"
+     * line.  That earlier line is logged before the web server is created, so it is reached even by a jar
+     * that packages no servlet container at all - which is exactly what a capability conflict between
+     * tomcat-embed-core and the standalone jakarta.servlet-api jar produces.  See the
+     * jvmDependencyConflicts block in the root build.gradle.
+     * <br><br>
+     * The test still does not wait for the platform to become <em>ready</em>.  The boot jar alone cannot
+     * get that far: a working platform also needs the metadata security and configuration store
      * connectors, which are packaged into the distribution's platform/lib directory and picked up through
      * -Dloader.path. Starting a complete platform is what the BVT and the FVT suites already do.
      */
-    private static final String STARTING_MESSAGE = "Starting OMAGServerPlatform";
+    private static final String STARTING_MESSAGE = "Starting Servlet engine: [Apache Tomcat";
 
     private static final int STARTUP_TIMEOUT_SECONDS = 120;
 
@@ -172,7 +179,7 @@ public class PackagedPlatformSmokeTest
 
                 if (line.contains(STARTING_MESSAGE))
                 {
-                    return;      // the packaging chain works - that is all this test checks
+                    return;      // the packaging chain works, servlet container included
                 }
 
                 if (System.nanoTime() > deadline)
@@ -181,7 +188,7 @@ public class PackagedPlatformSmokeTest
                 }
             }
 
-            fail("The packaged jar did not get as far as starting the application within " +
+            fail("The packaged jar did not get as far as starting its servlet container within " +
                          STARTUP_TIMEOUT_SECONDS + " seconds.  Its output was:\n" + String.join("\n", output));
         }
         finally

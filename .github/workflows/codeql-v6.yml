@@ -30,27 +30,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7.0.1
-      - uses: gradle/wrapper-validation-action@v3
       - name: Setup Java JDK
-        uses: actions/setup-java@v5.6.0
+        uses: actions/setup-java@v6.0.0
         with:
           distribution: 'temurin'
           java-version: '21'
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4.37.3
+        uses: github/codeql-action/init@v4.37.9
         with:
           languages: java
           queries: security-and-quality
           ram: 4096
-      - name: Build
-        uses: gradle/gradle-build-action@v3
+      # setup-gradle validates the Gradle wrapper checksums itself - validate-wrappers
+      # defaults to true - which is why there is no separate wrapper-validation step.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6.3.0
         with:
           # codeQL requires a full before/after build to compare results. Caching can result in action failing
-          #cache-read-only: true
           cache-disabled: true
-          arguments: -x javadoc -x test build -PskipOpenTypesFVT
+      - name: Build
+        run: ./gradlew -x javadoc -x test build -PskipOpenTypesFVT
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4.37.3
+        uses: github/codeql-action/analyze@v4.37.9
         with:
           ram: 4096
