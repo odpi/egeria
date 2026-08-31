@@ -34,11 +34,11 @@ public class DataSharingHubManagerConnector extends DynamicIntegrationConnectorB
 {
     /**
      * Indicates that the connector is completely configured and can begin processing.
-     * It will monitor the linked catalog targets and ensure that the governance action types
-     * attached as catalog targets are regularly invoked to gather and record insight, or, if they are supposed to
-     * be long-running, they are still.
+     * It will monitor the data sharing hubs that are linked as catalog targets, maintaining a data dictionary
+     * for each one.
      *
      * @throws ConnectorCheckedException the connector detected a problem.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
     public void start() throws ConnectorCheckedException, UserNotAuthorizedException

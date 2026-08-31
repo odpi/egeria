@@ -121,6 +121,36 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                         "No action is required.  This message is for monitoring the activity of the data sharing hub management.",
                         "https://egeria-project.org/concepts/data-sharing-hub/"),
 
+    /**
+     * LISKOV-DATA-HUB-MANAGER-0020 - The {0} integration connector has started engine action {1} to enable the cataloguing of {2} {3} ({4}) using governance action type {5}
+     */
+    ENABLING_CATALOGUING("LISKOV-DATA-HUB-MANAGER-0020",
+                         AuditLogRecordSeverityLevel.INFO,
+                         "The {0} integration connector has started engine action {1} to enable the cataloguing of {2} {3} ({4}) using governance action type {5}",
+                         "The connector has detected that the contents of a member of a data sharing hub are not being catalogued and has requested that the appropriate cataloguing integration connector begins to monitor it.  The contents of the member will appear in open metadata once the cataloguing integration connector has run.",
+                         "No action is required.  This message is for monitoring the set up of the cataloguing for the members of a data sharing hub.",
+                         "https://egeria-project.org/concepts/data-sharing-hub/"),
+
+    /**
+     * LISKOV-DATA-HUB-MANAGER-0021 - The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5}
+     */
+    STARTING_SURVEY("LISKOV-DATA-HUB-MANAGER-0021",
+                    AuditLogRecordSeverityLevel.INFO,
+                    "The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5}",
+                    "The connector has requested a new survey of a member of a data sharing hub so that the latest characteristics of its contents are available to the data sharing hub's owner.",
+                    "No action is required.  This message is for monitoring the surveying of the members of a data sharing hub.",
+                    "https://egeria-project.org/concepts/data-sharing-hub/"),
+
+    /**
+     * LISKOV-DATA-HUB-MANAGER-0022 - The {0} integration connector is unable to locate a technology type called {1} for {2} {3} ({4})
+     */
+    NO_TECHNOLOGY_TYPE("LISKOV-DATA-HUB-MANAGER-0022",
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} integration connector is unable to locate a technology type called {1} for {2} {3} ({4})",
+                       "The connector is not able to determine which cataloguing and survey governance action types are appropriate for this element and so it skips them.  The rest of the refresh continues.",
+                       "If this element should be catalogued and surveyed, check that its deployedImplementationType property is set to a technology type that is defined in the content packs loaded into this metadata store.",
+                       "https://egeria-project.org/concepts/data-sharing-hub/"),
+
     ;
 
     private final String                      logMessageId;

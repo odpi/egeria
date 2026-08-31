@@ -28,7 +28,7 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
 | Exception messages | 66 | 615 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 104 | 930 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Audit log messages | 104 | 933 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -100,7 +100,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [Event Bus Connectors](connectors/event-bus-connectors) | 2 | 22 | These connectors send and receive events over the event bus - typically Apache Kafka. |
 | [Governance Action Connectors](connectors/governance-action-connectors) | 2 | 43 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
 | [File Survey Connectors](connectors/file-survey-connectors) | 1 | 5 | These survey action services analyse the content of files and folders and record what they find in a survey report. |
-| [Nanny Connectors](connectors/nanny-connectors) | 16 | 78 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
+| [Nanny Connectors](connectors/nanny-connectors) | 16 | 81 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
 | [Lovelace Insights](connectors/lovelace-insights) | 2 | 7 | These connectors analyse the harvested observability data and turn it into insight reports. |
 | [Report Generating Connectors](connectors/report-generating-connectors) | 1 | 2 | These connectors turn the contents of the open metadata ecosystem into human-readable documents. |
 | [Secrets Store Connectors](connectors/secrets-store-connectors) | 2 | 5 | These connectors supply the credentials that other connectors need when they call a third party technology. |
@@ -172,7 +172,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `JDBC-INTEGRATION-CONNECTOR-` | Audit log messages | 11 | [JDBCIntegrationConnectorAuditCode](connectors/integration-connectors/JDBCIntegrationConnectorAuditCode.md) |
 | `JDBC-RESOURCE-CONNECTOR-` | Audit log messages | 4 | [JDBCAuditCode](connectors/data-store-connectors/JDBCAuditCode.md) |
 | `JDBC-RESOURCE-CONNECTOR-` | Exception messages | 7 | [JDBCErrorCode](connectors/data-store-connectors/JDBCErrorCode.md) |
-| `LISKOV-DATA-HUB-MANAGER-` | Audit log messages | 10 | [LiskovAuditCode](connectors/nanny-connectors/LiskovAuditCode.md) |
+| `LISKOV-DATA-HUB-MANAGER-` | Audit log messages | 13 | [LiskovAuditCode](connectors/nanny-connectors/LiskovAuditCode.md) |
 | `LISKOV-DATA-HUB-MANAGER-500-` | Exception messages | 1 | [LiskovErrorCode](connectors/nanny-connectors/LiskovErrorCode.md) |
 | `LOVELACE-INSIGHTS-` | Audit log messages | 5 | [LovelaceInsightAuditCode](connectors/lovelace-insights/LovelaceInsightAuditCode.md) |
 | `LOVELACE-INSIGHTS-500-` | Exception messages | 2 | [LovelaceInsightErrorCode](connectors/lovelace-insights/LovelaceInsightErrorCode.md) |
