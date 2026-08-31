@@ -103,9 +103,12 @@ loadScripts(document, 'script');</script>
  disagrees with the search is worse than no count at all: it is used to size pages and to decide whether
  there is anything to fetch, so a wrong answer is acted upon rather than noticed.
  <br>
- The assertion is that the count is at least the number of instances this test created and matches what
- find() reports for the same criteria.  It is not an absolute number because the repository legitimately
- holds other instances of the type.</div>
+ The assertion is that the count is at least the number of instances this test created, and matches the
+ instances find() reports for the same criteria that this repository is answerable for counting - those it
+ homes, and those it replicates on behalf of a non-cohort provenance.  It is not an absolute number because
+ the repository legitimately holds other instances of the type, and it is not the whole of what find()
+ returns because find() also returns reference copies of instances another member homes; those are counted
+ by that member, so counting them here too would double them in a federated count.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
