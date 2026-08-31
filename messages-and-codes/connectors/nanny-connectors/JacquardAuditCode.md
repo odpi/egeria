@@ -9,12 +9,11 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 17 |
+| **Number of messages** | 18 |
 | **Message identifiers begin** | `JACQUARD-HARVESTER-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/nanny-connectors](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors) |
 | **Source** | [JacquardAuditCode.java](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors/src/main/java/org/odpi/openmetadata/adapters/connectors/jacquard/ffdc/JacquardAuditCode.java) |
-| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 
 ## Messages
@@ -38,6 +37,7 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 | [JACQUARD-HARVESTER-0021](#jacquard-harvester-0021) | INFO | The {0} integration connector is harvesting valid metadata values - this may take some time ... |
 | [JACQUARD-HARVESTER-0022](#jacquard-harvester-0022) | INFO | The {0} integration connector is harvesting reference data sets - this may take some time ... |
 | [JACQUARD-HARVESTER-0023](#jacquard-harvester-0023) | INFO | The {0} integration connector is creating connectors to access the data in existing products - this may take some time ... |
+| [JACQUARD-HARVESTER-0024](#jacquard-harvester-0024) | INFO | The {0} integration connector has linked its solution component {1} ({2}) to the equivalent solution component {3} as a validated duplicate |
 
 ----
 
@@ -50,6 +50,7 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 | **Java constant** | `JacquardAuditCode.UNEXPECTED_EXCEPTION` |
 | **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -71,6 +72,7 @@ Use the details from the error message to determine the cause of the error and r
 | **Java constant** | `JacquardAuditCode.NO_LAST_UPDATE_DATE` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -92,6 +94,7 @@ Update the data source to ensure it has a column called 'updateTime'.
 | **Java constant** | `JacquardAuditCode.NO_CREATION_DATE` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -113,6 +116,7 @@ Update the data source to ensure it has a column called 'createTime'.
 | **Java constant** | `JacquardAuditCode.BARDOT_STARTED` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -134,6 +138,7 @@ No action is required unless there are errors that follow indicating that there 
 | **Java constant** | `JacquardAuditCode.CONNECTOR_STOPPING` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -155,6 +160,7 @@ No action is required unless there are errors that follow indicating that there 
 | **Java constant** | `JacquardAuditCode.CREATED_SUPPORTING_DEFINITION` |
 | **Severity** | TRACE - This is additional information on the operation of the server that may be of assistance in debugging a problem. It is not normally logged to any destination, but can be added when needed. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -176,6 +182,7 @@ No action is required.  This message is used to show the progress of the setup.
 | **Java constant** | `JacquardAuditCode.STARTING_CONNECTOR` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -197,6 +204,7 @@ Monitor the set up of the catalog and the switch over to monitoring.
 | **Java constant** | `JacquardAuditCode.NEW_OPEN_METADATA_PRODUCT` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -218,6 +226,7 @@ No action is required.  This message is for monitoring the set up of the fixed d
 | **Java constant** | `JacquardAuditCode.LINKING_ELEMENTS` |
 | **Severity** | TRACE - This is additional information on the operation of the server that may be of assistance in debugging a problem. It is not normally logged to any destination, but can be added when needed. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -239,6 +248,7 @@ No action is required.  This message is for monitoring the set up of the Open Me
 | **Java constant** | `JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION` |
 | **Severity** | TRACE - This is additional information on the operation of the server that may be of assistance in debugging a problem. It is not normally logged to any destination, but can be added when needed. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -260,6 +270,7 @@ No action is required.  This message is used to show progress during the setup.
 | **Java constant** | `JacquardAuditCode.RETRIEVING_OPEN_METADATA_PRODUCT` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -281,6 +292,7 @@ No action is required.  This message is for monitoring the retrieval of the fixe
 | **Java constant** | `JacquardAuditCode.UPDATED_OPEN_METADATA_PRODUCT` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -302,6 +314,7 @@ No action is required.  This message is for monitoring the updates to the fixed 
 | **Java constant** | `JacquardAuditCode.REFRESH_CATALOG_TARGET` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -323,6 +336,7 @@ No action is required.  This message is for monitoring the refresh progress of t
 | **Java constant** | `JacquardAuditCode.MAINTAINED_DATA_SCOPE` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -344,6 +358,7 @@ No action is required.  This message is for monitoring the refresh activity of t
 | **Java constant** | `JacquardAuditCode.HARVESTING_VALID_VALUES` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -365,6 +380,7 @@ No action is required beyond patience as this process can take 10+ minutes depen
 | **Java constant** | `JacquardAuditCode.HARVESTING_REFERENCE_DATA_SETS` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -386,6 +402,7 @@ No action is required beyond patience as this process can take 10+ minutes depen
 | **Java constant** | `JacquardAuditCode.HARVESTING_CATALOG_TARGETS` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
@@ -394,6 +411,28 @@ The connector is creating connectors to each of the existing digital products in
 **User action**
 
 No action is required beyond patience as this process can take 10+ minutes depending on how many digital products you have.  This message is to indicate that Jacquard has embarked on a potentially large piece of work.
+
+
+----
+
+### JACQUARD-HARVESTER-0024
+
+> The {0} integration connector has linked its solution component {1} ({2}) to the equivalent solution component {3} as a validated duplicate
+
+|  |  |
+|---|---|
+| **Java constant** | `JacquardAuditCode.LINKING_DUPLICATE_SOLUTION_COMPONENTS` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/duplicate-management/overview/> |
+
+**System action**
+
+The connector has found another solution component with the same display name as one of its own solution components.  The two components are linked with a validated PeerDuplicateLink relationship and both are classified as KnownDuplicate so that the retrieval processing combines them.
+
+**User action**
+
+No action is required.  This message is for monitoring the alignment of the Open Metadata Digital Product Catalog's solution blueprint with the solution components supplied by the content packs.
 
 
 ----

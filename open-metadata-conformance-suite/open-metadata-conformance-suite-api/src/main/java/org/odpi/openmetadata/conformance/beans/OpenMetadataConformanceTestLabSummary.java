@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -20,10 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenMetadataConformanceTestLabSummary implements Serializable
+public class OpenMetadataConformanceTestLabSummary
 {
-    private static final long     serialVersionUID = 1L;
-
     private Date   testRunDate   = new Date();
 
     private List<OpenMetadataConformanceWorkbenchSummary> testSummariesFromWorkbenches = null;
@@ -36,7 +33,6 @@ public class OpenMetadataConformanceTestLabSummary implements Serializable
         super();
     }
 
-
     /**
      * Return date that the test was run.
      *
@@ -46,7 +42,6 @@ public class OpenMetadataConformanceTestLabSummary implements Serializable
     {
         return testRunDate;
     }
-
 
     /**
      * Set up the date of the test.
@@ -58,7 +53,6 @@ public class OpenMetadataConformanceTestLabSummary implements Serializable
         this.testRunDate = testRunDate;
     }
 
-
     /**
      * Return the list of test summaries from each workbench.
      *
@@ -69,7 +63,6 @@ public class OpenMetadataConformanceTestLabSummary implements Serializable
         return testSummariesFromWorkbenches;
     }
 
-
     /**
      * Set up the list of test summaries from each workbench.
      *
@@ -79,7 +72,6 @@ public class OpenMetadataConformanceTestLabSummary implements Serializable
     {
         this.testSummariesFromWorkbenches = testSummariesFromWorkbenches;
     }
-
 
     /**
      * toString() JSON-style

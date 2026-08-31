@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -49,7 +47,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum SequencingOrder implements Serializable
+public enum SequencingOrder
 {
     /**
      * Any Order
@@ -91,8 +89,6 @@ public enum SequencingOrder implements Serializable
      */
     PROPERTY_DESCENDING  (7, "By property value (Descending)",  "Order by property value, highest first.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int     ordinal;
     private final String  name;
     private final String  description;
@@ -118,7 +114,6 @@ public enum SequencingOrder implements Serializable
      */
     public int getOrdinal() { return ordinal; }
 
-
     /**
      * Return the default name of the sequencing order.
      *
@@ -126,14 +121,12 @@ public enum SequencingOrder implements Serializable
      */
     public String getDisplayName() { return name; }
 
-
     /**
      * Return the default description of the sequencing order.
      *
      * @return String description
      */
     public String getDescription() { return description; }
-
 
     /**
      * toString() JSON-style

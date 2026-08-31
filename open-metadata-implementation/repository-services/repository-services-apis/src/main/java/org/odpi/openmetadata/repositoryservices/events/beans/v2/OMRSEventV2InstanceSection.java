@@ -14,7 +14,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
 
 import java.io.Serial;
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -25,11 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSEventV2InstanceSection implements Serializable
+public class OMRSEventV2InstanceSection
 {
     @Serial
-    private static final long serialVersionUID = 1L;
-
     private OMRSInstanceEventType eventType = null;
 
     private String         typeDefGUID                      = null;
@@ -48,14 +45,12 @@ public class OMRSEventV2InstanceSection implements Serializable
     private TypeDefSummary originalTypeDefSummary           = null;
     private String         originalInstanceGUID             = null;
 
-
     /**
      * Default constructor
      */
     public OMRSEventV2InstanceSection()
     {
     }
-
 
     /**
      * Return the reason for the event.
@@ -67,7 +62,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         return eventType;
     }
 
-
     /**
      * Set up the reason for the event.
      *
@@ -77,7 +71,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         this.eventType = eventType;
     }
-
 
     /**
      * Return the unique identifier of the instance type.
@@ -89,7 +82,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         return typeDefGUID;
     }
 
-
     /**
      * Set up the unique identifier of the instance type.
      *
@@ -99,7 +91,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         this.typeDefGUID = typeDefGUID;
     }
-
 
     /**
      * Return the unique name of the instance type.
@@ -111,7 +102,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         return typeDefName;
     }
 
-
     /**
      * Set up the unique name of the instance type.
      *
@@ -121,7 +111,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         this.typeDefName = typeDefName;
     }
-
 
     /**
      * Return the unique identifier of the instance.
@@ -133,7 +122,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         return instanceGUID;
     }
 
-
     /**
      * Set up the unique identifier of the instance.
      *
@@ -143,7 +131,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         this.instanceGUID = instanceGUID;
     }
-
 
     /**
      * Return the entity values before it was updated.
@@ -155,7 +142,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         return originalEntity;
     }
 
-
     /**
      * Set up the entity values before it was updated.
      *
@@ -165,7 +151,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         this.originalEntity = originalEntity;
     }
-
 
     /**
      * Return the values for the entity at the end of the operation.
@@ -177,7 +162,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         return entity;
     }
 
-
     /**
      * Set up the values for the entity at the end of the operation.
      *
@@ -188,14 +172,12 @@ public class OMRSEventV2InstanceSection implements Serializable
         this.entity = entity;
     }
 
-
     /**
      * Return associated entity proxy.
      *
      * @return proxy
      */
     public EntityProxy getEntityProxy() { return entityProxy; }
-
 
     /**
      * Set up associated entity proxy.
@@ -204,14 +186,12 @@ public class OMRSEventV2InstanceSection implements Serializable
      */
     public void setEntityProxy(EntityProxy entityProxy) { this.entityProxy = entityProxy; }
 
-
     /**
      * Return values for the relationship before it was changed.
      *
      * @return relationship
      */
     public Relationship getOriginalRelationship() { return originalRelationship; }
-
 
     /**
      * Set up the values for the relationship before it was changed.
@@ -223,7 +203,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         this.originalRelationship = originalRelationship;
     }
 
-
     /**
      * Return new relationship values.
      *
@@ -233,7 +212,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         return relationship;
     }
-
 
     /**
      * Set up new relationship values.
@@ -245,7 +223,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         this.relationship = relationship;
     }
 
-
     /**
      * Return the classification before it was changed.
      *
@@ -255,7 +232,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         return originalClassification;
     }
-
 
     /**
      * Set up the classification before it was changed.
@@ -267,7 +243,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         this.originalClassification = originalClassification;
     }
 
-
     /**
      * Return the new classification.
      *
@@ -277,7 +252,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         return classification;
     }
-
 
     /**
      * Set up new classification.
@@ -289,7 +263,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         this.classification = classification;
     }
 
-
     /**
      * Return a batch of instances.
      *
@@ -299,7 +272,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         return instanceBatch;
     }
-
 
     /**
      * Set up a batch of instances.
@@ -311,7 +283,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         this.instanceBatch = instanceBatch;
     }
 
-
     /**
      * Return the new metadata collection unique identifier.
      *
@@ -321,7 +292,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         return homeMetadataCollectionId;
     }
-
 
     /**
      * Set up the new metadata collection unique identifier.
@@ -333,7 +303,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         this.homeMetadataCollectionId = homeMetadataCollectionId;
     }
 
-
     /**
      * Return the unique identifier of the metadata collection before it was changed.
      *
@@ -343,7 +312,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         return originalHomeMetadataCollectionId;
     }
-
 
     /**
      * Set up the unique identifier of the metadata collection before it was changed.
@@ -355,7 +323,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         this.originalHomeMetadataCollectionId = originalHomeMetadataCollectionId;
     }
 
-
     /**
      * Return the type before it was changed.
      *
@@ -365,7 +332,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         return originalTypeDefSummary;
     }
-
 
     /**
      * Set up the type before it was changed.
@@ -377,7 +343,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         this.originalTypeDefSummary = originalTypeDefSummary;
     }
 
-
     /**
      * Return the unique identifier of the instance before it was changed.
      *
@@ -388,7 +353,6 @@ public class OMRSEventV2InstanceSection implements Serializable
         return originalInstanceGUID;
     }
 
-
     /**
      * Set up the unique identifier of the instance before it was changed.
      *
@@ -398,7 +362,6 @@ public class OMRSEventV2InstanceSection implements Serializable
     {
         this.originalInstanceGUID = originalInstanceGUID;
     }
-
 
     /**
      * JSON-style toString.

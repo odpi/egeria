@@ -26,7 +26,14 @@ public class PlatformUserDetails implements UserDetails
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private OpenMetadataUserAccount openMetadataUserAccount = null;
+    /*
+     * Spring Security's UserDetails extends Serializable, so this class has to be serializable even
+     * though nothing here uses Java serialization - there is no Spring Session and no HttpSession.
+     * The wrapped account is an open metadata bean that travels as JSON and is not itself
+     * Serializable, so it is transient: that keeps the contract honest rather than declaring a
+     * serializable class that could not actually be written.
+     */
+    private transient OpenMetadataUserAccount openMetadataUserAccount = null;
 
 
     /**

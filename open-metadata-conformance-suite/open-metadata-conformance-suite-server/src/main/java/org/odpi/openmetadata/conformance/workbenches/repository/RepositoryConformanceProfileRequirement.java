@@ -2,14 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.workbenches.repository;
 
-import java.io.Serializable;
-
 /**
  * RepositoryConformanceProfileRequirement documents the different requirements for each open
  * metadata repository conformance profile.  The Open Metadata Repository Tests
  * report their findings for each requirement
  */
-public enum RepositoryConformanceProfileRequirement implements Serializable
+public enum RepositoryConformanceProfileRequirement
 {
     /**
      * The technology under test is able to register with a cohort.
@@ -451,18 +449,11 @@ public enum RepositoryConformanceProfileRequirement implements Serializable
                                            "https://egeria-project.org/guides/cts/repository-workbench/profiles/external-instances/#store-external-classifications",
                                            RepositoryConformanceProfile.EXTERNAL_INSTANCES);
 
-
-
-
-    private static final long serialVersionUID = 1L;
-
     private final int                          ordinal;
     private final String                       name;
     private final String                       description;
     private final String                       documentationURL;
     private final RepositoryConformanceProfile profile;
-
-
 
     /**
      * Default constructor sets up the values for this enum instance.
@@ -487,7 +478,6 @@ public enum RepositoryConformanceProfileRequirement implements Serializable
         this.profile = profile;
     }
 
-
     /**
      * Return the identifier for the enum, used for indexing arrays etc. with the enum.
      *
@@ -498,7 +488,6 @@ public enum RepositoryConformanceProfileRequirement implements Serializable
         return ordinal;
     }
 
-
     /**
      * Return the name for the enum, used for message content.
      *
@@ -508,7 +497,6 @@ public enum RepositoryConformanceProfileRequirement implements Serializable
     {
         return name;
     }
-
 
     /**
      * Return the default description for the enum, used when there is no natural
@@ -521,7 +509,6 @@ public enum RepositoryConformanceProfileRequirement implements Serializable
         return description;
     }
 
-
     /**
      * Return the URL to link to more documentation about this profile.
      *
@@ -531,7 +518,6 @@ public enum RepositoryConformanceProfileRequirement implements Serializable
     {
         return documentationURL;
     }
-
 
     /**
      * Return the profile that this requirement belongs to.
@@ -543,7 +529,6 @@ public enum RepositoryConformanceProfileRequirement implements Serializable
         return profile;
     }
 
-
     /**
      * Return the profile identifier that this requirement belongs to.
      *
@@ -554,7 +539,6 @@ public enum RepositoryConformanceProfileRequirement implements Serializable
         return profile.getProfileId();
     }
 
-
     /**
      * Return the requirement identifier as an Integer.
      *
@@ -564,7 +548,6 @@ public enum RepositoryConformanceProfileRequirement implements Serializable
     {
         return ordinal;
     }
-
 
     /**
      * toString() JSON-style

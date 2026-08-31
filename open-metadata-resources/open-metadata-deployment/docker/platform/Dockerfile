@@ -54,11 +54,6 @@ EXPOSE 7443 5005
 # By default, we run the OMAG Server Platform
 ENV JAVA_APP_JAR=omag-server-platform-${version}.jar
 
-# These environment variables are a workaround for an incompatibility between the macOS encyryption library and XTDB's
-# expectionations.
-ENV XTDB_DISABLE_LIBCRYPTO=True
-ENV XTDB_ENABLE_BYTEUTILS_SHA1=True
-
 # This is used with regular class loader, ie any client code etc
 # ENV JAVA_LIBDIR=/deployments/lib
 

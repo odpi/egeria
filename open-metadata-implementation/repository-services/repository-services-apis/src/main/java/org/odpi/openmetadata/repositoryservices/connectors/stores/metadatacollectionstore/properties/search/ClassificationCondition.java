@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,12 +19,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ClassificationCondition implements Serializable
+public class ClassificationCondition
 {
 
     @Serial
-    private static final long serialVersionUID = 1L;
-
     private String name;
     private SearchProperties matchProperties;
 
@@ -108,7 +105,6 @@ public class ClassificationCondition implements Serializable
                 '}';
     }
 
-
     /**
      * Validate that an object is equal depending on their stored values.
      *
@@ -130,7 +126,6 @@ public class ClassificationCondition implements Serializable
         return Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getMatchProperties(), that.getMatchProperties());
     }
-
 
     /**
      * Return a hash code based on the property values

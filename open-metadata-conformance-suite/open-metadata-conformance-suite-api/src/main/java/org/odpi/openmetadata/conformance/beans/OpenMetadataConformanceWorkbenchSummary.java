@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,10 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenMetadataConformanceWorkbenchSummary implements Serializable
+public class OpenMetadataConformanceWorkbenchSummary
 {
-    private static final long     serialVersionUID = 1L;
-
     private String workbenchId               = null;
     private String workbenchName             = null;
     private String versionNumber             = null;
@@ -34,7 +31,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
 
     private List<OpenMetadataConformanceProfileSummary> profileSummaries = null;
 
-
     /**
      * Default constructor - used when constructing from JSON.
      */
@@ -42,7 +38,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
     {
         super();
     }
-
 
     /**
      * Return the unique identifier of the workbench.
@@ -54,7 +49,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
         return workbenchId;
     }
 
-
     /**
      * Set up the unique identifier of the workbench.
      *
@@ -64,7 +58,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
     {
         this.workbenchId = workbenchId;
     }
-
 
     /**
      * Return the name of the workbench
@@ -76,7 +69,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
         return workbenchName;
     }
 
-
     /**
      * Set up the name of the workbench
      *
@@ -86,7 +78,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
     {
         this.workbenchName = workbenchName;
     }
-
 
     /**
      * Return the version number of the workbench.
@@ -98,7 +89,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
         return versionNumber;
     }
 
-
     /**
      * Set up the version number of the workbench running the tests.
      *
@@ -108,7 +98,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
     {
         this.versionNumber = versionNumber;
     }
-
 
     /**
      * Return the url to the workbench documentation.
@@ -120,7 +109,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
         return workbenchDocumentationURL;
     }
 
-
     /**
      * Set up the url to the workbench documentation.
      *
@@ -130,7 +118,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
     {
         this.workbenchDocumentationURL = workbenchDocumentationURL;
     }
-
 
     /**
      * Return the technology under test type description.
@@ -142,7 +129,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
         return tutType;
     }
 
-
     /**
      * Set up the technology under test type description.
      *
@@ -152,7 +138,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
     {
         this.tutType = tutType;
     }
-
 
     /**
      * Return the technology under test name (eg server name).
@@ -164,7 +149,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
         return tutName;
     }
 
-
     /**
      * Set up the technology under test name (eg server name).
      *
@@ -174,7 +158,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
     {
         this.tutName = tutName;
     }
-
 
     /**
      * Return the indexed list of profile summaries.  There is an entry for each profile indexed
@@ -197,7 +180,6 @@ public class OpenMetadataConformanceWorkbenchSummary implements Serializable
     {
         this.profileSummaries = profileSummaries;
     }
-
 
     /**
      * toString() JSON-style

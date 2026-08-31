@@ -84,8 +84,6 @@ public enum ElementOriginCategory implements OpenMetadataRefData
                              "The element is maintained by an external technology.  The metadata collection id is the guid of the technology's descriptive entity.",
                              "a1550c51-6953-4f31-8ab7-3f0b9d9f45fe");
 
-    private static final long     serialVersionUID = 1L;
-
     private final int    originCode;
     private final String originName;
     private final String originDescription;

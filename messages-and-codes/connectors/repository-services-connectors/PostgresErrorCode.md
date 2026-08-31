@@ -4,7 +4,7 @@
 
 # PostgresErrorCode
 
-The PostgresErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with XTDB as an OMRS Metadata Repository. It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
+The PostgresErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with PostgreSQL as an OMRS Metadata Repository. It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
 
 |  |  |
 |---|---|

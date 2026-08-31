@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
@@ -21,11 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSAuditLogRecordOriginator implements Serializable
+public class OMRSAuditLogRecordOriginator
 {
     @Serial
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Property name for server name
      */
@@ -59,7 +56,6 @@ public class OMRSAuditLogRecordOriginator implements Serializable
     {
     }
 
-
     OMRSAuditLogRecordOriginator(Map<String, String>  originatorProperties)
     {
         if (originatorProperties != null)
@@ -70,7 +66,6 @@ public class OMRSAuditLogRecordOriginator implements Serializable
             metadataCollectionId = originatorProperties.get(METADATA_COLLECTION_ID_PROPERTY);
         }
     }
-
 
     /**
      * Return the display name for the server that is used in events, messages and UIs to
@@ -83,7 +78,6 @@ public class OMRSAuditLogRecordOriginator implements Serializable
         return serverName;
     }
 
-
     /**
      * Set up the display name for the server that is used in events, messages and UIs to
      * make it easier for people to understand the origin of metadata.
@@ -94,7 +88,6 @@ public class OMRSAuditLogRecordOriginator implements Serializable
     {
         this.serverName = serverName;
     }
-
 
     /**
      * Return the descriptive string describing the type of the server.  This might be the
@@ -107,7 +100,6 @@ public class OMRSAuditLogRecordOriginator implements Serializable
         return serverType;
     }
 
-
     /**
      * Set up the descriptive string describing the type of the server.  This might be the
      * name of the product, or similar identifier.
@@ -119,7 +111,6 @@ public class OMRSAuditLogRecordOriginator implements Serializable
         this.serverType = serverType;
     }
 
-
     /**
      * Return the name of the organization that runs/owns the server.
      *
@@ -129,7 +120,6 @@ public class OMRSAuditLogRecordOriginator implements Serializable
     {
         return organizationName;
     }
-
 
     /**
      * Set up the name of the organization that runs/owns the server.
@@ -141,7 +131,6 @@ public class OMRSAuditLogRecordOriginator implements Serializable
         this.organizationName = organizationName;
     }
 
-
     /**
      * Returns the unique identifier (guid) of the originating repository's metadata collection.
      *
@@ -152,7 +141,6 @@ public class OMRSAuditLogRecordOriginator implements Serializable
         return metadataCollectionId;
     }
 
-
     /**
      * Sets up the unique identifier (guid) of the originating repository.
      *
@@ -162,7 +150,6 @@ public class OMRSAuditLogRecordOriginator implements Serializable
     {
         this.metadataCollectionId = metadataCollectionId;
     }
-
 
     /**
      * Standard toString method.
@@ -179,7 +166,6 @@ public class OMRSAuditLogRecordOriginator implements Serializable
                 ", metadataCollectionId='" + metadataCollectionId + '\'' +
                 '}';
     }
-
 
     /**
      * Validate that an object is equal depending on their stored values.
@@ -204,7 +190,6 @@ public class OMRSAuditLogRecordOriginator implements Serializable
                 Objects.equals(getServerType(), that.getServerType()) &&
                 Objects.equals(getOrganizationName(), that.getOrganizationName());
     }
-
 
     /**
      * Return a hash code based on the values of this object.

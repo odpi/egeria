@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OMRSEventProtocolVersion implements Serializable
+public enum OMRSEventProtocolVersion
 {
     /**
      * OMRS Version 1
@@ -30,12 +28,9 @@ public enum OMRSEventProtocolVersion implements Serializable
      */
     V2 (2, "OMRS V2.0", "OMRS Version 2 (Egeria 6.0 and later)");
 
-    private static final long     serialVersionUID = 1L;
-
     private final int    ordinal;
     private final String name;
     private final String description;
-
 
     /**
      * Typical Constructor
@@ -54,7 +49,6 @@ public enum OMRSEventProtocolVersion implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the code for this enum instance
      *
@@ -64,7 +58,6 @@ public enum OMRSEventProtocolVersion implements Serializable
     {
         return ordinal;
     }
-
 
     /**
      * Return the default symbol for this enum instance.
@@ -76,7 +69,6 @@ public enum OMRSEventProtocolVersion implements Serializable
         return name;
     }
 
-
     /**
      * Return the default description for the star rating for this enum instance.
      *
@@ -86,7 +78,6 @@ public enum OMRSEventProtocolVersion implements Serializable
     {
         return description;
     }
-
 
     /**
      * Standard toString method.

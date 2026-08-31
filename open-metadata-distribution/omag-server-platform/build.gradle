@@ -89,13 +89,13 @@ distributions {
         contents {
             into('') {
                 // Describe the docker build script
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/docker-build" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/docker-build")
                 filePermissions {
                     unix('0755')
                 }
             }
             into('') {
-                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/docker/platform" }
+                from("$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/docker/platform")
                         {
                             include 'Dockerfile'
                             include 'dist/*'
@@ -125,7 +125,7 @@ distributions {
             }
             into('assembly') {
                 // Describe the deployment layout
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/assembly" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/assembly")
                 filePermissions {
                     unix('0755')
                 }
@@ -152,49 +152,49 @@ distributions {
             }
             into('assembly/platform') {
                 // Identify how the platform is started
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/platform" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/platform")
                 filePermissions {
                     unix('0755')
                 }
             }
             into('assembly/platform/secrets') {
                 // Provide the secrets stores
-                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/secrets" }
+                from("$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/secrets")
                 filePermissions {
                     unix('0755')
                 }
             }
             into('assembly/platform/loading-bay') {
                 // Describe the loading bay
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/loading-bay" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/loading-bay")
                 filePermissions {
                     unix('0755')
                 }
             }
             into('assembly/platform/data') {
                 // Describe the data files
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/data" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/data")
                 filePermissions {
                     unix('0755')
                 }
             }
             into('assembly/platform/data/servers') {
                 // Add all sample configs
-                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/sample-configs" }
+                from("$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/sample-configs")
                 filePermissions {
                     unix('0755')
                 }
             }
             into('assembly/platform/logs') {
                 // Describe the log files
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/logs" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/logs")
                 filePermissions {
                     unix('0755')
                 }
             }
             into('assembly/platform/lib') {
                 // Describe connectors
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/lib" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/lib")
                 filePermissions {
                     unix('0755')
                 }
@@ -253,21 +253,21 @@ distributions {
             }
             into('assembly/platform/extra') {
                 // Identify how to add new libs
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/extra" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/extra")
                 filePermissions {
                     unix('0755')
                 }
             }
             into('assembly/platform/landing-area') {
                 // Identify how to add new libs
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/landing-area" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/landing-area")
                 filePermissions {
                     unix('0666')
                 }
             }
             into('assembly/etc') {
                 // Describe the deployment layout
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/etc" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/etc")
                 filePermissions {
                     unix('0755')
                 }
@@ -282,15 +282,20 @@ distributions {
             }
             into('assembly/etc/reports') {
                 // Describe the reports layout
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/reports" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/reports")
                 filePermissions {
                     unix('0755')
                 }
             }
             into('assembly/etc/reports') {
+                // Held in a local so the rename closure below - which Gradle calls per file, at execution
+                // time - does not have to reach for rootProject then.  That is the one thing that made
+                // this whole build ineligible for the configuration cache.
+                def versionSuffix = "-$rootProject.version-jar-with-dependencies"
+
                 from { project(':open-metadata-resources:open-metadata-dev-utilities:component-id-report').shadowJar }
                 rename { String fileName ->
-                    fileName.replace("-$rootProject.version-jar-with-dependencies", "")
+                    fileName.replace(versionSuffix, "")
                 }
                 filePermissions {
                     unix('0755')
@@ -298,20 +303,20 @@ distributions {
             }
             into('assembly/opt') {
                 // Describe the opt layout
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/opt" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/opt")
                 filePermissions {
                     unix('0755')
                 }
             }
             into('assembly/opt/sample-data') {
-                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-samples/sample-data" }
+                from("$rootProject.projectDir/open-metadata-resources/open-metadata-samples/sample-data")
                 filePermissions {
                     unix('0755')
                 }
             }
             into('assembly/opt/sample-data') {
                 // Describe the sample-data layout
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/sample-data" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/sample-data")
                 filePermissions {
                     unix('0755')
                 }
@@ -326,107 +331,107 @@ distributions {
             }
             into('assembly/opt/http-client-collections') {
                 // Describe the HTTP clients
-                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/http-client-collections" }
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/http-client-collections")
                 filePermissions {
                     unix('0755')
                 }
             }
             into('assembly/opt/http-client-collections') {
-                from { "$rootProject.projectDir/open-metadata-implementation/admin-services" }
+                from("$rootProject.projectDir/open-metadata-implementation/admin-services")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/adapters/open-connectors" }
+                from("$rootProject.projectDir/open-metadata-implementation/adapters/open-connectors")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/repository-services" }
+                from("$rootProject.projectDir/open-metadata-implementation/repository-services")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/platform-services" }
+                from("$rootProject.projectDir/open-metadata-implementation/platform-services")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/server-operations" }
+                from("$rootProject.projectDir/open-metadata-implementation/server-operations")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/user-security/user-authn" }
+                from("$rootProject.projectDir/open-metadata-implementation/user-security/user-authn")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/governance-server-services/integration-daemon-services" }
+                from("$rootProject.projectDir/open-metadata-implementation/governance-server-services/integration-daemon-services")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/governance-server-services/engine-host-services" }
-                        { include 'Egeria*.http' }
-
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/actor-manager" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/asset-maker" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/automated-curation" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/classification-explorer" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/collection-manager" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/connection-maker" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/external-links" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/feedback-manager" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/governance-officer" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/lineage-linker" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/metadata-expert" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/multi-language" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/schema-maker" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/time-keeper" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/valid-metadata" }
+                from("$rootProject.projectDir/open-metadata-implementation/governance-server-services/engine-host-services")
                         { include 'Egeria*.http' }
 
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/action-author" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/actor-manager")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/asset-catalog" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/asset-maker")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/community-matters" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/automated-curation")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-designer" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/classification-explorer")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-discovery" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/collection-manager")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-engineer" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/connection-maker")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-officer" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/external-links")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/devops-pipeline" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/feedback-manager")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/digital-business" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/governance-officer")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-manager" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/lineage-linker")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/location-arena" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/metadata-expert")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/my-profile" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/multi-language")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/notification-manager" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/schema-maker")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/people-organizer" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/time-keeper")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/privacy-officer" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/valid-metadata")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/product-catalog" }
+
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/action-author")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/product-manager" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/asset-catalog")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/project-manager" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/community-matters")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/reference-data" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/data-designer")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/runtime-manager" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/data-discovery")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/security-officer" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/data-engineer")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/solution-architect" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/data-officer")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/subject-area" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/devops-pipeline")
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/template-manager" }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/digital-business")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/glossary-manager")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/location-arena")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/my-profile")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/notification-manager")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/people-organizer")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/privacy-officer")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/product-catalog")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/product-manager")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/project-manager")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/reference-data")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/runtime-manager")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/security-officer")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/solution-architect")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/subject-area")
+                        { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/template-manager")
                         { include 'Egeria*.http' }
 
 

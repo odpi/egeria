@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OMRSTypeDefEventType implements Serializable
+public enum OMRSTypeDefEventType
 {
     UNKNOWN_TYPEDEF_EVENT                 (0,  "UnknownTypeDefEvent",          "A TypeDef event that is not recognized by the local server."),
     NEW_TYPEDEF_EVENT                     (1,  "NewTypeDef",                   "A new TypeDef has been defined."),
@@ -31,12 +29,9 @@ public enum OMRSTypeDefEventType implements Serializable
     TYPEDEF_ERROR_EVENT                   (99, "TypeDefErrorEvent",
                                                "An error has been detected in the exchange of TypeDefs between members of the cohort.");
 
-    private static final long serialVersionUID = 1L;
-
     private  int    ordinal;
     private  String name;
     private  String description;
-
 
     /**
      * Default Constructor sets up the specific values for this instance of the enum.
@@ -53,7 +48,6 @@ public enum OMRSTypeDefEventType implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the int identifier used for indexing based on the enum.
      *
@@ -63,7 +57,6 @@ public enum OMRSTypeDefEventType implements Serializable
     {
         return ordinal;
     }
-
 
     /**
      * Return the string name used for messages that include the enum.
@@ -75,7 +68,6 @@ public enum OMRSTypeDefEventType implements Serializable
         return name;
     }
 
-
     /**
      * Return the default description for the enum value.  This is used when natural resource
      * bundle is not available.
@@ -86,7 +78,6 @@ public enum OMRSTypeDefEventType implements Serializable
     {
         return description;
     }
-
 
     /**
      * toString() JSON-style

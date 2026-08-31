@@ -12,6 +12,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconn
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryColumn;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryTable;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
@@ -120,6 +121,146 @@ public class DatabaseStore implements AutoCloseable
      * @return number of distinct chains rewritten, across all the instance tables
      * @throws RepositoryErrorException problem communicating with the database
      */
+    /**
+     * Rewrite every stored supertype chain that no longer matches the type system.
+     * <br><br>
+     * This is the unconditional form of {@link #repairSuperTypeChains(String, List)}, and it is what a server
+     * runs at start-up.  It is driven off the difference between what is stored and what the type system now
+     * says, so it needs no knowledge of which types have moved: the patch that moved a type is only how the
+     * type arrived at its current shape, not the record of what that shape is.  That also means it repairs
+     * chains that went stale for reasons a patch never sees - rows written by an older build, a restored dump,
+     * or reference copies that arrived from a cohort member on a different level of the types.
+     * <br><br>
+     * Only the distinct chains are examined, not the rows: there is one per type in use, so this is a handful
+     * of small queries however large the repository is.  A repository that is already correct issues one query
+     * per instance table and no updates at all.
+     * <br><br>
+     * A chain whose own type is no longer in the type system is left alone.  Its correct shape is unknowable -
+     * the type is gone - and rewriting it from an empty supertype list would strip a chain that is probably
+     * still right.
+     *
+     * @return number of distinct chains rewritten, across all the instance tables
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    public int repairSuperTypeChains() throws RepositoryErrorException
+    {
+        final String methodName = "repairSuperTypeChains";
+
+        int repairCount = 0;
+
+        for (RepositoryTable repositoryTable : new RepositoryTable[]{RepositoryTable.ENTITY,
+                                                                     RepositoryTable.RELATIONSHIP,
+                                                                     RepositoryTable.CLASSIFICATION})
+        {
+            String tableName      = repositoryTable.getTableName();
+            String typeNameColumn = RepositoryColumn.TYPE_NAME.getColumnName();
+
+            String selectChains = "select distinct " + typeNameColumn + " from " + tableName + ";";
+
+            /*
+             * Only the one column is selected, so only the one column may be described - see the note in
+             * repairSuperTypeChains(String, List).
+             */
+            Map<String, Integer> typeNameColumnMap = new HashMap<>();
+
+            typeNameColumnMap.put(typeNameColumn, RepositoryColumn.TYPE_NAME.getColumnType().getJdbcType());
+
+            try
+            {
+                List<Map<String, JDBCDataValue>> rows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                              selectChains,
+                                                                                              typeNameColumnMap);
+
+                if (rows == null)
+                {
+                    continue;
+                }
+
+                for (Map<String, JDBCDataValue> row : rows)
+                {
+                    String storedChain = baseMapper.getStringPropertyFromColumn(typeNameColumn, row, true);
+
+                    String requiredChain = this.getRequiredChain(storedChain);
+
+                    if ((requiredChain != null) && (! requiredChain.equals(storedChain)))
+                    {
+                        jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                              "update " + tableName +
+                                                                      " set " + typeNameColumn + " = '" + requiredChain + "'" +
+                                                                      " where " + typeNameColumn + " = '" + storedChain + "';");
+                        repairCount++;
+                    }
+                }
+            }
+            catch (PropertyServerException sqlException)
+            {
+                throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                               sqlException.getClass().getName(),
+                                                                                                               methodName,
+                                                                                                               sqlException.getMessage()),
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   sqlException);
+            }
+        }
+
+        return repairCount;
+    }
+
+
+    /**
+     * Return the chain that a stored type_name value should hold, given the type system as it is now.  The
+     * leading segment of the stored value is the instance's own type; everything after it is that type's
+     * supertypes, so the whole remainder is rebuilt from the type system rather than parsed.
+     *
+     * @param storedChain the value held in the type_name column - ":Type:Super:Super:"
+     * @return the value it should hold, or null if it cannot be worked out and the stored value must stand
+     */
+    private String getRequiredChain(String storedChain)
+    {
+        final String methodName = "getRequiredChain";
+
+        if ((storedChain == null) || (storedChain.length() < 3) || (! storedChain.startsWith(":")))
+        {
+            return null;
+        }
+
+        int endOfOwnType = storedChain.indexOf(":", 1);
+
+        if (endOfOwnType < 0)
+        {
+            return null;
+        }
+
+        String ownTypeName = storedChain.substring(1, endOfOwnType);
+
+        if (repositoryHelper.getTypeDefByName(repositoryName, ownTypeName) == null)
+        {
+            /*
+             * The type is no longer defined, so what its chain should be is unknowable.
+             */
+            return null;
+        }
+
+        StringBuilder requiredChain = new StringBuilder(":" + ownTypeName + ":");
+
+        List<TypeDefLink> superTypes = repositoryHelper.getSuperTypes(repositoryName, ownTypeName);
+
+        if (superTypes != null)
+        {
+            for (TypeDefLink superType : superTypes)
+            {
+                if ((superType != null) && (superType.getName() != null))
+                {
+                    requiredChain.append(superType.getName()).append(":");
+                }
+            }
+        }
+
+        return requiredChain.toString();
+    }
+
+
     public int repairSuperTypeChains(String       typeName,
                                      List<String> superTypeChain) throws RepositoryErrorException
     {

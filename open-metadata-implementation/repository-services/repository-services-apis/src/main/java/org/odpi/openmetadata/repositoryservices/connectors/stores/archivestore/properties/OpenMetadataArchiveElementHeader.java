@@ -11,7 +11,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * OpenMetadataArchiveElementHeader provides a common base for the content of an open metadata archive.
- * It implements Serializable.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,11 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = OpenMetadataArchiveTypeStore.class, name = "OpenMetadataArchiveTypeStore"),
         @JsonSubTypes.Type(value = OpenMetadataArchiveInstanceStore.class, name = "OpenMetadataArchiveInstanceStore")
 })
-public abstract class OpenMetadataArchiveElementHeader implements Serializable
+public abstract class OpenMetadataArchiveElementHeader
 {
-    private static final long serialVersionUID = 1L;
-
-
     /**
      * Default Constructor sets the properties to nulls
      */

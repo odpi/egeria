@@ -4,12 +4,10 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
-import java.io.Serializable;
-
 /**
  * AccessServiceDescription provides a list of registered OMAS services.
  */
-public enum AccessServiceDescription implements Serializable
+public enum AccessServiceDescription
 {
     /**
      * Common metadata services for the Open Connector Framework (OCF).
@@ -21,7 +19,6 @@ public enum AccessServiceDescription implements Serializable
                                       "Common metadata services for the Open Connector Framework (OCF).",
                                       "https://egeria-project.org/services/ocf-metadata-management",
                                       null),
-
 
     /**
      * Support governance action services.
@@ -45,9 +42,7 @@ public enum AccessServiceDescription implements Serializable
                                  "https://egeria-project.org/services/oms-metadata-management",
                                  ServiceOperationalStatus.ENABLED),
 
-
     ;
-
 
     private final int                        serviceCode;
     private final ComponentDevelopmentStatus serviceDevelopmentStatus;
@@ -57,7 +52,6 @@ public enum AccessServiceDescription implements Serializable
     private final String                     serviceWiki;
     private final String                     serverType;
     private final ServiceOperationalStatus   outTopicStatus;
-
 
     /**
      * Default Constructor
@@ -91,8 +85,6 @@ public enum AccessServiceDescription implements Serializable
         this.outTopicStatus = outTopicStatus;
     }
 
-
-
     /**
      * Return the code for this enum instance
      *
@@ -102,8 +94,6 @@ public enum AccessServiceDescription implements Serializable
     {
         return serviceCode;
     }
-
-
 
     /**
      * Return the development status of the component.
@@ -115,7 +105,6 @@ public enum AccessServiceDescription implements Serializable
         return serviceDevelopmentStatus;
     }
 
-
     /**
      * Return the default name for this enum instance.
      *
@@ -125,7 +114,6 @@ public enum AccessServiceDescription implements Serializable
     {
         return serviceName;
     }
-
 
     /**
      * Return the string that appears in the REST API URL that identifies the owning service.
@@ -138,7 +126,6 @@ public enum AccessServiceDescription implements Serializable
         return serviceURLMarker;
     }
 
-
     /**
      * Return the default description for the type for this enum instance.
      *
@@ -148,7 +135,6 @@ public enum AccessServiceDescription implements Serializable
     {
         return serviceDescription;
     }
-
 
     /**
      * Return the URL for the wiki page describing this access service.
@@ -160,7 +146,6 @@ public enum AccessServiceDescription implements Serializable
         return serviceWiki;
     }
 
-
     /**
      * Return the name of the type of server where this service resides.
      *
@@ -170,7 +155,6 @@ public enum AccessServiceDescription implements Serializable
     {
         return serverType;
     }
-
 
     /**
      * Return the status of the services' out topic.

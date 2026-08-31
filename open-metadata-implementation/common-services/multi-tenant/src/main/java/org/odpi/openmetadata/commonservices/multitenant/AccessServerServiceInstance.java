@@ -323,11 +323,24 @@ public class AccessServerServiceInstance extends AuditableServerServiceInstance
              */
             Connection  newEventBusConnection  = new Connection(topicEventBusConnection);
 
+            /*
+             * The configuration properties are copied before the caller identifier is put into them.
+             * Connection's copy constructor copies the reference to this map rather than the map itself, so
+             * every connection built from this template - and the template itself - share one map.  Putting
+             * the caller identifier straight into it therefore overwrites the identifier of every caller
+             * served before this one: the last one to ask wins, and they all end up subscribing to the event
+             * bus under a single identity.  Where that identity is a consumer group, one of them receives
+             * every event and the rest receive nothing.
+             */
             Map<String, Object> configurationProperties = newEventBusConnection.getConfigurationProperties();
 
             if (configurationProperties == null)
             {
                 configurationProperties = new HashMap<>();
+            }
+            else
+            {
+                configurationProperties = new HashMap<>(configurationProperties);
             }
 
             configurationProperties.put(serverIdPropertyName, callerId);

@@ -74,12 +74,17 @@ dependencies {
 
 description = 'Open Metadata Type Functional Verification Tests (type-fvt)'
 
+// The property is read here, at configuration time, rather than inside the onlyIf closure.  onlyIf is
+// evaluated during execution, and reaching for `project` then is unsupported with the configuration
+// cache.
+def runThisSuite = project.hasProperty('runTypeFvt')
+
 test {
     useJUnitPlatform()
 
     // Optional, opt-in suite: needs a reachable PostgreSQL server, so it is skipped unless explicitly
     // requested with -PrunTypeFvt.
-    onlyIf { project.hasProperty('runTypeFvt') }
+    onlyIf { runThisSuite }
 
     // Single JVM fork - the tests share one running platform/server (see OMAGPlatformExtension) and
     // are not designed to run concurrently against it.  No fixed timeout: this suite creates, reads and
@@ -91,6 +96,8 @@ test {
 }
 
 // Resolves logging conflicts between the various connectors pulled in by the platform chassis
-loggingCapabilities {
-    enforceLogback()
+jvmDependencyConflicts {
+    logging {
+        enforceLogback()
+    }
 }

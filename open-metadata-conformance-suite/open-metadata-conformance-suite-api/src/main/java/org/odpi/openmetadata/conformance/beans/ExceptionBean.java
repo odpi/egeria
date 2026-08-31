@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,10 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExceptionBean implements Serializable
+public class ExceptionBean
 {
-    private static final long   serialVersionUID = 1L;
-
     private String              exceptionClassName     = null;
     private String              errorMessage           = null;
     private String              testCaseId             = null;
@@ -36,7 +33,6 @@ public class ExceptionBean implements Serializable
     {
     }
 
-
     /**
      * Return the name of the class name for a caught exception.
      *
@@ -46,7 +42,6 @@ public class ExceptionBean implements Serializable
     {
         return exceptionClassName;
     }
-
 
     /**
      * Set up the class name for the exception.
@@ -58,7 +53,6 @@ public class ExceptionBean implements Serializable
         this.exceptionClassName = exceptionClassName;
     }
 
-
     /**
      * Return the error message associated with the exception.
      *
@@ -68,7 +62,6 @@ public class ExceptionBean implements Serializable
     {
         return errorMessage;
     }
-
 
     /**
      * Set up the error message associated with the exception.
@@ -80,7 +73,6 @@ public class ExceptionBean implements Serializable
         this.errorMessage = errorMessage;
     }
 
-
     /**
      * Return the unique identifier of the test case.
      *
@@ -90,7 +82,6 @@ public class ExceptionBean implements Serializable
     {
         return testCaseId;
     }
-
 
     /**
      * Set up the unique identifier of the test case.
@@ -102,7 +93,6 @@ public class ExceptionBean implements Serializable
         this.testCaseId = testCaseId;
     }
 
-
     /**
      * Return the display name of the test case.
      *
@@ -112,7 +102,6 @@ public class ExceptionBean implements Serializable
     {
         return testCaseName;
     }
-
 
     /**
      * Set up the display name of the test case.
@@ -124,7 +113,6 @@ public class ExceptionBean implements Serializable
         this.testCaseName = testCaseName;
     }
 
-
     /**
      * Return the URL of the description of the test case.
      *
@@ -134,7 +122,6 @@ public class ExceptionBean implements Serializable
     {
         return testCaseDescriptionURL;
     }
-
 
     /**
      * Set up the URL of the description of the test case.
@@ -146,7 +133,6 @@ public class ExceptionBean implements Serializable
         this.testCaseDescriptionURL = testCaseDescriptionURL;
     }
 
-
     /**
      * Return the properties providing more details about the exception.
      *
@@ -156,7 +142,6 @@ public class ExceptionBean implements Serializable
     {
         return properties;
     }
-
 
     /**
      * Set up the properties providing more details about the exception.

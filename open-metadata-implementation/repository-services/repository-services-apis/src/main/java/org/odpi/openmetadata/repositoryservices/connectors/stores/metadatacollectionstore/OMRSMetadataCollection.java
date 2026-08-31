@@ -271,6 +271,31 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
     }
 
 
+    /**
+     * Verify that what this repository has stored is consistent with the type system, and bring it up to date
+     * where it is not.  This is called once at server start-up, after the type archives have been processed and
+     * before the repository serves any request, so an implementation may rely on the repository helper holding
+     * the current types.
+     * <br><br>
+     * It exists for the repositories that denormalise part of the type system into their stored instances -
+     * a supertype chain written onto each row, say - because such a repository answers type questions from what
+     * it wrote rather than from the types as they are now, and a type that moves in the hierarchy leaves every
+     * instance written before the move answering for the hierarchy as it used to be.  A repository that reads
+     * the type system directly has nothing to do here, which is why this does nothing by default.
+     * <br><br>
+     * Problems are the implementation's to report and survive: a repository that cannot check itself should
+     * still start.
+     *
+     * @param userId unique identifier for requesting server
+     */
+    public void verifyStoredTypeHierarchy(String userId)
+    {
+        /*
+         * Nothing to do unless the repository stores a copy of the type hierarchy alongside its instances.
+         */
+    }
+
+
     /* ==============================
      * Group 2: Working with typedefs
      */

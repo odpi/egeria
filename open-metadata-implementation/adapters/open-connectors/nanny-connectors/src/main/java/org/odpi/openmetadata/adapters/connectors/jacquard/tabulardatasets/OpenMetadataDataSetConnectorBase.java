@@ -189,6 +189,19 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
         int maxPageSize = super.getIntConfigurationProperty(TabularDataSetConfigurationProperty.MAX_PAGE_SIZE.getName(), connectionBean.getConfigurationProperties());
 
         /*
+         * The user identity this connector works as comes from its own connection, which the connector broker
+         * populates from the embedded secrets store.  That is where it belongs: the connector calls the server
+         * named in its own configuration, and it has to call it as somebody that server knows.  A caller that
+         * asked for this connector may be talking to an entirely different server, so its identity is no use
+         * here - which is why it is only used when the caller has deliberately supplied one through
+         * setLocalEnvironment.
+         */
+        if (clientUserId == null)
+        {
+            clientUserId = connectionBean.getUserId();
+        }
+
+        /*
          * Set up the extractor client.
          */
         try
@@ -471,13 +484,13 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
         else if (ProductDataFieldDefinition.CREATE_TIME.getDisplayName().equals(columnName))
         {
             Date createTime = elementHeader.getVersions().getCreateTime();
-            recordValues.add(Long.toString(createTime.getTime()));
+            recordValues.add(createTime.toInstant().toString());
             return true;
         }
         else if (ProductDataFieldDefinition.UPDATE_TIME.getDisplayName().equals(columnName))
         {
             Date updateTime = this.getUpdateTime(elementHeader);
-            recordValues.add(Long.toString(updateTime.getTime()));
+            recordValues.add(updateTime.toInstant().toString());
             return true;
         }
         else  if (elementHeader.getLocationKinds() != null)

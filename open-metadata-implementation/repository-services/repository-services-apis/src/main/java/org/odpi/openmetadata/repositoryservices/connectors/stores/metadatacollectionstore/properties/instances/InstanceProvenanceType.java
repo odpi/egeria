@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -60,7 +58,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum InstanceProvenanceType implements Serializable
+public enum InstanceProvenanceType
 {
     /**
      * Unknown - Unknown provenance.
@@ -113,12 +111,9 @@ public enum InstanceProvenanceType implements Serializable
      */
     EXTERNAL_SOURCE         (6, "External Source",         "The instance is maintained by an external technology.  The metadata collection id is the guid of the technology's descriptive entity.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int            ordinal;
     private final String         name;
     private final String         description;
-
 
     /**
      * Default constructor for the instance provenance type.
@@ -134,14 +129,12 @@ public enum InstanceProvenanceType implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the numeric representation of the instance provenance type.
      *
      * @return int ordinal
      */
     public int getOrdinal() { return ordinal; }
-
 
     /**
      * Return the default name of the instance provenance type.
@@ -150,14 +143,12 @@ public enum InstanceProvenanceType implements Serializable
      */
     public String getName() { return name; }
 
-
     /**
      * Return the default description of the instance provenance type.
      *
      * @return String description
      */
     public String getDescription() { return description; }
-
 
     /**
      * toString() JSON-style

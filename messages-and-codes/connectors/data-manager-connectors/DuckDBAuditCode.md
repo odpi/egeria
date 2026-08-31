@@ -28,7 +28,7 @@ The DuckDBAuditCode is used to define the message content for the OMRS Audit Log
 | [DUCKDB-CONNECTOR-0005](#duckdb-connector-0005) | INFO | The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to DuckDB Database Asset {3} for Database {4} |
 | [DUCKDB-CONNECTOR-0006](#duckdb-connector-0006) | INFO | The {0} connector discovered that DuckDB Database {1} has an attached source called {2} of type {3} |
 | [DUCKDB-CONNECTOR-0007](#duckdb-connector-0007) | INFO | The {0} connector discovered that DuckDB Database {1} has a view called {2} that scans an external {3} resource at {4} |
-| [DUCKDB-CONNECTOR-0008](#duckdb-connector-0008) | INFO | The {0} connector was unable to query DuckDB's {1} federation metadata for database {2}; the error message was: {3} |
+| [DUCKDB-CONNECTOR-0008](#duckdb-connector-0008) | INFO | The {0} connector was unable to query the DuckDB {1} federation metadata for database {2}; the error message was: {3} |
 | [DUCKDB-CONNECTOR-0009](#duckdb-connector-0009) | INFO | The {0} connector was unable to catalog the federation relationship for {1} discovered in DuckDB Database {2}; the error message was: {3} |
 | [DUCKDB-CONNECTOR-0010](#duckdb-connector-0010) | ERROR | The {0} connector was unable to run attachStatements entry "{1}" for DuckDB Database {2}; the error message was: {3} |
 | [DUCKDB-CONNECTOR-0011](#duckdb-connector-0011) | INFO | The {0} connector has catalogued the schema for external file source {1} ({2} columns) |
@@ -187,7 +187,7 @@ No specific action is required.  This is an information message describing an ex
 
 ### DUCKDB-CONNECTOR-0008
 
-> The {0} connector was unable to query DuckDB's {1} federation metadata for database {2}; the error message was: {3}
+> The {0} connector was unable to query the DuckDB {1} federation metadata for database {2}; the error message was: {3}
 
 |  |  |
 |---|---|

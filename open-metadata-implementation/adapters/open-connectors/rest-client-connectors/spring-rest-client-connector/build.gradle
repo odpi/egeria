@@ -13,7 +13,6 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:user-security:token-manager')
     implementation 'org.springframework:spring-web'
-    implementation 'org.codehaus.plexus:plexus-utils'
     implementation 'org.springframework:spring-core'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
