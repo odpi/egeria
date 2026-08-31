@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 
-import java.io.Serial;
 
 /**
  * ClassificationEntityExtension is used to represent a single classification for an entity.
@@ -13,9 +12,6 @@ import java.io.Serial;
  */
 public class ClassificationEntityExtension extends InstanceElementHeader
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private Classification   classification = null;
     private EntityProxy      entityToClassify = null;
 

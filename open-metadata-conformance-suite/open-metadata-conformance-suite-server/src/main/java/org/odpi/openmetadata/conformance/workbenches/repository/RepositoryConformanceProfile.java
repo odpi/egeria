@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.conformance.beans.OpenMetadataConformanceProfilePriority;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -21,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum RepositoryConformanceProfile implements Serializable
+public enum RepositoryConformanceProfile
 {
     /**
      * The technology under test is able to share metadata with other members of the cohort.
@@ -54,7 +52,6 @@ public enum RepositoryConformanceProfile implements Serializable
                                         "The technology under test supports changes to the list of its supported types while it is running.",
                                         "https://egeria-project.org/guides/cts/repository-workbench/profiles/dynamic-types/",
                                         OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
-
 
     /**
      * The technology under test supports search for the state of the metadata instances at a specific time in the past.
@@ -176,15 +173,11 @@ public enum RepositoryConformanceProfile implements Serializable
                                      "https://egeria-project.org/guides/cts/repository-workbench/profiles/restore-from-backup/",
                                      OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE);
 
-
-    private static final long serialVersionUID = 1L;
-
     private final int                                    profileId;
     private final String                                 profileName;
     private final String                                 profileDescription;
     private final String                                 profileDocumentationURL;
     private final OpenMetadataConformanceProfilePriority profilePriority;
-
 
     /**
      * Default constructor sets up the values for this enum instance.
@@ -209,7 +202,6 @@ public enum RepositoryConformanceProfile implements Serializable
         this.profilePriority = profilePriority;
     }
 
-
     /**
      * Return the identifier for the enum, used for indexing arrays etc. with the enum.
      *
@@ -220,7 +212,6 @@ public enum RepositoryConformanceProfile implements Serializable
         return profileId;
     }
 
-
     /**
      * Return the name for the enum, used for message content.
      *
@@ -230,7 +221,6 @@ public enum RepositoryConformanceProfile implements Serializable
     {
         return profileName;
     }
-
 
     /**
      * Return the default description for the enum, used when there is no natural
@@ -243,7 +233,6 @@ public enum RepositoryConformanceProfile implements Serializable
         return profileDescription;
     }
 
-
     /**
      * Return the URL to link to more documentation about this profile.
      *
@@ -254,7 +243,6 @@ public enum RepositoryConformanceProfile implements Serializable
         return profileDocumentationURL;
     }
 
-
     /**
      * Return whether this profile is mandatory or optional.
      *
@@ -264,7 +252,6 @@ public enum RepositoryConformanceProfile implements Serializable
     {
         return profilePriority;
     }
-
 
     /**
      * toString() JSON-style

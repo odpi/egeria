@@ -89,8 +89,6 @@ public enum SequencingOrder
      */
     PROPERTY_DESCENDING  (7, "By property value (Descending)",  "Order by property value, highest first.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int     ordinal;
     private final String  name;
     private final String  description;

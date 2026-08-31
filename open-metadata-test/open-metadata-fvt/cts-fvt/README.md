@@ -62,6 +62,40 @@ The conformance test server gets an in-memory local repository and its enterpris
 automatically — `enableRepositoryConformanceSuiteWorkbench` sets both up as a side effect, along with the
 server type — so neither is configured here.
 
+One thing that *is* configured, and matters more here than it looks: both servers are given a **secrets
+store** of their own, `src/test/resources/cts-fvt.omsecrets`, named by the `ctsFvtSecretsStore` placeholder.
+The sibling suites name a file that does not exist, because `setBasicServerProperties` insists on a fully
+specified secrets store connection and nothing ever reads it. This suite is the exception. A server that has
+a secrets store gets one built into a connection for the `REST_BEARER_TOKEN` purpose and embedded in *every*
+remote cohort member's connection by `OMRSEnterpriseConnectorManager` before the connector broker is asked
+for a connector — which puts it squarely on the path the workbench takes to reach the technology under test,
+and is the path the first defect below was found on. Naming a file that is not there leaves that path only
+half-exercised, and logs `YAML-SECRETS-STORE-CONNECTOR-0001` once per registration attempt.
+
+The collection it names supplies no token and no `tokenAPI`, deliberately. This platform has no user
+directory and `CtsFvtSecurityConfig` installs a permit-all filter chain, so there is nothing to authenticate
+to; with no token to find, the REST client connector sets no authorization header and calls the other server
+unauthenticated, which is what this platform expects. What the file changes is that the store *resolves* —
+the connection is built and read rather than failing on a missing file.
+
+Both servers also have their **local server id** pinned, alongside the metadata collection ids. That id is
+the servers' Apache Kafka `group.id`, and the platform generates a fresh UUID for it whenever the
+configuration document does not name one — which, because this harness clears the configuration at the start
+of every run, used to mean a brand new consumer group every time. Kafka gives a group it has never seen
+`auto.offset.reset=latest`, and nothing in Egeria sets that property, so such a consumer starts reading at
+the *end* of the topic.
+
+That is a race, and it is the one way this harness fails without anything being wrong. The conformance test
+server starts first and asks the cohort for registration information exactly once (`OMRS-AUDIT-0062`). If the
+technology under test publishes its registration before that consumer has been assigned its partition — a
+window of a second or two — the conformance server reads straight past it and never learns the technology
+under test exists. The workbench then waits for a member that, as far as it is concerned, never registered,
+and the run fails at the start-up timeout having recorded no test cases at all. It really is a coin toss: run
+in turn on one machine, the in-memory run won the race by three seconds and the PostgreSQL run lost it by
+one, with identical code. Pinning the ids makes the consumer group survive across runs, so from the second
+run onwards there is a committed offset to resume from and the registration cannot be skipped. The very
+first run against a cohort whose topics do not yet exist still races; re-running it is enough.
+
 ## What it asserts
 
 The suite produces the results; this module decides what counts as a pass.

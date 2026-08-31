@@ -46,7 +46,7 @@ ext {
     plexusVersion = '4.1.0'
     postgresVersion = '42.7.13' // already there
     nettyVersion = '4.2.17.Final'
-    prometheusVersion = '1.17.0'
+    prometheusVersion = '1.17.1'
     jakartaServletVersion = '6.1.0'
     snappyVersion = '1.1.10.8'
 

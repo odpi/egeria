@@ -2,12 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.events;
 
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -18,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OMRSEventDirection implements Serializable
+public enum OMRSEventDirection
 {
     /**
      * Unknown - Uninitialized event direction.
@@ -35,13 +32,9 @@ public enum OMRSEventDirection implements Serializable
      */
     OUTBOUND (2, "Outbound Event", "Event from local server to other members of the open metadata repository cohort.");
 
-    private static final long serialVersionUID = 1L;
-
-
     private final int    ordinal;
     private final String name;
     private final String description;
-
 
     /**
      * Default constructor sets up the specific values for this enum instance.
@@ -58,7 +51,6 @@ public enum OMRSEventDirection implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the identifier for the enum, used for indexing arrays etc. with the enum.
      *
@@ -68,7 +60,6 @@ public enum OMRSEventDirection implements Serializable
     {
         return ordinal;
     }
-
 
     /**
      * Return the name for the enum, used for message content.
@@ -80,7 +71,6 @@ public enum OMRSEventDirection implements Serializable
         return name;
     }
 
-
     /**
      * Return the default description for the enum, used when there is no natural
      * language resource bundle available.
@@ -91,7 +81,6 @@ public enum OMRSEventDirection implements Serializable
     {
         return description;
     }
-
 
     /**
      * toString() JSON-style

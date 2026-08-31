@@ -19,8 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class WorkbenchReportResponse extends ConformanceServicesAPIResponse
 {
-    private static final long     serialVersionUID = 1L;
-
     private OpenMetadataConformanceWorkbenchResults workbenchResults = null;
 
     /**

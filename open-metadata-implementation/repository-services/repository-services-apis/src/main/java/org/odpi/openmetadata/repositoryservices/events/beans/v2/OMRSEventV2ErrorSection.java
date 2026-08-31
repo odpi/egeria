@@ -13,7 +13,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventErrorCode;
 
 import java.io.Serial;
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -25,11 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSEventV2ErrorSection implements Serializable
+public class OMRSEventV2ErrorSection
 {
     @Serial
-    private static final long    serialVersionUID = 1L;
-
     private OMRSEventErrorCode     errorCode                  = null;
     private String                 errorMessage               = null;
     private String                 targetMetadataCollectionId = null;
@@ -44,14 +41,12 @@ public class OMRSEventV2ErrorSection implements Serializable
     private AttributeTypeDef       otherAttributeTypeDef     = null;
     private String                 otherInstanceGUID         = null;
 
-
     /**
      * Default constructor
      */
     public OMRSEventV2ErrorSection()
     {
     }
-
 
     /**
      * Return the reason for the error.
@@ -63,7 +58,6 @@ public class OMRSEventV2ErrorSection implements Serializable
         return errorCode;
     }
 
-
     /**
      * Set up the reason for the error.
      *
@@ -73,7 +67,6 @@ public class OMRSEventV2ErrorSection implements Serializable
     {
         this.errorCode = errorCode;
     }
-
 
     /**
      * Return the message associated with the error.  It details the elements in trouble.
@@ -85,7 +78,6 @@ public class OMRSEventV2ErrorSection implements Serializable
         return errorMessage;
     }
 
-
     /**
      * Set up the message associated with the error.  It details the elements in trouble.
      *
@@ -95,7 +87,6 @@ public class OMRSEventV2ErrorSection implements Serializable
     {
         this.errorMessage = errorMessage;
     }
-
 
     /**
      * Return the identifier of the metadata collection nominated to resolve the error.
@@ -107,7 +98,6 @@ public class OMRSEventV2ErrorSection implements Serializable
         return targetMetadataCollectionId;
     }
 
-
     /**
      * Set up the identifier of the metadata collection nominated to resolve the error.
      *
@@ -117,7 +107,6 @@ public class OMRSEventV2ErrorSection implements Serializable
     {
         this.targetMetadataCollectionId = targetMetadataCollectionId;
     }
-
 
     /**
      * Return the remote collection that has an issue.
@@ -129,7 +118,6 @@ public class OMRSEventV2ErrorSection implements Serializable
         return targetRemoteConnection;
     }
 
-
     /**
      * Set up the remote collection that has an issue.
      *
@@ -139,7 +127,6 @@ public class OMRSEventV2ErrorSection implements Serializable
     {
         this.targetRemoteConnection = targetRemoteConnection;
     }
-
 
     /**
      * Return details of the type in trouble.
@@ -151,7 +138,6 @@ public class OMRSEventV2ErrorSection implements Serializable
         return targetTypeDefSummary;
     }
 
-
     /**
      * Set up details of the type in trouble.
      *
@@ -161,7 +147,6 @@ public class OMRSEventV2ErrorSection implements Serializable
     {
         this.targetTypeDefSummary = targetTypeDefSummary;
     }
-
 
     /**
      * Return details of the attribute type in trouble.
@@ -173,7 +158,6 @@ public class OMRSEventV2ErrorSection implements Serializable
         return targetAttributeTypeDef;
     }
 
-
     /**
      * Set up  details of the attribute type in trouble.
      *
@@ -183,7 +167,6 @@ public class OMRSEventV2ErrorSection implements Serializable
     {
         this.targetAttributeTypeDef = targetAttributeTypeDef;
     }
-
 
     /**
      * Return the unique identifier for the instance in trouble.
@@ -195,7 +178,6 @@ public class OMRSEventV2ErrorSection implements Serializable
         return targetInstanceGUID;
     }
 
-
     /**
      * Set up the unique identifier for the instance in trouble.
      *
@@ -205,7 +187,6 @@ public class OMRSEventV2ErrorSection implements Serializable
     {
         this.targetInstanceGUID = targetInstanceGUID;
     }
-
 
     /**
      * Return the provenance type of the conflicting metadata collection.
@@ -217,7 +198,6 @@ public class OMRSEventV2ErrorSection implements Serializable
         return otherOrigin;
     }
 
-
     /**
      * Set up the provenance type of the conflicting metadata collection.
      *
@@ -227,7 +207,6 @@ public class OMRSEventV2ErrorSection implements Serializable
     {
         this.otherOrigin = otherOrigin;
     }
-
 
     /**
      * Return the unique identifier of the conflicting metadata collection.
@@ -239,7 +218,6 @@ public class OMRSEventV2ErrorSection implements Serializable
         return otherMetadataCollectionId;
     }
 
-
     /**
      * Set up the unique identifier of the conflicting metadata collection.
      *
@@ -250,14 +228,12 @@ public class OMRSEventV2ErrorSection implements Serializable
         this.otherMetadataCollectionId = otherMetadataCollectionId;
     }
 
-
     /**
      * Return the type information for the conflicting type.
      *
      * @return typeDef summary
      */
     public TypeDefSummary getOtherTypeDefSummary() { return otherTypeDefSummary; }
-
 
     /**
      * Set up the type information for the conflicting type.
@@ -268,7 +244,6 @@ public class OMRSEventV2ErrorSection implements Serializable
     {
         this.otherTypeDefSummary = otherTypeDefSummary;
     }
-
 
     /**
      * Return the type information for the conflicting type.
@@ -290,7 +265,6 @@ public class OMRSEventV2ErrorSection implements Serializable
         this.otherTypeDef = otherTypeDef;
     }
 
-
     /**
      * Return the type information for the conflicting type.
      *
@@ -300,7 +274,6 @@ public class OMRSEventV2ErrorSection implements Serializable
     {
         return otherAttributeTypeDef;
     }
-
 
     /**
      * Set up the type information for the conflicting type.
@@ -312,7 +285,6 @@ public class OMRSEventV2ErrorSection implements Serializable
         this.otherAttributeTypeDef = otherAttributeTypeDef;
     }
 
-
     /**
      * Return the unique identifier of the conflicting instance.
      *
@@ -323,7 +295,6 @@ public class OMRSEventV2ErrorSection implements Serializable
         return otherInstanceGUID;
     }
 
-
     /**
      * Set up the unique identifier of the conflicting instance.
      *
@@ -333,7 +304,6 @@ public class OMRSEventV2ErrorSection implements Serializable
     {
         this.otherInstanceGUID = otherInstanceGUID;
     }
-
 
     /**
      * JSON-style toString.

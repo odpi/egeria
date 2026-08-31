@@ -14,16 +14,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * RepositoryElementHeader provides a common base for all type and instance information from the metadata collection.
- * It implements Serializable.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public abstract class RepositoryElementHeader implements Serializable
+public abstract class RepositoryElementHeader
 {
     @Serial
-    private static final long serialVersionUID = 1L;
-
     /*
      * Version number for this header.  The default is 1 to indicate that the element came from
      * the first version of the OMRS.

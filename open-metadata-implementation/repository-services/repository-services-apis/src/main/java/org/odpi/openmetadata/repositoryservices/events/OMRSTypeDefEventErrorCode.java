@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OMRSTypeDefEventErrorCode implements Serializable
+public enum OMRSTypeDefEventErrorCode
 {
     NOT_IN_USE                     (0,  "No Error",
                                         "There has been no error detected and so the error code is not in use.",
@@ -38,14 +36,10 @@ public enum OMRSTypeDefEventErrorCode implements Serializable
                                         "Unrecognized error code from incoming event.",
                                         null);
 
-
-    private static final long serialVersionUID = 1L;
-
     private int                ordinal;
     private String             name;
     private String             description;
     private OMRSEventErrorCode encoding;
-
 
     /**
      * Default constructor sets up the values for this enum instance.
@@ -67,7 +61,6 @@ public enum OMRSTypeDefEventErrorCode implements Serializable
         this.encoding = encoding;
     }
 
-
     /**
      * Return the identifier for the enum, used for indexing arrays etc with the enum.
      *
@@ -78,7 +71,6 @@ public enum OMRSTypeDefEventErrorCode implements Serializable
         return ordinal;
     }
 
-
     /**
      * Return the name for the enum, used for message content.
      *
@@ -88,7 +80,6 @@ public enum OMRSTypeDefEventErrorCode implements Serializable
     {
         return name;
     }
-
 
     /**
      * Return the default description for the enum, used when there is not natural
@@ -101,7 +92,6 @@ public enum OMRSTypeDefEventErrorCode implements Serializable
         return description;
     }
 
-
     /**
      * Return the encoding to use in OMRSEvents.
      *
@@ -111,7 +101,6 @@ public enum OMRSTypeDefEventErrorCode implements Serializable
     {
         return encoding;
     }
-
 
     /**
      * toString() JSON-style

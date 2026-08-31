@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -28,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum ClassificationPropagationRule implements Serializable
+public enum ClassificationPropagationRule
 {
     /**
      * No classification propagation.
@@ -50,12 +48,9 @@ public enum ClassificationPropagationRule implements Serializable
      */
     BOTH       (3, "BOTH",       "Classification propagation in both directions");
 
-    private static final long serialVersionUID = 1L;
-
     private final int            ordinal;
     private final String         name;
     private final String         description;
-
 
     /**
      * Constructor to set up a single instances of the enum.
@@ -71,14 +66,12 @@ public enum ClassificationPropagationRule implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the numeric representation of the propagation rule.
      *
      * @return int ordinal
      */
     public int getOrdinal() { return ordinal; }
-
 
     /**
      * Return the default name of the propagation rule.
@@ -87,14 +80,12 @@ public enum ClassificationPropagationRule implements Serializable
      */
     public String getName() { return name; }
 
-
     /**
      * Return the default description of the propagation rule.
      *
      * @return String description
      */
     public String getDescription() { return description; }
-
 
     /**
      * toString() JSON-style

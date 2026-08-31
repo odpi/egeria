@@ -2,11 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.events.beans;
 
-
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.repositoryservices.events.beans.v2.OMRSEventV2;
-
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -26,12 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = OMRSEventV2.class, name = "OMRSEventV1")
 })
-public abstract class OMRSEventBean implements Serializable
+public abstract class OMRSEventBean
 {
-    private static final long serialVersionUID = 1L;
-
     protected String                     protocolVersionId    = null;
-
 
     /**
      * Default constructor used when recreating events from JSON Strings
@@ -39,7 +33,6 @@ public abstract class OMRSEventBean implements Serializable
     public OMRSEventBean()
     {
     }
-
 
     /**
      * Constructor used when an instance of the subclass is created.
@@ -51,7 +44,6 @@ public abstract class OMRSEventBean implements Serializable
         this.protocolVersionId = protocolVersionId;
     }
 
-
     /**
      * Return the protocol version identifier for this event.
      *
@@ -62,7 +54,6 @@ public abstract class OMRSEventBean implements Serializable
         return protocolVersionId;
     }
 
-
     /**
      * Set up the protocol version id for this event.
      *
@@ -72,7 +63,6 @@ public abstract class OMRSEventBean implements Serializable
     {
         this.protocolVersionId = protocolVersionId;
     }
-
 
     /**
      * JSON-style toString.

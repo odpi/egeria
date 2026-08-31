@@ -6,17 +6,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * The AppInfoBean is a spring bean used to store the title and description of this runtime.
  */
 @Component
-public class AboutPlatformProperties implements Serializable
+public class AboutPlatformProperties
 {
     @Serial
-    private static final long serialVersionUID = 1L;
-
     /**
      * Display name value from application.properties
      */
@@ -31,7 +28,6 @@ public class AboutPlatformProperties implements Serializable
      * Organization.name value from application.properties
      */
     private final String organizationName;
-
 
     /**
      * Constructor called when the application's properties are processed.

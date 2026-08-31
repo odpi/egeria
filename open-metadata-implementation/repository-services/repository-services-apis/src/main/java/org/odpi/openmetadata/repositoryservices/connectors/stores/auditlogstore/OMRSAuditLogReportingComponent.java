@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,16 +19,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSAuditLogReportingComponent implements Serializable, ComponentDescription
+public class OMRSAuditLogReportingComponent implements ComponentDescription
 {
-    private static final long    serialVersionUID = 1L;
-
     private  int                        componentId = 0;
     private  ComponentDevelopmentStatus componentDevelopmentStatus = ComponentDevelopmentStatus.IN_DEVELOPMENT;
     private  String                     componentName = null;
     private  String                     componentDescription = null;
     private  String                     componentWikiURL = null;
-
 
     /**
      * Construct the description of the reporting component.
@@ -53,8 +49,6 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
         this.componentWikiURL = componentWikiURL;
     }
 
-
-
     /**
      * Construct the description of the reporting component.
      *
@@ -72,8 +66,6 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
         }
     }
 
-
-
     /**
      * Return the numerical code for this component.
      *
@@ -84,7 +76,6 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
     {
         return componentId;
     }
-
 
     /**
      * Return the development status of the component.
@@ -97,7 +88,6 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
         return componentDevelopmentStatus;
     }
 
-
     /**
      * Return the name of the component.  This is the name used in the audit log records.
      *
@@ -108,7 +98,6 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
     {
         return componentName;
     }
-
 
     /**
      * Return the short description of the component. This is an English description.  Natural language support for
@@ -123,7 +112,6 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
         return componentDescription;
     }
 
-
     /**
      * URL to the wiki page that describes this component.  This provides more information to the log reader
      * on the operation of the component.
@@ -135,7 +123,6 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
     {
         return componentWikiURL;
     }
-
 
     /**
      * Standard toString method.
@@ -154,7 +141,6 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
                        ", componentType='" + getComponentDescription() + '\'' +
                        '}';
     }
-
 
     /**
      * Validate that an object is equal depending on their stored values.
@@ -180,7 +166,6 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
                        Objects.equals(componentDescription, that.componentDescription) &&
                        Objects.equals(componentWikiURL, that.componentWikiURL);
     }
-
 
     /**
      * Return a hash code based on the values of this object.

@@ -36,9 +36,13 @@ public class PlatformSecurityConfig
     @Bean
     public AuthenticationProvider getPlatformAuthenticationProvider()
     {
-        var authProvider = new DaoAuthenticationProvider();
+        /*
+         * The no-argument constructor and setUserDetailsService() were both deprecated in Spring Security 6
+         * in favour of supplying the user details service to the constructor, which is the same wiring
+         * expressed so that the provider cannot exist without one.
+         */
+        var authProvider = new DaoAuthenticationProvider(userDetailsService);
 
-        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
 
         return authProvider;

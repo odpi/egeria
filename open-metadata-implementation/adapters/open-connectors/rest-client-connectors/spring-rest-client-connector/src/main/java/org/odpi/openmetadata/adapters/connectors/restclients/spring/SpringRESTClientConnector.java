@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.restclients.spring;
 
-import org.codehaus.plexus.util.Base64;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.RESTClientConnectorErrorCode;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
@@ -31,6 +30,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -217,8 +217,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
     private HttpHeaders createAuthorizationHeaders(String username, String password)
     {
         String authorizationString = username + ":" + password;
-        byte[] encodedAuthorizationString = Base64.encodeBase64(authorizationString.getBytes(StandardCharsets.US_ASCII));
-        String authHeader = "Basic " + new String( encodedAuthorizationString );
+        String authHeader = "Basic " + Base64.getEncoder().encodeToString(authorizationString.getBytes(StandardCharsets.US_ASCII));
 
         HttpHeaders header = new HttpHeaders();
 

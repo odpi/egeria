@@ -2,19 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest;
 
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
 
 /**
  * ConnectorConfigPropertiesRequestBody describes the request body used to update the configuration properties of an integration connector.
@@ -22,15 +19,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ConnectorConfigPropertiesRequestBody implements Serializable
+public class ConnectorConfigPropertiesRequestBody
 {
     @Serial
-    private static final long serialVersionUID = 1L;
-
     private String              connectorName           = null;
     private boolean             mergeUpdate             = false;
     private Map<String, Object> configurationProperties = null;
-
 
     /**
      * Default constructor
@@ -39,7 +33,6 @@ public class ConnectorConfigPropertiesRequestBody implements Serializable
     {
         super();
     }
-
 
     /**
      * Copy/clone constructor.
@@ -56,7 +49,6 @@ public class ConnectorConfigPropertiesRequestBody implements Serializable
         }
     }
 
-
     /**
      * Return the name of the connector (from the integration service configuration).
      *
@@ -66,7 +58,6 @@ public class ConnectorConfigPropertiesRequestBody implements Serializable
     {
         return connectorName;
     }
-
 
     /**
      * Set up the name of the connector (from the integration service configuration).
@@ -78,7 +69,6 @@ public class ConnectorConfigPropertiesRequestBody implements Serializable
         this.connectorName = connectorName;
     }
 
-
     /**
      * Return indication of whether properties should be over-write or replace existing properties.
      *
@@ -88,7 +78,6 @@ public class ConnectorConfigPropertiesRequestBody implements Serializable
     {
         return mergeUpdate;
     }
-
 
     /**
      * Set up the indication of whether properties should be over-write or replace existing properties.
@@ -100,7 +89,6 @@ public class ConnectorConfigPropertiesRequestBody implements Serializable
         this.mergeUpdate = mergeUpdate;
     }
 
-
     /**
      * Return the configuration properties for the connection.
      *
@@ -111,7 +99,6 @@ public class ConnectorConfigPropertiesRequestBody implements Serializable
         return configurationProperties;
     }
 
-
     /**
      * Set up the configuration properties for the connection.
      *
@@ -121,7 +108,6 @@ public class ConnectorConfigPropertiesRequestBody implements Serializable
     {
         this.configurationProperties = configurationProperties;
     }
-
 
     /**
      * JSON-style toString
@@ -137,7 +123,6 @@ public class ConnectorConfigPropertiesRequestBody implements Serializable
                        ", configurationProperties=" + configurationProperties +
                        '}';
     }
-
 
     /**
      * Return comparison result based on the content of the properties.
@@ -161,7 +146,6 @@ public class ConnectorConfigPropertiesRequestBody implements Serializable
                        Objects.equals(connectorName, that.connectorName) &&
                        Objects.equals(configurationProperties, that.configurationProperties);
     }
-
 
     /**
      * Return hash code for this object

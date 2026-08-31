@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,14 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSAuditLogStoreReport implements Serializable
+public class OMRSAuditLogStoreReport
 {
-    private static final long    serialVersionUID = 1L;
-
     private String       destinationName     = null;
     private List<String> supportedSeverities = null;
     private String       implementationClass = null;
-
 
     /**
      * Default constructor
@@ -36,7 +32,6 @@ public class OMRSAuditLogStoreReport implements Serializable
     public OMRSAuditLogStoreReport()
     {
     }
-
 
     /**
      * Copy/clone constructor
@@ -53,7 +48,6 @@ public class OMRSAuditLogStoreReport implements Serializable
         }
     }
 
-
     /**
      * Return the name of this audit log store destination.
      *
@@ -64,7 +58,6 @@ public class OMRSAuditLogStoreReport implements Serializable
         return destinationName;
     }
 
-
     /**
      * Set up the name of this audit log store destination.
      *
@@ -74,7 +67,6 @@ public class OMRSAuditLogStoreReport implements Serializable
     {
         this.destinationName = destinationName;
     }
-
 
     /**
      * Return the list of supported severities - null means all.
@@ -95,7 +87,6 @@ public class OMRSAuditLogStoreReport implements Serializable
         return new ArrayList<>(supportedSeverities);
     }
 
-
     /**
      * Set up the list of supported severities - null means all.
      *
@@ -105,7 +96,6 @@ public class OMRSAuditLogStoreReport implements Serializable
     {
         this.supportedSeverities = supportedSeverities;
     }
-
 
     /**
      * Return the name of the class that is providing the implementation of this audit log store.
@@ -117,7 +107,6 @@ public class OMRSAuditLogStoreReport implements Serializable
         return implementationClass;
     }
 
-
     /**
      * Set up the name of the class that is providing the implementation of this audit log store.
      *
@@ -127,7 +116,6 @@ public class OMRSAuditLogStoreReport implements Serializable
     {
         this.implementationClass = implementationClass;
     }
-
 
     /**
      * Standard toString method.
@@ -143,7 +131,6 @@ public class OMRSAuditLogStoreReport implements Serializable
                 ", implementationClass='" + implementationClass + '\'' +
                 '}';
     }
-
 
     /**
      * Validate that an object is equal depending on their stored values.
@@ -167,7 +154,6 @@ public class OMRSAuditLogStoreReport implements Serializable
                 Objects.equals(supportedSeverities, that.supportedSeverities) &&
                 Objects.equals(implementationClass, that.implementationClass);
     }
-
 
     /**
      * Return a hash code based on the values of this object.

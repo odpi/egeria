@@ -2,12 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.events;
 
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -43,10 +40,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSEventOriginator implements Serializable
+public class OMRSEventOriginator
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                   metadataCollectionId = null;
     private String                   serverName           = null;
     private String                   serverType           = null;
@@ -59,7 +54,6 @@ public class OMRSEventOriginator implements Serializable
     {
     }
 
-
     /**
      * Returns the unique identifier (guid) of the originating repository's metadata collection.
      *
@@ -70,7 +64,6 @@ public class OMRSEventOriginator implements Serializable
         return metadataCollectionId;
     }
 
-
     /**
      * Sets up the unique identifier (guid) of the originating repository.
      *
@@ -80,7 +73,6 @@ public class OMRSEventOriginator implements Serializable
     {
         this.metadataCollectionId = metadataCollectionId;
     }
-
 
     /**
      * Return the display name for the server that is used in events, messages and UIs to
@@ -93,7 +85,6 @@ public class OMRSEventOriginator implements Serializable
         return serverName;
     }
 
-
     /**
      * Set up the display name for the server that is used in events, messages and UIs to
      * make it easier for people to understand the origin of metadata.
@@ -104,7 +95,6 @@ public class OMRSEventOriginator implements Serializable
     {
         this.serverName = serverName;
     }
-
 
     /**
      * Return the descriptive string describing the type of the server.  This might be the
@@ -117,7 +107,6 @@ public class OMRSEventOriginator implements Serializable
         return serverType;
     }
 
-
     /**
      * Set up the descriptive string describing the type of the server.  This might be the
      * name of the product, or similar identifier.
@@ -129,7 +118,6 @@ public class OMRSEventOriginator implements Serializable
         this.serverType = serverType;
     }
 
-
     /**
      * Return the name of the organization that runs/owns the server.
      *
@@ -140,7 +128,6 @@ public class OMRSEventOriginator implements Serializable
         return organizationName;
     }
 
-
     /**
      * Set up the name of the organization that runs/owns the server.
      *
@@ -150,7 +137,6 @@ public class OMRSEventOriginator implements Serializable
     {
         this.organizationName = organizationName;
     }
-
 
     /**
      * Standard toString method.

@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum TypeDefCategory implements Serializable
+public enum TypeDefCategory
 {
     /**
      * Unknown - Uninitialized TypeDef object.
@@ -39,12 +37,9 @@ public enum TypeDefCategory implements Serializable
      */
     RELATIONSHIP_DEF   (8, "RelationshipDef",   "A link between two entities.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int            typeCode;
     private final String         typeName;
     private final String         typeDescription;
-
 
     /**
      * Constructor to set up a single instances of the enum.
@@ -63,7 +58,6 @@ public enum TypeDefCategory implements Serializable
         this.typeDescription = typeDescription;
     }
 
-
     /**
      * Return the code for this enum instance
      *
@@ -73,7 +67,6 @@ public enum TypeDefCategory implements Serializable
     {
         return typeCode;
     }
-
 
     /**
      * Return the default name for this enum instance.
@@ -85,7 +78,6 @@ public enum TypeDefCategory implements Serializable
         return typeName;
     }
 
-
     /**
      * Return the default description for the type for this enum instance.
      *
@@ -95,7 +87,6 @@ public enum TypeDefCategory implements Serializable
     {
         return typeDescription;
     }
-
 
     /**
      * toString() JSON-style

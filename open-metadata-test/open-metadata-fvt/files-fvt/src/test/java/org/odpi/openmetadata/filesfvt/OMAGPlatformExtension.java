@@ -156,7 +156,8 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
 
     /**
-     * Return the root URL of the running platform, for example "http://localhost:9451".
+     * Return the root URL of the running platform.  The port is allocated at run time rather than
+     * fixed, so it differs from one run to the next.
      *
      * @return URL root
      */
@@ -267,7 +268,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
             /*
              * A start-up that has already failed is reported again rather than retried.  Retrying would start
              * a second platform on a port the first one is still holding, and every test class after the first
-             * would then report "port 9451 already in use" - burying the one message that says what actually
+             * would then fail with a port-in-use error - burying the one message that says what actually
              * went wrong.
              */
             if (startupFailure != null)
@@ -347,14 +348,24 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
     /**
      * Start the OMAG Server Platform's Spring Boot application in-process.  All of the Spring Boot
-     * configuration (port, the placeholder variables that decide which Kafka
-     * broker are used, logging, security) comes from this module's classpath {@code application.properties}
-     * rather than being set programmatically here, so that the environment this suite targets can be changed
-     * without touching Java code.
+     * configuration (the placeholder variables that decide which Kafka broker is used, logging, security)
+     * comes from this module's classpath {@code application.properties} rather than being set
+     * programmatically here, so that the environment this suite targets can be changed without touching
+     * Java code.  The port is the exception - see below.
      */
     private void startPlatform()
     {
+        /*
+         * Allocate a free port before the platform starts, rather than binding a fixed one from
+         * application.properties.  A fixed port means a second checkout of Egeria running this same suite
+         * fails with PortInUseException, and the failure looks like a broken test rather than a clash.
+         * The port is passed in as a property so that ${server.port} in application.properties - notably
+         * the egeriaEndpoint placeholder, which becomes the server's own localServerURL - resolves to the
+         * port actually in use.
+         */
         SpringApplicationBuilder builder = new SpringApplicationBuilder(OMAGServerPlatform.class);
+
+        builder.properties(java.util.Map.of("server.port", Integer.toString(allocateFreePort())));
 
         builder.web(WebApplicationType.SERVLET);
 
@@ -981,6 +992,32 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                 started         = false;
                 startupFailure  = null;
             }
+        }
+    }
+
+    /**
+     * Find a port that is free right now, so that concurrent test runs - in another checkout, or another
+     * suite - do not collide on a hard-coded one.
+     * <br><br>
+     * The socket is closed before the port is handed to Spring, so there is a small window in which
+     * something else could take it.  Binding with {@code server.port=0} and letting Tomcat choose would
+     * close that window, but the port has to be known before the context starts: this suite's
+     * {@code application.properties} interpolates {@code ${server.port}} into the egeriaEndpoint
+     * placeholder, which becomes the server's own localServerURL, and that is resolved before Tomcat
+     * binds.  Knowing the number up front is worth the small race.
+     *
+     * @return a currently free TCP port
+     */
+    private static int allocateFreePort()
+    {
+        try (java.net.ServerSocket socket = new java.net.ServerSocket(0))
+        {
+            socket.setReuseAddress(true);
+            return socket.getLocalPort();
+        }
+        catch (java.io.IOException error)
+        {
+            throw new IllegalStateException("Could not allocate a free port for the test platform", error);
         }
     }
 }

@@ -16,11 +16,6 @@ public class StartupFailEvent extends ApplicationEvent
     private static final long serialVersionUID = 1L;
 
     /**
-     * Source of the failure
-     */
-    private final Object source;
-
-    /**
      * Error message
      */
     private final String message;
@@ -35,20 +30,7 @@ public class StartupFailEvent extends ApplicationEvent
     public StartupFailEvent(Object source, String message)
     {
         super(source);
-        this.source = source;
         this.message = message;
-    }
-
-
-    /**
-     * Return the source.
-     *
-     * @return object
-     */
-    @Override
-    public Object getSource()
-    {
-        return source;
     }
 
 

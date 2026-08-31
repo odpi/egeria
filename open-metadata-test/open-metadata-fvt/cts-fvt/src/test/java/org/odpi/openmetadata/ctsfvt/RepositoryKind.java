@@ -6,8 +6,9 @@ package org.odpi.openmetadata.ctsfvt;
  * RepositoryKind is the local repository that the technology under test runs, chosen when the run is
  * started - see this module's build.gradle for the Gradle properties that select it.
  * <br>
- * Each kind carries its own server names, cohort name and metadata collection ids rather than sharing
- * one set.  That is what keeps the two kinds from interfering with each other: a cohort registry store
+ * Each kind carries its own server names, cohort name, metadata collection ids and local server ids
+ * rather than sharing one set.  That is what keeps the two kinds from interfering with each other: a
+ * cohort registry store
  * outlives the run that created it, so if both kinds registered in the same cohort under the same
  * identities, a run of one kind would find the other kind's server registered but not running, and the
  * enterprise connector would keep trying to reach it.  Separate identities mean each kind has a cohort
@@ -25,6 +26,8 @@ enum RepositoryKind
              "ctsFvtCohort",
              "4d7e6f5a-8b9c-4012-b3c4-6374734676743",
              "5e8f7a6b-9c0d-4123-c4d5-748576877854",
+             "d8b2a3f4-5c6e-47d9-8b1c-2e3f4a5b6c7d",
+             "c7a1f2e3-4b5d-46c8-9a0b-1d2e3f4a5b6c",
              "PostgreSQL-backed metadata access store certified by the conformance suite."),
 
     /**
@@ -38,6 +41,8 @@ enum RepositoryKind
               "ctsFvtInMemoryCohort",
               "6f9a8b7c-0d1e-4234-d5e6-859687988865",
               "7a0b9c8d-1e2f-4345-e6f7-960798099976",
+              "fad4c5b6-7e80-49fb-8d3e-4a5b6c7d8e9f",
+              "e9c3b4a5-6d7f-48ea-9c2d-3f4a5b6c7d8e",
               "In-memory metadata access store certified by the conformance suite.");
 
 
@@ -53,6 +58,8 @@ enum RepositoryKind
     private final String cohortName;
     private final String tutMetadataCollectionId;
     private final String ctsMetadataCollectionId;
+    private final String tutServerId;
+    private final String ctsServerId;
     private final String tutServerDescription;
 
 
@@ -62,6 +69,8 @@ enum RepositoryKind
                    String cohortName,
                    String tutMetadataCollectionId,
                    String ctsMetadataCollectionId,
+                   String tutServerId,
+                   String ctsServerId,
                    String tutServerDescription)
     {
         this.propertyValue           = propertyValue;
@@ -70,6 +79,8 @@ enum RepositoryKind
         this.cohortName              = cohortName;
         this.tutMetadataCollectionId = tutMetadataCollectionId;
         this.ctsMetadataCollectionId = ctsMetadataCollectionId;
+        this.tutServerId             = tutServerId;
+        this.ctsServerId             = ctsServerId;
         this.tutServerDescription    = tutServerDescription;
     }
 
@@ -158,6 +169,28 @@ enum RepositoryKind
     String getCtsMetadataCollectionId()
     {
         return ctsMetadataCollectionId;
+    }
+
+
+    /**
+     * Return the fixed local server id of the technology under test.
+     *
+     * @return local server id
+     */
+    String getTutServerId()
+    {
+        return tutServerId;
+    }
+
+
+    /**
+     * Return the fixed local server id of the conformance test server.
+     *
+     * @return local server id
+     */
+    String getCtsServerId()
+    {
+        return ctsServerId;
     }
 
 
