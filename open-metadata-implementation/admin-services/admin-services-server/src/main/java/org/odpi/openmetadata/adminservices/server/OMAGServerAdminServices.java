@@ -2271,7 +2271,6 @@ public class OMAGServerAdminServices extends TokenController
                                                                                        configurationProperties,
                                                                                        eventBusConfig.getConnectorProvider(),
                                                                                        eventBusConfig.getTopicURLRoot(),
-                                                                                       serverConfig.getLocalServerId(),
                                                                                        eventBusConfig.getConfigurationProperties());
 
 

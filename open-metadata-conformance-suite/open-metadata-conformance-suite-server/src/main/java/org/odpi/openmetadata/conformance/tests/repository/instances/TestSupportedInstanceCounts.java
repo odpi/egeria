@@ -22,9 +22,12 @@ import java.util.List;
  * disagrees with the search is worse than no count at all: it is used to size pages and to decide whether
  * there is anything to fetch, so a wrong answer is acted upon rather than noticed.
  * <br>
- * The assertion is that the count is at least the number of instances this test created and matches what
- * find() reports for the same criteria.  It is not an absolute number because the repository legitimately
- * holds other instances of the type.
+ * The assertion is that the count is at least the number of instances this test created, and matches the
+ * instances find() reports for the same criteria that this repository is answerable for counting - those it
+ * homes, and those it replicates on behalf of a non-cohort provenance.  It is not an absolute number because
+ * the repository legitimately holds other instances of the type, and it is not the whole of what find()
+ * returns because find() also returns reference copies of instances another member homes; those are counted
+ * by that member, so counting them here too would double them in a federated count.
  */
 public class TestSupportedInstanceCounts extends RepositoryConformanceTestCase
 {
@@ -34,7 +37,7 @@ public class TestSupportedInstanceCounts extends RepositoryConformanceTestCase
     private static final String assertion1    = testCaseId + "-01";
     private static final String assertionMsg1 = " entity count includes the entities just created.";
     private static final String assertion2    = testCaseId + "-02";
-    private static final String assertionMsg2 = " entity count agrees with the number of entities found.";
+    private static final String assertionMsg2 = " entity count agrees with the entities found that it is answerable for.";
 
     private final RepositoryConformanceWorkPad workPad;
     private final EntityDef                    entityDef;
@@ -123,9 +126,19 @@ public class TestSupportedInstanceCounts extends RepositoryConformanceTestCase
                             elapsedTime);
 
             /*
-             * The count and the search have to agree.  Both are asked for everything of this type, so the
-             * number found should be the number counted - anything else means one of them is applying a
-             * criterion the other is not.
+             * The count and the search have to agree - but they are not asked quite the same question, and the
+             * difference is deliberate.
+             *
+             * A find is asked of one repository and answers with everything it holds that matches, reference
+             * copies included: the caller can see which repository answered and can deduplicate by GUID.  A
+             * count answers with a number, and a federated count is the sum of the numbers every cohort member
+             * gives back - so an instance held as a reference copy by three members would be counted three
+             * times if each member counted its copies, and nothing downstream can undo that because the GUIDs
+             * are gone.  A repository therefore counts only what it is answerable for: what it homes, and what
+             * it replicates on behalf of a non-cohort provenance.
+             *
+             * So the number counted is compared against the instances found that this repository homes or
+             * replicates, not against everything it returned.
              */
             List<EntityDetail> found = metadataCollection.findEntities(workPad.getLocalServerUserId(),
                                                                         entityDef.getGUID(),
@@ -140,7 +153,25 @@ public class TestSupportedInstanceCounts extends RepositoryConformanceTestCase
                                                                         null,
                                                                         0);
 
-            int foundCount = (found == null) ? 0 : found.size();
+            int foundCount = 0;
+
+            if (found != null)
+            {
+                String tutMetadataCollectionId = workPad.getTutMetadataCollectionId();
+
+                for (EntityDetail foundEntity : found)
+                {
+                    if (foundEntity != null)
+                    {
+                        if ((tutMetadataCollectionId == null) ||
+                            (tutMetadataCollectionId.equals(foundEntity.getMetadataCollectionId())) ||
+                            (tutMetadataCollectionId.equals(foundEntity.getReplicatedBy())))
+                        {
+                            foundCount++;
+                        }
+                    }
+                }
+            }
 
             /*
              * find() is limited by the page size the server allows, so the two can only be compared when the
