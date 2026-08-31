@@ -237,7 +237,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     {
         final String qualifiedName = "Provision::" + technologyName + "::GovernanceActionProcess";
         final String displayName = "Provision Governance Action Process for " + technologyName;
-        final String summary = "Create a " + technologyType + " element in the correct metadata collection so that it is provisioned into unity catalog.";
+        final String summary = "Create a " + technologyType.getDeployedImplementationType() + " element in the correct metadata collection so that it is provisioned into unity catalog.";
 
         String processGUID = archiveHelper.addGovernanceDefinition(OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
                                                                    qualifiedName,
@@ -289,7 +289,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                         null,
                                                                         qualifiedName + "::Step1",
                                                                         "Create the new element",
-                                                                        "Create a " + technologyType + " element in the correct metadata collection so that it is provisioned into unity catalog.",
+                                                                        "Create a " + technologyType.getDeployedImplementationType() + " element in the correct metadata collection so that it is provisioned into unity catalog.",
                                                                         0,
                                                                         supportedRequestParameters,
                                                                         null,
@@ -323,7 +323,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         {
             archiveHelper.addResourceListRelationshipByGUID(technologyType.getGUID(),
                                                             processGUID,
-                                                            ResourceUse.SURVEY_RESOURCE.getResourceUse(),
+                                                            ResourceUse.PROVISION_RESOURCE.getResourceUse(),
                                                             summary,
                                                             provisionRequestType.getRequestParameters());
         }
