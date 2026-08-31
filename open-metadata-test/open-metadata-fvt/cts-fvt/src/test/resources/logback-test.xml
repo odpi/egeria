@@ -36,6 +36,20 @@
 
     <logger name="org.odpi.openmetadata.ctsfvt" level="INFO" />
 
+    <!--
+        The Kafka event consumer decides, on its first partition assignment, whether to rewind to the point
+        the connector started - which is what stops a consumer that joined a moment too late from reading
+        straight past a cohort registration.  The two outcomes that matter are reported at warn by the
+        connector itself now, so they show up anywhere: a rewind having been needed, and the correction
+        having failed and been swallowed.
+
+        This turns the rest of that decision up to INFO as well - which offset was queried for, what was
+        found, and which branch was taken.  On a run that records no test cases, that trail is what
+        distinguishes a cohort that never formed from one that formed and whose registration was missed, and
+        it costs a handful of lines per topic at start-up.
+    -->
+    <logger name="org.odpi.openmetadata.adapters.eventbus.topic.kafka" level="INFO" />
+
     <root level="warn">
         <appender-ref ref="STDOUT" />
     </root>

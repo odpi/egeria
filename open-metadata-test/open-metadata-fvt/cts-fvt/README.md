@@ -62,6 +62,54 @@ The conformance test server gets an in-memory local repository and its enterpris
 automatically — `enableRepositoryConformanceSuiteWorkbench` sets both up as a side effect, along with the
 server type — so neither is configured here.
 
+One thing that *is* configured, and matters more here than it looks: both servers are given a **secrets
+store** of their own, `src/test/resources/cts-fvt.omsecrets`, named by the `ctsFvtSecretsStore` placeholder.
+The sibling suites name a file that does not exist, because `setBasicServerProperties` insists on a fully
+specified secrets store connection and nothing ever reads it. This suite is the exception. A server that has
+a secrets store gets one built into a connection for the `REST_BEARER_TOKEN` purpose and embedded in *every*
+remote cohort member's connection by `OMRSEnterpriseConnectorManager` before the connector broker is asked
+for a connector — which puts it squarely on the path the workbench takes to reach the technology under test,
+and is the path the first defect below was found on. Naming a file that is not there leaves that path only
+half-exercised, and logs `YAML-SECRETS-STORE-CONNECTOR-0001` once per registration attempt.
+
+The collection it names supplies no token and no `tokenAPI`, deliberately. This platform has no user
+directory and `CtsFvtSecurityConfig` installs a permit-all filter chain, so there is nothing to authenticate
+to; with no token to find, the REST client connector sets no authorization header and calls the other server
+unauthenticated, which is what this platform expects. What the file changes is that the store *resolves* —
+the connection is built and read rather than failing on a missing file.
+
+Both servers also have their **local server id** pinned, alongside the metadata collection ids — but be
+clear about what that does and does not achieve today, because it is less than it looks.
+
+That id becomes a server's Apache Kafka `group.id`, and a consumer group Kafka has never seen starts at
+`auto.offset.reset=latest`. The conformance test server starts first and asks the cohort for registration
+information exactly once (`OMRS-AUDIT-0062`); if the technology under test publishes its registration before
+that consumer is reading, the registration is stepped over and there is no second ask. The workbench then
+waits for a member that, as far as it is concerned, never registered, and the run fails at the start-up
+timeout having recorded no test cases at all.
+
+**Pinning does not currently reach the cohort topics.** `ConnectorConfigurationFactory` builds the cohort's
+registration and types topic connections with a freshly generated UUID rather than the server's id, and
+stamps whichever id it generates first into the properties map the other cohort connections are built from —
+so all three get a new group on every configuration whatever this harness pins, and the pinned id shows up
+only on the enterprise topic. Two things follow: the race is still present, and the id named here never
+appears on the broker. Both are open defects, not harness settings; see the notes below.
+
+What *is* fixed is a narrower defect in `KafkaOpenMetadataEventConsumer`. On first partition assignment it
+rewinds to the connector's start time, but only when `offsetsForTimes` finds a message there; when it returns
+null it used to do nothing, leaving the consumer with no resolved position, so `auto.offset.reset` settled it
+at the first fetch instead — at wherever the end of the log had moved to by then, stepping over anything
+published in between. It now pins the end as it stands at assignment. That closes one window; it does not on
+its own make a run reliable.
+
+So a run can still lose the race, and re-running is the remedy. When it happens the harness says so
+precisely — no test cases recorded rather than a timeout — and the check worth making is whether the
+conformance test server logged any `OMRS-AUDIT-8006` at all. None means it never received a cohort event.
+`logback-test.xml` turns the Kafka consumer's own logging up to `INFO` for this reason: every branch of that
+rewind decision, including the handler that gives up on it, logs at `INFO`, so at Egeria's default `warn`
+root level the whole mechanism is invisible and a missed registration is indistinguishable from one that was
+never sent.
+
 ## What it asserts
 
 The suite produces the results; this module decides what counts as a pass.

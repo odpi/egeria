@@ -584,7 +584,14 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                             // if the current offset is later than the start time we want, rewind to the start time
                             if (currentOffset > maxOffsetWanted) {
 
-                                log.info("Seeking to {} for partition {} and topic {} as current offset {} is too late", maxOffsetWanted, partitionID,
+                                /*
+                                 * Reported at warn: reaching here means this consumer was assigned its
+                                 * partition after events it should have seen had already been published, and
+                                 * is being wound back over them.  It is recoverable, and it is also the
+                                 * signal that this server starts slowly enough to be at risk of losing an
+                                 * event that arrives in the same window but cannot be recovered.
+                                 */
+                                log.warn("Seeking to {} for partition {} and topic {} as current offset {} is too late", maxOffsetWanted, partitionID,
                                         partitionTopic, currentOffset);
                                 consumer.seek(partition, maxOffsetWanted);
                             } else
@@ -592,14 +599,37 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                                         partitionTopic, currentOffset);
                         }
                         else
-                            log.info("No missed events found for partition {} and topic {}", partitionID, partitionTopic);
+                        {
+                            /*
+                             * Nothing had been published at or after the time this connector started, so
+                             * there is nothing to rewind to - but the position still has to be settled here.
+                             * Until something sets it, the consumer has no position at all, and
+                             * auto.offset.reset resolves it at the first fetch instead: with the default of
+                             * "latest" that is wherever the end of the log has moved to by then, so anything
+                             * published in between is stepped over rather than read.  On a cohort's
+                             * registration topic that is a member's registration, and a registration is sent
+                             * once - the member is simply never heard from, and the server waits for it for
+                             * ever.  Pinning the end as it stands now closes the window.
+                             */
+                            consumer.seekToEnd(Collections.singleton(partition));
+
+                            log.info("No missed events found for partition {} and topic {} - starting at end offset {}",
+                                    partitionID, partitionTopic, consumer.position(partition));
+                        }
                     }
                 }
                 else
                     log.debug("PartitionsAssigned Event - no action needed");
             } catch (Exception e) {
                 // We leave the offset as-is if anything goes wrong. Eventually other messages will cause the effective state to be updated
-                log.info("Error correcting seek position, continuing with defaults. Exception: {}", e.getMessage());
+                /*
+                 * Reported at warn: the position could not be corrected and the failure is being swallowed,
+                 * so the consumer carries on from wherever auto.offset.reset leaves it.  With the default of
+                 * "latest" that silently skips anything already published - on a cohort's registration topic,
+                 * a member's registration, which is sent once and never repeated.  At info this looked
+                 * identical to a healthy start.
+                 */
+                log.warn("Error correcting seek position, continuing with defaults. Exception: {}", e.getMessage());
             }
         }
 

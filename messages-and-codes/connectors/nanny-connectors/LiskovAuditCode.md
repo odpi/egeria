@@ -9,7 +9,7 @@ The LiskovAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 10 |
+| **Number of messages** | 13 |
 | **Message identifiers begin** | `LISKOV-DATA-HUB-MANAGER-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.liskov.ffdc.LiskovAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/nanny-connectors](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors) |
@@ -31,6 +31,9 @@ The LiskovAuditCode is used to define the message content for the Audit Log.
 | [LISKOV-DATA-HUB-MANAGER-0017](#liskov-data-hub-manager-0017) | INFO | The {0} integration connector is retrieving known data dictionary definitions for data sharing hub {1} ({2}) |
 | [LISKOV-DATA-HUB-MANAGER-0018](#liskov-data-hub-manager-0018) | INFO | The {0} integration connector has created a new data structure {1} ({2}) for data sharing hub {3} ({4}) |
 | [LISKOV-DATA-HUB-MANAGER-0019](#liskov-data-hub-manager-0019) | INFO | The {0} integration connector is refreshing data fields from CSV File {2} ({3}) for data sharing hub {4} ({5}) |
+| [LISKOV-DATA-HUB-MANAGER-0020](#liskov-data-hub-manager-0020) | INFO | The {0} integration connector has started engine action {1} to enable the cataloguing of {2} {3} ({4}) using governance action type {5} |
+| [LISKOV-DATA-HUB-MANAGER-0021](#liskov-data-hub-manager-0021) | INFO | The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5} |
+| [LISKOV-DATA-HUB-MANAGER-0022](#liskov-data-hub-manager-0022) | INFO | The {0} integration connector is unable to locate a technology type called {1} for {2} {3} ({4}) |
 
 ----
 
@@ -240,6 +243,69 @@ The connector is initiating its refreshing of a data sharing hub.
 **User action**
 
 No action is required.  This message is for monitoring the activity of the data sharing hub management.
+
+
+----
+
+### LISKOV-DATA-HUB-MANAGER-0020
+
+> The {0} integration connector has started engine action {1} to enable the cataloguing of {2} {3} ({4}) using governance action type {5}
+
+|  |  |
+|---|---|
+| **Java constant** | `LiskovAuditCode.ENABLING_CATALOGUING` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+
+**System action**
+
+The connector has detected that the contents of a member of a data sharing hub are not being catalogued and has requested that the appropriate cataloguing integration connector begins to monitor it.  The contents of the member will appear in open metadata once the cataloguing integration connector has run.
+
+**User action**
+
+No action is required.  This message is for monitoring the set up of the cataloguing for the members of a data sharing hub.
+
+
+----
+
+### LISKOV-DATA-HUB-MANAGER-0021
+
+> The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5}
+
+|  |  |
+|---|---|
+| **Java constant** | `LiskovAuditCode.STARTING_SURVEY` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+
+**System action**
+
+The connector has requested a new survey of a member of a data sharing hub so that the latest characteristics of its contents are available to the data sharing hub's owner.
+
+**User action**
+
+No action is required.  This message is for monitoring the surveying of the members of a data sharing hub.
+
+
+----
+
+### LISKOV-DATA-HUB-MANAGER-0022
+
+> The {0} integration connector is unable to locate a technology type called {1} for {2} {3} ({4})
+
+|  |  |
+|---|---|
+| **Java constant** | `LiskovAuditCode.NO_TECHNOLOGY_TYPE` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The connector is not able to determine which cataloguing and survey governance action types are appropriate for this element and so it skips them.  The rest of the refresh continues.
+
+**User action**
+
+If this element should be catalogued and surveyed, check that its deployedImplementationType property is set to a technology type that is defined in the content packs loaded into this metadata store.
 
 
 ----
