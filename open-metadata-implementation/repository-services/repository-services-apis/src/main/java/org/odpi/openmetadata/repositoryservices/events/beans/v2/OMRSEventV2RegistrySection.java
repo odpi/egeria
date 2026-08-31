@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventType;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Date;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,16 +20,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSEventV2RegistrySection implements Serializable
+public class OMRSEventV2RegistrySection
 {
     @Serial
-    private static final long serialVersionUID = 1L;
-
     private OMRSRegistryEventType registryEventType      = null;
     private Date                  registrationTimestamp  = null;
     private String                metadataCollectionName = null;
     private Connection            remoteConnection       = null;
-
 
     /**
      * Default constructor
@@ -38,7 +34,6 @@ public class OMRSEventV2RegistrySection implements Serializable
     public OMRSEventV2RegistrySection()
     {
     }
-
 
     /**
      * Return the reason for the event.
@@ -50,7 +45,6 @@ public class OMRSEventV2RegistrySection implements Serializable
         return registryEventType;
     }
 
-
     /**
      * Set up the reason for the event.
      *
@@ -60,7 +54,6 @@ public class OMRSEventV2RegistrySection implements Serializable
     {
         this.registryEventType = registryEventType;
     }
-
 
     /**
      * Return the timestamp for the registration.
@@ -72,7 +65,6 @@ public class OMRSEventV2RegistrySection implements Serializable
         return registrationTimestamp;
     }
 
-
     /**
      * Set up the timestamp for the registration.
      *
@@ -82,7 +74,6 @@ public class OMRSEventV2RegistrySection implements Serializable
     {
         this.registrationTimestamp = registrationTimestamp;
     }
-
 
     /**
      * Return the optional metadata collection name.
@@ -94,7 +85,6 @@ public class OMRSEventV2RegistrySection implements Serializable
         return metadataCollectionName;
     }
 
-
     /**
      * Set up the optional metadata collection name.
      *
@@ -104,7 +94,6 @@ public class OMRSEventV2RegistrySection implements Serializable
     {
         this.metadataCollectionName = metadataCollectionName;
     }
-
 
     /**
      * Return the connection used to call the remote repository.
@@ -116,7 +105,6 @@ public class OMRSEventV2RegistrySection implements Serializable
         return remoteConnection;
     }
 
-
     /**
      * Set up the connection used to call the remote repository.
      *
@@ -126,7 +114,6 @@ public class OMRSEventV2RegistrySection implements Serializable
     {
         this.remoteConnection = remoteConnection;
     }
-
 
     /**
      * JSON-style toString.

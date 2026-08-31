@@ -34,10 +34,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = WorkbenchReportResponse.class, name = "WorkbenchReportResponse"),
                 @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse")
         })
-public abstract class ConformanceServicesAPIResponse implements java.io.Serializable
+public abstract class ConformanceServicesAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private int                  relatedHTTPCode = 200;
     private String               successMessage = null;
     private String               exceptionClassName = null;
@@ -53,7 +51,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
     public ConformanceServicesAPIResponse()
     {
     }
-
 
     /**
      * Copy/clone constructor
@@ -74,7 +71,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
         }
     }
 
-
     /**
      * Return the HTTP Code to use if forwarding response to HTTP client.
      *
@@ -84,7 +80,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
     {
         return relatedHTTPCode;
     }
-
 
     /**
      * Set up the HTTP Code to use if forwarding response to HTTP client.
@@ -96,7 +91,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
         this.relatedHTTPCode = relatedHTTPCode;
     }
 
-
     /**
      * Return the success message (if any).
      *
@@ -106,7 +100,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
     {
         return successMessage;
     }
-
 
     /**
      * Set up the success message.  This provides supplementary information about the services that
@@ -119,7 +112,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
         this.successMessage = successMessage;
     }
 
-
     /**
      * Return the name of the Java class name to use to recreate the exception.
      *
@@ -129,7 +121,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
     {
         return exceptionClassName;
     }
-
 
     /**
      * Set up the name of the Java class name to use to recreate the exception.
@@ -141,7 +132,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
         this.exceptionClassName = exceptionClassName;
     }
 
-
     /**
      * Return the error message associated with the exception.
      *
@@ -151,7 +141,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
     {
         return exceptionErrorMessage;
     }
-
 
     /**
      * Set up the error message associated with the exception.
@@ -163,7 +152,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
         this.exceptionErrorMessage = exceptionErrorMessage;
     }
 
-
     /**
      * Return the description of the action taken by the system as a result of the exception.
      *
@@ -173,7 +161,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
     {
         return exceptionSystemAction;
     }
-
 
     /**
      * Set up the description of the action taken by the system as a result of the exception.
@@ -185,7 +172,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
         this.exceptionSystemAction = exceptionSystemAction;
     }
 
-
     /**
      * Return the action that a user should take to resolve the problem.
      *
@@ -195,7 +181,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
     {
         return exceptionUserAction;
     }
-
 
     /**
      * Set up the action that a user should take to resolve the problem.
@@ -207,7 +192,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
         this.exceptionUserAction = exceptionUserAction;
     }
 
-
     /**
      * Return the link to further reading about the component or concept behind the exception's message.
      *
@@ -218,7 +202,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
         return exceptionURL;
     }
 
-
     /**
      * Set up the link to further reading about the component or concept behind the exception's message.
      *
@@ -228,8 +211,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
     {
         this.exceptionURL = exceptionURL;
     }
-
-
 
     /**
      * Return the additional properties stored by the exceptions.
@@ -252,7 +233,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
         }
     }
 
-
     /**
      * Set up the additional properties stored by the exceptions.
      *
@@ -262,7 +242,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
     {
         this.exceptionProperties = exceptionProperties;
     }
-
 
     /**
      * JSON-like toString
@@ -283,7 +262,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
                 ", exceptionProperties=" + exceptionProperties +
                 '}';
     }
-
 
     /**
      * Return comparison result based on the content of the properties.
@@ -311,7 +289,6 @@ public abstract class ConformanceServicesAPIResponse implements java.io.Serializ
                 Objects.equals(getExceptionUserAction(), that.getExceptionUserAction()) &&
                 Objects.equals(getExceptionProperties(), that.getExceptionProperties());
     }
-
 
     /**
      * Return hash code for this object

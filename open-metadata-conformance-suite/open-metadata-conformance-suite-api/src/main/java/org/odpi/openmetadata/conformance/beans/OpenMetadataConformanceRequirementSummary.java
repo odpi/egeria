@@ -2,14 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.beans;
 
-
 import com.fasterxml.jackson.annotation.*;
-
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
 
 /**
  * OpenMetadataConformanceRequirementSummary documents the conformance assessment of the technology under test
@@ -26,16 +22,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         ({
                 @JsonSubTypes.Type(value = OpenMetadataConformanceRequirementResults.class, name = "OpenMetadataConformanceRequirementResults")
         })
-public class OpenMetadataConformanceRequirementSummary implements Serializable
+public class OpenMetadataConformanceRequirementSummary
 {
-    private static final long   serialVersionUID = 1L;
-
     private Integer                                   id                   = null;
     private String                                    name                 = null;
     private String                                    description          = null;
     private String                                    documentationURL     = null;
     private OpenMetadataConformanceStatus             conformanceStatus    = null;
-
 
     /**
      * Default constructor used in JSON exchange
@@ -43,7 +36,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
     public OpenMetadataConformanceRequirementSummary()
     {
     }
-
 
     /**
      * Standard constructor used during test run.
@@ -64,7 +56,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
         this.documentationURL = documentationURL;
     }
 
-
     /**
      * Copy/clone constructor used in JSON exchange
      *
@@ -82,7 +73,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
         }
     }
 
-
     /**
      * Return the identifier of the requirement.
      *
@@ -92,7 +82,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
     {
         return id;
     }
-
 
     /**
      * Set up the identifier of the requirement.
@@ -104,7 +93,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
         this.id = id;
     }
 
-
     /**
      * Return the display name of the requirement.
      *
@@ -114,7 +102,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
     {
         return name;
     }
-
 
     /**
      * Set up the display name of the requirement.
@@ -126,7 +113,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
         this.name = name;
     }
 
-
     /**
      * Return the short description of the requirement.
      *
@@ -136,7 +122,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
     {
         return description;
     }
-
 
     /**
      * Set up the short description of the requirement.
@@ -148,7 +133,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the URL link to the requirement.
      *
@@ -158,7 +142,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
     {
         return documentationURL;
     }
-
 
     /**
      * Set up the URL link to the requirement.
@@ -170,7 +153,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
         this.documentationURL = documentationURL;
     }
 
-
     /**
      * Return the conformance status of the technology under test (TUT).
      *
@@ -181,7 +163,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
         return conformanceStatus;
     }
 
-
     /**
      * Set up the conformance status of the technology under test (TUT).
      *
@@ -191,7 +172,6 @@ public class OpenMetadataConformanceRequirementSummary implements Serializable
     {
         this.conformanceStatus = conformanceStatus;
     }
-
 
     /**
      * toString() JSON-style

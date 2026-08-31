@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -22,10 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MemberRegistration implements Serializable
+public class MemberRegistration
 {
-    private static final long serialVersionUID = 1L;
-
     /*
      * Information about a metadata repository that is a member of the metadata repository cohort
      */
@@ -37,7 +34,6 @@ public class MemberRegistration implements Serializable
     private Date       registrationTime       = null;
     private Connection repositoryConnection   = null;
 
-
     /**
      * Default constructor initializes registration information to null.
      */
@@ -47,7 +43,6 @@ public class MemberRegistration implements Serializable
          * Nothing to do
          */
     }
-
 
     /**
      * Copy/clone constructor copies registration information from the template.
@@ -69,7 +64,6 @@ public class MemberRegistration implements Serializable
         }
     }
 
-
     /**
      * Return the unique identifier of the repository's metadata collection id.
      *
@@ -77,14 +71,12 @@ public class MemberRegistration implements Serializable
      */
     public String getMetadataCollectionId() { return metadataCollectionId; }
 
-
     /**
      * Set up the unique identifier of the repository's metadata collection id.
      *
      * @param metadataCollectionId String guid
      */
     public void setMetadataCollectionId(String metadataCollectionId) { this.metadataCollectionId = metadataCollectionId; }
-
 
     /**
      * Return the metadata collection name.  The server name is returned if the metadata collection name has not been explicitly provided.
@@ -103,7 +95,6 @@ public class MemberRegistration implements Serializable
         }
     }
 
-
     /**
      * Set up the metadata collection name.  This overrides the default value of the server name.
      *
@@ -113,7 +104,6 @@ public class MemberRegistration implements Serializable
     {
         this.metadataCollectionName = metadataCollectionName;
     }
-
 
     /**
      * Return the display name for the server.  It is not guaranteed to be unique just confusing for
@@ -126,7 +116,6 @@ public class MemberRegistration implements Serializable
         return serverName;
     }
 
-
     /**
      * Set up the display name for the server.  It is not guaranteed to be unique just confusing for
      * administrators if it is different.  The display name can change over time with no loss of data integrity.
@@ -138,7 +127,6 @@ public class MemberRegistration implements Serializable
         this.serverName = serverName;
     }
 
-
     /**
      * Return the type of server.
      *
@@ -148,7 +136,6 @@ public class MemberRegistration implements Serializable
     {
         return serverType;
     }
-
 
     /**
      * Set up the type of server.
@@ -160,7 +147,6 @@ public class MemberRegistration implements Serializable
         this.serverType = serverType;
     }
 
-
     /**
      * Return the name of the organization.
      *
@@ -170,7 +156,6 @@ public class MemberRegistration implements Serializable
     {
         return organizationName;
     }
-
 
     /**
      * Set up the name of the organization.
@@ -182,7 +167,6 @@ public class MemberRegistration implements Serializable
         this.organizationName = organizationName;
     }
 
-
     /**
      * Return the time that this repository registered with the cohort. (Or null if it has not yet registered.)
      *
@@ -193,14 +177,12 @@ public class MemberRegistration implements Serializable
         return registrationTime;
     }
 
-
     /**
      * Set up the time that this repository registered with the cohort. (Or null if it has not yet registered.)
      *
      * @param registrationTime Date object representing the registration time stamp
      */
     public void setRegistrationTime(Date registrationTime) { this.registrationTime = registrationTime; }
-
 
     /**
      * Return the connection information for a connector that enables remote calls to the repository server.
@@ -219,7 +201,6 @@ public class MemberRegistration implements Serializable
         }
     }
 
-
     /**
      * Set up the connection information for a connector that enables remote calls to the repository server.
      *
@@ -229,7 +210,6 @@ public class MemberRegistration implements Serializable
     {
         this.repositoryConnection = repositoryConnection;
     }
-
 
     /**
      * Validate if the values stored match the object to compare.
@@ -258,7 +238,6 @@ public class MemberRegistration implements Serializable
                 Objects.equals(getRepositoryConnection(), that.getRepositoryConnection());
     }
 
-
     /**
      * Hash code base on variable values.
      *
@@ -276,7 +255,6 @@ public class MemberRegistration implements Serializable
                             getRegistrationTime(),
                             getRepositoryConnection());
     }
-
 
     /**
      * toString JSON-style

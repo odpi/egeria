@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,12 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSAuditLogDestinationsReport implements Serializable
+public class OMRSAuditLogDestinationsReport
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<OMRSAuditLogStoreReport> logStoreReports = null;
-
 
     /**
      * Default constructor
@@ -34,7 +30,6 @@ public class OMRSAuditLogDestinationsReport implements Serializable
     public OMRSAuditLogDestinationsReport()
     {
     }
-
 
     /**
      * Copy/clone constructor
@@ -48,7 +43,6 @@ public class OMRSAuditLogDestinationsReport implements Serializable
             logStoreReports = template.getLogStoreReports();
         }
     }
-
 
     /**
      * Return the report for each audit log store.
@@ -69,7 +63,6 @@ public class OMRSAuditLogDestinationsReport implements Serializable
         return logStoreReports;
     }
 
-
     /**
      * Set up the report for each audit log store.
      *
@@ -79,7 +72,6 @@ public class OMRSAuditLogDestinationsReport implements Serializable
     {
         this.logStoreReports = logStoreReports;
     }
-
 
     /**
      * Standard toString method.
@@ -93,7 +85,6 @@ public class OMRSAuditLogDestinationsReport implements Serializable
                 "logStoreReports=" + logStoreReports +
                 '}';
     }
-
 
     /**
      * Validate that an object is equal depending on their stored values.
@@ -115,7 +106,6 @@ public class OMRSAuditLogDestinationsReport implements Serializable
         OMRSAuditLogDestinationsReport that = (OMRSAuditLogDestinationsReport) objectToCompare;
         return Objects.equals(logStoreReports, that.logStoreReports);
     }
-
 
     /**
      * Return a hash code based on the values of this object.

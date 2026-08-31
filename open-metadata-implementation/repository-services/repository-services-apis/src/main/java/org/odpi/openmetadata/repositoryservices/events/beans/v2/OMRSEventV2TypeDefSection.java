@@ -12,7 +12,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventType;
 
 import java.io.Serial;
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -23,11 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSEventV2TypeDefSection implements Serializable
+public class OMRSEventV2TypeDefSection
 {
     @Serial
-    private static final long serialVersionUID = 1L;
-
     private OMRSTypeDefEventType typeDefEventType         = null;
     private String               typeDefGUID              = null;
     private String               typeDefName              = null;
@@ -37,14 +34,12 @@ public class OMRSEventV2TypeDefSection implements Serializable
     private TypeDefSummary       originalTypeDefSummary   = null;
     private AttributeTypeDef     originalAttributeTypeDef = null;
 
-
     /**
      * Default constructor
      */
     public OMRSEventV2TypeDefSection()
     {
     }
-
 
     /**
      * Return the reason for the event.
@@ -56,7 +51,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
         return typeDefEventType;
     }
 
-
     /**
      * Set up the reason for the event.
      *
@@ -66,7 +60,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
     {
         this.typeDefEventType = typeDefEventType;
     }
-
 
     /**
      * Return the unique identifier of the type.
@@ -78,7 +71,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
         return typeDefGUID;
     }
 
-
     /**
      * Set up the unique identifier of the type.
      *
@@ -88,7 +80,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
     {
         this.typeDefGUID = typeDefGUID;
     }
-
 
     /**
      * Return the unique name of the type.
@@ -100,7 +91,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
         return typeDefName;
     }
 
-
     /**
      * Set up the unique name of the type.
      *
@@ -110,7 +100,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
     {
         this.typeDefName = typeDefName;
     }
-
 
     /**
      * Return the associated attribute type.
@@ -132,7 +121,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
         this.attributeTypeDef = attributeTypeDef;
     }
 
-
     /**
      * Return the type for the event.
      *
@@ -142,7 +130,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
     {
         return typeDef;
     }
-
 
     /**
      * Set up the type for the event.
@@ -154,7 +141,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
         this.typeDef = typeDef;
     }
 
-
     /**
      * Return the patch (changes) to a type.
      *
@@ -164,7 +150,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
     {
         return typeDefPatch;
     }
-
 
     /**
      * Set up the patch (changes) to a type.
@@ -176,7 +161,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
         this.typeDefPatch = typeDefPatch;
     }
 
-
     /**
      * Return the type before the change.
      *
@@ -186,7 +170,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
     {
         return originalTypeDefSummary;
     }
-
 
     /**
      * Set up the type before the change.
@@ -198,7 +181,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
         this.originalTypeDefSummary = originalTypeDefSummary;
     }
 
-
     /**
      * Return the attribute before the change.
      *
@@ -209,7 +191,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
         return originalAttributeTypeDef;
     }
 
-
     /**
      * Set up the attribute before the change.
      *
@@ -219,7 +200,6 @@ public class OMRSEventV2TypeDefSection implements Serializable
     {
         this.originalAttributeTypeDef = originalAttributeTypeDef;
     }
-
 
     /**
      * JSON-style toString.

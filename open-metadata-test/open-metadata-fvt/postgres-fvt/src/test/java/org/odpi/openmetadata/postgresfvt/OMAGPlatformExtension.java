@@ -155,7 +155,8 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
 
     /**
-     * Return the root URL of the running platform, for example "http://localhost:9451".
+     * Return the root URL of the running platform.  The port is allocated at run time rather than
+     * fixed, so it differs from one run to the next.
      *
      * @return URL root
      */
@@ -266,7 +267,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
             /*
              * A start-up that has already failed is reported again rather than retried.  Retrying would start
              * a second platform on a port the first one is still holding, and every test class after the first
-             * would then report "port 9451 already in use" - burying the one message that says what actually
+             * would then fail with a port-in-use error - burying the one message that says what actually
              * went wrong.
              */
             if (startupFailure != null)
@@ -996,6 +997,13 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     /**
      * Find a port that is free right now, so that concurrent test runs - in another checkout, or another
      * suite - do not collide on a hard-coded one.
+     * <br><br>
+     * The socket is closed before the port is handed to Spring, so there is a small window in which
+     * something else could take it.  Binding with {@code server.port=0} and letting Tomcat choose would
+     * close that window, but the port has to be known before the context starts: this suite's
+     * {@code application.properties} interpolates {@code ${server.port}} into the egeriaEndpoint
+     * placeholder, which becomes the server's own localServerURL, and that is resolved before Tomcat
+     * binds.  Knowing the number up front is worth the small race.
      *
      * @return a currently free TCP port
      */

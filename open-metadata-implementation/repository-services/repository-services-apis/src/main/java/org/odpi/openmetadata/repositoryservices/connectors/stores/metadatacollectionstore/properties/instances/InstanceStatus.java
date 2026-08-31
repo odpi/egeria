@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -39,7 +37,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum InstanceStatus implements Serializable
+public enum InstanceStatus
 {
     /**
      * Unknown - Unknown instance status.
@@ -66,12 +64,9 @@ public enum InstanceStatus implements Serializable
      */
     DELETED                 (99, "Deleted",                 "The instance has been deleted and is no longer available.");
 
-    private static final long serialVersionUID = 1L;
-
     private  final int    ordinal;
     private  final String name;
     private  final String description;
-
 
     /**
      * Default constructor sets up the specific values for an enum instance.
@@ -89,14 +84,12 @@ public enum InstanceStatus implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the numerical value for the enum.
      *
      * @return int enum value ordinal
      */
     public int getOrdinal() { return ordinal; }
-
 
     /**
      * Return the descriptive name for the enum.
@@ -105,14 +98,12 @@ public enum InstanceStatus implements Serializable
      */
     public String getName() { return name; }
 
-
     /**
      * Return the description for the enum.
      *
      * @return String description
      */
     public String getDescription() { return description; }
-
 
     /**
      * toString() JSON-style

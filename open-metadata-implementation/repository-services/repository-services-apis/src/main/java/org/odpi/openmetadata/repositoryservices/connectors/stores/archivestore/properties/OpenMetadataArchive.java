@@ -31,8 +31,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataArchive extends OpenMetadataArchiveElementHeader
 {
-    private static final long    serialVersionUID = 1L;
-
     private OpenMetadataArchiveProperties    archiveProperties    = null;
     private OpenMetadataArchiveTypeStore     archiveTypeStore     = null;
     private OpenMetadataArchiveInstanceStore archiveInstanceStore = null;

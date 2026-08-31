@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
-import java.io.Serial;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
@@ -28,9 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PrimitivePropertyValue extends InstancePropertyValue
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private  PrimitiveDefCategory   primitiveDefCategory = null;
     private  Object                 primitiveValue = null;
 

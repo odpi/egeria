@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors;
 
 
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.jar.JarFile;
@@ -47,8 +48,14 @@ public class IsolatedConnectorClassLoader extends URLClassLoader
         this.jarfile = new JarFile(jarFileName);
         super.addURL(new File(jarFileName).toURI().toURL());
 
-        this.jarFileSpec = "jar:file:" + jarFileName + "!/";
-        super.addURL(new URL(jarFileSpec));
+        /*
+         * The single-argument URL constructor was deprecated in Java 20.  Building the spec from the file's
+         * own URI rather than by concatenating the path is also more correct: File.toURI() escapes the
+         * characters - a space in the path, most obviously - that would otherwise produce a URL that cannot
+         * be parsed back.
+         */
+        this.jarFileSpec = "jar:" + new File(jarFileName).toURI().toURL() + "!/";
+        super.addURL(URI.create(jarFileSpec).toURL());
     }
 
 

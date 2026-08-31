@@ -4,8 +4,6 @@ package org.odpi.openmetadata.conformance.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -19,10 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
                 @JsonSubTypes.Type(value = OpenMetadataTestCaseResult.class, name = "OpenMetadataTestCaseResult")
               })
-public class OpenMetadataTestCaseSummary implements Serializable
+public class OpenMetadataTestCaseSummary
 {
-    private static final long   serialVersionUID = 1L;
-
     private String testCaseId             = null;
     private String testCaseName           = null;
     private String testCaseDescriptionURL = null;
@@ -33,7 +29,6 @@ public class OpenMetadataTestCaseSummary implements Serializable
     public OpenMetadataTestCaseSummary()
     {
     }
-
 
     /**
      * Constructor to create a test case summary from a test case.
@@ -47,7 +42,6 @@ public class OpenMetadataTestCaseSummary implements Serializable
         this.testCaseDescriptionURL = testCase.getTestCaseDescriptionURL();
     }
 
-
     /**
      * Return the unique id of the test case.
      *
@@ -57,7 +51,6 @@ public class OpenMetadataTestCaseSummary implements Serializable
     {
         return testCaseId;
     }
-
 
     /**
      * Set up the unique id of the test case.
@@ -69,7 +62,6 @@ public class OpenMetadataTestCaseSummary implements Serializable
         this.testCaseId = testCaseId;
     }
 
-
     /**
      * Return the name of the test case.
      *
@@ -79,7 +71,6 @@ public class OpenMetadataTestCaseSummary implements Serializable
     {
         return testCaseName;
     }
-
 
     /**
      * Set up the name of the test case.
@@ -91,7 +82,6 @@ public class OpenMetadataTestCaseSummary implements Serializable
         this.testCaseName = testCaseName;
     }
 
-
     /**
      * Return the URL that links to the test case description.
      *
@@ -102,7 +92,6 @@ public class OpenMetadataTestCaseSummary implements Serializable
         return testCaseDescriptionURL;
     }
 
-
     /**
      * Set up the URL that links to the test case description.
      *
@@ -112,7 +101,6 @@ public class OpenMetadataTestCaseSummary implements Serializable
     {
         this.testCaseDescriptionURL = testCaseDescriptionURL;
     }
-
 
     /**
      * toString() JSON-style

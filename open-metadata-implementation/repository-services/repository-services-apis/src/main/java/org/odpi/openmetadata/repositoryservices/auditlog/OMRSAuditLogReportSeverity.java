@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,14 +19,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Serializable
+public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity
 {
-    private static final long    serialVersionUID = 1L;
-
     private  int    ordinal;
     private  String name;
     private  String description;
-
 
     /**
      * Default constructor
@@ -35,7 +31,6 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
     public OMRSAuditLogReportSeverity()
     {
     }
-
 
     /**
      * Copy/clone constructor.
@@ -52,7 +47,6 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
         }
     }
 
-
     /**
      * Return the numerical code for this enum.
      *
@@ -62,7 +56,6 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
     {
         return ordinal;
     }
-
 
     /**
      * Set up the numerical code for this enum.
@@ -74,7 +67,6 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
         this.ordinal = ordinal;
     }
 
-
     /**
      * Return the name of the component.  This is the name used in the audit log records.
      *
@@ -85,7 +77,6 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
         return name;
     }
 
-
     /**
      * Set up the name of the component.  This is the name used in the audit log records.
      *
@@ -95,7 +86,6 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
     {
         this.name = name;
     }
-
 
     /**
      * Return the short description of the component. This is an English description.  Natural language support for
@@ -109,7 +99,6 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
         return description;
     }
 
-
     /**
      * Set up the short description of the component. This is an English description.  Natural language support for
      * these values can be added to UIs using a resource bundle indexed with the component id.  This value is
@@ -121,8 +110,6 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
     {
         this.description = description;
     }
-
-
 
     /**
      * toString, JSON-style
@@ -138,7 +125,6 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
                 ", description='" + description + '\'' +
                 '}';
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -162,7 +148,6 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity, Seria
                 Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description);
     }
-
 
     /**
      * Create a hash code for this element type.

@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -30,7 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum HistorySequencingOrder implements Serializable
+public enum HistorySequencingOrder
 {
     /**
      * Forwards - Chronological order (oldest first).
@@ -41,8 +39,6 @@ public enum HistorySequencingOrder implements Serializable
      * Backwards - Reverse chronological order (newest first).
      */
     BACKWARDS            (1, "Backwards", "Reverse chronological order (newest first).");
-
-    private static final long serialVersionUID = 1L;
 
     private final int     ordinal;
     private final String  name;
@@ -69,7 +65,6 @@ public enum HistorySequencingOrder implements Serializable
      */
     public int getOrdinal() { return ordinal; }
 
-
     /**
      * Return the default name of the sequencing order.
      *
@@ -77,14 +72,12 @@ public enum HistorySequencingOrder implements Serializable
      */
     public String getName() { return name; }
 
-
     /**
      * Return the default description of the sequencing order.
      *
      * @return String description
      */
     public String getDescription() { return description; }
-
 
     /**
      * toString() JSON-style

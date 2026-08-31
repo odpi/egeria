@@ -2,12 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.beans;
 
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OpenMetadataConformanceStatus implements Serializable
+public enum OpenMetadataConformanceStatus
 {
     /**
      * There is not enough evidence to determine the conformance of the technology under test.
@@ -51,12 +48,9 @@ public enum OpenMetadataConformanceStatus implements Serializable
     NOT_CONFORMANT               (4, "Not Conformant",
                                   "The technology is not functioning according to the open metadata specifications.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int    ordinal;
     private final String name;
     private final String description;
-
 
     /**
      * Default constructor sets up the values for this enum instance.
@@ -75,7 +69,6 @@ public enum OpenMetadataConformanceStatus implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the identifier for the enum, used for indexing arrays etc with the enum.
      *
@@ -85,7 +78,6 @@ public enum OpenMetadataConformanceStatus implements Serializable
     {
         return ordinal;
     }
-
 
     /**
      * Return the name for the enum, used for message content.
@@ -97,7 +89,6 @@ public enum OpenMetadataConformanceStatus implements Serializable
         return name;
     }
 
-
     /**
      * Return the default description for the enum, used when there is not natural
      * language resource bundle available.
@@ -108,9 +99,6 @@ public enum OpenMetadataConformanceStatus implements Serializable
     {
         return description;
     }
-
-
-
 
     /**
      * toString() JSON-style

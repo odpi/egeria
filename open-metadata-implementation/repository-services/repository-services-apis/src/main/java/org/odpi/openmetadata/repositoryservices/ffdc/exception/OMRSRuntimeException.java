@@ -40,7 +40,14 @@ public class OMRSRuntimeException extends RuntimeException
     private String                    reportedURL;
     private       Exception           reportedCaughtException          = null;
     private       String              reportedCaughtExceptionClassName = null;
-    private       Map<String, Object> relatedProperties                = null;
+    /*
+     * Java serialization is not used for transport - the platform's beans travel as JSON - but an
+     * exception is Serializable whether we want it or not, because Throwable is.  This map holds
+     * arbitrary values supplied by the caller, so it cannot be guaranteed serializable; marking it
+     * transient is what keeps the class a valid Serializable rather than one that would fail at run
+     * time on the first value that is not.
+     */
+    private transient       Map<String, Object> relatedProperties                = null;
 
 
 

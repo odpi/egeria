@@ -5,7 +5,6 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
-import java.io.Serial;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -31,9 +30,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class TypeDef extends TypeDefSummary
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     protected TypeDefLink                   superType                = null;
     protected String                        description              = null;
     protected String                        descriptionGUID          = null;

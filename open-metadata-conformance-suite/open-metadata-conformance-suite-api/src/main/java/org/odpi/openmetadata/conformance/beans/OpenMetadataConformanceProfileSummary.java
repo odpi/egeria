@@ -6,12 +6,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
 
 /**
  * OpenMetadataConformanceProfileSummary provides a summary of the assessment of a technology's
@@ -20,10 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenMetadataConformanceProfileSummary implements Serializable
+public class OpenMetadataConformanceProfileSummary
 {
-    private static final long   serialVersionUID = 1L;
-
     private Integer                                                 id                 = 0;
     private String                                                  name               = null;
     private String                                                  description        = null;
@@ -32,14 +28,12 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
     private OpenMetadataConformanceStatus                           conformanceStatus  = null;
     private List<OpenMetadataConformanceRequirementSummary>         requirementSummary = null;
 
-
     /**
      * Default constructor used in JSON exchange
      */
     public OpenMetadataConformanceProfileSummary()
     {
     }
-
 
     /**
      * Standard constructor used during test run.
@@ -82,7 +76,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
         }
     }
 
-
     /**
      * Return the identifier of the profile.
      *
@@ -92,7 +85,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
     {
         return id;
     }
-
 
     /**
      * Set up the identifier of the profile.
@@ -104,7 +96,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
         this.id = id;
     }
 
-
     /**
      * Return the display name of the profile.
      *
@@ -114,7 +105,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
     {
         return name;
     }
-
 
     /**
      * Set up the display name of the profile.
@@ -126,7 +116,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
         this.name = name;
     }
 
-
     /**
      * Return the short description of the profile.
      *
@@ -136,7 +125,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
     {
         return description;
     }
-
 
     /**
      * Set up the short description of the profile.
@@ -148,7 +136,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the URL link to the profile.
      *
@@ -158,7 +145,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
     {
         return documentationURL;
     }
-
 
     /**
      * Set up the URL link to the profile.
@@ -170,7 +156,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
         this.documentationURL = documentationURL;
     }
 
-
     /**
      * Return the conformance status of the technology under test (TUT).
      *
@@ -180,7 +165,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
     {
         return conformanceStatus;
     }
-
 
     /**
      * Set up the conformance status of the technology under test (TUT).
@@ -192,7 +176,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
         this.conformanceStatus = conformanceStatus;
     }
 
-
     /**
      * Return the priority of the profile.
      *
@@ -203,7 +186,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
         return profilePriority;
     }
 
-
     /**
      * Set up the priority of the profile.
      *
@@ -213,7 +195,6 @@ public class OpenMetadataConformanceProfileSummary implements Serializable
     {
         this.profilePriority = profilePriority;
     }
-
 
     /**
      * Return detailed results, requirement by requirement.

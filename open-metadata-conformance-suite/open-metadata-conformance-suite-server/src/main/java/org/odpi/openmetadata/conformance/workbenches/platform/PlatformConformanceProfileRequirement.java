@@ -2,13 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.workbenches.platform;
 
-import java.io.Serializable;
-
 /**
  * PlatformConformanceProfileRequirement documents the different requirements for each of the platform workbench's profiles.
  * The Open Metadata Platform Tests report their findings for each requirement.
  */
-public enum PlatformConformanceProfileRequirement implements Serializable
+public enum PlatformConformanceProfileRequirement
 {
     /**
      * The technology under test is able to return the identifier of the platform.
@@ -18,15 +16,11 @@ public enum PlatformConformanceProfileRequirement implements Serializable
                                    "https://egeria-project.org/guides/cts/platform-workbench/profiles/platform-origin/",
                                    PlatformConformanceProfile.PLATFORM_ORIGIN);
 
-    private static final long serialVersionUID = 1L;
-
     private final int                        ordinal;
     private final String                     name;
     private final String                     description;
     private final String                     documentationURL;
     private final PlatformConformanceProfile profile;
-
-
 
     /**
      * Default constructor sets up the values for this enum instance.
@@ -51,7 +45,6 @@ public enum PlatformConformanceProfileRequirement implements Serializable
         this.profile = profile;
     }
 
-
     /**
      * Return the identifier for the enum, used for indexing arrays etcetera with the enum.
      *
@@ -62,7 +55,6 @@ public enum PlatformConformanceProfileRequirement implements Serializable
         return ordinal;
     }
 
-
     /**
      * Return the name for the enum, used for message content.
      *
@@ -72,7 +64,6 @@ public enum PlatformConformanceProfileRequirement implements Serializable
     {
         return name;
     }
-
 
     /**
      * Return the default description for the enum, used when there is not a natural
@@ -85,7 +76,6 @@ public enum PlatformConformanceProfileRequirement implements Serializable
         return description;
     }
 
-
     /**
      * Return the URL to link to more documentation about this profile.
      *
@@ -95,7 +85,6 @@ public enum PlatformConformanceProfileRequirement implements Serializable
     {
         return documentationURL;
     }
-
 
     /**
      * Return the profile that this requirement belongs to.
@@ -107,7 +96,6 @@ public enum PlatformConformanceProfileRequirement implements Serializable
         return profile;
     }
 
-
     /**
      * Return the profile identifier that this requirement belongs to.
      *
@@ -118,7 +106,6 @@ public enum PlatformConformanceProfileRequirement implements Serializable
         return profile.getProfileId();
     }
 
-
     /**
      * Return the requirement identifier as an Integer.
      *
@@ -128,7 +115,6 @@ public enum PlatformConformanceProfileRequirement implements Serializable
     {
         return ordinal;
     }
-
 
     /**
      * toString() JSON-style
