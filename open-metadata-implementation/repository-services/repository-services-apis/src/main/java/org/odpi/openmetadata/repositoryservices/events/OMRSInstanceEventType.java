@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OMRSInstanceEventType implements Serializable
+public enum OMRSInstanceEventType
 {
     /**
      * An event that is not recognized by the local server.
@@ -219,13 +217,9 @@ public enum OMRSInstanceEventType implements Serializable
                                           "An error has been detected in the exchange of instances between members of the cohort.")
     ;
 
-
-    private static final long serialVersionUID = 1L;
-
     private final int    ordinal;
     private final String name;
     private final String description;
-
 
     /**
      * Default Constructor sets up the specific values for this instance of the enum.
@@ -242,7 +236,6 @@ public enum OMRSInstanceEventType implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the int identifier used for indexing based on the enum.
      *
@@ -252,7 +245,6 @@ public enum OMRSInstanceEventType implements Serializable
     {
         return ordinal;
     }
-
 
     /**
      * Return the string name used for messages that include the enum.
@@ -264,7 +256,6 @@ public enum OMRSInstanceEventType implements Serializable
         return name;
     }
 
-
     /**
      * Return the default description for the enum value.  This is used when natural resource
      * bundle is not available.
@@ -275,7 +266,6 @@ public enum OMRSInstanceEventType implements Serializable
     {
         return description;
     }
-
 
     /**
      * toString() JSON-style

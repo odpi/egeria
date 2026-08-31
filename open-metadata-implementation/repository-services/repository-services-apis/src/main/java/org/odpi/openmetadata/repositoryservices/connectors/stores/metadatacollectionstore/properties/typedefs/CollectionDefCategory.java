@@ -9,8 +9,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.StructPropertyValue;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -24,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum CollectionDefCategory implements Serializable
+public enum CollectionDefCategory
 {
     /**
      * Unknown collection type
@@ -46,13 +44,10 @@ public enum CollectionDefCategory implements Serializable
      */
     OM_COLLECTION_STRUCT  (3, "struct<>",        0, StructPropertyValue.class.getName());
 
-    private static final long serialVersionUID = 1L;
-
     private  final int         code;
     private  final String      name;
     private  final int         argumentCount;
     private  final String      javaClassName;
-
 
     /**
      * Constructor to set up a single instances of the enum.
@@ -70,7 +65,6 @@ public enum CollectionDefCategory implements Serializable
         this.javaClassName = javaClassName;
     }
 
-
     /**
      * Return the numeric code for the primitive type which can be used in optimized data flows.
      *
@@ -79,7 +73,6 @@ public enum CollectionDefCategory implements Serializable
     public int getOrdinal() {
         return code;
     }
-
 
     /**
      * Return the name of type that can be used for text-based interchange formats such as JSON or XML.
@@ -91,14 +84,12 @@ public enum CollectionDefCategory implements Serializable
         return name;
     }
 
-
     /**
      * Return the number of arguments for this collection type.
      *
      * @return int number of elements
      */
     public int getArgumentCount() { return argumentCount; }
-
 
     /**
      * Return the name of the java class that can be used to store properties of this type.
@@ -108,7 +99,6 @@ public enum CollectionDefCategory implements Serializable
     public String getJavaClassName() {
         return javaClassName;
     }
-
 
     /**
      * toString() JSON-style

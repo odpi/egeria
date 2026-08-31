@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OpenMetadataConformanceProfilePriority implements Serializable
+public enum OpenMetadataConformanceProfilePriority
 {
     /**
      * This profile must be supported for the technology under test to be compliant.
@@ -31,13 +29,9 @@ public enum OpenMetadataConformanceProfilePriority implements Serializable
     OPTIONAL_PROFILE    (1, "Optional Profile",
                             "This profile must either be supported, or a conformant response is required to signal that the feature is not supported.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int    ordinal;
     private final String name;
     private final String description;
-
-
 
     /**
      * Default constructor sets up the values for this enum instance.
@@ -56,7 +50,6 @@ public enum OpenMetadataConformanceProfilePriority implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the identifier for the enum, used for indexing arrays etc with the enum.
      *
@@ -66,7 +59,6 @@ public enum OpenMetadataConformanceProfilePriority implements Serializable
     {
         return ordinal;
     }
-
 
     /**
      * Return the name for the enum, used for message content.
@@ -78,7 +70,6 @@ public enum OpenMetadataConformanceProfilePriority implements Serializable
         return name;
     }
 
-
     /**
      * Return the default description for the enum, used when there is not natural
      * language resource bundle available.
@@ -89,7 +80,6 @@ public enum OpenMetadataConformanceProfilePriority implements Serializable
     {
         return description;
     }
-
 
     /**
      * toString() JSON-style

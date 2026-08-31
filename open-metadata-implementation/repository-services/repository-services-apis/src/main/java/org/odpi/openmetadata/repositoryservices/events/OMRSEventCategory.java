@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -31,7 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OMRSEventCategory implements Serializable
+public enum OMRSEventCategory
 {
     /**
      * Unknown Event - Unknown event category.
@@ -58,12 +56,9 @@ public enum OMRSEventCategory implements Serializable
      */
     GENERIC (99, "Generic Event", "Event used for sending generic messages, typically error messages.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int    ordinal;
     private final String name;
     private final String description;
-
 
     /**
      * Default constructor.
@@ -81,7 +76,6 @@ public enum OMRSEventCategory implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the code number for the event category.
      *
@@ -91,7 +85,6 @@ public enum OMRSEventCategory implements Serializable
     {
         return ordinal;
     }
-
 
     /**
      * Return the name of the event category.
@@ -103,7 +96,6 @@ public enum OMRSEventCategory implements Serializable
         return name;
     }
 
-
     /**
      * Return the default description of the event category.  This description is in English and is a default
      * value for the situation when the natural language resource bundle for Event Category is not available.
@@ -114,7 +106,6 @@ public enum OMRSEventCategory implements Serializable
     {
         return description;
     }
-
 
     /**
      * toString() JSON-style

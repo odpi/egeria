@@ -10,7 +10,6 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventProtocolVersion;
 import org.odpi.openmetadata.repositoryservices.events.beans.OMRSEventBean;
 
-import java.io.Serial;
 import java.util.Date;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -27,9 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class OMRSEventV2 extends OMRSEventBean
 {
-    @Serial
-    private static final long    serialVersionUID = 1L;
-
     private Date                       timestamp            = null;
     private OMRSEventOriginator        originator           = null;
     private OMRSEventCategory          eventCategory        = null;

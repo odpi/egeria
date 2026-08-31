@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -53,7 +51,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OMRSRegistryEventType implements Serializable
+public enum OMRSRegistryEventType
 {
     UNKNOWN_REGISTRY_EVENT       (0, "UnknownRegistryEvent",
                                      "An event that is not recognized by the local server."),
@@ -68,13 +66,9 @@ public enum OMRSRegistryEventType implements Serializable
     REGISTRATION_ERROR_EVENT     (99, "RegistrationErrorEvent",
                                       "An anomaly has been detected in the information received from a member in the metadata repository cohort.");
 
-    private static final long serialVersionUID = 1L;
-
-
     private  int    ordinal;
     private  String name;
     private  String description;
-
 
     /**
      * Default Constructor sets up the specific values for this instance of the enum.
@@ -91,7 +85,6 @@ public enum OMRSRegistryEventType implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the int identifier used for indexing based on the enum.
      *
@@ -101,7 +94,6 @@ public enum OMRSRegistryEventType implements Serializable
     {
         return ordinal;
     }
-
 
     /**
      * Return the string name used for messages that include the enum.
@@ -113,7 +105,6 @@ public enum OMRSRegistryEventType implements Serializable
         return name;
     }
 
-
     /**
      * Return the default description for the enum value.  This is used when natural resource
      * bundle is not available.
@@ -124,7 +115,6 @@ public enum OMRSRegistryEventType implements Serializable
     {
         return description;
     }
-
 
     /**
      * toString() JSON-style

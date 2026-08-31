@@ -2,12 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.beans;
 
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,10 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenMetadataConformanceTestEvidence implements Serializable
+public class OpenMetadataConformanceTestEvidence
 {
-    private static final long   serialVersionUID = 1L;
-
     private Integer                                 profileId              = null;
     private Integer                                 requirementId          = null;
     private String                                  testCaseId             = null;
@@ -36,7 +31,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     private String                                  methodName             = null;
     private Long                                    elapsedTime            = null;
 
-
     /**
      * Default Constructor used when converting from JSON
      */
@@ -44,7 +38,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     {
         super();
     }
-
 
     /**
      * Return the ID for the test, which can be cross-referenced with the specific testCaseId for additional details.
@@ -76,7 +69,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
         return profileId;
     }
 
-
     /**
      * Set up the identifier of the profile that this test evidence supports.
      *
@@ -86,7 +78,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     {
         this.profileId = profileId;
     }
-
 
     /**
      * Return the identifier of the profile's requirement that this test evidence supports.
@@ -98,7 +89,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
         return requirementId;
     }
 
-
     /**
      * Set up the identifier of the profile's requirement that this test evidence supports.
      *
@@ -108,7 +98,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     {
         this.requirementId = requirementId;
     }
-
 
     /**
      * Return the identifier of the test case that produced this test evidence.
@@ -120,7 +109,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
         return testCaseId;
     }
 
-
     /**
      * Set up the identifier of the test case that produced this test evidence.
      *
@@ -130,7 +118,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     {
         this.testCaseId = testCaseId;
     }
-
 
     /**
      * Return the name of the test case that produced this test evidence.
@@ -142,7 +129,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
         return testCaseName;
     }
 
-
     /**
      * Set up the name of the test case that produced this test evidence.
      *
@@ -152,7 +138,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     {
         this.testCaseName = testCaseName;
     }
-
 
     /**
      * Return the url for the documentation of the test case that produced this test evidence.
@@ -164,7 +149,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
         return testCaseDescriptionURL;
     }
 
-
     /**
      * Set up the url for the documentation of the test case that produced this test evidence.
      *
@@ -174,7 +158,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     {
         this.testCaseDescriptionURL = testCaseDescriptionURL;
     }
-
 
     /**
      * Return the enum that describes the type of test evidence that this represents.
@@ -186,7 +169,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
         return testEvidenceType;
     }
 
-
     /**
      * Set up the enum that describes the type of test evidence that this represents.
      *
@@ -196,7 +178,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     {
         this.testEvidenceType = testEvidenceType;
     }
-
 
     /**
      * Return details of an unexpected exception that interrupted the test.
@@ -208,7 +189,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
         return conformanceException;
     }
 
-
     /**
      * Set up details of an unexpected exception that interrupted the test.
      *
@@ -218,7 +198,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     {
         this.conformanceException = conformanceException;
     }
-
 
     /**
      * Return the name of a discovered property.
@@ -230,7 +209,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
         return propertyName;
     }
 
-
     /**
      * Set up the name of a discovered property.
      *
@@ -240,7 +218,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     {
         this.propertyName = propertyName;
     }
-
 
     /**
      * Return the value of a discovered property.
@@ -252,7 +229,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
         return propertyValue;
     }
 
-
     /**
      * Set up the value of a discovered property.
      *
@@ -263,7 +239,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
         this.propertyValue = propertyValue;
     }
 
-
     /**
      * Return the name of the method that this evidence supports.
      *
@@ -273,7 +248,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
         return methodName;
     }
 
-
     /**
      * Set up the name of the method that this evidence supports.
      *
@@ -282,7 +256,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     public void setMethodName(String methodName) {
         this.methodName = methodName;
     }
-
 
     /**
      * Return the elapsed time taken to execute the specific test.
@@ -294,7 +267,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
         return elapsedTime;
     }
 
-
     /**
      * Set up the elapsed time to execute a specific test.
      *
@@ -304,7 +276,6 @@ public class OpenMetadataConformanceTestEvidence implements Serializable
     {
         this.elapsedTime = elapsedTime;
     }
-
 
     /**
      * toString() JSON-style

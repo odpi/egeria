@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum InstancePropertyCategory implements Serializable
+public enum InstancePropertyCategory
 {
     /**
      * Unknown - Uninitialized InstancePropertyValue object.
@@ -50,12 +48,9 @@ public enum InstancePropertyCategory implements Serializable
      */
     ARRAY       (5, "Array",     "An ordered list of values, each with the same type.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int            typeCode;
     private final String         typeName;
     private final String         typeDescription;
-
 
     /**
      * Default Constructor
@@ -74,7 +69,6 @@ public enum InstancePropertyCategory implements Serializable
         this.typeDescription = typeDescription;
     }
 
-
     /**
      * Return the code for this enum instance
      *
@@ -84,7 +78,6 @@ public enum InstancePropertyCategory implements Serializable
     {
         return typeCode;
     }
-
 
     /**
      * Return the default name for this enum instance.
@@ -96,7 +89,6 @@ public enum InstancePropertyCategory implements Serializable
         return typeName;
     }
 
-
     /**
      * Return the default description for the type for this enum instance.
      *
@@ -106,7 +98,6 @@ public enum InstancePropertyCategory implements Serializable
     {
         return typeDescription;
     }
-
 
     /**
      * toString() JSON-style

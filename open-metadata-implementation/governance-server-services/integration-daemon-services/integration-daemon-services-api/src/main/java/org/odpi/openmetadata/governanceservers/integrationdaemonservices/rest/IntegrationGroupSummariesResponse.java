@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 
-import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,9 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  */
 public class IntegrationGroupSummariesResponse extends FFDCResponseBase
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private List<IntegrationGroupSummary> integrationGroupSummaries = null;
 
 

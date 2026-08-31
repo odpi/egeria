@@ -2,10 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.beans;
 
-
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,11 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = OpenMetadataConformanceWorkbenchResults.class, name = "OpenMetadataConformanceWorkbenchResults"),
                 @JsonSubTypes.Type(value = OpenMetadataConformanceTestLabResults.class, name = "OpenMetadataConformanceTestLabResults")
         })
-public abstract class OpenMetadataConformanceTestResults implements Serializable
+public abstract class OpenMetadataConformanceTestResults
 {
-    private static final long   serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */
@@ -55,7 +50,6 @@ public abstract class OpenMetadataConformanceTestResults implements Serializable
         }
     }
 
-
     /**
      * Count the test case results in the list - dealing with nulls and empty lists.
      *
@@ -74,14 +68,12 @@ public abstract class OpenMetadataConformanceTestResults implements Serializable
         }
     }
 
-
     /**
      * Return the number of test cases run.
      *
      * @return int count
      */
     public abstract int getTestCaseCount();
-
 
     /**
      * Default setter just needed for JSON transformation.  The value is ignored.
@@ -93,14 +85,12 @@ public abstract class OpenMetadataConformanceTestResults implements Serializable
         /* do nothing as count is calculated */
     }
 
-
     /**
      * Return the number of test cases passed.
      *
      * @return int count
      */
     public abstract int getTestPassCount();
-
 
     /**
      * Default setter just needed for JSON transformation.  The value is ignored.
@@ -112,14 +102,12 @@ public abstract class OpenMetadataConformanceTestResults implements Serializable
         /* do nothing as count is calculated */
     }
 
-
     /**
      * Return the number of test cases failed.
      *
      * @return int count
      */
     public abstract int getTestFailedCount();
-
 
     /**
      * Default setter just needed for JSON transformation.  The value is ignored.
@@ -131,14 +119,12 @@ public abstract class OpenMetadataConformanceTestResults implements Serializable
         /* do nothing as count is calculated */
     }
 
-
     /**
      * Return the number of test cases skipped.
      *
      * @return int count
      */
     public abstract int getTestSkippedCount();
-
 
     /**
      * Default setter just needed for JSON transformation.  The value is ignored.

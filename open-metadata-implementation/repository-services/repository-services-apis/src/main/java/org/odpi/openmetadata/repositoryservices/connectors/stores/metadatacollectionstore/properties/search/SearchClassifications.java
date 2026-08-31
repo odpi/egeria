@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,12 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SearchClassifications implements Serializable
+public class SearchClassifications
 {
 
     @Serial
-    private static final long serialVersionUID = 1L;
-
     private List<ClassificationCondition> conditions;
     private MatchCriteria matchCriteria;
 
@@ -114,7 +111,6 @@ public class SearchClassifications implements Serializable
                 '}';
     }
 
-
     /**
      * Validate that an object is equal depending on their stored values.
      *
@@ -136,7 +132,6 @@ public class SearchClassifications implements Serializable
         return getMatchCriteria() == that.getMatchCriteria() &&
                 Objects.equals(getConditions(), that.getConditions());
     }
-
 
     /**
      * Return a hash code based on the property values

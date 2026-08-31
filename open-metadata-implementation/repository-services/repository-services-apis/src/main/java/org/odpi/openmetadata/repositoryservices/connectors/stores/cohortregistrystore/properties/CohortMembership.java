@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,10 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CohortMembership implements Serializable
+public class CohortMembership
 {
-    private static final long serialVersionUID = 1L;
-
     private MemberRegistration            localRegistration   = null;
     private List<MemberRegistration>      remoteRegistrations = null;
 
@@ -34,7 +31,6 @@ public class CohortMembership implements Serializable
     public CohortMembership()
     {
     }
-
 
     /**
      * Return the description of the local server's registration with the cohort.
@@ -46,7 +42,6 @@ public class CohortMembership implements Serializable
         return localRegistration;
     }
 
-
     /**
      * Set up the description of the local server's registration with the cohort.
      *
@@ -56,7 +51,6 @@ public class CohortMembership implements Serializable
     {
         this.localRegistration = localRegistration;
     }
-
 
     /**
      * Return details of each of the remote repositories registered with this cohort.
@@ -75,7 +69,6 @@ public class CohortMembership implements Serializable
         }
     }
 
-
     /**
      * Set up details of each of the remote repositories registered with this cohort.
      *
@@ -92,7 +85,6 @@ public class CohortMembership implements Serializable
             this.remoteRegistrations = new ArrayList<>(remoteRegistrations);
         }
     }
-
 
     /**
      * Validate if the values stored match the object to compare.
@@ -116,7 +108,6 @@ public class CohortMembership implements Serializable
                 Objects.equals(getRemoteRegistrations(), that.getRemoteRegistrations());
     }
 
-
     /**
      * Hash code base on variable values.
      *
@@ -128,7 +119,6 @@ public class CohortMembership implements Serializable
 
         return Objects.hash(getLocalRegistration(), getRemoteRegistrations());
     }
-
 
     /**
      * toString JSON-style

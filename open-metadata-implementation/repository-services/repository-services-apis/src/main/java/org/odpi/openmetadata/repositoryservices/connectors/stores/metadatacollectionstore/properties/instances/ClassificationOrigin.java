@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -24,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum ClassificationOrigin implements Serializable
+public enum ClassificationOrigin
 {
     /**
      * Assigned - The classification is explicitly assigned to the entity.
@@ -36,12 +34,9 @@ public enum ClassificationOrigin implements Serializable
      */
     PROPAGATED     (1, "Propagated", "The classification has propagated along a relationship to this entity.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int            ordinal;
     private final String         name;
     private final String         description;
-
 
     /**
      * Default constructor for the classification origin.
@@ -57,14 +52,12 @@ public enum ClassificationOrigin implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the numeric representation of the classification origin.
      *
      * @return int ordinal
      */
     public int getOrdinal() { return ordinal; }
-
 
     /**
      * Return the default name of the classification origin.
@@ -73,14 +66,12 @@ public enum ClassificationOrigin implements Serializable
      */
     public String getName() { return name; }
 
-
     /**
      * Return the default description of the classification origin.
      *
      * @return String description
      */
     public String getDescription() { return description; }
-
 
     /**
      * toString() JSON-style

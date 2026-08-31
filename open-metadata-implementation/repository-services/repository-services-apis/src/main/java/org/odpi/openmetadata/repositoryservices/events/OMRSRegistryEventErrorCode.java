@@ -2,12 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.events;
 
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OMRSRegistryEventErrorCode implements Serializable
+public enum OMRSRegistryEventErrorCode
 {
     /**
      * No Error - There has been no error detected and so the error code is not in use.
@@ -52,13 +49,10 @@ public enum OMRSRegistryEventErrorCode implements Serializable
                                null)
     ;
 
-    private static final long serialVersionUID = 1L;
-
     private final int                ordinal;
     private final String             name;
     private final String             description;
     private final OMRSEventErrorCode encoding;
-
 
     /**
      * Typical constructor sets up the values for this enum instance.
@@ -80,7 +74,6 @@ public enum OMRSRegistryEventErrorCode implements Serializable
         this.encoding = encoding;
     }
 
-
     /**
      * Return the identifier for the enum, used for indexing arrays etc. with the enum.
      *
@@ -91,7 +84,6 @@ public enum OMRSRegistryEventErrorCode implements Serializable
         return ordinal;
     }
 
-
     /**
      * Return the name for the enum, used for message content.
      *
@@ -101,7 +93,6 @@ public enum OMRSRegistryEventErrorCode implements Serializable
     {
         return name;
     }
-
 
     /**
      * Return the default description for the enum, used when there is no natural
@@ -114,7 +105,6 @@ public enum OMRSRegistryEventErrorCode implements Serializable
         return description;
     }
 
-
     /**
      * Return the encoding to use in OMRSEvents.
      *
@@ -124,7 +114,6 @@ public enum OMRSRegistryEventErrorCode implements Serializable
     {
         return encoding;
     }
-
 
     /**
      * toString() JSON-style

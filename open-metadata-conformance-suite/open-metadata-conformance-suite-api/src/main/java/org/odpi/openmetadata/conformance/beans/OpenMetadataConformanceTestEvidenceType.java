@@ -2,14 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.beans;
 
-
-import java.io.Serializable;
-
 /**
  * OpenMetadataConformanceTestEvidenceType describes the type of evidence that is stored in an
  * OpenMetadataConformanceTestEvidence object.
  */
-public enum OpenMetadataConformanceTestEvidenceType implements Serializable
+public enum OpenMetadataConformanceTestEvidenceType
 {
     /**
      * Unknown - No data available at this time.
@@ -47,12 +44,9 @@ public enum OpenMetadataConformanceTestEvidenceType implements Serializable
     UNEXPECTED_EXCEPTION   (4, "Unexpected exception",
                             "An exception occurred where it should not.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int    ordinal;
     private final String name;
     private final String description;
-
 
     /**
      * Default constructor sets up the values for this enum instance.
@@ -71,7 +65,6 @@ public enum OpenMetadataConformanceTestEvidenceType implements Serializable
         this.description = description;
     }
 
-
     /**
      * Return the identifier for the enum, used for indexing arrays etc with the enum.
      *
@@ -81,7 +74,6 @@ public enum OpenMetadataConformanceTestEvidenceType implements Serializable
     {
         return ordinal;
     }
-
 
     /**
      * Return the name for the enum, used for message content.
@@ -93,7 +85,6 @@ public enum OpenMetadataConformanceTestEvidenceType implements Serializable
         return name;
     }
 
-
     /**
      * Return the default description for the enum, used when there is not natural
      * language resource bundle available.
@@ -104,7 +95,6 @@ public enum OpenMetadataConformanceTestEvidenceType implements Serializable
     {
         return description;
     }
-
 
     /**
      * toString() JSON-style

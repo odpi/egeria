@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -19,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OpenMetadataArchiveType implements Serializable
+public enum OpenMetadataArchiveType
 {
     /**
      * Content Pack - A collection of metadata elements that define a standard or support a specific use case.
@@ -39,12 +37,9 @@ public enum OpenMetadataArchiveType implements Serializable
     REPOSITORY_BACKUP (3, "RepositoryBackup",
                      "A collection of metadata elements that have been extracted from a specific open metadata repository to server as a back up.");
 
-    private static final long    serialVersionUID = 1L;
-
     private final int    archiveTypeCode;
     private final String archiveTypeName;
     private final String archiveTypeDescription;
-
 
     /**
      * Constructor fo an enum instance.
@@ -60,7 +55,6 @@ public enum OpenMetadataArchiveType implements Serializable
         this.archiveTypeDescription = archiveTypeDescription;
     }
 
-
     /**
      * Return the code number for the archive type.
      *
@@ -70,7 +64,6 @@ public enum OpenMetadataArchiveType implements Serializable
     {
         return archiveTypeCode;
     }
-
 
     /**
      * Return the printable name for the archive type.
@@ -82,7 +75,6 @@ public enum OpenMetadataArchiveType implements Serializable
         return archiveTypeName;
     }
 
-
     /**
      * Return the default description of the archive type.
      *
@@ -92,7 +84,6 @@ public enum OpenMetadataArchiveType implements Serializable
     {
         return archiveTypeDescription;
     }
-
 
     /**
      * toString() JSON-style
