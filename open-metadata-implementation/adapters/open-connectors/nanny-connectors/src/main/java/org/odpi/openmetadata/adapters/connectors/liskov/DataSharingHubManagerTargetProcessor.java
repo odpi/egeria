@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.liskov;
 
 
+import org.odpi.openmetadata.adapters.connectors.liskov.controls.LiskovConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.liskov.ffdc.LiskovAuditCode;
 import org.odpi.openmetadata.adapters.connectors.liskov.ffdc.LiskovErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -10,25 +11,37 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DeployedDatabaseSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.CSVFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DataSharingHubProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.TargetForGovernanceActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -38,12 +51,42 @@ import java.util.*;
 
 
 /**
- * Calculates the last time an update was made to the tabular data set that is the target and if it has changes since
- * the last refresh (or this is the first refresh), the DataScope classification is updated with the latest update time.
- * This will be detected as a change to the catalog target by any monitoring process.
+ * Maintains the data dictionary for a single data sharing hub.  On each refresh it works through the data stores
+ * that are members of the hub and, for each one, ensures that the contents of the member are being catalogued,
+ * requests a fresh survey of it, and then abstracts the data fields and data structures found in its schema into
+ * the hub's data dictionary.  The cataloguing and survey requests are made by starting the governance action types
+ * that the content packs register against the member's technology type, so they run asynchronously in a governance
+ * engine and their results are picked up by a later refresh.
  */
 public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessorBase
 {
+    /**
+     * These are the statuses of an engine action that mean it is either running, or is on its way to running.
+     * They are used to detect that a cataloguing or survey request that Liskov made on a previous refresh is
+     * still outstanding, so that a duplicate request is not made.
+     */
+    private static final List<ActivityStatus> liveActivityStatuses = List.of(ActivityStatus.REQUESTED,
+                                                                            ActivityStatus.APPROVED,
+                                                                            ActivityStatus.WAITING,
+                                                                            ActivityStatus.ACTIVATING,
+                                                                            ActivityStatus.IN_PROGRESS,
+                                                                            ActivityStatus.PAUSED);
+
+    /*
+     * These caches are rebuilt on each refresh.  They ensure that each element is only considered once, and that
+     * the supporting definitions are only retrieved once, no matter how many members of the data sharing hub use them.
+     */
+    private final Set<String>                          governedElements     = new HashSet<>();
+    private final Map<String, OpenMetadataRootElement> technologyTypeCache  = new HashMap<>();
+    private final Map<String, OpenMetadataRootElement> actionTypeCache      = new HashMap<>();
+    private final Map<String, Set<String>>             catalogTargetCache   = new HashMap<>();
+
+    /*
+     * The surveys that the connector has been configured not to run.  When this is empty - which is the default -
+     * every survey registered for a member's technology type is run.
+     */
+    private Set<String> excludedSurveys = new HashSet<>();
+
     /**
      * Constructor
      *
@@ -71,8 +114,9 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
 
     /**
-     * Check whether the data set has changed since the last refresh.  If it has then update the asset's
-     * DataScope classification.
+     * Work through the members of the data sharing hub, ensuring that each one is being catalogued and surveyed,
+     * and adding the data fields and data structures found in their schemas to the hub's data dictionary.  The
+     * data dictionary and its two standard collection folders are created if they are missing.
      *
      * @throws ConnectorCheckedException a problem with the connector.  It is unable to refresh the metadata.
      * @throws UserNotAuthorizedException the connector was disconnected so stop refresh processing
@@ -83,6 +127,17 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         final String methodName = "refresh";
 
         super.refresh();
+
+        /*
+         * The caches that support the cataloguing and surveying of the data sharing hub's members only apply to a
+         * single refresh so that changes made by other processes are picked up next time around.
+         */
+        governedElements.clear();
+        technologyTypeCache.clear();
+        actionTypeCache.clear();
+        catalogTargetCache.clear();
+
+        excludedSurveys = this.getExcludedSurveys();
 
         try
         {
@@ -361,6 +416,13 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
             if (dataStoreElement != null)
             {
+                /*
+                 * Make sure that the contents of this member are being catalogued, and request a new survey so that
+                 * the description of its contents is as complete and as up-to-date as possible.  Both of these run
+                 * asynchronously in a governance engine, so their results are picked up on a subsequent refresh.
+                 */
+                refreshAssetGovernance(dataStoreElement);
+
                 if (propertyHelper.isTypeOf(dataStoreElement.getElementHeader(), OpenMetadataType.FILE_FOLDER.typeName))
                 {
                     refreshFileFolder(dataFieldsFolderGUID, dataStructuresFolderGUID, dataStoreElement, dataSharingHubGUID, dataSharingHubQualifiedName, dataStructures);
@@ -427,6 +489,12 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
             {
                 for (OpenMetadataRootElement csvFile : csvFiles)
                 {
+                    /*
+                     * These files are revealed by the cataloguing of the folder.  Each of them has its own
+                     * file type specific survey.
+                     */
+                    refreshAssetGovernance(csvFile);
+
                     refreshCSVFile(dataFieldsFolderGUID, dataStructuresFolderGUID, csvFile, dataSharingHubGUID, dataSharingHubQualifiedName, dataStructures);
                 }
 
@@ -520,6 +588,8 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
                     if (databaseSchema != null)
                     {
+                        refreshAssetGovernance(databaseSchema);
+
                         refreshRelationalDatabaseSchema(dataFieldsFolderGUID, dataStructuresFolderGUID, databaseSchema, dataSharingHubGUID, dataSharingHubQualifiedName, dataStructures);
                     }
                 }
@@ -819,5 +889,470 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         governanceDefinitionClient.linkDesignToImplementation(dataStructureGUID, schemaGUID, governanceDefinitionClient.getMakeAnchorOptions(false), null);
 
         return dataStructureGUID;
+    }
+
+
+    /* ==============================================================================
+     * Methods that ensure the members of the data sharing hub are catalogued and surveyed.
+     * Egeria's content packs define governance action types for cataloguing and surveying each
+     * type of technology.  They are linked to the technology type (deployedImplementationType) that
+     * they support with a ResourceList relationship, qualified by the resource use.
+     */
+
+
+    /**
+     * Ensure that the contents of the supplied element are being catalogued, and request a new survey so that
+     * the description of its contents is as complete and as up-to-date as possible.  Cataloguing is only requested
+     * if it is not already set up.  Both types of request run asynchronously in a governance engine, so their
+     * results are picked up on a subsequent refresh.  Each element is only considered once per refresh.
+     *
+     * @param assetElement element to work with
+     */
+    private void refreshAssetGovernance(OpenMetadataRootElement assetElement)
+    {
+        final String methodName = "refreshAssetGovernance";
+
+        try
+        {
+            if ((assetElement == null) || (! (assetElement.getProperties() instanceof AssetProperties assetProperties)))
+            {
+                return;
+            }
+
+            if (! governedElements.add(assetElement.getElementHeader().getGUID()))
+            {
+                /*
+                 * This element has already been processed during this refresh.
+                 */
+                return;
+            }
+
+            OpenMetadataRootElement technologyType = getTechnologyType(assetProperties.getDeployedImplementationType());
+
+            if (technologyType == null)
+            {
+                auditLog.logMessage(methodName,
+                                    LiskovAuditCode.NO_TECHNOLOGY_TYPE.getMessageDefinition(connectorName,
+                                                                                            assetProperties.getDeployedImplementationType(),
+                                                                                            assetElement.getElementHeader().getType().getTypeName(),
+                                                                                            assetProperties.getDisplayName(),
+                                                                                            assetElement.getElementHeader().getGUID()));
+                return;
+            }
+
+            if (technologyType.getResourceList() != null)
+            {
+                /*
+                 * Requests made on an earlier refresh may not have completed yet.  They must not be repeated.
+                 */
+                Set<String> runningActionTypeGUIDs = getRunningActionTypeGUIDs(assetElement.getElementHeader().getGUID());
+
+                for (RelatedMetadataElementSummary resource : technologyType.getResourceList())
+                {
+                    if ((resource != null) &&
+                            (propertyHelper.isTypeOf(resource.getRelatedElement().getElementHeader(), OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName)) &&
+                            (resource.getRelationshipProperties() instanceof ResourceListProperties resourceListProperties) &&
+                            (! runningActionTypeGUIDs.contains(resource.getRelatedElement().getElementHeader().getGUID())))
+                    {
+                        if (ResourceUse.CATALOG_RESOURCE.getResourceUse().equals(resourceListProperties.getResourceUse()))
+                        {
+                            enableCataloguing(assetElement, assetProperties, resource.getRelatedElement());
+                        }
+                        else if (ResourceUse.SURVEY_RESOURCE.getResourceUse().equals(resourceListProperties.getResourceUse()))
+                        {
+                            requestSurvey(assetElement, assetProperties, resource.getRelatedElement());
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            auditLog.logException(methodName,
+                                  LiskovAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                            error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            error.getMessage()),
+                                  error);
+        }
+    }
+
+
+    /**
+     * Retrieve the technology type definition for a particular deployedImplementationType value.  The governance
+     * action types that catalog and survey this type of technology are linked to it with a ResourceList relationship.
+     *
+     * @param deployedImplementationType value from the asset
+     * @return technology type definition or null
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private OpenMetadataRootElement getTechnologyType(String deployedImplementationType) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        if (deployedImplementationType == null)
+        {
+            return null;
+        }
+
+        if (technologyTypeCache.containsKey(deployedImplementationType))
+        {
+            return technologyTypeCache.get(deployedImplementationType);
+        }
+
+        ValidValueDefinitionClient validValueDefinitionClient = integrationContext.getValidValueDefinitionClient(OpenMetadataType.TECHNOLOGY_TYPE.typeName);
+
+        QueryOptions queryOptions = validValueDefinitionClient.getQueryOptions(OpenMetadataType.TECHNOLOGY_TYPE.typeName,
+                                                                              0,
+                                                                              validValueDefinitionClient.getMaxPagingSize());
+
+        List<OpenMetadataRootElement> technologyTypes = validValueDefinitionClient.getValidValueDefinitionsByName(deployedImplementationType, queryOptions);
+
+        OpenMetadataRootElement technologyType = null;
+
+        if (technologyTypes != null)
+        {
+            /*
+             * The search matches on a number of properties.  Only an exact match on the preferred value describes
+             * the technology type used in the asset's deployedImplementationType property.
+             */
+            for (OpenMetadataRootElement matchingTechnologyType : technologyTypes)
+            {
+                if ((matchingTechnologyType != null) &&
+                        (matchingTechnologyType.getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties) &&
+                        (deployedImplementationType.equals(validValueDefinitionProperties.getPreferredValue())))
+                {
+                    technologyType = matchingTechnologyType;
+                    break;
+                }
+            }
+        }
+
+        technologyTypeCache.put(deployedImplementationType, technologyType);
+
+        return technologyType;
+    }
+
+
+    /**
+     * Retrieve the full definition of a governance action type - including its predefined action targets.
+     *
+     * @param governanceActionTypeGUID unique identifier of the governance action type
+     * @return governance action type or null
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private OpenMetadataRootElement getGovernanceActionType(String governanceActionTypeGUID) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        if (actionTypeCache.containsKey(governanceActionTypeGUID))
+        {
+            return actionTypeCache.get(governanceActionTypeGUID);
+        }
+
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient(OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName);
+
+        OpenMetadataRootElement governanceActionType = classificationExplorerClient.getRootElementByGUID(governanceActionTypeGUID,
+                                                                                                        classificationExplorerClient.getGetOptions());
+
+        actionTypeCache.put(governanceActionTypeGUID, governanceActionType);
+
+        return governanceActionType;
+    }
+
+
+    /**
+     * Request that the contents of the supplied element are catalogued, if this is not already happening.  The
+     * cataloguing governance action type links the element to an integration connector that maintains the
+     * description of its contents.  Therefore, cataloguing is already enabled if the element is a catalog target
+     * of that integration connector.
+     *
+     * @param assetElement      element to catalog
+     * @param assetProperties   properties of the element to catalog
+     * @param actionTypeSummary summary of the cataloguing governance action type
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private void enableCataloguing(OpenMetadataRootElement assetElement,
+                                   AssetProperties         assetProperties,
+                                   MetadataElementSummary  actionTypeSummary) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        final String methodName = "enableCataloguing";
+
+        OpenMetadataRootElement governanceActionType = getGovernanceActionType(actionTypeSummary.getElementHeader().getGUID());
+
+        if ((governanceActionType == null) || (! (governanceActionType.getProperties() instanceof GovernanceActionTypeProperties governanceActionTypeProperties)))
+        {
+            return;
+        }
+
+        String assetGUID = assetElement.getElementHeader().getGUID();
+
+        /*
+         * The cataloguing governance action types have the integration connector that will do the cataloguing
+         * set up as a predefined action target.  If the element is already one of its catalog targets then
+         * cataloguing is already enabled.
+         */
+        if (governanceActionType.getPredefinedTargetForAction() != null)
+        {
+            for (RelatedMetadataElementSummary predefinedTarget : governanceActionType.getPredefinedTargetForAction())
+            {
+                if ((predefinedTarget != null) &&
+                        (predefinedTarget.getRelationshipProperties() instanceof TargetForGovernanceActionProperties targetForGovernanceActionProperties) &&
+                        (ActionTarget.INTEGRATION_CONNECTOR.getName().equals(targetForGovernanceActionProperties.getActionTargetName())) &&
+                        (getCatalogTargetGUIDs(predefinedTarget.getRelatedElement().getElementHeader().getGUID()).contains(assetGUID)))
+                {
+                    return;
+                }
+            }
+        }
+
+        String engineActionGUID = initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(), assetGUID);
+
+        auditLog.logMessage(methodName,
+                            LiskovAuditCode.ENABLING_CATALOGUING.getMessageDefinition(connectorName,
+                                                                                      engineActionGUID,
+                                                                                      assetElement.getElementHeader().getType().getTypeName(),
+                                                                                      assetProperties.getDisplayName(),
+                                                                                      assetGUID,
+                                                                                      governanceActionTypeProperties.getQualifiedName()));
+    }
+
+
+    /**
+     * Request a new survey of the supplied element so that the description of its contents is as complete and as
+     * up-to-date as possible.  A new survey is requested on each refresh unless the survey requested on a previous
+     * refresh is still running.
+     *
+     * @param assetElement      element to survey
+     * @param assetProperties   properties of the element to survey
+     * @param actionTypeSummary summary of the survey governance action type
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private void requestSurvey(OpenMetadataRootElement assetElement,
+                               AssetProperties         assetProperties,
+                               MetadataElementSummary  actionTypeSummary) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        final String methodName = "requestSurvey";
+
+        OpenMetadataRootElement governanceActionType = getGovernanceActionType(actionTypeSummary.getElementHeader().getGUID());
+
+        if ((governanceActionType == null) || (! (governanceActionType.getProperties() instanceof GovernanceActionTypeProperties governanceActionTypeProperties)))
+        {
+            return;
+        }
+
+        if (isExcludedSurvey(governanceActionTypeProperties.getQualifiedName()))
+        {
+            return;
+        }
+
+        String assetGUID = assetElement.getElementHeader().getGUID();
+
+        String engineActionGUID = initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(), assetGUID);
+
+        auditLog.logMessage(methodName,
+                            LiskovAuditCode.STARTING_SURVEY.getMessageDefinition(connectorName,
+                                                                                 engineActionGUID,
+                                                                                 assetElement.getElementHeader().getType().getTypeName(),
+                                                                                 assetProperties.getDisplayName(),
+                                                                                 assetGUID,
+                                                                                 governanceActionTypeProperties.getQualifiedName()));
+    }
+
+
+    /**
+     * Start an engine action from the requested governance action type, passing the element as the "newAsset"
+     * action target.  The data sharing hub that Liskov is managing is recorded as the source of the request.
+     *
+     * @param governanceActionTypeQualifiedName unique name of the governance action type to run
+     * @param assetGUID unique identifier of the element to pass as the action target
+     * @return unique identifier of the new engine action
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private String initiateGovernanceActionType(String governanceActionTypeQualifiedName,
+                                                String assetGUID) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        NewActionTarget newActionTarget = new NewActionTarget();
+
+        newActionTarget.setActionTargetName(ActionTarget.NEW_ASSET.getName());
+        newActionTarget.setActionTargetGUID(assetGUID);
+
+        return integrationContext.getStewardshipAction().initiateGovernanceActionType(governanceActionTypeQualifiedName,
+                                                                                      Collections.singletonList(this.getCatalogTargetElement().getElementHeader().getGUID()),
+                                                                                      null,
+                                                                                      Collections.singletonList(newActionTarget),
+                                                                                      null,
+                                                                                      null,
+                                                                                      connectorName,
+                                                                                      null,
+                                                                                      null);
+    }
+
+
+    /**
+     * Return the surveys that this connector has been configured not to run.  The values are supplied as a
+     * comma-separated list of either the survey's request type (for example, survey-folder) or the qualified name
+     * of its governance action type (for example, FileSurvey::survey-folder).  The default is to exclude nothing.
+     *
+     * @return set of configured values - empty if all registered surveys are to run
+     */
+    private Set<String> getExcludedSurveys()
+    {
+        Set<String> surveys = new HashSet<>();
+
+        List<String> configuredSurveys = super.getArrayConfigurationProperty(LiskovConfigurationProperty.EXCLUDED_SURVEY_REQUEST_TYPES.getName(),
+                                                                             this.getConfigurationProperties(),
+                                                                             (List<String>) null);
+
+        if (configuredSurveys != null)
+        {
+            for (String configuredSurvey : configuredSurveys)
+            {
+                if ((configuredSurvey != null) && (! configuredSurvey.trim().isEmpty()))
+                {
+                    surveys.add(configuredSurvey.trim());
+                }
+            }
+        }
+
+        return surveys;
+    }
+
+
+    /**
+     * Return whether the requested survey is one that this connector has been configured not to run.  A survey's
+     * governance action type is qualified by the name of the survey engine that runs it - for example,
+     * FileSurvey::survey-folder - so the configured value may be either the whole qualified name or just the
+     * request type on the end.
+     *
+     * @param governanceActionTypeQualifiedName unique name of the survey's governance action type
+     * @return boolean flag
+     */
+    private boolean isExcludedSurvey(String governanceActionTypeQualifiedName)
+    {
+        if ((excludedSurveys.isEmpty()) || (governanceActionTypeQualifiedName == null))
+        {
+            return false;
+        }
+
+        if (excludedSurveys.contains(governanceActionTypeQualifiedName))
+        {
+            return true;
+        }
+
+        int requestTypeStart = governanceActionTypeQualifiedName.lastIndexOf("::");
+
+        return (requestTypeStart >= 0) && (excludedSurveys.contains(governanceActionTypeQualifiedName.substring(requestTypeStart + 2)));
+    }
+
+
+    /**
+     * Return the unique identifiers of the elements that are catalog targets for the requested integration connector.
+     *
+     * @param integrationConnectorGUID unique identifier of the integration connector
+     * @return set of unique identifiers - may be empty but not null
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private Set<String> getCatalogTargetGUIDs(String integrationConnectorGUID) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        Set<String> catalogTargetGUIDs = catalogTargetCache.get(integrationConnectorGUID);
+
+        if (catalogTargetGUIDs != null)
+        {
+            return catalogTargetGUIDs;
+        }
+
+        catalogTargetGUIDs = new HashSet<>();
+
+        AssetClient assetClient = integrationContext.getAssetClient();
+        int         startFrom   = 0;
+
+        List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(integrationConnectorGUID,
+                                                                                     assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+
+        while ((catalogTargets != null) && (! catalogTargets.isEmpty()))
+        {
+            for (OpenMetadataRootElement catalogTarget : catalogTargets)
+            {
+                if (catalogTarget != null)
+                {
+                    catalogTargetGUIDs.add(catalogTarget.getElementHeader().getGUID());
+                }
+            }
+
+            startFrom      = startFrom + assetClient.getMaxPagingSize();
+            catalogTargets = assetClient.getCatalogTargets(integrationConnectorGUID,
+                                                           assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+        }
+
+        catalogTargetCache.put(integrationConnectorGUID, catalogTargetGUIDs);
+
+        return catalogTargetGUIDs;
+    }
+
+
+    /**
+     * Return the unique identifiers of the governance action types that already have an engine action running
+     * (or waiting to run) against the requested element.  These are the requests that Liskov made on an earlier
+     * refresh that have not completed yet - they must not be requested again.
+     *
+     * @param assetGUID unique identifier of the element that is the action target
+     * @return set of governance action type unique identifiers - may be empty but not null
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private Set<String> getRunningActionTypeGUIDs(String assetGUID) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        Set<String> runningActionTypeGUIDs = new HashSet<>();
+
+        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.ENGINE_ACTION.typeName);
+        int         startFrom   = 0;
+
+        List<OpenMetadataRootElement> engineActions = assetClient.getActionsForActionTarget(assetGUID,
+                                                                                            liveActivityStatuses,
+                                                                                            assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+
+        while ((engineActions != null) && (! engineActions.isEmpty()))
+        {
+            for (OpenMetadataRootElement engineAction : engineActions)
+            {
+                if ((engineAction != null) &&
+                        (engineAction.getProperties() instanceof EngineActionProperties engineActionProperties) &&
+                        (engineActionProperties.getGovernanceActionTypeGUID() != null))
+                {
+                    runningActionTypeGUIDs.add(engineActionProperties.getGovernanceActionTypeGUID());
+                }
+            }
+
+            startFrom     = startFrom + assetClient.getMaxPagingSize();
+            engineActions = assetClient.getActionsForActionTarget(assetGUID,
+                                                                  liveActivityStatuses,
+                                                                  assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+        }
+
+        return runningActionTypeGUIDs;
     }
 }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.liskov;
 
 
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
+import org.odpi.openmetadata.adapters.connectors.liskov.controls.LiskovConfigurationProperty;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 
@@ -25,5 +26,7 @@ public class DataSharingHubManagerProvider extends IntegrationConnectorProvider
         super(EgeriaOpenConnectorDefinition.DATA_SHARING_HUB_MANAGER_INTEGRATION_CONNECTOR,
               connectorClassName,
               null);
+
+        super.supportedConfigurationProperties = LiskovConfigurationProperty.getConfigurationPropertyTypes();
     }
 }
