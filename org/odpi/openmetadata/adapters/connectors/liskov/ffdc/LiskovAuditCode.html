@@ -133,21 +133,29 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0009 - The {0} integration connector has stopped its monitoring of data sharing hubs from server {1} on platform {2} and is shutting down</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NEW_DATA_DICTIONARY" class="member-name-link">NEW_DATA_DICTIONARY</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#ENABLING_CATALOGUING" class="member-name-link">ENABLING_CATALOGUING</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">LISKOV-DATA-HUB-MANAGER-0020 - The {0} integration connector has started engine action {1} to enable the cataloguing of {2} {3} ({4}) using governance action type {5}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NEW_DATA_DICTIONARY" class="member-name-link">NEW_DATA_DICTIONARY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0013 - The {0} integration connector has created a new data dictionary for data sharing hub {1} ({2})</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEW_DATA_FIELD" class="member-name-link">NEW_DATA_FIELD</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NEW_DATA_FIELD" class="member-name-link">NEW_DATA_FIELD</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0014 - The {0} integration connector has created a new data field {1} ({2}) for data sharing hub {3} ({4})</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NEW_DATA_HUB" class="member-name-link">NEW_DATA_HUB</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NEW_DATA_HUB" class="member-name-link">NEW_DATA_HUB</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0012 - The {0} integration connector has created a new catalog target for data sharing hub {1} ({2})</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEW_DATA_STRUCTURE" class="member-name-link">NEW_DATA_STRUCTURE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NEW_DATA_STRUCTURE" class="member-name-link">NEW_DATA_STRUCTURE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0018 - The {0} integration connector has created a new data structure {1} ({2}) for data sharing hub {3} ({4})</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NO_TECHNOLOGY_TYPE" class="member-name-link">NO_TECHNOLOGY_TYPE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">LISKOV-DATA-HUB-MANAGER-0022 - The {0} integration connector is unable to locate a technology type called {1} for {2} {3} ({4})</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#REFRESHING_CSV_FILE" class="member-name-link">REFRESHING_CSV_FILE</a></code></div>
 <div class="col-last odd-row-color">
@@ -165,8 +173,12 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0011 - The {0} integration connector is starting its monitoring of data sharing hubs from server {1} on platform {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#STARTING_SURVEY" class="member-name-link">STARTING_SURVEY</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">LISKOV-DATA-HUB-MANAGER-0021 - The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
 </div>
@@ -297,6 +309,27 @@ the order they are declared.</div>
 <h3>REFRESHING_CSV_FILE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.ffdc">LiskovAuditCode</a></span>&nbsp;<span class="element-name">REFRESHING_CSV_FILE</span></div>
 <div class="block">LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data sharing hub {4} ({5})</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ENABLING_CATALOGUING">
+<h3>ENABLING_CATALOGUING</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.ffdc">LiskovAuditCode</a></span>&nbsp;<span class="element-name">ENABLING_CATALOGUING</span></div>
+<div class="block">LISKOV-DATA-HUB-MANAGER-0020 - The {0} integration connector has started engine action {1} to enable the cataloguing of {2} {3} ({4}) using governance action type {5}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="STARTING_SURVEY">
+<h3>STARTING_SURVEY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.ffdc">LiskovAuditCode</a></span>&nbsp;<span class="element-name">STARTING_SURVEY</span></div>
+<div class="block">LISKOV-DATA-HUB-MANAGER-0021 - The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_TECHNOLOGY_TYPE">
+<h3>NO_TECHNOLOGY_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.ffdc">LiskovAuditCode</a></span>&nbsp;<span class="element-name">NO_TECHNOLOGY_TYPE</span></div>
+<div class="block">LISKOV-DATA-HUB-MANAGER-0022 - The {0} integration connector is unable to locate a technology type called {1} for {2} {3} ({4})</div>
 </section>
 </li>
 </ul>

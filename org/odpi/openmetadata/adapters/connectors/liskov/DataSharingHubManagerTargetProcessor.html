@@ -104,9 +104,12 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">DataSharingHubManagerTargetProcessor</span>
 <span class="extends-implements">extends <a href="../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></span></div>
-<div class="block">Calculates the last time an update was made to the tabular data set that is the target and if it has changes since
- the last refresh (or this is the first refresh), the DataScope classification is updated with the latest update time.
- This will be detected as a change to the catalog target by any monitoring process.</div>
+<div class="block">Maintains the data dictionary for a single data sharing hub.  On each refresh it works through the data stores
+ that are members of the hub and, for each one, ensures that the contents of the member are being catalogued,
+ requests a fresh survey of it, and then abstracts the data fields and data structures found in its schema into
+ the hub's data dictionary.  The cataloguing and survey requests are made by starting the governance action types
+ that the content packs register against the member's technology type, so they run asynchronously in a governance
+ engine and their results are picked up by a later refresh.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -158,7 +161,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Check whether the data set has changed since the last refresh.</div>
+<div class="block">Work through the members of the data sharing hub, ensuring that each one is being catalogued and surveyed,
+ and adding the data fields and data structures found in their schemas to the hub's data dictionary.</div>
 </div>
 </div>
 </div>
@@ -228,8 +232,9 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
              throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Check whether the data set has changed since the last refresh.  If it has then update the asset's
- DataScope classification.</div>
+<div class="block">Work through the members of the data sharing hub, ensuring that each one is being catalogued and surveyed,
+ and adding the data fields and data structures found in their schemas to the hub's data dictionary.  The
+ data dictionary and its two standard collection folders are created if they are missing.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#refresh()">refresh</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></code></dd>
