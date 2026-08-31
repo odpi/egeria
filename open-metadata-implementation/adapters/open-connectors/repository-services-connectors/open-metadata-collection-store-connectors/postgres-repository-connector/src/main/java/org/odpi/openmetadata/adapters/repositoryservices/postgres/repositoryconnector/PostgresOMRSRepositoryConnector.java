@@ -10,7 +10,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconn
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc.PostgresErrorCode;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ControlMapper;
+import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryColumn;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryTable;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -260,6 +262,9 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
                                                                               repositoryName,
                                                                               RepositoryTable.getTables());
             jdbcResourceConnector.addDatabaseDefinitions(jdbcConnection, postgreSQLSchemaDDL.getDDLStatements());
+
+            this.createTypeNameIndexes(jdbcResourceConnector, jdbcConnection, schemaName);
+
             jdbcConnection.commit();
         }
         catch (Exception error)
@@ -281,6 +286,42 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
     }
 
 
+
+
+    /**
+     * Index the type_name column of the instance tables.
+     * <br><br>
+     * The column holds each instance's supertype chain as ":Type:Super:Super:", and the searches that match a
+     * type against it use "like '%:Type:%'", which no ordinary index can serve - so this is not for them.  It is
+     * for the "select distinct type_name" that verifyStoredTypeHierarchy() issues over each instance table at
+     * every server start: with an index PostgreSQL can answer it by walking the index rather than the table, and
+     * the number of distinct chains is the number of types in use rather than the number of instances.
+     * <br><br>
+     * These are separate statements rather than part of the table definitions because the schema DDL generator
+     * describes columns and constraints only.  "if not exists" makes them safe to reissue at every start, which
+     * is also how they reach a repository created before this index existed.
+     *
+     * @param jdbcResourceConnector connector to the database
+     * @param jdbcConnection connection to use
+     * @param schemaName name of the schema holding the tables
+     * @throws PropertyServerException problem issuing the statement
+     */
+    private void createTypeNameIndexes(JDBCResourceConnector jdbcResourceConnector,
+                                       java.sql.Connection   jdbcConnection,
+                                       String                schemaName) throws PropertyServerException
+    {
+        for (RepositoryTable repositoryTable : new RepositoryTable[]{RepositoryTable.ENTITY,
+                                                                      RepositoryTable.RELATIONSHIP,
+                                                                      RepositoryTable.CLASSIFICATION})
+        {
+            jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                  "create index if not exists " +
+                                                          repositoryTable.getTableName() + "_" +
+                                                          RepositoryColumn.TYPE_NAME.getColumnName() + "_idx on " +
+                                                          repositoryTable.getTableName(schemaName) +
+                                                          " (" + RepositoryColumn.TYPE_NAME.getColumnName() + ");");
+        }
+    }
 
 
     /**

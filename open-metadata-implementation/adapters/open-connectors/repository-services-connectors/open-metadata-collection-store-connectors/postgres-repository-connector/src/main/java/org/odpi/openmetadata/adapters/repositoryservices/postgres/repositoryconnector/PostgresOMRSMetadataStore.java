@@ -457,6 +457,38 @@ class PostgresOMRSMetadataStore
 
 
     /**
+     * Bring every stored supertype chain that no longer matches the type system up to date.  This is what a
+     * server runs at start-up, once the types are loaded; see DatabaseStore.repairSuperTypeChains() for what is
+     * rewritten and why it needs no knowledge of which types have moved.
+     * <br><br>
+     * A read-only repository is left alone.  It cannot be written to, and the chains it holds are the
+     * responsibility of whoever does own them.
+     *
+     * @return number of distinct chains rewritten - zero for a repository that is already correct
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    int repairSuperTypeChains() throws RepositoryErrorException
+    {
+        if (isReadOnly)
+        {
+            return 0;
+        }
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            int repairCount = databaseStore.repairSuperTypeChains();
+
+            if (repairCount > 0)
+            {
+                databaseStore.commit();
+            }
+
+            return repairCount;
+        }
+    }
+
+
+    /**
      * Return a count of the entities that match the supplied criteria.  This has the same search semantics as
      * findEntities(), but issues an efficient database COUNT query rather than fetching and mapping every
      * matching row.

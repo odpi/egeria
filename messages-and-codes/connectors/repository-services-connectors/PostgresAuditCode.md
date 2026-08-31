@@ -9,7 +9,7 @@ The PostgresAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 5 |
+| **Number of messages** | 7 |
 | **Message identifiers begin** | `POSTGRES-REPOSITORY-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc.PostgresAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/postgres-repository-connector](../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/postgres-repository-connector) |
@@ -26,6 +26,8 @@ The PostgresAuditCode is used to define the message content for the Audit Log.
 | [POSTGRES-REPOSITORY-CONNECTOR-0003](#postgres-repository-connector-0003) | STARTUP | The PostgreSQL repository connector {0} is validating the schema definitions for schema {1} |
 | [POSTGRES-REPOSITORY-CONNECTOR-0007](#postgres-repository-connector-0007) | STARTUP | The PostgreSQL repository connector {0} has is using a default asOfTime for queries of: {1} |
 | [POSTGRES-REPOSITORY-CONNECTOR-0008](#postgres-repository-connector-0008) | STARTUP | The PostgreSQL repository connector {0} is using a repository mode of: {1} |
+| [POSTGRES-REPOSITORY-CONNECTOR-0009](#postgres-repository-connector-0009) | STARTUP | The PostgreSQL repository connector {0} has brought {1} stored supertype chain(s) into line with the current open metadata types |
+| [POSTGRES-REPOSITORY-CONNECTOR-0010](#postgres-repository-connector-0010) | ERROR | The PostgreSQL repository connector {0} could not check its stored supertype chains; the {1} exception was: {2} |
 
 ----
 
@@ -130,6 +132,48 @@ The repository mode is used to switch the repository into a read-only mode.  The
 **User action**
 
 Check that this is the intended value.  Typically it is only changed from its default value of read-write for situations where you do not want any changes to be made to the metadata in the repository.
+
+
+----
+
+### POSTGRES-REPOSITORY-CONNECTOR-0009
+
+> The PostgreSQL repository connector {0} has brought {1} stored supertype chain(s) into line with the current open metadata types
+
+|  |  |
+|---|---|
+| **Java constant** | `PostgresAuditCode.SUPERTYPE_CHAINS_REPAIRED` |
+| **Severity** | STARTUP - A new component is starting up. |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+Each instance carries its type's supertype chain, written when the instance was stored, and searches for a supertype are answered from it.  Instances written before a type was moved in the hierarchy still held the hierarchy as it used to be, so they did not answer searches for the type's new supertypes.  They have been rewritten and now do.
+
+**User action**
+
+No action is required.  This message is expected the first time a server starts after a type has been given a new supertype, and is not issued by a repository that is already up to date.
+
+
+----
+
+### POSTGRES-REPOSITORY-CONNECTOR-0010
+
+> The PostgreSQL repository connector {0} could not check its stored supertype chains; the {1} exception was: {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `PostgresAuditCode.SUPERTYPE_CHAIN_CHECK_FAILED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The server continues to start.  Any instance whose stored supertype chain is out of date stays invisible to searches for the supertypes it gained, until a later start completes this check.
+
+**User action**
+
+Use the details in the message to work out why the repository could not be read or written, then restart the server.
 
 
 ----

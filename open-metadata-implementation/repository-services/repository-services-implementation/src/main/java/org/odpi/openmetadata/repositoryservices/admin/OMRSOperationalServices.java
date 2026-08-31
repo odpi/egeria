@@ -485,6 +485,35 @@ public class OMRSOperationalServices
             archiveManager.setLocalRepository(localMetadataCollectionId,
                                               localRepositoryContentManager,
                                               localRepositoryConnector.getIncomingInstanceEventProcessor());
+
+            /*
+             * The types are now in place, and nothing has been served from the repository yet.  This is the
+             * moment to let the repository check that what it has stored still agrees with them.
+             *
+             * It matters for a repository that keeps a copy of part of the type system alongside its
+             * instances - the PostgreSQL repository writes each instance's supertype chain onto the instance
+             * and answers searches for a supertype from it - because a type that has been given a new
+             * supertype leaves every instance stored before the change answering for the hierarchy as it used
+             * to be.  Repositories that read the type system directly do nothing here.
+             *
+             * This is deliberately not driven off the patches that were just applied.  A patch is applied only
+             * while the repository is still on the version it applies to, so the server that applies it is the
+             * only one that ever sees it; every server after that would skip the repair and keep the stale
+             * data for ever.  What the repository needs in order to check itself is the current type system,
+             * and that is what it has here.
+             */
+            try
+            {
+                localRepositoryConnector.getMetadataCollection().verifyStoredTypeHierarchy(localServerUserId);
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(actionDescription,
+                                      OMRSAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                               actionDescription,
+                                                                                               error.getMessage()),
+                                      error);
+            }
         }
         else
         {
