@@ -406,6 +406,22 @@ public class OMAGServerOperationalServices extends TokenController
             instance.setServerActiveStatus(ServerActiveStatus.STARTING);
 
             /*
+             * Server operations records itself as one of the server's running services.
+             *
+             * Every other service is added to this map by the activation code that starts it, and server
+             * operations is the one doing the starting - so it was the only running service that never
+             * appeared in its own list.  That made getActiveServices disagree with the platform services'
+             * getActiveServicesForServer, which builds its answer from the platform's instance map and does
+             * include it, and left a caller unable to tell which of the two lists they were holding.
+             *
+             * RUNNING rather than STARTING because that is what it is: by the time this instance exists,
+             * server operations is already answering REST calls for this server.  The shutdown path marks it
+             * INACTIVE alongside the others.
+             */
+            instance.setServerServiceActiveStatus(CommonServicesDescription.SERVER_OPERATIONS.getServiceName(),
+                                                  ServerActiveStatus.RUNNING);
+
+            /*
              * Save the configuration that is going to be used to start the server for this instance.  This configuration can be queried by
              * the operator to verify the configuration used to start the server. (The values in the config store may have been
              * updated since the server was started.)
@@ -1546,6 +1562,9 @@ public class OMAGServerOperationalServices extends TokenController
 
                     instance.setServerServiceActiveStatus(CommonServicesDescription.REPOSITORY_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
+
+                instance.setServerServiceActiveStatus(CommonServicesDescription.SERVER_OPERATIONS.getServiceName(),
+                                                      ServerActiveStatus.INACTIVE);
 
                 instance.setServerActiveStatus(ServerActiveStatus.INACTIVE);
 

@@ -256,7 +256,12 @@ public class OMAGServerPlatformConfigurationClient
     {
         final String methodName    = "setPlatformSecurityConnection";
         final String parameterName = "connection";
-        final String urlTemplate   = "/open-metadata/admin-services/platform/security/connection";
+        /*
+         * Addressed to the platform services rather than to the administration services.  The platform
+         * security connection moved there and this client was left pointing at the URL it used to be on, so
+         * every call returned a 404.
+         */
+        final String urlTemplate   = "/open-metadata/platform-services/server-platform/security/connection?delegatingUserId={0}";
 
         invalidParameterHandler.validateConnection(connection, parameterName, methodName);
 
@@ -266,7 +271,8 @@ public class OMAGServerPlatformConfigurationClient
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        requestBody);
+                                        requestBody,
+                                        delegatingUserId);
     }
 
 
@@ -286,10 +292,11 @@ public class OMAGServerPlatformConfigurationClient
                                                          OMAGConfigurationErrorException
     {
         final String methodName  = "clearPlatformSecurityConnection";
-        final String urlTemplate = "/open-metadata/admin-services/platform/security/connection";
+        final String urlTemplate = "/open-metadata/platform-services/server-platform/security/connection?delegatingUserId={0}";
 
         restClient.callVoidDeleteRESTCall(methodName,
-                                          serverPlatformRootURL + urlTemplate);
+                                          serverPlatformRootURL + urlTemplate,
+                                          delegatingUserId);
     }
 
 
@@ -308,10 +315,11 @@ public class OMAGServerPlatformConfigurationClient
                                                              OMAGConfigurationErrorException
     {
         final String methodName  = "getPlatformSecurityConnection";
-        final String urlTemplate = "/open-metadata/admin-services/platform/security/connection";
+        final String urlTemplate = "/open-metadata/platform-services/server-platform/security/connection?delegatingUserId={0}";
 
         ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                             serverPlatformRootURL + urlTemplate);
+                                                                             serverPlatformRootURL + urlTemplate,
+                                                                             delegatingUserId);
 
         return restResult.getConnection();
     }

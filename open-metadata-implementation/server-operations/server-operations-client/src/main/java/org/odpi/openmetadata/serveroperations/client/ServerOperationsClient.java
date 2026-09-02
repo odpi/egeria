@@ -114,7 +114,15 @@ public class ServerOperationsClient
     {
         final String methodName = "getServerStatus";
         final String serverNameParameter  = "serverName";
-        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/servers/{0}/status?delegatingUserId={1}";
+
+        /*
+         * Deliberately NOT under retrieveURLTemplatePrefix.  A server's status - when it started, when it
+         * stopped, and its history of previous instances - is held by the platform rather than by the server,
+         * so it is the platform services that answer for it, and there is no equivalent endpoint under
+         * /open-metadata/server-operations.  This client used to address one there and received a 404 on
+         * every call.
+         */
+        final String urlTemplate = platformRootURL + "/open-metadata/platform-services/server-platform/servers/{0}/status?delegatingUserId={1}";
 
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
 
@@ -259,7 +267,7 @@ public class ServerOperationsClient
         invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
         invalidParameterHandler.validateConnection(connection, parameterName, methodName);
 
-        restClient.callVoidPostRESTCall(methodName, urlTemplate, connection, serverName);
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, connection, serverName, delegatingUserId);
     }
 
 

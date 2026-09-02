@@ -260,7 +260,7 @@ public class PlatformServicesClient
     {
         final String methodName    = "setUserAccount";
         final String parameterName = "userAccount";
-        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/security/user-accounts?delegatingUserId={1}";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/security/user-accounts?delegatingUserId={0}";
 
         invalidParameterHandler.validateObject(userAccount, parameterName, methodName);
 
@@ -368,7 +368,7 @@ public class PlatformServicesClient
     {
         final String methodName    = "setSecurityAccessControl";
         final String parameterName = "securityAccessControl";
-        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/security/security-access-controls?delegatingUserId={1}";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/security/security-access-controls?delegatingUserId={0}";
 
         invalidParameterHandler.validateObject(securityAccessControl, parameterName, methodName);
 

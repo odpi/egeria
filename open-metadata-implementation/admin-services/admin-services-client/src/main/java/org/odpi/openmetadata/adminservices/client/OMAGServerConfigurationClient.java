@@ -98,6 +98,7 @@ public class OMAGServerConfigurationClient
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
+     * @param serverName name of the server to configure
      * @param serverPlatformRootURL the network address of the server running the admin services
      * @param secretsStoreConnectorMap connectors to secrets stores
      * @param delegatingUserId external userId making request
@@ -105,7 +106,8 @@ public class OMAGServerConfigurationClient
      * @throws InvalidParameterException a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public OMAGServerConfigurationClient(String                             serverPlatformRootURL,
+    public OMAGServerConfigurationClient(String                             serverName,
+                                         String                             serverPlatformRootURL,
                                          Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
                                          String                             delegatingUserId,
                                          AuditLog                           auditLog) throws InvalidParameterException
@@ -116,6 +118,12 @@ public class OMAGServerConfigurationClient
         {
             invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
 
+            /*
+             * serverName is assigned here rather than being left to the field's default.  This constructor
+             * used to validate the URL against the (still null) field and never set it, so every URL this
+             * client then built carried a null server name.
+             */
+            this.serverName = serverName;
             this.serverPlatformRootURL = serverPlatformRootURL;
             this.delegatingUserId = delegatingUserId;
 
@@ -322,8 +330,7 @@ public class OMAGServerConfigurationClient
                                         serverPlatformRootURL + urlTemplate,
                                         description,
                                         serverName,
-                                        delegatingUserId,
-                                        description);
+                                        delegatingUserId);
     }
 
 
@@ -554,28 +561,56 @@ public class OMAGServerConfigurationClient
 
 
     /**
-     * Add an audit log destination that creates log records as JSON files in a shared directory.
+     * Add an audit log destination that creates log records as rows in a PostgreSQL database schema.
+     *
+     * @param storageProperties properties used to configure access to the database
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void addPostgreSQLAuditLogDestination(Map<String, Object> storageProperties) throws UserNotAuthorizedException,
+                                                                                               InvalidParameterException,
+                                                                                               OMAGConfigurationErrorException
+    {
+        final String methodName  = "addPostgreSQLAuditLogDestination";
+        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/postgres?delegatingUserId={1}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        storageProperties,
+                                        serverName,
+                                        delegatingUserId);
+    }
+
+
+    /**
+     * Add an audit log destination that creates log records as rows in a JDBC database.
      *
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @param jdbcConnectionString connection string used to connect to the JDBC data base
      * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws InvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     * @deprecated the platform publishes no JDBC audit log destination.  It was replaced by the PostgreSQL
+     * destination and this method was left addressing the endpoint the JDBC one used to publish, so every
+     * call to it returned a 404.  Use {@link #addPostgreSQLAuditLogDestination(Map)} instead, which takes the
+     * storage properties that destination needs rather than a bare connection string - note that the
+     * severities argument here has never had anywhere to go and is ignored.
      */
+    @Deprecated
     public void addJDBCAuditLogDestination(List<String> supportedSeverities,
                                            String       jdbcConnectionString) throws UserNotAuthorizedException,
                                                                                      InvalidParameterException,
                                                                                      OMAGConfigurationErrorException
     {
-        final String methodName  = "addFileAuditLogDestination";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/jdbc?delegatingUserId={1}&connectionString={2}";
+        Map<String, Object> storageProperties = new HashMap<>();
 
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        supportedSeverities,
-                                        serverName,
-                                        delegatingUserId,
-                                        jdbcConnectionString);
+        if (jdbcConnectionString != null)
+        {
+            storageProperties.put("databaseURL", jdbcConnectionString);
+        }
+
+        this.addPostgreSQLAuditLogDestination(storageProperties);
     }
 
 
@@ -959,8 +994,15 @@ public class OMAGServerConfigurationClient
                                                                  InvalidParameterException,
                                                                  OMAGConfigurationErrorException
     {
-        final String methodName  = "getOMAGServerConfig";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/instance/configuration?delegatingUserId={1}";
+        final String methodName  = "getOMAGServerInstanceConfig";
+
+        /*
+         * Deliberately NOT under /open-metadata/admin-services.  The administration services own the
+         * configuration document on disk; the configuration a *running* instance is using belongs to the
+         * server operations, and that is where the endpoint is.  This client used to address one under
+         * admin-services and received a 404 on every call.
+         */
+        final String urlTemplate = "/open-metadata/server-operations/servers/{0}/instance/configuration?delegatingUserId={1}";
 
         OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName,
                                                                                          serverPlatformRootURL + urlTemplate,

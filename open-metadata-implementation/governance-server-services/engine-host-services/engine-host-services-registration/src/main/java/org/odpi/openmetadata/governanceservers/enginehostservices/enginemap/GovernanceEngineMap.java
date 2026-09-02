@@ -62,11 +62,17 @@ public class GovernanceEngineMap
 
 
     /**
-     * Return the governance engine handler for a specific governance engine name if known.
-     * If the handler does not yet exist, an attempt is made to create it. If this fails, null is returned
+     * Return the governance engine handler for a specific governance engine name if one has already been
+     * created.
+     * <br><br>
+     * This is a lookup and nothing more.  A configured engine whose definition has not been retrieved yet has
+     * a placeholder in the map but no handler, so null is returned for it just as it is for an engine name
+     * this server knows nothing about - the two are indistinguishable through this method.  Callers that want
+     * to give such an engine a chance to load should use {@link #refreshGovernanceEngineHandler(String)},
+     * which retries the retrieval, or the {@link #getGovernanceEngineHandler(EngineConfig)} overload.
      *
      * @param governanceEngineName engine to lookup
-     * @return handler or null
+     * @return handler, or null if the engine is unknown or has no handler yet
      */
     public synchronized GovernanceEngineHandler getGovernanceEngineHandler(String governanceEngineName)
     {
@@ -83,6 +89,50 @@ public class GovernanceEngineMap
         return null;
     }
 
+
+
+    /**
+     * Return the governance engine handler for a configured governance engine, retrieving the engine's
+     * definition and building the handler if that has not happened yet.
+     * <br><br>
+     * This is what makes an {@code ASSIGNED} engine - one configured into this server whose definition was not
+     * in the metadata store when the server started - able to come into service without a restart.  Asking
+     * for it again re-runs the retrieval, which is the whole point of refreshing a named engine: the
+     * definition may have been created since the last attempt.
+     * <br><br>
+     * Returns null in two different situations, which the caller is expected to tell apart itself using
+     * {@link #getGovernanceEngineNames()}: the engine is not configured in this server at all, or it is
+     * configured and its definition still could not be retrieved.
+     * <br><br>
+     * Deliberately not synchronized - it takes the lock only to read the engine's configuration, then hands
+     * off to the overload below, which performs an outbound REST call outside the lock.
+     *
+     * @param governanceEngineName engine to look up or bring into service
+     * @return handler, or null if the engine is unknown or its definition is still unavailable
+     */
+    public GovernanceEngineHandler refreshGovernanceEngineHandler(String governanceEngineName)
+    {
+        EngineConfig engineConfig;
+
+        synchronized (this)
+        {
+            GovernanceEngineHandlerProperties engineHandlerProperties = governanceEngineHandlerMap.get(governanceEngineName);
+
+            if (engineHandlerProperties == null)
+            {
+                return null;
+            }
+
+            engineConfig = engineHandlerProperties.getEngineConfig();
+        }
+
+        if (engineConfig == null)
+        {
+            return null;
+        }
+
+        return this.getGovernanceEngineHandler(engineConfig);
+    }
 
 
     /**

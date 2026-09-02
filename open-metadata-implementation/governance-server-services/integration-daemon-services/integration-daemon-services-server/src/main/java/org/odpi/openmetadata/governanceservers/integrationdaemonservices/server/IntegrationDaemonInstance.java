@@ -347,6 +347,18 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
         List<IntegrationConnectorReport> connectorReports = new ArrayList<>();
         List<String> connectorIds = integrationConnectorCacheMap.getConnectorIds();
 
+        /*
+         * getConnectorIds() returns null rather than an empty list when the daemon has no connectors, which
+         * is the ordinary state of one whose integration group has not loaded its definitions yet - and the
+         * state an operator is in when they call this to find out why.  shutdown() below already makes this
+         * check; the three places that iterate the list did not, and raised a NullPointerException instead of
+         * reporting an idle daemon.
+         */
+        if (connectorIds == null)
+        {
+            return connectorReports;
+        }
+
         for (String connectorId : connectorIds)
         {
             if (connectorId != null)
@@ -377,7 +389,12 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
         if (connectorName == null)
         {
             List<String> connectorIds = integrationConnectorCacheMap.getConnectorIds();
-            for (String connectorId : connectorIds)
+
+            /*
+             * Null means the daemon has no connectors - see getConnectorReports above.  Refreshing all of
+             * nothing is a no-op rather than a failure.
+             */
+            for (String connectorId : (connectorIds == null) ? new ArrayList<String>() : connectorIds)
             {
                 if (connectorId != null)
                 {
@@ -424,7 +441,13 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 
         if (connectorName == null)
         {
-            for (String connectorId : integrationConnectorCacheMap.getConnectorIds())
+            List<String> connectorIds = integrationConnectorCacheMap.getConnectorIds();
+
+            /*
+             * Null means the daemon has no connectors - see getConnectorReports above.  Restarting all of
+             * nothing is a no-op rather than a failure.
+             */
+            for (String connectorId : (connectorIds == null) ? new ArrayList<String>() : connectorIds)
             {
                 if (connectorId != null)
                 {
