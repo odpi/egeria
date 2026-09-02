@@ -21,8 +21,8 @@ The OMAGCommonErrorCode is used to define first failure data capture (FFDC) for 
 
 | Message Id | HTTP Code | Message |
 |---|---|---|
-| [OMAG-COMMON-400-001](#omag-common-400-001) | 400 | The OMAG Server Platform URL is null |
-| [OMAG-COMMON-400-003](#omag-common-400-003) | 400 | The OMAG Server name is null |
+| [OMAG-COMMON-400-001](#omag-common-400-001) | 400 | The OMAG Server Platform URL is null or blank |
+| [OMAG-COMMON-400-003](#omag-common-400-003) | 400 | The OMAG Server name is null or blank |
 | [OMAG-COMMON-400-004](#omag-common-400-004) | 400 | The user identifier (user id) passed on the {0} operation is null |
 | [OMAG-COMMON-400-005](#omag-common-400-005) | 400 | The unique identifier (guid) passed on the {0} parameter of the {1} operation is null |
 | [OMAG-COMMON-400-006](#omag-common-400-006) | 400 | The name passed on the {0} parameter of the {1} operation is null |
@@ -58,7 +58,7 @@ The OMAGCommonErrorCode is used to define first failure data capture (FFDC) for 
 
 ### OMAG-COMMON-400-001
 
-> The OMAG Server Platform URL is null
+> The OMAG Server Platform URL is null or blank
 
 |  |  |
 |---|---|
@@ -79,7 +79,7 @@ Create a new client and pass the URL for the server on the constructor.
 
 ### OMAG-COMMON-400-003
 
-> The OMAG Server name is null
+> The OMAG Server name is null or blank
 
 |  |  |
 |---|---|

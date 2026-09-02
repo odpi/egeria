@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.rest.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReportSeverity;
 
@@ -24,7 +25,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AuditLogSeveritiesResponse extends OMRSAPIResponse
 {
-    private List<AuditLogRecordSeverity> severities = null;
+    /*
+     * Held as the concrete OMRSAuditLogReportSeverity rather than as the AuditLogRecordSeverity interface the
+     * accessors use, and that is what makes this response readable at all.
+     *
+     * The severities the server supplies are AuditLogRecordSeverityLevel enum constants.  Jackson serializes
+     * an enum as its constant name, so the body used to be ["UNKNOWN","INFO",...] - which dropped the ordinal
+     * and the description, the two things an endpoint called "severity-definitions" exists to provide, and
+     * which no client could read back: deserializing a bare string into the AuditLogRecordSeverity interface
+     * fails with "abstract types either need to be mapped to concrete types".  AuditLogServicesClient
+     * .getSeverityList() therefore could not succeed against any server.
+     *
+     * Converting on the way in gives a body of {"ordinal":..,"name":..,"description":..} objects, which
+     * carries the whole definition and which Jackson can construct on the way back.  The accessors still take
+     * and return the interface, so callers on both sides are unaffected.
+     */
+    private List<OMRSAuditLogReportSeverity> severities = null;
 
 
     /**
@@ -47,7 +63,7 @@ public class AuditLogSeveritiesResponse extends OMRSAPIResponse
 
         if (template != null)
         {
-            severities = template.getSeverities();
+            this.setSeverities(template.getSeverities());
         }
     }
 
@@ -65,23 +81,42 @@ public class AuditLogSeveritiesResponse extends OMRSAPIResponse
         }
         else if (severities.isEmpty())
         {
-            return null;
+            return new ArrayList<>();
         }
-        else
-        {
-            return new ArrayList<>(severities);
-        }
+
+        return new ArrayList<>(severities);
     }
 
 
     /**
      * Set up the list of severity values.
+     * <br><br>
+     * The {@code contentAs} is what makes the response readable.  Jackson picks the deserializer from this
+     * setter's declared parameter type, and {@link AuditLogRecordSeverity} is an interface it cannot
+     * construct - so without this the whole response fails with "abstract types either need to be mapped to
+     * concrete types", however the elements were serialized.
      *
      * @param severities severities list
      */
+    @JsonDeserialize(contentAs = OMRSAuditLogReportSeverity.class)
     public void setSeverities(List<AuditLogRecordSeverity> severities)
     {
-        this.severities = severities;
+        if (severities == null)
+        {
+            this.severities = null;
+        }
+        else
+        {
+            this.severities = new ArrayList<>();
+
+            for (AuditLogRecordSeverity severity : severities)
+            {
+                if (severity != null)
+                {
+                    this.severities.add(new OMRSAuditLogReportSeverity(severity));
+                }
+            }
+        }
     }
 
 

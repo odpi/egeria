@@ -84,7 +84,12 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
                 auditLog.logMessage(serviceOperationName,
                                     EngineHostServicesAuditCode.CLEARING_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(engineName));
 
-                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.getGovernanceEngineHandler(engineName);
+                /*
+                 * refreshGovernanceEngineHandler rather than a plain lookup, so that an engine which is
+                 * configured but has not yet retrieved its definition gets another attempt at it.  Refreshing
+                 * every engine the host has should include the ones that have not managed to start.
+                 */
+                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.refreshGovernanceEngineHandler(engineName);
 
                 if (governanceEngineHandler != null)
                 {
@@ -98,9 +103,18 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
         }
         else
         {
-            GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.getGovernanceEngineHandler(governanceEngineName);
-
-            if (governanceEngineHandler == null)
+            /*
+             * A name this server has no engine configured for is the caller's mistake, and is the one case
+             * that is an error: they named something particular and it does not exist here.
+             *
+             * An engine that IS configured but has no handler yet - reported as ASSIGNED by
+             * getGovernanceEngineSummary - is a different situation and must not be reported the same way.
+             * Refreshing it is precisely what may bring it into service, because the retrieval of its
+             * definition is retried; the previous code looked the handler up without retrying, found null,
+             * and told the caller their engine name was unknown.  So a configured engine and a mistyped one
+             * produced the same message, and the remedy the operator actually needed was refused.
+             */
+            if (! governanceEngineHandlers.getGovernanceEngineNames().contains(governanceEngineName))
             {
                 throw new InvalidParameterException(EngineHostServicesErrorCode.UNKNOWN_ENGINE_NAME.getMessageDefinition(governanceEngineName, serverName),
                                                     this.getClass().getName(),
@@ -111,8 +125,20 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
             auditLog.logMessage(serviceOperationName,
                                 EngineHostServicesAuditCode.CLEARING_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(governanceEngineName));
 
-            governanceEngineHandler.refreshConfig();
-            governanceEngineHandler.startMissedEngineActions();
+            GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.refreshGovernanceEngineHandler(governanceEngineName);
+
+            if (governanceEngineHandler != null)
+            {
+                governanceEngineHandler.refreshConfig();
+                governanceEngineHandler.startMissedEngineActions();
+            }
+
+            /*
+             * A configured engine whose definition still could not be retrieved leaves the request accepted
+             * and the engine ASSIGNED.  That is not an error: the caller asked this host to try again, and it
+             * did.  Why the retrieval failed is in the audit log, and the engine's state is available from
+             * getGovernanceEngineSummary.
+             */
 
             auditLog.logMessage(serviceOperationName,
                                 EngineHostServicesAuditCode.FINISHED_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(governanceEngineName));

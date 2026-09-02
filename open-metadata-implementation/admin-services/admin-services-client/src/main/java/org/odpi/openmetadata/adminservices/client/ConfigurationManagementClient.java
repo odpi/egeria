@@ -116,7 +116,7 @@ public class ConfigurationManagementClient
                                                                      InvalidParameterException
     {
         final String methodName  = "getAllServerConfigurations";
-        final String urlTemplate = "/open-metadata/admin-services/configurations?delegatingUserId={1}";
+        final String urlTemplate = "/open-metadata/admin-services/configurations?delegatingUserId={0}";
 
         OMAGServerConfigsResponse restResult = restClient.callGetAllServerConfigurationsRESTCall(methodName,
                                                                                                  serverPlatformRootURL + urlTemplate,
