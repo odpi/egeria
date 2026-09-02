@@ -135,7 +135,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineHandler(java.lang.String)" class="member-name-link">getGovernanceEngineHandler</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the governance engine handler for a specific governance engine name if known.</div>
+<div class="block">Return the governance engine handler for a specific governance engine name if one has already been
+ created.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineHandler(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig)" class="member-name-link">getGovernanceEngineHandler</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;governanceEngine)</code></div>
@@ -157,16 +158,22 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of the configured engines for a particular engine service.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceEngineProperties(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient,org.odpi.openmetadata.governanceservers.enginehostservices.threads.EngineConfigurationRefreshThread)" class="member-name-link">setGovernanceEngineProperties</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engineConfig,
- <a href="../../../frameworks/openmetadata/events/OpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventClient</a>&nbsp;eventClient,
- <a href="../threads/EngineConfigurationRefreshThread.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.threads">EngineConfigurationRefreshThread</a>&nbsp;configurationRefreshThread)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshGovernanceEngineHandler(java.lang.String)" class="member-name-link">refreshGovernanceEngineHandler</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up a placeholder entry in the governance handler map for a governance engine.</div>
+<div class="block">Return the governance engine handler for a configured governance engine, retrieving the engine's
+ definition and building the handler if that has not happened yet.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdown()" class="member-name-link">shutdown</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceEngineProperties(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient,org.odpi.openmetadata.governanceservers.enginehostservices.threads.EngineConfigurationRefreshThread)" class="member-name-link">setGovernanceEngineProperties</a><wbr>(<a href="../../../adminservices/configuration/properties/EngineConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineConfig</a>&nbsp;engineConfig,
+ <a href="../../../frameworks/openmetadata/events/OpenMetadataEventClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventClient</a>&nbsp;eventClient,
+ <a href="../threads/EngineConfigurationRefreshThread.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.threads">EngineConfigurationRefreshThread</a>&nbsp;configurationRefreshThread)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up a placeholder entry in the governance handler map for a governance engine.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdown()" class="member-name-link">shutdown</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Shutdown all engines ...</div>
 </div>
 </div>
@@ -215,13 +222,45 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getGovernanceEngineHandler(java.lang.String)">
 <h3>getGovernanceEngineHandler</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></span>&nbsp;<span class="element-name">getGovernanceEngineHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineName)</span></div>
-<div class="block">Return the governance engine handler for a specific governance engine name if known.
- If the handler does not yet exist, an attempt is made to create it. If this fails, null is returned</div>
+<div class="block">Return the governance engine handler for a specific governance engine name if one has already been
+ created.
+ <br><br>
+ This is a lookup and nothing more.  A configured engine whose definition has not been retrieved yet has
+ a placeholder in the map but no handler, so null is returned for it just as it is for an engine name
+ this server knows nothing about - the two are indistinguishable through this method.  Callers that want
+ to give such an engine a chance to load should use <a href="#refreshGovernanceEngineHandler(java.lang.String)"><code>refreshGovernanceEngineHandler(String)</code></a>,
+ which retries the retrieval, or the <a href="#getGovernanceEngineHandler(org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig)"><code>getGovernanceEngineHandler(EngineConfig)</code></a> overload.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>governanceEngineName</code> - engine to lookup</dd>
 <dt>Returns:</dt>
-<dd>handler or null</dd>
+<dd>handler, or null if the engine is unknown or has no handler yet</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="refreshGovernanceEngineHandler(java.lang.String)">
+<h3>refreshGovernanceEngineHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../admin/GovernanceEngineHandler.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.admin">GovernanceEngineHandler</a></span>&nbsp;<span class="element-name">refreshGovernanceEngineHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineName)</span></div>
+<div class="block">Return the governance engine handler for a configured governance engine, retrieving the engine's
+ definition and building the handler if that has not happened yet.
+ <br><br>
+ This is what makes an <code>ASSIGNED</code> engine - one configured into this server whose definition was not
+ in the metadata store when the server started - able to come into service without a restart.  Asking
+ for it again re-runs the retrieval, which is the whole point of refreshing a named engine: the
+ definition may have been created since the last attempt.
+ <br><br>
+ Returns null in two different situations, which the caller is expected to tell apart itself using
+ <a href="#getGovernanceEngineNames()"><code>getGovernanceEngineNames()</code></a>: the engine is not configured in this server at all, or it is
+ configured and its definition still could not be retrieved.
+ <br><br>
+ Deliberately not synchronized - it takes the lock only to read the engine's configuration, then hands
+ off to the overload below, which performs an outbound REST call outside the lock.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>governanceEngineName</code> - engine to look up or bring into service</dd>
+<dt>Returns:</dt>
+<dd>handler, or null if the engine is unknown or its definition is still unavailable</dd>
 </dl>
 </section>
 </li>

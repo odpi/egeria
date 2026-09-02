@@ -218,7 +218,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setSeverities(java.util.List)">
 <h3>setSeverities</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSeverities</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/auditlog/messagesets/AuditLogRecordSeverity.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogRecordSeverity</a>&gt;&nbsp;severities)</span></div>
-<div class="block">Set up the list of severity values.</div>
+<div class="block">Set up the list of severity values.
+ <br><br>
+ The <code>contentAs</code> is what makes the response readable.  Jackson picks the deserializer from this
+ setter's declared parameter type, and <a href="../../../frameworks/auditlog/messagesets/AuditLogRecordSeverity.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets"><code>AuditLogRecordSeverity</code></a> is an interface it cannot
+ construct - so without this the whole response fails with "abstract types either need to be mapped to
+ concrete types", however the elements were serialized.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>severities</code> - severities list</dd>

@@ -103,7 +103,8 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  The URLs for the REST APIs are of this form:
 
  <ul>
-     <li><i>restURLroot</i> - serverURLroot + "/servers/" + serverName</li>
+     <li><i>restURLroot</i> - the OMAG Server Platform URL root on its own.  Unlike
+     MetadataCollectionServicesClient, this client adds "/servers/{serverName}" itself.</li>
      <li><i>rootServiceNameInURL</i> - "/open-metadata/repository-services"</li>
      <li><i>operationSpecificURL</i> - operation specific part of the URL</li>
  </ul></div>
@@ -252,8 +253,9 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - the name of the remote server</dd>
-<dd><code>restURLRoot</code> - the network address of the server running the repository services.  This is of the form
- serverURLroot + "/servers/" + serverName.</dd>
+<dd><code>restURLRoot</code> - the network address of the OMAG Server Platform running the server - the platform URL
+ root on its own.  This client adds "/servers/{serverName}/open-metadata/repository-services" to it
+ itself, so a caller who appends the server name here gets a doubled path segment and a 404 on every call.</dd>
 <dd><code>secretsStoreProvider</code> - secrets store connector for bearer token</dd>
 <dd><code>secretsStoreLocation</code> - secrets store location for bearer token</dd>
 <dd><code>secretsStoreCollection</code> - secrets store collection for bearer token</dd>
@@ -277,8 +279,10 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - the name of the remote server</dd>
-<dd><code>restURLRoot</code> - the network address of the server running the repository services.  This is of the form
-                    serverURLroot + "/servers/" + serverName.</dd>
+<dd><code>restURLRoot</code> - the network address of the OMAG Server Platform running the server - the platform URL
+                    root on its own.  This client adds "/servers/{serverName}/open-metadata/repository-services"
+                    to it itself, so a caller who appends the server name here gets a doubled path segment
+                    and a 404 on every call.</dd>
 <dd><code>secretsStoreConnectorMap</code> - connectors to secrets stores</dd>
 <dd><code>delegatingUserId</code> - external userId making request</dd>
 <dd><code>auditLog</code> - destination for log messages.</dd>
