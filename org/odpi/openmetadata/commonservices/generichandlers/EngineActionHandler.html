@@ -826,7 +826,18 @@ loadScripts(document, 'script');</script>
                                throws <span class="exceptions"><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Retrieve the engine actions that are still in progress.</div>
+<div class="block">Retrieve the engine actions that are still in progress.
+ <br><br>
+ The status selection is pushed down into the repository rather than being applied to the results of a
+ query for every engine action.  That matters for more than speed.  A metadata store accumulates engine
+ actions indefinitely and the great majority of them are finished, so filtering afterwards meant reading
+ a page of mostly-completed actions to find the few that were live.
+ <br><br>
+ It also made the paging wrong.  <code>startFrom</code> and <code>pageSize</code> were applied to the unfiltered
+ query, so a caller asking for ten active actions received however many of an arbitrary ten engine
+ actions happened to be active - frequently none, while more sat on later pages - and <code>startFrom</code>
+ skipped over completed actions rather than over results. With the filter in the query, a page is a page
+ of active engine actions.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of caller</dd>
