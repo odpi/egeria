@@ -17,6 +17,9 @@ on:
     branches: [main, egeria-release-6*]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   analyze:
     if: ${{ github.repository == 'odpi/egeria'}}
