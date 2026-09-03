@@ -45,6 +45,7 @@ public class MetadataAccessPointConfigurationClient extends MetadataAccessServer
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
+     * @param serverName name of the server to configure
      * @param serverPlatformRootURL the network address of the server running the admin services
      * @param secretsStoreConnectorMap connectors to secrets stores
      * @param delegatingUserId external userId making request
@@ -52,11 +53,12 @@ public class MetadataAccessPointConfigurationClient extends MetadataAccessServer
      * @throws InvalidParameterException a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public MetadataAccessPointConfigurationClient(String                             serverPlatformRootURL,
+    public MetadataAccessPointConfigurationClient(String                             serverName,
+                                                                         String                             serverPlatformRootURL,
                                                   Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
                                                   String                             delegatingUserId,
                                                   AuditLog                           auditLog) throws InvalidParameterException
     {
-        super(serverPlatformRootURL, secretsStoreConnectorMap, delegatingUserId, auditLog);
+        super(serverName, serverPlatformRootURL, secretsStoreConnectorMap, delegatingUserId, auditLog);
     }
 }

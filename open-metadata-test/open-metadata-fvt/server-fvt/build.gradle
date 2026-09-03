@@ -1,0 +1,154 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module is a Functional Verification Test (FVT) suite for the platform's own **administration and
+// operation** APIs - the services that configure a server, start it, look at what it is doing, and shut it
+// down again - driven through their Java clients:
+//
+//   * admin-services              - building and storing a server's configuration document
+//   * platform-services           - what the platform knows about itself and the servers on it
+//   * server-operations           - what a *running* server is doing
+//   * repository-services         - the audit log and the metadata highway of a running server
+//   * engine-services             - the four engine services' connector validation endpoints
+//   * governance-server-services  - the engine host and integration daemon control surfaces
+//   * user-security               - the platform's own identity endpoints
+//
+// These are the services behind the Runtime Manager API.  The REST endpoints underneath them are exercised
+// constantly, but always with the same handful of options, and the Java clients on top of them have almost
+// no automated coverage at all.  That combination hides two kinds of defect that this suite is built to
+// find, and which it has already found several of:
+//
+//   * a client whose URL or request body no longer matches the endpoint it calls.  Nothing catches this at
+//     compile time - the client and the controller are in different modules and share only a string - so a
+//     renamed or removed endpoint leaves a client method that compiles perfectly and 404s at runtime.
+//   * an input that is not validated, or is validated with a message that does not say what is wrong.  An
+//     administration API is used interactively, so "what did I get wrong?" is most of what it is for.
+//
+// The suite is deliberately hermetic: an in-memory repository, no Apache Kafka broker, no PostgreSQL server,
+// and no content packs.  Nothing here needs persisted metadata - the subject is the configuration and
+// operation of servers rather than what is in them - and a suite that needs no external technology is one
+// that can be run on every change.  It takes well under a minute.
+//
+// Like the other FVTs it is NOT part of the default build.  It only runs when explicitly requested:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:server-fvt:test -PrunServerFvt
+
+dependencies {
+    // The OMAG Server Platform itself, run in-process via SpringApplication.run(...).
+    //
+    // user-authn is NOT excluded, unlike every sibling suite except auth-fvt, and this platform runs with
+    // real authentication rather than a permit-all filter chain.  Two things need it: the endpoints
+    // user-authn publishes (/api/about, /api/public/app/info, /api/token) are part of the user-security
+    // surface under test and simply do not exist on a platform that excludes the module; and every client
+    // here obtains its own bearer token from a secrets store, which is a path used by every real deployment
+    // and by no other test.  See OMAGPlatformExtension for the full argument.
+    testImplementation project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')
+
+    // Connectors needed to configure and run the servers this suite stands up.  All in-memory or
+    // file-based: nothing here talks to a database or a message broker.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
+    // The PostgreSQL audit log destination, and the JDBC resource connector it is built on.  Neither is used
+    // to log anything here: they are needed because *configuring* that destination instantiates its connector
+    // provider, so a platform without them on the classpath refuses the configuration call with a
+    // NoClassDefFoundError rather than storing it.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-postgres-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:omrs-rest-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:metadata-security-connectors:open-metadata-access-security-connector')
+
+    // The in-memory event bus.  A cohort needs *a* topic connector to be configurable at all, and this one
+    // needs no broker - which is what lets the cohort and metadata highway tests run hermetically.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
+
+    // ---------------------------------------------------------------------------------------------------
+    // The clients under test.  Each one is on the *compile* classpath, because this suite calls them
+    // directly rather than driving the REST API underneath them - the client is as much the subject as the
+    // endpoint is.
+    // ---------------------------------------------------------------------------------------------------
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-api')
+    testImplementation project(':open-metadata-implementation:server-operations:server-operations-client')
+    testImplementation project(':open-metadata-implementation:server-operations:server-operations-api')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-client')
+    testImplementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-api')
+    testImplementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-client')
+    testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-api')
+    testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
+    testImplementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-client')
+    testImplementation project(':open-metadata-implementation:engine-services:survey-action:survey-action-client')
+    testImplementation project(':open-metadata-implementation:engine-services:watchdog-action:watchdog-action-client')
+    testImplementation project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-client')
+    // Each engine service client implements its service's own API interface, so the api modules have to be
+    // on the compile classpath for the client to be callable at all - not just on the runtime one.
+    testImplementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-api')
+    testImplementation project(':open-metadata-implementation:engine-services:survey-action:survey-action-api')
+    testImplementation project(':open-metadata-implementation:engine-services:watchdog-action:watchdog-action-api')
+    testImplementation project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-api')
+
+    // Frameworks: the exception types every client above throws, the connection/connector-type beans the
+    // configuration calls take, and the user account beans the platform security API exchanges.
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:common-services:ffdc-services')
+    testImplementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
+
+    // In-process Spring Boot startup and shutdown.
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+    testImplementation 'org.springframework:spring-core'
+
+    // Used by the tests that check what the platform actually *persisted* - the configuration document on
+    // disk, and the user directory - rather than only what it accepted over HTTP.
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Server Administration and Operation Functional Verification Tests (server-fvt)'
+
+// The property is read here, at configuration time, rather than inside the onlyIf closure.  onlyIf is
+// evaluated during execution, and reaching for `project` then is unsupported with the configuration cache.
+def runThisSuite = project.hasProperty('runServerFvt')
+
+test {
+    useJUnitPlatform()
+
+    // Optional, opt-in suite - see the note at the top of this file.
+    onlyIf { runThisSuite }
+
+    // Single JVM fork.  The tests share one running platform (see OMAGPlatformExtension) and several of them
+    // create, start, stop and delete servers on it, so they must not run concurrently.
+    maxParallelForks = 1
+    timeout = java.time.Duration.ofMinutes(15)
+    testLogging.showStandardStreams = true
+
+    // Any server.fvt.* setting can be overridden for a single run from the command line.  Gradle does not
+    // pass its own system properties to the forked test JVM, so they are forwarded here.
+    systemProperties System.properties.findAll { it.key.toString().startsWith('server.fvt.') }
+}
+
+// Resolves logging conflicts between the various connectors pulled in by the platform chassis
+jvmDependencyConflicts {
+    logging {
+        enforceLogback()
+    }
+}

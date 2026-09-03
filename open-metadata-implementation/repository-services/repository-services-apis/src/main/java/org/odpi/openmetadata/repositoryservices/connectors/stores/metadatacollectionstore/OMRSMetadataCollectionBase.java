@@ -2904,6 +2904,41 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
+     * Is this instance one that this repository is responsible for counting?
+     * <br><br>
+     * A count is not the same question as a find.  A find is asked of one repository and returns everything it
+     * holds that matches, reference copies included, because the caller can see which repository answered and
+     * can deduplicate by GUID.  A count returns a number, and the enterprise connector answers a federated
+     * count by summing the numbers every member gives it - so an instance held as a reference copy by three
+     * members would be counted three times if each member counted its copies.  Nothing downstream can undo
+     * that, because the GUIDs are gone by then.
+     * <br><br>
+     * So a repository counts only what it is answerable for: the instances it homes, and those it has been
+     * asked to replicate on behalf of a non-cohort provenance.  Every other member counts theirs, and the sum
+     * is right.  A repository that does not know its own metadata collection id has no identity to filter on
+     * and counts everything it can see.
+     *
+     * @param instance instance returned by the equivalent find
+     * @return whether this repository should include it in its count
+     */
+    private boolean isCountedByThisRepository(InstanceHeader instance)
+    {
+        if (super.metadataCollectionId == null)
+        {
+            return true;
+        }
+
+        if (instance == null)
+        {
+            return false;
+        }
+
+        return (super.metadataCollectionId.equals(instance.getMetadataCollectionId()) ||
+                super.metadataCollectionId.equals(instance.getReplicatedBy()));
+    }
+
+
+    /**
      * Return a count of the entities that match the supplied criteria.  This default implementation calls
      * findEntities() and counts the results.  Subclasses whose repository can answer a count more efficiently
      * (for example, with a database COUNT query) should override this method.
@@ -2987,7 +3022,22 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                         sequencingOrder,
                                                         0);
 
-        return (entities == null) ? 0L : entities.size();
+        if (entities == null)
+        {
+            return 0L;
+        }
+
+        long count = 0L;
+
+        for (EntityDetail entity : entities)
+        {
+            if (isCountedByThisRepository(entity))
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
 
@@ -3595,7 +3645,22 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                    sequencingOrder,
                                                                    0);
 
-        return (relationships == null) ? 0L : relationships.size();
+        if (relationships == null)
+        {
+            return 0L;
+        }
+
+        long count = 0L;
+
+        for (Relationship relationship : relationships)
+        {
+            if (isCountedByThisRepository(relationship))
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
 

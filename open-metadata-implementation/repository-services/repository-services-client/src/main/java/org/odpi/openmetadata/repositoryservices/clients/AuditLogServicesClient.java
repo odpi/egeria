@@ -29,7 +29,8 @@ import java.util.Map;
  * the OMRS REST API has a one-to-one correspondence with the audit log service API.
  * The URLs for the REST APIs are of this form:
  * <ul>
- *     <li><i>restURLroot</i> - serverURLroot + "/servers/" + serverName</li>
+ *     <li><i>restURLroot</i> - the OMAG Server Platform URL root on its own.  Unlike
+ *     MetadataCollectionServicesClient, this client adds "/servers/{serverName}" itself.</li>
  *     <li><i>rootServiceNameInURL</i> - "/open-metadata/repository-services"</li>
  *     <li><i>userIdInURL</i> - optional - "/users/{0}"</li>
  *     <li><i>operationSpecificURL</i> - operation specific part of the URL</li>
@@ -55,8 +56,10 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName the name of the remote server
-     * @param restURLRoot the network address of the server running the repository services.  This is of the form
-     *                    serverURLroot + "/servers/" + serverName.
+     * @param restURLRoot the network address of the OMAG Server Platform running the server - the platform URL
+     *                    root on its own.  This client adds "/servers/{serverName}/open-metadata/repository-services"
+     *                    to it itself, so a caller who appends the server name here gets a doubled path segment
+     *                    and a 404 on every call.
      * @param secretsStoreProvider class name of the secrets store
      * @param secretsStoreLocation location (networkAddress) of the secrets store
      * @param secretsStoreCollection name of the collection of secrets to use to connect to the remote server
@@ -89,8 +92,10 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName the name of the remote server
-     * @param restURLRoot the network address of the server running the repository services.  This is of the form
-     *                    serverURLroot + "/servers/" + serverName.
+     * @param restURLRoot the network address of the OMAG Server Platform running the server - the platform URL
+     *                    root on its own.  This client adds "/servers/{serverName}/open-metadata/repository-services"
+     *                    to it itself, so a caller who appends the server name here gets a doubled path segment
+     *                    and a 404 on every call.
      * @param secretsStoreConnectorMap connectors to secrets stores
      * @param delegatingUserId external userId making request
      * @param auditLog destination for log messages.
@@ -155,7 +160,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
                                                                  RepositoryErrorException,
                                                                  UserNotAuthorizedException
     {
-        final String methodName  = "getAuditLogReport";
+        final String methodName  = "getSeverityList";
         final String operationSpecificURL = "/audit-log/severity-definitions?delegatingUserId={1}";
 
         AuditLogSeveritiesResponse restResult;

@@ -298,7 +298,6 @@ public class OMRSConfigurationFactory
                                                Map<String, Object>  configurationProperties,
                                                String               eventBusConnectorProvider,
                                                String               topicURLRoot,
-                                               String               serverId,
                                                Map<String, Object>  eventBusConfigurationProperties)
     {
         CohortConfig cohortConfig  = new CohortConfig();
@@ -312,23 +311,31 @@ public class OMRSConfigurationFactory
         cohortConfig.setCohortName(newCohortName);
         cohortConfig.setCohortRegistryConnection(connectorConfigurationFactory.getDefaultCohortRegistryConnection(localServerName, newCohortName));
 
+        /*
+         * Each topic's connection is given the name of the server that will consume it, so that the caller id
+         * it ends up with - and with it the Apache Kafka group.id - is <server>.<cohort>.<category>.  That is
+         * the same on every restart, different for every member of the cohort, and different for each of the
+         * cohort's three topics.  See getCohortTopicCallerId().
+         */
         cohortConfig.setCohortOMRSRegistrationTopicConnection(connectorConfigurationFactory.getDefaultRegistrationCohortOMRSTopicConnection(newCohortName,
+                                                                                                                                            localServerName,
                                                                                                                                             configurationProperties,
                                                                                                                                             eventBusConnectorProvider,
                                                                                                                                             topicURLRoot,
                                                                                                                                             eventBusConfigurationProperties));
 
         cohortConfig.setCohortOMRSTypesTopicConnection(connectorConfigurationFactory.getDefaultTypesCohortOMRSTopicConnection(newCohortName,
+                                                                                                                              localServerName,
                                                                                                                               configurationProperties,
                                                                                                                               eventBusConnectorProvider,
                                                                                                                               topicURLRoot,
                                                                                                                               eventBusConfigurationProperties));
 
         cohortConfig.setCohortOMRSInstancesTopicConnection(connectorConfigurationFactory.getDefaultInstancesCohortOMRSTopicConnection(newCohortName,
+                                                                                                                                      localServerName,
                                                                                                                                       configurationProperties,
                                                                                                                                       eventBusConnectorProvider,
                                                                                                                                       topicURLRoot,
-                                                                                                                                      serverId,
                                                                                                                                       eventBusConfigurationProperties));
 
         cohortConfig.setCohortOMRSTopicProtocolVersion(this.getDefaultCohortOMRSTopicProtocolVersion());

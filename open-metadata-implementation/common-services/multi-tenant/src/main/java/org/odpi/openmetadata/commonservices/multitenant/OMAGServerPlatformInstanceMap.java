@@ -466,6 +466,20 @@ public class OMAGServerPlatformInstanceMap
             response.addAll(services);
         }
 
+        /*
+         * The engine services were missing from this aggregation while being reported correctly by
+         * getRegisteredEngineServices, so the four OMESs were absent from "all registered services" even
+         * though the platform was running them and the category endpoint listed them.  This list is what a
+         * tool builds its picture of the platform from, so a service missing from it does not exist as far as
+         * that tool is concerned.
+         */
+        services = getRegisteredEngineServices(userId, delegatingUserId);
+
+        if ((services != null) && (! services.isEmpty()))
+        {
+            response.addAll(services);
+        }
+
         services = getRegisteredGovernanceServices(userId, delegatingUserId);
 
         if ((services != null) && (! services.isEmpty()))

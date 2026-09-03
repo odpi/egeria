@@ -16,7 +16,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyCondition;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -29,6 +33,24 @@ import java.util.*;
  */
 public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
+    /**
+     * The activity statuses that mean an engine action is still in progress - it has been requested but has
+     * not yet reached a terminal state.
+     */
+    private static final List<ActivityStatus> ACTIVE_ACTIVITY_STATUSES = List.of(ActivityStatus.REQUESTED,
+                                                                                 ActivityStatus.APPROVED,
+                                                                                 ActivityStatus.WAITING,
+                                                                                 ActivityStatus.IN_PROGRESS);
+
+    /**
+     * The activity statuses that mean an engine action has been claimed by a governance engine and is still
+     * being worked on.  Narrower than {@link #ACTIVE_ACTIVITY_STATUSES}: an action that is only REQUESTED or
+     * APPROVED has not been picked up by anyone yet, so it cannot have been claimed.
+     */
+    private static final List<ActivityStatus> CLAIMED_ACTIVITY_STATUSES = List.of(ActivityStatus.WAITING,
+                                                                                  ActivityStatus.IN_PROGRESS);
+
+
     /**
      * Construct the handler for engine actions.
      *
@@ -3199,7 +3221,113 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Build the search properties that select elements whose activity status is any one of those supplied.
+     * <br><br>
+     * The value for each condition is built with {@code addEnumPropertyToInstance} rather than by naming the
+     * enum directly.  That helper looks the symbolic name up in the {@code ActivityStatus} type definition by
+     * ordinal, which is exactly how the value was written when the element was stored - and the symbolic name
+     * is what the repositories compare on ({@code EnumPropertyValue.valueAsObject} returns it, and the
+     * PostgreSQL query builder renders it).  Deriving it the same way on both sides means these conditions
+     * cannot drift from the stored values if the type definition changes.
+     *
+     * @param activityStatuses statuses to match, any one of which will do
+     * @param methodName calling method
+     * @return search properties matching any of the supplied statuses
+     *
+     * @throws InvalidParameterException the activity status enum is not known to the repository
+     */
+    private SearchProperties getActivityStatusSearchProperties(List<ActivityStatus> activityStatuses,
+                                                               String               methodName) throws InvalidParameterException
+    {
+        List<PropertyCondition> conditions = new ArrayList<>();
+
+        for (ActivityStatus activityStatus : activityStatuses)
+        {
+            InstanceProperties statusProperties;
+
+            try
+            {
+                statusProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                              null,
+                                                                              OpenMetadataProperty.ACTIVITY_STATUS.name,
+                                                                              ActivityStatus.getOpenTypeGUID(),
+                                                                              ActivityStatus.getOpenTypeName(),
+                                                                              activityStatus.getOrdinal(),
+                                                                              methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataProperty.ACTIVITY_STATUS.name);
+            }
+
+            PropertyCondition condition = new PropertyCondition();
+
+            condition.setProperty(OpenMetadataProperty.ACTIVITY_STATUS.name);
+            condition.setOperator(PropertyComparisonOperator.EQ);
+            condition.setValue(statusProperties.getPropertyValue(OpenMetadataProperty.ACTIVITY_STATUS.name));
+
+            conditions.add(condition);
+        }
+
+        SearchProperties searchProperties = new SearchProperties();
+
+        searchProperties.setConditions(conditions);
+
+        /*
+         * ANY, because the statuses are alternatives.  There is no IN operator in
+         * PropertyComparisonOperator, so a set membership test is expressed as an OR of equalities.
+         */
+        searchProperties.setMatchCriteria(MatchCriteria.ANY);
+
+        return searchProperties;
+    }
+
+
+    /**
+     * Build a condition that matches an exact string property value.
+     * <br><br>
+     * The value is built with {@code addStringPropertyToInstance} for the same reason the enum conditions are
+     * built with {@code addEnumPropertyToInstance}: it is the helper that wrote the stored value, so the two
+     * sides of the comparison are constructed the same way.
+     *
+     * @param propertyName property to match
+     * @param propertyValue value it must have
+     * @param methodName calling method
+     * @return the condition
+     */
+    private PropertyCondition getExactStringCondition(String propertyName,
+                                                      String propertyValue,
+                                                      String methodName)
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     propertyName,
+                                                                                     propertyValue,
+                                                                                     methodName);
+
+        PropertyCondition condition = new PropertyCondition();
+
+        condition.setProperty(propertyName);
+        condition.setOperator(PropertyComparisonOperator.EQ);
+        condition.setValue(properties.getPropertyValue(propertyName));
+
+        return condition;
+    }
+
+
+    /**
      * Retrieve the engine actions that are still in progress.
+     * <br><br>
+     * The status selection is pushed down into the repository rather than being applied to the results of a
+     * query for every engine action.  That matters for more than speed.  A metadata store accumulates engine
+     * actions indefinitely and the great majority of them are finished, so filtering afterwards meant reading
+     * a page of mostly-completed actions to find the few that were live.
+     * <br><br>
+     * It also made the paging wrong.  {@code startFrom} and {@code pageSize} were applied to the unfiltered
+     * query, so a caller asking for ten active actions received however many of an arbitrary ten engine
+     * actions happened to be active - frequently none, while more sat on later pages - and {@code startFrom}
+     * skipped over completed actions rather than over results. With the filter in the query, a page is a page
+     * of active engine actions.
      *
      * @param userId userId of caller
      * @param startFrom starting from position
@@ -3223,19 +3351,23 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<EntityDetail> retrievedEntities = this.getEntitiesByType(userId,
-                                                                      OpenMetadataType.ENGINE_ACTION.typeGUID,
-                                                                      OpenMetadataType.ENGINE_ACTION.typeName,
-                                                                      null,
-                                                                      null,
-                                                                      SequencingOrder.CREATION_DATE_RECENT,
-                                                                      null,
-                                                                      false,
-                                                                      false,
-                                                                      startFrom,
-                                                                      queryPageSize,
-                                                                      effectiveTime,
-                                                                      methodName);
+        SearchProperties searchProperties = this.getActivityStatusSearchProperties(ACTIVE_ACTIVITY_STATUSES, methodName);
+
+        List<EntityDetail> retrievedEntities = repositoryHandler.findEntities(userId,
+                                                                              OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                              null,
+                                                                              searchProperties,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                              false,
+                                                                              false,
+                                                                              startFrom,
+                                                                              queryPageSize,
+                                                                              effectiveTime,
+                                                                              methodName);
 
         if (retrievedEntities != null)
         {
@@ -3243,20 +3375,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             for (EntityDetail nextEngineAction : retrievedEntities)
             {
-                int status = repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataProperty.ACTIVITY_STATUS.name,
-                                                                     nextEngineAction.getProperties(),
-                                                                     methodName);
+                B bean = this.getEngineAction(userId, nextEngineAction, effectiveTime, methodName);
 
-                if ((status == ActivityStatus.REQUESTED.getOrdinal()) || (status == ActivityStatus.APPROVED.getOrdinal()) ||
-                        (status == ActivityStatus.WAITING.getOrdinal()) || (status == ActivityStatus.IN_PROGRESS.getOrdinal()))
+                if (bean != null)
                 {
-                    B bean = this.getEngineAction(userId, nextEngineAction, effectiveTime, methodName);
-
-                    if (bean != null)
-                    {
-                        results.add(bean);
-                    }
+                    results.add(bean);
                 }
             }
 
@@ -3298,26 +3421,53 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(governanceEngineGUID, guidParameterName, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                          null,
-                                                                                          OpenMetadataProperty.PROCESSING_ENGINE_USER_ID.name,
-                                                                                          userId,
-                                                                                          methodName);
+        /*
+         * All three selections are pushed into the repository.  Only the processing engine user id was
+         * before, and it is the least selective of the three: an engine host running several engines claims
+         * every one of their actions as the same user, so this used to read that user's entire history of
+         * engine actions - most of them finished, and many belonging to a different engine - to find the few
+         * this engine is currently working on.  As with getActiveEngineActions the paging was applied to the
+         * unfiltered query, so a page of results was rarely a page of claimed actions.
+         *
+         * The status alternatives sit in a nested ANY group inside the top-level ALL.  That is the shape
+         * RepositoryHandler already uses for the effectivity window it adds to every query, so it is well
+         * travelled - see RepositoryHandler.getEffectivityBound.
+         */
+        List<PropertyCondition> conditions = new ArrayList<>();
 
-        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
-                                                                                   matchProperties,
-                                                                                   OpenMetadataType.ENGINE_ACTION.typeGUID,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   SequencingOrder.CREATION_DATE_RECENT,
-                                                                                   null,
-                                                                                   false,
-                                                                                   false,
-                                                                                   startFrom,
-                                                                                   queryPageSize,
-                                                                                   effectiveTime,
-                                                                                   methodName);
+        conditions.add(this.getExactStringCondition(OpenMetadataProperty.PROCESSING_ENGINE_USER_ID.name,
+                                                    userId,
+                                                    methodName));
+        conditions.add(this.getExactStringCondition(OpenMetadataProperty.EXECUTOR_ENGINE_GUID.name,
+                                                    governanceEngineGUID,
+                                                    methodName));
+
+        PropertyCondition statusCondition = new PropertyCondition();
+
+        statusCondition.setNestedConditions(this.getActivityStatusSearchProperties(CLAIMED_ACTIVITY_STATUSES, methodName));
+
+        conditions.add(statusCondition);
+
+        SearchProperties searchProperties = new SearchProperties();
+
+        searchProperties.setConditions(conditions);
+        searchProperties.setMatchCriteria(MatchCriteria.ALL);
+
+        List<EntityDetail> retrievedEntities = repositoryHandler.findEntities(userId,
+                                                                              OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                              null,
+                                                                              searchProperties,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                              false,
+                                                                              false,
+                                                                              startFrom,
+                                                                              queryPageSize,
+                                                                              effectiveTime,
+                                                                              methodName);
 
         if (retrievedEntities != null)
         {
@@ -3325,24 +3475,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             for (EntityDetail nextEngineAction : retrievedEntities)
             {
-                int status = repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataProperty.ACTIVITY_STATUS.name,
-                                                                     nextEngineAction.getProperties(),
-                                                                     methodName);
+                B bean = this.getEngineAction(userId, nextEngineAction, effectiveTime, methodName);
 
-                String engineActionGovernanceEngineGUID = repositoryHelper.getStringProperty(serviceName,
-                                                                                             OpenMetadataProperty.EXECUTOR_ENGINE_GUID.name,
-                                                                                             nextEngineAction.getProperties(),
-                                                                                             methodName);
-                if ((governanceEngineGUID.equals(engineActionGovernanceEngineGUID) &&
-                        ((status == ActivityStatus.WAITING.getOrdinal()) || (status == ActivityStatus.IN_PROGRESS.getOrdinal()))))
+                if (bean != null)
                 {
-                    B bean = this.getEngineAction(userId, nextEngineAction, effectiveTime, methodName);
-
-                    if (bean != null)
-                    {
-                        results.add(bean);
-                    }
+                    results.add(bean);
                 }
             }
 

@@ -637,14 +637,23 @@ class PostgresOMRSMetadataStore
             {
                 if (entityMapper != null)
                 {
-                    EntityDetail entityDetail = entityMapper.getEntityDetail();
-
                     /*
-                     * Ignore entity proxies.
+                     * Ignore entity proxies.  The test has to be isProxy(): getEntityDetail() builds an
+                     * EntityDetail out of whatever row it was given and only fails when there is no row at
+                     * all, so it never answers null for a proxy and a null check here passed every one of
+                     * them through.  A proxy stands in for an entity another repository homes, and returning
+                     * it as though this repository held the entity itself makes findEntities() disagree with
+                     * countEntities() - which counts only what this repository homes or replicates - and the
+                     * conformance suite fails the pair against each other.
                      */
-                    if (entityDetail != null)
+                    if (! entityMapper.isProxy())
                     {
-                        entityDetails.add(entityDetail);
+                        EntityDetail entityDetail = entityMapper.getEntityDetail();
+
+                        if (entityDetail != null)
+                        {
+                            entityDetails.add(entityDetail);
+                        }
                     }
                 }
             }
