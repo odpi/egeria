@@ -163,6 +163,7 @@ public class OpenMetadataTypesArchive
         update0205ConnectionLinkage();
         update0221DocumentStores();
         update0423SecurityDefinitions();
+        update0451Notifications();
         update0505SchemaAttributes();
         add0280SoftwareDevelopmentAssets();
         add0281SoftwareModules();
@@ -391,6 +392,52 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SECURITY_ROLES));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0451Notifications()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateNotificationTypeEntity());
+    }
+
+
+    private TypeDefPatch updateNotificationTypeEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NOTIFICATION_TYPE.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_NOTIFICATION));
+
+        /*
+         * notificationInterval is deprecated.  It described how often a notification type should fire, which
+         * put the schedule on the notification type itself.  Whether a notification may fire is now assessed
+         * by the notification manager, from minimumNotificationInterval and nextScheduledNotification
+         * together with each subscriber's own state - so the notification type no longer carries a schedule
+         * of its own.  The attribute is deprecated rather than removed so that repositories holding a value
+         * for it can still read their instances.
+         */
+        TypeDefAttribute deprecatedAttribute = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTIFICATION_INTERVAL);
+        deprecatedAttribute.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(deprecatedAttribute);
 
         typeDefPatch.setPropertyDefinitions(properties);
 

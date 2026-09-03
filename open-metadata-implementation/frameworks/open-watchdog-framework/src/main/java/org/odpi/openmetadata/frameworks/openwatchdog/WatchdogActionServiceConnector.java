@@ -38,7 +38,6 @@ public abstract class WatchdogActionServiceConnector extends ConnectorBase imple
     protected AuditLog        auditLog                  = null;
     protected List<Connector> embeddedConnectors        = null;
 
-
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
      * with the correct component description and log destinations.

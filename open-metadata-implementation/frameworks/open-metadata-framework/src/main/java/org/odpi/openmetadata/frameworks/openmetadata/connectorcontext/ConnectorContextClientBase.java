@@ -4,11 +4,13 @@
 package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.Date;
 import java.util.List;
@@ -607,22 +609,75 @@ public class ConnectorContextClientBase
 
 
     /**
-     * Extract the display name from the supplied element.
+     * Return the display name from the properties - defaults to qualified name - or Unknown if not present.
      *
      * @param rootElement element to query
-     * @return display name or null if this object is null, or not a referenceable
+     * @return display name
      */
     public String getDisplayName(OpenMetadataRootElement rootElement)
     {
         if (rootElement != null)
         {
-            if (rootElement.getProperties() instanceof ReferenceableProperties referenceableProperties)
-            {
-                return referenceableProperties.getDisplayName();
-            }
+            return getDisplayName(rootElement.getProperties());
         }
 
         return null;
+    }
+
+
+    /**
+     * Return the display name from the properties - defaults to qualified name - or Unknown if not present.
+     *
+     * @param properties properties of the resource
+     * @return display name
+     */
+    public String getDisplayName(ElementProperties properties)
+    {
+        final String methodName = "getDisplayName";
+
+        String displayName = propertyHelper.getStringProperty(parentContext.connectorName,
+                                                              OpenMetadataProperty.DISPLAY_NAME.name,
+                                                              properties,
+                                                              methodName);
+
+        if (displayName == null)
+        {
+            displayName = propertyHelper.getStringProperty(parentContext.connectorName,
+                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                           properties,
+                                                           methodName);
+        }
+
+        if (displayName == null)
+        {
+            displayName = "Unknown";
+        }
+
+        return displayName;
+    }
+
+
+    /**
+     * Return the display name from the properties - defaults to qualified name - or Unknown if not present.
+     *
+     * @param properties properties of the resource
+     * @return display name
+     */
+    public String getDisplayName(OpenMetadataRootProperties properties)
+    {
+        if (properties instanceof ReferenceableProperties referenceableProperties)
+        {
+            if (referenceableProperties.getDisplayName() != null)
+            {
+                return referenceableProperties.getDisplayName();
+            }
+            else
+            {
+                return referenceableProperties.getQualifiedName();
+            }
+        }
+
+        return "Unknown";
     }
 
 

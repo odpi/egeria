@@ -34,7 +34,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHea
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryPropertiesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
@@ -105,9 +104,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     private Map<String, String> dataFields            = null;
     private Map<String, String> products              = null;
 
-    private final List<NewActionTarget> notificationWatchdogTargets = new ArrayList<>();
-
-    String baudotEngineActionGUID = null;
+    /*
+     * This is the subscription manager used to monitor the product notifications.  It is a WatchdogActionService.
+     */
+    private String baudotEngineActionGUID = null;
 
 
     /**
@@ -198,7 +198,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             communities           = this.getCommunities();
             communityNoteLogs     = this.getCommunityNoteLogs();
             dataFields            = this.getDataFields();
-            products              = this.getProducts();
+            products              = this.getProducts(baudotEngineActionGUID);
         }
         catch (Exception error)
         {
@@ -260,9 +260,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          * Call each of the insight harvesters to check they have their catalog targets set up.
          */
         auditLog.logMessage(methodName, JacquardAuditCode.HARVESTING_VALID_VALUES.getMessageDefinition(integrationContext.getConnectorName()));
-        harvestValidMetadataValues(existingDataSources);
+        harvestValidMetadataValues(existingDataSources, baudotEngineActionGUID);
         auditLog.logMessage(methodName, JacquardAuditCode.HARVESTING_REFERENCE_DATA_SETS.getMessageDefinition(integrationContext.getConnectorName()));
-        harvestReferenceDataSets(existingDataSources);
+        harvestReferenceDataSets(existingDataSources, baudotEngineActionGUID);
 
         /*
          * Refresh all the harvested tabular data sources, looking for data changes.
@@ -276,11 +276,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * It extracts the valid metadata value list from the catalog targets
      *
      * @param existingDataSources existing data source map
+     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product notifications
      * @throws ConnectorCheckedException problem access the valid value set list
      * @throws UserNotAuthorizedException the user is not authorized to access the catalog (probably shutdown requested)
      */
-    private void harvestValidMetadataValues(Map<String, RequestedCatalogTarget>  existingDataSources) throws ConnectorCheckedException,
-                                                                                                             UserNotAuthorizedException
+    private void harvestValidMetadataValues(Map<String, RequestedCatalogTarget> existingDataSources,
+                                            String                              baudotEngineActionGUID) throws ConnectorCheckedException,
+                                                                                                               UserNotAuthorizedException
     {
         final String methodName = "harvestValidValues";
 
@@ -309,7 +311,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                             {
                                 try
                                 {
-                                    refreshValidMetadataValueDataSet(propertyName);
+                                    refreshValidMetadataValueDataSet(propertyName, baudotEngineActionGUID);
                                 }
                                 catch (Exception error)
                                 {
@@ -341,10 +343,15 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * Create a product that represents a single valid metadata value set.
      *
      * @param propertyName unique name of the valid value set
+     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product notifications
+     * @throws InvalidParameterException  an invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException    the repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      */
-    private void refreshValidMetadataValueDataSet(String propertyName) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
+    private void refreshValidMetadataValueDataSet(String propertyName,
+                                                  String baudotEngineActionGUID) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
         /*
          * Create a dynamic product definition and add it to the open metadata ecosystem.
@@ -355,7 +362,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                             super.fromCamelToCanonicalCase(propertyName) + " Valid Values",
                                                                             this.getPropertyDescription(propertyName));
 
-        this.getProduct(productDefinition);
+        this.getProduct(productDefinition, baudotEngineActionGUID);
     }
 
 
@@ -384,10 +391,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * It extracts the valid metadata value list from the catalog targets
      *
      * @param existingDataSources existing data source map
+     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product notifications
      * @throws ConnectorCheckedException problem access the valid value set list
      * @throws UserNotAuthorizedException the user is not authorized to access the catalog (probably shutdown requested)
      */
-    private void harvestReferenceDataSets(Map<String, RequestedCatalogTarget>  existingDataSources) throws ConnectorCheckedException, UserNotAuthorizedException
+    private void harvestReferenceDataSets(Map<String, RequestedCatalogTarget>  existingDataSources,
+                                          String                               baudotEngineActionGUID) throws ConnectorCheckedException,
+                                                                                                              UserNotAuthorizedException
     {
         final String methodName = "harvestReferenceDataSets";
 
@@ -421,7 +431,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                             {
                                 try
                                 {
-                                    refreshReferenceDataSet(referenceDataSetGUID, identifier, description);
+                                    refreshReferenceDataSet(referenceDataSetGUID, identifier, description, baudotEngineActionGUID);
                                 }
                                 catch (Exception error)
                                 {
@@ -452,13 +462,20 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     /**
      * Create a product that represents a single reference data value set.
      *
-     * @param identifier unique name of the reference data set
+     * @param referenceDataSetGUID   unique identifier of the reference data set
+     * @param identifier             unique name of the reference data set
+     * @param description            description of the reference data set
+     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product notifications
+     * @throws InvalidParameterException  an invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException    the repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      */
     private void refreshReferenceDataSet(String referenceDataSetGUID,
                                          String identifier,
-                                         String description) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+                                         String description,
+                                         String baudotEngineActionGUID) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
     {
         /*
          * Create a dynamic product definition and add it to the open metadata ecosystem.
@@ -470,7 +487,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                             super.fromCamelToCanonicalCase(identifier) + " Reference Data Set",
                                                                             description);
 
-        this.getProduct(productDefinition);
+        this.getProduct(productDefinition, baudotEngineActionGUID);
     }
 
 
@@ -478,21 +495,23 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * Return the map of qualifiedNames-to-guids for the pre-defined products that make up the
      * fixed part of the product catalog.
      *
+     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product
+     *
      * @return map
-     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
-     * @throws PropertyServerException repository is probably down
+     * @throws InvalidParameterException an invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException the repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private Map<String, String> getProducts() throws InvalidParameterException,
-                                                     PropertyServerException,
-                                                     UserNotAuthorizedException
+    private Map<String, String> getProducts(String baudotEngineActionGUID) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         products = new HashMap<>();
 
         for (ProductDefinition productDefinition : ProductDefinitionEnum.values())
         {
-            String productGUID = this.getProduct(productDefinition);
+            String productGUID = this.getProduct(productDefinition, baudotEngineActionGUID);
 
             products.put(productDefinition.getQualifiedName(), productGUID);
         }
@@ -506,15 +525,17 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * repository or by creating the product.
      *
      * @param productDefinition description of the product
+     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product
      * @return unique identifier
-     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
-     * @throws PropertyServerException repository is probably down
+     * @throws InvalidParameterException an invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException the repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private String getProduct(ProductDefinition productDefinition) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+    private String getProduct(ProductDefinition productDefinition,
+                              String            baudotEngineActionGUID) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
     {
         CollectionClient             collectionClient             = integrationContext.getCollectionClient(OpenMetadataType.DIGITAL_PRODUCT.typeName);
         ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
@@ -693,7 +714,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          * The subscription options show up as governance action processes that are configured with the appropriate
          * information.
          */
-        this.addSubscriptionTypes(productDefinition, productElement.getElementHeader(), productAssetGUID, licenseTypeGUID, communityNoteLogGUID, productManagerElement.getElementHeader().getGUID());
+        this.addSubscriptionTypes(productDefinition, productElement.getElementHeader(), productAssetGUID, licenseTypeGUID, communityNoteLogGUID, productManagerElement.getElementHeader().getGUID(), baudotEngineActionGUID);
 
         /*
          * Register each product as a catalog target, so it is refreshed.
@@ -952,39 +973,54 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * by this connector, and the products are built either side of that.
      *
      * @param notificationTypeGUID the notification type to be monitored
+     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product
      *
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private void registerWithSubscriptionManager(String notificationTypeGUID) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+    private void registerWithSubscriptionManager(String notificationTypeGUID,
+                                                 String baudotEngineActionGUID) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
     {
         if (baudotEngineActionGUID != null)
         {
-            AssetClient assetClient = integrationContext.getAssetClient();
-
-            ActionTargetProperties actionTargetProperties = new ActionTargetProperties();
-
-            actionTargetProperties.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
-
-            assetClient.addActionTarget(baudotEngineActionGUID,
-                                        notificationTypeGUID,
-                                        assetClient.getMakeAnchorOptions(false),
-                                        actionTargetProperties);
-        }
-        else // save for when Baudot is running
-        {
-            NewActionTarget notificationTarget = new NewActionTarget();
-
-            notificationTarget.setActionTargetGUID(notificationTypeGUID);
-            notificationTarget.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
-
-            notificationWatchdogTargets.add(notificationTarget);
+            this.attachNotificationType(baudotEngineActionGUID, notificationTypeGUID);
         }
     }
+
+
+    /**
+     * Attach one notification type to the subscription manager's engine action, so that the manager
+     * monitors it.
+     *
+     * @param engineActionGUID the subscription manager's engine action
+     * @param notificationTypeGUID the notification type to be monitored
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void attachNotificationType(String engineActionGUID,
+                                        String notificationTypeGUID) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        AssetClient assetClient = integrationContext.getAssetClient();
+
+        ActionTargetProperties actionTargetProperties = new ActionTargetProperties();
+
+        actionTargetProperties.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
+
+        assetClient.addActionTarget(engineActionGUID,
+                                    notificationTypeGUID,
+                                    assetClient.getMakeAnchorOptions(false),
+                                    actionTargetProperties);
+    }
+
 
 
     /**
@@ -1010,6 +1046,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * @param licenseTypeGUID unique identifier for the license type granted to the product subscribers
      * @param communityNoteLogGUID unique identifier of the community's note log
      * @param productManagerGUID unique identifier for the product manager
+     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product
      *
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException repository is probably down
@@ -1021,9 +1058,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                       String            productAssetGUID,
                                       String            licenseTypeGUID,
                                       String            communityNoteLogGUID,
-                                      String            productManagerGUID) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+                                      String            productManagerGUID,
+                                      String            baudotEngineActionGUID) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
     {
         boolean isProductFamily = propertyHelper.isTypeOf(productHeader, OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName);
 
@@ -1048,7 +1086,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                   productDefinition.getProductName(),
                                                                   productAssetGUID,
                                                                   communityNoteLogGUID,
-                                                                  productManagerGUID);
+                                                                  productManagerGUID,
+                                                                  baudotEngineActionGUID);
 
                 addSubscriptionGovernanceActionProcess(productDefinition.getProductName(),
                                                        productDefinition.getIdentifier(),
@@ -1074,9 +1113,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * @param productAssetGUID              unique identifier for the asset that represents the product
      * @param communityNoteLogGUID          unique identifier of the community's note log
      * @param productManagerGUID            unique identifier for the product manager
+     * @param baudotEngineActionGUID        unique identifier of the engine action that is monitoring the product
      * @return guid
-     * @throws InvalidParameterException  invalid parameter passed - probably a bug in this code
-     * @throws PropertyServerException    repository is probably down
+     * @throws InvalidParameterException  an invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException    the repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      *                                    been disconnected.
      */
@@ -1085,9 +1125,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                        String                        productName,
                                        String                        productAssetGUID,
                                        String                        communityNoteLogGUID,
-                                       String                        productManagerGUID) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException
+                                       String                        productManagerGUID,
+                                       String                        baudotEngineActionGUID) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
     {
         /*
          * The notification of changes to a subscription is managed via a notification type.
@@ -1096,17 +1137,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         GovernanceDefinitionClient   notificationTypeClient       = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.NOTIFICATION_TYPE.typeName);
         MakeAnchorOptions           makeAnchorOptions            = new MakeAnchorOptions(notificationTypeClient.getMetadataSourceOptions());
 
-        NotificationTypeProperties notificationTypeProperties = new NotificationTypeProperties();
-
-        notificationTypeProperties.setQualifiedName(OpenMetadataType.NOTIFICATION_TYPE.typeName + "::" + productHeader.getGUID() + "::" + productName + "::" + productSubscriptionDefinition.getIdentifier());
-        notificationTypeProperties.setIdentifier(productSubscriptionDefinition.getIdentifier());
-        notificationTypeProperties.setDisplayName("Notification type for " + productSubscriptionDefinition.getDisplayName() + " for product " + productName);
-        notificationTypeProperties.setDescription(productSubscriptionDefinition.getDescription());
-        notificationTypeProperties.setDomainIdentifier(GovernanceDomain.DATA_SHARING.getOrdinal());
-        notificationTypeProperties.setPlannedStartDate(new Date());
-        notificationTypeProperties.setMultipleNotificationsPermitted(productSubscriptionDefinition.getMultipleNotificationsPermitted());
-        notificationTypeProperties.setMinimumNotificationInterval(productSubscriptionDefinition.getMinimumNotificationInterval());
-        notificationTypeProperties.setNotificationInterval(productSubscriptionDefinition.getNotificationInterval());
+        NotificationTypeProperties notificationTypeProperties = getNotificationTypeProperties(productSubscriptionDefinition, productHeader, productName);
 
         OpenMetadataRootElement notificationTypeElement = classificationExplorerClient.getRootElementByUniqueName(notificationTypeProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, classificationExplorerClient.getGetOptions());
 
@@ -1123,7 +1154,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                             notificationTypeProperties,
                                                                                             null);
 
-            if ((productAssetGUID != null) && (isResourceMonitored(productSubscriptionDefinition)))
+            if ((productAssetGUID != null) && (productSubscriptionDefinition.getMultipleNotificationsPermitted()) && (productSubscriptionDefinition.isAddMonitoredResource()))
             {
                 /*
                  * Only need to register the resource with notification types that use changes to the resource to determine
@@ -1166,7 +1197,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, productManagerGUID, makeAnchorOptions, notificationSubscriberProperties);
             }
 
-            this.registerWithSubscriptionManager(notificationTypeGUID);
+            this.registerWithSubscriptionManager(notificationTypeGUID, baudotEngineActionGUID);
 
             return notificationTypeGUID;
         }
@@ -1181,7 +1212,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
              */
             String notificationTypeGUID = notificationTypeElement.getElementHeader().getGUID();
 
-            this.registerWithSubscriptionManager(notificationTypeGUID);
+            this.registerWithSubscriptionManager(notificationTypeGUID, baudotEngineActionGUID);
 
             return notificationTypeGUID;
         }
@@ -1189,7 +1220,33 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
-     * Set up a product's subscription types.  Each are governance action processes configured with an appropriate
+     * Extract the properties for a notification type from a subscription definition.
+     *
+     * @param productSubscriptionDefinition description of the subscription type that is supported by the product
+     * @param productHeader                 unique identifier and type for the product
+     * @param productName                   name of the product
+     * @return properties
+     */
+    private static NotificationTypeProperties getNotificationTypeProperties(ProductSubscriptionDefinition productSubscriptionDefinition,
+                                                                            ElementHeader                 productHeader,
+                                                                            String                        productName)
+    {
+        NotificationTypeProperties notificationTypeProperties = new NotificationTypeProperties();
+
+        notificationTypeProperties.setQualifiedName(OpenMetadataType.NOTIFICATION_TYPE.typeName + "::" + productHeader.getGUID() + "::" + productName + "::" + productSubscriptionDefinition.getIdentifier());
+        notificationTypeProperties.setIdentifier(productSubscriptionDefinition.getIdentifier());
+        notificationTypeProperties.setDisplayName("Notification type for " + productSubscriptionDefinition.getDisplayName() + " for product " + productName);
+        notificationTypeProperties.setDescription(productSubscriptionDefinition.getDescription());
+        notificationTypeProperties.setDomainIdentifier(GovernanceDomain.DATA_SHARING.getOrdinal());
+        notificationTypeProperties.setPlannedStartDate(new Date());
+        notificationTypeProperties.setMultipleNotificationsPermitted(productSubscriptionDefinition.getMultipleNotificationsPermitted());
+        notificationTypeProperties.setMinimumNotificationInterval(productSubscriptionDefinition.getMinimumNotificationInterval());
+        return notificationTypeProperties;
+    }
+
+
+    /**
+     * Set up a product's subscription types.  These are governance action processes configured with an appropriate
      * subscription template.  When the governance action process runs, it creates the subscription for the requesting
      * actor.
      *
@@ -1443,7 +1500,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
             for (ProductSubscriptionDefinition productSubscriptionDefinition : productFamily.getSubscriptionTypes())
             {
-                if (! isResourceMonitored(productSubscriptionDefinition))
+                if (! productSubscriptionDefinition.getMultipleNotificationsPermitted())
                 {
                     continue;
                 }
@@ -1456,7 +1513,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                                           classificationExplorerClient.getGetOptions());
 
-                if (notificationTypeElement != null)
+                if ((notificationTypeElement != null) && (productSubscriptionDefinition.isAddMonitoredResource()))
                 {
                     MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
 
@@ -1476,27 +1533,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
-     * Return whether a subscription type decides when to notify its subscribers by watching a resource, rather
-     * than by a fixed interval.  Only the former has anything to monitor.
-     *
-     * @param productSubscriptionDefinition subscription type to ask about
-     * @return true if the subscription type watches a resource
-     */
-    private boolean isResourceMonitored(ProductSubscriptionDefinition productSubscriptionDefinition)
-    {
-        return (productSubscriptionDefinition.getMultipleNotificationsPermitted())
-                       && (productSubscriptionDefinition.getNotificationInterval() == 0);
-    }
-
-
-    /**
      * Set up a product's data spec.
      *
      * @param productDefinition description of product
      * @param productGUID unique identifier of the product
      *
-     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
-     * @throws PropertyServerException repository is probably down
+     * @throws InvalidParameterException an invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException the repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
@@ -1516,6 +1559,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             String qualifiedName = productDefinition.getQualifiedName() + "_" + productDefinition.getAssetIdentifier();
 
             OpenMetadataRootElement assetElement = classificationExplorerClient.getRootElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, classificationExplorerClient.getGetOptions());
+
+            String assetGUID;
 
             if (assetElement == null)
             {
@@ -1542,10 +1587,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 CollectionMembershipProperties collectionMembershipProperties = new CollectionMembershipProperties();
                 collectionMembershipProperties.setMembershipType("product data set");
 
-                String assetGUID = assetClient.createAsset(newElementOptions,
-                                                           null,
-                                                           dataSetProperties,
-                                                           collectionMembershipProperties);
+                assetGUID = assetClient.createAsset(newElementOptions,
+                                                    null,
+                                                    dataSetProperties,
+                                                    collectionMembershipProperties);
 
                 /*
                  * Add the "productized" keyword on the asset to identify assets that have been elevated to products.
@@ -1566,220 +1611,549 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                          dataSetProperties.getTypeName(),
                                                                                                          dataSetProperties.getDisplayName(),
                                                                                                          assetGUID));
-
-                String connectorTypeGUID = this.getConnectorTypeGUID(productDefinition.getConnectorProvider());
-
-                if (connectorTypeGUID != null)
-                {
-                    ConnectionClient connectionClient = integrationContext.getConnectionClient();
-                    EndpointClient   endpointClient   = integrationContext.getEndpointClient();
-
-                    /*
-                     * Set up the connection for the asset.
-                     */
-                    VirtualConnectionProperties connectionProperties = new VirtualConnectionProperties();
-
-                    connectionProperties.setQualifiedName(qualifiedName + "_connection");
-                    connectionProperties.setDisplayName("Asset Connection for " + productDefinition.getDisplayName());
-                    connectionProperties.setDescription("This connection provides access to the metadata access server that supplied the data for this digital product.");
-                    connectionProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
-                    connectionProperties.setUserId(integrationContext.getMyUserId());
-
-                    Map<String, Object> connectionConfigurationProperties = new HashMap<>();
-                    if (productDefinition.getConfigurationProperties() != null)
-                    {
-                        connectionConfigurationProperties.putAll(productDefinition.getConfigurationProperties());
-                    }
-                    connectionConfigurationProperties.put(TabularDataSetConfigurationProperty.SERVER_NAME.getName(), integrationContext.getMetadataAccessServer());
-                    connectionConfigurationProperties.put(TabularDataSetConfigurationProperty.MAX_PAGE_SIZE.getName(), integrationContext.getMaxPageSize());
-                    connectionProperties.setConfigurationProperties(connectionConfigurationProperties);
-
-                    newElementOptions.setParentAtEnd1(true);
-                    newElementOptions.setParentGUID(assetGUID);
-                    newElementOptions.setParentRelationshipTypeName(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName);
-
-                    String connectionGUID = connectionClient.createConnection(newElementOptions,
-                                                                              null,
-                                                                              connectionProperties,
-                                                                              null);
-
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                             connectionProperties.getTypeName(),
-                                                                                                             connectionProperties.getDisplayName(), connectionGUID));
-
-                    /*
-                     * Pass on all the secrets stores to the product asset.  These secret stores are set up
-                     * initially in the content pack for this connector.
-                     */
-                    for (String purpose : secretsStoreConnectorMap.keySet())
-                    {
-                        newElementOptions.setParentAtEnd1(true);
-                        newElementOptions.setParentGUID(connectionGUID);
-                        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName);
-
-                        /*
-                         * Get secrets store connection used by this connector
-                         */
-                        Connection secretsConnectorConnection = secretsStoreConnectorMap.get(purpose).getConnection();
-                        String     secretsStoreConnectionGUID = secretsConnectorConnection.getGUID();
-
-                        if (secretsStoreConnectionGUID == null)
-                        {
-                            /*
-                             * Create the secret store connection from this connector's secrets store connection.
-                             */
-                            ConnectionProperties secretsStoreConnection = new ConnectionProperties();
-                            secretsStoreConnection.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_connection");
-                            secretsStoreConnection.setDisplayName(purpose + "Secrets Store Connection for " + productDefinition.getDisplayName());
-                            secretsStoreConnection.setDescription("This connection provides access to the secrets store for this digital product.");
-                            secretsStoreConnection.setVersionIdentifier(productDefinition.getVersionIdentifier());
-
-                            if (secretsConnectorConnection.getConfigurationProperties() != null)
-                            {
-                                Map<String, Object> secretsStoreConfigProperties = new HashMap<>(secretsConnectorConnection.getConfigurationProperties());
-                                secretsStoreConnection.setConfigurationProperties(secretsStoreConfigProperties);
-                            }
-
-                            /*
-                             * Embed secrets store connection in product connection.
-                             */
-                            EmbeddedConnectionProperties embeddedConnectionProperties = new EmbeddedConnectionProperties();
-                            embeddedConnectionProperties.setDisplayName(purpose);
-
-                            secretsStoreConnectionGUID = connectionClient.createConnection(newElementOptions, null, secretsStoreConnection, embeddedConnectionProperties);
-
-                            auditLog.logMessage(methodName,
-                                                JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                                     secretsStoreConnection.getTypeName(),
-                                                                                                                     secretsStoreConnection.getDisplayName(),
-                                                                                                                     secretsStoreConnectionGUID));
-
-                            /*
-                             * Link connector type to connection.
-                             */
-                            connectionClient.linkConnectionConnectorType(secretsStoreConnectionGUID,
-                                                                         secretsConnectorConnection.getConnectorType().getGUID(),
-                                                                         new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
-                                                                         null);
-
-                            auditLog.logMessage(methodName,
-                                                JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                                        secretsStoreConnection.getTypeName(),
-                                                                                                        secretsStoreConnectionGUID,
-                                                                                                        OpenMetadataType.CONNECTOR_TYPE.typeName,
-                                                                                                        secretsConnectorConnection.getConnectorType().getGUID(),
-                                                                                                        OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
-
-                            /*
-                             * Add secrets store location as an endpoint.
-                             */
-                            EndpointProperties secretsStoreEndpoint = new EndpointProperties();
-                            secretsStoreEndpoint.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_locationEndpoint");
-                            secretsStoreEndpoint.setDisplayName(purpose + "Secrets Store Endpoint for " + productDefinition.getDisplayName());
-                            secretsStoreEndpoint.setNetworkAddress(secretsConnectorConnection.getEndpoint().getNetworkAddress());
-
-                            newElementOptions.setParentAtEnd1(true);
-                            newElementOptions.setParentGUID(secretsStoreConnectionGUID);
-                            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
-
-                            String secretsStoreEndpointGUID = endpointClient.createEndpoint(newElementOptions, null, secretsStoreEndpoint, null);
-
-                            auditLog.logMessage(methodName,
-                                                JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                                     secretsStoreEndpoint.getTypeName(),
-                                                                                                                     secretsStoreEndpoint.getDisplayName(),
-                                                                                                                     secretsStoreEndpointGUID));
-
-                            auditLog.logMessage(methodName,
-                                                JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                                        secretsStoreConnection.getTypeName(),
-                                                                                                        secretsStoreConnectionGUID,
-                                                                                                        secretsStoreEndpoint.getTypeName(),
-                                                                                                        secretsStoreEndpointGUID,
-                                                                                                        OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
-                        }
-                        else
-                        {
-                            /*
-                             * Embed this connector's secrets store connection in product asset connection.
-                             */
-                            EmbeddedConnectionProperties embeddedConnectionProperties = new EmbeddedConnectionProperties();
-                            embeddedConnectionProperties.setDisplayName(purpose);
-
-                            connectionClient.linkEmbeddedConnection(connectionGUID,
-                                                                    secretsStoreConnectionGUID,
-                                                                    new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
-                                                                    embeddedConnectionProperties);
-
-                            auditLog.logMessage(methodName,
-                                                JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                                        connectionProperties.getTypeName(),
-                                                                                                        connectionGUID,
-                                                                                                        OpenMetadataType.CONNECTION.typeName,
-                                                                                                        secretsStoreConnectionGUID,
-                                                                                                        OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName));
-                        }
-                    }
-
-
-                    /*
-                     * Connect the connection to the connectorType
-                     */
-                    connectionClient.linkConnectionConnectorType(connectionGUID,
-                                                                 connectorTypeGUID,
-                                                                 new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
-                                                                 null);
-
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                                connectionProperties.getTypeName(),
-                                                                                                connectionGUID,
-                                                                                                OpenMetadataType.CONNECTOR_TYPE.typeName,
-                                                                                                connectorTypeGUID,
-                                                                                                OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
-
-                    /*
-                     * Create an endpoint to carry the URL of the platform needed to connect to the metadata store.
-                     */
-                    EndpointProperties endpointProperties = new EndpointProperties();
-
-                    endpointProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceDataSet_platformEndpoint");
-                    endpointProperties.setDisplayName("Reference data set for " + productDefinition.getDisplayName());
-                    endpointProperties.setDescription("This endpoint represents the URL of the OMAG Server Platform that hosts the metadata access store.");
-                    endpointProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
-                    endpointProperties.setNetworkAddress(integrationContext.getMetadataAccessServerPlatformURLRoot());
-
-                    newElementOptions.setParentAtEnd1(true);
-                    newElementOptions.setParentGUID(connectionGUID);
-                    newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
-
-                    endpointClient = integrationContext.getEndpointClient();
-
-                    String endpointGUID = endpointClient.createEndpoint(newElementOptions, null, endpointProperties, null);
-
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                             endpointProperties.getTypeName(),
-                                                                                                             endpointProperties.getDisplayName(),
-                                                                                                             endpointGUID));
-
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                                connectionProperties.getTypeName(),
-                                                                                                connectionGUID,
-                                                                                                endpointProperties.getTypeName(),
-                                                                                                endpointGUID,
-                                                                                                OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
-                }
-
-                return assetGUID;
+            }
+            else
+            {
+                assetGUID = assetElement.getElementHeader().getGUID();
             }
 
-            return assetElement.getElementHeader().getGUID();
+            /*
+             * The connection is dealt with whether the asset was just created or was already there.  The
+             * original assumption was that an asset which exists has a connection, because the two are created
+             * together - but they are created by two calls, and anything that goes wrong between them leaves an
+             * asset that can never acquire one: every later pass finds the asset, skips the block that would
+             * have built the connection, and moves on.  A product data set without a connection cannot be read,
+             * so the product is silently useless.
+             */
+            this.addProductAssetConnection(productDefinition, productGUID, assetGUID, qualifiedName);
+
+            return assetGUID;
         }
 
         return null;
+    }
+
+
+    /**
+     * Make sure the product's asset has a connection, and that the connection still describes the metadata
+     * access server this connector is talking to.
+     * <br>
+     * The connector type and the endpoint are both checked rather than assumed.  A product catalog outlives the
+     * deployment it was built in: the platform can move to a different URL, and a connector provider can be
+     * renamed or replaced between releases.  Either leaves a connection that looks complete and fails when
+     * something tries to use it.
+     *
+     * @param productDefinition definition of the product
+     * @param productGUID unique identifier of the product - the anchor for everything created here
+     * @param assetGUID unique identifier of the product's asset
+     * @param qualifiedName qualified name of the product's asset
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected
+     */
+    private void addProductAssetConnection(ProductDefinition productDefinition,
+                                           String            productGUID,
+                                           String            assetGUID,
+                                           String            qualifiedName) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "addProductAssetConnection";
+
+        String connectorTypeGUID = this.getConnectorTypeGUID(productDefinition.getConnectorProvider());
+
+        if (connectorTypeGUID != null)
+        {
+            ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+
+            OpenMetadataRootElement connectionElement = classificationExplorerClient.getRootElementByUniqueName(qualifiedName + "_connection",
+                                                                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                classificationExplorerClient.getGetOptions());
+
+            if (connectionElement == null)
+            {
+                NewElementOptions newElementOptions = new NewElementOptions(integrationContext.getAssetClient().getMetadataSourceOptions());
+
+                newElementOptions.setIsOwnAnchor(false);
+                newElementOptions.setAnchorGUID(productGUID);
+
+        ConnectionClient connectionClient = integrationContext.getConnectionClient();
+        EndpointClient   endpointClient   = integrationContext.getEndpointClient();
+
+        /*
+         * Set up the connection for the asset.
+         */
+        VirtualConnectionProperties connectionProperties = new VirtualConnectionProperties();
+
+        connectionProperties.setQualifiedName(qualifiedName + "_connection");
+        connectionProperties.setDisplayName("Asset Connection for " + productDefinition.getDisplayName());
+        connectionProperties.setDescription("This connection provides access to the metadata access server that supplied the data for this digital product.");
+        connectionProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+        connectionProperties.setUserId(integrationContext.getMyUserId());
+
+        connectionProperties.setConfigurationProperties(this.getConnectionConfigurationProperties(productDefinition));
+
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentGUID(assetGUID);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName);
+
+        String connectionGUID = connectionClient.createConnection(newElementOptions,
+                                                                  null,
+                                                                  connectionProperties,
+                                                                  null);
+
+        auditLog.logMessage(methodName,
+                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                 connectionProperties.getTypeName(),
+                                                                                                 connectionProperties.getDisplayName(), connectionGUID));
+
+        /*
+         * Pass on all the secrets stores to the product asset.  These secret stores are set up
+         * initially in the content pack for this connector.
+         */
+        for (String purpose : secretsStoreConnectorMap.keySet())
+        {
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentGUID(connectionGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName);
+
+            /*
+             * Get secrets store connection used by this connector
+             */
+            Connection secretsConnectorConnection = secretsStoreConnectorMap.get(purpose).getConnection();
+            String     secretsStoreConnectionGUID = secretsConnectorConnection.getGUID();
+
+            if (secretsStoreConnectionGUID == null)
+            {
+                /*
+                 * Create the secret store connection from this connector's secrets store connection.
+                 */
+                ConnectionProperties secretsStoreConnection = new ConnectionProperties();
+                secretsStoreConnection.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_connection");
+                secretsStoreConnection.setDisplayName(purpose + "Secrets Store Connection for " + productDefinition.getDisplayName());
+                secretsStoreConnection.setDescription("This connection provides access to the secrets store for this digital product.");
+                secretsStoreConnection.setVersionIdentifier(productDefinition.getVersionIdentifier());
+
+                if (secretsConnectorConnection.getConfigurationProperties() != null)
+                {
+                    Map<String, Object> secretsStoreConfigProperties = new HashMap<>(secretsConnectorConnection.getConfigurationProperties());
+                    secretsStoreConnection.setConfigurationProperties(secretsStoreConfigProperties);
+                }
+
+                /*
+                 * Embed secrets store connection in product connection.
+                 */
+                EmbeddedConnectionProperties embeddedConnectionProperties = new EmbeddedConnectionProperties();
+                embeddedConnectionProperties.setDisplayName(purpose);
+
+                secretsStoreConnectionGUID = connectionClient.createConnection(newElementOptions, null, secretsStoreConnection, embeddedConnectionProperties);
+
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                         secretsStoreConnection.getTypeName(),
+                                                                                                         secretsStoreConnection.getDisplayName(),
+                                                                                                         secretsStoreConnectionGUID));
+
+                /*
+                 * Link connector type to connection.
+                 */
+                connectionClient.linkConnectionConnectorType(secretsStoreConnectionGUID,
+                                                             secretsConnectorConnection.getConnectorType().getGUID(),
+                                                             new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
+                                                             null);
+
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                            secretsStoreConnection.getTypeName(),
+                                                                                            secretsStoreConnectionGUID,
+                                                                                            OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                                                            secretsConnectorConnection.getConnectorType().getGUID(),
+                                                                                            OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
+
+                /*
+                 * Add secrets store location as an endpoint.
+                 */
+                EndpointProperties secretsStoreEndpoint = new EndpointProperties();
+                secretsStoreEndpoint.setQualifiedName(qualifiedName + "::" + purpose + "_secretsStore_locationEndpoint");
+                secretsStoreEndpoint.setDisplayName(purpose + "Secrets Store Endpoint for " + productDefinition.getDisplayName());
+                secretsStoreEndpoint.setNetworkAddress(secretsConnectorConnection.getEndpoint().getNetworkAddress());
+
+                newElementOptions.setParentAtEnd1(true);
+                newElementOptions.setParentGUID(secretsStoreConnectionGUID);
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
+
+                String secretsStoreEndpointGUID = endpointClient.createEndpoint(newElementOptions, null, secretsStoreEndpoint, null);
+
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                         secretsStoreEndpoint.getTypeName(),
+                                                                                                         secretsStoreEndpoint.getDisplayName(),
+                                                                                                         secretsStoreEndpointGUID));
+
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                            secretsStoreConnection.getTypeName(),
+                                                                                            secretsStoreConnectionGUID,
+                                                                                            secretsStoreEndpoint.getTypeName(),
+                                                                                            secretsStoreEndpointGUID,
+                                                                                            OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+            }
+            else
+            {
+                /*
+                 * Embed this connector's secrets store connection in product asset connection.
+                 */
+                EmbeddedConnectionProperties embeddedConnectionProperties = new EmbeddedConnectionProperties();
+                embeddedConnectionProperties.setDisplayName(purpose);
+
+                connectionClient.linkEmbeddedConnection(connectionGUID,
+                                                        secretsStoreConnectionGUID,
+                                                        new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
+                                                        embeddedConnectionProperties);
+
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                            connectionProperties.getTypeName(),
+                                                                                            connectionGUID,
+                                                                                            OpenMetadataType.CONNECTION.typeName,
+                                                                                            secretsStoreConnectionGUID,
+                                                                                            OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName));
+            }
+        }
+
+
+        /*
+         * Connect the connection to the connectorType
+         */
+        connectionClient.linkConnectionConnectorType(connectionGUID,
+                                                     connectorTypeGUID,
+                                                     new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
+                                                     null);
+
+        auditLog.logMessage(methodName,
+                            JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                    connectionProperties.getTypeName(),
+                                                                                    connectionGUID,
+                                                                                    OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                                                    connectorTypeGUID,
+                                                                                    OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
+
+        /*
+         * Create an endpoint to carry the URL of the platform needed to connect to the metadata store.
+         */
+        EndpointProperties endpointProperties = new EndpointProperties();
+
+        endpointProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceDataSet_platformEndpoint");
+        endpointProperties.setDisplayName("Reference data set for " + productDefinition.getDisplayName());
+        endpointProperties.setDescription("This endpoint represents the URL of the OMAG Server Platform that hosts the metadata access store.");
+        endpointProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+        endpointProperties.setNetworkAddress(integrationContext.getMetadataAccessServerPlatformURLRoot());
+
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentGUID(connectionGUID);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
+
+        endpointClient = integrationContext.getEndpointClient();
+
+        String endpointGUID = endpointClient.createEndpoint(newElementOptions, null, endpointProperties, null);
+
+        auditLog.logMessage(methodName,
+                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                 endpointProperties.getTypeName(),
+                                                                                                 endpointProperties.getDisplayName(),
+                                                                                                 endpointGUID));
+
+        auditLog.logMessage(methodName,
+                            JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                    connectionProperties.getTypeName(),
+                                                                                    connectionGUID,
+                                                                                    endpointProperties.getTypeName(),
+                                                                                    endpointGUID,
+                                                                                    OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+            }
+            else
+            {
+                this.verifyProductAssetConnection(productDefinition,
+                                                  connectionElement.getElementHeader().getGUID(),
+                                                  connectorTypeGUID);
+            }
+        }
+    }
+
+
+    /**
+     * Check that an existing product asset connection still describes the right thing, and correct it where it
+     * does not.
+     * <br>
+     * Three things are checked, and each is something that can drift after the connection was first written:
+     * the connector type (the provider can be renamed or replaced between releases), the endpoint (the platform
+     * can move to a different URL), and the server name in the configuration properties (the catalog can be
+     * rebuilt against a different metadata access server).  A connection carrying any of these stale reads as
+     * complete and only fails when a connector is built from it.
+     *
+     * @param productDefinition definition of the product
+     * @param connectionGUID unique identifier of the existing connection
+     * @param connectorTypeGUID unique identifier of the connector type the connection should be using
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected
+     */
+    private void verifyProductAssetConnection(ProductDefinition productDefinition,
+                                              String            connectionGUID,
+                                              String            connectorTypeGUID) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+        ConnectionClient             connectionClient             = integrationContext.getConnectionClient();
+        EndpointClient               endpointClient               = integrationContext.getEndpointClient();
+
+        /*
+         * The connection is at end 1 of both of these relationships, so the element wanted is at the other end.
+         */
+        this.verifyConnectorType(classificationExplorerClient, connectionClient, connectionGUID, connectorTypeGUID);
+        this.verifyEndpoint(classificationExplorerClient, endpointClient, productDefinition, connectionGUID);
+        this.verifyConnectionConfigurationProperties(connectionClient, productDefinition, connectionGUID);
+    }
+
+
+    /**
+     * Make sure the connection is linked to the connector type it should be using, and to no other.
+     *
+     * @param classificationExplorerClient client to retrieve the current connector type
+     * @param connectionClient client to relink the connector type
+     * @param connectionGUID unique identifier of the connection
+     * @param connectorTypeGUID unique identifier of the connector type the connection should be using
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected
+     */
+    private void verifyConnectorType(ClassificationExplorerClient classificationExplorerClient,
+                                     ConnectionClient             connectionClient,
+                                     String                       connectionGUID,
+                                     String                       connectorTypeGUID) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName = "verifyConnectorType";
+
+        List<OpenMetadataRootElement> connectorTypes = classificationExplorerClient.getRelatedRootElements(connectionGUID,
+                                                                                                           1,
+                                                                                                           OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
+                                                                                                           classificationExplorerClient.getQueryOptions());
+        boolean correctConnectorTypeInPlace = false;
+
+        if (connectorTypes != null)
+        {
+            for (OpenMetadataRootElement connectorType : connectorTypes)
+            {
+                if (connectorType != null)
+                {
+                    String linkedConnectorTypeGUID = connectorType.getElementHeader().getGUID();
+
+                    if (connectorTypeGUID.equals(linkedConnectorTypeGUID))
+                    {
+                        correctConnectorTypeInPlace = true;
+                    }
+                    else
+                    {
+                        /*
+                         * A connection has one connector type.  Leaving the old one attached alongside the new
+                         * one would make the connection ambiguous rather than corrected.
+                         */
+                        connectionClient.detachConnectionConnectorType(connectionGUID,
+                                                                       linkedConnectorTypeGUID,
+                                                                       connectionClient.getDeleteOptions(false));
+
+                        auditLog.logMessage(methodName,
+                                            JacquardAuditCode.UNLINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                                      OpenMetadataType.CONNECTION.typeName,
+                                                                                                      connectionGUID,
+                                                                                                      OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                                                                      linkedConnectorTypeGUID,
+                                                                                                      OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
+                    }
+                }
+            }
+        }
+
+        if (! correctConnectorTypeInPlace)
+        {
+            connectionClient.linkConnectionConnectorType(connectionGUID,
+                                                         connectorTypeGUID,
+                                                         new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
+                                                         null);
+
+            auditLog.logMessage(methodName,
+                                JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                        OpenMetadataType.CONNECTION.typeName,
+                                                                                        connectionGUID,
+                                                                                        OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                                                        connectorTypeGUID,
+                                                                                        OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
+        }
+    }
+
+
+    /**
+     * Make sure the connection's endpoint still carries the platform URL of the metadata access server this
+     * connector is talking to.
+     *
+     * @param classificationExplorerClient client to retrieve the current endpoint
+     * @param endpointClient client to create or update the endpoint
+     * @param productDefinition definition of the product
+     * @param connectionGUID unique identifier of the connection
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected
+     */
+    private void verifyEndpoint(ClassificationExplorerClient classificationExplorerClient,
+                                EndpointClient               endpointClient,
+                                ProductDefinition            productDefinition,
+                                String                       connectionGUID) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName = "verifyEndpoint";
+
+        String networkAddress = integrationContext.getMetadataAccessServerPlatformURLRoot();
+
+        List<OpenMetadataRootElement> endpoints = classificationExplorerClient.getRelatedRootElements(connectionGUID,
+                                                                                                      1,
+                                                                                                      OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
+                                                                                                      classificationExplorerClient.getQueryOptions());
+        if (endpoints != null)
+        {
+            for (OpenMetadataRootElement endpoint : endpoints)
+            {
+                if ((endpoint != null) && (endpoint.getProperties() instanceof EndpointProperties endpointProperties))
+                {
+                    if (! networkAddress.equals(endpointProperties.getNetworkAddress()))
+                    {
+                        EndpointProperties updatedProperties = new EndpointProperties();
+
+                        updatedProperties.setNetworkAddress(networkAddress);
+
+                        endpointClient.updateEndpoint(endpoint.getElementHeader().getGUID(),
+                                                      endpointClient.getUpdateOptions(false),
+                                                      updatedProperties);
+
+                        auditLog.logMessage(methodName,
+                                            JacquardAuditCode.UPDATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                                 OpenMetadataType.ENDPOINT.typeName,
+                                                                                                                 endpointProperties.getDisplayName(),
+                                                                                                                 endpoint.getElementHeader().getGUID()));
+                    }
+                }
+            }
+
+            return;
+        }
+
+        /*
+         * The connection has no endpoint at all, so there is nothing to correct - it has to be built.
+         */
+        EndpointProperties endpointProperties = new EndpointProperties();
+
+        endpointProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceDataSet_platformEndpoint");
+        endpointProperties.setDisplayName("Reference data set for " + productDefinition.getDisplayName());
+        endpointProperties.setDescription("This endpoint represents the URL of the OMAG Server Platform that hosts the metadata access store.");
+        endpointProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+        endpointProperties.setNetworkAddress(networkAddress);
+
+        NewElementOptions newElementOptions = new NewElementOptions(endpointClient.getMetadataSourceOptions());
+
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentGUID(connectionGUID);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
+
+        String endpointGUID = endpointClient.createEndpoint(newElementOptions, null, endpointProperties, null);
+
+        auditLog.logMessage(methodName,
+                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                 endpointProperties.getTypeName(),
+                                                                                                 endpointProperties.getDisplayName(),
+                                                                                                 endpointGUID));
+    }
+
+
+    /**
+     * Make sure the connection's configuration properties still name the metadata access server this connector
+     * is talking to.  This is the value the data set connector reads to decide which server to call, so a stale
+     * one sends every read to a server that may no longer exist.
+     *
+     * @param connectionClient client to update the connection
+     * @param productDefinition definition of the product
+     * @param connectionGUID unique identifier of the connection
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected
+     */
+    private void verifyConnectionConfigurationProperties(ConnectionClient  connectionClient,
+                                                         ProductDefinition productDefinition,
+                                                         String            connectionGUID) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "verifyConnectionConfigurationProperties";
+
+        OpenMetadataRootElement connectionElement = connectionClient.getConnectionByGUID(connectionGUID, connectionClient.getGetOptions());
+
+        if ((connectionElement != null) && (connectionElement.getProperties() instanceof ConnectionProperties connectionProperties))
+        {
+            Map<String, Object> currentProperties = connectionProperties.getConfigurationProperties();
+            Map<String, Object> requiredProperties = this.getConnectionConfigurationProperties(productDefinition);
+
+            if (! requiredProperties.equals(currentProperties))
+            {
+                ConnectionProperties updatedProperties = new ConnectionProperties();
+
+                updatedProperties.setConfigurationProperties(requiredProperties);
+
+                connectionClient.updateConnection(connectionGUID,
+                                                  connectionClient.getUpdateOptions(false),
+                                                  updatedProperties);
+
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.UPDATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                         OpenMetadataType.CONNECTION.typeName,
+                                                                                                         connectionProperties.getDisplayName(),
+                                                                                                         connectionGUID));
+            }
+        }
+    }
+
+
+    /**
+     * Return the configuration properties a product asset's connection needs - the product's own settings, plus
+     * the metadata access server and page size that the data set connector reads to know which server to call.
+     *
+     * @param productDefinition definition of the product
+     * @return configuration properties
+     */
+    private Map<String, Object> getConnectionConfigurationProperties(ProductDefinition productDefinition)
+    {
+        Map<String, Object> connectionConfigurationProperties = new HashMap<>();
+
+        if (productDefinition.getConfigurationProperties() != null)
+        {
+            connectionConfigurationProperties.putAll(productDefinition.getConfigurationProperties());
+        }
+
+        connectionConfigurationProperties.put(TabularDataSetConfigurationProperty.SERVER_NAME.getName(), integrationContext.getMetadataAccessServer());
+        connectionConfigurationProperties.put(TabularDataSetConfigurationProperty.MAX_PAGE_SIZE.getName(), integrationContext.getMaxPageSize());
+
+        return connectionConfigurationProperties;
     }
 
 
@@ -1875,8 +2249,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                         PropertyServerException,
                                                         UserNotAuthorizedException
     {
-        final String methodName = "activateNotificationWatchdog";
-
         GovernanceDefinitionClient governanceActionClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName);
         AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.ENGINE_ACTION.typeName);
 
@@ -1890,21 +2262,21 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
             if (governanceActionType.getProperties() instanceof GovernanceActionTypeProperties governanceActionTypeProperties)
             {
-                String engineActionGUID = integrationContext.getStewardshipAction().initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(),
-                                                                                                                 Collections.singletonList(integrationContext.getIntegrationConnectorGUID()),
-                                                                                                                 Collections.singletonList(productFolders.get(ProductFolderDefinition.TOP_LEVEL.getQualifiedName())),
-                                                                                                                 notificationWatchdogTargets,
-                                                                                                                 null,
-                                                                                                                 null,
-                                                                                                                 connectorName,
-                                                                                                                 null,
-                                                                                                                 null);
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.BARDOT_STARTED.getMessageDefinition(connectorName,
-                                                                                          engineActionGUID,
-                                                                                          Integer.toString(notificationWatchdogTargets.size())));
-
-                return engineActionGUID;
+                /*
+                 * The engine action is started with no action targets.  The notification types are attached
+                 * afterwards by reconcileWithSubscriptionManager(), which covers the ones this run creates
+                 * and the ones an earlier run left behind alike - passing them here would only ever carry
+                 * the former, and on a catalogue that is already built that is none of them.
+                 */
+                return integrationContext.getStewardshipAction().initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(),
+                                                                                              Collections.singletonList(integrationContext.getIntegrationConnectorGUID()),
+                                                                                              Collections.singletonList(productFolders.get(ProductFolderDefinition.TOP_LEVEL.getQualifiedName())),
+                                                                                              null,
+                                                                                              null,
+                                                                                              null,
+                                                                                              connectorName,
+                                                                                              null,
+                                                                                              null);
             }
         }
         else

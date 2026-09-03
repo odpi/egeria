@@ -70,7 +70,9 @@ public class FFDCRESTClientBase
         }
         catch (Exception     error)
         {
-            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
+            throw new InvalidParameterException(OMAGCommonErrorCode.UNABLE_TO_CREATE_CLIENT.getMessageDefinition(serverName,
+                                                                                                                  serverPlatformURLRoot,
+                                                                                                                  error.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 error,
@@ -111,7 +113,9 @@ public class FFDCRESTClientBase
         }
         catch (Exception     error)
         {
-            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
+            throw new InvalidParameterException(OMAGCommonErrorCode.UNABLE_TO_CREATE_CLIENT.getMessageDefinition(serverName,
+                                                                                                                  serverPlatformURLRoot,
+                                                                                                                  error.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 error,

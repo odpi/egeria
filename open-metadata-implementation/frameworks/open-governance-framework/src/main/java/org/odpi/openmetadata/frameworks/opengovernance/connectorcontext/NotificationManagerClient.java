@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.opengovernance.handlers.NotificationHand
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextClientBase;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -97,127 +96,41 @@ public class NotificationManagerClient extends ConnectorContextClientBase
     /**
      * Create a notification/action for the subscribers.
      *
-     * @param firstNotificationProperties        properties for the first notification sent to this subscriber by this governance service instance
-     * @param nextNotificationProperties   properties for a follow on notification sent to this subscriber by this governance service instance
-     * @param notificationCount      notification count
      * @param notificationTypeGUID   unique identifier of the cause for the action to be raised
+     * @param firstNotificationProperties  properties for the first notification sent to this subscriber by this governance service instance
+     * @param nextNotificationProperties   properties for a follow-on notification sent to this subscriber by this governance service instance
+     * @param lastNotificationProperties   properties for the last notification sent to this subscriber by this governance service instance
      * @param initialClassifications initial classifications to add to the action
      * @param requestParameters      firstNotificationProperties to pass to the next governance service
      * @param actionRequesterGUID    unique identifier of the source of the action
      * @param actionTargets          the list of elements that should be acted upon
-     * @param minimumNotificationInterval    minimum time between notifications
-     * @param newSubscriberStatus    set the subscriber relationship to this value after a successful notification; null means leave it alone
      * @throws InvalidParameterException  the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
      * @throws PropertyServerException    a problem connecting to the metadata store
      */
-    public void notifySubscribers(long                                  notificationCount,
+    public void notifySubscribers(String                                notificationTypeGUID,
                                   Map<String, ClassificationProperties> initialClassifications,
                                   NotificationProperties                firstNotificationProperties,
                                   NotificationProperties                nextNotificationProperties,
-                                  String                                notificationTypeGUID,
+                                  NotificationProperties                lastNotificationProperties,
                                   Map<String, String>                   requestParameters,
                                   String                                actionRequesterGUID,
-                                  List<NewActionTarget>                 actionTargets,
-                                  long                                  minimumNotificationInterval,
-                                  ActivityStatus                        newSubscriberStatus) throws InvalidParameterException,
+                                  List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        notificationHandler.notifySubscribers(connectorUserId,
-                                              notificationCount,
+        notificationHandler.notifySubscribers(externalSourceGUID,
+                                              externalSourceName,
+                                              connectorUserId,
                                               initialClassifications,
                                               firstNotificationProperties,
                                               nextNotificationProperties,
+                                              lastNotificationProperties,
                                               notificationTypeGUID,
                                               requestParameters,
                                               actionRequesterGUID,
                                               actionTargets,
-                                              minimumNotificationInterval,
-                                              newSubscriberStatus);
-    }
-
-
-    /**
-     * Create a notification/action for the new subscriber.
-     *
-     * @param subscriberGUID       unique identifier of the subscriber
-     * @param notificationCount      notification count
-     * @param outboundNotificationProperties           properties of the action
-     * @param initialClassifications initial classifications to add to the action
-     * @param notificationTypeGUID unique identifier of the cause for the action to be raised
-     * @param requestParameters    properties to pass to any governance action subscriber
-     * @param actionRequesterGUID  unique identifier of the source of the action
-     * @param actionTargets        the list of elements that should be acted upon
-     * @param minimumNotificationInterval    minimum time between notifications
-     * @param newSubscriberStatus    set the subscriber relationship to this value after a successful notification; null means leave it alone
-     * @return unique identifier of the action
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to continue
-     * @throws PropertyServerException    a problem connecting to the metadata store
-     */
-    public String welcomeSubscriber(String                                subscriberGUID,
-                                    long                                  notificationCount,
-                                    Map<String, ClassificationProperties> initialClassifications,
-                                    NotificationProperties                outboundNotificationProperties,
-                                    String                                notificationTypeGUID,
-                                    Map<String, String>                   requestParameters,
-                                    String                                actionRequesterGUID,
-                                    List<NewActionTarget>                 actionTargets,
-                                    long                                  minimumNotificationInterval,
-                                    ActivityStatus                        newSubscriberStatus) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
-    {
-        return notificationHandler.welcomeSubscriber(connectorUserId,
-                                                     subscriberGUID,
-                                                     notificationCount,
-                                                     initialClassifications,
-                                                     outboundNotificationProperties,
-                                                     notificationTypeGUID,
-                                                     requestParameters,
-                                                     actionRequesterGUID,
-                                                     actionTargets,
-                                                     minimumNotificationInterval,
-                                                     newSubscriberStatus);
-    }
-
-    /**
-     * Create a notification/action for an unsubscribed subscriber.
-     *
-     * @param subscriberGUID       unique identifier of the subscriber
-     * @param notificationCount      notification count
-     * @param outboundNotificationProperties           properties of the action
-     * @param initialClassifications initial classifications to add to the action
-     * @param notificationTypeGUID unique identifier of the cause for the action to be raised
-     * @param requestParameters    properties to pass to any governance action subscriber
-     * @param actionRequesterGUID  unique identifier of the source of the action
-     * @param actionTargets        the list of elements that should be acted upon
-     * @return unique identifier of the action
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to continue
-     * @throws PropertyServerException    a problem connecting to the metadata store
-     */
-    public String dismissSubscriber(String                                subscriberGUID,
-                                    long                                  notificationCount,
-                                    Map<String, ClassificationProperties> initialClassifications,
-                                    NotificationProperties                outboundNotificationProperties,
-                                    String                                notificationTypeGUID,
-                                    Map<String, String>                   requestParameters,
-                                    String                                actionRequesterGUID,
-                                    List<NewActionTarget>                 actionTargets) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
-    {
-        return notificationHandler.dismissSubscriber(connectorUserId,
-                                                     subscriberGUID,
-                                                     notificationCount,
-                                                     initialClassifications,
-                                                     outboundNotificationProperties,
-                                                     notificationTypeGUID,
-                                                     requestParameters,
-                                                     actionRequesterGUID,
-                                                     actionTargets);
+                                              parentContext.getConnectorName());
     }
 
 

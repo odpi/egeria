@@ -136,15 +136,6 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
               "https://egeria-project.org/services/ffdc-services/"),
 
     /**
-     * OMAG-COMMON-400-014 - OMAG server has been called with a null local server name
-     */
-    NULL_LOCAL_SERVER_NAME(400, "OMAG-COMMON-400-014",
-                           "OMAG server has been called with a null local server name",
-                           "The system cannot configure the local server without knowing what it is called.",
-                           "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly.",
-                           "https://egeria-project.org/services/ffdc-services/"),
-
-    /**
      * OMAG-COMMON-400-015 - The object passed on the {0} parameter of the {1} operation is null
      */
     NULL_OBJECT(400, "OMAG-COMMON-400-015",
@@ -283,6 +274,15 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                 "The value {0} passed on the {1} parameter of the {2} operation is invalid",
                 "The system cannot process the request without a valid value for this parameter.",
                 "Correct the code in the caller to provide a valid value.",
+                "https://egeria-project.org/services/ffdc-services/"),
+
+    /**
+     * OMAG-COMMON-400-033 - Unable to create a client to call the {0} server at {1}; the error was {2}
+     */
+    UNABLE_TO_CREATE_CLIENT(400, "OMAG-COMMON-400-033",
+                "Unable to create a client to call the {0} server at {1}; the error was {2}",
+                "The system cannot issue requests to the server because the client that calls it could not be built.",
+                "Use the error message to determine what is wrong.  The server name and platform URL root are the usual causes, but the client also needs whatever it authenticates with - a secrets store, for example - to be reachable and to hold credentials the server accepts.",
                 "https://egeria-project.org/services/ffdc-services/"),
 
     /**

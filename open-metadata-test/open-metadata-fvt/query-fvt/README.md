@@ -6,15 +6,23 @@
 The query-fvt module is a functional verification test suite that gives the repository query surface -
 paging, sorting, subtype filtering, status (soft-delete) filtering, complex property/classification
 search, `asOfTime` historical queries, and `graphQueryDepth` - a thorough workout against a real
-[PostgreSQL repository](../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/postgres-repository-connector)
-loaded with the (nearly) full set of open metadata archives from the top-level
+repository loaded with the (nearly) full set of open metadata archives from the top-level
 [content-packs](../../../content-packs) directory.
+
+The same tests run against either the
+[PostgreSQL repository](../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/postgres-repository-connector)
+or the
+[in-memory repository](../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/inmemory-repository-connector),
+and running both is the point rather than a convenience. The two answer the same query in quite
+different ways - PostgreSQL translates the search into SQL, while the in-memory store retrieves and
+then filters in Java - and their observable behaviour is supposed to be identical. Where it silently
+is not, only a suite that runs on both sides can tell.
 
 Unlike [open-metadata-bvt](../../open-metadata-bvt), which is fast, hermetic and runs on every build, this
 suite:
 
-* needs a reachable PostgreSQL server,
-* loads ~27 archives worth of content before any query test even starts, which can take a while, and
+* loads ~27 archives worth of content before any query test even starts, which can take a while,
+* needs a reachable PostgreSQL server for the PostgreSQL run (the in-memory run needs nothing), and
 * is **not** part of the default build - it only runs when explicitly requested.
 
 ## Running it
@@ -23,7 +31,17 @@ suite:
 ./gradlew :open-metadata-test:open-metadata-fvt:query-fvt:test -PrunQueryFvt
 ```
 
-Without `-PrunQueryFvt`, the suite's `test` task is skipped, even by `./gradlew build`/`./gradlew test`
+```bash
+./gradlew :open-metadata-test:open-metadata-fvt:query-fvt:test -PrunQueryFvtInMemory
+```
+
+`-PrunQueryFvt` uses the PostgreSQL repository and `-PrunQueryFvtInMemory` the in-memory one. Each run
+exercises one repository; asking for both at once is refused rather than resolved to one of them. The
+in-memory run needs no database and does its archive loading without database round trips, so it is
+much the cheaper of the two to run - but it is not a substitute for the PostgreSQL run, since each
+repository has behaviour the other cannot exercise.
+
+Without one of those properties, the suite's `test` task is skipped, even by `./gradlew build`/`./gradlew test`
 from the repo root - so it is safe to leave registered in `settings.gradle` without slowing down every
 other build.
 

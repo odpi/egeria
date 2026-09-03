@@ -9,12 +9,11 @@ The OMFAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 12 |
+| **Number of messages** | 16 |
 | **Message identifiers begin** | `OPEN-METADATA-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFAuditCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-metadata-framework](../../open-metadata-implementation/frameworks/open-metadata-framework) |
 | **Source** | [OMFAuditCode.java](../../open-metadata-implementation/frameworks/open-metadata-framework/src/main/java/org/odpi/openmetadata/frameworks/openmetadata/ffdc/OMFAuditCode.java) |
-| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 
 ## Messages
@@ -32,6 +31,10 @@ The OMFAuditCode is used to define the message content for the Audit Log.
 | [OPEN-METADATA-0015](#open-metadata-0015) | ERROR | The valid metadata value {0} for property {1} is not found |
 | [OPEN-METADATA-0016](#open-metadata-0016) | INFO | Thread interrupt for connector {0} with message {1} |
 | [OPEN-METADATA-0017](#open-metadata-0017) | INFO | File change notification for connector {0} of kind {1} for path {2} |
+| [OPEN-METADATA-0018](#open-metadata-0018) | INFO | The {0} service is not yet monitoring notification type {1} because it is planned to start at {2} |
+| [OPEN-METADATA-0019](#open-metadata-0019) | INFO | The {0} service has stopped monitoring notification type {1} because it has passed its completion date of {2} |
+| [OPEN-METADATA-0020](#open-metadata-0020) | INFO | The {0} service is refreshing its cache for configured notification type {1} ({2}) where only one notification is sent to each subscriber |
+| [OPEN-METADATA-0021](#open-metadata-0021) | INFO | The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.  The next scheduled notification will be sent at {4} |
 | [OPEN-METADATA-0025](#open-metadata-0025) | EXCEPTION | The Open Metadata Store has received an unexpected {0} exception while formatting a response during method {1} for service {2}.  The message was: {3} |
 
 ----
@@ -45,6 +48,7 @@ The OMFAuditCode is used to define the message content for the Audit Log.
 | **Java constant** | `OMFAuditCode.DIRECTORY_MONITORING_STARTING` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 **System action**
 
@@ -66,6 +70,7 @@ No action is required unless there are errors that follow indicating that the mo
 | **Java constant** | `OMFAuditCode.DIRECTORY_MONITORING_STOPPING` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 **System action**
 
@@ -87,6 +92,7 @@ No action is required unless there are errors that follow indicating that the mo
 | **Java constant** | `OMFAuditCode.UNEXPECTED_FILE_MONITORING_EXCEPTION` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 **System action**
 
@@ -108,6 +114,7 @@ Use the message in the unexpected exception to determine the root cause of the e
 | **Java constant** | `OMFAuditCode.FILE_SYSTEM_MONITORING_STOPPING` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 **System action**
 
@@ -129,6 +136,7 @@ No action is required unless there are errors that follow indicating that there 
 | **Java constant** | `OMFAuditCode.DISCONNECT_DETECTED` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 **System action**
 
@@ -150,6 +158,7 @@ Monitor the shutdown of the connector.
 | **Java constant** | `OMFAuditCode.MISSING_CORRELATION` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 **System action**
 
@@ -171,6 +180,7 @@ Review the audit log to determine if there were errors detected when the open me
 | **Java constant** | `OMFAuditCode.VALID_METADATA_UPDATE` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 **System action**
 
@@ -192,6 +202,7 @@ This is an informational message to provide an audit log of changes to the open 
 | **Java constant** | `OMFAuditCode.UNEXPECTED_EXCEPTION` |
 | **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 **System action**
 
@@ -213,6 +224,7 @@ Use the details from the error message to determine the cause of the error and r
 | **Java constant** | `OMFAuditCode.VALID_METADATA_MISSING` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 **System action**
 
@@ -234,6 +246,7 @@ Check the parameter of the call to make sure there name and value have been prop
 | **Java constant** | `OMFAuditCode.THREAD_INTERRUPT` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 **System action**
 
@@ -255,6 +268,7 @@ Thread interrupts are part of normal processing.  Look for other errors.
 | **Java constant** | `OMFAuditCode.FILE_CHANGE_EVENT` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 **System action**
 
@@ -263,6 +277,94 @@ A file change event has been received. If appropriate, it wil lbe passed to the 
 **User action**
 
 Check that the connector reacts correctly to this event.
+
+
+----
+
+### OPEN-METADATA-0018
+
+> The {0} service is not yet monitoring notification type {1} because it is planned to start at {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMFAuditCode.NOTIFICATION_TYPE_NOT_STARTED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/notification-type/> |
+
+**System action**
+
+The notification type is skipped until its planned start date has passed.
+
+**User action**
+
+No action is required if the start date is intended.  A notification type whose subscribers are waiting for data has the wrong start date.
+
+
+----
+
+### OPEN-METADATA-0019
+
+> The {0} service has stopped monitoring notification type {1} because it has passed its completion date of {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMFAuditCode.NOTIFICATION_TYPE_COMPLETED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/notification-type/> |
+
+**System action**
+
+The notification type is no longer monitored and its subscribers receive no further notifications.
+
+**User action**
+
+No action is required if the completion date is intended.  Extend it if the notification type should still be delivering to its subscribers.
+
+
+----
+
+### OPEN-METADATA-0020
+
+> The {0} service is refreshing its cache for configured notification type {1} ({2}) where only one notification is sent to each subscriber
+
+|  |  |
+|---|---|
+| **Java constant** | `OMFAuditCode.ONE_TIME_NOTIFICATION_TYPE` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/notification-type/> |
+
+**System action**
+
+The governance service sends a notification to each subscriber registered when the service starts up and then monitors for new subscribers in order to send them a notification.
+
+**User action**
+
+This notification pattern was selected because multipleNotificationsPermitted is set to false. Validate that this is the right pattern.
+
+
+----
+
+### OPEN-METADATA-0021
+
+> The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.  The next scheduled notification will be sent at {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMFAuditCode.PERIODIC_NOTIFICATION_TYPE` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/concepts/notification-type/> |
+
+**System action**
+
+The governance service sends a notification to each subscriber registered when the service starts up and then monitors for new subscribers in order to send them notifications.  Additional notifications are sent to each active subscriber every notification interval.
+
+**User action**
+
+This notification pattern was selected because multipleNotificationsPermitted is set to true and notificationInterval is greater than 0. Validate that this is the intended behaviour and the notification interval is appropriate.
 
 
 ----
@@ -276,6 +378,7 @@ Check that the connector reacts correctly to this event.
 | **Java constant** | `OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION` |
 | **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
 
 **System action**
 

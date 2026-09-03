@@ -91,7 +91,16 @@ Content-Type: application/json
   ]
 }
 
+###
+# group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
+# @name Add file audit log destination
+# Add the file audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/servers/simple-metadata-store/audit-log-destinations/files
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
+["Error", "Exception"]
 
 ###
 # Add the file name for an open Metadata Archive that should be loaded each time the server starts.
@@ -156,7 +165,16 @@ Content-Type: application/json
 
 ["Error", "Exception", "Activity", "Action", "Decision", "Security", "Cohort", "Trace"]
 
+###
+# group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
+# @name Add file audit log destination
+# Add the file audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/audit-log-destinations/files
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
+["Error", "Exception"]
 
 ###
 # Set up all of the registered, undeprecated Open Metadata Access Services (OMASs) with kafka notifications enabled.
@@ -199,7 +217,6 @@ Content-Type: application/json
   }
   ]
 }
-
 
 
 ###
@@ -375,7 +392,16 @@ Content-Type: application/json
 
 ["Error", "Exception", "Activity", "Action", "Decision", "Security", "Cohort"]
 
+###
+# group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
+# @name Add file audit log destination
+# Add the file audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/servers/view-server/audit-log-destinations/files
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
+["Error", "Exception"]
 
 ###
 # Set up all of the registered, undeprecated Open Metadata View Services (OMVSs).  The request body lists the platforms
@@ -479,6 +505,17 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ["Error", "Exception", "Activity", "Action", "Decision", "Security", "Cohort"]
+
+###
+# group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
+# @name Add file audit log destination
+# Add the file audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/servers/engine-host/audit-log-destinations/files
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+["Error", "Exception"]
 
 ###
 # Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
@@ -843,6 +880,17 @@ Content-Type: application/json
 ["Error", "Exception", "Activity", "Action", "Decision", "Security", "Cohort"]
 
 ###
+# group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
+# @name Add file audit log destination
+# Add the file audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/servers/integration-daemon/audit-log-destinations/files
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+["Error", "Exception"]
+
+###
 # Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
 POST {{baseURL}}/open-metadata/admin-services/servers/integration-daemon/security/connection
 Authorization: Bearer {{token}}
@@ -1055,6 +1103,17 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ["Error", "Exception", "Activity", "Action", "Decision", "Security", "Cohort"]
+
+###
+# group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
+# @name Add file audit log destination
+# Add the file audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/servers/nanny-daemon/audit-log-destinations/files
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+["Error", "Exception"]
 
 ###
 # Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.

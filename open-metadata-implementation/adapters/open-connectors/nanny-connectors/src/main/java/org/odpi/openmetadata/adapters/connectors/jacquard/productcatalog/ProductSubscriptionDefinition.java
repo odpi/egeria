@@ -18,7 +18,7 @@ public enum ProductSubscriptionDefinition
                             null,
                             ProductGovernanceDefinition.ONE_TIME_SLO,
                             false,
-                            10,
+                            false,
                             0,
                             ProductGlossaryTermDefinition.EVALUATION_SUBSCRIPTION),
 
@@ -32,7 +32,7 @@ public enum ProductSubscriptionDefinition
                                null,
                                ProductGovernanceDefinition.DAILY_REFRESH_SLO,
                                true,
-                               10,
+                               true,
                                24 * 60,
                                ProductGlossaryTermDefinition.DAILY_REFRESH_SUBSCRIPTION),
 
@@ -46,7 +46,7 @@ public enum ProductSubscriptionDefinition
                                null,
                                ProductGovernanceDefinition.WEEKLY_REFRESH_SLO,
                                 true,
-                                10,
+                                true,
                                 7 * 24 * 60,
                                 ProductGlossaryTermDefinition.WEEKLY_REFRESH_SUBSCRIPTION),
 
@@ -61,8 +61,8 @@ public enum ProductSubscriptionDefinition
                    null,
                    ProductGovernanceDefinition.MONITORED_RESOURCE_SLO,
                    true,
+                   true,
                    10,
-                   0,
                    ProductGlossaryTermDefinition.ONGOING_UPDATE_SUBSCRIPTION),
     ;
 
@@ -73,9 +73,9 @@ public enum ProductSubscriptionDefinition
     private final String                        description;
     private final String                        category;
     private final ProductGovernanceDefinition   serviceLevelObjective;
+    private final boolean                       addMonitoredResource;
     private final boolean                       multipleNotificationsPermitted;
     private final long                          minimumNotificationInterval;
-    private final long                          notificationInterval;
     private final ProductGlossaryTermDefinition glossaryTerm;
 
 
@@ -88,9 +88,10 @@ public enum ProductSubscriptionDefinition
      * @param description                 description of subscription type
      * @param category                    category of subscription type
      * @param serviceLevelObjective       behaviour of subscription type
+     * @param addMonitoredResource        should the subscription monitor its resource for changes?
      * @param multipleNotificationsPermitted whether multiple notifications are permitted
      * @param minimumNotificationInterval minimum time between notifications
-     * @param notificationInterval        time between notifications for periodic notification pattern
+     * @param glossaryTerm                glossary term describing this subscription type
      */
     ProductSubscriptionDefinition(String                        governanceActionTypeGUID,
                                   String                        identifier,
@@ -98,9 +99,9 @@ public enum ProductSubscriptionDefinition
                                   String                        description,
                                   String                        category,
                                   ProductGovernanceDefinition   serviceLevelObjective,
+                                  boolean                       addMonitoredResource,
                                   boolean                       multipleNotificationsPermitted,
                                   long                          minimumNotificationInterval,
-                                  long                          notificationInterval,
                                   ProductGlossaryTermDefinition glossaryTerm)
     {
         this.governanceActionTypeGUID       = governanceActionTypeGUID;
@@ -109,9 +110,9 @@ public enum ProductSubscriptionDefinition
         this.description                    = description;
         this.category                       = category;
         this.serviceLevelObjective          = serviceLevelObjective;
+        this.addMonitoredResource           = addMonitoredResource;
         this.multipleNotificationsPermitted = multipleNotificationsPermitted;
         this.minimumNotificationInterval    = minimumNotificationInterval;
-        this.notificationInterval           = notificationInterval;
         this.glossaryTerm                   = glossaryTerm;
     }
 
@@ -196,6 +197,17 @@ public enum ProductSubscriptionDefinition
 
 
     /**
+     * Return whether a monitored resource should be added to the subscription.
+     *
+     * @return boolean flag
+     */
+    public boolean isAddMonitoredResource()
+    {
+        return addMonitoredResource;
+    }
+
+
+    /**
      * Return the minimum minutes between notifications.  If 0, notifications are sent out whenever the
      * appropriate condition is detected.
      *
@@ -204,19 +216,6 @@ public enum ProductSubscriptionDefinition
     public long getMinimumNotificationInterval()
     {
         return minimumNotificationInterval;
-    }
-
-
-
-    /**
-     * Return the minutes between notifications.  If null, notifications are driven by other events,
-     * such as a change to a monitored resource.
-     *
-     * @return minute count
-     */
-    public long getNotificationInterval()
-    {
-        return notificationInterval;
     }
 
 
@@ -248,7 +247,6 @@ public enum ProductSubscriptionDefinition
                 ", serviceLevelObjective=" + serviceLevelObjective +
                 ", multipleNotificationsPermitted=" + multipleNotificationsPermitted +
                 ", minimumNotificationInterval=" + minimumNotificationInterval +
-                ", notificationInterval=" + notificationInterval +
                 ", glossaryTerm=" + glossaryTerm +
                 "} " + super.toString();
     }
