@@ -9,7 +9,7 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 18 |
+| **Number of messages** | 20 |
 | **Message identifiers begin** | `JACQUARD-HARVESTER-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/nanny-connectors](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors) |
@@ -28,6 +28,8 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 | [JACQUARD-HARVESTER-0010](#jacquard-harvester-0010) | TRACE | The {0} integration connector has created a new {1} supporting definition called {2} with GUID {3} |
 | [JACQUARD-HARVESTER-0011](#jacquard-harvester-0011) | INFO | The {0} integration connector is starting its harvesting of open metadata from server {1} on platform {2} into digital products |
 | [JACQUARD-HARVESTER-0012](#jacquard-harvester-0012) | INFO | The {0} integration connector has created a new digital product {1} called {2} |
+| [JACQUARD-HARVESTER-0025](#jacquard-harvester-0025) | TRACE | The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3} |
+| [JACQUARD-HARVESTER-0026](#jacquard-harvester-0026) | TRACE | The {0} integration connector is unlinking {1} element {2} from {3} element {4} to remove relationship {5} |
 | [JACQUARD-HARVESTER-0014](#jacquard-harvester-0014) | TRACE | The {0} integration connector is linking {1} element {2} to {3} element {4} using relationship {5} |
 | [JACQUARD-HARVESTER-0015](#jacquard-harvester-0015) | TRACE | The {0} integration connector has retrieved a new {1} supporting definition called {2} with GUID {3} |
 | [JACQUARD-HARVESTER-0016](#jacquard-harvester-0016) | INFO | The {0} integration connector has retrieved an existing digital product {1} called {2} |
@@ -213,6 +215,50 @@ The connector is setting up the fixed open metadata digital products.
 **User action**
 
 No action is required.  This message is for monitoring the set up of the fixed digital products.
+
+
+----
+
+### JACQUARD-HARVESTER-0025
+
+> The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `JacquardAuditCode.UPDATED_SUPPORTING_DEFINITION` |
+| **Severity** | TRACE - This is additional information on the operation of the server that may be of assistance in debugging a problem. It is not normally logged to any destination, but can be added when needed. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
+
+**System action**
+
+The connector found a definition in the Open Metadata Digital Product Catalog that no longer described the deployment it is running in, and corrected it.
+
+**User action**
+
+No action is required.  This message records that the catalog has been brought back into line with the metadata access server that supplies it.
+
+
+----
+
+### JACQUARD-HARVESTER-0026
+
+> The {0} integration connector is unlinking {1} element {2} from {3} element {4} to remove relationship {5}
+
+|  |  |
+|---|---|
+| **Java constant** | `JacquardAuditCode.UNLINKING_ELEMENTS` |
+| **Severity** | TRACE - This is additional information on the operation of the server that may be of assistance in debugging a problem. It is not normally logged to any destination, but can be added when needed. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
+
+**System action**
+
+The connector is removing a link that no longer describes the deployment it is running in, so that the corrected link can take its place.
+
+**User action**
+
+No action is required.  This message is for monitoring the maintenance of the Open Metadata Digital Product Catalog.
 
 
 ----

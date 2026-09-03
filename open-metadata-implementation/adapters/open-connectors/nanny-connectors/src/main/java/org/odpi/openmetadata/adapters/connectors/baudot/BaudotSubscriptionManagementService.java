@@ -21,11 +21,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationTypeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openwatchdog.GenericWatchdogActionListener;
 import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceConnector;
@@ -36,18 +35,17 @@ import java.util.*;
 
 
 /**
- * MonitoredResourceNotificationService is a Watchdog Governance Action Service that listens for changes to its
- * monitored resources and notifies its subscribers when a change occurs.
+ * BaudotSubscriptionManagementService is a Watchdog Governance Action Service that listens for changes to its
+ * monitored resources and notifies its subscribers when a change occurs.  There are 2 distinct parts to this processing.
  * It listens for changes to its subscribers and sends welcome and cancellation notifications.
  * It is designed to run continuously and so does not set up completion status or guards unless it fails.  This means its
- * Engine Action entity is never (rarely) completed and this service is restarted each time the hosting engine is restarted.
+ * Engine Action entity is never (rarely) completed and as a result, this service is restarted each time the hosting engine is restarted.
  */
 public class BaudotSubscriptionManagementService extends WatchdogActionServiceConnector
 {
     volatile boolean completed = false;
 
     private final GenericWatchdogActionListener listener             = new GenericWatchdogActionListener(this);
-    private final NotificationTypes             notificationTypeMap = new NotificationTypes();
     private final MonitoredResources            monitoredResources   = new MonitoredResources();
 
 
@@ -65,59 +63,56 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
         super.start();
 
         final String methodName = "start";
-        boolean listenerRegistered = false;
 
         try
         {
+            /*
+             * Listening starts before the first cache refresh, not after it.
+             *
+             * The notification types managed by this service are attached to its engine action using ActionTarget
+             * relationships, and that can happen while this service is starting - so the two can race.
+             * Refreshing first and then listening loses every notification type attached in between: the
+             * refresh does not see them because they are not there yet, and the listener does not see them
+             * because it is not listening when the change events are sent.  They would then go unmonitored
+             * until the next scheduled refresh, an hour later.  Listening first means anything missed by
+             * the first scan arrives as an event and can be skipped.
+             */
+            watchdogContext.registerListener(listener,
+                                             null,
+                                             null,
+                                             null);
+
             while (! completed)
             {
-                /*
-                 * Listening starts before the first cache refresh, not after it.
-                 *
-                 * The notification types this service is responsible for are attached to its engine action by
-                 * whoever started it, and that happens while this service is starting - so the two race.
-                 * Refreshing first and then listening loses every notification type attached in between: the
-                 * refresh does not see them because they are not there yet, and the listener does not see them
-                 * because it does not exist yet.  They would then go unmonitored until the next scheduled
-                 * refresh, an hour later.  Listening first means anything missed by the refresh arrives as an
-                 * event, and anything seen by both is simply refreshed twice.
-                 */
-                if (! listenerRegistered)
-                {
-                    /*
-                     * Will need to filter manually in the listener
-                     */
-                    watchdogContext.registerListener(listener,
-                                                     null,
-                                                     null,
-                                                     null);
-                    listenerRegistered = true;
-                }
-
                 /*
                  * Set up the caches. Begin by extracting the notification types from the action targets.
                  * Once the caches are set up, send out first time (monitor resources), periodic and
                  * onte-time notifications.
                  */
-                Date nextCacheRefresh = refreshCaches();
+                Date nextRefresh = performPeriodicNotifications();
 
                 /*
                  * Wait for the next time the caches need to be refreshed.
                  */
 
-                long sleepTime = nextCacheRefresh.getTime() - System.currentTimeMillis();
+                long sleepTime = nextRefresh.getTime() - System.currentTimeMillis();
 
                 while (sleepTime > 0)
                 {
                     try
                     {
                         Thread.sleep(sleepTime);
+                        if (! super.isActive())
+                        {
+                            completed = true;
+                            break;
+                        }
                     }
                     catch (InterruptedException ignored)
                     {
                     }
 
-                    sleepTime = nextCacheRefresh.getTime() - System.currentTimeMillis();
+                    sleepTime = nextRefresh.getTime() - System.currentTimeMillis();
                 }
             }
         }
@@ -175,36 +170,40 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
 
 
     /**
-     * Refresh the caches for the notification types.
+     * Review the notification types and deliver the notifications. Maintain the caches for the event processing.
      *
      * @return the next time that the caches should be refreshed.
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the watchdog action service is not authorized to continue
      * @throws PropertyServerException    a problem connecting to the metadata store
      */
-    Date refreshCaches() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    Date performPeriodicNotifications() throws InvalidParameterException,
+                                               PropertyServerException,
+                                               UserNotAuthorizedException
     {
-        final String methodName = "refreshCaches";
+        final String methodName = "performPeriodicNotifications";
 
         /*
          * The default next refresh is 1 hour from now.  This will be modified if a periodic notification
          * needs to be processed before that.
          */
-        Date nextCacheRefresh = new Date(System.currentTimeMillis() + (60 * 60 * 1000));
+        Date nextRefresh = new Date(System.currentTimeMillis() + (60 * 60 * 1000));
 
         /*
          * Locate all the action targets that are notification types.
          */
         List<ActionTargetElement> notificationTypeTargetElements = watchdogContext.getNotificationTypesFromActionTargets();
 
+        /*
+         * These counts are used for messages.
+         */
         int monitoredNotificationTypeCount = 0;
         int newNotificationTypeCount       = 0;
 
         if ((notificationTypeTargetElements != null) && (! notificationTypeTargetElements.isEmpty()))
         {
             /*
-             * Details of each notification type need to be organized in a map to allow easy look-up when
-             * processing notifications
+             * Loop through the notification types and process the ones that need processing.
              */
             for (ActionTargetElement actionTargetElement : notificationTypeTargetElements)
             {
@@ -216,187 +215,90 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                      */
                     OpenMetadataRootElement notificationTypeElement = watchdogContext.getNotificationType(actionTargetElement.getActionTargetGUID());
 
-                    if ((notificationTypeElement == null) || (! (notificationTypeElement.getProperties() instanceof NotificationTypeProperties)))
+                    if ((notificationTypeElement != null) && (notificationTypeElement.getProperties() instanceof NotificationTypeProperties notificationTypeProperties))
                     {
-                        auditLog.logMessage(methodName,
-                                            BaudotAuditCode.UNREADABLE_NOTIFICATION_TYPE.getMessageDefinition(watchdogActionServiceName,
-                                                                                                               actionTargetElement.getActionTargetName(),
-                                                                                                               actionTargetElement.getActionTargetGUID()));
-                    }
-                    else if (notificationTypeElement.getProperties() instanceof NotificationTypeProperties notificationTypeProperties)
-                    {
-                        monitoredNotificationTypeCount ++;
+                        monitoredNotificationTypeCount++;
 
-                        /*
-                         * Refresh the cache
-                         */
-                        boolean firstNotification = notificationTypeMap.setNotificationType(notificationTypeElement, watchdogContext);
-
-                        if (firstNotification)
+                        if (notificationTypeProperties.getLastNotification() == null)
                         {
                             newNotificationTypeCount ++;
                         }
 
-                        /*
-                         * The notification type has been successfully retrieved from open metadata.  It is
-                         * added to the map.  True is returned if this is the first time the notification type
-                         * has been added to the map.
-                         *
-                         * These resources are monitored by the event listener.
-                         */
-                        monitoredResources.setMonitoredResources(notificationTypeElement.getMonitoredResources(),
-                                                                 notificationTypeElement.getElementHeader().getGUID());
+                        if (notificationTypeElement.getMonitoredResources() == null)
+                        {
+                            long notificationCount = notificationTypeProperties.getNotificationCount() + 1;
+                            MessageDefinition newNotificationDescription = BaudotNotificationMessageSet.NEW_SUBSCRIBER.getMessageDefinition(watchdogContext.getDisplayName(notificationTypeProperties), notificationTypeElement.getElementHeader().getGUID());
 
-                        /*
-                         * Only process notification types that have started
-                         */
-                        if ((notificationTypeProperties.getPlannedStartDate() != null) && (! new Date().after(notificationTypeProperties.getPlannedStartDate())))
-                        {
-                            auditLog.logMessage(methodName,
-                                                BaudotAuditCode.NOTIFICATION_TYPE_NOT_STARTED.getMessageDefinition(watchdogActionServiceName,
-                                                                                                                   notificationTypeProperties.getDisplayName(),
-                                                                                                                   notificationTypeProperties.getPlannedStartDate().toString()));
-                        }
-                        else
-                        {
-                            if ((notificationTypeProperties.getPlannedCompletionDate() != null) && (new Date().after(notificationTypeProperties.getPlannedCompletionDate())))
+                            NotificationProperties nextNotificationProperties;
+
+                            if (notificationTypeProperties.getMultipleNotificationsPermitted())
                             {
-                                /*
-                                 * The Notification Type has finished sending notifications.  Check that all subscribers
-                                 * are notified and switched to completion status.
-                                 */
-                                long notificationCount = -1;
-
-                                watchdogContext.dismissSubscribers(notificationTypeElement.getElementHeader().getGUID(),
-                                                                   notificationCount,
-                                                                   null,
-                                                                   watchdogContext.getNotificationProperties(BaudotNotificationMessageSet.CANCELLED_SUBSCRIBER.getMessageDefinition(notificationTypeProperties.getDisplayName(), notificationTypeElement.getElementHeader().getGUID()),
-                                                                                                             notificationTypeElement.getElementHeader().getGUID(),
-                                                                                                             notificationCount),
-                                                                   watchdogContext.getRequestParameters(),
-                                                                   null,
-                                                                   notificationTypeProperties.getMinimumNotificationInterval());
+                                auditLog.logMessage(methodName,
+                                                    BaudotAuditCode.PERIODIC_NOTIFICATION_TYPE.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                    notificationTypeProperties.getDisplayName(),
+                                                                                                                    notificationTypeElement.getElementHeader().getGUID(),
+                                                                                                                    Long.toString(notificationTypeProperties.getMinimumNotificationInterval()),
+                                                                                                                    nextRefresh.toString()));
+                                nextNotificationProperties = watchdogContext.getNotificationProperties(BaudotNotificationMessageSet.PERIODIC_NOTIFICATION.getMessageDefinition(notificationTypeProperties.getDisplayName(),
+                                                                                                                                                                               notificationTypeElement.getElementHeader().getGUID(),
+                                                                                                                                                                               Long.toString(notificationTypeProperties.getMinimumNotificationInterval())),
+                                                                                                       notificationTypeElement.getElementHeader().getGUID(),
+                                                                                                       notificationCount);
                             }
                             else
                             {
-                                /*
-                                 * The notification type's properties define the conditions for when notifications are
-                                 * sent to the subscribers and how many.  The next block of code determines which processing
-                                 * pattern to use.  This affects the notification properties sent and the status of the
-                                 * subscriber if the notification is sent.  If this is the first iteration for the notification
-                                 * type, then an audit log message is published to identify how the notification type is being
-                                 * interpreted.  This is to allow users to validate that they have set up the
-                                 * notification type correctly.
-                                 */
-                                long notificationCount = notificationTypeMap.getNotificationType(notificationTypeElement.getElementHeader().getGUID()).incrementNotificationCount();
+                                auditLog.logMessage(methodName,
+                                                    BaudotAuditCode.ONE_TIME_NOTIFICATION_TYPE.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                    notificationTypeProperties.getDisplayName(),
+                                                                                                                    notificationTypeElement.getElementHeader().getGUID()));
 
-                                if (notificationTypeProperties.getMultipleNotificationsPermitted())
-                                {
-                                    MessageDefinition newNotificationDescription = BaudotNotificationMessageSet.NEW_SUBSCRIBER.getMessageDefinition(notificationTypeProperties.getDisplayName(), notificationTypeElement.getElementHeader().getGUID());
-
-                                    if (notificationTypeProperties.getNotificationInterval() == 0)
-                                    {
-                                        /*
-                                         * Notifications for this notification type are based on the changing values in the
-                                         * monitored resources.  A message is output for the notification type only on the first round.
-                                         */
-                                        if (firstNotification)
-                                        {
-                                            String size = "0";
-                                            if (notificationTypeElement.getMonitoredResources() != null)
-                                            {
-                                                size = Integer.toString(notificationTypeElement.getMonitoredResources().size());
-                                            }
-
-                                            auditLog.logMessage(methodName,
-                                                                BaudotAuditCode.MONITORED_RESOURCE_NOTIFICATION_TYPE.getMessageDefinition(watchdogActionServiceName,
-                                                                                                                                          notificationTypeProperties.getDisplayName(),
-                                                                                                                                          notificationTypeElement.getElementHeader().getGUID(),
-                                                                                                                                          size));
-
-
-                                            watchdogContext.welcomeMonitoringSubscribers(notificationTypeElement.getElementHeader().getGUID(),
-                                                                                         notificationCount,
-                                                                                         null,
-                                                                                         watchdogContext.getNotificationProperties(newNotificationDescription,
-                                                                                                                                   notificationTypeElement.getElementHeader().getGUID(),
-                                                                                                                                   notificationCount),
-                                                                                         watchdogContext.getRequestParameters(),
-                                                                                         null,
-                                                                                         notificationTypeProperties.getMinimumNotificationInterval());
-                                        }
-                                    }
-                                    else
-                                    {
-                                        /*
-                                         * Notifications are sent periodically.  Set up the time for the next periodic notification
-                                         * for the notification type if it has expired.
-                                         */
-                                        Date                       nextNotificationTime          = new Date(System.currentTimeMillis() + (notificationTypeProperties.getNotificationInterval() * 60 * 1000));
-                                        NotificationTypeProperties newNotificationTypeProperties = new NotificationTypeProperties();
-
-                                        newNotificationTypeProperties.setNextScheduledNotification(nextNotificationTime);
-
-                                        if ((notificationTypeProperties.getNextScheduledNotification() == null) ||
-                                                (notificationTypeProperties.getNextScheduledNotification().before(nextNotificationTime)))
-                                        {
-                                            watchdogContext.updateNotificationType(notificationTypeElement.getElementHeader().getGUID(), newNotificationTypeProperties);
-
-                                            /*
-                                             * Adjust the time of the next cache refresh if this notification type needs to be
-                                             * processed sooner.
-                                             */
-                                            if (nextNotificationTime.before(nextCacheRefresh))
-                                            {
-                                                nextCacheRefresh = nextNotificationTime;
-                                            }
-
-                                            if (firstNotification)
-                                            {
-                                                auditLog.logMessage(methodName,
-                                                                    BaudotAuditCode.PERIODIC_NOTIFICATION_TYPE.getMessageDefinition(watchdogActionServiceName,
-                                                                                                                                    notificationTypeProperties.getDisplayName(),
-                                                                                                                                    notificationTypeElement.getElementHeader().getGUID(),
-                                                                                                                                    Long.toString(notificationTypeProperties.getNotificationInterval()),
-                                                                                                                                    nextCacheRefresh.toString()));
-                                            }
-
-                                            watchdogContext.notifyPeriodicSubscribers(notificationTypeElement.getElementHeader().getGUID(),
-                                                                                      notificationCount,
-                                                                                      null,
-                                                                                      watchdogContext.getNotificationProperties(BaudotNotificationMessageSet.PERIODIC_NOTIFICATION.getMessageDefinition(notificationTypeProperties.getDisplayName(),
-                                                                                                                                                                                                        notificationTypeElement.getElementHeader().getGUID(),
-                                                                                                                                                                                                        Long.toString(notificationTypeProperties.getNotificationInterval())),
-                                                                                                                                notificationTypeElement.getElementHeader().getGUID(),
-                                                                                                                                notificationCount),
-                                                                                      watchdogContext.getRequestParameters(),
-                                                                                      null,
-                                                                                      notificationTypeProperties.getMinimumNotificationInterval());
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    if (firstNotification)
-                                    {
-                                        auditLog.logMessage(methodName,
-                                                            BaudotAuditCode.ONE_TIME_NOTIFICATION_TYPE.getMessageDefinition(watchdogActionServiceName,
-                                                                                                                            notificationTypeProperties.getDisplayName(),
-                                                                                                                            notificationTypeElement.getElementHeader().getGUID()));
-                                    }
-
-                                    watchdogContext.notifyOneTimeSubscribers(notificationTypeElement.getElementHeader().getGUID(),
-                                                                              notificationCount,
-                                                                              null,
-                                                                              watchdogContext.getNotificationProperties(BaudotNotificationMessageSet.ONE_TIME_NOTIFICATION.getMessageDefinition(notificationTypeProperties.getDisplayName(),
-                                                                                                                                                                                                notificationTypeElement.getElementHeader().getGUID()),
-                                                                                                                        notificationTypeElement.getElementHeader().getGUID(),
-                                                                                                                        notificationCount),
-                                                                              watchdogContext.getRequestParameters(),
-                                                                              null);
-                                }
+                                nextNotificationProperties = watchdogContext.getNotificationProperties(BaudotNotificationMessageSet.ONE_TIME_NOTIFICATION.getMessageDefinition(notificationTypeProperties.getDisplayName(),
+                                                                                                                                                                               notificationTypeElement.getElementHeader().getGUID()),
+                                                                                                                          notificationTypeElement.getElementHeader().getGUID(),
+                                                                                                                          notificationCount);
                             }
+
+                            watchdogContext.notifySubscribers(actionTargetElement.getActionTargetGUID(),
+                                                              null,
+                                                              watchdogContext.getNotificationProperties(newNotificationDescription,
+                                                                                                        notificationTypeElement.getElementHeader().getGUID(),
+                                                                                                        notificationCount),
+                                                              nextNotificationProperties,
+                                                              watchdogContext.getNotificationProperties(BaudotNotificationMessageSet.CANCELLED_SUBSCRIBER.getMessageDefinition(notificationTypeProperties.getDisplayName(), notificationTypeElement.getElementHeader().getGUID()),
+                                                                                                        notificationTypeElement.getElementHeader().getGUID(),
+                                                                                                        notificationCount),
+                                                              watchdogContext.getRequestParameters(),
+                                                              null);
                         }
+                        else
+                        {
+                            /*
+                             * These resources are monitored by the event listener.
+                             */
+                            monitoredResources.setMonitoredResources(notificationTypeElement.getMonitoredResources(),
+                                                                     notificationTypeElement.getElementHeader().getGUID(),
+                                                                     notificationTypeProperties.getDisplayName(),
+                                                                     watchdogContext);
+
+                            String size = "0";
+                            if (notificationTypeElement.getMonitoredResources() != null)
+                            {
+                                size = Integer.toString(notificationTypeElement.getMonitoredResources().size());
+                            }
+
+                            auditLog.logMessage(methodName,
+                                                BaudotAuditCode.MONITORED_RESOURCE_NOTIFICATION_TYPE.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                          notificationTypeProperties.getDisplayName(),
+                                                                                                                          notificationTypeElement.getElementHeader().getGUID(),
+                                                                                                                          size));
+                        }
+                    }
+                    else
+                    {
+                        auditLog.logMessage(methodName,
+                                            BaudotAuditCode.UNREADABLE_NOTIFICATION_TYPE.getMessageDefinition(watchdogActionServiceName,
+                                                                                                              actionTargetElement.getActionTargetName(),
+                                                                                                              actionTargetElement.getActionTargetGUID()));
                     }
                 }
             }
@@ -412,7 +314,7 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                                                                                   Integer.toString(monitoredNotificationTypeCount),
                                                                                   Integer.toString(newNotificationTypeCount)));
 
-        return nextCacheRefresh;
+        return nextRefresh;
     }
 
 
@@ -437,150 +339,84 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                  */
                 if (event.getElementHeader().getType().getTypeCategory() == OpenMetadataTypeDefCategory.ENTITY_DEF)
                 {
-                    List<MonitoredResource> monitoredResourceRelationships = monitoredResources.isMonitored(event.getElementHeader());
-                    if (monitoredResourceRelationships != null)
+                    List<MonitoredResource> monitoredResourceList = monitoredResources.isMonitored(event.getElementHeader());
+
+                    if (monitoredResourceList != null)
                     {
-                        for (MonitoredResource monitoredResourceRelationship : monitoredResourceRelationships)
+                        for (MonitoredResource monitoredResource : monitoredResourceList)
                         {
-                            if (monitoredResourceRelationship != null)
+                            if (monitoredResource != null)
                             {
-                                NotificationType notificationType = notificationTypeMap.getNotificationType(monitoredResourceRelationship.getNotificationTypeGUID());
+                                try
+                                {
+                                    OpenMetadataRootElement notificationType = watchdogContext.getNotificationType(monitoredResource.getNotificationTypeGUID());
 
-                                MessageDefinition notificationDescription = BaudotNotificationMessageSet.MONITORED_RESOURCE_CHANGED.getMessageDefinition(event.getElementHeader().getType().getTypeName(),
-                                                                                                                                                         propertyHelper.getStringProperty(watchdogActionServiceName,
-                                                                                                                                                                                          OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                                                                                                                                          event.getElementProperties(),
-                                                                                                                                                                                          methodName),
-                                                                                                                                                         event.getElementHeader().getGUID(),
-                                                                                                                                                         notificationType.getNotificationTypeName(),
-                                                                                                                                                         notificationType.getNotificationTypeGUID());
+                                    if ((notificationType != null) && (notificationType.getProperties() instanceof NotificationTypeProperties notificationTypeProperties))
+                                    {
+                                        List<NewActionTarget> newActionTargets = new ArrayList<>();
+                                        NewActionTarget       newActionTarget  = new NewActionTarget();
 
-                                List<NewActionTarget> newActionTargets = new ArrayList<>();
-                                NewActionTarget       newActionTarget  = new NewActionTarget();
+                                        newActionTarget.setActionTargetGUID(event.getElementHeader().getGUID());
+                                        newActionTarget.setActionTargetName(ActionTarget.CHANGED_ELEMENT.name);
 
-                                newActionTarget.setActionTargetGUID(event.getElementHeader().getGUID());
-                                newActionTarget.setActionTargetName(ActionTarget.CHANGED_ELEMENT.name);
+                                        newActionTargets.add(newActionTarget);
 
-                                newActionTargets.add(newActionTarget);
-
-                                long notificationCount = notificationType.incrementNotificationCount();
-
-                                watchdogContext.notifyMonitoringSubscribers(notificationType.getNotificationTypeGUID(),
-                                                                            notificationCount,
-                                                                            null,
-                                                                            watchdogContext.getNotificationProperties(notificationDescription,
-                                                                                                                      notificationType.getNotificationTypeGUID(),
-                                                                                                                      notificationCount),
-                                                                            watchdogContext.getRequestParameters(),
-                                                                            newActionTargets,
-                                                                            notificationType.getMinimumNotificationInterval());
+                                        watchdogContext.notifySubscribers(monitoredResource.getNotificationTypeGUID(),
+                                                                          null,
+                                                                          watchdogContext.getNotificationProperties(monitoredResource.getFirstNotificationDescription(), monitoredResource.getNotificationTypeGUID(), notificationTypeProperties.getNotificationCount() + 1),
+                                                                          watchdogContext.getNotificationProperties(monitoredResource.getNextNotificationDescription(), monitoredResource.getNotificationTypeGUID(), notificationTypeProperties.getNotificationCount() + 1),
+                                                                          watchdogContext.getNotificationProperties(monitoredResource.getLastNotificationDescription(), monitoredResource.getNotificationTypeGUID(), notificationTypeProperties.getNotificationCount() + 1),
+                                                                          watchdogContext.getRequestParameters(),
+                                                                          newActionTargets);
+                                    }
+                                }
+                                catch (Exception error)
+                                {
+                                    auditLog.logMessage(methodName, BaudotAuditCode.UNREADABLE_NOTIFICATION_TYPE.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                                      monitoredResource.getNotificationTypeDisplayName(),
+                                                                                                                                      monitoredResource.getNotificationTypeGUID()));
+                                }
                             }
                         }
                     }
                 }
                 else if (event.getElementHeader().getType().getTypeCategory() == OpenMetadataTypeDefCategory.RELATIONSHIP_DEF)
-                        // Relationship event - check our action targets, monitored resources and subscribers
+                        // Relationship event - check our action targets and monitored resources
                 {
-                    if (propertyHelper.isTypeOf(event.getElementHeader(), OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName))
+                    if (propertyHelper.isTypeOf(event.getElementHeader(), OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName))
                     {
                         String changedNotificationGUID = event.getEndOneElementHeader().getGUID();
 
-                        NotificationType notificationType = notificationTypeMap.getNotificationType(changedNotificationGUID);
+                        List<ActionTargetElement> notificationTypeTargetElements = watchdogContext.getNotificationTypesFromActionTargets();
 
-                        /*
-                         * Make sure the notification type is still valid.
-                         */
-                        if (notificationTypeIsActive(notificationType))
+                        if (notificationTypeTargetElements != null)
                         {
-                            /*
-                             * Do not need to update notification count since this is just a change in the subscriber list.
-                             */
-                            long notificationCount = notificationType.notificationCount;
-
-                            if (event.getEventType() == OpenMetadataEventType.NEW_ELEMENT_CREATED)
+                            for (ActionTargetElement notificationTypeTargetElement : notificationTypeTargetElements)
                             {
-                                MessageDefinition notificationDescription = BaudotNotificationMessageSet.NEW_SUBSCRIBER.getMessageDefinition(notificationType.getNotificationTypeName(),
-                                                                                                                                             notificationType.getNotificationTypeGUID());
-                                watchdogContext.welcomeSubscriber(notificationType.getNotificationTypeGUID(),
-                                                                  event.getEndTwoElementHeader().getGUID(),
-                                                                  notificationCount,
-                                                                  null,
-                                                                  watchdogContext.getNotificationProperties(notificationDescription,
-                                                                                                            notificationType.getNotificationTypeGUID(),
-                                                                                                            notificationCount),
-                                                                  watchdogContext.getRequestParameters(),
-                                                                  null,
-                                                                  notificationType.getMinimumNotificationInterval(),
-                                                                  ActivityStatus.IN_PROGRESS);
-                            }
-                            else if (event.getEventType() == OpenMetadataEventType.ELEMENT_DELETED)
-                            {
-                                MessageDefinition notificationDescription = BaudotNotificationMessageSet.CANCELLED_SUBSCRIBER.getMessageDefinition(notificationType.getNotificationTypeName(),
-                                                                                                                                                   notificationType.getNotificationTypeGUID());
-                                watchdogContext.dismissSubscriber(notificationType.getNotificationTypeGUID(),
-                                                                  event.getEndTwoElementHeader().getGUID(),
-                                                                  notificationCount,
-                                                                  null,
-                                                                  watchdogContext.getNotificationProperties(notificationDescription,
-                                                                                                            notificationType.getNotificationTypeGUID(),
-                                                                                                            notificationCount),
-                                                                  watchdogContext.getRequestParameters(),
-                                                                  null);
-                            }
-                        }
-                    }
-                    else if (propertyHelper.isTypeOf(event.getElementHeader(), OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName))
-                    {
-                        String changedNotificationGUID = event.getEndOneElementHeader().getGUID();
-
-                        NotificationType notificationType = notificationTypeMap.getNotificationType(changedNotificationGUID);
-
-                        if (notificationTypeIsActive(notificationType))
-                        {
-                            if (event.getEventType() == OpenMetadataEventType.NEW_ELEMENT_CREATED)
-                            {
-                                monitoredResources.addMonitoredElement(event.getElementHeader().getGUID(),
-                                                                       event.getEndTwoElementHeader(),
-                                                                       notificationType.getNotificationTypeGUID());
-                            }
-                            else if (event.getEventType() == OpenMetadataEventType.ELEMENT_DELETED)
-                            {
-                                monitoredResources.removeMonitoredElement(event.getEndTwoElementHeader(), notificationType.getNotificationTypeGUID());
+                                if ((notificationTypeTargetElement != null) && (notificationTypeTargetElement.getActionTargetGUID().equals(changedNotificationGUID)))
+                                {
+                                    if (event.getEventType() == OpenMetadataEventType.NEW_ELEMENT_CREATED)
+                                    {
+                                        monitoredResources.addMonitoredElement(event.getElementHeader().getGUID(),
+                                                                               event.getEndTwoElementHeader(),
+                                                                               event.getElementProperties(),
+                                                                               changedNotificationGUID,
+                                                                               watchdogContext.getDisplayName(notificationTypeTargetElement.getTargetElement().getElementProperties()),
+                                                                               watchdogContext);
+                                    }
+                                    else if (event.getEventType() == OpenMetadataEventType.ELEMENT_DELETED)
+                                    {
+                                        monitoredResources.removeMonitoredElement(event.getEndTwoElementHeader(), changedNotificationGUID);
+                                    }
+                                }
                             }
                         }
                     }
                     else if ((propertyHelper.isTypeOf(event.getElementHeader(), OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName)) &&
-                            (event.getEventType() == OpenMetadataEventType.NEW_ELEMENT_CREATED) &&
+                            (event.getEventType() == OpenMetadataEventType.ELEMENT_DELETED) &&
                             (event.getEndOneElementHeader().getGUID().equals(watchdogContext.getEngineActionGUID())))
                     {
-                        /*
-                         * A new notification type has been attached to this watchdog's engine action, so the caches
-                         * are rebuilt rather than left until the next scheduled refresh - but only if this is a
-                         * notification type the caches do not already hold.
-                         *
-                         * Notification types are attached in a burst, one event each, and a refresh reads every
-                         * action target this engine action has.  Refreshing for each event in the burst therefore
-                         * costs the square of the number of notification types in requests to the metadata store,
-                         * which is enough to exhaust its connections and leave the refresh unable to read
-                         * anything at all.  Refreshing only for a type that is not yet cached collapses the burst
-                         * to a handful of refreshes, because each one picks up everything attached so far.
-                         *
-                         * Only an action target being attached counts.  Refreshing on any change to one would
-                         * not terminate: a refresh claims each of its action targets by updating the status on
-                         * the relationship, and each of those updates is itself an event about an action target
-                         * of this engine action.
-                         *
-                         * The identifier compared here is the engine action's, because that is what an action target
-                         * relationship joins the notification type to.  Comparing the connector's instead means this
-                         * never matches: a notification type created after the last refresh stays uncached, and every
-                         * subscriber event for it is then dropped by the checks above - so a subscription taken out
-                         * against a newly built catalogue would wait until the next refresh, an hour later, before
-                         * anything was delivered.
-                         */
-                        if (notificationTypeMap.getNotificationType(event.getEndTwoElementHeader().getGUID()) == null)
-                        {
-                            this.refreshCaches();
-                        }
+                        monitoredResources.removeMonitoredNotificationType(event.getEndTwoElementHeader().getGUID());
                     }
                 }
             }
@@ -620,20 +456,6 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
 
 
     /**
-     * Validate that the notification type is set up correctly and "in date".
-     *
-     * @param notificationType notification type cache
-     * @return boolean indicating whether to proceed
-     */
-    private boolean notificationTypeIsActive(NotificationType notificationType)
-    {
-        return  ((notificationType != null) && (notificationType.notificationTypeProperties != null) &&
-                        ((notificationType.notificationTypeProperties.getPlannedStartDate() == null) || (new Date().after(notificationType.notificationTypeProperties.getPlannedStartDate())) &&
-                        ((notificationType.notificationTypeProperties.getPlannedCompletionDate() == null) || (new Date().before(notificationType.notificationTypeProperties.getPlannedCompletionDate())))));
-    }
-
-
-    /**
      * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
      * or the administrator requested this watchdog action service stop running, or the hosting server is shutting down.
      * If disconnect completes before this watchdog action service records
@@ -658,11 +480,23 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
 
 
     /**
-     * Manage the list of monitored resources and support queries.
+     * Manage the list of monitored resources linked to this service's action targets, and support queries.
      */
     static class MonitoredResources
     {
+        /*
+         * Map from resourceGUID to the list of associated notification types.  This is used to rapidly navigate
+         * to the notification types that are monitoring a given resource.
+         */
         private final Map<String, List<MonitoredResource>> monitoredResources = new HashMap<>();
+
+        /**
+         * Constructor
+         */
+        public MonitoredResources()
+        {
+        }
+
 
         /**
          * Set up the monitored elements for a specific notification type.
@@ -670,7 +504,9 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
          * @param initialResources list of elements for the notification type.
          */
         public synchronized void setMonitoredResources(List<RelatedMetadataElementSummary> initialResources,
-                                                       String                              notificationTypeGUID)
+                                                       String                              notificationTypeGUID,
+                                                       String                              notificationTypeDisplayName,
+                                                       WatchdogContext                     watchdogContext)
         {
             if (initialResources != null)
             {
@@ -678,7 +514,7 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                 {
                     if (initialResource != null)
                     {
-                        this.addMonitoredElement(initialResource, notificationTypeGUID);
+                        this.addMonitoredElement(initialResource, notificationTypeGUID, notificationTypeDisplayName, watchdogContext);
                     }
                 }
             }
@@ -688,10 +524,15 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
         /**
          * Add a new element to the map.
          *
-         * @param monitoredElement new resource
+         * @param monitoredElement            new resource
+         * @param notificationTypeGUID        unique identifier of the notification type
+         * @param notificationTypeDisplayName name of the notification type
+         * @param watchdogContext             context for the watchdog
          */
         public synchronized void addMonitoredElement(RelatedMetadataElementSummary monitoredElement,
-                                                     String                        notificationTypeGUID)
+                                                     String                        notificationTypeGUID,
+                                                     String                        notificationTypeDisplayName,
+                                                     WatchdogContext               watchdogContext)
         {
             if (monitoredElement != null)
             {
@@ -702,20 +543,30 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                     resourceList = new ArrayList<>();
                 }
 
-                resourceList.add(new MonitoredResource(monitoredElement, notificationTypeGUID));
+                resourceList.add(new MonitoredResource(monitoredElement, notificationTypeGUID, notificationTypeDisplayName, watchdogContext));
                 monitoredResources.put(monitoredElement.getRelatedElement().getElementHeader().getGUID(), resourceList);
             }
         }
 
 
         /**
-         * Add a new element to the map.
+         * Adds a monitored element along with its related properties, relationship GUID, and notification type details
+         * to the monitored resources map. If the monitored element is already present, it updates the monitored resource list
+         * for the given element.
          *
-         * @param monitoredElement new resource
+         * @param monitoredResourceRelationshipGUID the unique identifier for the monitored resource relationship
+         * @param monitoredElement                  the element header of the monitored resource being added
+         * @param monitoredElementProperties        the properties of the monitored resource element
+         * @param notificationTypeGUID              the unique identifier for the notification type
+         * @param notificationTypeDisplayName       the display name of the notification type
+         * @param watchdogContext                   the watchdog context for the notification type
          */
-        public synchronized void addMonitoredElement(String        monitoredResourceRelationshipGUID,
-                                                     ElementHeader monitoredElement,
-                                                     String        notificationTypeGUID)
+        public synchronized void addMonitoredElement(String            monitoredResourceRelationshipGUID,
+                                                     ElementHeader     monitoredElement,
+                                                     ElementProperties monitoredElementProperties,
+                                                     String            notificationTypeGUID,
+                                                     String            notificationTypeDisplayName,
+                                                     WatchdogContext   watchdogContext)
         {
             if (monitoredElement != null)
             {
@@ -726,7 +577,12 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                     resourceList = new ArrayList<>();
                 }
 
-                resourceList.add(new MonitoredResource(monitoredResourceRelationshipGUID, notificationTypeGUID));
+                resourceList.add(new MonitoredResource(monitoredResourceRelationshipGUID,
+                                                       monitoredElement.getGUID(),
+                                                       watchdogContext.getDisplayName(monitoredElementProperties),
+                                                       monitoredElement.getType().getTypeName(),
+                                                       notificationTypeGUID, notificationTypeDisplayName));
+
                 monitoredResources.put(monitoredElement.getGUID(), resourceList);
             }
         }
@@ -755,6 +611,35 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
                     if (resourceList.isEmpty())
                     {
                         monitoredResources.remove(monitoredElement.getGUID());
+                    }
+                }
+            }
+        }
+
+
+        /**
+         * Remove an element from the map.
+         *
+         * @param notificationTypeGUID old notification type
+         */
+        public synchronized void removeMonitoredNotificationType(String notificationTypeGUID)
+        {
+            for (String resourceGUID : monitoredResources.keySet())
+            {
+                List<MonitoredResource> resourceList = monitoredResources.get(resourceGUID);
+                if (resourceList != null)
+                {
+                    for (MonitoredResource monitoredResource : resourceList)
+                    {
+                        if ((monitoredResource != null) && (monitoredResource.getNotificationTypeGUID().equals(notificationTypeGUID)))
+                        {
+                            resourceList.remove(monitoredResource);
+
+                            if (resourceList.isEmpty())
+                            {
+                                monitoredResources.remove(resourceGUID);
+                            }
+                        }
                     }
                 }
             }
@@ -800,21 +685,39 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
      */
     static class MonitoredResource
     {
-        private final String                      monitoredResourceRelationshipGUID;
-        private final String                      notificationTypeGUID;
+        private final String            monitoredResourceRelationshipGUID;
+        private final String            notificationTypeGUID;
+        private final String            notificationTypeDisplayName;
+        private final MessageDefinition firstNotificationDescription;
+        private final MessageDefinition nextNotificationDescription;
+        private final MessageDefinition lastNotificationDescription;
 
         /**
          * Constructor using resource information from refreshing the caches.
          *
          * @param retrievedResource resource from the repository
          * @param notificationTypeGUID associates notification type
+         * @param notificationTypeDisplayName the display name of the notification type
          */
         public MonitoredResource(RelatedMetadataElementSummary retrievedResource,
-                                 String                        notificationTypeGUID)
+                                 String                        notificationTypeGUID,
+                                 String                        notificationTypeDisplayName,
+                                 WatchdogContext               watchdogContext)
         {
             this.notificationTypeGUID = notificationTypeGUID;
+            this.notificationTypeDisplayName = notificationTypeDisplayName;
 
             this.monitoredResourceRelationshipGUID = retrievedResource.getRelationshipHeader().getGUID();
+
+            this.firstNotificationDescription = BaudotNotificationMessageSet.NEW_SUBSCRIBER.getMessageDefinition(notificationTypeDisplayName, notificationTypeGUID);
+
+            this.nextNotificationDescription = BaudotNotificationMessageSet.MONITORED_RESOURCE_CHANGED.getMessageDefinition(retrievedResource.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                                                                                            watchdogContext.getDisplayName(retrievedResource.getRelatedElement().getProperties()),
+                                                                                                                            retrievedResource.getRelatedElement().getElementHeader().getGUID(),
+                                                                                                                            notificationTypeDisplayName,
+                                                                                                                            notificationTypeGUID);
+
+            this.lastNotificationDescription = BaudotNotificationMessageSet.CANCELLED_SUBSCRIBER.getMessageDefinition(notificationTypeDisplayName, notificationTypeGUID);
         }
 
 
@@ -824,12 +727,27 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
          * @param monitoredResourceRelationshipGUID relationship GUID for the monitored resource
          * @param notificationTypeGUID              associates notification type
          */
-        public MonitoredResource(String        monitoredResourceRelationshipGUID,
-                                 String        notificationTypeGUID)
+        public MonitoredResource(String monitoredResourceRelationshipGUID,
+                                 String monitoredResourceGUID,
+                                 String monitoredResourceDisplayName,
+                                 String monitoredResourceTypeName,
+                                 String notificationTypeGUID,
+                                 String notificationTypeDisplayName)
         {
             this.notificationTypeGUID = notificationTypeGUID;
+            this.notificationTypeDisplayName = notificationTypeDisplayName;
 
             this.monitoredResourceRelationshipGUID = monitoredResourceRelationshipGUID;
+
+            this.firstNotificationDescription = BaudotNotificationMessageSet.NEW_SUBSCRIBER.getMessageDefinition(notificationTypeDisplayName, notificationTypeGUID);
+
+            this.nextNotificationDescription = BaudotNotificationMessageSet.MONITORED_RESOURCE_CHANGED.getMessageDefinition(monitoredResourceTypeName,
+                                                                                                                            monitoredResourceDisplayName,
+                                                                                                                            monitoredResourceGUID,
+                                                                                                                            notificationTypeDisplayName,
+                                                                                                                            notificationTypeGUID);
+
+            this.lastNotificationDescription = BaudotNotificationMessageSet.CANCELLED_SUBSCRIBER.getMessageDefinition(notificationTypeDisplayName, notificationTypeGUID);
         }
 
 
@@ -845,6 +763,17 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
 
 
         /**
+         * Return the notification type's display name for this resource.
+         *
+         * @return string
+         */
+        public String getNotificationTypeDisplayName()
+        {
+            return notificationTypeDisplayName;
+        }
+
+
+        /**
          * Return the relationship GUID for this resource.
          *
          * @return string
@@ -853,247 +782,38 @@ public class BaudotSubscriptionManagementService extends WatchdogActionServiceCo
         {
             return monitoredResourceRelationshipGUID;
         }
-    }
 
-
-    /**
-     * Manage the list of action target notification types and support queries.
-     */
-    static class NotificationTypes
-    {
-        private final Map<String, NotificationType> notificationTypeMap = new HashMap<>();
 
         /**
-         * Set up the details of a specific notification type.  If the notification type
-         * is already in the map, it is replaced with new values.
+         * Retrieves the first notification description associated with the monitored resource.
          *
-         * @param openMetadataRootElement details of a notification type.
-         * @param watchdogContext context for the action service
-         * @return true if the notification type is new
+         * @return MessageDefinition containing details about the first notification.
          */
-        public synchronized boolean setNotificationType(OpenMetadataRootElement openMetadataRootElement,
-                                                        WatchdogContext         watchdogContext)
+        public MessageDefinition getFirstNotificationDescription()
         {
-            if (openMetadataRootElement != null)
-            {
-                NotificationType notificationType = new NotificationType(openMetadataRootElement, watchdogContext);
-
-                /*
-                 * "First" means the first time this subscription manager has seen this notification type, not
-                 * the first time anything ever has.  It decides whether the notification type's interpretation
-                 * is reported, and - for a notification type driven by changes to a monitored resource -
-                 * whether its subscribers are welcomed, which is what makes the first delivery happen.
-                 *
-                 * Answering it from the notification count held in open metadata makes it mean "first time
-                 * ever": the count survives the manager that wrote it, so after a restart every existing
-                 * notification type looks like one that has already been dealt with.  Its subscribers are then
-                 * never welcomed again, and a subscription taken out after that restart is never delivered.
-                 */
-                NotificationType knownNotificationType = notificationTypeMap.put(notificationType.getNotificationTypeGUID(),
-                                                                                  notificationType);
-
-                return knownNotificationType == null;
-            }
-
-            return false;
+            return firstNotificationDescription;
         }
 
 
         /**
-         * Retrieve a notification type from the map.
+         * Return the notification description for this resource.
          *
-         * @param notificationTypeGUID unique identifier of the notification type
-         * @return notification type or null if not found
+         * @return MessageDefinition
          */
-        public synchronized NotificationType getNotificationType(String notificationTypeGUID)
+        public MessageDefinition getNextNotificationDescription()
         {
-            return notificationTypeMap.get(notificationTypeGUID);
+            return nextNotificationDescription;
         }
 
 
         /**
-         * Remove an element from the map.
+         * Retrieves the last notification description associated with the monitored resource.
          *
-         * @param monitoredElement old resource
+         * @return MessageDefinition containing details about the last notification.
          */
-        public synchronized void removeMonitoredElement(ElementHeader monitoredElement)
+        public MessageDefinition getLastNotificationDescription()
         {
-            if (monitoredElement != null)
-            {
-                notificationTypeMap.remove(monitoredElement.getGUID());
-            }
-        }
-
-
-        /**
-         * Is this one of the monitored elements?
-         *
-         * @param potentialElement resource header
-         * @return boolean - true for a monitored element
-         */
-        public synchronized boolean isMonitored(ElementHeader potentialElement)
-        {
-            if (potentialElement != null)
-            {
-                if (notificationTypeMap.containsKey(potentialElement.getGUID()))
-                {
-                    return true;
-                }
-
-                if ((potentialElement.getAnchor() != null) &&
-                        (potentialElement.getAnchor().getClassificationProperties() instanceof AnchorsProperties anchorsProperties) &&
-                        (anchorsProperties.getAnchorGUID() != null))
-                {
-                    return notificationTypeMap.containsKey(anchorsProperties.getAnchorGUID());
-                }
-            }
-
-            return false;
-        }
-    }
-
-
-    /**
-     * Cached information about a notification type.
-     */
-    static class NotificationType
-    {
-        private String                     notificationTypeGUID;
-        private String                     notificationTypeName;
-        private NotificationTypeProperties notificationTypeProperties;
-        private long                       notificationCount;
-        private WatchdogContext            watchdogContext;
-
-        /**
-         * Constructor uses a root element to initialize the notification type properties.
-         *
-         * @param openMetadataRootElement full description of a notification type
-         * @param watchdogContext         context for the action service
-         */
-        public NotificationType(OpenMetadataRootElement openMetadataRootElement,
-                                WatchdogContext         watchdogContext)
-        {
-            if ((openMetadataRootElement != null) && (openMetadataRootElement.getProperties() instanceof NotificationTypeProperties properties))
-            {
-                this.notificationTypeGUID = openMetadataRootElement.getElementHeader().getGUID();
-                this.setNotificationTypeProperties(properties);
-                this.watchdogContext = watchdogContext;
-            }
-        }
-
-
-        /**
-         * Refresh the properties for this notification type.
-         *
-         * @param notificationTypeProperties properties
-         */
-        public synchronized void setNotificationTypeProperties(NotificationTypeProperties notificationTypeProperties)
-        {
-            this.notificationTypeProperties = notificationTypeProperties;
-
-            if (notificationTypeProperties.getDisplayName() != null)
-            {
-                notificationTypeName = notificationTypeProperties.getDisplayName();
-            }
-            else if (notificationTypeProperties.getQualifiedName() != null)
-            {
-                notificationTypeName = notificationTypeProperties.getQualifiedName();
-            }
-
-            notificationCount = notificationTypeProperties.getNotificationCount();
-        }
-
-
-        /**
-         * Return the unique identifier of this notification type.
-         *
-         * @return string
-         */
-        public synchronized String getNotificationTypeGUID()
-        {
-            return notificationTypeGUID;
-        }
-
-
-        /**
-         * Return the display name of this notification type.
-         *
-         * @return string
-         */
-        public synchronized String getNotificationTypeName()
-        {
-            return notificationTypeName;
-        }
-
-
-        /**
-         * Return whether multiple notifications are permitted.  If false, only one notification will be sent out
-         * to a subscriber.
-         *
-         * @return boolean flag
-         */
-        public synchronized boolean getMultipleNotificationsPermitted()
-        {
-            return notificationTypeProperties.getMultipleNotificationsPermitted();
-        }
-
-
-        /**
-         * Return the minimum minutes between notifications.  If 0, notifications are sent out whenever the
-         * appropriate condition is detected.
-         *
-         * @return minute count
-         */
-        public synchronized long getMinimumNotificationInterval()
-        {
-            return notificationTypeProperties.getMinimumNotificationInterval();
-        }
-
-
-        /**
-         * Return the minutes between notifications.  If null, notifications are driven by other events,
-         * such as a change to a monitored resource.
-         *
-         * @return minute count
-         */
-        public synchronized long getNotificationInterval()
-        {
-            return notificationTypeProperties.getNotificationInterval();
-        }
-
-
-        /**
-         * Return the date/time that the notifications should be sent out if they are on a fixed schedule.
-         * If notificationInterval is 0, then this field is null.
-         *
-         * @return date
-         */
-        public synchronized Date getNextScheduledNotification()
-        {
-            return notificationTypeProperties.getNextScheduledNotification();
-        }
-
-
-        /**
-         * Return the notification count that is used to ensure unique qualified names for notifications.
-         * (Millisecond time is not granular enough to distinguish qualified names - particularly for the note log.
-         *
-         * @return long
-         * @throws InvalidParameterException an invalid property has been passed
-         * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
-         * @throws PropertyServerException a problem communicating with the metadata server (or it has a logic error).
-         */
-        public synchronized long incrementNotificationCount() throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
-        {
-            NotificationTypeProperties properties = new NotificationTypeProperties();
-            notificationCount++;
-            properties.setNotificationCount(notificationCount);
-
-            watchdogContext.updateNotificationType(notificationTypeGUID, properties);
-
-            return notificationCount;
+            return lastNotificationDescription;
         }
     }
 }

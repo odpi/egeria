@@ -748,6 +748,15 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "https://egeria-project.org/services/omrs/"),
 
     /**
+     * OMRS-REPOSITORY-400-084 - The value supplied for property {0} of type {1} contains a null (U+0000) character at position {2}; it was passed to method {3} on the {4} parameter
+     */
+    NULL_CHARACTER_IN_PROPERTY(400, "OMRS-REPOSITORY-400-084",
+            "The value supplied for property {0} of type {1} contains a null (U+0000) character at position {2}; it was passed to method {3} on the {4} parameter",
+            "The repository rejects the request rather than storing the value.  A null character is not storable text: PostgreSQL refuses the whole statement with \"null character not permitted\", other databases silently truncate the value where the null falls, and a repository that does store it hands back something no other repository could hold.  The request is refused everywhere so that a value which cannot survive open metadata is never accepted by one repository and rejected by another.",
+            "Remove the null character from the offending property value and retry the request.  A null character in a name, description or other text property is almost always a symptom of a fault further upstream - a C-style null-terminated string copied byte-for-byte, a fixed-width field padded with zero bytes, or binary content mislabelled as text - so it is worth correcting whatever produced the value rather than only the single property.",
+            "https://egeria-project.org/services/omrs/"),
+
+    /**
      * OMRS-PROPERTIES-400-002 - No name provided for entity classification
      */
     NULL_CLASSIFICATION_PROPERTY_NAME(400, "OMRS-PROPERTIES-400-002",

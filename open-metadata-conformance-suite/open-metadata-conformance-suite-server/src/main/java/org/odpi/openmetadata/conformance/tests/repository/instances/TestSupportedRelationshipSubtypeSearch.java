@@ -49,6 +49,8 @@ public class TestSupportedRelationshipSubtypeSearch extends RepositoryConformanc
     private static final String assertionMsg5 = " relationship count agrees with the subtype inclusion search.";
     private static final String assertion6    = testCaseId + "-06";
     private static final String assertionMsg6 = " relationship count agrees with the subtype exclusion search.";
+    private static final String assertion7    = testCaseId + "-07";
+    private static final String assertionMsg7 = " an entity's relationships of a supertype include its subtype relationships.";
 
     private final RepositoryConformanceWorkPad   workPad;
     private final Map<String, EntityDef>         entityDefs;
@@ -247,13 +249,41 @@ public class TestSupportedRelationshipSubtypeSearch extends RepositoryConformanc
                             RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId(),
                             "countRelationships",
                             elapsedTime);
+
+            /*
+             * Narrowing an entity's relationships to a type is a different code path from searching for
+             * relationships of a type, and it takes a single type rather than a list.  It has to resolve the
+             * type the same way: naming a supertype has to return the subtype's instances too, or a caller
+             * asking for a general kind of link never sees the specific ones.  A repository that compares the
+             * requested type identifier to the stored one directly passes every assertion above and still
+             * fails here.
+             */
+            start = System.currentTimeMillis();
+            results = metadataCollection.getRelationshipsForEntity(workPad.getLocalServerUserId(),
+                                                                    subTypeInstance.getEntityOneProxy().getGUID(),
+                                                                    relationshipDef.getGUID(),
+                                                                    0,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    0);
+            elapsedTime = System.currentTimeMillis() - start;
+
+            verifyCondition(this.contains(results, subTypeInstance),
+                            assertion7,
+                            testTypeName + assertionMsg7 + " (subtype " + subtypeDef.getName() + ")",
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getProfileId(),
+                            RepositoryConformanceProfileRequirement.RELATIONSHIP_CONDITION_SEARCH.getRequirementId(),
+                            "getRelationshipsForEntity",
+                            elapsedTime);
         }
         finally
         {
             this.cleanUp(metadataCollection);
         }
 
-        super.setSuccessMessage("Relationship subtype searches can be narrowed by inclusion and by exclusion");
+        super.setSuccessMessage("Relationship subtype searches can be narrowed by inclusion and by exclusion, and an entity's relationships resolve subtypes");
     }
 
 

@@ -1814,6 +1814,9 @@ public class OpenMetadataElementBuilder
                                                                                        OpenMetadataProperty.NOTIFICATION_INTERVAL.name,
                                                                                        notificationTypeProperties.getNotificationInterval());
                                     elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.LAST_NOTIFICATION.name,
+                                                                                       notificationTypeProperties.getLastNotification());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                                        OpenMetadataProperty.NEXT_SCHEDULED_NOTIFICATION.name,
                                                                                        notificationTypeProperties.getNextScheduledNotification());
                                     elementProperties = propertyHelper.addLongProperty(elementProperties,

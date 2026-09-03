@@ -33,7 +33,6 @@ The OMAGCommonErrorCode is used to define first failure data capture (FFDC) for 
 | [OMAG-COMMON-400-011](#omag-common-400-011) | 400 | The connection object passed on the {0} parameter of the {1} operation is null |
 | [OMAG-COMMON-400-012](#omag-common-400-012) | 400 | The enumeration value passed on the {0} parameter of the {1} operation is null |
 | [OMAG-COMMON-400-013](#omag-common-400-013) | 400 | The text field value passed on the {0} parameter of the {1} operation is null |
-| [OMAG-COMMON-400-014](#omag-common-400-014) | 400 | OMAG server has been called with a null local server name |
 | [OMAG-COMMON-400-015](#omag-common-400-015) | 400 | The object passed on the {0} parameter of the {1} operation is null |
 | [OMAG-COMMON-400-016](#omag-common-400-016) | 400 | An unexpected {0} exception was caught by {1}; error message was {2} |
 | [OMAG-COMMON-400-017](#omag-common-400-017) | 400 | An request by user {0} to method {1} on server {2} had no request body |
@@ -49,6 +48,7 @@ The OMAGCommonErrorCode is used to define first failure data capture (FFDC) for 
 | [OMAG-COMMON-400-030](#omag-common-400-030) | 400 | The {0} operation is only supported by {1} servers and server {2} is a {3} |
 | [OMAG-COMMON-400-031](#omag-common-400-031) | 400 | A request by user {0} to method {1} on server {2} had no request body.  Add a request body of type {3} |
 | [OMAG-COMMON-400-032](#omag-common-400-032) | 400 | The value {0} passed on the {1} parameter of the {2} operation is invalid |
+| [OMAG-COMMON-400-033](#omag-common-400-033) | 400 | Unable to create a client to call the {0} server at {1}; the error was {2} |
 | [OMAG-COMMON-404-001](#omag-common-404-001) | 404 | The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3} |
 | [OMAG-COMMON-409-001](#omag-common-409-001) | 409 | Method {0} of service {1} is not able to create an instance of type {2} because parameter name {3} is defined as a unique property and value {4} is not available for use |
 | [OMAG-COMMON-500-001](#omag-common-500-001) | 500 | Method {0} called by user {1} to OMAG Server {2} is not implemented in service {3} |
@@ -304,27 +304,6 @@ The system cannot process the request without this text field value.
 **User action**
 
 Correct the code in the caller to provide a value in the text field.
-
-
-----
-
-### OMAG-COMMON-400-014
-
-> OMAG server has been called with a null local server name
-
-|  |  |
-|---|---|
-| **Java constant** | `OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME` |
-| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
-| **Message inserts** | none |
-
-**System action**
-
-The system cannot configure the local server without knowing what it is called.
-
-**User action**
-
-The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly.
 
 
 ----
@@ -640,6 +619,27 @@ The system cannot process the request without a valid value for this parameter.
 **User action**
 
 Correct the code in the caller to provide a valid value.
+
+
+----
+
+### OMAG-COMMON-400-033
+
+> Unable to create a client to call the {0} server at {1}; the error was {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMAGCommonErrorCode.UNABLE_TO_CREATE_CLIENT` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The system cannot issue requests to the server because the client that calls it could not be built.
+
+**User action**
+
+Use the error message to determine what is wrong.  The server name and platform URL root are the usual causes, but the client also needs whatever it authenticates with - a secrets store, for example - to be reachable and to hold credentials the server accepts.
 
 
 ----

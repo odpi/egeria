@@ -21,7 +21,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.MessageSet;
 public enum BaudotNotificationMessageSet implements MessageSet
 {
     /**
-     * BAUDOT-SUBSCRIPTION-MANAGEMENT-0001 - Welcome to your subscription for subscription type: {0} ({1})
+     * BAUDOT-SUBSCRIPTION-MANAGEMENT-0001 - Welcome to your subscription for product subscription type: {0} ({1})
      */
     NEW_SUBSCRIBER("BAUDOT-SUBSCRIPTION-MANAGEMENT-0001",
                    "Welcome to your subscription for product subscription type: {0} ({1})",

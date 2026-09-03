@@ -6,7 +6,7 @@
 
 The Open Metadata Repository Services (OMRS) manage the exchange of metadata between the repositories of an open metadata repository cohort.  This is the oldest and largest set of messages in Egeria.
 
-This directory documents 315 messages in 2 message sets.  Return to the [messages and codes index](../README.md).
+This directory documents 316 messages in 2 message sets.  Return to the [messages and codes index](../README.md).
 
 
 ## Message sets
@@ -14,7 +14,7 @@ This directory documents 315 messages in 2 message sets.  Return to the [message
 | Message set | Type | Message identifiers | Messages | Further reading |
 |---|---|---|---|---|
 | [OMRSAuditCode](OMRSAuditCode.md) | Audit log messages | `OMRS-AUDIT-` | 127 | <https://egeria-project.org/services/omrs/> |
-| [OMRSErrorCode](OMRSErrorCode.md) | Exception messages | `OMRS-` | 188 | <https://egeria-project.org/services/omrs/> |
+| [OMRSErrorCode](OMRSErrorCode.md) | Exception messages | `OMRS-` | 189 | <https://egeria-project.org/services/omrs/> |
 
 
 ----

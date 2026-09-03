@@ -102,6 +102,26 @@ public enum JacquardAuditCode implements AuditLogMessageSet
                               "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
     /**
+     * JACQUARD-HARVESTER-0025 - The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3}
+     */
+    UPDATED_SUPPORTING_DEFINITION("JACQUARD-HARVESTER-0025",
+                                  AuditLogRecordSeverityLevel.TRACE,
+                                  "The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3}",
+                                  "The connector found a definition in the Open Metadata Digital Product Catalog that no longer described the deployment it is running in, and corrected it.",
+                                  "No action is required.  This message records that the catalog has been brought back into line with the metadata access server that supplies it.",
+                                  "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
+
+    /**
+     * JACQUARD-HARVESTER-0026 - The {0} integration connector is unlinking {1} element {2} from {3} element {4} to remove relationship {5}
+     */
+    UNLINKING_ELEMENTS("JACQUARD-HARVESTER-0026",
+                       AuditLogRecordSeverityLevel.TRACE,
+                       "The {0} integration connector is unlinking {1} element {2} from {3} element {4} to remove relationship {5}",
+                       "The connector is removing a link that no longer describes the deployment it is running in, so that the corrected link can take its place.",
+                       "No action is required.  This message is for monitoring the maintenance of the Open Metadata Digital Product Catalog.",
+                       "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
+
+    /**
      * JACQUARD-HARVESTER-0014 - The {0} integration connector is linking {1} element {2} to {3} element {4} using relationship {5}
      */
     LINKING_ELEMENTS("JACQUARD-HARVESTER-0014",

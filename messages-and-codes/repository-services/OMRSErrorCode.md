@@ -9,7 +9,7 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 188 |
+| **Number of messages** | 189 |
 | **Message identifiers begin** | `OMRS-` |
 | **Java class** | `org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode` |
 | **Module** | [open-metadata-implementation/repository-services/repository-services-apis](../../open-metadata-implementation/repository-services/repository-services-apis) |
@@ -97,6 +97,7 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 | [OMRS-REPOSITORY-400-081](#omrs-repository-400-081) | 400 | A {0} request has been made to repository {1} to add a classification {2} to entity {3} when this entity is already classified |
 | [OMRS-REPOSITORY-400-082](#omrs-repository-400-082) | 400 | The OMRS repository connector operation {0} from the OMRS Enterprise Repository Services can not locate the home repository connector for classification {1} located in metadata collection {2} |
 | [OMRS-REPOSITORY-400-083](#omrs-repository-400-083) | 400 | The OMRS repository connector operation {0} does not allow a time range from {1} to {2} |
+| [OMRS-REPOSITORY-400-084](#omrs-repository-400-084) | 400 | The value supplied for property {0} of type {1} contains a null (U+0000) character at position {2}; it was passed to method {3} on the {4} parameter |
 | [OMRS-PROPERTIES-400-002](#omrs-properties-400-002) | 400 | No name provided for entity classification |
 | [OMRS-PROPERTIES-400-003](#omrs-properties-400-003) | 400 | Null property name passed to properties object |
 | [OMRS-PROPERTIES-400-004](#omrs-properties-400-004) | 400 | {0} cannot add a new element to location {1} of an array of size {2} value |
@@ -1804,6 +1805,27 @@ The system is unable continue processing the request because the time range prov
 **User action**
 
 Correct the code in the caller's method (potentially just reverse the times) and retry the request.
+
+
+----
+
+### OMRS-REPOSITORY-400-084
+
+> The value supplied for property {0} of type {1} contains a null (U+0000) character at position {2}; it was passed to method {3} on the {4} parameter
+
+|  |  |
+|---|---|
+| **Java constant** | `OMRSErrorCode.NULL_CHARACTER_IN_PROPERTY` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The repository rejects the request rather than storing the value.  A null character is not storable text: PostgreSQL refuses the whole statement with "null character not permitted", other databases silently truncate the value where the null falls, and a repository that does store it hands back something no other repository could hold.  The request is refused everywhere so that a value which cannot survive open metadata is never accepted by one repository and rejected by another.
+
+**User action**
+
+Remove the null character from the offending property value and retry the request.  A null character in a name, description or other text property is almost always a symptom of a fault further upstream - a C-style null-terminated string copied byte-for-byte, a fixed-width field padded with zero bytes, or binary content mislabelled as text - so it is worth correcting whatever produced the value rather than only the single property.
 
 
 ----

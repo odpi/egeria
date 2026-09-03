@@ -130,7 +130,12 @@ test {
     // Gradle does not pass its own system properties to the forked test JVM, so they are forwarded here.
     // Spring's Environment reads system properties ahead of application.properties, so a value given this
     // way wins for that run without editing the file.
-    systemProperties System.properties.findAll { it.key.toString().startsWith('cts.fvt.') }
+    //
+    // Read through the provider API rather than System.properties directly.  A bulk read of
+    // System.properties is not tracked as a configuration input, so on a configuration cache hit the
+    // forwarded values were whatever the cached entry was built with and a -D given on the command line
+    // was silently ignored - the run then reported on a scope nobody had asked for.
+    systemProperties providers.systemPropertiesPrefixedBy('cts.fvt.').get()
 
     // Which repository the harness stands up.  Asking for both at once is refused rather than resolved to
     // one of them: the run would certify a repository the command line says it is not certifying.

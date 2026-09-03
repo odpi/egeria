@@ -194,6 +194,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             Map<String, RelationshipDef>           relationshipDefsByName  = new HashMap<>();
             List<TestSupportedExternalInstances> externalInstanceTestCases = new ArrayList<>();
             List<TestSupportedEffectivityConditions> effectivityConditionTestCases = new ArrayList<>();
+            List<TestSupportedRelationshipEffectivityConditions> relationshipEffectivityConditionTestCases = new ArrayList<>();
 
             Map<String, EntityDef> entityDefs = typeDefGalleryTestCase.getEntityDefs();
             List<RelationshipDef> relationshipDefs = typeDefGalleryTestCase.getRelationshipDefs();
@@ -345,6 +346,10 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     TestSupportedRelationshipEndCriteria testRelationshipEndCriteria = new TestSupportedRelationshipEndCriteria(workPad, entityDefs, relationshipDef);
                     relationshipEndCriteriaTestCases.add(testRelationshipEndCriteria);
 
+                    TestSupportedRelationshipEffectivityConditions testRelationshipEffectivityConditions =
+                            new TestSupportedRelationshipEffectivityConditions(workPad, entityDefs, relationshipDef);
+                    relationshipEffectivityConditionTestCases.add(testRelationshipEffectivityConditions);
+
                     relationshipDefsByName.put(relationshipDef.getName(), relationshipDef);
                 }
             }
@@ -459,6 +464,12 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             }
 
             for (TestSupportedRelationshipEndCriteria testCase : relationshipEndCriteriaTestCases)
+            {
+                testCase.executeTest();
+                testCase.cleanTest();
+            }
+
+            for (TestSupportedRelationshipEffectivityConditions testCase : relationshipEffectivityConditionTestCases)
             {
                 testCase.executeTest();
                 testCase.cleanTest();
