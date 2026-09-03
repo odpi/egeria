@@ -71,9 +71,12 @@ public class SpecialCharacterFVT
     private static final String AWKWARD_DESCRIPTION = "100% of Coco's data_lake \\ everything else";
 
     /**
-     * Message identifier the connector reports when a value contains a null (U+0000) character.
+     * Message identifier reported when a value contains a null (U+0000) character.  The check is made by
+     * the repository validator, before any repository is asked to store the value, so every repository
+     * refuses it the same way and reports the same message.  The JDBC resource connector keeps a check of
+     * its own (JDBC-RESOURCE-CONNECTOR-400-004) for callers that reach it without going through OMRS.
      */
-    private static final String NULL_CHARACTER_MESSAGE_ID = "JDBC-RESOURCE-CONNECTOR-400-004";
+    private static final String NULL_CHARACTER_MESSAGE_ID = "OMRS-REPOSITORY-400-084";
 
     private static final int UPDATE_CYCLES = 3;
 
@@ -349,9 +352,13 @@ public class SpecialCharacterFVT
 
 
     /**
-     * Check that a value containing a null (U+0000) character is rejected with an FFDC message that
-     * names the offending column, rather than being passed down to the database - which rejects the
-     * whole statement with an error that says nothing about which property was at fault.
+     * Check that a value containing a null (U+0000) character is rejected with an FFDC message that names
+     * the offending property, rather than being passed down to the store.
+     * <br>
+     * The rejection has to be the same whichever repository is behind the platform.  Left to the store,
+     * PostgreSQL is refused by the database with an error that says nothing about which property was at
+     * fault, and the in-memory repository takes the value without complaint - so the same request would
+     * succeed or fail depending on a deployment choice the caller knows nothing about.
      *
      * @throws Exception unexpected failure in the test
      */

@@ -25,7 +25,13 @@ public class NotificationTypeProperties extends GovernanceControlProperties
     private Date    plannedStartDate               = null;
     private boolean multipleNotificationsPermitted = true;
     private long    minimumNotificationInterval    = 0L;
+
+    /**
+     * @deprecated the schedule no longer belongs to the notification type - see the getter.
+     */
+    @Deprecated
     private long    notificationInterval           = 0L;
+    private Date    lastNotification               = null;
     private Date    nextScheduledNotification      = null;
     private long    notificationCount              = 0L;
     private Date    plannedCompletionDate          = null;
@@ -50,13 +56,14 @@ public class NotificationTypeProperties extends GovernanceControlProperties
     {
         if (template != null)
         {
-            plannedStartDate      = template.getPlannedStartDate();
+            plannedStartDate               = template.getPlannedStartDate();
             multipleNotificationsPermitted = template.getMultipleNotificationsPermitted();
-            minimumNotificationInterval = template.getMinimumNotificationInterval();
-            notificationInterval  = template.getNotificationInterval();
-            nextScheduledNotification = template.getNextScheduledNotification();
-            notificationCount = template.getNotificationCount();
-            plannedCompletionDate = template.getPlannedCompletionDate();
+            minimumNotificationInterval    = template.getMinimumNotificationInterval();
+            notificationInterval           = template.getNotificationInterval();
+            lastNotification               = template.getLastNotification();
+            nextScheduledNotification      = template.getNextScheduledNotification();
+            notificationCount              = template.getNotificationCount();
+            plannedCompletionDate          = template.getPlannedCompletionDate();
         }
     }
 
@@ -130,12 +137,19 @@ public class NotificationTypeProperties extends GovernanceControlProperties
         this.minimumNotificationInterval = minimumNotificationInterval;
     }
 
+
     /**
-     * Return the minutes between notifications.  If null, notifications are driven by other events,
-     * such as a change to a monitored resource.
+     * Return how frequently a notification should be sent, in minutes.
      *
      * @return minute count
+     *
+     * @deprecated whether a notification may fire is assessed by the notification manager, from
+     * minimumNotificationInterval and nextScheduledNotification together with each subscriber's own state.
+     * The notification type no longer carries a schedule of its own.  The property is retained so that a
+     * repository holding a value for it can still read its instances - see the deprecated attribute on the
+     * NotificationType entity in OpenMetadataTypesArchive.
      */
+    @Deprecated
     public long getNotificationInterval()
     {
         return notificationInterval;
@@ -143,11 +157,13 @@ public class NotificationTypeProperties extends GovernanceControlProperties
 
 
     /**
-     * Set up the minutes between notifications.  If null, notifications are driven by other events,
-     * such as a change to a monitored resource.
+     * Set up how frequently a notification should be sent, in minutes.
      *
      * @param notificationInterval minute count
+     *
+     * @deprecated see {@link #getNotificationInterval()}.
      */
+    @Deprecated
     public void setNotificationInterval(long notificationInterval)
     {
         this.notificationInterval = notificationInterval;
@@ -155,8 +171,30 @@ public class NotificationTypeProperties extends GovernanceControlProperties
 
 
     /**
+     * Return the last notification time
+     *
+     * @return date
+     */
+    public Date getLastNotification()
+    {
+        return lastNotification;
+    }
+
+
+    /**
+     * Set up the last notification time
+     *
+     * @param lastNotification date
+     */
+    public void setLastNotification(Date lastNotification)
+    {
+        this.lastNotification = lastNotification;
+    }
+
+
+    /**
      * Return the date/time that the notifications should be sent out if they are on a fixed schedule.
-     * If notificationInterval is 0, then this field is null.
+     * This is null when the notification type is not on a schedule.
      *
      * @return date
      */
@@ -165,9 +203,10 @@ public class NotificationTypeProperties extends GovernanceControlProperties
         return nextScheduledNotification;
     }
 
+
     /**
      * Set up the date/time that the notifications should be sent out if they are on a fixed schedule.
-     * If notificationInterval is 0, then this field is null.
+     * This is null when the notification type is not on a schedule.
      *
      * @param nextScheduledNotification date
      */
@@ -230,13 +269,14 @@ public class NotificationTypeProperties extends GovernanceControlProperties
     public String toString()
     {
         return "NotificationTypeProperties{" +
-                "plannedStartDate=" + getPlannedStartDate() +
-                ", multipleNotificationsPermitted=" + getMultipleNotificationsPermitted() +
-                ", minimumNotificationInterval=" + getMinimumNotificationInterval() +
-                ", notificationInterval=" + getNotificationInterval() +
-                ", nextScheduledNotification=" + getNextScheduledNotification() +
-                ", notificationCount=" + getNotificationCount() +
-                ", plannedCompletionDate=" + getPlannedCompletionDate() +
+                "plannedStartDate=" + plannedStartDate +
+                ", multipleNotificationsPermitted=" + multipleNotificationsPermitted +
+                ", minimumNotificationInterval=" + minimumNotificationInterval +
+                ", notificationInterval=" + notificationInterval +
+                ", lastNotification=" + lastNotification +
+                ", nextScheduledNotification=" + nextScheduledNotification +
+                ", notificationCount=" + notificationCount +
+                ", plannedCompletionDate=" + plannedCompletionDate +
                 "} " + super.toString();
     }
 
@@ -255,10 +295,11 @@ public class NotificationTypeProperties extends GovernanceControlProperties
         if (!super.equals(objectToCompare)) return false;
         NotificationTypeProperties that = (NotificationTypeProperties) objectToCompare;
         return minimumNotificationInterval == that.minimumNotificationInterval &&
-                multipleNotificationsPermitted == that.multipleNotificationsPermitted &&
                 notificationInterval == that.notificationInterval &&
+                multipleNotificationsPermitted == that.multipleNotificationsPermitted &&
                 notificationCount == that.notificationCount &&
                 Objects.equals(plannedStartDate, that.plannedStartDate) &&
+                Objects.equals(lastNotification, that.lastNotification) &&
                 Objects.equals(nextScheduledNotification, that.nextScheduledNotification) &&
                 Objects.equals(plannedCompletionDate, that.plannedCompletionDate);
     }
@@ -272,6 +313,8 @@ public class NotificationTypeProperties extends GovernanceControlProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), plannedStartDate, multipleNotificationsPermitted, minimumNotificationInterval, notificationInterval, notificationCount, nextScheduledNotification, plannedCompletionDate);
+        return Objects.hash(super.hashCode(), plannedStartDate, multipleNotificationsPermitted,
+                            minimumNotificationInterval, notificationInterval, notificationCount,
+                            lastNotification, nextScheduledNotification, plannedCompletionDate);
     }
 }

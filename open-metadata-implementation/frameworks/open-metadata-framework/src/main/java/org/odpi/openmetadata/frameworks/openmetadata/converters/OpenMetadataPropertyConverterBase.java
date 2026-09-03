@@ -16164,8 +16164,15 @@ public class OpenMetadataPropertyConverterBase
 
                                 ((NotificationTypeProperties) beanProperties).setPlannedStartDate(this.removePlannedStartDate(elementProperties));
                                 ((NotificationTypeProperties) beanProperties).setMinimumNotificationInterval(this.removeMinimumNotificationInterval(elementProperties));
+                                /*
+                                 * notificationInterval is deprecated, but it is still consumed here.  Left
+                                 * unmapped it falls into extendedProperties, where a long does not survive a
+                                 * JSON round trip - it comes back as an Integer, so the bean no longer equals
+                                 * itself.  Mapping it keeps existing instances readable.
+                                 */
                                 ((NotificationTypeProperties) beanProperties).setNotificationInterval(this.removeNotificationInterval(elementProperties));
                                 ((NotificationTypeProperties) beanProperties).setMultipleNotificationsPermitted(this.removeMultipleNotificationsPermitted(elementProperties));
+                                ((NotificationTypeProperties) beanProperties).setLastNotification(this.removeLastNotification(elementProperties));
                                 ((NotificationTypeProperties) beanProperties).setNextScheduledNotification(this.removeNextScheduledNotification(elementProperties));
                                 ((NotificationTypeProperties) beanProperties).setNotificationCount(this.removeNotificationCount(elementProperties));
                                 ((NotificationTypeProperties) beanProperties).setPlannedCompletionDate(this.removePlannedCompletionDate(elementProperties));

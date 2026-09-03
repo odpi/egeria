@@ -20,8 +20,9 @@ import java.util.Map;
 
 /**
  * OMAGPlatformExtension starts a single OMAG Server Platform in-process for the whole query-fvt run
- * (no Kafka - a PostgreSQL repository and console audit log are used instead), configures and starts a
- * metadata access store server on it backed by the PostgreSQL repository connector, loads the full set
+ * (no Kafka - a local repository and console audit log are used instead), configures and starts a
+ * metadata access store server on it backed by either the PostgreSQL or the in-memory repository
+ * connector (see {@link #usingInMemoryRepository()} for how that is chosen), loads the full set
  * of open metadata archives under the repo's top-level {@code content-packs} directory (in dependency
  * order), and shuts everything down once when the test run finishes.
  * <br>
@@ -49,6 +50,21 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      * UserId used for all admin, platform and metadata calls made by the query-fvt suite.
      */
     public static final String USER_ID = "queryfvtuser";
+
+    /**
+     * Name of the system property that chooses which local repository backs this suite's server, and the
+     * value that selects the in-memory one.  It is set from build.gradle: {@code -PrunQueryFvt} runs the
+     * suite against PostgreSQL, {@code -PrunQueryFvtInMemory} against the in-memory repository.
+     * <br>
+     * Running the same tests against both matters because the two repositories answer a query in quite
+     * different ways.  PostgreSQL translates the search into SQL; the in-memory store retrieves and then
+     * filters in Java through OMRSRepositoryContentValidator.  Their observable behaviour is supposed to
+     * be identical, and where it silently was not - a nested search condition discarding every instance
+     * that had no properties of its own - only the in-memory side was wrong, and no suite ran there to
+     * notice.
+     */
+    private static final String REPOSITORY_PROPERTY = "query.fvt.repository";
+    private static final String IN_MEMORY_REPOSITORY = "inmemory";
 
     /**
      * Fixed local metadata collection id for the server's repository.  This is deliberately stable
@@ -183,6 +199,17 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      *
      * @throws Exception any problem configuring or starting the server is fatal to the whole query-fvt run
      */
+    /**
+     * Is this run using the in-memory repository rather than PostgreSQL?
+     *
+     * @return true if the in-memory repository was selected
+     */
+    static boolean usingInMemoryRepository()
+    {
+        return IN_MEMORY_REPOSITORY.equals(System.getProperty(REPOSITORY_PROPERTY));
+    }
+
+
     private void configureAndStartServer() throws Exception
     {
         PlatformServicesClient platformServicesClient = new PlatformServicesClient("query-fvt Platform",
@@ -227,14 +254,23 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                                                        platformURLRoot,
                                                        100);
 
-        Map<String, Object> storageProperties = new HashMap<>();
+        if (usingInMemoryRepository())
+        {
+            // Nothing to point at: the in-memory repository needs no database, no schema and no secrets,
+            // which is why this variant of the suite can run anywhere the PostgreSQL one cannot.
+            configurationClient.setInMemLocalRepository();
+        }
+        else
+        {
+            Map<String, Object> storageProperties = new HashMap<>();
 
-        storageProperties.put("databaseURL", "~{repositoryDatabaseURL}~?currentSchema=repository_" + SERVER_NAME);
-        storageProperties.put("databaseSchema", "repository_" + SERVER_NAME);
-        storageProperties.put("secretsStore", "~{egeriaServersSecretsStore}~");
-        storageProperties.put("secretsCollectionName", "~{repositorySecretCollectionName}~");
+            storageProperties.put("databaseURL", "~{repositoryDatabaseURL}~?currentSchema=repository_" + SERVER_NAME);
+            storageProperties.put("databaseSchema", "repository_" + SERVER_NAME);
+            storageProperties.put("secretsStore", "~{egeriaServersSecretsStore}~");
+            storageProperties.put("secretsCollectionName", "~{repositorySecretCollectionName}~");
 
-        configurationClient.setPostgreSQLLocalRepository(storageProperties);
+            configurationClient.setPostgreSQLLocalRepository(storageProperties);
+        }
         configurationClient.addConsoleAuditLogDestination(new ArrayList<>());
         configurationClient.configureAllAccessServicesNoTopics(new HashMap<>());
 

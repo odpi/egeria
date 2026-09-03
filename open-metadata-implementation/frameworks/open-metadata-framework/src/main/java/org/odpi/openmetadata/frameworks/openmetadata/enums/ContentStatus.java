@@ -67,6 +67,11 @@ public enum ContentStatus implements OpenMetadataEnum
     DEPRECATED              (6, "Deprecated",              "The instance is out of date and should not be used.", "c831d2a8-0b08-45ae-930d-e19038e7e1b1"),
 
     /**
+     * The instance is no longer active and must not be used.
+     */
+    OBSOLETE                (7, "Obsolete",                 "The instance is no longer active and must not be used.", "a833d2a8-0b08-45ae-930d-e10038e8e1b1"),
+
+    /**
      * The instance is in a locally defined state.
      */
     OTHER                   (99, "Other",                   "The instance is in a locally defined state.", "2fd04d45-d6f2-4008-a679-42f7326f9b01");

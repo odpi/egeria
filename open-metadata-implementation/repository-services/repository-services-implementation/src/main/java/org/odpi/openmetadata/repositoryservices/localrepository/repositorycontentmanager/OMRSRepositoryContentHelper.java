@@ -2686,14 +2686,17 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             case "byte" -> ((Byte) v1).compareTo((Byte) v2);
             case "char" -> ((Character) v1).compareTo((Character) v2);
             case "short" -> ((Short) v1).compareTo((Short) v2);
-            case "integer" -> ((Integer) v1).compareTo((Integer) v2);
+            case "int" -> ((Integer) v1).compareTo((Integer) v2);
             case "long" -> ((Long) v1).compareTo((Long) v2);
             case "float" -> ((Float) v1).compareTo((Float) v2);
             case "double" -> ((Double) v1).compareTo((Double) v2);
             case "biginteger" -> ((BigInteger) v1).compareTo((BigInteger) v2);
             case "bigdecimal" -> ((BigDecimal) v1).compareTo((BigDecimal) v2);
             case "string" -> ((String) v1).compareTo((String) v2);
-            case "date" -> ((Date) v1).compareTo((Date) v2);
+            /*
+             * A date is held as a Long - see PrimitivePropertyValue, which converts a Date on the way in.
+             */
+            case "date" -> ((Long) v1).compareTo((Long) v2);
             default ->
             {
                 log.debug("Property type not catered for in compare function");

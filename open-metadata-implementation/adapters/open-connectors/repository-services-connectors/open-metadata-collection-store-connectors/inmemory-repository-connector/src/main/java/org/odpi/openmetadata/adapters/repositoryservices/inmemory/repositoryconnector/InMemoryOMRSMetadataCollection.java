@@ -322,18 +322,14 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 {
                     repositoryValidator.validRelationship(repositoryName, storedRelationship);
 
-                    if (repositoryHelper.relatedEntity(repositoryName,
-                                                       entityGUID,
-                                                       storedRelationship))
+                    if ((repositoryHelper.relatedEntity(repositoryName,
+                                                        entityGUID,
+                                                        storedRelationship)) &&
+                        (repositoryValidator.verifyInstanceType(repositoryName,
+                                                                relationshipTypeGUID,
+                                                                storedRelationship)))
                     {
-                        if (relationshipTypeGUID == null)
-                        {
-                            entityRelationships.add(storedRelationship);
-                        }
-                        else if (relationshipTypeGUID.equals(storedRelationship.getType().getTypeDefGUID()))
-                        {
-                            entityRelationships.add(storedRelationship);
-                        }
+                        entityRelationships.add(storedRelationship);
                     }
                 }
             }

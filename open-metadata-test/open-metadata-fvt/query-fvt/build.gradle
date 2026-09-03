@@ -30,6 +30,11 @@ dependencies {
     // Connectors needed to configure and run a metadata access store server backed by PostgreSQL
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
+    // The same suite also runs against the in-memory repository (-PrunQueryFvtInMemory), which needs no
+    // database.  The two repositories implement the same query contract by quite different means - SQL
+    // versus retrieve-then-filter in Java - so running the tests against both is what catches one of
+    // them drifting from the contract.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
@@ -69,17 +74,41 @@ dependencies {
 
 description = 'Open Metadata Repository Query Functional Verification Tests (query-fvt)'
 
-// The property is read here, at configuration time, rather than inside the onlyIf closure.  onlyIf is
-// evaluated during execution, and reaching for `project` then is unsupported with the configuration
+// These properties are read here, at configuration time, rather than inside the onlyIf closure.  onlyIf
+// is evaluated during execution, and reaching for `project` then is unsupported with the configuration
 // cache.
-def runThisSuite = project.hasProperty('runQueryFvt')
+//
+// The suite runs against one local repository per invocation:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:query-fvt:test -PrunQueryFvt
+//   ./gradlew :open-metadata-test:open-metadata-fvt:query-fvt:test -PrunQueryFvtInMemory
+//
+// The in-memory variant needs no PostgreSQL server and loads the archives without database round trips,
+// so it is much cheaper to run and works anywhere.  It is not a substitute for the PostgreSQL variant:
+// each repository has query behaviour the other cannot exercise, and the point of having both is to
+// catch the two diverging.
+def runAgainstPostgreSQL = project.hasProperty('runQueryFvt')
+def runAgainstInMemory   = project.hasProperty('runQueryFvtInMemory')
+def runThisSuite         = runAgainstPostgreSQL || runAgainstInMemory
+
+// Asking for both at once is refused rather than resolved to one of them: the run would report on a
+// repository the command line says it is not testing.
+if (runAgainstPostgreSQL && runAgainstInMemory)
+{
+    throw new GradleException('Specify either -PrunQueryFvt or -PrunQueryFvtInMemory, not both - ' +
+                                      'each run exercises one repository.')
+}
 
 test {
     useJUnitPlatform()
 
-    // Optional, opt-in suite: needs a reachable PostgreSQL server and loads ~30 archives, so it is
-    // skipped unless explicitly requested with -PrunQueryFvt.
+    // Optional, opt-in suite: the PostgreSQL variant needs a reachable server and both variants load ~30
+    // archives, so it is skipped unless explicitly requested.
     onlyIf { runThisSuite }
+
+    // Which repository OMAGPlatformExtension stands up.  Named and shaped like cts-fvt's equivalent
+    // setting, which does the same job for the conformance suite.
+    systemProperty 'query.fvt.repository', runAgainstInMemory ? 'inmemory' : 'postgres'
 
     // Single JVM fork - the tests share one running platform/server (see OMAGPlatformExtension) and
     // are not designed to run concurrently against it.  No fixed timeout: loading the full content-packs

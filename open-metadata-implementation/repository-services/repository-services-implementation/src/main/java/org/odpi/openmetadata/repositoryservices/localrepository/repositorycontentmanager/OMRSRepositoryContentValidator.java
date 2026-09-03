@@ -2195,6 +2195,87 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
+     * Reject any string in the supplied properties that contains a null (U+0000) character.
+     *
+     * @param parameterName name of the "properties" parameter
+     * @param typeDefName type of the instance the properties belong to
+     * @param properties proposed properties for the instance
+     * @param methodName method receiving the call
+     * @throws PropertyErrorException a property value contains a null character
+     */
+    private void validateNoNullCharacter(String             parameterName,
+                                         String             typeDefName,
+                                         InstanceProperties properties,
+                                         String             methodName) throws PropertyErrorException
+    {
+        if ((properties == null) || (properties.getInstanceProperties() == null))
+        {
+            return;
+        }
+
+        for (Map.Entry<String, InstancePropertyValue> property : properties.getInstanceProperties().entrySet())
+        {
+            this.validateNoNullCharacter(parameterName, typeDefName, property.getKey(), property.getValue(), methodName);
+        }
+    }
+
+
+    /**
+     * Reject a property value that contains a null (U+0000) character, looking inside arrays, maps and
+     * structs as well as at a simple value - a null character is no more storable for being nested.
+     *
+     * @param parameterName name of the "properties" parameter
+     * @param typeDefName type of the instance the property belongs to
+     * @param propertyName name of the property being checked
+     * @param propertyValue value being checked
+     * @param methodName method receiving the call
+     * @throws PropertyErrorException the value contains a null character
+     */
+    private void validateNoNullCharacter(String                parameterName,
+                                         String                typeDefName,
+                                         String                propertyName,
+                                         InstancePropertyValue propertyValue,
+                                         String                methodName) throws PropertyErrorException
+    {
+        if (propertyValue == null)
+        {
+            return;
+        }
+
+        if (propertyValue instanceof PrimitivePropertyValue primitivePropertyValue)
+        {
+            if (primitivePropertyValue.getPrimitiveValue() instanceof String stringValue)
+            {
+                int nullCharacterPosition = stringValue.indexOf('\u0000');
+
+                if (nullCharacterPosition >= 0)
+                {
+                    throw new PropertyErrorException(OMRSErrorCode.NULL_CHARACTER_IN_PROPERTY.getMessageDefinition(propertyName,
+                                                                                                                   typeDefName,
+                                                                                                                   Integer.toString(nullCharacterPosition),
+                                                                                                                   methodName,
+                                                                                                                   parameterName),
+                                                     this.getClass().getName(),
+                                                     methodName);
+                }
+            }
+        }
+        else if (propertyValue instanceof ArrayPropertyValue arrayPropertyValue)
+        {
+            this.validateNoNullCharacter(parameterName, typeDefName, arrayPropertyValue.getArrayValues(), methodName);
+        }
+        else if (propertyValue instanceof MapPropertyValue mapPropertyValue)
+        {
+            this.validateNoNullCharacter(parameterName, typeDefName, mapPropertyValue.getMapValues(), methodName);
+        }
+        else if (propertyValue instanceof StructPropertyValue structPropertyValue)
+        {
+            this.validateNoNullCharacter(parameterName, typeDefName, structPropertyValue.getAttributes(), methodName);
+        }
+    }
+
+
+    /**
      * Validate that the properties for a metadata instance match its TypeDef.
      *
      * @param sourceName source of the request (used for logging)
@@ -2228,6 +2309,14 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         {
             typeDefCategoryName = typeDef.getCategory().getName();
         }
+
+        /*
+         * Done for every repository, before the type is even consulted, because a null character is not
+         * storable text anywhere.  Leaving it to the store means each repository decides for itself: the
+         * PostgreSQL repository is refused by the database, while a repository that keeps its instances in
+         * memory takes the value happily and hands back something no other repository could hold.
+         */
+        this.validateNoNullCharacter(parameterName, typeDefName, properties, methodName);
 
         List<TypeDefAttribute> typeDefAttributes = repositoryContentManager.getAllPropertiesForTypeDef(sourceName,
                                                                                                        typeDef,
@@ -4292,7 +4381,17 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             InstancePropertyValue actualValue = null;
             PropertyComparisonOperator operator = condition.getOperator();
 
-            if (propertyName == null)
+            if ((condition.getNestedConditions() != null) && (propertyName == null) && (operator == null))
+            {
+                /*
+                 * This condition only groups a nested set of conditions.  It has no property,
+                 * operator or value of its own, so its entire contribution is matchesNested.
+                 * Falling through to the wildcard branch below would test the (absent) condition
+                 * against every property, and an instance with no properties at all would be
+                 * rejected no matter what the nested conditions decided.
+                 */
+            }
+            else if (propertyName == null)
             {
                 /*
                  * Build a condition that tests all properties

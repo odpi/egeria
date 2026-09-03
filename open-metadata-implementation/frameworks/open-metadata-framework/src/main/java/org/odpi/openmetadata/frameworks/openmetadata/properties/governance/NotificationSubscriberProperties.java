@@ -159,10 +159,10 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
     public String toString()
     {
         return "NotificationSubscriberProperties{" +
-                "activityStatus=" + getActivityStatus() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", iscQualifiedName='" + getISCQualifiedName() + '\'' +
-                ", lastNotification=" + getLastNotification() +
+                "activityStatus=" + activityStatus +
+                ", zoneMembership=" + zoneMembership +
+                ", iscQualifiedName='" + iscQualifiedName + '\'' +
+                ", lastNotification=" + lastNotification +
                 "} " + super.toString();
     }
 
