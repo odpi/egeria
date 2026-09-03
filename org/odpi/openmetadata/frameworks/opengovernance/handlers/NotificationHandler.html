@@ -139,62 +139,35 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dismissSubscriber(java.lang.String,java.lang.String,long,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,java.lang.String,java.util.Map,java.lang.String,java.util.List)" class="member-name-link">dismissSubscriber</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subscriberGUID,
- long&nbsp;notificationCount,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../openmetadata/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
- <a href="../../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;outboundNotificationProperties,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMonitoredResources(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getMonitoredResources</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notificationTypeGUID,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionRequesterGUID,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;actionTargets)</code></div>
+ <a href="../../openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a notification/action for an unsubscribed subscriber.</div>
+<div class="block">Return the list of resources linked to the supplied notification type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMonitoredResources(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getMonitoredResources</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNotificationSubscribers(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getNotificationSubscribers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notificationTypeGUID,
  <a href="../../openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of resources linked to the supplied notification type.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNotificationSubscribers(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getNotificationSubscribers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notificationTypeGUID,
- <a href="../../openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of subscribers linked to the supplied notification type.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#notifySubscribers(java.lang.String,long,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,java.lang.String,java.util.Map,java.lang.String,java.util.List,long,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)" class="member-name-link">notifySubscribers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- long&nbsp;notificationCount,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#notifySubscribers(java.lang.String,java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,java.lang.String,java.util.Map,java.lang.String,java.util.List,java.lang.String)" class="member-name-link">notifySubscribers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../openmetadata/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
  <a href="../../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;firstNotificationProperties,
  <a href="../../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;subsequentNotificationProperties,
+ <a href="../../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;lastNotificationProperties,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notificationTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionRequesterGUID,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;actionTargets,
- long&nbsp;minimumNotificationInterval,
- <a href="../../openmetadata/enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;newSubscriberStatus)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a notification/action for the subscribers.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#welcomeSubscriber(java.lang.String,java.lang.String,long,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,java.lang.String,java.util.Map,java.lang.String,java.util.List,long,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)" class="member-name-link">welcomeSubscriber</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subscriberGUID,
- long&nbsp;notificationCount,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../openmetadata/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
- <a href="../../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;outboundNotificationProperties,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notificationTypeGUID,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionRequesterGUID,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;actionTargets,
- long&nbsp;minimumNotificationInterval,
- <a href="../../openmetadata/enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;newSubscriberStatus)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requester)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a notification/action for the new subscriber.</div>
+<div class="block">Create a notification/action for the subscribers if the notificationType is eligible for delivering notifications.</div>
 </div>
 </div>
 </div>
@@ -270,116 +243,45 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="notifySubscribers(java.lang.String,long,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,java.lang.String,java.util.Map,java.lang.String,java.util.List,long,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)">
+<section class="detail" id="notifySubscribers(java.lang.String,java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,java.lang.String,java.util.Map,java.lang.String,java.util.List,java.lang.String)">
 <h3>notifySubscribers</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">notifySubscribers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- long&nbsp;notificationCount,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">notifySubscribers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../openmetadata/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
  <a href="../../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;firstNotificationProperties,
  <a href="../../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;subsequentNotificationProperties,
+ <a href="../../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;lastNotificationProperties,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notificationTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionRequesterGUID,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;actionTargets,
- long&nbsp;minimumNotificationInterval,
- <a href="../../openmetadata/enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;newSubscriberStatus)</span>
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requester)</span>
                        throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Create a notification/action for the subscribers.  The caller determines if a notification is required.
- This method determines if the subscriber is eligible to receive the notification.</div>
+<div class="block">Create a notification/action for the subscribers if the notificationType is eligible for delivering notifications.
+ Each subscriber is considered in turn.  Each subscriber may be in a different state which affects whether it is notified and how.
+ This method determines if the subscriber is eligible to receive the notification.  It also determines
+ if this is the first notification for the subscriber, or later one, since it affects the notification properties.
+ The notification type is updated if it is eligible for delivering notifications (even if it has no subscribers).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the external source - null means local</dd>
+<dd><code>externalSourceName</code> - name of the external source</dd>
 <dd><code>userId</code> - caller's userId</dd>
-<dd><code>notificationCount</code> - count of notifications sent for this notification type - used to create unique qualified Names</dd>
 <dd><code>initialClassifications</code> - classification to add to the action</dd>
-<dd><code>firstNotificationProperties</code> - properties for the first notification sent to this subscriber by this governance service instance</dd>
-<dd><code>subsequentNotificationProperties</code> - properties for a follow-on notification sent to this subscriber by this governance service instance</dd>
+<dd><code>firstNotificationProperties</code> - properties for the first notification sent to this subscriber by this service</dd>
+<dd><code>subsequentNotificationProperties</code> - properties for a follow-on notification sent to this subscriber by this service</dd>
+<dd><code>lastNotificationProperties</code> - properties for the last notification sent to this subscriber by this service</dd>
 <dd><code>notificationTypeGUID</code> - unique identifier of the cause for the action to be raised</dd>
 <dd><code>requestParameters</code> - properties to pass to the next governance service</dd>
 <dd><code>actionRequesterGUID</code> - unique identifier of the source of the action</dd>
 <dd><code>actionTargets</code> - the list of elements that should be acted upon</dd>
-<dd><code>minimumNotificationInterval</code> - minimum time between notifications</dd>
-<dd><code>newSubscriberStatus</code> - set the subscriber relationship to this value after a successful notification; null means leave it alone</dd>
+<dd><code>requester</code> - name of the service making the request</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the watchdog action service is not authorized to continue</dd>
-<dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem connecting to the metadata store</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="welcomeSubscriber(java.lang.String,java.lang.String,long,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,java.lang.String,java.util.Map,java.lang.String,java.util.List,long,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)">
-<h3>welcomeSubscriber</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">welcomeSubscriber</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subscriberGUID,
- long&nbsp;notificationCount,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../openmetadata/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
- <a href="../../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;outboundNotificationProperties,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notificationTypeGUID,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionRequesterGUID,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;actionTargets,
- long&nbsp;minimumNotificationInterval,
- <a href="../../openmetadata/enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;newSubscriberStatus)</span>
-                         throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Create a notification/action for the new subscriber.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>subscriberGUID</code> - unique identifier of the subscriber</dd>
-<dd><code>notificationCount</code> - number of notifications sent by this notification type - used to generate unique qualified names</dd>
-<dd><code>initialClassifications</code> - initial classifications to add to the action</dd>
-<dd><code>outboundNotificationProperties</code> - properties of the action</dd>
-<dd><code>notificationTypeGUID</code> - unique identifier of the cause for the action to be raised</dd>
-<dd><code>requestParameters</code> - properties to pass to any governance action subscriber</dd>
-<dd><code>actionRequesterGUID</code> - unique identifier of the source of the action</dd>
-<dd><code>actionTargets</code> - the list of elements that should be acted upon</dd>
-<dd><code>minimumNotificationInterval</code> - minimum time between notifications</dd>
-<dd><code>newSubscriberStatus</code> - set the subscriber relationship to this value after a successful notification; null means leave it alone</dd>
-<dt>Returns:</dt>
-<dd>unique identifier of the action</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
-<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to continue</dd>
-<dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem connecting to the metadata store</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="dismissSubscriber(java.lang.String,java.lang.String,long,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,java.lang.String,java.util.Map,java.lang.String,java.util.List)">
-<h3>dismissSubscriber</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">dismissSubscriber</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subscriberGUID,
- long&nbsp;notificationCount,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../openmetadata/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ClassificationProperties</a>&gt;&nbsp;initialClassifications,
- <a href="../../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;outboundNotificationProperties,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;notificationTypeGUID,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionRequesterGUID,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;actionTargets)</span>
-                         throws <span class="exceptions"><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
-<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
-<a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Create a notification/action for an unsubscribed subscriber.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>subscriberGUID</code> - unique identifier of the subscriber</dd>
-<dd><code>notificationCount</code> - number of notifications sent to this subscriber by this governance service</dd>
-<dd><code>initialClassifications</code> - initial classifications to add to the action</dd>
-<dd><code>outboundNotificationProperties</code> - properties of the action</dd>
-<dd><code>notificationTypeGUID</code> - unique identifier of the cause for the action to be raised</dd>
-<dd><code>requestParameters</code> - properties to pass to any governance action subscriber</dd>
-<dd><code>actionRequesterGUID</code> - unique identifier of the source of the action</dd>
-<dd><code>actionTargets</code> - the list of elements that should be acted upon</dd>
-<dt>Returns:</dt>
-<dd>unique identifier of the action</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
-<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to continue</dd>
 <dd><code><a href="../../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem connecting to the metadata store</dd>
 </dl>
 </section>

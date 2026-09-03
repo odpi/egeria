@@ -212,37 +212,37 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
 <div class="col-last even-row-color">
 <div class="block">OMAG-COMMON-400-005 - The unique identifier (guid) passed on the {0} parameter of the {1} operation is null</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NULL_LOCAL_SERVER_NAME" class="member-name-link">NULL_LOCAL_SERVER_NAME</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NULL_NAME" class="member-name-link">NULL_NAME</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OMAG-COMMON-400-014 - OMAG server has been called with a null local server name</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NULL_NAME" class="member-name-link">NULL_NAME</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">OMAG-COMMON-400-006 - The name passed on the {0} parameter of the {1} operation is null</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NULL_OBJECT" class="member-name-link">NULL_OBJECT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NULL_OBJECT" class="member-name-link">NULL_OBJECT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMAG-COMMON-400-015 - The object passed on the {0} parameter of the {1} operation is null</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NULL_SEARCH_STRING" class="member-name-link">NULL_SEARCH_STRING</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NULL_SEARCH_STRING" class="member-name-link">NULL_SEARCH_STRING</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMAG-COMMON-400-022 - The search string passed on the {0} parameter of the {1} operation is null</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NULL_TEXT" class="member-name-link">NULL_TEXT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NULL_TEXT" class="member-name-link">NULL_TEXT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMAG-COMMON-400-013 - The text field value passed on the {0} parameter of the {1} operation is null</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NULL_USER_ID" class="member-name-link">NULL_USER_ID</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NULL_USER_ID" class="member-name-link">NULL_USER_ID</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMAG-COMMON-400-004 - The user identifier (user id) passed on the {0} operation is null</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_NAME_NOT_SPECIFIED" class="member-name-link">SERVER_NAME_NOT_SPECIFIED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVER_NAME_NOT_SPECIFIED" class="member-name-link">SERVER_NAME_NOT_SPECIFIED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMAG-COMMON-400-003 - The OMAG Server name is null</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVER_URL_NOT_SPECIFIED" class="member-name-link">SERVER_URL_NOT_SPECIFIED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SERVER_URL_NOT_SPECIFIED" class="member-name-link">SERVER_URL_NOT_SPECIFIED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMAGCommonAuditCode - The OMAG Server Platform URL is null</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNABLE_TO_CREATE_CLIENT" class="member-name-link">UNABLE_TO_CREATE_CLIENT</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-COMMON-400-033 - Unable to create a client to call the {0} server at {1}; the error was {2}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
@@ -410,13 +410,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NULL_LOCAL_SERVER_NAME">
-<h3>NULL_LOCAL_SERVER_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_LOCAL_SERVER_NAME</span></div>
-<div class="block">OMAG-COMMON-400-014 - OMAG server has been called with a null local server name</div>
-</section>
-</li>
-<li>
 <section class="detail" id="NULL_OBJECT">
 <h3>NULL_OBJECT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">NULL_OBJECT</span></div>
@@ -519,6 +512,13 @@ the order they are declared.</div>
 <h3>INVALID_PARAMETER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">INVALID_PARAMETER</span></div>
 <div class="block">OMAG-COMMON-400-032 - The value {0} passed on the {1} parameter of the {2} operation is invalid</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNABLE_TO_CREATE_CLIENT">
+<h3>UNABLE_TO_CREATE_CLIENT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGCommonErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.ffdc">OMAGCommonErrorCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_CREATE_CLIENT</span></div>
+<div class="block">OMAG-COMMON-400-033 - Unable to create a client to call the {0} server at {1}; the error was {2}</div>
 </section>
 </li>
 <li>

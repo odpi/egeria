@@ -102,11 +102,11 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">BaudotSubscriptionManagementService</span>
 <span class="extends-implements">extends <a href="../../../frameworks/openwatchdog/WatchdogActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.openwatchdog">WatchdogActionServiceConnector</a></span></div>
-<div class="block">MonitoredResourceNotificationService is a Watchdog Governance Action Service that listens for changes to its
- monitored resources and notifies its subscribers when a change occurs.
+<div class="block">BaudotSubscriptionManagementService is a Watchdog Governance Action Service that listens for changes to its
+ monitored resources and notifies its subscribers when a change occurs.  There are 2 distinct parts to this processing.
  It listens for changes to its subscribers and sends welcome and cancellation notifications.
  It is designed to run continuously and so does not set up completion status or guards unless it fails.  This means its
- Engine Action entity is never (rarely) completed and this service is restarted each time the hosting engine is restarted.</div>
+ Engine Action entity is never (rarely) completed and as a result, this service is restarted each time the hosting engine is restarted.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

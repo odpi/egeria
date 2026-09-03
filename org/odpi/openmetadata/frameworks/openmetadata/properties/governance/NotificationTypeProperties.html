@@ -141,7 +141,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button><button id="method-summary-table-tab6" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab6', 3)" class="table-tab">Deprecated Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -152,45 +152,58 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Validate that an object is equal depending on their stored values.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinimumNotificationInterval()" class="member-name-link">getMinimumNotificationInterval</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the minimum minutes between notifications.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMultipleNotificationsPermitted()" class="member-name-link">getMultipleNotificationsPermitted</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return whether multiple notifications are permitted.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNextScheduledNotification()" class="member-name-link">getNextScheduledNotification</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastNotification()" class="member-name-link">getLastNotification</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the date/time that the notifications should be sent out if they are on a fixed schedule.</div>
+<div class="block">Return the last notification time</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNotificationCount()" class="member-name-link">getNotificationCount</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinimumNotificationInterval()" class="member-name-link">getMinimumNotificationInterval</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the number of notifications that have been triggered.</div>
+<div class="block">Return the minimum minutes between notifications.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNotificationInterval()" class="member-name-link">getNotificationInterval</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMultipleNotificationsPermitted()" class="member-name-link">getMultipleNotificationsPermitted</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the minutes between notifications.</div>
+<div class="block">Return whether multiple notifications are permitted.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlannedCompletionDate()" class="member-name-link">getPlannedCompletionDate</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNextScheduledNotification()" class="member-name-link">getNextScheduledNotification</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the date/time that the monitor should stop running.</div>
+<div class="block">Return the date/time that the notifications should be sent out if they are on a fixed schedule.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNotificationCount()" class="member-name-link">getNotificationCount</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the number of notifications that have been triggered.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#getNotificationInterval()" class="member-name-link">getNotificationInterval</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">whether a notification may fire is assessed by the notification manager, from
+ minimumNotificationInterval and nextScheduledNotification together with each subscriber's own state.</div>
+</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlannedStartDate()" class="member-name-link">getPlannedStartDate</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlannedCompletionDate()" class="member-name-link">getPlannedCompletionDate</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the date/time that the monitor should stop running.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlannedStartDate()" class="member-name-link">getPlannedStartDate</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the date/time that the monitor can start.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a hash code based on the values of this object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLastNotification(java.util.Date)" class="member-name-link">setLastNotification</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastNotification)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the last notification time</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMinimumNotificationInterval(long)" class="member-name-link">setMinimumNotificationInterval</a><wbr>(long&nbsp;minimumNotificationInterval)</code></div>
@@ -212,10 +225,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up yhe number of notifications that have been triggered.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNotificationInterval(long)" class="member-name-link">setNotificationInterval</a><wbr>(long&nbsp;notificationInterval)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the minutes between notifications.</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#setNotificationInterval(long)" class="member-name-link">setNotificationInterval</a><wbr>(long&nbsp;notificationInterval)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">see <a href="#getNotificationInterval()"><code>getNotificationInterval()</code></a>.</div>
+</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPlannedCompletionDate(java.util.Date)" class="member-name-link">setPlannedCompletionDate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;plannedCompletionDate)</code></div>
@@ -366,9 +381,16 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getNotificationInterval()">
 <h3>getNotificationInterval</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getNotificationInterval</span>()</div>
-<div class="block">Return the minutes between notifications.  If null, notifications are driven by other events,
- such as a change to a monitored resource.</div>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getNotificationInterval</span>()</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">whether a notification may fire is assessed by the notification manager, from
+ minimumNotificationInterval and nextScheduledNotification together with each subscriber's own state.
+ The notification type no longer carries a schedule of its own.  The property is retained so that a
+ repository holding a value for it can still read its instances - see the deprecated attribute on the
+ NotificationType entity in OpenMetadataTypesArchive.</div>
+</div>
+<div class="block">Return how frequently a notification should be sent, in minutes.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>minute count</dd>
@@ -378,12 +400,37 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setNotificationInterval(long)">
 <h3>setNotificationInterval</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setNotificationInterval</span><wbr><span class="parameters">(long&nbsp;notificationInterval)</span></div>
-<div class="block">Set up the minutes between notifications.  If null, notifications are driven by other events,
- such as a change to a monitored resource.</div>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setNotificationInterval</span><wbr><span class="parameters">(long&nbsp;notificationInterval)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">see <a href="#getNotificationInterval()"><code>getNotificationInterval()</code></a>.</div>
+</div>
+<div class="block">Set up how frequently a notification should be sent, in minutes.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>notificationInterval</code> - minute count</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getLastNotification()">
+<h3>getLastNotification</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getLastNotification</span>()</div>
+<div class="block">Return the last notification time</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>date</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setLastNotification(java.util.Date)">
+<h3>setLastNotification</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLastNotification</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;lastNotification)</span></div>
+<div class="block">Set up the last notification time</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>lastNotification</code> - date</dd>
 </dl>
 </section>
 </li>
@@ -392,7 +439,7 @@ loadScripts(document, 'script');</script>
 <h3>getNextScheduledNotification</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getNextScheduledNotification</span>()</div>
 <div class="block">Return the date/time that the notifications should be sent out if they are on a fixed schedule.
- If notificationInterval is 0, then this field is null.</div>
+ This is null when the notification type is not on a schedule.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>date</dd>
@@ -404,7 +451,7 @@ loadScripts(document, 'script');</script>
 <h3>setNextScheduledNotification</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setNextScheduledNotification</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;nextScheduledNotification)</span></div>
 <div class="block">Set up the date/time that the notifications should be sent out if they are on a fixed schedule.
- If notificationInterval is 0, then this field is null.</div>
+ This is null when the notification type is not on a schedule.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>nextScheduledNotification</code> - date</dd>
