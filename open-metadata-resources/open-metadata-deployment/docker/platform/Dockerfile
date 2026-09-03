@@ -15,7 +15,10 @@
 # This can be switched to the runtime image for a smaller footprint image
 # However the JDK debugging tools will be lost, which are helpful in monitoring & undersanding performance/resource issues
 #FROM registry.access.redhat.com/ubi9/openjdk-21-runtime
-FROM registry.access.redhat.com/ubi9/openjdk-21
+# Pinned by digest for a reproducible build; Dependabot's docker ecosystem is configured
+# for this directory and raises the digest bump monthly.  This is the multi-arch manifest
+# list digest, so the linux/amd64 + linux/arm64 build in merge-v6.yml still resolves both.
+FROM registry.access.redhat.com/ubi9/openjdk-21@sha256:26fea73c6d66b0c8191bd2a9b8bba67c22d650a60fcd365be30ed56d8c631a8d
 
 ARG version=6.2-SNAPSHOT
 ARG VCS_REF=unknown
