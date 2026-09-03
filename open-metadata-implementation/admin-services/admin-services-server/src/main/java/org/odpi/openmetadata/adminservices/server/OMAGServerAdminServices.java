@@ -2271,7 +2271,6 @@ public class OMAGServerAdminServices extends TokenController
                                                                                        configurationProperties,
                                                                                        eventBusConfig.getConnectorProvider(),
                                                                                        eventBusConfig.getTopicURLRoot(),
-                                                                                       serverConfig.getLocalServerId(),
                                                                                        eventBusConfig.getConfigurationProperties());
 
 
@@ -2937,6 +2936,33 @@ public class OMAGServerAdminServices extends TokenController
             }
             else
             {
+                /*
+                 * The destination is identified by its qualified name, or - if nothing matches that - by its
+                 * display name, which is the friendlier of the two because it is what an administrator sees.
+                 *
+                 * Which of the two is being matched on has to be settled BEFORE the surviving destinations
+                 * are collected, rather than by making a second pass.  Two passes over the same list, each
+                 * adding the non-matching entries to one survivor list, put every entry that did not match
+                 * the qualified name into that list twice - and left the entry that matched the display name
+                 * in it as well, because the first pass had already added it.  So removing a destination by
+                 * display name did not remove it, and duplicated every other destination the server had.
+                 */
+                boolean matchOnDisplayName = false;
+
+                for (Connection existingConnection : auditLogDestinations)
+                {
+                    if ((existingConnection != null) && (suppliedConnectionName.equals(existingConnection.getQualifiedName())))
+                    {
+                        matchOnDisplayName = false;
+                        break;
+                    }
+
+                    if ((existingConnection != null) && (suppliedConnectionName.equals(existingConnection.getDisplayName())))
+                    {
+                        matchOnDisplayName = true;
+                    }
+                }
+
                 List<Connection> newAuditLogConnections = new ArrayList<>();
                 boolean          found = false;
 
@@ -2944,7 +2970,11 @@ public class OMAGServerAdminServices extends TokenController
                 {
                     if (existingConnection != null)
                     {
-                        if (existingConnection.getQualifiedName().equals(suppliedConnectionName))
+                        String comparisonName = matchOnDisplayName
+                                                        ? existingConnection.getDisplayName()
+                                                        : existingConnection.getQualifiedName();
+
+                        if (suppliedConnectionName.equals(comparisonName))
                         {
                             found = true;
                             configAuditTrail.add(new Date() + " " + userId + " removed " + existingConnection.getQualifiedName() + " from the list of audit log destinations.");
@@ -2952,28 +2982,6 @@ public class OMAGServerAdminServices extends TokenController
                         else
                         {
                             newAuditLogConnections.add(existingConnection);
-                        }
-                    }
-                }
-
-                if (! found)
-                {
-                    /*
-                     * Try searching with the display name
-                     */
-                    for (Connection existingConnection : auditLogDestinations)
-                    {
-                        if (existingConnection != null)
-                        {
-                            if (existingConnection.getDisplayName().equals(suppliedConnectionName))
-                            {
-                                found = true;
-                                configAuditTrail.add(new Date() + " " + userId + " removed " + existingConnection.getQualifiedName() + " from the list of audit log destinations.");
-                            }
-                            else
-                            {
-                                newAuditLogConnections.add(existingConnection);
-                            }
                         }
                     }
                 }

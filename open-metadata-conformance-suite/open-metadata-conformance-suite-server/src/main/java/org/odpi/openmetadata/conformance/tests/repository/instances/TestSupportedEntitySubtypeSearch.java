@@ -49,9 +49,9 @@ public class TestSupportedEntitySubtypeSearch extends RepositoryConformanceTestC
     private static final String assertion4    = testCaseId + "-04";
     private static final String assertionMsg4 = " a subtype exclusion list returns instances of the supertype.";
     private static final String assertion5    = testCaseId + "-05";
-    private static final String assertionMsg5 = " entity count agrees with the subtype inclusion search.";
+    private static final String assertionMsg5 = " entity count agrees with the answerable part of the subtype inclusion search.";
     private static final String assertion6    = testCaseId + "-06";
-    private static final String assertionMsg6 = " entity count agrees with the subtype exclusion search.";
+    private static final String assertionMsg6 = " entity count agrees with the answerable part of the subtype exclusion search.";
 
     private final RepositoryConformanceWorkPad workPad;
     private final EntityDef                    entityDef;
@@ -175,9 +175,9 @@ public class TestSupportedEntitySubtypeSearch extends RepositoryConformanceTestC
                                                                     null,
                                                                     0);
 
-            verifyCondition((inclusionCount == this.size(results)),
+            verifyCondition((inclusionCount == this.countAnswerableFor(results)),
                             assertion5,
-                            testTypeName + assertionMsg5 + " (counted " + inclusionCount + ", found " + this.size(results) + ")",
+                            testTypeName + assertionMsg5 + " (counted " + inclusionCount + ", found " + this.countAnswerableFor(results) + ")",
                             RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId(),
                             "countEntities",
@@ -232,9 +232,9 @@ public class TestSupportedEntitySubtypeSearch extends RepositoryConformanceTestC
                                                                     null,
                                                                     0);
 
-            verifyCondition((exclusionCount == this.size(results)),
+            verifyCondition((exclusionCount == this.countAnswerableFor(results)),
                             assertion6,
-                            testTypeName + assertionMsg6 + " (counted " + exclusionCount + ", found " + this.size(results) + ")",
+                            testTypeName + assertionMsg6 + " (counted " + exclusionCount + ", found " + this.countAnswerableFor(results) + ")",
                             RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_CONDITION_SEARCH.getRequirementId(),
                             "countEntities",
@@ -333,14 +333,44 @@ public class TestSupportedEntitySubtypeSearch extends RepositoryConformanceTestC
 
 
     /**
-     * Size of a result set, treating null as none.
+     * Number of a find()'s results that this repository is answerable for counting: those it homes, and those
+     * it replicates on behalf of a non-cohort provenance.
+     * <br><br>
+     * find() and countEntities() are not asked quite the same question, and the difference is deliberate.  A
+     * find is asked of one repository and answers with everything it holds that matches, reference copies
+     * included, because the caller can see who answered and can deduplicate by GUID.  A count answers with a
+     * number, and a federated count sums the numbers every cohort member gives back - so an instance held as a
+     * reference copy by three members would be counted three times if each member counted its copies, and
+     * nothing downstream can undo it because the GUIDs are gone.  So the count is compared against the part of
+     * the result set this repository is answerable for, not against all of it.
      *
      * @param results what the repository returned
-     * @return number of results
+     * @return number of results this repository counts
      */
-    private long size(List<EntityDetail> results)
+    private long countAnswerableFor(List<EntityDetail> results)
     {
-        return (results == null) ? 0L : results.size();
+        if (results == null)
+        {
+            return 0L;
+        }
+
+        String tutMetadataCollectionId = workPad.getTutMetadataCollectionId();
+        long   answerableFor           = 0L;
+
+        for (EntityDetail result : results)
+        {
+            if (result != null)
+            {
+                if ((tutMetadataCollectionId == null) ||
+                    (tutMetadataCollectionId.equals(result.getMetadataCollectionId())) ||
+                    (tutMetadataCollectionId.equals(result.getReplicatedBy())))
+                {
+                    answerableFor++;
+                }
+            }
+        }
+
+        return answerableFor;
     }
 
 

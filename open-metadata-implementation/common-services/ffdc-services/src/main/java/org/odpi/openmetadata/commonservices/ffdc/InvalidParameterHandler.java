@@ -60,7 +60,12 @@ public class InvalidParameterHandler
     public void validateOMAGServerPlatformURL(String omagServerPlatformURL,
                                               String methodName) throws InvalidParameterException
     {
-        if (omagServerPlatformURL == null)
+        /*
+         * Blank counts as not specified.  A blank URL is not usable and, unlike a null, it survives all the
+         * way to the HTTP call - where it produces a "no protocol" failure naming the whole assembled URL
+         * rather than the parameter that was wrong.
+         */
+        if ((omagServerPlatformURL == null) || (omagServerPlatformURL.isBlank()))
         {
             final String parameterName = "omagServerPlatformURL";
 
@@ -88,7 +93,13 @@ public class InvalidParameterHandler
     {
         this.validateOMAGServerPlatformURL(omagServerPlatformURL, methodName);
 
-        if (serverName == null)
+        /*
+         * Blank counts as not specified here too, and it matters more than the null case does.  A blank
+         * server name is substituted into the URL path and leaves an empty segment - so the request goes to
+         * a different endpoint, or to none, and the caller is told about whatever they happened to hit
+         * instead of about the name they left out.
+         */
+        if ((serverName == null) || (serverName.isBlank()))
         {
             final String parameterName = "serverName";
 

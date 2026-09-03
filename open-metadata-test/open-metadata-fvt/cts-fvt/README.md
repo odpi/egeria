@@ -78,23 +78,45 @@ to; with no token to find, the REST client connector sets no authorization heade
 unauthenticated, which is what this platform expects. What the file changes is that the store *resolves* —
 the connection is built and read rather than failing on a missing file.
 
-Both servers also have their **local server id** pinned, alongside the metadata collection ids. That id is
-the servers' Apache Kafka `group.id`, and the platform generates a fresh UUID for it whenever the
-configuration document does not name one — which, because this harness clears the configuration at the start
-of every run, used to mean a brand new consumer group every time. Kafka gives a group it has never seen
-`auto.offset.reset=latest`, and nothing in Egeria sets that property, so such a consumer starts reading at
-the *end* of the topic.
+Both servers also have their **local server id** pinned, alongside the metadata collection ids. It is worth
+knowing what that does now, because it is less than it once had to be.
 
-That is a race, and it is the one way this harness fails without anything being wrong. The conformance test
-server starts first and asks the cohort for registration information exactly once (`OMRS-AUDIT-0062`). If the
-technology under test publishes its registration before that consumer has been assigned its partition — a
-window of a second or two — the conformance server reads straight past it and never learns the technology
-under test exists. The workbench then waits for a member that, as far as it is concerned, never registered,
-and the run fails at the start-up timeout having recorded no test cases at all. It really is a coin toss: run
-in turn on one machine, the in-memory run won the race by three seconds and the PostgreSQL run lost it by
-one, with identical code. Pinning the ids makes the consumer group survive across runs, so from the second
-run onwards there is a committed offset to resume from and the registration cannot be skipped. The very
-first run against a cohort whose topics do not yet exist still races; re-running it is enough.
+A server's cohort consumers are identified to Apache Kafka by a caller id that becomes the `group.id`, and a
+consumer group Kafka has never seen starts at `auto.offset.reset=latest`. That mattered here more than
+anywhere else: the conformance test server starts first and asks the cohort for registration information
+exactly once (`OMRS-AUDIT-0062`), so a registration published before its consumer is reading is stepped over
+and never asked for again. The workbench then waits for a member that, as far as it is concerned, never
+registered, and the run fails at the start-up timeout having recorded no test cases at all.
+
+Two defects behind that are now fixed in the product rather than worked around here:
+
+* **The cohort topics drew a new consumer group on every configuration.** `ConnectorConfigurationFactory`
+  built the registration and types connections with a freshly generated UUID, and stamped whichever id it
+  generated first into the properties map all three cohort connections were built from - so the instances
+  topic inherited it too. A cohort topic's caller id is now `<server>.<cohort>.<category>`: the same on every
+  restart, different for every member, and different for each of the three topics. This harness felt it far
+  more than a deployed server does, because it clears its configuration at the start of every run and so was
+  reconfigured - and given a new group - every time, where a server configured once keeps its id for good.
+* **A consumer that found nothing to rewind to left its position unset.**
+  `KafkaOpenMetadataEventConsumer` rewinds to the connector's start time on first partition assignment, but
+  only when `offsetsForTimes` finds a message there; when it returned null it did nothing, so
+  `auto.offset.reset` settled the position at the first fetch instead - at wherever the end of the log had
+  moved to by then, stepping over anything published in between. It now pins the end as it stands at
+  assignment.
+
+So the ids pinned here no longer decide anything about the cohort: the cohort topics derive their own from
+the server and cohort names. What the pinning still gives is a stable identity in the configuration document
+and on the enterprise topic connection, and a server that rejoins as itself. **It has to happen before the
+cohort is added** - `addCohortRegistration` builds the cohort's connections at the point it is called, from
+the configuration document as it stands then.
+
+If a run does fail this way, the harness says so precisely - no test cases recorded, rather than a timeout -
+and the check worth making is whether the server that saw nothing logged any `OMRS-AUDIT-8006` at all. None
+means it never received a cohort event, and the next question is whether its consumers were ever assigned a
+partition: a healthy run logs one rewind decision per server per topic, six in all, and a starved one logs
+three. `logback-test.xml` turns the Kafka consumer's logging up to `INFO` so that trail exists at all - the
+two outcomes that matter, a rewind having been needed and the correction having failed, are reported at
+`warn` by the connector itself, but the branch that was taken is only visible at `INFO`.
 
 ## What it asserts
 
@@ -123,7 +145,8 @@ have room for the headline; a run that takes an hour deserves somewhere to put t
 ## What it found
 
 Standing this up was the test. Three defects had to be fixed before the workbench could run at all, and the
-first of them broke cohort federation generally - not just the conformance suite.
+first of them broke cohort federation generally - not just the conformance suite. Running it repeatedly then
+found four more, described after those, which is the point of a harness that can be run again and again.
 
 **No server with a secrets store could call any remote cohort member.** When a server has a secrets store
 configured, `OMRSEnterpriseConnectorManager` builds a secrets-store connection and attaches it to the remote
@@ -150,6 +173,37 @@ for it.
 JSON-quoted string, and the endpoint - which binds it as an opaque `@RequestBody String` - stored it with the
 quotation marks attached, answering 200 as it did so. The REST client connector now sends a string request
 body as `text/plain`.
+
+**A cohort member could be starved of every event it should have received.** Two servers joined the same
+cohort and one of them received nothing at all for the whole run - no `OMRS-AUDIT-8006`, ever - while the
+other worked normally. Its three cohort consumers never reached a partition assignment. The cohort topics
+took a freshly generated UUID as their caller id on every configuration, so a reconfigured server drew a new
+Kafka consumer group each time, and the factory stamped whichever id it generated first into the properties
+map all three connections were built from. Caller ids are now `<server>.<cohort>.<category>` and the map is
+copied per connection. This is invisible in a deployed server, which is configured once and keeps its id;
+it took a harness that reconfigures every run to show it.
+
+**A consumer with nothing to rewind to left its position unset.** The rewind on first partition assignment
+only acted when `offsetsForTimes` found a message at or after the connector's start time. When it returned
+null - the ordinary case - nothing was set, so `auto.offset.reset` resolved the position at the first fetch
+rather than at assignment, stepping over whatever arrived in between. On a registration topic that is a
+member's registration, sent once. Every branch of that decision, including the handler that swallowed a
+failure, logged at `INFO` while Egeria's default root level is `warn`, so the whole mechanism was invisible
+and a missed registration looked exactly like one that was never sent. Two of those messages are now `warn`.
+
+**`findEntities` returned entity proxies as though they were entities.** The guard meant to drop them tested
+`getEntityDetail() != null`, which is never false for a proxy - it builds an `EntityDetail` from any row it
+is given. A proxy carries only the mandatory attributes, so returning one as an entity is wrong on its own
+terms; it also made `findEntities` disagree with `countEntities`, which counts only what the repository is
+answerable for.
+
+**`countEntities` meant different things in different repositories.** The PostgreSQL repository counted the
+instances it homes or replicates; the default implementation counted everything the equivalent `findEntities`
+returned. The default is the one that was wrong: a federated count is the sum of what every member reports,
+and an instance held as a reference copy by three members would be counted three times, with no way to undo
+it afterwards because a count carries no GUIDs. The default now follows the same rule, and the conformance
+suite's own assertions - which compared a count against a whole result set - now compare it against the part
+the repository is answerable for.
 
 ## Prerequisites
 

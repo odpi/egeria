@@ -7,9 +7,10 @@ Functional Verification Tests (FVTs) test multiple components together to
 ensure they function correctly.   Each test uses a different technology stack
 to ensure that we achieve good coverage of the components.
 
-Every suite is **opt-in**: each needs a running technology stack of its own - a PostgreSQL server, an Apache
-Kafka broker, or both - so none of them run as part of an ordinary build. Each is started by naming its
-property on the command line, shown against each suite below.
+Every suite is **opt-in** and none of them run as part of an ordinary build. Most need a running technology
+stack of their own - a PostgreSQL server, an Apache Kafka broker, or both; auth-fvt and server-fvt need
+neither and run in well under a minute. Each is started by naming its property on the command line, shown
+against each suite below.
 
 * **[query-fvt](query-fvt)** - gives the repository query surface a thorough workout against a real
   PostgreSQL repository: paging, sorting, subtype filtering, status (soft-delete) filtering, complex property
@@ -118,6 +119,22 @@ property on the command line, shown against each suite below.
 
   ```
   ./gradlew :open-metadata-test:open-metadata-fvt:auth-fvt:test -PrunAuthFvt
+  ```
+
+* **[server-fvt](server-fvt)** - exercises the services that **configure, start, inspect and stop servers** -
+  `admin-services`, `platform-services`, `server-operations`, `repository-services`, `engine-services`,
+  `governance-server-services` and `user-security` - through their **Java clients**. Those clients are what
+  the Runtime Manager API is being built on and they had almost no automated coverage, which is how several
+  of them came to be addressing endpoints that no longer exist: the client and the controller share only a
+  string literal, so nothing fails at compile time. It needs no database, no broker and no content packs, so
+  it runs in well under a minute.
+
+  The client defects it found have been fixed. Unlike the other suites here, some of its tests are still
+  **expected to fail**: each asserts the behaviour the API should have, and what is left is server-side
+  behaviour rather than a client defect. [Its README](server-fvt) lists both.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:server-fvt:test -PrunServerFvt
   ```
 
 

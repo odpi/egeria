@@ -69,6 +69,36 @@ public class ConfigPropertiesResource
 
 
     /**
+     * Set up the descriptive type of the server.  This value is added to distributed events to make it easier
+     * to understand the source of events.  The default value is derived from the type of server that is being
+     * configured; calling this overrides that default.
+     *
+     * @param serverName  local server name.
+     * @param delegatingUserId external userId making request
+     * @param typeName  short description of the type of server.
+     * @return void response or
+     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * InvalidParameterException invalid serverName or typeName parameter.
+     */
+    @PostMapping(path = "/server-type")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setServerType",
+               description="Set up the descriptive type of the server.  This value is added to distributed events to" +
+                                   " make it easier to understand the source of events.  The default value is derived from" +
+                                   " the type of server that is being configured.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/omag-server/"))
+
+    public VoidResponse setServerType(@PathVariable String serverName,
+                                      @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
+                                      @RequestParam String typeName)
+    {
+        return adminAPI.setServerType(serverName, delegatingUserId, typeName);
+    }
+
+
+    /**
      * Set up the name of the organization that is running this server.  This value is added to distributed events to
      * make it easier to understand the source of events.  The default value is null.
      *

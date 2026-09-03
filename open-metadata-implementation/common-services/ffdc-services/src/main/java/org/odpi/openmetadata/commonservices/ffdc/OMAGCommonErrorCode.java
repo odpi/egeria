@@ -31,7 +31,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      * OMAGCommonAuditCode - The OMAG Server Platform URL is null
      */
     SERVER_URL_NOT_SPECIFIED(400, "OMAG-COMMON-400-001",
-                             "The OMAG Server Platform URL is null",
+                             "The OMAG Server Platform URL is null or blank",
                              "The system cannot identify the OMAG Server Platform.",
                              "Create a new client and pass the URL for the server on the constructor.",
                              "https://egeria-project.org/services/ffdc-services/"),
@@ -40,7 +40,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      * OMAG-COMMON-400-003 - The OMAG Server name is null
      */
     SERVER_NAME_NOT_SPECIFIED(400, "OMAG-COMMON-400-003",
-                              "The OMAG Server name is null",
+                              "The OMAG Server name is null or blank",
                               "The system cannot locate to the OMAG Server to fulfill any request.",
                               "Create a new client and pass the correct name for the server on the constructor.",
                               "https://egeria-project.org/services/ffdc-services/"),

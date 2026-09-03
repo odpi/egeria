@@ -20,6 +20,8 @@ import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServ
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+
 
 /**
  * OMRSMetadataHighwayRESTServices provides the server-side implementation for REST services that support the
@@ -69,7 +71,14 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
-            response.setCohorts(metadataHighwayManager.getCohortDescriptions());
+            if (metadataHighwayManager != null)
+            {
+                response.setCohorts(metadataHighwayManager.getCohortDescriptions());
+            }
+            else
+            {
+                response.setCohorts(new ArrayList<>());
+            }
         }
         catch (Throwable  error)
         {
@@ -110,7 +119,10 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
-            response.setCohortMember(metadataHighwayManager.getLocalRegistration());
+            if (metadataHighwayManager != null)
+            {
+                response.setCohortMember(metadataHighwayManager.getLocalRegistration());
+            }
         }
         catch (Throwable  error)
         {
@@ -153,7 +165,10 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
-            response.setCohortMember(metadataHighwayManager.getLocalRegistration(cohortName));
+            if (metadataHighwayManager != null)
+            {
+                response.setCohortMember(metadataHighwayManager.getLocalRegistration(cohortName));
+            }
         }
         catch (Throwable  error)
         {
@@ -198,7 +213,11 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
-            response.setFlag(metadataHighwayManager.connectToCohort(cohortName));
+            /*
+             * False means "the cohort name was not recognized", which is exactly the state of a server that
+             * has no metadata highway at all.
+             */
+            response.setFlag((metadataHighwayManager != null) && metadataHighwayManager.connectToCohort(cohortName));
         }
         catch (Throwable  error)
         {
@@ -240,7 +259,14 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
-            response.setCohortMembers(metadataHighwayManager.getRemoteMembers(cohortName));
+            if (metadataHighwayManager != null)
+            {
+                response.setCohortMembers(metadataHighwayManager.getRemoteMembers(cohortName));
+            }
+            else
+            {
+                response.setCohortMembers(new ArrayList<>());
+            }
         }
         catch (Throwable  error)
         {
@@ -282,7 +308,7 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
-            response.setFlag(metadataHighwayManager.disconnectFromCohort(cohortName, false));
+            response.setFlag((metadataHighwayManager != null) && metadataHighwayManager.disconnectFromCohort(cohortName, false));
         }
         catch (Throwable  error)
         {
@@ -324,7 +350,7 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
 
             OMRSMetadataHighwayManager metadataHighwayManager = getMetadataHighway(userId, serverName, methodName);
 
-            response.setFlag(metadataHighwayManager.disconnectFromCohort(cohortName, true));
+            response.setFlag((metadataHighwayManager != null) && metadataHighwayManager.disconnectFromCohort(cohortName, true));
         }
         catch (Throwable  error)
         {
@@ -346,7 +372,7 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
      * @return OMRSMetadataCollection object for the local repository
      * @throws InvalidParameterException unknown servername
      * @throws UserNotAuthorizedException unsupported userId
-     * @throws RepositoryErrorException null local repository
+     * @throws RepositoryErrorException problem retrieving the server instance
      */
     private OMRSMetadataHighwayManager getMetadataHighway(String userId,
                                                           String serverName,
@@ -367,15 +393,21 @@ public class OMRSMetadataHighwayRESTServices extends TokenController
         }
 
         /*
-         * If the local repository is not set up then do not attempt to process the request.
+         * A null manager is returned rather than an error being raised, and the callers above treat it as a
+         * server that is a member of no cohorts.
+         *
+         * Being in no cohort is the ordinary state of most servers, not a failure: a server only has a
+         * metadata highway once a cohort has been configured into it.  Reporting it as
+         * NO_METADATA_HIGHWAY made a correctly configured server indistinguishable from a broken one, and
+         * meant a caller asking "which cohorts is this server in?" could not receive the honest answer of
+         * "none".
+         *
+         * Nothing else is being relaxed here.  An unknown or unstarted server still fails, because
+         * instanceHandler.getInstance above raises that, and it is the failure the caller needs.  This is
+         * also consistent with how the manager itself answers about a cohort it does not have - null, an
+         * empty list, or false, rather than an exception - so a server with no highway now behaves exactly
+         * like a server whose highway holds no matching cohort.
          */
-        if (metadataHighwayManager == null)
-        {
-            throw new RepositoryErrorException(OMRSErrorCode.NO_METADATA_HIGHWAY.getMessageDefinition(methodName),
-                                               this.getClass().getName(),
-                                               methodName);
-        }
-
         return metadataHighwayManager;
     }
 }
