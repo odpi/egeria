@@ -494,7 +494,7 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                            AuditLogRecordSeverityLevel.INFO,
                            "The {0} governance action service has delivered all {1} table(s) of collection {2} to {3}",
                            "Every table the source collection offers has been delivered.",
-                           "No action is required.  This message records what was delivered.",
+                           "No action is required.  This message records that the whole collection was delivered; the tables themselves are listed in the preceding messages.",
                            "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**

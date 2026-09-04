@@ -147,7 +147,7 @@ Give the products in the family distinct table names in their data specification
 
 **System action**
 
-The product is left out of the collection.  The other products in the family are still presented.
+The product's connector could not be built from its asset's connection, so the product is left out of the collection; the other products in the family are still presented.
 
 **User action**
 

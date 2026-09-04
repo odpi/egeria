@@ -77,7 +77,7 @@ public enum TabularDataAuditCode implements AuditLogMessageSet
     FAMILY_MEMBER_UNREADABLE("TABULAR-METADATA-CONNECTORS-0005",
                              AuditLogRecordSeverityLevel.EXCEPTION,
                              "The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its connector could not be built: {4} exception with message {5}",
-                             "The product is left out of the collection.  The other products in the family are still presented.",
+                             "The product's connector could not be built from its asset's connection, so the product is left out of the collection; the other products in the family are still presented.",
                              "Use the details from the error message to correct the product asset's connection, then refresh the connector.",
                              "https://egeria-project.org/concepts/tabular-data-set-connector/"),
 

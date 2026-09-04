@@ -944,7 +944,7 @@ Every table the source collection offers has been delivered.
 
 **User action**
 
-No action is required.  This message records what was delivered.
+No action is required.  This message records that the whole collection was delivered; the tables themselves are listed in the preceding messages.
 
 
 ----
