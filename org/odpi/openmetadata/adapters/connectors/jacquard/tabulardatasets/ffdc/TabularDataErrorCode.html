@@ -135,6 +135,14 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code><a href="#NO_TABLE_IN_FOCUS" class="member-name-link">NO_TABLE_IN_FOCUS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">REFERENCE-DATA-CONNECTORS-400-008 - Connector {0} has been asked to read digital product family {1} without being told which of its tabular data sets to read</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NOT_A_PRODUCT_FAMILY" class="member-name-link">NOT_A_PRODUCT_FAMILY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">REFERENCE-DATA-CONNECTORS-400-006 - Connector {0} has been configured to read element {1}, which is a {2} rather than a digital product family</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_PRODUCT_DEFINITION" class="member-name-link">NULL_PRODUCT_DEFINITION</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">REFERENCE-DATA-CONNECTORS-500-004 - Product definition is null for connector {0} in method {1}</div>
@@ -147,13 +155,21 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="col-last even-row-color">
 <div class="block">REFERENCE-DATA-CONNECTORS-400-002 - Reference Data Connector {0} has been configured without the name of the OMAG Server to call</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NULL_URL" class="member-name-link">NULL_URL</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NULL_STARTING_ELEMENT" class="member-name-link">NULL_STARTING_ELEMENT</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">REFERENCE-DATA-CONNECTORS-400-005 - Connector {0} has been configured without the unique identifier of the digital product family it reads; it is supplied in the {1} configuration property</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NULL_URL" class="member-name-link">NULL_URL</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">REFERENCE-DATA-CONNECTORS-400-001 - Reference Data Connector {0} has been configured without the URL to the OMAG Server Platform</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">REFERENCE-DATA-CONNECTORS-500-001 - The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_TABLE_NAME" class="member-name-link">UNKNOWN_TABLE_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">REFERENCE-DATA-CONNECTORS-400-007 - Connector {0} has no tabular data set called {1} in digital product family {2}; the data sets it has are: {3}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNMAPPED_COLUMN" class="member-name-link">UNMAPPED_COLUMN</a></code></div>
 <div class="col-last odd-row-color">
@@ -259,6 +275,34 @@ the order they are declared.</div>
 <h3>NULL_PRODUCT_DEFINITION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">NULL_PRODUCT_DEFINITION</span></div>
 <div class="block">REFERENCE-DATA-CONNECTORS-500-004 - Product definition is null for connector {0} in method {1}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NULL_STARTING_ELEMENT">
+<h3>NULL_STARTING_ELEMENT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">NULL_STARTING_ELEMENT</span></div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-005 - Connector {0} has been configured without the unique identifier of the digital product family it reads; it is supplied in the {1} configuration property</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NOT_A_PRODUCT_FAMILY">
+<h3>NOT_A_PRODUCT_FAMILY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">NOT_A_PRODUCT_FAMILY</span></div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-006 - Connector {0} has been configured to read element {1}, which is a {2} rather than a digital product family</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNKNOWN_TABLE_NAME">
+<h3>UNKNOWN_TABLE_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_TABLE_NAME</span></div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-007 - Connector {0} has no tabular data set called {1} in digital product family {2}; the data sets it has are: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_TABLE_IN_FOCUS">
+<h3>NO_TABLE_IN_FOCUS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></span>&nbsp;<span class="element-name">NO_TABLE_IN_FOCUS</span></div>
+<div class="block">REFERENCE-DATA-CONNECTORS-400-008 - Connector {0} has been asked to read digital product family {1} without being told which of its tabular data sets to read</div>
 </section>
 </li>
 </ul>

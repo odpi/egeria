@@ -153,6 +153,14 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last odd-row-color">
 <div class="block">INTEGRATION-DAEMON-SERVICES-0031 - The integration connector {0} method {1} has returned with a {2} exception containing message {3}</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#CONNECTOR_REGISTRATION_CHANGED" class="member-name-link">CONNECTOR_REGISTRATION_CHANGED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0066 - The registration of integration connector {0} in integration daemon {1} has changed ({2}); the connector is being reinitialized</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CONNECTOR_REINITIALIZE_DEFERRED" class="member-name-link">CONNECTOR_REINITIALIZE_DEFERRED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">INTEGRATION-DAEMON-SERVICES-0067 - The registration of integration connector {0} in integration daemon {1} has changed ({2}) while the connector is refreshing; it will be reinitialized when the refresh completes</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_THREAD_STARTING" class="member-name-link">CONNECTOR_THREAD_STARTING</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">INTEGRATION-DAEMON-SERVICES-0030 - The dedicated thread for integration connector {0} has started in integration daemon {1}</div>
@@ -561,6 +569,20 @@ the order they are declared.</div>
 <h3>REFRESH_THREAD_TERMINATING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">REFRESH_THREAD_TERMINATING</span></div>
 <div class="block">INTEGRATION-DAEMON-SERVICES-0064 - The integration connector refresh thread for integration connector {0} is shutting down</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CONNECTOR_REGISTRATION_CHANGED">
+<h3>CONNECTOR_REGISTRATION_CHANGED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_REGISTRATION_CHANGED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0066 - The registration of integration connector {0} in integration daemon {1} has changed ({2}); the connector is being reinitialized</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CONNECTOR_REINITIALIZE_DEFERRED">
+<h3>CONNECTOR_REINITIALIZE_DEFERRED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationDaemonServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc">IntegrationDaemonServicesAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_REINITIALIZE_DEFERRED</span></div>
+<div class="block">INTEGRATION-DAEMON-SERVICES-0067 - The registration of integration connector {0} in integration daemon {1} has changed ({2}) while the connector is refreshing; it will be reinitialized when the refresh completes</div>
 </section>
 </li>
 <li>

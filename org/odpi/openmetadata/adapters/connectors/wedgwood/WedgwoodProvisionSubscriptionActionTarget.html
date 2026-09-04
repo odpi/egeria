@@ -98,7 +98,10 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">WedgwoodProvisionSubscriptionActionTarget</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="WedgwoodProvisionSubscriptionActionTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.wedgwood">WedgwoodProvisionSubscriptionActionTarget</a>&gt;</span></div>
-<div class="block">ActionTargetEnum characterises the action targets that this governance action service works with/</div>
+<div class="block">ActionTargetEnum characterises the action targets that this governance action service works with.
+ Both are data sets: a single tabular data set, or a collection of them - a digital product family's asset on
+ the source side, a schema of tables on the destination side.  The service delivers a collection a table at a
+ time.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -120,9 +123,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#DESTINATION_DATA_SET" class="member-name-link">DESTINATION_DATA_SET</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The tabular data set, or collection of tabular data sets, to copy to.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SOURCE_DATA_SET" class="member-name-link">SOURCE_DATA_SET</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The tabular data set, or collection of tabular data sets, to copy from.</div>
+</div>
 </div>
 </section>
 </li>
@@ -138,7 +145,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#description" class="member-name-link">description</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Description of the target.</div>
+<div class="block">Description of the action target.</div>
 </div>
 </div>
 </section>
@@ -157,42 +164,43 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/specificationproperties/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ActionTargetType</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionTargetType()" class="member-name-link">getActionTargetType</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return an target type for use in the governance service's provider.</div>
+<div class="block">Return the action target type for a specific action target enum.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../../frameworks/openmetadata/specificationproperties/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ActionTargetType</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getActionTargetTypes()" class="member-name-link">getActionTargetTypes</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Return the targets defined in this enum for a PostgreSQL server.</div>
+<div class="block">Return all the action targets defined in this enum.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationType()" class="member-name-link">getDeployedImplementationType</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a more specific definition of a permitted target.</div>
+<div class="block">Return the preferred value of the deployed implementation type of the element that is linked to for
+ this type of action target.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the description of the target.</div>
+<div class="block">Return the description of the action target.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the target name.</div>
+<div class="block">Return the name of the action target.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOtherPropertyValues()" class="member-name-link">getOtherPropertyValues</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a map of property name to property value that the target should have to be valid for this integration connector.</div>
+<div class="block">Return a map of property name to property value that the elements linked to this action target should have.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the type name (or super type name) of a permitted target.</div>
+<div class="block">Return the type name of the element that is linked to for this type of action target.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">JSON-style toString</div>
+<div class="block">Output of this enum class and main value.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="WedgwoodProvisionSubscriptionActionTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.wedgwood">WedgwoodProvisionSubscriptionActionTarget</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
@@ -229,12 +237,14 @@ the order they are declared.</div>
 <section class="detail" id="SOURCE_DATA_SET">
 <h3>SOURCE_DATA_SET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WedgwoodProvisionSubscriptionActionTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.wedgwood">WedgwoodProvisionSubscriptionActionTarget</a></span>&nbsp;<span class="element-name">SOURCE_DATA_SET</span></div>
+<div class="block">The tabular data set, or collection of tabular data sets, to copy from.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DESTINATION_DATA_SET">
 <h3>DESTINATION_DATA_SET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WedgwoodProvisionSubscriptionActionTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.wedgwood">WedgwoodProvisionSubscriptionActionTarget</a></span>&nbsp;<span class="element-name">DESTINATION_DATA_SET</span></div>
+<div class="block">The tabular data set, or collection of tabular data sets, to copy to.</div>
 </section>
 </li>
 </ul>
@@ -249,7 +259,7 @@ the order they are declared.</div>
 <section class="detail" id="description">
 <h3>description</h3>
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">description</span></div>
-<div class="block">Description of the target.</div>
+<div class="block">Description of the action target.</div>
 </section>
 </li>
 </ul>
@@ -295,7 +305,7 @@ not permitted.)</div>
 <section class="detail" id="getName()">
 <h3>getName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getName</span>()</div>
-<div class="block">Return the target name.</div>
+<div class="block">Return the name of the action target.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string name</dd>
@@ -306,7 +316,7 @@ not permitted.)</div>
 <section class="detail" id="getDescription()">
 <h3>getDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
-<div class="block">Return the description of the target.</div>
+<div class="block">Return the description of the action target.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string description</dd>
@@ -317,10 +327,10 @@ not permitted.)</div>
 <section class="detail" id="getTypeName()">
 <h3>getTypeName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTypeName</span>()</div>
-<div class="block">Return the type name (or super type name) of a permitted target.</div>
+<div class="block">Return the type name of the element that is linked to for this type of action target.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>name of an open metadata type</dd>
+<dd>type name</dd>
 </dl>
 </section>
 </li>
@@ -328,10 +338,11 @@ not permitted.)</div>
 <section class="detail" id="getDeployedImplementationType()">
 <h3>getDeployedImplementationType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDeployedImplementationType</span>()</div>
-<div class="block">Return a more specific definition of a permitted target.</div>
+<div class="block">Return the preferred value of the deployed implementation type of the element that is linked to for
+ this type of action target.  This is typically only set for assets.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>deployed implementation type name</dd>
+<dd>preferred value string</dd>
 </dl>
 </section>
 </li>
@@ -339,10 +350,10 @@ not permitted.)</div>
 <section class="detail" id="getOtherPropertyValues()">
 <h3>getOtherPropertyValues</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getOtherPropertyValues</span>()</div>
-<div class="block">Return a map of property name to property value that the target should have to be valid for this integration connector.</div>
+<div class="block">Return a map of property name to property value that the elements linked to this action target should have.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>map of string to string</dd>
+<dd>map</dd>
 </dl>
 </section>
 </li>
@@ -350,7 +361,7 @@ not permitted.)</div>
 <section class="detail" id="getActionTargetTypes()">
 <h3>getActionTargetTypes</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/specificationproperties/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ActionTargetType</a>&gt;</span>&nbsp;<span class="element-name">getActionTargetTypes</span>()</div>
-<div class="block">Return the targets defined in this enum for a PostgreSQL server.</div>
+<div class="block">Return all the action targets defined in this enum.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list</dd>
@@ -361,10 +372,10 @@ not permitted.)</div>
 <section class="detail" id="getActionTargetType()">
 <h3>getActionTargetType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/specificationproperties/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ActionTargetType</a></span>&nbsp;<span class="element-name">getActionTargetType</span>()</div>
-<div class="block">Return an target type for use in the governance service's provider.</div>
+<div class="block">Return the action target type for a specific action target enum.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>target type</dd>
+<dd>action target type</dd>
 </dl>
 </section>
 </li>
@@ -372,12 +383,12 @@ not permitted.)</div>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
-<div class="block">JSON-style toString</div>
+<div class="block">Output of this enum class and main value.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="WedgwoodProvisionSubscriptionActionTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.wedgwood">WedgwoodProvisionSubscriptionActionTarget</a>&gt;</code></dd>
 <dt>Returns:</dt>
-<dd>return string containing the property names and values</dd>
+<dd>string showing enum value</dd>
 </dl>
 </section>
 </li>

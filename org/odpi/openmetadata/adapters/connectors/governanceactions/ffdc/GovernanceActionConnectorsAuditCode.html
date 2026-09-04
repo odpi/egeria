@@ -133,6 +133,14 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0024 - {0}</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="#COLLECTION_PARTIALLY_PROVISIONED" class="member-name-link">COLLECTION_PARTIALLY_PROVISIONED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0044 - The {0} governance action service delivered {1} of the {2} table(s) of collection {3} to {4}; the table(s) it could not deliver are: {5}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#COLLECTION_PROVISIONED" class="member-name-link">COLLECTION_PROVISIONED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0043 - The {0} governance action service has delivered all {1} table(s) of collection {2} to {3}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#CONNECTOR_CONFIGURED" class="member-name-link">CONNECTOR_CONFIGURED</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0032 - Integration connector {0} is now cataloging {1} server at {2}</div>
@@ -271,6 +279,14 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-first odd-row-color"><code><a href="#SETTING_ZONES" class="member-name-link">SETTING_ZONES</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0020 - The {0} governance action service is publishing asset {1} to the following zones: {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TABLE_PROVISIONED" class="member-name-link">TABLE_PROVISIONED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0041 - The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#TABLE_PROVISIONING_FAILED" class="member-name-link">TABLE_PROVISIONING_FAILED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0042 - The {0} governance action service was unable to deliver table {1} from {2} to {3}: {4} exception with message {5}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#TOO_MANY_CONNECTIONS" class="member-name-link">TOO_MANY_CONNECTIONS</a></code></div>
 <div class="col-last even-row-color">
@@ -643,6 +659,34 @@ the order they are declared.</div>
 <h3>NEW_SUBSCRIPTION_CREATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NEW_SUBSCRIPTION_CREATED</span></div>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0040 - The {0} governance action service has created a new {1} digital subscription {2} for {3} {4} ({5}) requested by {6} {7} ({8})</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TABLE_PROVISIONED">
+<h3>TABLE_PROVISIONED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">TABLE_PROVISIONED</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0041 - The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TABLE_PROVISIONING_FAILED">
+<h3>TABLE_PROVISIONING_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">TABLE_PROVISIONING_FAILED</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0042 - The {0} governance action service was unable to deliver table {1} from {2} to {3}: {4} exception with message {5}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="COLLECTION_PROVISIONED">
+<h3>COLLECTION_PROVISIONED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">COLLECTION_PROVISIONED</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0043 - The {0} governance action service has delivered all {1} table(s) of collection {2} to {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="COLLECTION_PARTIALLY_PROVISIONED">
+<h3>COLLECTION_PARTIALLY_PROVISIONED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">COLLECTION_PARTIALLY_PROVISIONED</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0044 - The {0} governance action service delivered {1} of the {2} table(s) of collection {3} to {4}; the table(s) it could not deliver are: {5}</div>
 </section>
 </li>
 </ul>

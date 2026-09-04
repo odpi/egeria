@@ -129,8 +129,28 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-first even-row-color"><code><a href="#FAMILY_MEMBER_DUPLICATE_TABLE" class="member-name-link">FAMILY_MEMBER_DUPLICATE_TABLE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">TABULAR-METADATA-CONNECTORS-0004 - The {0} connector found that asset {1} of product {2} in digital product family {3} is a copy of asset {4} - both carry qualified name {5}; the copies have been linked as peer duplicates for the duplicate manager and only the first is presented</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#FAMILY_MEMBER_NOT_TABULAR" class="member-name-link">FAMILY_MEMBER_NOT_TABULAR</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">TABULAR-METADATA-CONNECTORS-0003 - The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its connector {4} is not a readable tabular data source</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#FAMILY_MEMBER_TABLE_NAME_CLASH" class="member-name-link">FAMILY_MEMBER_TABLE_NAME_CLASH</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">TABULAR-METADATA-CONNECTORS-0006 - The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its table name {4} is already used by asset {5} of a different product</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#FAMILY_MEMBER_UNREADABLE" class="member-name-link">FAMILY_MEMBER_UNREADABLE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">TABULAR-METADATA-CONNECTORS-0005 - The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its connector could not be built: {4} exception with message {5}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#FAMILY_MEMBERS_LOADED" class="member-name-link">FAMILY_MEMBERS_LOADED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">TABULAR-METADATA-CONNECTORS-0002 - The {0} connector found {1} tabular data set(s) in digital product family {2} ({3})</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The {0} Tabular Metadata Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
 </div>
@@ -198,6 +218,41 @@ the order they are declared.</div>
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
 <div class="block">The {0} Tabular Metadata Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FAMILY_MEMBERS_LOADED">
+<h3>FAMILY_MEMBERS_LOADED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataAuditCode</a></span>&nbsp;<span class="element-name">FAMILY_MEMBERS_LOADED</span></div>
+<div class="block">TABULAR-METADATA-CONNECTORS-0002 - The {0} connector found {1} tabular data set(s) in digital product family {2} ({3})</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FAMILY_MEMBER_NOT_TABULAR">
+<h3>FAMILY_MEMBER_NOT_TABULAR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataAuditCode</a></span>&nbsp;<span class="element-name">FAMILY_MEMBER_NOT_TABULAR</span></div>
+<div class="block">TABULAR-METADATA-CONNECTORS-0003 - The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its connector {4} is not a readable tabular data source</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FAMILY_MEMBER_DUPLICATE_TABLE">
+<h3>FAMILY_MEMBER_DUPLICATE_TABLE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataAuditCode</a></span>&nbsp;<span class="element-name">FAMILY_MEMBER_DUPLICATE_TABLE</span></div>
+<div class="block">TABULAR-METADATA-CONNECTORS-0004 - The {0} connector found that asset {1} of product {2} in digital product family {3} is a copy of asset {4} - both carry qualified name {5}; the copies have been linked as peer duplicates for the duplicate manager and only the first is presented</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FAMILY_MEMBER_TABLE_NAME_CLASH">
+<h3>FAMILY_MEMBER_TABLE_NAME_CLASH</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataAuditCode</a></span>&nbsp;<span class="element-name">FAMILY_MEMBER_TABLE_NAME_CLASH</span></div>
+<div class="block">TABULAR-METADATA-CONNECTORS-0006 - The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its table name {4} is already used by asset {5} of a different product</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FAMILY_MEMBER_UNREADABLE">
+<h3>FAMILY_MEMBER_UNREADABLE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TabularDataAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataAuditCode</a></span>&nbsp;<span class="element-name">FAMILY_MEMBER_UNREADABLE</span></div>
+<div class="block">TABULAR-METADATA-CONNECTORS-0005 - The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its connector could not be built: {4} exception with message {5}</div>
 </section>
 </li>
 </ul>

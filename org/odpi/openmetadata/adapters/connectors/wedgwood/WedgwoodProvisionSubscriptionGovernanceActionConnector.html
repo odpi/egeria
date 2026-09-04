@@ -104,7 +104,14 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">WedgwoodProvisionSubscriptionGovernanceActionConnector</span>
 <span class="extends-implements">extends <a href="../../../frameworks/opengovernance/GeneralGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">GeneralGovernanceActionService</a></span></div>
-<div class="block">WedgwoodProvisionSubscriptionGovernanceActionConnector copies data from one tabular data set to another.</div>
+<div class="block">WedgwoodProvisionSubscriptionGovernanceActionConnector copies data from one tabular data set to another.
+ <br><br>
+ The source may be a single tabular data set or a collection of them.  A digital product family's asset is a
+ collection - one table per product in the family - and delivering it means delivering each of its tables into
+ the destination, which for a family is a collection too: a schema that receives one table per product.  The
+ service asks the source collection for its table names, brings each into focus and copies it.  A table that
+ cannot be copied is logged and skipped so that the rest of the family is still delivered; the service then
+ completes with a failed status and says which tables were missed.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
