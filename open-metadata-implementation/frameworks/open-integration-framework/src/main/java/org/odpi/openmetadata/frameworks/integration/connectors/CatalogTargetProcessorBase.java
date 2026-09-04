@@ -27,9 +27,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.*;
 
 /**
@@ -123,6 +125,69 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
 
 
     /**
+     * Return the catalog target's element with its supported software capabilities attached, and nothing
+     * else - which is all the set-up methods below read.  A full read would bring back everything attached
+     * to the element to the default depth; for a catalog target with a large schema that is most of the cost
+     * of setting a processor up.
+     *
+     * @param methodName calling method
+     * @return the element
+     * @throws ConnectorCheckedException the element cannot be read
+     */
+    private OpenMetadataRootElement getCatalogTargetElementWithCapabilities(String methodName) throws ConnectorCheckedException
+    {
+        try
+        {
+            GetOptions getOptions = integrationContext.getClassificationExplorerClient().getGetOptions();
+
+            getOptions.setGraphQueryDepth(1);
+            getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName));
+
+            return super.getCatalogTargetElement(getOptions);
+        }
+        catch (Exception error)
+        {
+            throw new ConnectorCheckedException(OIFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error);
+        }
+    }
+
+
+    /**
+     * Return the catalog target's element read in full, as {@link RequestedCatalogTarget#getCatalogTargetElement()}
+     * does, logging it if the read failed and the element as retrieved by the targets manager is being returned
+     * in its place.
+     *
+     * @return the element
+     */
+    @Override
+    public OpenMetadataRootElement getCatalogTargetElement()
+    {
+        final String methodName = "getCatalogTargetElement";
+
+        OpenMetadataRootElement catalogTargetElement = super.getCatalogTargetElement();
+
+        if ((super.getCatalogTargetElementRetrievalException() != null) && (auditLog != null))
+        {
+            Exception error = super.getCatalogTargetElementRetrievalException();
+
+            auditLog.logException(methodName,
+                                  OIFAuditCode.GET_CATALOG_TARGET_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                 connectorName,
+                                                                                                 error.getMessage()),
+                                  error);
+        }
+
+        return catalogTargetElement;
+    }
+
+
+    /**
      * Ensure that the metadata collection identifiers are properly set up.
      *
      * @throws ConnectorCheckedException a problem retrieving the server definitions.
@@ -131,9 +196,11 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
     {
         final String methodName = "setUpMetadataSource";
 
+        OpenMetadataRootElement catalogTargetElement = this.getCatalogTargetElementWithCapabilities(methodName);
+
         ReferenceableProperties serverProperties;
 
-        if (super.getCatalogTargetElement().getProperties() instanceof ReferenceableProperties referenceableProperties)
+        if (catalogTargetElement.getProperties() instanceof ReferenceableProperties referenceableProperties)
         {
             serverProperties = referenceableProperties;
         }
@@ -147,9 +214,9 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
         /*
          * Extract details of the software capabilities currently attached to the server.
          */
-        if (super.getCatalogTargetElement().getCapabilities() != null)
+        if (catalogTargetElement.getCapabilities() != null)
         {
-            for (RelatedMetadataElementSummary softwareCapability : super.getCatalogTargetElement().getCapabilities())
+            for (RelatedMetadataElementSummary softwareCapability : catalogTargetElement.getCapabilities())
             {
                 if (softwareCapability != null)
                 {
@@ -225,8 +292,8 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
                 NewElementOptions newElementOptions = new NewElementOptions(softwareCapabilityClient.getMetadataSourceOptions());
 
                 newElementOptions.setIsOwnAnchor(false);
-                newElementOptions.setAnchorGUID(super.getCatalogTargetElement().getElementHeader().getGUID());
-                newElementOptions.setParentGUID(super.getCatalogTargetElement().getElementHeader().getGUID());
+                newElementOptions.setAnchorGUID(catalogTargetElement.getElementHeader().getGUID());
+                newElementOptions.setParentGUID(catalogTargetElement.getElementHeader().getGUID());
                 newElementOptions.setParentAtEnd1(true);
                 newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName);
 
@@ -275,7 +342,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
             NewElementOptions newElementOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
 
             newElementOptions.setIsOwnAnchor(false);
-            newElementOptions.setAnchorGUID(super.getCatalogTargetElement().getElementHeader().getGUID());
+            newElementOptions.setAnchorGUID(catalogTargetElement.getElementHeader().getGUID());
             newElementOptions.setParentGUID(inventoryCatalogGUID);
             newElementOptions.setParentAtEnd1(true);
             newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
@@ -324,9 +391,11 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
     {
         final String methodName = "setUpSoftwareCapability";
 
+        OpenMetadataRootElement catalogTargetElement = this.getCatalogTargetElementWithCapabilities(methodName);
+
         ReferenceableProperties serverProperties;
 
-        if (super.getCatalogTargetElement().getProperties() instanceof ReferenceableProperties referenceableProperties)
+        if (catalogTargetElement.getProperties() instanceof ReferenceableProperties referenceableProperties)
         {
             serverProperties = referenceableProperties;
         }
@@ -340,9 +409,9 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
         /*
          * Extract details of the software capabilities currently attached to the server.
          */
-        if (super.getCatalogTargetElement().getCapabilities() != null)
+        if (catalogTargetElement.getCapabilities() != null)
         {
-            for (RelatedMetadataElementSummary softwareCapability : super.getCatalogTargetElement().getCapabilities())
+            for (RelatedMetadataElementSummary softwareCapability : catalogTargetElement.getCapabilities())
             {
                 if (softwareCapability != null)
                 {
@@ -371,8 +440,8 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
             NewElementOptions newElementOptions = new NewElementOptions(softwareCapabilityClient.getMetadataSourceOptions());
 
             newElementOptions.setIsOwnAnchor(false);
-            newElementOptions.setAnchorGUID(super.getCatalogTargetElement().getElementHeader().getGUID());
-            newElementOptions.setParentGUID(super.getCatalogTargetElement().getElementHeader().getGUID());
+            newElementOptions.setAnchorGUID(catalogTargetElement.getElementHeader().getGUID());
+            newElementOptions.setParentGUID(catalogTargetElement.getElementHeader().getGUID());
             newElementOptions.setParentAtEnd1(true);
             newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName);
 
@@ -419,8 +488,8 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
     protected void throwWrongTypeOfCatalogTarget(String    expectedTypeName,
                                                  String    methodName) throws ConnectorCheckedException
     {
-        throw new ConnectorCheckedException(OIFErrorCode.INVALID_CATALOG_TARGET_TYPE.getMessageDefinition(super.getCatalogTargetElement().getElementHeader().getGUID(),
-                                                                                                          super.getCatalogTargetElement().getElementHeader().getType().getTypeName(),
+        throw new ConnectorCheckedException(OIFErrorCode.INVALID_CATALOG_TARGET_TYPE.getMessageDefinition(super.getCatalogTargetElementHeader().getGUID(),
+                                                                                                          super.getCatalogTargetElementHeader().getType().getTypeName(),
                                                                                                           connectorName,
                                                                                                           expectedTypeName),
                                             this.getClass().getName(),
@@ -438,7 +507,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
     protected void throwWrongTypeOfResourceConnector(String    expectedClassName,
                                                      String    methodName) throws ConnectorCheckedException
     {
-        throw new ConnectorCheckedException(OIFErrorCode.INVALID_CONNECTOR_TYPE.getMessageDefinition(super.getCatalogTargetElement().getElementHeader().getGUID(),
+        throw new ConnectorCheckedException(OIFErrorCode.INVALID_CONNECTOR_TYPE.getMessageDefinition(super.getCatalogTargetElementHeader().getGUID(),
                                                                                                      super.connectorToTarget.getClass().getName(),
                                                                                                      connectorName,
                                                                                                      expectedClassName),
@@ -457,7 +526,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
     protected void throwMissingConnectionInfo(String    missingParameterName,
                                               String    methodName) throws ConnectorCheckedException
     {
-        throw new ConnectorCheckedException(OIFErrorCode.INVALID_CATALOG_TARGET_CONNECTION.getMessageDefinition(super.getCatalogTargetElement().getElementHeader().getGUID(),
+        throw new ConnectorCheckedException(OIFErrorCode.INVALID_CATALOG_TARGET_CONNECTION.getMessageDefinition(super.getCatalogTargetElementHeader().getGUID(),
                                                                                                                 missingParameterName,
                                                                                                                 connectorName),
                                             this.getClass().getName(),

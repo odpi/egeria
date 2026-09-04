@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ValidValue
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 
 import java.util.List;
 
@@ -77,8 +78,16 @@ public class ReferenceDataSetConnector extends DynamicOpenMetadataDataSetConnect
         try
         {
             ClassificationExplorerClient classificationExplorerClient = connectorContext.getClassificationExplorerClient(OpenMetadataType.REFERENCE_DATA_VALUE.typeName);
-            OpenMetadataRootElement validValueSet = classificationExplorerClient.getRootElementByGUID(startingElementGUID,
-                                                                                                      classificationExplorerClient.getGetOptions());
+            /*
+             * The set is read with its members and nothing else; each member is then read on its own, header and
+             * properties only.
+             */
+            GetOptions setOptions = classificationExplorerClient.getGetOptions();
+
+            setOptions.setGraphQueryDepth(1);
+            setOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName));
+
+            OpenMetadataRootElement validValueSet = classificationExplorerClient.getRootElementByGUID(startingElementGUID, setOptions);
 
             if (validValueSet != null)
             {
@@ -126,7 +135,7 @@ public class ReferenceDataSetConnector extends DynamicOpenMetadataDataSetConnect
                     try
                     {
                         OpenMetadataRootElement rootElement = validValueDefinitionClient.getValidValueDefinitionByGUID(member.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                       validValueDefinitionClient.getGetOptions());
+                                                                                                                       this.getHeaderAndPropertiesOptions(validValueDefinitionClient));
 
                         if (rootElement != null)
                         {

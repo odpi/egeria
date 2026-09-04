@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -72,9 +73,9 @@ public class BaudotNotificationTypeProcessor extends CatalogTargetProcessorBase
      */
     public String getNotificationTypeGUID()
     {
-        if ((this.getCatalogTargetElement() != null) && (this.getCatalogTargetElement().getElementHeader() != null))
+        if (this.getCatalogTargetElementHeader() != null)
         {
-            return this.getCatalogTargetElement().getElementHeader().getGUID();
+            return this.getCatalogTargetElementHeader().getGUID();
         }
 
         return null;
@@ -89,9 +90,23 @@ public class BaudotNotificationTypeProcessor extends CatalogTargetProcessorBase
      */
     public String getNotificationTypeDisplayName()
     {
-        if ((notificationTypeDisplayName == null) && (this.getCatalogTargetElement() != null))
+        if ((notificationTypeDisplayName == null) && (this.getCatalogTargetElementHeader() != null))
         {
-            notificationTypeDisplayName = integrationContext.getGovernanceDefinitionClient().getDisplayName(this.getCatalogTargetElement());
+            try
+            {
+                /*
+                 * The properties are enough for a display name; nothing attached to the notification type is read.
+                 */
+                GetOptions headerAndProperties = integrationContext.getGovernanceDefinitionClient().getGetOptions();
+
+                headerAndProperties.setGraphQueryDepth(0);
+
+                notificationTypeDisplayName = integrationContext.getGovernanceDefinitionClient().getDisplayName(this.getCatalogTargetElement(headerAndProperties));
+            }
+            catch (Exception error)
+            {
+                notificationTypeDisplayName = this.getCatalogTargetName();
+            }
         }
 
         return notificationTypeDisplayName;
@@ -133,6 +148,7 @@ public class BaudotNotificationTypeProcessor extends CatalogTargetProcessorBase
             GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
             QueryOptions               queryOptions               = governanceDefinitionClient.getQueryOptions();
 
+            queryOptions.setGraphQueryDepth(1);
             queryOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName));
 
             OpenMetadataRootElement notificationTypeElement = governanceDefinitionClient.getGovernanceDefinitionByGUID(notificationTypeGUID, queryOptions);
