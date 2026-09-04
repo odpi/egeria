@@ -13,6 +13,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataE
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
@@ -28,11 +31,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -585,6 +590,8 @@ final class SubscriptionFvtTestSupport
                                        + " register the notification types with the subscription manager, but not rebuilding it");
         }
 
+        Date refreshRequested = new Date();
+
         OMAGPlatformExtension.getIntegrationDaemonClient()
                              .refreshConnector(IntegrationConnectorDefinition.PRODUCT_HARVESTER.getConnectorName());
 
@@ -592,7 +599,55 @@ final class SubscriptionFvtTestSupport
                        productDefinitions[productDefinitions.length - 1].getQualifiedName(),
                        "Jacquard finished building the digital product catalogue");
 
+        /*
+         * The last product Jacquard defines is not the last product it creates.  Once the defined products are
+         * in place Jacquard harvests the dynamic ones - a product per valid metadata value set, per reference
+         * data set - and that is most of the catalogue and most of the time.  A test that subscribes to a
+         * family while that is still going on sees a family with a handful of members, and a delivery of a
+         * handful of tables, and cannot tell that from a family that has lost its members.  So this also waits
+         * for the daemon to report that a refresh of Jacquard has completed since the request above was made.
+         * Where the daemon was already part way through Jacquard's first refresh when the request arrived, the
+         * request is declined and it is that refresh whose completion is waited for.
+         */
+        waitForHarvestToComplete(refreshRequested);
+
         catalogueBuilt = true;
+    }
+
+
+    /**
+     * Wait until the integration daemon reports that Jacquard has completed a refresh since the given moment
+     * and is waiting for the next one.
+     *
+     * @param since the refresh must have completed after this moment
+     * @throws Exception the daemon could not be asked, or Jacquard did not finish in time
+     */
+    private static void waitForHarvestToComplete(Date since) throws Exception
+    {
+        String connectorName = IntegrationConnectorDefinition.PRODUCT_HARVESTER.getConnectorName();
+
+        waitFor("Jacquard completed its harvest of the product catalogue",
+                "subscription.fvt.harvest.timeout.seconds",
+                2400,
+                () ->
+                {
+                    IntegrationDaemonStatus daemonStatus = OMAGPlatformExtension.getIntegrationDaemonClient().getIntegrationDaemonStatus();
+
+                    if ((daemonStatus != null) && (daemonStatus.getIntegrationConnectorReports() != null))
+                    {
+                        for (IntegrationConnectorReport report : daemonStatus.getIntegrationConnectorReports())
+                        {
+                            if ((report != null) && (connectorName.equals(report.getConnectorName())))
+                            {
+                                return (report.getConnectorStatus() == IntegrationConnectorStatus.WAITING)
+                                        && (report.getLastRefreshTime() != null)
+                                        && (report.getLastRefreshTime().after(since));
+                            }
+                        }
+                    }
+
+                    return false;
+                });
     }
 
 
@@ -667,6 +722,37 @@ final class SubscriptionFvtTestSupport
         }
 
         return related.getElementList();
+    }
+
+
+    /**
+     * Return the names of the tables in a destination schema.  A product family delivers one table per product,
+     * so this is how a test sees what a family subscription has delivered so far.
+     *
+     * @param connection open connection to the database holding the schema
+     * @param schemaName schema to list
+     * @return table names, in no particular order; empty if the schema is empty or missing
+     * @throws Exception the catalog is not readable
+     */
+    static List<String> getTableNames(Connection connection,
+                                      String     schemaName) throws Exception
+    {
+        List<String> tableNames = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement("select table_name from information_schema.tables where table_schema = ?"))
+        {
+            statement.setString(1, schemaName);
+
+            try (ResultSet resultSet = statement.executeQuery())
+            {
+                while (resultSet.next())
+                {
+                    tableNames.add(resultSet.getString(1));
+                }
+            }
+        }
+
+        return tableNames;
     }
 
 

@@ -244,6 +244,18 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
 
 
     /**
+     * Return the user identity this connector works as: the one the caller supplied through
+     * setLocalEnvironment, or failing that the one on the connector's own connection.  It is resolved in start().
+     *
+     * @return userId
+     */
+    protected String getClientUserId()
+    {
+        return clientUserId;
+    }
+
+
+    /**
      * Refresh any cached values.
      *
      * @throws ConnectorCheckedException unable to refresh

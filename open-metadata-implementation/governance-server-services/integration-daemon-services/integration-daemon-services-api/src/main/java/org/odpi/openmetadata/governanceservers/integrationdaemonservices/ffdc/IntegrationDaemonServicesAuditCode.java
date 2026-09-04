@@ -419,6 +419,26 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                               "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
+     * INTEGRATION-DAEMON-SERVICES-0066 - The registration of integration connector {0} in integration daemon {1} has changed ({2}); the connector is being reinitialized
+     */
+    CONNECTOR_REGISTRATION_CHANGED("INTEGRATION-DAEMON-SERVICES-0066",
+                                   AuditLogRecordSeverityLevel.INFO,
+                                   "The registration of integration connector {0} in integration daemon {1} has changed ({2}); the connector is being reinitialized",
+                                   "The integration daemon re-read the connector's registration in response to a change to the connector or its group and found it different from the one the running connector was built from.  The running connector is disconnected and a new one built from the new registration.",
+                                   "No action is required if the registration was changed deliberately.  If it was not, compare the two connections recorded with this message to see what differed.",
+                                   "https://egeria-project.org/services/integration-daemon-services/"),
+
+    /**
+     * INTEGRATION-DAEMON-SERVICES-0067 - The registration of integration connector {0} in integration daemon {1} has changed ({2}) while the connector is refreshing; it will be reinitialized when the refresh completes
+     */
+    CONNECTOR_REINITIALIZE_DEFERRED("INTEGRATION-DAEMON-SERVICES-0067",
+                                    AuditLogRecordSeverityLevel.INFO,
+                                    "The registration of integration connector {0} in integration daemon {1} has changed ({2}) while the connector is refreshing; it will be reinitialized when the refresh completes",
+                                    "Reinitializing a connector disconnects it and starts a new instance.  Doing that while the current instance is part way through a refresh would leave two instances of the connector working at once, so the change is held until the refresh returns.",
+                                    "No action is required.  The connector is reinitialized from the new registration as soon as its current refresh completes.",
+                                    "https://egeria-project.org/services/integration-daemon-services/"),
+
+    /**
      * INTEGRATION-DAEMON-SERVICES-0065 - The integration connector refresh thread for integration connector {0} caught a {1} exception  containing message {2}
      */
     REFRESH_THREAD_CONNECTOR_ERROR("INTEGRATION-DAEMON-SERVICES-0065",

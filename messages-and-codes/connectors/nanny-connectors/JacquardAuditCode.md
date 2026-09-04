@@ -9,7 +9,7 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 21 |
+| **Number of messages** | 23 |
 | **Message identifiers begin** | `JACQUARD-HARVESTER-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/nanny-connectors](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors) |
@@ -41,6 +41,8 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 | [JACQUARD-HARVESTER-0022](#jacquard-harvester-0022) | INFO | The {0} integration connector is harvesting reference data sets - this may take some time ... |
 | [JACQUARD-HARVESTER-0023](#jacquard-harvester-0023) | INFO | The {0} integration connector is creating connectors to access the data in existing products - this may take some time ... |
 | [JACQUARD-HARVESTER-0024](#jacquard-harvester-0024) | INFO | The {0} integration connector has linked its solution component {1} ({2}) to the equivalent solution component {3} as a validated duplicate |
+| [JACQUARD-HARVESTER-0029](#jacquard-harvester-0029) | ERROR | The {0} integration connector found more than one element with the qualified name of {1} while cataloguing {2}; the copies have been linked as peer duplicates for the duplicate manager and {2} is skipped until they are resolved |
+| [JACQUARD-HARVESTER-0028](#jacquard-harvester-0028) | ERROR | The {0} integration connector cannot read {1} as a date at record {2}, column {3} of the {4} data set for digital product {5}; values that are not dates are ignored when working out when the data set was created and last updated |
 
 ----
 
@@ -502,6 +504,50 @@ The connector has found another solution component with the same display name as
 **User action**
 
 No action is required.  This message is for monitoring the alignment of the Open Metadata Digital Product Catalog's solution blueprint with the solution components supplied by the content packs.
+
+
+----
+
+### JACQUARD-HARVESTER-0029
+
+> The {0} integration connector found more than one element with the qualified name of {1} while cataloguing {2}; the copies have been linked as peer duplicates for the duplicate manager and {2} is skipped until they are resolved
+
+|  |  |
+|---|---|
+| **Java constant** | `JacquardAuditCode.DUPLICATE_ELEMENT_DETECTED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
+
+**System action**
+
+Two writers created the same element at the same time - uniqueness of a qualified name cannot be guaranteed in a federated environment.  The metadata server has linked the copies with PeerDuplicateLink relationships in DISCOVERED status.  The connector leaves them to the Mendel Automated Duplicate Manager, which confirms close matches, refers the rest to a steward and consolidates them, and carries on with the rest of the catalogue.
+
+**User action**
+
+No action is required if the duplicate manager is deployed; the product is catalogued again once the copies have been combined.  If it is not deployed, a steward should review the peer duplicate links and remove or consolidate the copies.
+
+
+----
+
+### JACQUARD-HARVESTER-0028
+
+> The {0} integration connector cannot read {1} as a date at record {2}, column {3} of the {4} data set for digital product {5}; values that are not dates are ignored when working out when the data set was created and last updated
+
+|  |  |
+|---|---|
+| **Java constant** | `JacquardAuditCode.UNREADABLE_DATE_VALUE` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
+
+**System action**
+
+The connector expects a date column to hold an ISO-8601 instant, or a count of milliseconds since the epoch.  It skips the value and carries on with the rest of the data set, so the product's DataScope classification may be maintained from fewer records than it has.
+
+**User action**
+
+Check how the product's data set connector writes its date columns and correct it to write ISO-8601 instants.
 
 
 ----

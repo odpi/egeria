@@ -931,7 +931,7 @@ public enum ProductDataFieldDefinition
                 OpenMetadataProperty.COVERAGE_START.description,
                 OpenMetadataProperty.COVERAGE_START.dataType,
                 null,
-                "milliseconds",
+                "ISO-8601 instant, for example 2026-04-01T06:45:49.989Z",
                 false,
                 false),
 
@@ -943,7 +943,7 @@ public enum ProductDataFieldDefinition
                    OpenMetadataProperty.COVERAGE_END.description,
                    OpenMetadataProperty.COVERAGE_END.dataType,
                    null,
-                   "milliseconds",
+                   "ISO-8601 instant, for example 2026-04-01T06:45:49.989Z",
                    false,
                    false),
 
@@ -955,7 +955,7 @@ public enum ProductDataFieldDefinition
                 OpenMetadataProperty.CREATE_TIME.description,
                 OpenMetadataProperty.CREATE_TIME.dataType,
                 null,
-                "milliseconds",
+                "ISO-8601 instant, for example 2026-04-01T06:45:49.989Z",
                 false,
                 false),
 
@@ -967,7 +967,7 @@ public enum ProductDataFieldDefinition
                 OpenMetadataProperty.UPDATE_TIME.description,
                 OpenMetadataProperty.UPDATE_TIME.dataType,
                 null,
-                "milliseconds",
+                "ISO-8601 instant, for example 2026-04-01T06:45:49.989Z",
                 false,
                 false),
 
@@ -979,7 +979,7 @@ public enum ProductDataFieldDefinition
                 OpenMetadataProperty.REVIEW_DATE.description,
                 OpenMetadataProperty.REVIEW_DATE.dataType,
                 null,
-                "milliseconds",
+                "ISO-8601 instant, for example 2026-04-01T06:45:49.989Z",
                 false,
                 false),
 
@@ -991,7 +991,7 @@ public enum ProductDataFieldDefinition
                 OpenMetadataProperty.LAST_REVIEW_TIME.description,
                 OpenMetadataProperty.LAST_REVIEW_TIME.dataType,
                 null,
-                "milliseconds",
+                "ISO-8601 instant, for example 2026-04-01T06:45:49.989Z",
                 false,
                 false),
 

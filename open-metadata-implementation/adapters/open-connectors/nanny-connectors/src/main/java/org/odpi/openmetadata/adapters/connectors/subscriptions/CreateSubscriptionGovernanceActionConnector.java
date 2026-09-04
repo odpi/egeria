@@ -19,7 +19,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementItemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSubscriberProperties;
@@ -31,6 +30,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceDomain;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -42,7 +42,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * CreateSubscriptionGovernanceActionConnector creates an asset and passes its GUID as an action target for follow on work.
+ * CreateSubscriptionGovernanceActionConnector creates a digital subscription to a product - or to a product
+ * family, which is subscribed to as one product - along with the pipeline that delivers its data and the process
+ * that cancels it, and passes the subscription's GUID as an action target for follow on work.
  */
 public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernanceActionService
 {
@@ -236,7 +238,13 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
 
     /**
-     * Set up the subscription(s) for the requested product (or product family).
+     * Set up the subscription for the requested product or product family.
+     * <br><br>
+     * Whether the product is a family or not, one subscription is created and one provisioning pipeline is set
+     * up for each asset the product holds.  A family's data is presented through a single asset - a tabular data
+     * set collection over its members' data sets - so a subscription to it is delivered from one source in one
+     * pass, and picks up any product added to the family later.  There is nothing to expand at subscription
+     * time.
      *
      * @param subscriptionName name of the subscription
      * @param subscriptionIdentifier identifier use to locate the correct notification
@@ -272,21 +280,22 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
-
         CollectionClient productClient = governanceContext.getCollectionClient(OpenMetadataType.DIGITAL_PRODUCT.typeName);
 
-        OpenMetadataRootElement productDetails = productClient.getCollectionByGUID(productGUID, productClient.getGetOptions());
+        /*
+         * The product's members are what is wanted - the assets that carry its data - and nothing else that
+         * hangs off a product: its data spec, its questions, its subscription options and every subscription
+         * ever taken out to it.
+         */
+        GetOptions getOptions = productClient.getGetOptions();
+
+        getOptions.setGraphQueryDepth(1);
+        getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName));
+
+        OpenMetadataRootElement productDetails = productClient.getCollectionByGUID(productGUID, getOptions);
 
         if (productDetails != null)
         {
-            List<RelatedMetadataElementSummary> productGovernanceDefinitions = productDetails.getGovernedBy();
-            List<RelatedMetadataElementSummary> collectionMembers            = productDetails.getCollectionMembers();
-
-            /*
-             * The product may be a product or a product family.  The subscription is the same,
-             * but only the product with at least one asset as aa member has a pipeline set up.
-             * A nested subscription is set up for each product nested in the product families.
-             */
             String subscriptionGUID = this.createSubscription(subscriptionName + " to " + targetAssetDisplayName,
                                                               subscriptionIdentifier,
                                                               subscriptionDescription,
@@ -295,75 +304,32 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                                               subscriptionRequesterGUID,
                                                               productOwners);
 
-            if (collectionMembers != null)
+            setUpCancellationProcess(subscriptionGUID,
+                                     targetAssetGUID,
+                                     cancellingActionTypeGUID,
+                                     licenseTypeGUID);
+
+            addServiceLevelObjectives(subscriptionGUID,
+                                      serviceLevelObjectives);
+
+            /*
+             * A product's assets are members of the product.  A family's members are its products and its own
+             * collection asset; the products are not subscribed to one by one - the collection asset covers
+             * them - so only the assets are looked for.
+             */
+            if ((notificationTypeGUID != null) && (productDetails.getCollectionMembers() != null))
             {
-                setUpCancellationProcess(subscriptionGUID,
-                                         targetAssetGUID,
-                                         cancellingActionTypeGUID,
-                                         licenseTypeGUID);
-
-                addServiceLevelObjectives(subscriptionGUID,
-                                          serviceLevelObjectives);
-
-                /*
-                 * Search the members to detect nested products and/or assets
-                 */
-                List<String> sourceAssetGUIDs     = new ArrayList<>();
-
-                for (RelatedMetadataElementSummary collectionMember : collectionMembers)
+                for (RelatedMetadataElementSummary collectionMember : productDetails.getCollectionMembers())
                 {
-                    if (collectionMember != null)
+                    if ((collectionMember != null) && (propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.ASSET.typeName)))
                     {
-                        if (propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.DIGITAL_PRODUCT.typeName))
-                        {
-                            String childSubscriptionGUID = this.setUpSubscription(subscriptionName,
-                                                                                  subscriptionIdentifier,
-                                                                                  subscriptionDescription,
-                                                                                  collectionMember.getRelatedElement().getElementHeader().getGUID(),
-                                                                                  licenseTypeGUID,
-                                                                                  notificationTypeGUID,
-                                                                                  subscriptionRequesterGUID,
-                                                                                  targetAssetGUID,
-                                                                                  targetAssetDisplayName,
-                                                                                  provisioningActionTypeGUID,
-                                                                                  cancellingActionTypeGUID,
-                                                                                  productOwners,
-                                                                                  serviceLevelObjectives);
-
-                            CollectionMembershipProperties collectionMembershipProperties = new CollectionMembershipProperties();
-
-                            collectionMembershipProperties.setMembershipType("nested subscription");
-
-                            productClient.addToCollection(subscriptionGUID, childSubscriptionGUID, new MakeAnchorOptions(productClient.getMetadataSourceOptions()), collectionMembershipProperties);
-                        }
-                        else if (propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.ASSET.typeName))
-                        {
-                            sourceAssetGUIDs.add(collectionMember.getRelatedElement().getElementHeader().getGUID());
-                        }
-                    }
-                }
-
-                if (! sourceAssetGUIDs.isEmpty())
-                {
-                    for (String sourceAssetGUID : sourceAssetGUIDs)
-                    {
-                        AssetClient assetClient = governanceContext.getAssetClient();
-
-                        OpenMetadataRootElement asset = assetClient.getAssetByGUID(sourceAssetGUID, assetClient.getGetOptions());
-
-                        if (asset != null)
-                        {
-                            if (notificationTypeGUID != null)
-                            {
-                                setUpProvisioningPipeline(sourceAssetGUID,
-                                                          targetAssetGUID,
-                                                          licenseTypeGUID,
-                                                          notificationTypeGUID,
-                                                          provisioningActionTypeGUID,
-                                                          subscriptionGUID,
-                                                          subscriptionRequesterGUID);
-                            }
-                        }
+                        setUpProvisioningPipeline(collectionMember.getRelatedElement().getElementHeader().getGUID(),
+                                                  targetAssetGUID,
+                                                  licenseTypeGUID,
+                                                  notificationTypeGUID,
+                                                  provisioningActionTypeGUID,
+                                                  subscriptionGUID,
+                                                  subscriptionRequesterGUID);
                     }
                 }
             }
@@ -407,11 +373,9 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
         DigitalSubscriptionProperties digitalSubscriptionProperties = new DigitalSubscriptionProperties();
 
         /*
-         * The product is named as well as the subscription, because a subscription to a product family creates a
-         * nested subscription for each member and every one of them is created from the same subscription name
-         * and the same destination - so the name alone does not distinguish them.  The timestamp is an instant
-         * rather than a date because Date.toString() resolves only to the second, and the members of a family
-         * are created within the same second as each other.
+         * The product and the moment are part of the name, because a consumer can take out the same kind of
+         * subscription to the same destination more than once and each is a subscription in its own right.  The
+         * moment is an instant rather than a date because Date.toString() resolves only to the second.
          */
         digitalSubscriptionProperties.setQualifiedName(OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName + "::" + subscriptionName
                                                                + "::" + productGUID + "::" + Instant.now());

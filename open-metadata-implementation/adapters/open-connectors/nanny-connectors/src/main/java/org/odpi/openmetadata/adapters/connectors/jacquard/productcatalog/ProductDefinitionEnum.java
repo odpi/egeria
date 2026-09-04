@@ -13,6 +13,7 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.master
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataAttributesForTypesDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataPropertiesDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataTypesDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.productfamily.DigitalProductFamilyDataSetCollectionProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata.ReferenceDataSetListProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues.ValidMetadataValueSetListProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
@@ -1868,9 +1869,24 @@ public enum ProductDefinitionEnum implements ProductDefinition
         this.dataSpecFields      = null;
         this.assetTypeName       = assetTypeName;
         this.assetIdentifier     = assetIdentifier;
-        this.connectorProvider   = null;
         this.catalogTargetName   = null;
         this.zoneMembership      = zoneMembership;
+
+        /*
+         * A product family's data is its members' data, and it is presented through one asset: a tabular data
+         * set collection whose connector walks the family and offers each member's data set as a table.  That
+         * is what a subscription to the family delivers from.  A family has no catalog target of its own
+         * because there is nothing of its own to watch: its members' assets are watched, and the family's
+         * notification types are told when any of them changes.
+         */
+        if (OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName.equals(typeName))
+        {
+            this.connectorProvider = new DigitalProductFamilyDataSetCollectionProvider();
+        }
+        else
+        {
+            this.connectorProvider = null;
+        }
     }
 
 

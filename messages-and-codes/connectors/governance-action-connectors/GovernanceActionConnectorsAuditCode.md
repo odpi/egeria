@@ -9,7 +9,7 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 39 |
+| **Number of messages** | 43 |
 | **Message identifiers begin** | `GOVERNANCE-ACTION-CONNECTORS-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/governance-action-connectors](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors) |
@@ -60,6 +60,10 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 | [GOVERNANCE-ACTION-CONNECTORS-0038](#governance-action-connectors-0038) | INFO | The governance service {0} has completed successfully |
 | [GOVERNANCE-ACTION-CONNECTORS-0039](#governance-action-connectors-0039) | ERROR | The {0} governance action service has not been passed a {1} request parameter |
 | [GOVERNANCE-ACTION-CONNECTORS-0040](#governance-action-connectors-0040) | INFO | The {0} governance action service has created a new {1} digital subscription {2} for {3} {4} ({5}) requested by {6} {7} ({8}) |
+| [GOVERNANCE-ACTION-CONNECTORS-0041](#governance-action-connectors-0041) | INFO | The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4} |
+| [GOVERNANCE-ACTION-CONNECTORS-0042](#governance-action-connectors-0042) | EXCEPTION | The {0} governance action service was unable to deliver table {1} from {2} to {3}: {4} exception with message {5} |
+| [GOVERNANCE-ACTION-CONNECTORS-0043](#governance-action-connectors-0043) | INFO | The {0} governance action service has delivered all {1} table(s) of collection {2} to {3} |
+| [GOVERNANCE-ACTION-CONNECTORS-0044](#governance-action-connectors-0044) | ERROR | The {0} governance action service delivered {1} of the {2} table(s) of collection {3} to {4}; the table(s) it could not deliver are: {5} |
 
 ----
 
@@ -878,6 +882,90 @@ The governance action service returns an ACTIONED completion status with this su
 **User action**
 
 Ensure follow-on uses of the subscription are successful.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0041
+
+> The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.TABLE_PROVISIONED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The table's records have been written to the destination, replacing any earlier delivery of the same records.
+
+**User action**
+
+No action is required.  This message records what was delivered.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0042
+
+> The {0} governance action service was unable to deliver table {1} from {2} to {3}: {4} exception with message {5}
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.TABLE_PROVISIONING_FAILED` |
+| **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+
+**System action**
+
+The table is left as it was.  Where the source is a collection of tables, the service carries on with the remaining tables and reports the failure in its completion status.
+
+**User action**
+
+Use the details from the error message to determine why the table could not be delivered and correct the problem.  The next delivery will try again.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0043
+
+> The {0} governance action service has delivered all {1} table(s) of collection {2} to {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.COLLECTION_PROVISIONED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+Every table the source collection offers has been delivered.
+
+**User action**
+
+No action is required.  This message records that the whole collection was delivered; the tables themselves are listed in the preceding messages.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0044
+
+> The {0} governance action service delivered {1} of the {2} table(s) of collection {3} to {4}; the table(s) it could not deliver are: {5}
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.COLLECTION_PARTIALLY_PROVISIONED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+
+**System action**
+
+The tables that could be delivered have been.  The service completes with a failed status so that the shortfall is visible.
+
+**User action**
+
+Each table that could not be delivered has its own exception message in the audit log.  Correct the problems and the next delivery will try again.
 
 
 ----

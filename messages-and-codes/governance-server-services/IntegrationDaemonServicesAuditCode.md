@@ -9,7 +9,7 @@ The IntegrationDaemonServicesAuditCode is used to define the message content for
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 34 |
+| **Number of messages** | 36 |
 | **Message identifiers begin** | `INTEGRATION-DAEMON-SERVICES-` |
 | **Java class** | `org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode` |
 | **Module** | [open-metadata-implementation/governance-server-services/integration-daemon-services/integration-daemon-services-api](../../open-metadata-implementation/governance-server-services/integration-daemon-services/integration-daemon-services-api) |
@@ -54,6 +54,8 @@ The IntegrationDaemonServicesAuditCode is used to define the message content for
 | [INTEGRATION-DAEMON-SERVICES-0058](#integration-daemon-services-0058) | ERROR | User {0} has attempted to update the endpoint network address for the integration connector {1} in integration daemon {2} to {3} but this connector does not have an endpoint defined |
 | [INTEGRATION-DAEMON-SERVICES-0060](#integration-daemon-services-0060) | STARTUP | The integration connector refresh thread for integration connector {0} has started |
 | [INTEGRATION-DAEMON-SERVICES-0064](#integration-daemon-services-0064) | SHUTDOWN | The integration connector refresh thread for integration connector {0} is shutting down |
+| [INTEGRATION-DAEMON-SERVICES-0066](#integration-daemon-services-0066) | INFO | The registration of integration connector {0} in integration daemon {1} has changed ({2}); the connector is being reinitialized |
+| [INTEGRATION-DAEMON-SERVICES-0067](#integration-daemon-services-0067) | INFO | The registration of integration connector {0} in integration daemon {1} has changed ({2}) while the connector is refreshing; it will be reinitialized when the refresh completes |
 | [INTEGRATION-DAEMON-SERVICES-0065](#integration-daemon-services-0065) | EXCEPTION | The integration connector refresh thread for integration connector {0} caught a {1} exception containing message {2} |
 
 ----
@@ -747,6 +749,48 @@ The thread will stop calling refresh() on the integration connectors hosted in t
 **User action**
 
 Ensure that the thread terminates without errors.
+
+
+----
+
+### INTEGRATION-DAEMON-SERVICES-0066
+
+> The registration of integration connector {0} in integration daemon {1} has changed ({2}); the connector is being reinitialized
+
+|  |  |
+|---|---|
+| **Java constant** | `IntegrationDaemonServicesAuditCode.CONNECTOR_REGISTRATION_CHANGED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The integration daemon re-read the connector's registration in response to a change to the connector or its group and found it different from the one the running connector was built from.  The running connector is disconnected and a new one built from the new registration.
+
+**User action**
+
+No action is required if the registration was changed deliberately.  If it was not, compare the two connections recorded with this message to see what differed.
+
+
+----
+
+### INTEGRATION-DAEMON-SERVICES-0067
+
+> The registration of integration connector {0} in integration daemon {1} has changed ({2}) while the connector is refreshing; it will be reinitialized when the refresh completes
+
+|  |  |
+|---|---|
+| **Java constant** | `IntegrationDaemonServicesAuditCode.CONNECTOR_REINITIALIZE_DEFERRED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+Reinitializing a connector disconnects it and starts a new instance.  Doing that while the current instance is part way through a refresh would leave two instances of the connector working at once, so the change is held until the refresh returns.
+
+**User action**
+
+No action is required.  The connector is reinitialized from the new registration as soon as its current refresh completes.
 
 
 ----

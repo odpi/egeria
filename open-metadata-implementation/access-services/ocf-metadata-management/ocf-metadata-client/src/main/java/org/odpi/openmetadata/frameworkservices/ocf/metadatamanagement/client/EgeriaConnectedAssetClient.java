@@ -3,7 +3,10 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+
+import java.util.Map;
 
 /**
  * EgeriaConnectedAssetClient is used by applications and tools as a factory for Open
@@ -37,5 +40,26 @@ public class EgeriaConnectedAssetClient extends ConnectedAssetClientBase
                                       AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, maxPageSize, auditLog);
+    }
+
+
+    /**
+     * Create a client that authenticates with the secrets store connectors it is handed.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param secretsStoreConnectorMap secrets store connectors, keyed by purpose, supplying the credentials
+     * @param maxPageSize maximum value allowed for page size
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public EgeriaConnectedAssetClient(String                             serverName,
+                                      String                             serverPlatformURLRoot,
+                                      Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                      int                                maxPageSize,
+                                      AuditLog                           auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, secretsStoreConnectorMap, maxPageSize, auditLog);
     }
 }

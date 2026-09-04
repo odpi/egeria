@@ -467,6 +467,46 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                       "Ensure follow-on uses of the subscription are successful.",
                       "https://egeria-project.org/concepts/governance-action-service/"),
 
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0041 - The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4}
+     */
+    TABLE_PROVISIONED("GOVERNANCE-ACTION-CONNECTORS-0041",
+                      AuditLogRecordSeverityLevel.INFO,
+                      "The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4}",
+                      "The table's records have been written to the destination, replacing any earlier delivery of the same records.",
+                      "No action is required.  This message records what was delivered.",
+                      "https://egeria-project.org/concepts/governance-action-service/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0042 - The {0} governance action service was unable to deliver table {1} from {2} to {3}: {4} exception with message {5}
+     */
+    TABLE_PROVISIONING_FAILED("GOVERNANCE-ACTION-CONNECTORS-0042",
+                              AuditLogRecordSeverityLevel.EXCEPTION,
+                              "The {0} governance action service was unable to deliver table {1} from {2} to {3}: {4} exception with message {5}",
+                              "The table is left as it was.  Where the source is a collection of tables, the service carries on with the remaining tables and reports the failure in its completion status.",
+                              "Use the details from the error message to determine why the table could not be delivered and correct the problem.  The next delivery will try again.",
+                              "https://egeria-project.org/concepts/governance-action-service/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0043 - The {0} governance action service has delivered all {1} table(s) of collection {2} to {3}
+     */
+    COLLECTION_PROVISIONED("GOVERNANCE-ACTION-CONNECTORS-0043",
+                           AuditLogRecordSeverityLevel.INFO,
+                           "The {0} governance action service has delivered all {1} table(s) of collection {2} to {3}",
+                           "Every table the source collection offers has been delivered.",
+                           "No action is required.  This message records that the whole collection was delivered; the tables themselves are listed in the preceding messages.",
+                           "https://egeria-project.org/concepts/governance-action-service/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0044 - The {0} governance action service delivered {1} of the {2} table(s) of collection {3} to {4}; the table(s) it could not deliver are: {5}
+     */
+    COLLECTION_PARTIALLY_PROVISIONED("GOVERNANCE-ACTION-CONNECTORS-0044",
+                                     AuditLogRecordSeverityLevel.ERROR,
+                                     "The {0} governance action service delivered {1} of the {2} table(s) of collection {3} to {4}; the table(s) it could not deliver are: {5}",
+                                     "The tables that could be delivered have been.  The service completes with a failed status so that the shortfall is visible.",
+                                     "Each table that could not be delivered has its own exception message in the audit log.  Correct the problems and the next delivery will try again.",
+                                     "https://egeria-project.org/concepts/governance-action-service/"),
+
     ;
 
     private final String                      logMessageId;

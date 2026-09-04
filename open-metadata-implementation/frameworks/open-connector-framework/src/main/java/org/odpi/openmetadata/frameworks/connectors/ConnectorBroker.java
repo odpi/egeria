@@ -285,6 +285,24 @@ public class ConnectorBroker
 
 
     /**
+     * Return a copy of a connection of the same kind as the original, so that what the broker fills in from
+     * the secrets stores stays with the connector it builds.
+     *
+     * @param connection connection to copy
+     * @return copy
+     */
+    private Connection copyConnection(Connection connection)
+    {
+        if (connection instanceof VirtualConnection virtualConnection)
+        {
+            return new VirtualConnection(virtualConnection);
+        }
+
+        return new Connection(connection);
+    }
+
+
+    /**
      * Creates a new instance of a connector using the name of the connector provider in the supplied connection.
      *
      * @param connection   properties for the connector and connector provider.
@@ -303,6 +321,17 @@ public class ConnectorBroker
         log.debug("==> ConnectorBroker." + methodName);
 
         this.validateConnection(connection);
+
+        /*
+         * The connection is copied before anything is done with it.  Resolving the embedded secrets stores
+         * below writes the userId and passwords they supply into the connection, and the copy handed to the
+         * connector is the one that should carry them - not the caller's object.  A caller that keeps its
+         * connection to compare against later reads of the same element - the integration daemon does, to
+         * decide whether a connector has to be rebuilt - found it silently changed, and rebuilt the connector
+         * for a difference of the broker's own making.
+         */
+        connection = this.copyConnection(connection);
+
         connectionName = connection.getDisplayName();
 
 

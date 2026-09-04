@@ -28,6 +28,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
@@ -339,12 +340,15 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                     /*
                                      * OK so this is really unexpected.
                                      */
-                                    auditLog.logException(methodName,
-                                                          JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                      error.getClass().getName(),
-                                                                                                                      methodName,
-                                                                                                                      error.getMessage()),
-                                                          error);
+                                    if (! this.logDuplicateElementDetected(error, methodName))
+                                    {
+                                        auditLog.logException(methodName,
+                                                              JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                          error.getClass().getName(),
+                                                                                                                          methodName,
+                                                                                                                          error.getMessage()),
+                                                              error);
+                                    }
                                 }
                             }
                         }
@@ -464,12 +468,15 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                     /*
                                      * OK so this is really unexpected.
                                      */
-                                    auditLog.logException(methodName,
-                                                          JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                      error.getClass().getName(),
-                                                                                                                      methodName,
-                                                                                                                      error.getMessage()),
-                                                          error);
+                                    if (! this.logDuplicateElementDetected(error, methodName))
+                                    {
+                                        auditLog.logException(methodName,
+                                                              JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                          error.getClass().getName(),
+                                                                                                                          methodName,
+                                                                                                                          error.getMessage()),
+                                                              error);
+                                    }
                                 }
                             }
                         }
@@ -512,6 +519,65 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     }
 
 
+    /*
+     * The error the metadata server reports when a lookup by qualified name finds more than one element.  When
+     * it does, the server links the copies as peer duplicates (in DISCOVERED status) before reporting it.
+     */
+    private static final String MULTIPLE_ENTITIES_FOUND_MESSAGE_ID = "OMAG-GENERIC-HANDLERS-404-002";
+
+
+    /**
+     * Recognise the failure of a lookup that found two elements where there should be one, and log it as what
+     * it is: a duplicate for the duplicate manager to resolve, not an unexpected error.
+     * <br><br>
+     * Uniqueness of a qualified name cannot be guaranteed in a federated environment, so two writers can create
+     * the same element at the same instant.  The metadata server has already linked the copies with
+     * PeerDuplicateLink relationships by the time this connector hears about it, and the Mendel Automated
+     * Duplicate Manager takes it from there - confirming close matches, referring the rest to a steward and
+     * consolidating them.  This connector does not choose between the copies; it skips what it was cataloguing
+     * and comes back to it on a later refresh, when the copies have been combined.
+     *
+     * @param error the exception from the lookup
+     * @param subject what was being catalogued, for the log
+     * @return true if the error was a duplicate and has been logged; false if it is something else
+     */
+    private boolean logDuplicateElementDetected(Exception error,
+                                                String    subject)
+    {
+        final String methodName = "logDuplicateElementDetected";
+
+        if ((error instanceof OMFCheckedExceptionBase omfError) &&
+                (MULTIPLE_ENTITIES_FOUND_MESSAGE_ID.equals(omfError.getReportedErrorMessageId())))
+        {
+            /*
+             * The qualified name is the second insert of the server's message; the message is the most reliable
+             * place to read it from since the lookup that failed may be several calls deep.
+             */
+            String qualifiedName = "unknown";
+            String message       = omfError.getReportedErrorMessage();
+
+            if (message != null)
+            {
+                int start = message.indexOf("with a name of ");
+                int end   = message.indexOf(": the identifiers of the returned entities");
+
+                if ((start >= 0) && (end > start))
+                {
+                    qualifiedName = message.substring(start + "with a name of ".length(), end);
+                }
+            }
+
+            auditLog.logMessage(methodName,
+                                JacquardAuditCode.DUPLICATE_ELEMENT_DETECTED.getMessageDefinition(connectorName,
+                                                                                                  qualifiedName,
+                                                                                                  subject));
+            return true;
+        }
+
+        return false;
+    }
+
+
     /**
      * Return the map of qualifiedNames-to-guids for the pre-defined products that make up the
      * fixed part of the product catalog.
@@ -532,9 +598,23 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         for (ProductDefinition productDefinition : ProductDefinitionEnum.values())
         {
-            String productGUID = this.getProduct(productDefinition, subscriptionManagerGUID);
+            try
+            {
+                String productGUID = this.getProduct(productDefinition, subscriptionManagerGUID);
 
-            products.put(productDefinition.getQualifiedName(), productGUID);
+                products.put(productDefinition.getQualifiedName(), productGUID);
+            }
+            catch (PropertyServerException error)
+            {
+                /*
+                 * A product that exists twice is left to the duplicate manager and the rest of the catalogue is
+                 * still built; anything else is as unexpected as it always was.
+                 */
+                if (! this.logDuplicateElementDetected(error, productDefinition.getProductName()))
+                {
+                    throw error;
+                }
+            }
         }
 
         return products;
@@ -722,14 +802,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         this.addQuestions(productDefinition, productElement);
 
         /*
-         * This asset has a connector to a connector that is able to mine open metadata to create a particular product.
-         * Product families do not have an asset.
+         * This asset has a connection to a connector that is able to mine open metadata to create a particular
+         * product.  A product family's asset is a tabular data set collection whose connector walks the family
+         * and presents each member's data set as a table - so a subscription to the family is delivered from
+         * one source, in one pass, and picks up products added to the family later.
          */
-        String productAssetGUID = null;
-        if (! propertyHelper.isTypeOf(productElement.getElementHeader(), OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName))
-        {
-            productAssetGUID = this.addProductAsset(productDefinition, productElement.getElementHeader().getGUID());
-        }
+        String productAssetGUID = this.addProductAsset(productDefinition, productElement.getElementHeader().getGUID());
 
         /*
          * The subscription options show up as governance action processes that are configured with the appropriate
@@ -745,8 +823,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          * changes.  It is added once: a catalog target relationship persists with the asset, and adding one on
          * every refresh - as this used to - gave each product a new relationship per run, and the connector a
          * processor per relationship, until starting them all took longer than a refresh cycle.
+         * A product family names no catalog target: its asset is a view over its members' assets, which are
+         * catalog targets in their own right, so there is nothing of the family's own to watch.
          */
-        if ((productAssetGUID != null) && (! ownCatalogTargets.contains(productAssetGUID)))
+        if ((productAssetGUID != null) && (productDefinition.getCatalogTargetName() != null) && (! ownCatalogTargets.contains(productAssetGUID)))
         {
             AssetClient assetClient = integrationContext.getAssetClient();
 
@@ -769,14 +849,23 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         {
             for (ProductDefinition productGroup : productDefinition.getProductFamilies())
             {
-                CollectionMembershipProperties collectionMembershipProperties = new CollectionMembershipProperties();
+                String productFamilyGUID = products.get(productGroup.getQualifiedName());
 
-                collectionMembershipProperties.setMembershipType("includes product");
+                /*
+                 * A family that could not be catalogued this refresh - it exists twice, say - has already been
+                 * logged; its members are still catalogued and are linked to it once it is back.
+                 */
+                if (productFamilyGUID != null)
+                {
+                    CollectionMembershipProperties collectionMembershipProperties = new CollectionMembershipProperties();
 
-                collectionClient.addToCollection(products.get(productGroup.getQualifiedName()),
-                                                 productElement.getElementHeader().getGUID(),
-                                                 new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
-                                                 collectionMembershipProperties);
+                    collectionMembershipProperties.setMembershipType("includes product");
+
+                    collectionClient.addToCollection(productFamilyGUID,
+                                                     productElement.getElementHeader().getGUID(),
+                                                     new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
+                                                     collectionMembershipProperties);
+                }
             }
 
             this.monitorMemberAssetForFamilies(productDefinition, productAssetGUID);
@@ -1247,10 +1336,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * actor by linking them to the notification type.
      * <br>
      * Product families offer their subscription types in exactly the same way as a single product, because
-     * subscribing to a family is how a consumer takes out one subscription covering every product in it.  What
-     * differs is that a family has no asset of its own: its data is the data of its members.  So a family's
-     * subscription options are built without a source asset, and its notification type is linked to each
-     * member's asset as that member is catalogued - see {@link #monitorMemberAssetForFamilies}.
+     * subscribing to a family is how a consumer takes out one subscription covering every product in it.  A
+     * family's asset is a tabular data set collection over its members' data sets, so its subscription options
+     * name a source like any product's; what differs is what is watched for changes.  The family's asset never
+     * changes itself, so its notification type is linked to each member's asset as that member is catalogued -
+     * see {@link #monitorMemberAssetForFamilies}.
      * <br>
      * A product that is not a family and has no asset offers nothing, because there would be nothing to
      * deliver.  Products in that state are ones whose connector has not been written yet: the definition
@@ -1258,8 +1348,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      *
      * @param productDefinition description of product
      * @param productHeader unique identifier and type for the product
-     * @param productAssetGUID unique identifier for the asset that represents the product, or null for a
-     *                         product family, which has no asset of its own
+     * @param productAssetGUID unique identifier for the asset that represents the product - for a family, the
+     *                         collection over its members' data sets - or null if the product has no asset
      * @param licenseTypeGUID unique identifier for the license type granted to the product subscribers
      * @param communityNoteLogGUID unique identifier of the community's note log
      * @param productManagerGUID unique identifier for the product manager
@@ -1280,16 +1370,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException
     {
-        boolean isProductFamily = propertyHelper.isTypeOf(productHeader, OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName);
-
         /*
-         * A product family has no asset of its own and still offers subscriptions, because its data is its
-         * members' data.  A product that is not a family and has no asset is a different case: it has nothing
-         * to deliver, so offering a subscription to it would promise a delivery that cannot happen.  That is
-         * the state of every product whose connector has not been written yet - the definition describes the
-         * data and names no connector provider to produce it.
+         * A product with no asset has nothing to deliver, so offering a subscription to it would promise a
+         * delivery that cannot happen.  That is the state of every product whose connector has not been written
+         * yet - the definition describes the data and names no connector provider to produce it.  A family
+         * always has an asset - the collection over its members - so it always offers its subscriptions.
          */
-        if ((productAssetGUID == null) && (! isProductFamily))
+        if (productAssetGUID == null)
         {
             return;
         }
@@ -1371,15 +1458,18 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                             notificationTypeProperties,
                                                                                             null);
 
-            if ((productAssetGUID != null) && (productSubscriptionDefinition.getMultipleNotificationsPermitted()) && (productSubscriptionDefinition.isAddMonitoredResource()))
+            if ((productAssetGUID != null)
+                        && (productSubscriptionDefinition.getMultipleNotificationsPermitted())
+                        && (productSubscriptionDefinition.isAddMonitoredResource())
+                        && (! propertyHelper.isTypeOf(productHeader, OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName)))
             {
                 /*
                  * Only need to register the resource with notification types that use changes to the resource to determine
                  * when to issue a notification to the subscribers.
                  *
-                 * A product family has no asset of its own here.  Its data is its members' data, so its members'
-                 * assets are linked to this notification type as each member is catalogued - see
-                 * monitorMemberAssetForFamilies().
+                 * A product family's asset is a view over its members' assets and never changes itself, so it is
+                 * not what the notification type watches.  Its members' assets are linked to this notification
+                 * type as each member is catalogued - see monitorMemberAssetForFamilies().
                  */
                 MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
 
@@ -1578,9 +1668,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName());
 
             /*
-             * A product family has no source asset of its own - the data it delivers is its members' data, and
-             * the create-subscription service reaches that by working through the family's members.  So the
-             * source is only named where there is one.
+             * The source is the product's asset.  For a product family that is the tabular data set collection
+             * over its members' data sets, so a subscription to the family is provisioned from one source like
+             * any other.  A product that has no asset yet has no source to name.
              */
             if (productAssetGUID != null)
             {
@@ -1634,7 +1724,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
             openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                            governanceActionProcessGUID,
-                                                           GovernanceActionTypeDefinition.PROVISION_TABULAR.getGovernanceActionTypeGUID(),
+                                                           GovernanceActionTypeDefinition.PROVISION_SUBSCRIPTION.getGovernanceActionTypeGUID(),
                                                            null,
                                                            null,
                                                            propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName()));
@@ -1955,7 +2045,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         connectionProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
         connectionProperties.setUserId(integrationContext.getMyUserId());
 
-        connectionProperties.setConfigurationProperties(this.getConnectionConfigurationProperties(productDefinition));
+        connectionProperties.setConfigurationProperties(this.getConnectionConfigurationProperties(productDefinition, productGUID));
 
         newElementOptions.setParentAtEnd1(true);
         newElementOptions.setParentGUID(assetGUID);
@@ -2138,6 +2228,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             else
             {
                 this.verifyProductAssetConnection(productDefinition,
+                                                  productGUID,
                                                   connectionElement.getElementHeader().getGUID(),
                                                   connectorTypeGUID);
             }
@@ -2165,6 +2256,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * been disconnected
      */
     private void verifyProductAssetConnection(ProductDefinition productDefinition,
+                                              String            productGUID,
                                               String            connectionGUID,
                                               String            connectorTypeGUID) throws InvalidParameterException,
                                                                                           PropertyServerException,
@@ -2179,7 +2271,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          */
         this.verifyConnectorType(classificationExplorerClient, connectionClient, connectionGUID, connectorTypeGUID);
         this.verifyEndpoint(classificationExplorerClient, endpointClient, productDefinition, connectionGUID);
-        this.verifyConnectionConfigurationProperties(connectionClient, productDefinition, connectionGUID);
+        this.verifyConnectionConfigurationProperties(connectionClient, productDefinition, productGUID, connectionGUID);
     }
 
 
@@ -2367,6 +2459,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      */
     private void verifyConnectionConfigurationProperties(ConnectionClient  connectionClient,
                                                          ProductDefinition productDefinition,
+                                                         String            productGUID,
                                                          String            connectionGUID) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
@@ -2378,7 +2471,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         if ((connectionElement != null) && (connectionElement.getProperties() instanceof ConnectionProperties connectionProperties))
         {
             Map<String, Object> currentProperties = connectionProperties.getConfigurationProperties();
-            Map<String, Object> requiredProperties = this.getConnectionConfigurationProperties(productDefinition);
+            Map<String, Object> requiredProperties = this.getConnectionConfigurationProperties(productDefinition, productGUID);
 
             if (! requiredProperties.equals(currentProperties))
             {
@@ -2407,17 +2500,26 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     /**
      * Return the configuration properties a product asset's connection needs - the product's own settings, plus
      * the metadata access server and page size that the data set connector reads to know which server to call.
+     * A product family's connection also names the family, because its connector presents the family's members
+     * and has to know where to start walking.
      *
      * @param productDefinition definition of the product
+     * @param productGUID unique identifier of the product
      * @return configuration properties
      */
-    private Map<String, Object> getConnectionConfigurationProperties(ProductDefinition productDefinition)
+    private Map<String, Object> getConnectionConfigurationProperties(ProductDefinition productDefinition,
+                                                                     String            productGUID)
     {
         Map<String, Object> connectionConfigurationProperties = new HashMap<>();
 
         if (productDefinition.getConfigurationProperties() != null)
         {
             connectionConfigurationProperties.putAll(productDefinition.getConfigurationProperties());
+        }
+
+        if (OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName.equals(productDefinition.getTypeName()))
+        {
+            connectionConfigurationProperties.put(TabularDataSetConfigurationProperty.STARTING_ELEMENT_GUID.getName(), productGUID);
         }
 
         connectionConfigurationProperties.put(TabularDataSetConfigurationProperty.SERVER_NAME.getName(), integrationContext.getMetadataAccessServer());

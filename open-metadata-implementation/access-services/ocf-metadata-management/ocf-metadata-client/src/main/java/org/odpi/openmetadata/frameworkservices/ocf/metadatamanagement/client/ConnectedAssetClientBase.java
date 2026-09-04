@@ -16,6 +16,9 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+
+import java.util.Map;
 
 
 /**
@@ -58,6 +61,37 @@ public class ConnectedAssetClientBase extends ConnectedAssetClient
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
         this.ocfRESTClient = new OCFRESTClient(serverName, serverPlatformURLRoot, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, auditLog);
+    }
+
+
+    /**
+     * Create a client that authenticates with the secrets store connectors it is handed - the connectors a
+     * caller has already built from the embedded connections of its own connection.  This is the constructor
+     * for a connector that needs to build connectors to other assets: it talks to the metadata server as the
+     * identity its own connection carries, and hands out connectors that carry the same secrets.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param secretsStoreConnectorMap secrets store connectors, keyed by purpose, supplying the credentials
+     * @param maxPageSize maximum value allowed for page size
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public ConnectedAssetClientBase(String                             serverName,
+                                    String                             serverPlatformURLRoot,
+                                    Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                                    int                                maxPageSize,
+                                    AuditLog                           auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
+
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        this.ocfRESTClient = new OCFRESTClient(serverName, serverPlatformURLRoot, secretsStoreConnectorMap, auditLog);
     }
 
 

@@ -6,6 +6,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataCollection;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularDataCollection;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
@@ -15,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBas
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,13 @@ import java.util.Map;
 
 /**
  * WedgwoodProvisionSubscriptionGovernanceActionConnector copies data from one tabular data set to another.
+ * <br><br>
+ * The source may be a single tabular data set or a collection of them.  A digital product family's asset is a
+ * collection - one table per product in the family - and delivering it means delivering each of its tables into
+ * the destination, which for a family is a collection too: a schema that receives one table per product.  The
+ * service asks the source collection for its table names, brings each into focus and copies it.  A table that
+ * cannot be copied is logged and skipped so that the rest of the family is still delivered; the service then
+ * completes with a failed status and says which tables were missed.
  */
 public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends GeneralGovernanceActionService
 {
@@ -122,16 +131,22 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
 
         if ((sourceMetadataElement == null) || (destinationMetadataElement == null))
         {
-            outputGuards.add(WedgwoodProvisionSubscriptionGuard.PROVISIONING_COMPLETE.getName());
-            completionStatus = WedgwoodProvisionSubscriptionGuard.PROVISIONING_COMPLETE.getCompletionStatus();
+            outputGuards.add(WedgwoodProvisionSubscriptionGuard.PROVISIONING_NO_TARGETS.getName());
+            completionStatus = WedgwoodProvisionSubscriptionGuard.PROVISIONING_NO_TARGETS.getCompletionStatus();
             completionMessage = GovernanceActionConnectorsAuditCode.NO_TARGETS.getMessageDefinition(governanceServiceName);
         }
         else
         {
+            String sourceName      = this.getElementName(sourceMetadataElement, methodName);
+            String destinationName = this.getElementName(destinationMetadataElement, methodName);
+
+            Connector sourceAssetConnector      = null;
+            Connector destinationAssetConnector = null;
+
             try
             {
-                Connector sourceAssetConnector      = governanceContext.getConnectorForAsset(sourceMetadataElement.getElementGUID());
-                Connector destinationAssetConnector = governanceContext.getConnectorForAsset(destinationMetadataElement.getElementGUID());
+                sourceAssetConnector      = governanceContext.getConnectorForAsset(sourceMetadataElement.getElementGUID());
+                destinationAssetConnector = governanceContext.getConnectorForAsset(destinationMetadataElement.getElementGUID());
 
                 /*
                  * A connector is built by the connector broker and handed over unstarted - starting it is the
@@ -146,57 +161,68 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
                 ReadableTabularDataSource sourceConnector      = (ReadableTabularDataSource) sourceAssetConnector;
                 WritableTabularDataSource destinationConnector = (WritableTabularDataSource) destinationAssetConnector;
 
-                long sourceRecordCount = sourceConnector.getRecordCount();
-
-                /*
-                 * A destination that holds many tables has to be told which one this data belongs in before it
-                 * can be asked anything about it.  Counting its records first asks a collection for the size of
-                 * a table it has not been given the name of, which fails rather than answering zero.
-                 */
-                if (destinationConnector instanceof TabularDataCollection tabularDataCollection)
+                if (sourceConnector instanceof ReadableTabularDataCollection sourceCollection)
                 {
-                    tabularDataCollection.setTableName(sourceConnector.getTableName(),
-                                                       sourceConnector.getTableDescription());
-                }
+                    List<String> tableNames   = sourceCollection.getTableNames();
+                    List<String> failedTables = new ArrayList<>();
 
-                /*
-                 * The destination is given the source's shape before it is asked what it holds.  Describing it
-                 * is what creates the table where there is not one yet, so counting first asks about a table
-                 * that need not exist - and a destination that has never been delivered to is exactly the
-                 * normal case for a new subscription.
-                 */
-                destinationConnector.setColumnDescriptions(sourceConnector.getColumnDescriptions());
-
-                long destinationRecordCount = destinationConnector.getRecordCount();
-
-                if (sourceRecordCount >= destinationRecordCount)
-                {
-                    for (long rowNumber=0; rowNumber < destinationRecordCount ; rowNumber++)
+                    for (String tableName : tableNames)
                     {
-                        destinationConnector.writeRecord(rowNumber, sourceConnector.readRecord(rowNumber));
+                        try
+                        {
+                            sourceCollection.setTableName(tableName, null);
+
+                            this.copyTable(sourceConnector, destinationConnector, sourceName, destinationName);
+                        }
+                        catch (Exception error)
+                        {
+                            /*
+                             * One table that cannot be delivered does not stop the others: a family's products
+                             * are independent of each other, and the subscriber is better served by most of
+                             * them than by none.  The miss is logged here and reported in the completion status.
+                             */
+                            super.logExceptionRecord(methodName,
+                                                     GovernanceActionConnectorsAuditCode.TABLE_PROVISIONING_FAILED.getMessageDefinition(governanceServiceName,
+                                                                                                                                        tableName,
+                                                                                                                                        sourceName,
+                                                                                                                                        destinationName,
+                                                                                                                                        error.getClass().getName(),
+                                                                                                                                        error.getMessage()),
+                                                     error);
+                            failedTables.add(tableName);
+                        }
                     }
 
-                    for (long rowNumber = destinationRecordCount; rowNumber < sourceRecordCount ; rowNumber ++)
+                    if (failedTables.isEmpty())
                     {
-                        destinationConnector.appendRecord(sourceConnector.readRecord(rowNumber));
+                        completionMessage = GovernanceActionConnectorsAuditCode.COLLECTION_PROVISIONED.getMessageDefinition(governanceServiceName,
+                                                                                                                             Integer.toString(tableNames.size()),
+                                                                                                                             sourceName,
+                                                                                                                             destinationName);
+                        outputGuards.add(WedgwoodProvisionSubscriptionGuard.PROVISIONING_COMPLETE.getName());
+                        completionStatus = WedgwoodProvisionSubscriptionGuard.PROVISIONING_COMPLETE.getCompletionStatus();
+                    }
+                    else
+                    {
+                        completionMessage = GovernanceActionConnectorsAuditCode.COLLECTION_PARTIALLY_PROVISIONED.getMessageDefinition(governanceServiceName,
+                                                                                                                                       Integer.toString(tableNames.size() - failedTables.size()),
+                                                                                                                                       Integer.toString(tableNames.size()),
+                                                                                                                                       sourceName,
+                                                                                                                                       destinationName,
+                                                                                                                                       failedTables.toString());
+                        super.logRecord(methodName, completionMessage);
+
+                        outputGuards.add(WedgwoodProvisionSubscriptionGuard.PROVISIONING_FAILED_EXCEPTION.getName());
+                        completionStatus = WedgwoodProvisionSubscriptionGuard.PROVISIONING_FAILED_EXCEPTION.getCompletionStatus();
                     }
                 }
                 else
                 {
-                    for (long rowNumber=0; rowNumber < sourceRecordCount ; rowNumber++)
-                    {
-                        destinationConnector.writeRecord(rowNumber, sourceConnector.readRecord(rowNumber));
-                    }
+                    this.copyTable(sourceConnector, destinationConnector, sourceName, destinationName);
 
-                    for (long rowNumber = sourceRecordCount; rowNumber < destinationRecordCount ; rowNumber ++)
-                    {
-                        destinationConnector.deleteRecord(rowNumber);
-                    }
+                    outputGuards.add(WedgwoodProvisionSubscriptionGuard.PROVISIONING_COMPLETE.getName());
+                    completionStatus = WedgwoodProvisionSubscriptionGuard.PROVISIONING_COMPLETE.getCompletionStatus();
                 }
-
-
-                outputGuards.add(WedgwoodProvisionSubscriptionGuard.PROVISIONING_COMPLETE.getName());
-                completionStatus = WedgwoodProvisionSubscriptionGuard.PROVISIONING_COMPLETE.getCompletionStatus();
             }
             catch (Exception error)
             {
@@ -209,6 +235,15 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
                 outputGuards.add(WedgwoodProvisionSubscriptionGuard.PROVISIONING_FAILED_EXCEPTION.getName());
                 completionStatus = WedgwoodProvisionSubscriptionGuard.PROVISIONING_FAILED_EXCEPTION.getCompletionStatus();
             }
+            finally
+            {
+                /*
+                 * Both connectors hold resources - a database connection, a metadata client - that are only
+                 * released by disconnecting them.  The engine action is done with them either way.
+                 */
+                this.disconnectQuietly(sourceAssetConnector);
+                this.disconnectQuietly(destinationAssetConnector);
+            }
         }
 
         try
@@ -218,6 +253,124 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
         catch (OMFCheckedExceptionBase error)
         {
             throw new ConnectorCheckedException(error.getReportedErrorMessage(), error);
+        }
+    }
+
+
+    /**
+     * Copy the table the source is presenting into the destination, so that the destination holds exactly the
+     * source's records afterwards.
+     *
+     * @param sourceConnector where the records come from
+     * @param destinationConnector where they go
+     * @param sourceName name of the source, for the log
+     * @param destinationName name of the destination, for the log
+     * @throws ConnectorCheckedException problem reading or writing
+     */
+    private void copyTable(ReadableTabularDataSource sourceConnector,
+                           WritableTabularDataSource destinationConnector,
+                           String                    sourceName,
+                           String                    destinationName) throws ConnectorCheckedException
+    {
+        final String methodName = "copyTable";
+
+        String tableName         = sourceConnector.getTableName();
+        long   sourceRecordCount = sourceConnector.getRecordCount();
+
+        /*
+         * A destination that holds many tables has to be told which one this data belongs in before it
+         * can be asked anything about it.  Counting its records first asks a collection for the size of
+         * a table it has not been given the name of, which fails rather than answering zero.
+         */
+        if (destinationConnector instanceof TabularDataCollection tabularDataCollection)
+        {
+            tabularDataCollection.setTableName(tableName, sourceConnector.getTableDescription());
+        }
+
+        /*
+         * The destination is given the source's shape before it is asked what it holds.  Describing it
+         * is what creates the table where there is not one yet, so counting first asks about a table
+         * that need not exist - and a destination that has never been delivered to is exactly the
+         * normal case for a new subscription.
+         */
+        destinationConnector.setColumnDescriptions(sourceConnector.getColumnDescriptions());
+
+        long destinationRecordCount = destinationConnector.getRecordCount();
+
+        if (sourceRecordCount >= destinationRecordCount)
+        {
+            for (long rowNumber=0; rowNumber < destinationRecordCount ; rowNumber++)
+            {
+                destinationConnector.writeRecord(rowNumber, sourceConnector.readRecord(rowNumber));
+            }
+
+            for (long rowNumber = destinationRecordCount; rowNumber < sourceRecordCount ; rowNumber ++)
+            {
+                destinationConnector.appendRecord(sourceConnector.readRecord(rowNumber));
+            }
+        }
+        else
+        {
+            for (long rowNumber=0; rowNumber < sourceRecordCount ; rowNumber++)
+            {
+                destinationConnector.writeRecord(rowNumber, sourceConnector.readRecord(rowNumber));
+            }
+
+            for (long rowNumber = sourceRecordCount; rowNumber < destinationRecordCount ; rowNumber ++)
+            {
+                destinationConnector.deleteRecord(rowNumber);
+            }
+        }
+
+        super.logRecord(methodName, GovernanceActionConnectorsAuditCode.TABLE_PROVISIONED.getMessageDefinition(governanceServiceName,
+                                                                                                                Long.toString(sourceRecordCount),
+                                                                                                                tableName,
+                                                                                                                sourceName,
+                                                                                                                destinationName));
+    }
+
+
+    /**
+     * Return a name to call an element by in the log: its display name if it has one, otherwise its GUID.
+     *
+     * @param element the element
+     * @param methodName calling method
+     * @return name
+     */
+    private String getElementName(OpenMetadataElement element,
+                                  String              methodName)
+    {
+        String displayName = propertyHelper.getStringProperty(governanceServiceName,
+                                                              OpenMetadataProperty.DISPLAY_NAME.name,
+                                                              element.getElementProperties(),
+                                                              methodName);
+
+        if (displayName != null)
+        {
+            return displayName + " (" + element.getElementGUID() + ")";
+        }
+
+        return element.getElementGUID();
+    }
+
+
+    /**
+     * Disconnect a connector, ignoring any complaint it makes on the way out.
+     *
+     * @param connector connector to disconnect - may be null
+     */
+    private void disconnectQuietly(Connector connector)
+    {
+        if (connector != null)
+        {
+            try
+            {
+                connector.disconnect();
+            }
+            catch (Exception error)
+            {
+                // the work is done; the connector's complaint on closing changes nothing
+            }
         }
     }
 }

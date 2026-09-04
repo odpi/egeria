@@ -74,6 +74,12 @@ public class IntegrationConnectorHandler
     private volatile String                              failingExceptionMessage             = null;
     private volatile Date                                lastRefreshTime                     = null;
 
+    /*
+     * A change to the connector's registration that arrived while the connector was refreshing.  It is applied
+     * when the refresh returns - see refreshConnectorDetails().
+     */
+    private volatile RegisteredIntegrationConnectorElement pendingRegistrationChange         = null;
+
     private static final RequestId requestId = new RequestId();
 
     /**
@@ -734,6 +740,30 @@ public class IntegrationConnectorHandler
         integrationContextRefreshProxy.setRefreshInProgress(false, minMinutesBetweenRefresh);
         updateStatus(IntegrationConnectorStatus.WAITING);
 
+        /*
+         * A change to the registration that arrived during the refresh is applied now that the refresh has
+         * returned - see deferRegistrationChangeIfRefreshing().  Only a change that needs the connector rebuilt
+         * does anything here: the refresh thread refreshes on its own schedule, and this method runs under
+         * the handler's lock, so it must not start a refresh of its own.
+         */
+        RegisteredIntegrationConnectorElement pendingRegistration = pendingRegistrationChange;
+
+        if (pendingRegistration != null)
+        {
+            pendingRegistrationChange = null;
+
+            String registrationChange = this.getRegistrationChange(pendingRegistration);
+
+            if (registrationChange != null)
+            {
+                auditLog.logMessage(actionDescription,
+                                    IntegrationDaemonServicesAuditCode.CONNECTOR_REGISTRATION_CHANGED.getMessageDefinition(integrationConnectorName,
+                                                                                                                          integrationDaemonName,
+                                                                                                                          registrationChange));
+                reinitializeConnector(actionDescription);
+            }
+        }
+
         if (auditLog != null)
         {
             Date refreshEnd = new Date();
@@ -764,8 +794,19 @@ public class IntegrationConnectorHandler
     {
         final String methodName = "refreshConnectorDetails";
 
-        if (updateConnectorDetails(registeredIntegrationConnectorElement))
+        if (this.deferRegistrationChangeIfRefreshing(registeredIntegrationConnectorElement))
         {
+            return;
+        }
+
+        String registrationChange = this.getRegistrationChange(registeredIntegrationConnectorElement);
+
+        if (registrationChange != null)
+        {
+            auditLog.logMessage(methodName,
+                                IntegrationDaemonServicesAuditCode.CONNECTOR_REGISTRATION_CHANGED.getMessageDefinition(integrationConnectorName,
+                                                                                                                      integrationDaemonName,
+                                                                                                                      registrationChange));
             reinitializeConnector(methodName);
         }
         else
@@ -776,12 +817,67 @@ public class IntegrationConnectorHandler
 
 
     /**
+     * Hold a change to the connector's registration while the connector is part way through a refresh.
+     * <br><br>
+     * Reinitializing the connector disconnects the running instance and builds a new one with its own refresh
+     * thread.  The lock this handler uses for its state changes is not held during the refresh itself - a
+     * refresh can take many minutes - so a reinitialization arriving in the middle of one used to go straight
+     * ahead: the old instance carried on with its refresh, unaware, while the new instance started its own.
+     * Two instances of one connector then worked on the same metadata at the same time, and a connector that
+     * creates elements it does not find - as a harvester does - created some of them twice.  The change that
+     * triggered it was the connector's own doing: an event about one of the catalog targets it had just added
+     * to itself made the daemon re-read its registration.
+     * <br><br>
+     * The change is kept and applied from afterRefreshConnector(), once the refresh has returned.  Only the
+     * latest change is kept; each one carries the whole registration.
+     *
+     * @param registeredIntegrationConnectorElement the registration as just read
+     * @return true if the change has been held for later, false if it can be applied now
+     */
+    private synchronized boolean deferRegistrationChangeIfRefreshing(RegisteredIntegrationConnectorElement registeredIntegrationConnectorElement)
+    {
+        final String methodName = "deferRegistrationChangeIfRefreshing";
+
+        if (integrationConnectorStatus == IntegrationConnectorStatus.REFRESHING)
+        {
+            /*
+             * The properties that take effect without a rebuild are not touched here, so that the refresh in
+             * progress is not reconfigured underneath itself either; they are picked up with the rest of the
+             * registration when it is applied.
+             */
+            pendingRegistrationChange = registeredIntegrationConnectorElement;
+
+            auditLog.logMessage(methodName,
+                                IntegrationDaemonServicesAuditCode.CONNECTOR_REINITIALIZE_DEFERRED.getMessageDefinition(integrationConnectorName,
+                                                                                                                       integrationDaemonName,
+                                                                                                                       "registration re-read while refreshing"));
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
      * Update the connector properties with as little disruption to the running connector.
      *
      * @param registeredIntegrationConnectorElement new configuration information from the server
      * @return boolean - true if the connection has changed
      */
     public synchronized boolean updateConnectorDetails(RegisteredIntegrationConnectorElement registeredIntegrationConnectorElement)
+    {
+        return (this.getRegistrationChange(registeredIntegrationConnectorElement) != null);
+    }
+
+
+    /**
+     * Refresh the connector's details from its registration and say whether the change needs the connector to be
+     * reinitialized - the properties that only take effect when the connector is built.
+     *
+     * @param registeredIntegrationConnectorElement the connector's registration as just read
+     * @return a description of what changed, for the log, or null if nothing that needs a reinitialization changed
+     */
+    private synchronized String getRegistrationChange(RegisteredIntegrationConnectorElement registeredIntegrationConnectorElement)
     {
         integrationConnectorGUID = registeredIntegrationConnectorElement.getElementHeader().getGUID();
         integrationConnectorName = registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorName();
@@ -795,17 +891,19 @@ public class IntegrationConnectorHandler
         if (needDedicatedThread != registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls())
         {
             needDedicatedThread = registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls();
-            return true;
+            return "usesBlockingCalls is now " + needDedicatedThread;
         }
         else if ((! connection.equals(registeredIntegrationConnectorElement.getProperties().getConnection())) &&
                 (registeredIntegrationConnectorElement.getProperties().getConnection() != null))
         {
+            String change = "connection changed from " + connection + " to " + registeredIntegrationConnectorElement.getProperties().getConnection();
+
             connection = registeredIntegrationConnectorElement.getProperties().getConnection();
-            return true;
+            return change;
         }
         else
         {
-            return false;
+            return null;
         }
     }
 

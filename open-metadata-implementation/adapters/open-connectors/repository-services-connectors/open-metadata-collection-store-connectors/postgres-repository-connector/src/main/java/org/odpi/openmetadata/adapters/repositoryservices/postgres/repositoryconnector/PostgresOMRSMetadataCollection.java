@@ -2753,10 +2753,11 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         String entityGUID = entityProxy.getGUID();
 
         /*
-         * Save entity proxy
+         * The entity may be homed elsewhere and known here only as a proxy.  Where it is not known at all, the
+         * caller's proxy is stored so that the classification has an entity to hang off.
          */
-
         EntitySummary entity = repositoryStore.getEntityProxy(entityGUID, null);
+
         if (entity == null)
         {
             repositoryStore.addEntityProxyToStore(entityProxy);
@@ -2766,47 +2767,33 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
-        Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName,
-                                                                                     entityProxy,
-                                                                                     classificationName,
-                                                                                     methodName);
+        /*
+         * The update is built on the classification this repository holds, because that is the version chain
+         * the store will accept the update into: a new version is only saved if it is later than the stored
+         * one.  The caller's proxy carries the caller's view of the classification, which may be an older
+         * version - it was read some time before this call, and the classification may have been updated
+         * since - or may differ in the audit fields that a read through the enterprise connector fills in.
+         * Neither difference matters: the caller is asking for the classification's properties to be
+         * replaced, and the stored copy is where they are replaced.  The caller's copy is only used where
+         * the store holds the entity but not this classification, which can happen when the proxy has just
+         * been added from the caller's copy.
+         */
+        Classification classification;
+
         try
+        {
+            classification = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                          entity,
+                                                                          classificationName,
+                                                                          methodName);
+        }
+        catch (ClassificationErrorException missingStoredClassification)
         {
             classification = repositoryHelper.getClassificationFromEntity(repositoryName,
                                                                           entityProxy,
                                                                           classificationName,
                                                                           methodName);
         }
-        catch (ClassificationErrorException missingClassification)
-        {
-            System.out.println("callerClassification: " + classification);
-            System.out.println("callerEntityProxy: " + entityProxy);
-            System.out.println("storedEntity: " + entity);
-
-            /*
-             * Throw the exception
-             */
-            repositoryHelper.getClassificationFromEntity(repositoryName,
-                                                         entityProxy,
-                                                         classificationName,
-                                                         methodName);
-        }
-
-        Classification storedClassification = null;
-        try
-        {
-            storedClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
-                                                                                entity,
-                                                                                classificationName,
-                                                                                methodName);
-        }
-        catch (ClassificationErrorException missingClassification)
-        {
-            System.out.println("callerClassification: " + classification);
-            System.out.println("storedEntity: " + entity);
-        }
-
-        assert(classification.equals(storedClassification));
 
         Classification newClassification = new Classification(classification);
 

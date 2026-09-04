@@ -9,7 +9,7 @@ The TabularDataErrorCode is used to define first failure data capture (FFDC) for
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 6 |
+| **Number of messages** | 10 |
 | **Message identifiers begin** | `REFERENCE-DATA-CONNECTORS-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.TabularDataErrorCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/nanny-connectors](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors) |
@@ -27,6 +27,10 @@ The TabularDataErrorCode is used to define first failure data capture (FFDC) for
 | [REFERENCE-DATA-CONNECTORS-500-001](#reference-data-connectors-500-001) | 500 | The {0} Reference Data Connector received an unexpected exception {1} during method {2}; the error message was: {3} |
 | [REFERENCE-DATA-CONNECTORS-500-003](#reference-data-connectors-500-003) | 500 | The {0} Reference Data Connector cannot map column {1} |
 | [REFERENCE-DATA-CONNECTORS-500-004](#reference-data-connectors-500-004) | 500 | Product definition is null for connector {0} in method {1} |
+| [REFERENCE-DATA-CONNECTORS-400-005](#reference-data-connectors-400-005) | 400 | Connector {0} has been configured without the unique identifier of the digital product family it reads; it is supplied in the {1} configuration property |
+| [REFERENCE-DATA-CONNECTORS-400-006](#reference-data-connectors-400-006) | 400 | Connector {0} has been configured to read element {1}, which is a {2} rather than a digital product family |
+| [REFERENCE-DATA-CONNECTORS-400-007](#reference-data-connectors-400-007) | 400 | Connector {0} has no tabular data set called {1} in digital product family {2}; the data sets it has are: {3} |
+| [REFERENCE-DATA-CONNECTORS-400-008](#reference-data-connectors-400-008) | 400 | Connector {0} has been asked to read digital product family {1} without being told which of its tabular data sets to read |
 
 ----
 
@@ -152,6 +156,90 @@ The connector cannot continue to work without the product definition.
 **User action**
 
 This is a timing issue.  The connector should set up a valid product definition either in its constructor or start() method.  The calls to retrieve the table name/description should occur after start().
+
+
+----
+
+### REFERENCE-DATA-CONNECTORS-400-005
+
+> Connector {0} has been configured without the unique identifier of the digital product family it reads; it is supplied in the {1} configuration property
+
+|  |  |
+|---|---|
+| **Java constant** | `TabularDataErrorCode.NULL_STARTING_ELEMENT` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+The connector cannot find the family whose products it is to present, so it cannot start.
+
+**User action**
+
+Add the unique identifier of the digital product family to the connection's configuration properties.  Jacquard sets this property when it builds the family's asset.
+
+
+----
+
+### REFERENCE-DATA-CONNECTORS-400-006
+
+> Connector {0} has been configured to read element {1}, which is a {2} rather than a digital product family
+
+|  |  |
+|---|---|
+| **Java constant** | `TabularDataErrorCode.NOT_A_PRODUCT_FAMILY` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The connector only knows how to walk the members of a digital product family, so it cannot start.
+
+**User action**
+
+Correct the unique identifier in the connection's configuration properties so that it names a digital product family.
+
+
+----
+
+### REFERENCE-DATA-CONNECTORS-400-007
+
+> Connector {0} has no tabular data set called {1} in digital product family {2}; the data sets it has are: {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `TabularDataErrorCode.UNKNOWN_TABLE_NAME` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The connector cannot bring the requested data set into focus.
+
+**User action**
+
+Ask the connector for its table names and use one of those.  If the product was added to the family after the connector started, refresh the connector's cache.
+
+
+----
+
+### REFERENCE-DATA-CONNECTORS-400-008
+
+> Connector {0} has been asked to read digital product family {1} without being told which of its tabular data sets to read
+
+|  |  |
+|---|---|
+| **Java constant** | `TabularDataErrorCode.NO_TABLE_IN_FOCUS` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+A collection of data sets is read one data set at a time, and none has been chosen, so there is nothing to read.
+
+**User action**
+
+Call setTableName() with one of the names returned by getTableNames() before describing or reading records.
 
 
 ----
