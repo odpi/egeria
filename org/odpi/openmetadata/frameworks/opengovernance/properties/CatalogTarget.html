@@ -105,7 +105,12 @@ loadScripts(document, 'script');</script>
 <div class="block">CatalogTarget contains the properties for one of the integration connector's catalog targets.
  Each integration connector is optionally linked via the CatalogTarget relationship to one or more elements that the integration connector
  is working on. The catalogTargetElement contains details of the entity that represents the catalog target.
- It is extracted from entity proxy two of the catalog target relationship.</div>
+ It is extracted from entity proxy two of the catalog target relationship.
+ <br><br>
+ The element is held as it was retrieved with the catalog target: its header and properties, and the relationship
+ that makes it a target.  What is attached to the element is not retrieved with it.  A caller that needs to see
+ the attachments reads them on demand - and says how much - through the getters on RequestedCatalogTarget in
+ the Open Integration Framework, which is where every catalog target that a connector processes ends up.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -161,7 +166,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTargetElement()" class="member-name-link">getCatalogTargetElement</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return details of the catalog target element.</div>
+<div class="block">Return the catalog target element as it was retrieved with the catalog target: header, properties and
+ the catalog target relationship, with nothing attached.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipGUID()" class="member-name-link">getRelationshipGUID</a>()</code></div>
@@ -311,10 +317,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getCatalogTargetElement()">
 <h3>getCatalogTargetElement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></span>&nbsp;<span class="element-name">getCatalogTargetElement</span>()</div>
-<div class="block">Return details of the catalog target element.</div>
+<div class="block">Return the catalog target element as it was retrieved with the catalog target: header, properties and
+ the catalog target relationship, with nothing attached.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>element stub</dd>
+<dd>element, with its attachments not populated</dd>
 </dl>
 </section>
 </li>
