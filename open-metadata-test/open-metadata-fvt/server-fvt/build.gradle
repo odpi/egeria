@@ -85,6 +85,13 @@ dependencies {
     testImplementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-client')
     testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-api')
     testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
+    // The engine action lifecycle is driven through the Open Governance Framework's own clients, and the
+    // governance engine each action names is created through the Open Metadata Framework's store client.
+    // See EngineActionLifecycleFVT for why that lifecycle is covered from this suite.
+    testImplementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-client')
+    testImplementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-api')
+    testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+
     testImplementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-client')
     testImplementation project(':open-metadata-implementation:engine-services:survey-action:survey-action-client')
     testImplementation project(':open-metadata-implementation:engine-services:watchdog-action:watchdog-action-client')
@@ -100,6 +107,7 @@ dependencies {
     // configuration calls take, and the user account beans the platform security API exchanges.
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation project(':open-metadata-implementation:common-services:ffdc-services')
     testImplementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')

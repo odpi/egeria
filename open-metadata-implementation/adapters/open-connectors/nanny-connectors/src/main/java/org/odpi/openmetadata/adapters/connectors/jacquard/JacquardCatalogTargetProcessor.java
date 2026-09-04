@@ -31,7 +31,8 @@ import java.util.List;
  */
 public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
 {
-    private OpenMetadataDataSetConnectorBase tabularDataSource = null;
+    private OpenMetadataDataSetConnectorBase tabularDataSource        = null;
+    private boolean                          tabularDataSourceStarted = false;
 
 
     /**
@@ -60,7 +61,71 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
             this.tabularDataSource.setLocalEnvironment(catalogTargetContext.getMyUserId(),
                                                        catalogTargetContext.getLocalServerName(),
                                                        connectorName);
-            this.tabularDataSource.start();
+
+            /*
+             * The data source is not started here - see start().
+             */
+        }
+    }
+
+
+    /**
+     * Start the processor, and with it the connector to the product's data set.
+     * <br><br>
+     * The targets manager starts every new processor while it is still retrieving the catalog targets, before
+     * the connector's refresh has done anything else.  Starting the data source opens a connection to the
+     * platform named in the product's connection, and a product whose connection named a platform that had
+     * moved failed here - and the failure, thrown, aborted the whole refresh: no other product was refreshed,
+     * and the harvest that repairs such connections was never reached, so the product could never recover.
+     * <br><br>
+     * A failure to start the data source is therefore logged against this product and kept, not thrown.  The
+     * refresh tries again each cycle and, while it keeps failing, skips this product and no other.
+     *
+     * @throws ConnectorCheckedException a problem in the framework's own start-up
+     * @throws UserNotAuthorizedException the connector has been disconnected
+     */
+    @Override
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
+    {
+        final String methodName = "start";
+
+        integrationContext.validateIsActive(methodName);
+
+        this.startTabularDataSource(methodName);
+    }
+
+
+    /**
+     * Start the connector to the product's data set if it is not already started, logging rather than throwing
+     * if it cannot be.
+     *
+     * @param methodName calling method, for the log
+     * @throws UserNotAuthorizedException the connector has been disconnected
+     */
+    private void startTabularDataSource(String methodName) throws UserNotAuthorizedException
+    {
+        if (! tabularDataSourceStarted)
+        {
+            try
+            {
+                super.start();
+                tabularDataSourceStarted = true;
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                throw error;
+            }
+            catch (Exception error)
+            {
+                integrationContext.validateIsActive(methodName);
+
+                auditLog.logException(methodName,
+                                      JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                  error.getClass().getName(),
+                                                                                                  methodName + "(" + getCatalogTargetName() + ")",
+                                                                                                  error.getMessage()),
+                                      error);
+            }
         }
     }
 
@@ -85,6 +150,17 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
         final String methodName = "refresh";
 
         super.refresh();
+
+        /*
+         * A data source that could not be started when the processor was created - see start() - is tried
+         * again now, and if it still cannot be, this product is skipped for this cycle.
+         */
+        this.startTabularDataSource(methodName);
+
+        if (! tabularDataSourceStarted)
+        {
+            return;
+        }
 
         try
         {

@@ -12,12 +12,6 @@ package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 public enum GovernanceActionTypeDefinition
 {
     /**
-     * baudot-subscription-manager
-     */
-    BAUDOT_SUBSCRIPTION_MANAGER("baudot-subscription-manager",
-                                "5910a207-0da0-4694-afcb-9037c82fef33"),
-
-    /**
      * award-karma-points
      */
     AWARD_KARMA_POINTS("award-karma-points",

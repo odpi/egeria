@@ -58,10 +58,10 @@ public enum BaudotNotificationMessageSet implements MessageSet
 
 
     /**
-     * BAUDOT-SUBSCRIPTION-MANAGEMENT-0005 - A regular notification for subscription type {0} ({1}) has been triggered.  It will trigger again in {2} milliseconds
+     * BAUDOT-SUBSCRIPTION-MANAGEMENT-0005 - A regular notification for subscription type {0} ({1}) has been triggered.  It will trigger again no sooner than {2} minutes from now
      */
     PERIODIC_NOTIFICATION("BAUDOT-SUBSCRIPTION-MANAGEMENT-0005",
-                          "A regular notification for subscription type {0} ({1}) has been triggered.  It will trigger again in {2} milliseconds",
+                          "A regular notification for subscription type {0} ({1}) has been triggered.  It will trigger again no sooner than {2} minutes from now",
                           "The subscription manager has been requested to send this notification to you.  It is a periodic notification.",
                           "No specific action is required.  This message is to inform you of the periodic notification.",
                           "https://egeria-project.org/concepts/notification/"),

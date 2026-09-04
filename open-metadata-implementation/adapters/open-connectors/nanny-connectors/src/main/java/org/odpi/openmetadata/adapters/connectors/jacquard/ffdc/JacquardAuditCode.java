@@ -52,14 +52,14 @@ public enum JacquardAuditCode implements AuditLogMessageSet
                          "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
     /**
-     * JACQUARD-HARVESTER-0006 - The {0} integration connector has initiated the Badot Subscription Manager running as engine action {1} with {2} action targets
+     * JACQUARD-HARVESTER-0006 - The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types will not be handed to a subscription manager and their subscribers will not be notified
      */
-    BARDOT_STARTED("JACQUARD-HARVESTER-0006",
-                       AuditLogRecordSeverityLevel.INFO,
-                       "The {0} integration connector has initiated the Badot Subscription Manager running as engine action {1} with {2} action targets",
-                       "The connector has started the Badot Subscription Manager.",
-                       "No action is required unless there are errors that follow indicating that there were problems with the subscription manager.",
-                       "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
+    NO_SUBSCRIPTION_MANAGER("JACQUARD-HARVESTER-0006",
+                            AuditLogRecordSeverityLevel.ERROR,
+                            "The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types will not be handed to a subscription manager and their subscribers will not be notified",
+                            "The connector builds the products and their notification types, but no connector is looking after the notification types.  Subscriptions can be taken out, and nothing will deliver them.",
+                            "Set the configuration property to the unique identifier of the Baudot Subscription Manager integration connector.  The Open Metadata Digital Products content pack sets it when it defines this connector; a connector defined by hand needs it added.",
+                            "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
     /**
      * JACQUARD-HARVESTER-0009 - The {0} integration connector has stopped its monitoring of open metadata from server {1} on platform {2} and is shutting down
@@ -100,6 +100,16 @@ public enum JacquardAuditCode implements AuditLogMessageSet
                               "The connector is setting up the fixed open metadata digital products.",
                               "No action is required.  This message is for monitoring the set up of the fixed digital products.",
                               "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
+
+    /**
+     * JACQUARD-HARVESTER-0025 - The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3}
+     */
+    DUPLICATE_CATALOG_TARGETS_REMOVED("JACQUARD-HARVESTER-0027",
+                                      AuditLogRecordSeverityLevel.INFO,
+                                      "The {0} integration connector removed {1} duplicate catalog target relationship(s) from its own catalog targets, leaving one for each of its {2} product asset(s)",
+                                      "Earlier versions of this connector added a product's asset as a catalog target on every refresh, so each product accumulated one relationship per run and the connector started one processor per relationship.  The duplicates are removed and a product is now added once.",
+                                      "No action is required.  This message appears once for a repository built by an earlier version of the connector, and not again.",
+                                      "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
     /**
      * JACQUARD-HARVESTER-0025 - The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3}

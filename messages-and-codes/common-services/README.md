@@ -6,7 +6,7 @@
 
 The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time.
 
-This directory documents 180 messages in 11 message sets.  Return to the [messages and codes index](../README.md).
+This directory documents 181 messages in 11 message sets.  Return to the [messages and codes index](../README.md).
 
 
 ## Message sets
@@ -14,7 +14,7 @@ This directory documents 180 messages in 11 message sets.  Return to the [messag
 | Message set | Type | Message identifiers | Messages | Further reading |
 |---|---|---|---|---|
 | [GenericHandlersAuditCode](GenericHandlersAuditCode.md) | Audit log messages | `OMAG-GENERIC-HANDLERS-` | 15 |  |
-| [GenericHandlersErrorCode](GenericHandlersErrorCode.md) | Exception messages | `OMAG-GENERIC-HANDLERS-` | 25 | <https://egeria-project.org/services/generic-handlers/> |
+| [GenericHandlersErrorCode](GenericHandlersErrorCode.md) | Exception messages | `OMAG-GENERIC-HANDLERS-` | 26 | <https://egeria-project.org/services/generic-handlers/> |
 | [OMAGCommonAuditCode](OMAGCommonAuditCode.md) | Audit log messages | `OMAG-COMMON-` | 2 | <https://egeria-project.org/services/ffdc-services/> |
 | [OMAGCommonErrorCode](OMAGCommonErrorCode.md) | Exception messages | `OMAG-COMMON-` | 32 | <https://egeria-project.org/services/ffdc-services/> |
 | [OMAGServerInstanceAuditCode](OMAGServerInstanceAuditCode.md) | Audit log messages | `OMAG-MULTI-TENANT-` | 2 | <https://egeria-project.org/services/multi-tenant/> |

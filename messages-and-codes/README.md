@@ -27,8 +27,8 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
-| Exception messages | 66 | 616 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 104 | 939 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Exception messages | 66 | 617 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
+| Audit log messages | 104 | 943 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -82,7 +82,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | Area | Message sets | Messages | Description |
 |---|---|---|---|
 | [Frameworks](frameworks) | 11 | 122 | The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely. |
-| [Common Services](common-services) | 11 | 180 | The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time. |
+| [Common Services](common-services) | 11 | 181 | The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time. |
 | [Access Services](access-services) | 6 | 38 | The access services provide the domain-specific APIs and events that run in a metadata access server. |
 | [Generic View Services](view-server-generic-services) | 15 | 75 | The generic view services provide the REST APIs used by user interfaces to work with any type of open metadata element. |
 | [View Services](view-services) | 25 | 122 | The view services provide the REST APIs used by user interfaces such as Egeria UI.  Each view service supports a particular type of user or task. |
@@ -100,7 +100,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [Event Bus Connectors](connectors/event-bus-connectors) | 2 | 22 | These connectors send and receive events over the event bus - typically Apache Kafka. |
 | [Governance Action Connectors](connectors/governance-action-connectors) | 2 | 43 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
 | [File Survey Connectors](connectors/file-survey-connectors) | 1 | 5 | These survey action services analyse the content of files and folders and record what they find in a survey report. |
-| [Nanny Connectors](connectors/nanny-connectors) | 16 | 83 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
+| [Nanny Connectors](connectors/nanny-connectors) | 16 | 87 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
 | [Lovelace Insights](connectors/lovelace-insights) | 2 | 7 | These connectors analyse the harvested observability data and turn it into insight reports. |
 | [Report Generating Connectors](connectors/report-generating-connectors) | 1 | 2 | These connectors turn the contents of the open metadata ecosystem into human-readable documents. |
 | [Secrets Store Connectors](connectors/secrets-store-connectors) | 2 | 5 | These connectors supply the credentials that other connectors need when they call a third party technology. |
@@ -135,7 +135,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `BASIC-FILES-INTEGRATION-CONNECTORS-` | Audit log messages | 19 | [BasicFilesIntegrationConnectorsAuditCode](connectors/integration-connectors/BasicFilesIntegrationConnectorsAuditCode.md) |
 | `BASIC-FILES-INTEGRATION-CONNECTORS-` | Exception messages | 7 | [BasicFilesIntegrationConnectorsErrorCode](connectors/integration-connectors/BasicFilesIntegrationConnectorsErrorCode.md) |
 | `BAUDOT-SUBSCRIPTION-MANAGEMENT-` | Notification messages | 5 | [BaudotNotificationMessageSet](connectors/nanny-connectors/BaudotNotificationMessageSet.md) |
-| `BAUDOT-SUBSCRIPTION-MANAGER-` | Audit log messages | 6 | [BaudotAuditCode](connectors/nanny-connectors/BaudotAuditCode.md) |
+| `BAUDOT-SUBSCRIPTION-MANAGER-` | Audit log messages | 9 | [BaudotAuditCode](connectors/nanny-connectors/BaudotAuditCode.md) |
 | `CLIENT-SIDE-REST-API-CONNECTOR-503-` | Exception messages | 2 | [RESTClientConnectorErrorCode](connectors/rest-client-connectors/RESTClientConnectorErrorCode.md) |
 | `CONFORMANCE-SUITE-` | Audit log messages | 15 | [ConformanceSuiteAuditCode](conformance-suite/ConformanceSuiteAuditCode.md) |
 | `CONFORMANCE-SUITE-` | Exception messages | 10 | [ConformanceSuiteErrorCode](conformance-suite/ConformanceSuiteErrorCode.md) |
@@ -166,7 +166,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `HARVEST-SURVEYS-500-` | Exception messages | 1 | [HarvestSurveysErrorCode](connectors/nanny-connectors/HarvestSurveysErrorCode.md) |
 | `INTEGRATION-DAEMON-SERVICES-` | Audit log messages | 34 | [IntegrationDaemonServicesAuditCode](governance-server-services/IntegrationDaemonServicesAuditCode.md) |
 | `INTEGRATION-DAEMON-SERVICES-400-` | Exception messages | 8 | [IntegrationDaemonServicesErrorCode](governance-server-services/IntegrationDaemonServicesErrorCode.md) |
-| `JACQUARD-HARVESTER-` | Audit log messages | 20 | [JacquardAuditCode](connectors/nanny-connectors/JacquardAuditCode.md) |
+| `JACQUARD-HARVESTER-` | Audit log messages | 21 | [JacquardAuditCode](connectors/nanny-connectors/JacquardAuditCode.md) |
 | `JACQUARD-HARVESTER-` | Exception messages | 2 | [JacquardErrorCode](connectors/nanny-connectors/JacquardErrorCode.md) |
 | `JDBC-AUDIT-LOG-500-` | Exception messages | 1 | [PostgreSQLAuditLogErrorCode](connectors/repository-services-connectors/PostgreSQLAuditLogErrorCode.md) |
 | `JDBC-INTEGRATION-CONNECTOR-` | Audit log messages | 11 | [JDBCIntegrationConnectorAuditCode](connectors/integration-connectors/JDBCIntegrationConnectorAuditCode.md) |
@@ -198,7 +198,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `OMAG-CONNECTORS-` | Audit log messages | 6 | [OMAGConnectorAuditCode](connectors/system-connectors/OMAGConnectorAuditCode.md) |
 | `OMAG-CONNECTORS-` | Exception messages | 3 | [OMAGConnectorErrorCode](connectors/system-connectors/OMAGConnectorErrorCode.md) |
 | `OMAG-GENERIC-HANDLERS-` | Audit log messages | 15 | [GenericHandlersAuditCode](common-services/GenericHandlersAuditCode.md) |
-| `OMAG-GENERIC-HANDLERS-` | Exception messages | 25 | [GenericHandlersErrorCode](common-services/GenericHandlersErrorCode.md) |
+| `OMAG-GENERIC-HANDLERS-` | Exception messages | 26 | [GenericHandlersErrorCode](common-services/GenericHandlersErrorCode.md) |
 | `OMAG-MULTI-TENANT-` | Audit log messages | 2 | [OMAGServerInstanceAuditCode](common-services/OMAGServerInstanceAuditCode.md) |
 | `OMAG-MULTI-TENANT-` | Exception messages | 12 | [OMAGServerInstanceErrorCode](common-services/OMAGServerInstanceErrorCode.md) |
 | `OMAG-REPOSITORY-HANDLER-` | Audit log messages | 10 | [RepositoryHandlerAuditCode](common-services/RepositoryHandlerAuditCode.md) |

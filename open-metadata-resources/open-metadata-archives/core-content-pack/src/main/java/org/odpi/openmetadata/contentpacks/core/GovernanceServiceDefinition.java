@@ -453,17 +453,6 @@ public enum GovernanceServiceDefinition
                         ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
     /**
-     * Baudot Open Metadata Digital Product Subscription Manager Governance Action Service
-     */
-    BAUDOT_SUBSCRIPTION_MANAGER("8b4e7a99-651e-4c54-b8ec-3615786c8394",
-                                "baudot-subscription-manager-governance-service",
-                                "Baudot Open Metadata Digital Product Subscription Manager Governance Action Service",
-                                new BaudotSubscriptionManagementProvider(),
-                                ResourceUse.INFORM_STEWARD,
-                                DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
-                                ContentPackDefinition.PRODUCTS_CONTENT_PACK),
-
-    /**
      * Wedgwood Open Metadata Digital Product Provisioning Pipeline Governance Action Service
      */
     SUBSCRIPTION_PROVISIONER("2efbd7d9-402e-44af-953b-65b27c18f492",

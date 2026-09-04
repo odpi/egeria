@@ -11,8 +11,7 @@ public enum ProductSubscriptionDefinition
     /**
      * This subscription delivers the data to the target destination just once to allow an evaluation of the product data.
      */
-    EVALUATION_SUBSCRIPTION(GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID(),
-                            "EVALUATION-SUBSCRIPTION",
+    EVALUATION_SUBSCRIPTION("EVALUATION-SUBSCRIPTION",
                             "Evaluation subscription",
                             "This subscription delivers the data to the target destination just once to allow an evaluation of the product data.",
                             null,
@@ -25,8 +24,7 @@ public enum ProductSubscriptionDefinition
     /**
      * This subscription delivers the data to the target destination once a day.
      */
-    DAILY_REFRESH_SUBSCRIPTION(GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID(),
-                               "DAILY-REFRESH-SUBSCRIPTION",
+    DAILY_REFRESH_SUBSCRIPTION("DAILY-REFRESH-SUBSCRIPTION",
                                "Daily refresh subscription",
                                "This subscription delivers the data to the target destination once a day.",
                                null,
@@ -39,8 +37,7 @@ public enum ProductSubscriptionDefinition
     /**
      * This subscription delivers the data to the target destination once a week.
      */
-    WEEKLY_REFRESH_SUBSCRIPTION(GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID(),
-                               "WEEKLY-REFRESH-SUBSCRIPTION",
+    WEEKLY_REFRESH_SUBSCRIPTION("WEEKLY-REFRESH-SUBSCRIPTION",
                                "Weekly refresh subscription",
                                "This subscription delivers the data to the target destination once a week.",
                                null,
@@ -54,8 +51,7 @@ public enum ProductSubscriptionDefinition
     /**
      * This subscription delivers data updates to the target destination within an hour of receiving the new data.
      */
-    ONGOING_UPDATE(GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID(),
-                   "ONGOING-UPDATE-SUBSCRIPTION",
+    ONGOING_UPDATE("ONGOING-UPDATE-SUBSCRIPTION",
                    "Ongoing update subscription",
                    "This subscription delivers data updates to the target destination within an hour of receiving the new data.",
                    null,
@@ -67,7 +63,6 @@ public enum ProductSubscriptionDefinition
     ;
 
 
-    private final String                        governanceActionTypeGUID;
     private final String                        identifier;
     private final String                        displayName;
     private final String                        description;
@@ -82,7 +77,6 @@ public enum ProductSubscriptionDefinition
     /**
      * Constructor for enum value.
      *
-     * @param governanceActionTypeGUID    governance action type that fulfils the subscription
      * @param identifier                  identifier of this subscription type
      * @param displayName                 display name for subscription type
      * @param description                 description of subscription type
@@ -93,8 +87,7 @@ public enum ProductSubscriptionDefinition
      * @param minimumNotificationInterval minimum time between notifications
      * @param glossaryTerm                glossary term describing this subscription type
      */
-    ProductSubscriptionDefinition(String                        governanceActionTypeGUID,
-                                  String                        identifier,
+    ProductSubscriptionDefinition(String                        identifier,
                                   String                        displayName,
                                   String                        description,
                                   String                        category,
@@ -104,7 +97,6 @@ public enum ProductSubscriptionDefinition
                                   long                          minimumNotificationInterval,
                                   ProductGlossaryTermDefinition glossaryTerm)
     {
-        this.governanceActionTypeGUID       = governanceActionTypeGUID;
         this.identifier                     = identifier;
         this.displayName                    = displayName;
         this.description                    = description;
@@ -116,17 +108,6 @@ public enum ProductSubscriptionDefinition
         this.glossaryTerm                   = glossaryTerm;
     }
 
-
-
-    /**
-     * Returns the unique identifier for the subscription manager's governance action type.
-     *
-     * @return type name
-     */
-    public String getGovernanceActionTypeGUID()
-    {
-        return governanceActionTypeGUID;
-    }
 
 
     /**
@@ -239,8 +220,7 @@ public enum ProductSubscriptionDefinition
     public String toString()
     {
         return "ProductSubscriptionDefinition{" +
-                "governanceActionTypeGUID='" + governanceActionTypeGUID + '\'' +
-                ", identifier='" + identifier + '\'' +
+                "identifier='" + identifier + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", category='" + category + '\'' +

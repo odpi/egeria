@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.jacquard;
 
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
+import org.odpi.openmetadata.adapters.connectors.jacquard.controls.JacquardConfigurationProperty;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 
@@ -28,5 +29,7 @@ public class JacquardIntegrationConnectorProvider extends IntegrationConnectorPr
         super(EgeriaOpenConnectorDefinition.JACQUARD_PRODUCT_LOOM,
               connectorClassName,
               null);
+
+        super.supportedConfigurationProperties = JacquardConfigurationProperty.getConfigurationPropertyTypes();
     }
 }

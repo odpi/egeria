@@ -568,7 +568,26 @@ public class IntegrationContext extends ConnectorContextBase
             return name;
         }
 
-        return name.replace(' ', '_').toLowerCase();
+        /*
+         * The result is used unquoted as a table or column name in SQL, so it has to be a legal identifier:
+         * letters, digits and underscores, not starting with a digit.  Replacing only the spaces let anything
+         * else through - "Globally Unique Identifier (GUID)" became globally_unique_identifier_(guid), and
+         * "Is Case Sensitive?" became is_case_sensitive?, whose question mark a JDBC driver reads as a statement
+         * parameter - and every table with such a column failed to be created.  Each run of characters that
+         * are not letters or digits becomes a single underscore.  A name that was already legal is unchanged.
+         */
+        String snakeCase = name.toLowerCase().replaceAll("[^a-z0-9]+", "_").replaceAll("^_+|_+$", "");
+
+        if (snakeCase.isEmpty())
+        {
+            snakeCase = "_";
+        }
+        else if (Character.isDigit(snakeCase.charAt(0)))
+        {
+            snakeCase = "_" + snakeCase;
+        }
+
+        return snakeCase;
     }
 
 

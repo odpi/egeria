@@ -134,16 +134,17 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      * are named from the content pack's own definitions rather than as string literals, so that a rename in
      * the content pack is a compile failure here rather than a server that starts with nothing in it.
      * <br>
-     * Both engines are needed and they do different jobs.  The Egeria Governance engine runs the
-     * create-subscription and cancel-subscription governance services - the ones a consumer's request turns
-     * into.  The Egeria Watchdog engine runs the Baudot subscription manager, which Jacquard activates as it
-     * builds the catalogue; without it Jacquard's first refresh does not complete and no product ever
-     * appears.
+     * The integration group carries both Jacquard, which builds the catalogue, and the Baudot subscription
+     * manager, which notifies each product's subscribers and so starts the provisioning of a subscription.
+     * Baudot used to be a watchdog governance service on an Egeria Watchdog engine here, waking on a schedule
+     * of its own; as an integration connector its refresh is on the daemon's schedule and can be brought
+     * forward through the daemon's REST API, which is what {@link SubscriptionDriver} does after taking out a
+     * subscription.  One engine is left: the Egeria Governance engine runs the create-subscription and
+     * cancel-subscription governance services - the ones a consumer's request turns into.
      */
     static final IntegrationGroupDefinition INTEGRATION_GROUP = IntegrationGroupDefinition.JACQUARD;
 
-    static final List<GovernanceEngineDefinition> GOVERNANCE_ENGINES = List.of(GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
-                                                                               GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE);
+    static final List<GovernanceEngineDefinition> GOVERNANCE_ENGINES = List.of(GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE);
 
     private static volatile boolean               started = false;
     private static volatile Exception             startupFailure;
@@ -464,7 +465,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
          */
         SpringApplicationBuilder builder = new SpringApplicationBuilder(OMAGServerPlatform.class);
 
-        builder.properties(java.util.Map.of("server.port", Integer.toString(allocateFreePort())));
+        builder.properties(java.util.Map.of("server.port", Integer.toString(choosePort())));
 
         builder.web(WebApplicationType.SERVLET);
 
@@ -1077,6 +1078,93 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         catch (java.io.IOException error)
         {
             throw new IllegalStateException("Could not allocate a free port for the test platform", error);
+        }
+    }
+
+
+    /**
+     * The file in which the port used by the last run is remembered.
+     */
+    private static final java.io.File LAST_PORT_FILE = new java.io.File("build/subscription-fvt-data/platform.port");
+
+
+    /**
+     * Choose the platform's port: the one the previous run used if it is still free, otherwise a fresh one.
+     * <br>
+     * The repository persists between runs and the catalogue in it names the platform by URL - every product's
+     * connection carries an endpoint with the platform's address, and the subscription manager and provisioner
+     * dial it.  A fresh port on every run made every one of those endpoints stale on every run: Jacquard
+     * repaired the ones it knew at start-up, the rest were repaired only when the harvest reached them a few
+     * minutes in, and anything provisioned before then dialled a platform that no longer existed.  None of that
+     * happens to a deployment, whose platform keeps its address.  Reusing the port makes the suite behave the
+     * same way, while a second checkout on the same machine still gets a port of its own when the remembered
+     * one is taken.
+     *
+     * @return port number
+     */
+    private static int choosePort()
+    {
+        Integer lastPort = readLastPort();
+
+        if (lastPort != null)
+        {
+            try (java.net.ServerSocket socket = new java.net.ServerSocket(lastPort))
+            {
+                socket.setReuseAddress(true);
+                return lastPort;
+            }
+            catch (java.io.IOException notFree)
+            {
+                System.out.println("subscription-fvt: the port used by the last run (" + lastPort + ") is in use - allocating another");
+            }
+        }
+
+        int port = allocateFreePort();
+
+        rememberPort(port);
+
+        return port;
+    }
+
+
+    /**
+     * Read the port used by the previous run, if it was recorded.
+     *
+     * @return port number or null
+     */
+    private static Integer readLastPort()
+    {
+        try
+        {
+            if (LAST_PORT_FILE.isFile())
+            {
+                return Integer.parseInt(java.nio.file.Files.readString(LAST_PORT_FILE.toPath()).trim());
+            }
+        }
+        catch (Exception ignored)
+        {
+            // An unreadable or malformed file is treated as no record: a fresh port is allocated and recorded.
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Record the port this run is using, for the next run to prefer.
+     *
+     * @param port port number
+     */
+    private static void rememberPort(int port)
+    {
+        try
+        {
+            java.nio.file.Files.createDirectories(LAST_PORT_FILE.toPath().getParent());
+            java.nio.file.Files.writeString(LAST_PORT_FILE.toPath(), Integer.toString(port));
+        }
+        catch (Exception error)
+        {
+            System.out.println("subscription-fvt: could not record the platform port for the next run - " + error.getMessage());
         }
     }
 

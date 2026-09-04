@@ -829,14 +829,14 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
 
     BAUDOT_SUBSCRIPTION_MANAGER(381,
                                 "a99bbd51-71ed-4c1d-9a2a-cd04e6b95837",
-                                "Egeria::GovernanceService::Watchdog::Baudot::DigitalProductSubscriptionManager",
+                                "Egeria::IntegrationConnector::Baudot::DigitalProductSubscriptionManager",
                                 "Baudot Open Metadata Digital Product Subscription Manager",
-                                "Manages the notifications used to fulfill digital product subscriptions obligations.",
+                                "Manages the notifications used to fulfill digital product subscriptions obligations.  Each notification type it looks after is one of its catalog targets.",
                                 "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/nanny-connectors",
                                 "org.odpi.openmetadata.adapters.connectors.baudot.BaudotSubscriptionManagementProvider",
                                 ComponentDevelopmentStatus.STABLE,
-                                DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
-                                DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
+                                DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
     CANCEL_SUBSCRIPTION(382,
                         "9c45474b-a685-40df-8b40-5b7e7988546a",

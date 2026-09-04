@@ -124,8 +124,11 @@ public abstract class GovernanceServiceHandler implements Runnable
 
 
     /**
-     * If the service request has a start time in the future, wait for the start time.
-     * Once the service is ready to run, its status is updated to IN_PROGRESS,
+     * If the service request has a start time in the future, mark the engine action WAITING and wait for that
+     * time to arrive.  Once the service is ready to run, its status is updated to IN_PROGRESS.
+     * <br><br>
+     * So a delayed engine action runs ACTIVATING (claimed, service being brought up) to WAITING (up, but not
+     * due yet) to IN_PROGRESS (running); one with no delay goes straight from ACTIVATING to IN_PROGRESS.
      *
      * @param serverUserId userId for this server
      * @throws InvalidParameterException error updating engine action status
@@ -137,6 +140,20 @@ public abstract class GovernanceServiceHandler implements Runnable
                                                                 UserNotAuthorizedException
     {
         Date now = new Date();
+
+        if ((requestedStartDate != null) && (requestedStartDate.after(now)))
+        {
+            /*
+             * The engine action was claimed and its service activated, but it is not due to run yet - so it
+             * goes to WAITING, which is precisely that: "waiting for its start time or an actor to claim it".
+             *
+             * Without this the action sat in ACTIVATING for the whole delay, which says the service is being
+             * brought up right now.  For an action scheduled hours ahead that is misleading to anyone reading
+             * the status, and it hides the one thing worth knowing about a service that has not started -
+             * whether it is stuck coming up, or simply not due yet.
+             */
+            engineActionClient.updateEngineActionStatus(serverUserId, engineActionGUID, ActivityStatus.WAITING);
+        }
 
         while ((requestedStartDate != null) && (requestedStartDate.after(now)))
         {

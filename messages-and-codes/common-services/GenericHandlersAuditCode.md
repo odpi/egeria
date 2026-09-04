@@ -29,7 +29,7 @@ The GenericHandlersAuditCode is used to define the message content for the OMRS 
 | [OMAG-GENERIC-HANDLERS-0020](#omag-generic-handlers-0020) | STARTUP | Initializing a new engine action {0} for request type {1} to run on governance engine {2} with receivedGuards of {3}, mandatoryGuards of {4}, supplied with request parameters {5} and a start time of {6} at the request of {7} |
 | [OMAG-GENERIC-HANDLERS-0021](#omag-generic-handlers-0021) | STARTUP | Initializing a new engine action {0} from governance action process step {1} for request type {2} to run on governance engine {3} with receivedGuards of {4}, mandatoryGuards of {5}, supplied with request parameters {6} and a start time of {7} as part of process {8} |
 | [OMAG-GENERIC-HANDLERS-0022](#omag-generic-handlers-0022) | STARTUP | Adding action target {0} ({1}) to engine action {2} ({3}) |
-| [OMAG-GENERIC-HANDLERS-0024](#omag-generic-handlers-0024) | STARTUP | Governance engine with {0} userId has successfully claimed engine action {1} |
+| [OMAG-GENERIC-HANDLERS-0024](#omag-generic-handlers-0024) | STARTUP | Governance engine with {0} userId has successfully claimed engine action {1}, changing its status from {2} to {3} |
 | [OMAG-GENERIC-HANDLERS-0025](#omag-generic-handlers-0025) | INFO | Status changed from {0} to {1} for engine action {2} by governance engine with {3} userId |
 | [OMAG-GENERIC-HANDLERS-0027](#omag-generic-handlers-0027) | SHUTDOWN | Engine action {0} has been cancelled by user {1}, it was in {2} status before the cancel request |
 | [OMAG-GENERIC-HANDLERS-0028](#omag-generic-handlers-0028) | INFO | Method {0} was unable to receive list of entities due to a {1} exception with message {2} |
@@ -238,18 +238,18 @@ Validate that this action target should be added to the engine action.
 
 ### OMAG-GENERIC-HANDLERS-0024
 
-> Governance engine with {0} userId has successfully claimed engine action {1}
+> Governance engine with {0} userId has successfully claimed engine action {1}, changing its status from {2} to {3}
 
 |  |  |
 |---|---|
 | **Java constant** | `GenericHandlersAuditCode.SUCCESSFUL_ACTION_CLAIM_REQUEST` |
 | **Severity** | STARTUP - A new component is starting up. |
-| **Message inserts** | `{0}`, `{1}` |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
 | **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
 
 **System action**
 
-The engine action is updated to show that the governance engine has claimed it and that its status is now WAITING.  This will be successful if the governance engine is the first to claim the engine action and it is in APPROVED status.
+The engine action is updated to show that the governance engine has claimed it and that its status is now ACTIVATING.  This will be successful if the governance engine is the first to claim the engine action and it is in APPROVED status.
 
 **User action**
 

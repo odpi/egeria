@@ -9,7 +9,7 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 20 |
+| **Number of messages** | 21 |
 | **Message identifiers begin** | `JACQUARD-HARVESTER-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/nanny-connectors](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors) |
@@ -23,11 +23,12 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 | [JACQUARD-HARVESTER-0001](#jacquard-harvester-0001) | EXCEPTION | The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3} |
 | [JACQUARD-HARVESTER-0002](#jacquard-harvester-0002) | ERROR | Integration connector {0} cannot determine if tabular data source {1} has changed since it has no last update time column |
 | [JACQUARD-HARVESTER-0003](#jacquard-harvester-0003) | ERROR | Integration connector {0} cannot determine if tabular data source {1} has changed since it has no createTime column |
-| [JACQUARD-HARVESTER-0006](#jacquard-harvester-0006) | INFO | The {0} integration connector has initiated the Badot Subscription Manager running as engine action {1} with {2} action targets |
+| [JACQUARD-HARVESTER-0006](#jacquard-harvester-0006) | ERROR | The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types will not be handed to a subscription manager and their subscribers will not be notified |
 | [JACQUARD-HARVESTER-0009](#jacquard-harvester-0009) | INFO | The {0} integration connector has stopped its monitoring of open metadata from server {1} on platform {2} and is shutting down |
 | [JACQUARD-HARVESTER-0010](#jacquard-harvester-0010) | TRACE | The {0} integration connector has created a new {1} supporting definition called {2} with GUID {3} |
 | [JACQUARD-HARVESTER-0011](#jacquard-harvester-0011) | INFO | The {0} integration connector is starting its harvesting of open metadata from server {1} on platform {2} into digital products |
 | [JACQUARD-HARVESTER-0012](#jacquard-harvester-0012) | INFO | The {0} integration connector has created a new digital product {1} called {2} |
+| [JACQUARD-HARVESTER-0027](#jacquard-harvester-0027) | INFO | The {0} integration connector removed {1} duplicate catalog target relationship(s) from its own catalog targets, leaving one for each of its {2} product asset(s) |
 | [JACQUARD-HARVESTER-0025](#jacquard-harvester-0025) | TRACE | The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3} |
 | [JACQUARD-HARVESTER-0026](#jacquard-harvester-0026) | TRACE | The {0} integration connector is unlinking {1} element {2} from {3} element {4} to remove relationship {5} |
 | [JACQUARD-HARVESTER-0014](#jacquard-harvester-0014) | TRACE | The {0} integration connector is linking {1} element {2} to {3} element {4} using relationship {5} |
@@ -111,22 +112,22 @@ Update the data source to ensure it has a column called 'createTime'.
 
 ### JACQUARD-HARVESTER-0006
 
-> The {0} integration connector has initiated the Badot Subscription Manager running as engine action {1} with {2} action targets
+> The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types will not be handed to a subscription manager and their subscribers will not be notified
 
 |  |  |
 |---|---|
-| **Java constant** | `JacquardAuditCode.BARDOT_STARTED` |
-| **Severity** | INFO - The server is providing information about its normal operation. |
-| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Java constant** | `JacquardAuditCode.NO_SUBSCRIPTION_MANAGER` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}` |
 | **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
-The connector has started the Badot Subscription Manager.
+The connector builds the products and their notification types, but no connector is looking after the notification types.  Subscriptions can be taken out, and nothing will deliver them.
 
 **User action**
 
-No action is required unless there are errors that follow indicating that there were problems with the subscription manager.
+Set the configuration property to the unique identifier of the Baudot Subscription Manager integration connector.  The Open Metadata Digital Products content pack sets it when it defines this connector; a connector defined by hand needs it added.
 
 
 ----
@@ -215,6 +216,28 @@ The connector is setting up the fixed open metadata digital products.
 **User action**
 
 No action is required.  This message is for monitoring the set up of the fixed digital products.
+
+
+----
+
+### JACQUARD-HARVESTER-0027
+
+> The {0} integration connector removed {1} duplicate catalog target relationship(s) from its own catalog targets, leaving one for each of its {2} product asset(s)
+
+|  |  |
+|---|---|
+| **Java constant** | `JacquardAuditCode.DUPLICATE_CATALOG_TARGETS_REMOVED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
+
+**System action**
+
+Earlier versions of this connector added a product's asset as a catalog target on every refresh, so each product accumulated one relationship per run and the connector started one processor per relationship.  The duplicates are removed and a product is now added once.
+
+**User action**
+
+No action is required.  This message appears once for a repository built by an earlier version of the connector, and not again.
 
 
 ----

@@ -50,9 +50,9 @@ public enum ProductSolutionComponent
 
     SUBSCRIPTION_MANAGER("b31abcf4-89bc-477c-870f-c93631253d80",
                          SolutionComponentType.AUTOMATED_ACTION.getSolutionComponentType(),
-                         DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType(),
+                         DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType(),
                          "Baudot Subscription Manager",
-                         "This is the service that monitors for changes in registered products and notifies subscribers when changes occur.",
+                         "This is the integration connector that monitors for changes in registered products and notifies subscribers when changes occur.  The notification types it looks after are its catalog targets.",
                          "6.2-SNAPSHOT",
                          new ProductSolutionBlueprint[]{
                                  ProductSolutionBlueprint.ALL,
