@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.OpenConnectorDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 
 /**
@@ -769,6 +770,17 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                           ComponentDevelopmentStatus.STABLE,
                                           DeployedImplementationType.TABULAR_DATA_SET.getAssociatedTypeName(),
                                           DeployedImplementationType.TABULAR_DATA_SET.getDeployedImplementationType()),
+
+    DIGITAL_PRODUCT_FAMILY_TABULAR_DATA_SET_COLLECTION(574,
+                                                       "2a12d44d-4fd6-4e04-8182-82b6ec93faab",
+                                                       "Egeria::ResourceConnector::TabularDataSetCollection::DigitalProductFamily",
+                                                       "Digital Product Family Tabular Data Set Collection Connector",
+                                                       "Connector presents the tabular data sets of the products in a digital product family as a single collection, one table per product, so that a subscription to the family can be provisioned in one pass.",
+                                                       "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/nanny-connectors",
+                                                       "org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.productfamily.DigitalProductFamilyDataSetCollectionProvider",
+                                                       ComponentDevelopmentStatus.STABLE,
+                                                       OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                                                       DeployedImplementationType.TABULAR_DATA_SET_COLLECTION.getDeployedImplementationType()),
 
     OPEN_METADATA_TYPES_LIST_TABULAR_DATA_SET(369,
                                               "c67aed34-284e-4a4f-8293-0cfb65cb0321",

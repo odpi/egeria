@@ -31,7 +31,55 @@ public enum TabularDataAuditCode implements AuditLogMessageSet
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
                          "https://egeria-project.org/concepts/tabular-data-set-connector/"),
 
+    /**
+     * TABULAR-METADATA-CONNECTORS-0002 - The {0} connector found {1} tabular data set(s) in digital product family {2} ({3})
+     */
+    FAMILY_MEMBERS_LOADED("TABULAR-METADATA-CONNECTORS-0002",
+                          AuditLogRecordSeverityLevel.INFO,
+                          "The {0} connector found {1} tabular data set(s) in digital product family {2} ({3})",
+                          "The connector walked the family's members and found this many products with a readable tabular data set.  These are the tables it presents.",
+                          "No action is required.  If a product in the family is missing from the count, check that it has an asset with a connection to a readable tabular data source.",
+                          "https://egeria-project.org/concepts/tabular-data-set-connector/"),
 
+    /**
+     * TABULAR-METADATA-CONNECTORS-0003 - The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its connector {4} is not a readable tabular data source
+     */
+    FAMILY_MEMBER_NOT_TABULAR("TABULAR-METADATA-CONNECTORS-0003",
+                              AuditLogRecordSeverityLevel.INFO,
+                              "The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its connector {4} is not a readable tabular data source",
+                              "The product is left out of the collection.  The other products in the family are still presented.",
+                              "No action is required unless the product's data should be delivered with the family, in which case give its asset a connection to a connector that implements ReadableTabularDataSource.",
+                              "https://egeria-project.org/concepts/tabular-data-set-connector/"),
+
+    /**
+     * TABULAR-METADATA-CONNECTORS-0004 - The {0} connector found that asset {1} of product {2} in digital product family {3} is a copy of asset {4} - both carry qualified name {5}; the copies have been linked as peer duplicates for the duplicate manager and only the first is presented
+     */
+    FAMILY_MEMBER_DUPLICATE_TABLE("TABULAR-METADATA-CONNECTORS-0004",
+                                  AuditLogRecordSeverityLevel.ERROR,
+                                  "The {0} connector found that asset {1} of product {2} in digital product family {3} is a copy of asset {4} - both carry qualified name {5}; the copies have been linked as peer duplicates for the duplicate manager and only the first is presented",
+                                  "Two writers created the same product at the same time.  The connector links the two assets with a PeerDuplicateLink in DISCOVERED status, which is what the Mendel Automated Duplicate Manager works from to confirm and consolidate duplicates, and presents the first copy so that the family's data is still delivered.",
+                                  "No action is required if the duplicate manager is deployed.  If it is not, a steward should review the peer duplicate link and remove or consolidate the copies.",
+                                  "https://egeria-project.org/concepts/tabular-data-set-connector/"),
+
+    /**
+     * TABULAR-METADATA-CONNECTORS-0006 - The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its table name {4} is already used by asset {5} of a different product
+     */
+    FAMILY_MEMBER_TABLE_NAME_CLASH("TABULAR-METADATA-CONNECTORS-0006",
+                                   AuditLogRecordSeverityLevel.ERROR,
+                                   "The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its table name {4} is already used by asset {5} of a different product",
+                                   "Two distinct products in the family give their data sets the same table name, and two tables of the same name cannot both be delivered into one destination.  The product found second is left out.",
+                                   "Give the products in the family distinct table names in their data specifications.",
+                                   "https://egeria-project.org/concepts/tabular-data-set-connector/"),
+
+    /**
+     * TABULAR-METADATA-CONNECTORS-0005 - The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its connector could not be built: {4} exception with message {5}
+     */
+    FAMILY_MEMBER_UNREADABLE("TABULAR-METADATA-CONNECTORS-0005",
+                             AuditLogRecordSeverityLevel.EXCEPTION,
+                             "The {0} connector is not presenting asset {1} of product {2} in digital product family {3} because its connector could not be built: {4} exception with message {5}",
+                             "The product is left out of the collection.  The other products in the family are still presented.",
+                             "Use the details from the error message to correct the product asset's connection, then refresh the connector.",
+                             "https://egeria-project.org/concepts/tabular-data-set-connector/"),
 
     ;
 

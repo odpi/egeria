@@ -10,60 +10,69 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ActionTargetEnum characterises the action targets that this governance action service works with/
+ * ActionTargetEnum characterises the action targets that this governance action service works with.
+ * Both are data sets: a single tabular data set, or a collection of them - a digital product family's asset on
+ * the source side, a schema of tables on the destination side.  The service delivers a collection a table at a
+ * time.
  */
 public enum WedgwoodProvisionSubscriptionActionTarget
 {
+    /**
+     * The tabular data set, or collection of tabular data sets, to copy from.
+     */
     SOURCE_DATA_SET("sourceDataSet",
-                    DeployedImplementationType.TABULAR_DATA_SET.getDescription(),
-                    DeployedImplementationType.TABULAR_DATA_SET.getAssociatedTypeName(),
-                    DeployedImplementationType.TABULAR_DATA_SET.getDeployedImplementationType(),
+                    "The tabular data set, or collection of tabular data sets, to copy from.  A collection - such as a digital product family's asset - is delivered a table at a time.",
+                    DeployedImplementationType.DATA_SET.getAssociatedTypeName(),
+                    DeployedImplementationType.DATA_SET.getDeployedImplementationType(),
                     null),
 
+    /**
+     * The tabular data set, or collection of tabular data sets, to copy to.
+     */
     DESTINATION_DATA_SET("destinationDataSet",
-                         DeployedImplementationType.TABULAR_DATA_SET.getDescription(),
-                         DeployedImplementationType.TABULAR_DATA_SET.getAssociatedTypeName(),
-                         DeployedImplementationType.TABULAR_DATA_SET.getDeployedImplementationType(),
+                         "The tabular data set, or collection of tabular data sets, to copy to.  A collection - such as a database schema - receives one table per source table.",
+                         DeployedImplementationType.DATA_SET.getAssociatedTypeName(),
+                         DeployedImplementationType.DATA_SET.getDeployedImplementationType(),
                          null),
 
-    ;;
+    ;
 
 
     /**
-     * Catalog target name.
+     * Action target name
      */
     private final String name;
 
     /**
-     * Description of the target.
+     * Description of the action target.
      */
     public final String description;
 
     /**
-     * The open metadata type name of the element that can be a target.
+     * The open metadata type name of the element that can be this type of action target.
      */
     private final String typeName;
 
 
     /**
-     * The deployed implementation type allows the connector to be more specific about the resources it works with.
+     * The deployed implementation type allows the service to be more specific about the resources it works with.
      */
     private final String deployedImplementationType;
 
     /**
-     * A map of property name to property value for values that should match in the target for it to be compatible with this integration
+     * A map of property name to property value for values that should match in the action target for it to be compatible with this integration
      * connector.
      */
     private final Map<String, String> otherPropertyValues;
 
 
     /**
-     * Constructor for Enum
+     * Constructor for the enum.
      *
-     * @param name target name
-     * @param description description of target
-     * @param typeName open metadata type name for the linked element
-     * @param deployedImplementationType deployed implementation type for the linked element
+     * @param name ActionTargetName
+     * @param description description of action target
+     * @param typeName Open Metadata Type Name for action target
+     * @param deployedImplementationType optional deployed implementation type
      * @param otherPropertyValues other values
      */
     WedgwoodProvisionSubscriptionActionTarget(String name,
@@ -81,7 +90,7 @@ public enum WedgwoodProvisionSubscriptionActionTarget
 
 
     /**
-     * Return the target name.
+     * Return the name of the action target.
      *
      * @return string name
      */
@@ -92,7 +101,7 @@ public enum WedgwoodProvisionSubscriptionActionTarget
 
 
     /**
-     * Return the description of the target.
+     * Return the description of the action target.
      *
      * @return string description
      */
@@ -103,9 +112,9 @@ public enum WedgwoodProvisionSubscriptionActionTarget
 
 
     /**
-     * Return the type name (or super type name) of a permitted target.
+     * Return the type name of the element that is linked to for this type of action target.
      *
-     * @return name of an open metadata type
+     * @return type name
      */
     public String getTypeName()
     {
@@ -114,9 +123,10 @@ public enum WedgwoodProvisionSubscriptionActionTarget
 
 
     /**
-     * Return a more specific definition of a permitted target.
+     * Return the preferred value of the deployed implementation type of the element that is linked to for
+     * this type of action target.  This is typically only set for assets.
      *
-     * @return deployed implementation type name
+     * @return preferred value string
      */
     public String getDeployedImplementationType()
     {
@@ -125,9 +135,9 @@ public enum WedgwoodProvisionSubscriptionActionTarget
 
 
     /**
-     * Return a map of property name to property value that the target should have to be valid for this integration connector.
+     * Return a map of property name to property value that the elements linked to this action target should have.
      *
-     * @return map of string to string
+     * @return map
      */
     public Map<String, String> getOtherPropertyValues()
     {
@@ -137,7 +147,7 @@ public enum WedgwoodProvisionSubscriptionActionTarget
 
 
     /**
-     * Return the targets defined in this enum for a PostgreSQL server.
+     * Return all the action targets defined in this enum.
      *
      * @return list
      */
@@ -155,9 +165,9 @@ public enum WedgwoodProvisionSubscriptionActionTarget
 
 
     /**
-     * Return an target type for use in the governance service's provider.
+     * Return the action target type for a specific action target enum.
      *
-     * @return target type
+     * @return action target type
      */
     public ActionTargetType getActionTargetType()
     {
@@ -173,9 +183,9 @@ public enum WedgwoodProvisionSubscriptionActionTarget
 
 
     /**
-     * JSON-style toString
+     * Output of this enum class and main value.
      *
-     * @return return string containing the property names and values
+     * @return string showing enum value
      */
     @Override
     public String toString()

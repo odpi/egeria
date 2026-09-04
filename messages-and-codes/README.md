@@ -27,8 +27,8 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
-| Exception messages | 66 | 617 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 104 | 943 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Exception messages | 66 | 621 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
+| Audit log messages | 104 | 956 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -87,7 +87,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [Generic View Services](view-server-generic-services) | 15 | 75 | The generic view services provide the REST APIs used by user interfaces to work with any type of open metadata element. |
 | [View Services](view-services) | 25 | 122 | The view services provide the REST APIs used by user interfaces such as Egeria UI.  Each view service supports a particular type of user or task. |
 | [Engine Services](engine-services) | 8 | 59 | The engine services run the governance services of a particular governance service type in an Engine Host server. |
-| [Governance Server Services](governance-server-services) | 4 | 85 | The governance server services host the connectors and governance services that run outside of a metadata access server - such as the integration daemon and the engine host. |
+| [Governance Server Services](governance-server-services) | 4 | 87 | The governance server services host the connectors and governance services that run outside of a metadata access server - such as the integration daemon and the engine host. |
 | [Repository Services](repository-services) | 2 | 316 | The Open Metadata Repository Services (OMRS) manage the exchange of metadata between the repositories of an open metadata repository cohort.  This is the oldest and largest set of messages in Egeria. |
 | [Administration Services](admin-services) | 2 | 53 | The administration services configure and control the servers running on the OMAG Server Platform. |
 | [Server Operations](server-operations) | 2 | 31 | The server operations services report on the servers that are running on an OMAG Server Platform. |
@@ -98,9 +98,9 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [System Connectors](connectors/system-connectors) | 13 | 73 | These connectors call the APIs of third party systems such as Apache Atlas, Apache Kafka and the Egeria runtime itself. |
 | [Repository Services Connectors](connectors/repository-services-connectors) | 8 | 32 | These connectors provide the pluggable implementations used by the repository services - the metadata repositories, the audit log destinations, the cohort registry stores and the open metadata archive stores. |
 | [Event Bus Connectors](connectors/event-bus-connectors) | 2 | 22 | These connectors send and receive events over the event bus - typically Apache Kafka. |
-| [Governance Action Connectors](connectors/governance-action-connectors) | 2 | 43 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
+| [Governance Action Connectors](connectors/governance-action-connectors) | 2 | 47 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
 | [File Survey Connectors](connectors/file-survey-connectors) | 1 | 5 | These survey action services analyse the content of files and folders and record what they find in a survey report. |
-| [Nanny Connectors](connectors/nanny-connectors) | 16 | 87 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
+| [Nanny Connectors](connectors/nanny-connectors) | 16 | 98 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
 | [Lovelace Insights](connectors/lovelace-insights) | 2 | 7 | These connectors analyse the harvested observability data and turn it into insight reports. |
 | [Report Generating Connectors](connectors/report-generating-connectors) | 1 | 2 | These connectors turn the contents of the open metadata ecosystem into human-readable documents. |
 | [Secrets Store Connectors](connectors/secrets-store-connectors) | 2 | 5 | These connectors supply the credentials that other connectors need when they call a third party technology. |
@@ -156,7 +156,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `FILE-DOC-STORE-400-` | Exception messages | 2 | [DocStoreErrorCode](connectors/configuration-store-connectors/DocStoreErrorCode.md) |
 | `FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-` | Audit log messages | 2 | [FileBasedOpenMetadataArchiveStoreConnectorAuditCode](connectors/repository-services-connectors/FileBasedOpenMetadataArchiveStoreConnectorAuditCode.md) |
 | `FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-400-` | Exception messages | 1 | [FileBasedOpenMetadataArchiveStoreConnectorErrorCode](connectors/repository-services-connectors/FileBasedOpenMetadataArchiveStoreConnectorErrorCode.md) |
-| `GOVERNANCE-ACTION-CONNECTORS-` | Audit log messages | 39 | [GovernanceActionConnectorsAuditCode](connectors/governance-action-connectors/GovernanceActionConnectorsAuditCode.md) |
+| `GOVERNANCE-ACTION-CONNECTORS-` | Audit log messages | 43 | [GovernanceActionConnectorsAuditCode](connectors/governance-action-connectors/GovernanceActionConnectorsAuditCode.md) |
 | `GOVERNANCE-ACTION-CONNECTORS-` | Exception messages | 4 | [GovernanceActionConnectorsErrorCode](connectors/governance-action-connectors/GovernanceActionConnectorsErrorCode.md) |
 | `GOVERNANCE-ACTION-SAMPLES-` | Audit log messages | 5 | [GovernanceActionSamplesAuditCode](samples/GovernanceActionSamplesAuditCode.md) |
 | `GOVERNANCE-ACTION-SAMPLES-` | Exception messages | 4 | [GovernanceActionSamplesErrorCode](samples/GovernanceActionSamplesErrorCode.md) |
@@ -164,9 +164,9 @@ Every message identifier begins with a prefix that names the component that rais
 | `HARVEST-OPEN-METADATA-500-` | Exception messages | 1 | [HarvestOpenMetadataErrorCode](connectors/nanny-connectors/HarvestOpenMetadataErrorCode.md) |
 | `HARVEST-SURVEYS-` | Audit log messages | 1 | [HarvestSurveysAuditCode](connectors/nanny-connectors/HarvestSurveysAuditCode.md) |
 | `HARVEST-SURVEYS-500-` | Exception messages | 1 | [HarvestSurveysErrorCode](connectors/nanny-connectors/HarvestSurveysErrorCode.md) |
-| `INTEGRATION-DAEMON-SERVICES-` | Audit log messages | 34 | [IntegrationDaemonServicesAuditCode](governance-server-services/IntegrationDaemonServicesAuditCode.md) |
+| `INTEGRATION-DAEMON-SERVICES-` | Audit log messages | 36 | [IntegrationDaemonServicesAuditCode](governance-server-services/IntegrationDaemonServicesAuditCode.md) |
 | `INTEGRATION-DAEMON-SERVICES-400-` | Exception messages | 8 | [IntegrationDaemonServicesErrorCode](governance-server-services/IntegrationDaemonServicesErrorCode.md) |
-| `JACQUARD-HARVESTER-` | Audit log messages | 21 | [JacquardAuditCode](connectors/nanny-connectors/JacquardAuditCode.md) |
+| `JACQUARD-HARVESTER-` | Audit log messages | 23 | [JacquardAuditCode](connectors/nanny-connectors/JacquardAuditCode.md) |
 | `JACQUARD-HARVESTER-` | Exception messages | 2 | [JacquardErrorCode](connectors/nanny-connectors/JacquardErrorCode.md) |
 | `JDBC-AUDIT-LOG-500-` | Exception messages | 1 | [PostgreSQLAuditLogErrorCode](connectors/repository-services-connectors/PostgreSQLAuditLogErrorCode.md) |
 | `JDBC-INTEGRATION-CONNECTOR-` | Audit log messages | 11 | [JDBCIntegrationConnectorAuditCode](connectors/integration-connectors/JDBCIntegrationConnectorAuditCode.md) |
@@ -276,14 +276,14 @@ Every message identifier begins with a prefix that names the component that rais
 | `POSTGRES-CONNECTOR-` | Exception messages | 2 | [PostgresErrorCode](connectors/data-manager-connectors/PostgresErrorCode.md) |
 | `POSTGRES-REPOSITORY-CONNECTOR-` | Audit log messages | 7 | [PostgresAuditCode](connectors/repository-services-connectors/PostgresAuditCode.md) |
 | `POSTGRES-REPOSITORY-CONNECTOR-` | Exception messages | 8 | [PostgresErrorCode](connectors/repository-services-connectors/PostgresErrorCode.md) |
-| `REFERENCE-DATA-CONNECTORS-` | Exception messages | 6 | [TabularDataErrorCode](connectors/nanny-connectors/TabularDataErrorCode.md) |
+| `REFERENCE-DATA-CONNECTORS-` | Exception messages | 10 | [TabularDataErrorCode](connectors/nanny-connectors/TabularDataErrorCode.md) |
 | `REPORT-GENERATORS-` | Audit log messages | 2 | [ReportsAuditCode](connectors/report-generating-connectors/ReportsAuditCode.md) |
 | `SERVER-OPS-` | Audit log messages | 24 | [ServerOpsAuditCode](server-operations/ServerOpsAuditCode.md) |
 | `SERVER-OPS-` | Exception messages | 7 | [ServerOpsErrorCode](server-operations/ServerOpsErrorCode.md) |
 | `SMART-COLLECTIONS-INTEGRATION-CONNECTOR-` | Audit log messages | 4 | [SmartCollectionsAuditCode](connectors/integration-connectors/SmartCollectionsAuditCode.md) |
 | `SMART-COLLECTIONS-INTEGRATION-CONNECTOR-` | Exception messages | 2 | [SmartCollectionsErrorCode](connectors/integration-connectors/SmartCollectionsErrorCode.md) |
 | `SURVEY-ACTION-SERVICE-` | Audit log messages | 5 | [SurveyServiceAuditCode](connectors/file-survey-connectors/SurveyServiceAuditCode.md) |
-| `TABULAR-METADATA-CONNECTORS-` | Audit log messages | 1 | [TabularDataAuditCode](connectors/nanny-connectors/TabularDataAuditCode.md) |
+| `TABULAR-METADATA-CONNECTORS-` | Audit log messages | 6 | [TabularDataAuditCode](connectors/nanny-connectors/TabularDataAuditCode.md) |
 | `TOKEN-CONTROLLER-401-` | Exception messages | 1 | [TokenControllerErrorCode](user-security/TokenControllerErrorCode.md) |
 | `UNITY-CATALOG-CONNECTOR-` | Audit log messages | 18 | [UCAuditCode](connectors/data-manager-connectors/UCAuditCode.md) |
 | `UNITY-CATALOG-CONNECTOR-` | Exception messages | 7 | [UCErrorCode](connectors/data-manager-connectors/UCErrorCode.md) |

@@ -21,6 +21,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScope
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -314,7 +317,7 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
 
 
     /**
-     * Extract the date of the creation time of the data set.
+     * Extract the creation time of the data set: the earliest create time of any of its records.
      *
      * @param createTimeColumnNumber column to check
      * @return date (or null if no date has been detected - typically because the data set is empty)
@@ -322,31 +325,22 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
      */
     private Date getDataSetCreateTime(int createTimeColumnNumber) throws ConnectorCheckedException
     {
-        long recordCount = tabularDataSource.getRecordCount();
+        Date earliest = null;
 
-        if (recordCount > 0L)
+        for (Date createTime : this.getColumnDates(createTimeColumnNumber))
         {
-            for (long rowNumber = 0; rowNumber < recordCount; rowNumber++)
+            if ((earliest == null) || (createTime.before(earliest)))
             {
-                List<String> recordValues = tabularDataSource.readRecord(rowNumber);
-
-                if (recordValues != null)
-                {
-                    String createDateAsString = recordValues.get(createTimeColumnNumber);
-                    if (createDateAsString != null)
-                    {
-                        return new Date(Long.parseLong(createDateAsString));
-                    }
-                }
+                earliest = createTime;
             }
         }
 
-        return null;
+        return earliest;
     }
 
 
     /**
-     * Extract the date of the last update to the data set.
+     * Extract the time of the last update to the data set: the latest update time of any of its records.
      *
      * @param lastUpdateColumnNumber column to check
      * @return date (or null if no date has been detected - typically because the data set is empty)
@@ -354,25 +348,97 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
      */
     private Date getDataSetLastUpdateTime(int lastUpdateColumnNumber) throws ConnectorCheckedException
     {
-        long recordCount = tabularDataSource.getRecordCount();
+        Date latest = null;
 
-        if (recordCount > 0L)
+        for (Date updateTime : this.getColumnDates(lastUpdateColumnNumber))
         {
-            for (long rowNumber = 0; rowNumber < recordCount; rowNumber++)
+            if ((latest == null) || (updateTime.after(latest)))
             {
-                List<String> recordValues = tabularDataSource.readRecord(rowNumber);
+                latest = updateTime;
+            }
+        }
 
-                if (recordValues != null)
+        return latest;
+    }
+
+
+    /**
+     * Read one date column of every record in the data set.  A value that is not a date is logged once per
+     * refresh and left out, so that one bad value does not stop the product being refreshed.
+     *
+     * @param columnNumber column to read
+     * @return the dates found, in record order; empty if the data set is empty or the column is absent
+     * @throws ConnectorCheckedException problem accessing the data set values
+     */
+    private List<Date> getColumnDates(int columnNumber) throws ConnectorCheckedException
+    {
+        final String methodName = "getColumnDates";
+
+        List<Date> dates = new ArrayList<>();
+
+        if (columnNumber < 0)
+        {
+            return dates;
+        }
+
+        long    recordCount   = tabularDataSource.getRecordCount();
+        boolean badValueSeen  = false;
+
+        for (long rowNumber = 0; rowNumber < recordCount; rowNumber++)
+        {
+            List<String> recordValues = tabularDataSource.readRecord(rowNumber);
+
+            if ((recordValues != null) && (recordValues.size() > columnNumber) && (recordValues.get(columnNumber) != null))
+            {
+                Date date = this.parseDate(recordValues.get(columnNumber));
+
+                if (date != null)
                 {
-                    String lastUpdateDateAsString = recordValues.get(lastUpdateColumnNumber);
-                    if (lastUpdateDateAsString != null)
-                    {
-                        return new Date(Long.parseLong(lastUpdateDateAsString));
-                    }
+                    dates.add(date);
+                }
+                else if (! badValueSeen)
+                {
+                    badValueSeen = true;
+
+                    auditLog.logMessage(methodName,
+                                        JacquardAuditCode.UNREADABLE_DATE_VALUE.getMessageDefinition(connectorName,
+                                                                                                    recordValues.get(columnNumber),
+                                                                                                    Long.toString(rowNumber),
+                                                                                                    Integer.toString(columnNumber),
+                                                                                                    tabularDataSource.getTableName(),
+                                                                                                    getCatalogTargetName()));
                 }
             }
         }
 
-        return null;
+        return dates;
+    }
+
+
+    /**
+     * Parse a date as the data set connectors write it.  They write dates as ISO-8601 instants
+     * (Date.toInstant().toString(), for example 2026-04-01T06:45:49.989Z); a plain count of milliseconds since
+     * the epoch is accepted too, since that is how the data spec describes the column.
+     *
+     * @param dateAsString the value in the record
+     * @return date, or null if the value is neither form
+     */
+    private Date parseDate(String dateAsString)
+    {
+        try
+        {
+            return Date.from(Instant.parse(dateAsString));
+        }
+        catch (DateTimeParseException notAnInstant)
+        {
+            try
+            {
+                return new Date(Long.parseLong(dateAsString));
+            }
+            catch (NumberFormatException notMilliseconds)
+            {
+                return null;
+            }
+        }
     }
 }
