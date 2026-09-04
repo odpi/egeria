@@ -3,8 +3,10 @@
 package org.odpi.openmetadata.adapters.connectors.jacquard;
 
 
+import org.odpi.openmetadata.adapters.connectors.baudot.controls.BaudotCatalogTarget;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.ManageDigitalSubscriptionActionTarget;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.ManageDigitalSubscriptionRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.jacquard.controls.JacquardConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardAuditCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardErrorCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.*;
@@ -22,7 +24,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
@@ -40,8 +41,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.Assignmen
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PerspectiveProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.TabularDataSetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
@@ -53,7 +52,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLog
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
@@ -105,9 +103,25 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     private Map<String, String> products              = null;
 
     /*
-     * This is the subscription manager used to monitor the product notifications.  It is a WatchdogActionService.
+     * This is the Baudot Subscription Manager: the integration connector that notifies the subscribers of the
+     * products' notification types.  Each notification type this connector creates is handed to it as a catalog
+     * target.  Its unique identifier comes from this connector's configuration properties, seeded by the content
+     * pack; null means no subscription manager is configured, and the notification types are not handed on.
      */
-    private String baudotEngineActionGUID = null;
+    private String subscriptionManagerGUID = null;
+
+    /*
+     * The notification types already handed to the subscription manager, so that they are not added twice.
+     * Loaded from the manager's existing catalog targets at start-up, and added to as notification types are
+     * handed on.
+     */
+    private final Set<String> subscriptionManagerCatalogTargets = new HashSet<>();
+
+    /*
+     * The product assets that are already this connector's own catalog targets, so that a product is not added
+     * again on every refresh.  Loaded at start-up, and added to as products are catalogued.
+     */
+    private final Set<String> ownCatalogTargets = new HashSet<>();
 
 
     /**
@@ -164,33 +178,27 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             productFolders = this.getProductCatalogFolders();
 
             /*
-             * The engine action for the watchdog notification serve is started before the monitored resource
-             * and subscribers are attached to ensure the notification watchdog sees their attachment events and
-             * sends out the welcome messages.
+             * The subscription manager is located before the products are built, because each product's
+             * notification types are handed to it as they are created.  It is another integration connector -
+             * the Baudot Subscription Manager - and this connector is told which one by a configuration
+             * property that the content pack seeds with the manager's unique identifier.  If it is not
+             * configured, the products are still built but their subscribers are never notified, and that is
+             * said loudly here because from outside it looks exactly like a subscription that was never asked
+             * for.
              */
-            if (baudotEngineActionGUID == null)
-            {
-                try
-                {
-                    baudotEngineActionGUID = this.activateSubscriptionManager();
-                }
-                catch (Exception error)
-                {
-                    /*
-                     * Check that the error is not caused because the server/platform is shutting down.
-                     */
-                    integrationContext.validateIsActive(methodName);
+            this.loadOwnCatalogTargets();
 
-                    /*
-                     * OK so this is really unexpected.
-                     */
-                    auditLog.logException(methodName,
-                                          JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                          error);
-                }
+            subscriptionManagerGUID = this.getSubscriptionManagerGUID();
+
+            if (subscriptionManagerGUID == null)
+            {
+                auditLog.logMessage(methodName,
+                                    JacquardAuditCode.NO_SUBSCRIPTION_MANAGER.getMessageDefinition(connectorName,
+                                                                                                   JacquardConfigurationProperty.SUBSCRIPTION_MANAGER_GUID.getName()));
+            }
+            else
+            {
+                this.loadSubscriptionManagerCatalogTargets();
             }
 
             glossaryTerms         = this.getGlossaryTerms();
@@ -198,7 +206,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             communities           = this.getCommunities();
             communityNoteLogs     = this.getCommunityNoteLogs();
             dataFields            = this.getDataFields();
-            products              = this.getProducts(baudotEngineActionGUID);
+            products              = this.getProducts(subscriptionManagerGUID);
         }
         catch (Exception error)
         {
@@ -260,9 +268,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          * Call each of the insight harvesters to check they have their catalog targets set up.
          */
         auditLog.logMessage(methodName, JacquardAuditCode.HARVESTING_VALID_VALUES.getMessageDefinition(integrationContext.getConnectorName()));
-        harvestValidMetadataValues(existingDataSources, baudotEngineActionGUID);
+        harvestValidMetadataValues(existingDataSources, subscriptionManagerGUID);
         auditLog.logMessage(methodName, JacquardAuditCode.HARVESTING_REFERENCE_DATA_SETS.getMessageDefinition(integrationContext.getConnectorName()));
-        harvestReferenceDataSets(existingDataSources, baudotEngineActionGUID);
+        harvestReferenceDataSets(existingDataSources, subscriptionManagerGUID);
 
         /*
          * Refresh all the harvested tabular data sources, looking for data changes.
@@ -276,12 +284,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * It extracts the valid metadata value list from the catalog targets
      *
      * @param existingDataSources existing data source map
-     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product notifications
+     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector notifications
      * @throws ConnectorCheckedException problem access the valid value set list
      * @throws UserNotAuthorizedException the user is not authorized to access the catalog (probably shutdown requested)
      */
     private void harvestValidMetadataValues(Map<String, RequestedCatalogTarget> existingDataSources,
-                                            String                              baudotEngineActionGUID) throws ConnectorCheckedException,
+                                            String                              subscriptionManagerGUID) throws ConnectorCheckedException,
                                                                                                                UserNotAuthorizedException
     {
         final String methodName = "harvestValidValues";
@@ -307,11 +315,18 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                         {
                             String propertyName = rowValues.get(columnNumber);
 
-                            if ((propertyName != null) && (! existingDataSources.containsKey("Valid Metadata Value Set: " + propertyName))) // name set up in property definition in provider
+                            /*
+                             * Every valid value set goes through, including the ones this connector already has
+                             * a data source for.  Refreshing an existing product is a find rather than a build,
+                             * and it is also what checks that the product's connection still describes this
+                             * deployment - the platform's URL in particular.  Skipping known sets left their
+                             * endpoints pointing at whichever platform first catalogued them, for good.
+                             */
+                            if (propertyName != null)
                             {
                                 try
                                 {
-                                    refreshValidMetadataValueDataSet(propertyName, baudotEngineActionGUID);
+                                    refreshValidMetadataValueDataSet(propertyName, subscriptionManagerGUID);
                                 }
                                 catch (Exception error)
                                 {
@@ -343,13 +358,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * Create a product that represents a single valid metadata value set.
      *
      * @param propertyName unique name of the valid value set
-     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product notifications
+     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector notifications
      * @throws InvalidParameterException  an invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException    the repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      */
     private void refreshValidMetadataValueDataSet(String propertyName,
-                                                  String baudotEngineActionGUID) throws InvalidParameterException,
+                                                  String subscriptionManagerGUID) throws InvalidParameterException,
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
@@ -362,7 +377,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                             super.fromCamelToCanonicalCase(propertyName) + " Valid Values",
                                                                             this.getPropertyDescription(propertyName));
 
-        this.getProduct(productDefinition, baudotEngineActionGUID);
+        this.getProduct(productDefinition, subscriptionManagerGUID);
     }
 
 
@@ -391,12 +406,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * It extracts the valid metadata value list from the catalog targets
      *
      * @param existingDataSources existing data source map
-     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product notifications
+     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector notifications
      * @throws ConnectorCheckedException problem access the valid value set list
      * @throws UserNotAuthorizedException the user is not authorized to access the catalog (probably shutdown requested)
      */
     private void harvestReferenceDataSets(Map<String, RequestedCatalogTarget>  existingDataSources,
-                                          String                               baudotEngineActionGUID) throws ConnectorCheckedException,
+                                          String                               subscriptionManagerGUID) throws ConnectorCheckedException,
                                                                                                               UserNotAuthorizedException
     {
         final String methodName = "harvestReferenceDataSets";
@@ -427,11 +442,16 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                             String identifier = rowValues.get(identifierColumnNumber);
                             String description = rowValues.get(descriptionColumnNumber);
 
-                            if ((referenceDataSetGUID != null) && (! existingDataSources.containsKey("Reference Data Set: " + identifier))) // name set up in property definition in provider
+                            /*
+                             * Every reference data set goes through, known or not, for the same reason as the
+                             * valid value sets above: a refresh of an existing product is a find, and it keeps
+                             * the product's connection current.
+                             */
+                            if (referenceDataSetGUID != null)
                             {
                                 try
                                 {
-                                    refreshReferenceDataSet(referenceDataSetGUID, identifier, description, baudotEngineActionGUID);
+                                    refreshReferenceDataSet(referenceDataSetGUID, identifier, description, subscriptionManagerGUID);
                                 }
                                 catch (Exception error)
                                 {
@@ -465,7 +485,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * @param referenceDataSetGUID   unique identifier of the reference data set
      * @param identifier             unique name of the reference data set
      * @param description            description of the reference data set
-     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product notifications
+     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector notifications
      * @throws InvalidParameterException  an invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException    the repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
@@ -473,7 +493,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     private void refreshReferenceDataSet(String referenceDataSetGUID,
                                          String identifier,
                                          String description,
-                                         String baudotEngineActionGUID) throws InvalidParameterException,
+                                         String subscriptionManagerGUID) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
     {
@@ -487,7 +507,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                             super.fromCamelToCanonicalCase(identifier) + " Reference Data Set",
                                                                             description);
 
-        this.getProduct(productDefinition, baudotEngineActionGUID);
+        this.getProduct(productDefinition, subscriptionManagerGUID);
     }
 
 
@@ -495,7 +515,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * Return the map of qualifiedNames-to-guids for the pre-defined products that make up the
      * fixed part of the product catalog.
      *
-     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product
+     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector
      *
      * @return map
      * @throws InvalidParameterException an invalid parameter passed - probably a bug in this code
@@ -503,7 +523,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private Map<String, String> getProducts(String baudotEngineActionGUID) throws InvalidParameterException,
+    private Map<String, String> getProducts(String subscriptionManagerGUID) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
@@ -511,7 +531,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         for (ProductDefinition productDefinition : ProductDefinitionEnum.values())
         {
-            String productGUID = this.getProduct(productDefinition, baudotEngineActionGUID);
+            String productGUID = this.getProduct(productDefinition, subscriptionManagerGUID);
 
             products.put(productDefinition.getQualifiedName(), productGUID);
         }
@@ -525,7 +545,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * repository or by creating the product.
      *
      * @param productDefinition description of the product
-     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product
+     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector
      * @return unique identifier
      * @throws InvalidParameterException an invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException the repository is probably down
@@ -533,7 +553,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * been disconnected.
      */
     private String getProduct(ProductDefinition productDefinition,
-                              String            baudotEngineActionGUID) throws InvalidParameterException,
+                              String            subscriptionManagerGUID) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
     {
@@ -714,12 +734,18 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          * The subscription options show up as governance action processes that are configured with the appropriate
          * information.
          */
-        this.addSubscriptionTypes(productDefinition, productElement.getElementHeader(), productAssetGUID, licenseTypeGUID, communityNoteLogGUID, productManagerElement.getElementHeader().getGUID(), baudotEngineActionGUID);
+        this.addSubscriptionTypes(productDefinition, productElement.getElementHeader(), productAssetGUID, licenseTypeGUID, communityNoteLogGUID, productManagerElement.getElementHeader().getGUID(), subscriptionManagerGUID);
 
         /*
          * Register each product as a catalog target, so it is refreshed.
          */
-        if (productAssetGUID != null)
+        /*
+         * The product's asset is one of this connector's own catalog targets, so that its data is watched for
+         * changes.  It is added once: a catalog target relationship persists with the asset, and adding one on
+         * every refresh - as this used to - gave each product a new relationship per run, and the connector a
+         * processor per relationship, until starting them all took longer than a refresh cycle.
+         */
+        if ((productAssetGUID != null) && (! ownCatalogTargets.contains(productAssetGUID)))
         {
             AssetClient assetClient = integrationContext.getAssetClient();
 
@@ -734,6 +760,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                          productAssetGUID,
                                          new MakeAnchorOptions(assetClient.getMetadataSourceOptions()),
                                          catalogTargetProperties);
+
+            ownCatalogTargets.add(productAssetGUID);
         }
 
         if (productDefinition.getProductFamilies() != null)
@@ -973,7 +1001,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * by this connector, and the products are built either side of that.
      *
      * @param notificationTypeGUID the notification type to be monitored
-     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product
+     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector
      *
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException repository is probably down
@@ -981,44 +1009,175 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * been disconnected.
      */
     private void registerWithSubscriptionManager(String notificationTypeGUID,
-                                                 String baudotEngineActionGUID) throws InvalidParameterException,
+                                                 String subscriptionManagerGUID) throws InvalidParameterException,
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException
     {
-        if (baudotEngineActionGUID != null)
+        if ((subscriptionManagerGUID != null) && (notificationTypeGUID != null) && (! subscriptionManagerCatalogTargets.contains(notificationTypeGUID)))
         {
-            this.attachNotificationType(baudotEngineActionGUID, notificationTypeGUID);
+            this.attachNotificationType(subscriptionManagerGUID, notificationTypeGUID);
         }
     }
 
 
     /**
-     * Attach one notification type to the subscription manager's engine action, so that the manager
-     * monitors it.
+     * Hand one notification type to the subscription manager as a catalog target, so that the manager
+     * notifies its subscribers.  The manager notices new catalog targets on its next refresh.
      *
-     * @param engineActionGUID the subscription manager's engine action
-     * @param notificationTypeGUID the notification type to be monitored
+     * @param subscriptionManagerGUID the subscription manager integration connector
+     * @param notificationTypeGUID the notification type to be looked after
      *
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private void attachNotificationType(String engineActionGUID,
+    private void attachNotificationType(String subscriptionManagerGUID,
                                         String notificationTypeGUID) throws InvalidParameterException,
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
         AssetClient assetClient = integrationContext.getAssetClient();
 
-        ActionTargetProperties actionTargetProperties = new ActionTargetProperties();
+        CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
 
-        actionTargetProperties.setActionTargetName(ActionTarget.NOTIFICATION_TYPE.name);
+        catalogTargetProperties.setCatalogTargetName(BaudotCatalogTarget.NOTIFICATION_TYPE.getName());
+        catalogTargetProperties.setPermittedSynchronization(PermittedSynchronization.BOTH_DIRECTIONS);
 
-        assetClient.addActionTarget(engineActionGUID,
-                                    notificationTypeGUID,
-                                    assetClient.getMakeAnchorOptions(false),
-                                    actionTargetProperties);
+        assetClient.addCatalogTarget(subscriptionManagerGUID,
+                                     notificationTypeGUID,
+                                     assetClient.getMakeAnchorOptions(false),
+                                     catalogTargetProperties);
+
+        subscriptionManagerCatalogTargets.add(notificationTypeGUID);
+    }
+
+
+    /**
+     * Return the unique identifier of the subscription manager from this connector's configuration properties.
+     *
+     * @return string guid, or null if it is not configured
+     */
+    private String getSubscriptionManagerGUID()
+    {
+        Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
+
+        if ((configurationProperties != null) &&
+                (configurationProperties.get(JacquardConfigurationProperty.SUBSCRIPTION_MANAGER_GUID.getName()) != null))
+        {
+            return configurationProperties.get(JacquardConfigurationProperty.SUBSCRIPTION_MANAGER_GUID.getName()).toString();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Load this connector's own catalog targets - the product assets whose data it watches - so that a product
+     * is not added as a target again on every refresh, and remove the duplicate relationships that earlier
+     * versions of this connector left behind by doing exactly that.  Each duplicate was another processor to
+     * start on every refresh, for the same product; on a catalogue refreshed daily for a fortnight, starting
+     * them all took longer than the refresh cycle.  The first relationship found for each asset is kept.
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void loadOwnCatalogTargets() throws InvalidParameterException,
+                                                PropertyServerException,
+                                                UserNotAuthorizedException
+    {
+        final String methodName = "loadOwnCatalogTargets";
+
+        AssetClient assetClient = integrationContext.getAssetClient();
+
+        ownCatalogTargets.clear();
+
+        int                           duplicatesRemoved = 0;
+        int                           startFrom         = 0;
+        List<OpenMetadataRootElement> catalogTargets    = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                        assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+
+        while ((catalogTargets != null) && (! catalogTargets.isEmpty()))
+        {
+            for (OpenMetadataRootElement catalogTarget : catalogTargets)
+            {
+                if ((catalogTarget != null) && (catalogTarget.getElementHeader() != null))
+                {
+                    String elementGUID = catalogTarget.getElementHeader().getGUID();
+
+                    if (ownCatalogTargets.add(elementGUID))
+                    {
+                        continue;
+                    }
+
+                    /*
+                     * Already seen - this relationship is a duplicate of one kept above.
+                     */
+                    if ((catalogTarget.getRelatedBy() != null) && (catalogTarget.getRelatedBy().getRelationshipHeader() != null))
+                    {
+                        assetClient.removeCatalogTarget(catalogTarget.getRelatedBy().getRelationshipHeader().getGUID(),
+                                                        assetClient.getDeleteOptions(false));
+                        duplicatesRemoved++;
+                    }
+                }
+            }
+
+            startFrom      = startFrom + assetClient.getMaxPagingSize();
+            catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                           assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+        }
+
+        if (duplicatesRemoved > 0)
+        {
+            auditLog.logMessage(methodName,
+                                JacquardAuditCode.DUPLICATE_CATALOG_TARGETS_REMOVED.getMessageDefinition(connectorName,
+                                                                                                         Integer.toString(duplicatesRemoved),
+                                                                                                         Integer.toString(ownCatalogTargets.size())));
+        }
+    }
+
+
+    /**
+     * Load the notification types that the subscription manager already looks after, so that this connector
+     * does not hand it the same one twice.  On a catalogue that is already built - the normal case after the
+     * first run - this is every notification type there is.
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void loadSubscriptionManagerCatalogTargets() throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
+    {
+        AssetClient assetClient = integrationContext.getAssetClient();
+
+        subscriptionManagerCatalogTargets.clear();
+
+        /*
+         * Each element returned is the catalog target itself - here, a notification type.
+         */
+        int                           startFrom      = 0;
+        List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(subscriptionManagerGUID,
+                                                                                     assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+
+        while ((catalogTargets != null) && (! catalogTargets.isEmpty()))
+        {
+            for (OpenMetadataRootElement catalogTarget : catalogTargets)
+            {
+                if ((catalogTarget != null) && (catalogTarget.getElementHeader() != null))
+                {
+                    subscriptionManagerCatalogTargets.add(catalogTarget.getElementHeader().getGUID());
+                }
+            }
+
+            startFrom      = startFrom + assetClient.getMaxPagingSize();
+            catalogTargets = assetClient.getCatalogTargets(subscriptionManagerGUID,
+                                                           assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+        }
     }
 
 
@@ -1046,7 +1205,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * @param licenseTypeGUID unique identifier for the license type granted to the product subscribers
      * @param communityNoteLogGUID unique identifier of the community's note log
      * @param productManagerGUID unique identifier for the product manager
-     * @param baudotEngineActionGUID unique identifier of the engine action that is monitoring the product
+     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector
      *
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException repository is probably down
@@ -1059,7 +1218,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                       String            licenseTypeGUID,
                                       String            communityNoteLogGUID,
                                       String            productManagerGUID,
-                                      String            baudotEngineActionGUID) throws InvalidParameterException,
+                                      String            subscriptionManagerGUID) throws InvalidParameterException,
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException
     {
@@ -1087,7 +1246,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                   productAssetGUID,
                                                                   communityNoteLogGUID,
                                                                   productManagerGUID,
-                                                                  baudotEngineActionGUID);
+                                                                  subscriptionManagerGUID);
 
                 addSubscriptionGovernanceActionProcess(productDefinition.getProductName(),
                                                        productDefinition.getIdentifier(),
@@ -1113,7 +1272,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * @param productAssetGUID              unique identifier for the asset that represents the product
      * @param communityNoteLogGUID          unique identifier of the community's note log
      * @param productManagerGUID            unique identifier for the product manager
-     * @param baudotEngineActionGUID        unique identifier of the engine action that is monitoring the product
+     * @param subscriptionManagerGUID        unique identifier of the subscription manager integration connector
      * @return guid
      * @throws InvalidParameterException  an invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException    the repository is probably down
@@ -1126,7 +1285,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                        String                        productAssetGUID,
                                        String                        communityNoteLogGUID,
                                        String                        productManagerGUID,
-                                       String                        baudotEngineActionGUID) throws InvalidParameterException,
+                                       String                        subscriptionManagerGUID) throws InvalidParameterException,
                                                                                                     PropertyServerException,
                                                                                                     UserNotAuthorizedException
     {
@@ -1197,22 +1356,59 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, productManagerGUID, makeAnchorOptions, notificationSubscriberProperties);
             }
 
-            this.registerWithSubscriptionManager(notificationTypeGUID, baudotEngineActionGUID);
+            this.registerWithSubscriptionManager(notificationTypeGUID, subscriptionManagerGUID);
 
             return notificationTypeGUID;
         }
         else
         {
             /*
-             * The notification type is already catalogued, and it still has to be handed to the subscription
-             * manager.  The manager is a new engine action every time this connector starts, and an engine
-             * action only knows about the action targets attached to it - so a restart against a catalogue
-             * that is already built would otherwise leave the manager with nothing to monitor, and every
-             * subscription to every existing product would quietly stop being delivered.
+             * The notification type is already catalogued, and it is still offered to the subscription
+             * manager.  Its catalog targets persist with it, so on a catalogue that is already built this is
+             * normally a no-op - the manager already has it - but a notification type that was created while
+             * no manager was configured, or whose catalog target was removed, is picked up here rather than
+             * quietly leaving every subscription to that product undelivered.
              */
             String notificationTypeGUID = notificationTypeElement.getElementHeader().getGUID();
 
-            this.registerWithSubscriptionManager(notificationTypeGUID, baudotEngineActionGUID);
+            /*
+             * An existing notification type is checked against its definition and brought up to date with a
+             * merge, so that nothing else about it is touched.  Two things drift:
+             *
+             *   - A notification type catalogued before content status was part of a notification type has
+             *     none, and the notification manager sends nothing for a notification type that is not ACTIVE.
+             *     A product whose notification types are silent has subscriptions that are taken out and never
+             *     delivered.
+             *   - The notification pattern - whether more than one notification is permitted, and how far apart
+             *     they must be - comes from the subscription definition, and the definition is the source of
+             *     truth.  A notification type catalogued under an earlier definition keeps the old pattern
+             *     otherwise: an evaluation subscription that is meant to deliver once, but was catalogued as
+             *     periodic with no minimum interval, has its data delivered again on every refresh of the
+             *     subscription manager, and each delivery after the first fails on the rows already there.
+             */
+            if ((notificationTypeElement.getProperties() instanceof NotificationTypeProperties existingProperties) &&
+                    ((existingProperties.getContentStatus() != ContentStatus.ACTIVE) ||
+                     (existingProperties.getMultipleNotificationsPermitted() != notificationTypeProperties.getMultipleNotificationsPermitted()) ||
+                     (existingProperties.getMinimumNotificationInterval() != notificationTypeProperties.getMinimumNotificationInterval())))
+            {
+                NotificationTypeProperties updatedProperties = new NotificationTypeProperties();
+
+                updatedProperties.setContentStatus(ContentStatus.ACTIVE);
+                updatedProperties.setMultipleNotificationsPermitted(notificationTypeProperties.getMultipleNotificationsPermitted());
+                updatedProperties.setMinimumNotificationInterval(notificationTypeProperties.getMinimumNotificationInterval());
+
+                notificationTypeClient.updateGovernanceDefinition(notificationTypeGUID,
+                                                                  notificationTypeClient.getUpdateOptions(true),
+                                                                  updatedProperties);
+
+                auditLog.logMessage("addNotificationType",
+                                    JacquardAuditCode.UPDATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                         OpenMetadataType.NOTIFICATION_TYPE.typeName,
+                                                                                                         existingProperties.getDisplayName(),
+                                                                                                         notificationTypeGUID));
+            }
+
+            this.registerWithSubscriptionManager(notificationTypeGUID, subscriptionManagerGUID);
 
             return notificationTypeGUID;
         }
@@ -1241,6 +1437,14 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         notificationTypeProperties.setPlannedStartDate(new Date());
         notificationTypeProperties.setMultipleNotificationsPermitted(productSubscriptionDefinition.getMultipleNotificationsPermitted());
         notificationTypeProperties.setMinimumNotificationInterval(productSubscriptionDefinition.getMinimumNotificationInterval());
+
+        /*
+         * A notification type only notifies while it is ACTIVE: the notification manager refuses to send anything
+         * for a notification type in any other content status, and it treats no status as not active.  These
+         * notification types are live from the moment they are created, so they say so.
+         */
+        notificationTypeProperties.setContentStatus(ContentStatus.ACTIVE);
+
         return notificationTypeProperties;
     }
 
@@ -2042,8 +2246,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
                         updatedProperties.setNetworkAddress(networkAddress);
 
+                        /*
+                         * A merge update: only the network address is supplied, and a replace-all update would
+                         * wipe the endpoint's qualified name and be refused for it.
+                         */
                         endpointClient.updateEndpoint(endpoint.getElementHeader().getGUID(),
-                                                      endpointClient.getUpdateOptions(false),
+                                                      endpointClient.getUpdateOptions(true),
                                                       updatedProperties);
 
                         auditLog.logMessage(methodName,
@@ -2120,8 +2328,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
                 updatedProperties.setConfigurationProperties(requiredProperties);
 
+                /*
+                 * A merge update, for the same reason as the endpoint above: only the configuration properties
+                 * are supplied, so a replace-all update would wipe the connection's qualified name.
+                 */
                 connectionClient.updateConnection(connectionGUID,
-                                                  connectionClient.getUpdateOptions(false),
+                                                  connectionClient.getUpdateOptions(true),
                                                   updatedProperties);
 
                 auditLog.logMessage(methodName,
@@ -2233,67 +2445,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         }
 
         return connectorTypeGUID;
-    }
-
-
-    /**
-     * Set up the notification watchdog - Baudot Subscription Manager.
-     *
-     * @return engine action guid
-     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
-     * @throws PropertyServerException repository is probably down
-     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
-     * been disconnected.
-     */
-    private String activateSubscriptionManager() throws InvalidParameterException,
-                                                        PropertyServerException,
-                                                        UserNotAuthorizedException
-    {
-        GovernanceDefinitionClient governanceActionClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName);
-        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.ENGINE_ACTION.typeName);
-
-        List<OpenMetadataRootElement> activeEngineActions = assetClient.findProcesses(GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID(),
-                                                                                      Collections.singletonList(ActivityStatus.IN_PROGRESS),
-                                                                                      assetClient.getSearchOptions(0, 0));
-
-        if (activeEngineActions == null)
-        {
-            OpenMetadataRootElement governanceActionType = governanceActionClient.getGovernanceDefinitionByGUID(GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID(), null);
-
-            if (governanceActionType.getProperties() instanceof GovernanceActionTypeProperties governanceActionTypeProperties)
-            {
-                /*
-                 * The engine action is started with no action targets.  The notification types are attached
-                 * afterwards by reconcileWithSubscriptionManager(), which covers the ones this run creates
-                 * and the ones an earlier run left behind alike - passing them here would only ever carry
-                 * the former, and on a catalogue that is already built that is none of them.
-                 */
-                return integrationContext.getStewardshipAction().initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(),
-                                                                                              Collections.singletonList(integrationContext.getIntegrationConnectorGUID()),
-                                                                                              Collections.singletonList(productFolders.get(ProductFolderDefinition.TOP_LEVEL.getQualifiedName())),
-                                                                                              null,
-                                                                                              null,
-                                                                                              null,
-                                                                                              connectorName,
-                                                                                              null,
-                                                                                              null);
-            }
-        }
-        else
-        {
-            for (OpenMetadataRootElement activeEngineAction : activeEngineActions)
-            {
-                if ((activeEngineAction != null) && (activeEngineAction.getProperties() instanceof EngineActionProperties engineActionProperties))
-                {
-                    if (GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID().equals(engineActionProperties.getGovernanceActionTypeGUID()))
-                    {
-                        return activeEngineAction.getElementHeader().getGUID();
-                    }
-                }
-            }
-        }
-
-        return null;
     }
 
 
@@ -4093,13 +4244,21 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         }
         catch (Exception error)
         {
-            throw new ConnectorCheckedException(JacquardErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                            error.getClass().getName(),
-                                                                                                            methodName,
-                                                                                                            error.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                error);
+            /*
+             * One product's data set cannot be reached - typically its connection still describes a platform
+             * that has moved.  That is logged and the target is returned without a processor, so it is left
+             * alone this cycle, rather than thrown.  Throwing aborted the whole refresh before the harvest,
+             * and the harvest is what repairs the connection: the product could never recover, and every
+             * other product was refreshed by nobody in the meantime.
+             */
+            auditLog.logException(methodName,
+                                  JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                              error.getClass().getName(),
+                                                                                              methodName + "(" + retrievedCatalogTarget.getCatalogTargetName() + ")",
+                                                                                              error.getMessage()),
+                                  error);
+
+            return new RequestedCatalogTarget(retrievedCatalogTarget, catalogTargetContext, connectorToTarget);
         }
     }
 

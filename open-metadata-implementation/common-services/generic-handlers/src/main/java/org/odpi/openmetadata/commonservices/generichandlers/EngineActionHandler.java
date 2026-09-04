@@ -36,18 +36,32 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     /**
      * The activity statuses that mean an engine action is still in progress - it has been requested but has
      * not yet reached a terminal state.
+     * <br><br>
+     * These are the same five statuses that {@code recordCompletionStatus} and the incomplete-action count
+     * treat as "not yet finished".  {@code ACTIVATING} was missing from this list, so an engine action being
+     * activated by an engine host was invisible to anyone asking what was still running.
      */
     private static final List<ActivityStatus> ACTIVE_ACTIVITY_STATUSES = List.of(ActivityStatus.REQUESTED,
                                                                                  ActivityStatus.APPROVED,
                                                                                  ActivityStatus.WAITING,
+                                                                                 ActivityStatus.ACTIVATING,
                                                                                  ActivityStatus.IN_PROGRESS);
 
     /**
      * The activity statuses that mean an engine action has been claimed by a governance engine and is still
      * being worked on.  Narrower than {@link #ACTIVE_ACTIVITY_STATUSES}: an action that is only REQUESTED or
      * APPROVED has not been picked up by anyone yet, so it cannot have been claimed.
+     * <br><br>
+     * A claim sets {@code ACTIVATING}, so that is the status a freshly claimed action holds.  {@code WAITING}
+     * belongs here too, and not only for historical reasons: an action whose requested start time is in the
+     * future is claimed and activated, and then moved to {@code WAITING} by
+     * {@code GovernanceServiceHandler.waitForStartDate} until that time arrives.  It is claimed work that has
+     * not started yet, which is exactly what this list is for.  (It is also what a claim used to set, so
+     * actions claimed before that was corrected still hold it.)  Every query here is additionally scoped by
+     * the processing engine user id, so an unclaimed {@code WAITING} action cannot match.
      */
     private static final List<ActivityStatus> CLAIMED_ACTIVITY_STATUSES = List.of(ActivityStatus.WAITING,
+                                                                                  ActivityStatus.ACTIVATING,
                                                                                   ActivityStatus.IN_PROGRESS);
 
 
@@ -2242,7 +2256,20 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                 if ((status == ActivityStatus.APPROVED) && (processingEngineUserId == null))
                 {
-                    EngineActionBuilder builder = new EngineActionBuilder(ActivityStatus.WAITING.getOrdinal(),
+                    /*
+                     * ACTIVATING, not WAITING.  Claiming an engine action means an engine host has taken it on
+                     * and is activating the governance service that will run it, which is exactly what
+                     * ACTIVATING describes - "the process that will perform the activity is being activated".
+                     * WAITING means the opposite: "waiting for its start time or an actor to claim it", so
+                     * setting it on a claim marked a claimed action as though it were still unclaimed.
+                     *
+                     * The status therefore runs APPROVED -> ACTIVATING -> IN_PROGRESS, with the move to
+                     * IN_PROGRESS made by GovernanceServiceHandler.waitForStartDate once the service is
+                     * actually running.  It used to jump from WAITING straight to IN_PROGRESS, which left no
+                     * way to tell an action a host was busy activating from one nobody had picked up - and
+                     * the restart paths act on that difference.
+                     */
+                    EngineActionBuilder builder = new EngineActionBuilder(ActivityStatus.ACTIVATING.getOrdinal(),
                                                                           userId,
                                                                           repositoryHelper,
                                                                           serviceName,
@@ -2266,7 +2293,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            effectiveTime,
                                            methodName);
 
-                    auditLog.logMessage(methodName, GenericHandlersAuditCode.SUCCESSFUL_ACTION_CLAIM_REQUEST.getMessageDefinition(userId, engineActionGUID));
+                    auditLog.logMessage(methodName,
+                                        GenericHandlersAuditCode.SUCCESSFUL_ACTION_CLAIM_REQUEST.getMessageDefinition(userId,
+                                                                                                                       engineActionGUID,
+                                                                                                                       this.getEngineActionStatusName(status.getOrdinal()),
+                                                                                                                       this.getEngineActionStatusName(ActivityStatus.ACTIVATING.getOrdinal())));
                 }
                 else
                 {
@@ -2522,13 +2553,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 }
                 else
                 {
-                    throw new UserNotAuthorizedException(GenericHandlersErrorCode.INVALID_PROCESSING_USER.getMessageDefinition(userId,
-                                                                                                                               methodName,
-                                                                                                                               engineActionGUID,
-                                                                                                                               processingEngineUserId),
-                                                         this.getClass().getName(),
-                                                         methodName,
-                                                         userId);
+                    this.throwEngineActionNotUpdatable(userId, processingEngineUserId, engineActionGUID, methodName);
                 }
 
             }
@@ -2657,6 +2682,18 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                          methodName),
                                                                  methodName);
 
+                        /*
+                         * Reported the same way as every other status change, so that the audit log holds the
+                         * whole life of an engine action rather than everything except how it ended.  Without
+                         * this the log showed an action reaching IN_PROGRESS and then nothing - the transition
+                         * to ACTIONED, INVALID or FAILED was the one change that left no trace.
+                         */
+                        auditLog.logMessage(methodName,
+                                            GenericHandlersAuditCode.ENGINE_ACTION_STATUS_CHANGE.getMessageDefinition(this.getEngineActionStatusName(storedStatus),
+                                                                                                                       this.getEngineActionStatusName(status),
+                                                                                                                       engineActionGUID,
+                                                                                                                       userId));
+
                         this.markActionTargetsAsComplete(userId,
                                                          engineActionGUID,
                                                          effectiveTime,
@@ -2737,13 +2774,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     }
                     else
                     {
-                        throw new UserNotAuthorizedException(GenericHandlersErrorCode.INVALID_PROCESSING_USER.getMessageDefinition(userId,
-                                                                                                                                   methodName,
-                                                                                                                                   engineActionGUID,
-                                                                                                                                   processingEngineUserId),
-                                                             this.getClass().getName(),
-                                                             methodName,
-                                                             userId);
+                        this.throwEngineActionNotUpdatable(userId, processingEngineUserId, engineActionGUID, methodName);
                     }
                 }
             }
@@ -3734,5 +3765,50 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                            newActionTargetProperties,
                                                            methodName);
         }
+    }
+
+    /**
+     * Refuse an update to an engine action that the caller is not entitled to make, saying which of the two
+     * reasons it is.
+     * <br><br>
+     * Only the engine host that claimed an engine action may update it, and there are two quite different ways
+     * to fail that test.  Reporting both as "already being processed by ... a userId of null" told an operator
+     * that another engine host held the action when in fact nobody did, and sent them looking for a contending
+     * engine host that does not exist.
+     * <br><br>
+     * A null processing engine user means the action has not been claimed at all - ordinarily a caller that is
+     * not an engine host trying to drive an action's status directly.  A processing engine user that is set but
+     * is somebody else is the case the original message describes, and it is genuinely a race: two engine hosts
+     * running the same governance engine both went for the action and only one of them got it.
+     *
+     * @param userId caller
+     * @param processingEngineUserId the engine host that holds the action, or null if nobody does
+     * @param engineActionGUID the engine action
+     * @param methodName calling method
+     *
+     * @throws UserNotAuthorizedException always - this method exists to choose which message to throw with
+     */
+    private void throwEngineActionNotUpdatable(String userId,
+                                               String processingEngineUserId,
+                                               String engineActionGUID,
+                                               String methodName) throws UserNotAuthorizedException
+    {
+        if (processingEngineUserId == null)
+        {
+            throw new UserNotAuthorizedException(GenericHandlersErrorCode.ENGINE_ACTION_NOT_CLAIMED.getMessageDefinition(userId,
+                                                                                                                         methodName,
+                                                                                                                         engineActionGUID),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+
+        throw new UserNotAuthorizedException(GenericHandlersErrorCode.INVALID_PROCESSING_USER.getMessageDefinition(userId,
+                                                                                                                   methodName,
+                                                                                                                   engineActionGUID,
+                                                                                                                   processingEngineUserId),
+                                             this.getClass().getName(),
+                                             methodName,
+                                             userId);
     }
 }

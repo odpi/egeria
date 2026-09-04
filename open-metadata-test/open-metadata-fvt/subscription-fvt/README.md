@@ -34,8 +34,8 @@ The defaults target the same shared PostgreSQL and Kafka containers the other su
 | Server | What it is for |
 |---|---|
 | `subscriptionFvtMetadataStore` | Metadata access store with a PostgreSQL repository and its access services publishing to Kafka.  Loads the open metadata types and the Core, PostgreSQL and Open Metadata Digital Products content packs. |
-| `subscriptionFvtIntegrationDaemon` | Integration daemon running `Egeria:IntegrationGroup:Jacquard` - where the catalogue comes from. |
-| `subscriptionFvtEngineHost` | Engine host running the Egeria Governance engine (the create- and cancel-subscription services) and the Egeria Watchdog engine (the Baudot subscription manager). |
+| `subscriptionFvtIntegrationDaemon` | Integration daemon running `Egeria:IntegrationGroup:Jacquard` - Jacquard, where the catalogue comes from, and the Baudot subscription manager, which notifies each product's subscribers. |
+| `subscriptionFvtEngineHost` | Engine host running the Egeria Governance engine (the create- and cancel-subscription services). |
 
 Kafka is genuinely required.  Neither governance server is told what to run: each asks the metadata access
 store for its configuration at start-up and then listens on the access services' out topics for configuration
@@ -114,12 +114,17 @@ So the suite **reuses an existing catalogue by default**, and rebuilds only when
 | Situation | What happens |
 |---|---|
 | Products are missing from the catalogue | Built by the refresh - a partial catalogue is never tested against |
-| The catalogue is complete | Reused; Jacquard is still refreshed, which is what starts the subscription manager |
+| The catalogue is complete | Reused; Jacquard is still refreshed, which is what hands the notification types to the subscription manager |
 | `-Dsubscription.fvt.rebuild.catalogue=true` | Purged and rebuilt from scratch |
 
-Jacquard is refreshed on every run even when nothing needs building, because refreshing is also what activates
-the **Baudot Subscription Manager**.  A run that skips it has no subscription manager at all: subscriptions are
-taken out and nothing ever delivers them.
+Jacquard is refreshed on every run even when nothing needs building, because refreshing is also what hands each
+product's notification types to the **Baudot Subscription Manager** as catalog targets.  A run that skips it may
+leave the manager with nothing to look after: subscriptions are taken out and nothing ever delivers them.
+
+Baudot itself is refreshed by the suite each time a subscription is taken out.  Baudot sends a new subscriber's
+welcome notification - the one that starts provisioning - on its refresh cycle, and that cycle is configured in
+minutes rather than the seconds a test waits, so the suite brings it forward through the integration daemon's
+`refreshConnector` REST call rather than waiting for the schedule.
 
 That is a deliberate trade.  A run that reuses the catalogue is testing subscriptions, not catalogue
 construction: Jacquard reuses what it finds, so a change to *how* products or their subscription options are

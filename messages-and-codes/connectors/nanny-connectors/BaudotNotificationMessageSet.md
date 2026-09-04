@@ -25,7 +25,7 @@ The BaudotNotificationMessageSet is used to define the message content for the n
 | [BAUDOT-SUBSCRIPTION-MANAGEMENT-0002](#baudot-subscription-management-0002) | The subscription for the following subscription type has been terminated: {0} ({1}) |
 | [BAUDOT-SUBSCRIPTION-MANAGEMENT-0003](#baudot-subscription-management-0003) | The monitored {0} resource {1} ({2}) has changed for subscription type: {3} ({4}) |
 | [BAUDOT-SUBSCRIPTION-MANAGEMENT-0004](#baudot-subscription-management-0004) | Your subscription to {0} ({1}) has been triggered |
-| [BAUDOT-SUBSCRIPTION-MANAGEMENT-0005](#baudot-subscription-management-0005) | A regular notification for subscription type {0} ({1}) has been triggered.  It will trigger again in {2} milliseconds |
+| [BAUDOT-SUBSCRIPTION-MANAGEMENT-0005](#baudot-subscription-management-0005) | A regular notification for subscription type {0} ({1}) has been triggered.  It will trigger again no sooner than {2} minutes from now |
 
 ----
 
@@ -111,7 +111,7 @@ No specific action is required.  This message is to inform you of the one-time n
 
 ### BAUDOT-SUBSCRIPTION-MANAGEMENT-0005
 
-> A regular notification for subscription type {0} ({1}) has been triggered.  It will trigger again in {2} milliseconds
+> A regular notification for subscription type {0} ({1}) has been triggered.  It will trigger again no sooner than {2} minutes from now
 
 |  |  |
 |---|---|

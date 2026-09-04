@@ -140,9 +140,17 @@ public class NotificationHandler extends GovernanceDefinitionHandler
         propertyHelper.validateObject(subsequentNotificationProperties, subsequentNotificationPropertiesParameterName, methodName);
         propertyHelper.validateObject(lastNotificationProperties, lastNotificationPropertiesParameterName, methodName);
 
+        /*
+         * Only the subscribers are asked for.  A notification type is also linked to every notification ever
+         * sent to its subscribers, which grows without bound and is of no use in deciding who to notify next.
+         */
+        QueryOptions queryOptions = this.getQueryOptions(0, 0);
+
+        queryOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName));
+
         OpenMetadataRootElement notificationType = this.getRootElementByGUID(userId,
                                                                              notificationTypeGUID,
-                                                                             this.getQueryOptions(0, 0),
+                                                                             queryOptions,
                                                                              methodName);
 
         if ((notificationType != null) &&
@@ -200,8 +208,14 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                              notificationTypeProperties.getMinimumNotificationInterval(),
                                              newSubscriberStatus);
                         }
-                        else
+                        else if (notificationTypeProperties.getMultipleNotificationsPermitted())
                         {
+                            /*
+                             * A subscriber that has already been notified hears again only from a notification
+                             * type that permits more than one notification.  A one-time notification type's
+                             * subscriber has had its one notification - the first - and is left alone, however
+                             * short the minimum interval.
+                             */
                             notifySubscriber(userId,
                                              subscriber.getRelatedElement().getElementHeader().getGUID(),
                                              subscriber.getRelatedElement().getElementHeader(),
@@ -236,7 +250,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
             updatedNotificationTypeProperties.setLastNotification(new Date());
             if (notificationTypeProperties.getMinimumNotificationInterval() > 0)
             {
-                updatedNotificationTypeProperties.setNextScheduledNotification(new Date(System.currentTimeMillis() + notificationTypeProperties.getMinimumNotificationInterval()));
+                updatedNotificationTypeProperties.setNextScheduledNotification(new Date(System.currentTimeMillis() + toMilliseconds(notificationTypeProperties.getMinimumNotificationInterval())));
             }
 
             UpdateOptions updateOptions = new UpdateOptions();
@@ -261,6 +275,22 @@ public class NotificationHandler extends GovernanceDefinitionHandler
      * @param notificationTypeProperties notification type properties
      * @return true if the subscribers should be notified
      */
+    /**
+     * Convert a notification interval to milliseconds.  A notification type's minimumNotificationInterval is
+     * in minutes - that is how {@link NotificationTypeProperties} documents it and how the notification types
+     * are defined - while the arithmetic here is against {@code System.currentTimeMillis()}.  Comparing the two
+     * directly made a ten-minute interval ten milliseconds, so every periodic notification type notified its
+     * subscribers on every pass.
+     *
+     * @param minutes interval in minutes
+     * @return interval in milliseconds
+     */
+    private static long toMilliseconds(long minutes)
+    {
+        return minutes * 60L * 1000L;
+    }
+
+
     private boolean notificationPermitted(String                     requester,
                                           NotificationTypeProperties notificationTypeProperties)
     {
@@ -292,7 +322,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
             return true;
         }
 
-        return System.currentTimeMillis() > notificationTypeProperties.getLastNotification().getTime() + notificationTypeProperties.getMinimumNotificationInterval();
+        return System.currentTimeMillis() > notificationTypeProperties.getLastNotification().getTime() + toMilliseconds(notificationTypeProperties.getMinimumNotificationInterval());
     }
 
 
@@ -352,7 +382,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
              * since the last notification, then send the notification.
              */
             if ((notificationSubscriberProperties.getLastNotification() == null) ||
-                    ((System.currentTimeMillis() > notificationSubscriberProperties.getLastNotification().getTime() + minimumNotificationInterval)))
+                    ((System.currentTimeMillis() > notificationSubscriberProperties.getLastNotification().getTime() + toMilliseconds(minimumNotificationInterval))))
             {
                 NotificationProperties subscriberNotificationProperties = new NotificationProperties(outboundNotificationProperties);
 
@@ -395,29 +425,37 @@ public class NotificationHandler extends GovernanceDefinitionHandler
 
                 /*
                  * Issue notification.  This depends on the type of subscriber.
+                 *
+                 * The notification's identifier is kept rather than returned from inside each branch, so that
+                 * every kind of subscriber reaches the recording of its lastNotification time below.  Returning
+                 * from the branch skipped that step for actors, note logs and governance actions alike - which is
+                 * every kind of subscriber there is - so no subscriber ever had a lastNotification, and each one
+                 * was treated as new, and welcomed, on every pass.
                  */
+                String actionGUID = null;
+
                 if (propertyHelper.isTypeOf(subscriberHeader, OpenMetadataType.ACTOR.typeName))
                 {
-                    return assetHandler.createActorAction(userId,
-                                                          initialClassifications,
-                                                          subscriberNotificationProperties,
-                                                          actionRequesterGUID,
-                                                          notificationSubscriberProperties.getISCQualifiedName(),
-                                                          Collections.singletonList(notificationTypeGUID),
-                                                          subscriberGUID,
-                                                          AssignmentType.REVIEWER,
-                                                          actionTargets);
+                    actionGUID = assetHandler.createActorAction(userId,
+                                                                initialClassifications,
+                                                                subscriberNotificationProperties,
+                                                                actionRequesterGUID,
+                                                                notificationSubscriberProperties.getISCQualifiedName(),
+                                                                Collections.singletonList(notificationTypeGUID),
+                                                                subscriberGUID,
+                                                                AssignmentType.REVIEWER,
+                                                                actionTargets);
                 }
                 else if (propertyHelper.isTypeOf(subscriberHeader, OpenMetadataType.NOTE_LOG.typeName))
                 {
-                    return assetHandler.createNoteLogEntry(userId,
-                                                           initialClassifications,
-                                                           subscriberNotificationProperties,
-                                                           actionRequesterGUID,
-                                                           notificationSubscriberProperties.getISCQualifiedName(),
-                                                           Collections.singletonList(notificationTypeGUID),
-                                                           subscriberGUID,
-                                                           actionTargets);
+                    actionGUID = assetHandler.createNoteLogEntry(userId,
+                                                                 initialClassifications,
+                                                                 subscriberNotificationProperties,
+                                                                 actionRequesterGUID,
+                                                                 notificationSubscriberProperties.getISCQualifiedName(),
+                                                                 Collections.singletonList(notificationTypeGUID),
+                                                                 subscriberGUID,
+                                                                 actionTargets);
                 }
                 else if (propertyHelper.isTypeOf(subscriberHeader, OpenMetadataType.GOVERNANCE_ACTION.typeName))
                 {
@@ -433,31 +471,31 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                                                                            methodName);
                             if (processQualifiedName != null)
                             {
-                                return openGovernanceClient.initiateGovernanceActionProcess(userId,
-                                                                                            processQualifiedName,
-                                                                                            Collections.singletonList(actionRequesterGUID),
-                                                                                            Collections.singletonList(notificationTypeGUID),
-                                                                                            actionTargets,
-                                                                                            null,
-                                                                                            requestParameters,
-                                                                                            localServiceName,
-                                                                                            null,
-                                                                                            notificationSubscriberProperties.getISCQualifiedName());
+                                actionGUID = openGovernanceClient.initiateGovernanceActionProcess(userId,
+                                                                                                  processQualifiedName,
+                                                                                                  Collections.singletonList(actionRequesterGUID),
+                                                                                                  Collections.singletonList(notificationTypeGUID),
+                                                                                                  actionTargets,
+                                                                                                  null,
+                                                                                                  requestParameters,
+                                                                                                  localServiceName,
+                                                                                                  null,
+                                                                                                  notificationSubscriberProperties.getISCQualifiedName());
                             }
                         }
                     }
                     else if (propertyHelper.isTypeOf(subscriberHeader, OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName))
                     {
-                        return openGovernanceClient.initiateGovernanceActionType(userId,
-                                                                                 subscriberNotificationProperties.getQualifiedName(),
-                                                                                 Collections.singletonList(actionRequesterGUID),
-                                                                                 Collections.singletonList(notificationTypeGUID),
-                                                                                 actionTargets,
-                                                                                 null,
-                                                                                 requestParameters,
-                                                                                 localServiceName,
-                                                                                 null,
-                                                                                 notificationSubscriberProperties.getISCQualifiedName());
+                        actionGUID = openGovernanceClient.initiateGovernanceActionType(userId,
+                                                                                       subscriberNotificationProperties.getQualifiedName(),
+                                                                                       Collections.singletonList(actionRequesterGUID),
+                                                                                       Collections.singletonList(notificationTypeGUID),
+                                                                                       actionTargets,
+                                                                                       null,
+                                                                                       requestParameters,
+                                                                                       localServiceName,
+                                                                                       null,
+                                                                                       notificationSubscriberProperties.getISCQualifiedName());
                     }
                 }
                 else
@@ -485,7 +523,12 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                                                                      new Date());
                 if (newSubscriberStatus != null)
                 {
-                    elementProperties = propertyHelper.addEnumProperty(null,
+                    /*
+                     * Added to the lastNotification property, not in place of it: a subscriber whose
+                     * lastNotification is never recorded looks new on every pass and is welcomed - and
+                     * provisioned - again each time.
+                     */
+                    elementProperties = propertyHelper.addEnumProperty(elementProperties,
                                                                        OpenMetadataProperty.ACTIVITY_STATUS.name,
                                                                        ActivityStatus.getOpenTypeName(),
                                                                        newSubscriberStatus.name());
@@ -497,6 +540,8 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                                              notificationSubscriberGUID,
                                                              updateOptions,
                                                              elementProperties);
+
+                return actionGUID;
             }
         }
 

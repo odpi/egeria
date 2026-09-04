@@ -22,63 +22,94 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum BaudotAuditCode implements AuditLogMessageSet
 {
     /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0002 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where notifications are triggered by changes to its monitored resources.  {3} monitored resources are currently registered
+     * BAUDOT-SUBSCRIPTION-MANAGER-0001 - The {0} integration connector is starting; it is connected to metadata access server {1} on platform {2}
      */
-    MONITORED_RESOURCE_NOTIFICATION_TYPE( "BAUDOT-SUBSCRIPTION-MANAGER-0002",
-                         AuditLogRecordSeverityLevel.INFO,
-                         "The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where notifications are triggered by changes to its monitored resources.   {3} monitored resources are currently registered",
-                         "The governance service monitors the events generated when open metadata elements change.  Notifications are sent if one of the monitored resources (or anything anchored from it) changes, unless another notification has been sent out within the minimumNotificationInterval.",
-                         "This notification pattern was selected because multipleNotificationsPermitted is set to true and notificationInterval is set to 0. Verify that this is the intended behaviour and that the correct elements are linked to this notification type using the MonitoredResource relationship.",
-                         "https://egeria-project.org/concepts/notification-type/"),
+    STARTING_CONNECTOR("BAUDOT-SUBSCRIPTION-MANAGER-0001",
+                       AuditLogRecordSeverityLevel.STARTUP,
+                       "The {0} integration connector is starting; it is connected to metadata access server {1} on platform {2}",
+                       "The connector registers to receive metadata change events, and then waits for the integration daemon to refresh it.  Each refresh notifies the subscribers of every notification type the connector has been given as a catalog target.",
+                       "No action is required.  The notification types this connector looks after are its catalog targets; add one to have its subscribers notified.",
+                       "https://egeria-project.org/concepts/notification-type/"),
 
     /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0003 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where only one notification is sent to each subscriber
+     * BAUDOT-SUBSCRIPTION-MANAGER-0002 - The {0} integration connector has refreshed notification type {1} ({2}) where notifications are triggered by changes to its monitored resources.  {3} monitored resources are currently registered
      */
-    ONE_TIME_NOTIFICATION_TYPE( "BAUDOT-SUBSCRIPTION-MANAGER-0003",
-                              AuditLogRecordSeverityLevel.INFO,
-                              "The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where only one notification is sent to each subscriber",
-                              "The governance service sends a notification to each subscriber registered when the service starts up and then monitors for new subscribers in order to send them a notification.",
-                              "This notification pattern was selected because multipleNotificationsPermitted is set to false. Validate that this is the right pattern.",
-                              "https://egeria-project.org/concepts/notification-type/"),
+    MONITORED_RESOURCE_NOTIFICATION_TYPE("BAUDOT-SUBSCRIPTION-MANAGER-0002",
+                                         AuditLogRecordSeverityLevel.INFO,
+                                         "The {0} integration connector has refreshed notification type {1} ({2}) where notifications are triggered by changes to its monitored resources.  {3} monitored resources are currently registered",
+                                         "The connector monitors the events generated when open metadata elements change.  Notifications are sent if one of the monitored resources (or anything anchored from it) changes, unless another notification has been sent out within the minimumNotificationInterval.",
+                                         "This notification pattern was selected because the notification type has monitored resources. Verify that this is the intended behaviour and that the correct elements are linked to this notification type using the MonitoredResource relationship.",
+                                         "https://egeria-project.org/concepts/notification-type/"),
 
     /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0005 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.  The next scheduled notification will be sent at {4}
+     * BAUDOT-SUBSCRIPTION-MANAGER-0003 - The {0} integration connector has refreshed notification type {1} ({2}) where only one notification is sent to each subscriber
+     */
+    ONE_TIME_NOTIFICATION_TYPE("BAUDOT-SUBSCRIPTION-MANAGER-0003",
+                               AuditLogRecordSeverityLevel.INFO,
+                               "The {0} integration connector has refreshed notification type {1} ({2}) where only one notification is sent to each subscriber",
+                               "The connector sends a notification to each subscriber that has not yet received one.  New subscribers are noticed on each refresh.",
+                               "This notification pattern was selected because multipleNotificationsPermitted is set to false. Validate that this is the right pattern.",
+                               "https://egeria-project.org/concepts/notification-type/"),
+
+    /**
+     * BAUDOT-SUBSCRIPTION-MANAGER-0004 - The {0} integration connector is stopping
+     */
+    CONNECTOR_STOPPING("BAUDOT-SUBSCRIPTION-MANAGER-0004",
+                       AuditLogRecordSeverityLevel.SHUTDOWN,
+                       "The {0} integration connector is stopping",
+                       "The connector stops listening for metadata change events.  No further notifications are sent until it is restarted.",
+                       "No action is required if the integration daemon is shutting down.  Otherwise check why the connector was stopped.",
+                       "https://egeria-project.org/concepts/notification-type/"),
+
+    /**
+     * BAUDOT-SUBSCRIPTION-MANAGER-0005 - The {0} integration connector has refreshed notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule no more often than every {3} milliseconds.  The connector's next scheduled refresh is at {4}
      */
     PERIODIC_NOTIFICATION_TYPE("BAUDOT-SUBSCRIPTION-MANAGER-0005",
-                      AuditLogRecordSeverityLevel.INFO,
-                      "The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.  The next scheduled notification will be sent at {4}",
-                      "The governance service sends a notification to each subscriber registered when the service starts up and then monitors for new subscribers in order to send them notifications.  Additional notifications are sent to each active subscriber every notification interval.",
-                      "This notification pattern was selected because multipleNotificationsPermitted is set to true and notificationInterval is greater than 0. Validate that this is the intended behaviour and the notification interval is appropriate.",
-                      "https://egeria-project.org/concepts/notification-type/"),
+                               AuditLogRecordSeverityLevel.INFO,
+                               "The {0} integration connector has refreshed notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule no more often than every {3} milliseconds.  The connector's next scheduled refresh is at {4}",
+                               "The connector sends a notification to each new subscriber, and a further notification to each existing subscriber on every refresh that falls outside the notification type's minimum interval.  The refresh interval is part of the connector's configuration in the integration daemon.",
+                               "This notification pattern was selected because multipleNotificationsPermitted is set to true and the notification type has no monitored resources. Validate that this is the intended behaviour and that the connector's refresh interval and the notification type's minimum interval are appropriate together.",
+                               "https://egeria-project.org/concepts/notification-type/"),
+
     /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0011 - The {0} governance service is not monitoring notification type {1} ({2}) because it could not be retrieved, or is not a notification type
+     * BAUDOT-SUBSCRIPTION-MANAGER-0006 - The {0} integration connector was unable to refresh notification type {1} ({2}); the {3} exception had message {4}
+     */
+    NOTIFICATION_TYPE_REFRESH_FAILED("BAUDOT-SUBSCRIPTION-MANAGER-0006",
+                                     AuditLogRecordSeverityLevel.EXCEPTION,
+                                     "The {0} integration connector was unable to refresh notification type {1} ({2}); the {3} exception had message {4}",
+                                     "The notification type is skipped on this refresh and tried again on the next.  The connector's other notification types are unaffected.",
+                                     "Use the exception message to determine the cause, and correct it before the next refresh.",
+                                     "https://egeria-project.org/concepts/notification-type/"),
+
+    /**
+     * BAUDOT-SUBSCRIPTION-MANAGER-0007 - The {0} integration connector received a {1} exception while processing a change event for element {2}; the message was {3}
+     */
+    EVENT_PROCESSING_FAILED("BAUDOT-SUBSCRIPTION-MANAGER-0007",
+                            AuditLogRecordSeverityLevel.EXCEPTION,
+                            "The {0} integration connector received a {1} exception while processing a change event for element {2}; the message was {3}",
+                            "The event is dropped.  Any notification it should have prompted is not sent.",
+                            "Use the exception message to determine the cause.  If subscribers have missed a change, the next change to the same resource will be notified normally.",
+                            "https://egeria-project.org/concepts/notification-type/"),
+
+    /**
+     * BAUDOT-SUBSCRIPTION-MANAGER-0011 - The {0} integration connector is not monitoring notification type {1} ({2}) because it could not be retrieved, or is not a notification type
      */
     UNREADABLE_NOTIFICATION_TYPE("BAUDOT-SUBSCRIPTION-MANAGER-0011",
                                  AuditLogRecordSeverityLevel.ERROR,
-                                 "The {0} governance service is not monitoring notification type {1} ({2}) because it could not be retrieved, or is not a notification type",
+                                 "The {0} integration connector is not monitoring notification type {1} ({2}) because it could not be retrieved, or is not a notification type",
                                  "The notification type is skipped.  Its subscribers receive nothing.",
-                                 "Check that the element named as an action target of this service is a notification type, and that this service's userId can read it.",
+                                 "Check that the element attached as a catalog target of this connector is a notification type, and that this connector's userId can read it.",
                                  "https://egeria-project.org/concepts/notification-type/"),
 
     /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0012 - The {0} governance service is not yet monitoring notification type {1} because it is planned to start at {2}
+     * BAUDOT-SUBSCRIPTION-MANAGER-0013 - The {0} integration connector has completed a refresh: {1} notification type(s) are its catalog targets, and {2} resource(s) are being monitored for changes
      */
-    NOTIFICATION_TYPE_NOT_STARTED("BAUDOT-SUBSCRIPTION-MANAGER-0012",
-                                  AuditLogRecordSeverityLevel.INFO,
-                                  "The {0} governance service is not yet monitoring notification type {1} because it is planned to start at {2}",
-                                  "The notification type is skipped until its planned start date has passed.",
-                                  "No action is required if the start date is intended.  A notification type whose subscribers are waiting for data has the wrong start date.",
-                                  "https://egeria-project.org/concepts/notification-type/"),
-
-    /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0013 - The {0} governance service refreshed its caches: {1} notification type(s) configured, {2} being monitored for the first time by this service
-     */
-    CACHE_REFRESHED("BAUDOT-SUBSCRIPTION-MANAGER-0013",
-                    AuditLogRecordSeverityLevel.INFO,
-                    "The {0} governance service refreshed its caches: {1} notification type(s) configured, {2} being monitored for the first time by this service",
-                    "The service monitors the notification types it has been given and notifies their subscribers.",
-                    "No action is required.  A refresh that reports zero notification types is monitoring nothing, and subscriptions to any product will not be delivered.",
-                    "https://egeria-project.org/concepts/notification-type/"),
+    REFRESH_COMPLETE("BAUDOT-SUBSCRIPTION-MANAGER-0013",
+                     AuditLogRecordSeverityLevel.INFO,
+                     "The {0} integration connector has completed a refresh: {1} notification type(s) are its catalog targets, and {2} resource(s) are being monitored for changes",
+                     "The connector notifies the subscribers of the notification types it has been given as catalog targets.",
+                     "No action is required.  A refresh that reports zero notification types is monitoring nothing, and subscriptions to any product will not be delivered: check that the connector that creates the notification types is adding them to this connector as catalog targets.",
+                     "https://egeria-project.org/concepts/notification-type/"),
 
     ;
 
@@ -110,12 +141,7 @@ public enum BaudotAuditCode implements AuditLogMessageSet
 
 
     /**
-     * The constructor for DistributeKafkaAuditCode expects to be passed one of the enumeration rows defined in
-     * DistributeKafkaAuditCode above.   For example:
-     * <br>
-     *     DistributeKafkaAuditCode   auditCode = DistributeKafkaAuditCode.SERVER_NOT_AVAILABLE;
-     * <br>
-     * This will expand out to the 4 parameters shown below.
+     * The constructor for BaudotAuditCode expects to be passed one of the enumeration rows defined above.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -186,7 +212,7 @@ public enum BaudotAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "JacquardAuditCode{" +
+        return "BaudotAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +
                 ", logMessage='" + logMessage + '\'' +

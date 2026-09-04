@@ -130,12 +130,23 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
      */
     INVALID_PROCESSING_USER(403, "OMAG-GENERIC-HANDLERS-403-002",
                             "Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3}",
-                            "The system cannot update an engine action because the requester has not claimed the engine action.",
+                            "The system cannot update an engine action that a different engine host has claimed.",
                             "Investigate why the Engine Host OMAG Server is attempting to process this engine action.  If you have multiple Engine Host OMAG Servers " +
                                     "running the same governance engines then it is possible that they both attempted to claim the engine action at the same time.  If this is the case, " +
                                     "validate that the engine action is processed successful by the victorious engine host.  If this happens frequently, it may be necessary to " +
                                     "separate the workload amongst distinct governance engines that support the same governance services.",
                                     "https://egeria-project.org/services/generic-handlers/"),
+
+    /**
+     * OMAG-GENERIC-HANDLERS-403-006 - Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because the engine action has not been claimed
+     */
+    ENGINE_ACTION_NOT_CLAIMED(403, "OMAG-GENERIC-HANDLERS-403-006",
+                              "Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because the engine action has not been claimed",
+                              "The system cannot update an engine action that nobody has claimed, because the update would not be attributable to the engine host doing the work.",
+                              "Claim the engine action before updating it.  An engine action is claimed by the engine host that is going to run it, which records itself as the " +
+                                      "processing engine user and moves the action to ACTIVATING.  If the caller is not an engine host, this request is not one it should be " +
+                                      "making: the status of an unclaimed engine action is managed by the governance engine that picks it up.",
+                              "https://egeria-project.org/services/generic-handlers/"),
 
     /**
      * OMAG-GENERIC-HANDLERS-403-003 - Engine Host OMAG Server with a userId of {0} is not allowed claim the engine action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3}

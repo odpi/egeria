@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.Product
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductSubscriptionDefinition;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.ManageDigitalSubscriptionActionTarget;
+import org.odpi.openmetadata.contentpacks.core.IntegrationConnectorDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
@@ -268,6 +269,17 @@ class SubscriptionDriver
         new EngineActionWaiter().waitForProcess(processInstanceGUID,
                                                 subscriptionType.getIdentifier() + " subscription to "
                                                         + productDefinition.getProductName());
+
+        /*
+         * The subscription now exists and is a subscriber of the product's notification type, but nothing has
+         * been delivered: that starts with the welcome notification from the Baudot subscription manager, which
+         * sends it on its next refresh.  Baudot refreshes on the interval it is configured with, which is far
+         * longer than a test is prepared to wait, so the refresh is asked for now through the integration
+         * daemon's REST API.  This is the reason Baudot is an integration connector rather than a watchdog
+         * service with a sleep loop of its own: the refresh is driven from outside.
+         */
+        OMAGPlatformExtension.getIntegrationDaemonClient()
+                             .refreshConnector(IntegrationConnectorDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getConnectorName());
 
         String subscriptionGUID = findSubscription(productDefinition, subscriptionType);
 

@@ -576,6 +576,46 @@ public enum IntegrationConnectorDefinition
                                 IntegrationGroupDefinition.OPEN_LINEAGE,
                                 ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
+    /**
+     * The Baudot Subscription Manager notifies the subscribers of the digital products' notification types.  It
+     * runs alongside Jacquard in the same integration group: Jacquard adds each notification type it creates to
+     * this connector as a catalog target, and this connector notifies that notification type's subscribers on
+     * every refresh (welcome, one-time and periodic notifications) and as the change events arrive (monitored
+     * resources).  The refresh interval is therefore this connector's configuration, and a refresh can be
+     * brought forward through the integration daemon's REST API.
+     * <br>
+     * It is declared before Jacquard because Jacquard's configuration properties carry this connector's GUID,
+     * and an enum constant can only refer to one declared ahead of it.
+     */
+    BAUDOT_SUBSCRIPTION_MANAGER("fed3e17d-6aa0-4959-8af4-a2cbfde1717b",
+                                "BaudotDigitalProductSubscriptionManagerIntegrationConnector",
+                                "Notifies the subscribers of the digital products' notification types, on its refresh cycle and as their monitored resources change.",
+                                org.odpi.openmetadata.adapters.connectors.baudot.BaudotSubscriptionManagementProvider.class.getName(),
+                                "BaudotDigitalProductSubscriptionManager",
+                                "baudotnpa",
+                                null,
+                                null,
+                                null,
+                                null,
+                                10,
+                                null,
+                                ProductSolutionComponent.SUBSCRIPTION_MANAGER.getGUID(),
+                                ProductSolutionComponent.SUBSCRIPTION_MANAGER.getDisplayName(),
+                                ProductSolutionComponent.SUBSCRIPTION_MANAGER.getDescription(),
+                                true,
+                                /*
+                                 * No secrets store.  Baudot reaches open metadata only through the integration
+                                 * context, which the daemon authenticates on its behalf; unlike Jacquard, whose
+                                 * data set connectors open their own REST clients to the platform and need a
+                                 * bearer token of their own.
+                                 */
+                                null,
+                                null,
+                                null,
+                                null,
+                                IntegrationGroupDefinition.JACQUARD,
+                                ContentPackDefinition.PRODUCTS_CONTENT_PACK),
+
     PRODUCT_HARVESTER("8a3d91da-05a0-49ca-83e0-77f5c48bdf0c",
                       "JacquardDigitalProductLoomIntegrationConnector",
                       "Defines and maintains digital products based on the content of the open metadata repositories.",
@@ -585,7 +625,7 @@ public enum IntegrationConnectorDefinition
                       null,
                       null,
                       null,
-                      null,
+                      getJacquardConfigProperties(),
                       60,
                       null,
                       ProductSolutionComponent.JACQUARD_HARVESTER.getGUID(),
@@ -698,6 +738,25 @@ public enum IntegrationConnectorDefinition
      *
      * @return map
      */
+    /**
+     * Return the configuration properties for the Jacquard Digital Product Loom.  Jacquard needs to know which
+     * connector is the subscription manager, so that it can hand each notification type it creates to that
+     * connector as a catalog target.  The GUID is seeded here from the definition of the Baudot connector in
+     * the same content pack, in the same way that the database cataloguers are told about their friends.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getJacquardConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(org.odpi.openmetadata.adapters.connectors.jacquard.controls.JacquardConfigurationProperty.SUBSCRIPTION_MANAGER_GUID.getName(),
+                                    BAUDOT_SUBSCRIPTION_MANAGER.getGUID());
+
+        return configurationProperties;
+    }
+
+
     /**
      * Return the configuration properties for the Mendel Automated Duplicate Manager.
      *

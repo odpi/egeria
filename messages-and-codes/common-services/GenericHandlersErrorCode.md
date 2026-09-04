@@ -9,7 +9,7 @@ The GenericHandlersErrorCode is used to define first failure data capture (FFDC)
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 25 |
+| **Number of messages** | 26 |
 | **Message identifiers begin** | `OMAG-GENERIC-HANDLERS-` |
 | **Java class** | `org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode` |
 | **Module** | [open-metadata-implementation/common-services/generic-handlers](../../open-metadata-implementation/common-services/generic-handlers) |
@@ -31,6 +31,7 @@ The GenericHandlersErrorCode is used to define first failure data capture (FFDC)
 | [OMAG-GENERIC-HANDLERS-400-014](#omag-generic-handlers-400-014) | 400 | The {0} element carries the TemplateSubstitute classification but has no SourcedFrom relationship to the template it stands in for, so the {1} request has no template to work from |
 | [OMAG-GENERIC-HANDLERS-403-001](#omag-generic-handlers-403-001) | 403 | The {0} method cannot delete the requested relationship between {1} {2} and {3} {4} because it was not created by the requesting user {5} |
 | [OMAG-GENERIC-HANDLERS-403-002](#omag-generic-handlers-403-002) | 403 | Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3} |
+| [OMAG-GENERIC-HANDLERS-403-006](#omag-generic-handlers-403-006) | 403 | Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because the engine action has not been claimed |
 | [OMAG-GENERIC-HANDLERS-403-003](#omag-generic-handlers-403-003) | 403 | Engine Host OMAG Server with a userId of {0} is not allowed claim the engine action {1} because it is already being processed by Engine Host OMAG Server with a userId of {2} and is in status {3} |
 | [OMAG-GENERIC-HANDLERS-403-004](#omag-generic-handlers-403-004) | 403 | A delete of {0} data asset {1} is not permitted because it is being used by {2} data set {3} |
 | [OMAG-GENERIC-HANDLERS-403-005](#omag-generic-handlers-403-005) | 403 | A delete of {0} element {1} is not permitted because it still has a dependent {2} element {3} |
@@ -250,11 +251,32 @@ Retry the request with a relationship created with this user, or request that th
 
 **System action**
 
-The system cannot update an engine action because the requester has not claimed the engine action.
+The system cannot update an engine action that a different engine host has claimed.
 
 **User action**
 
 Investigate why the Engine Host OMAG Server is attempting to process this engine action.  If you have multiple Engine Host OMAG Servers running the same governance engines then it is possible that they both attempted to claim the engine action at the same time.  If this is the case, validate that the engine action is processed successful by the victorious engine host.  If this happens frequently, it may be necessary to separate the workload amongst distinct governance engines that support the same governance services.
+
+
+----
+
+### OMAG-GENERIC-HANDLERS-403-006
+
+> Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because the engine action has not been claimed
+
+|  |  |
+|---|---|
+| **Java constant** | `GenericHandlersErrorCode.ENGINE_ACTION_NOT_CLAIMED` |
+| **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The system cannot update an engine action that nobody has claimed, because the update would not be attributable to the engine host doing the work.
+
+**User action**
+
+Claim the engine action before updating it.  An engine action is claimed by the engine host that is going to run it, which records itself as the processing engine user and moves the action to ACTIVATING.  If the caller is not an engine host, this request is not one it should be making: the status of an unclaimed engine action is managed by the governance engine that picks it up.
 
 
 ----

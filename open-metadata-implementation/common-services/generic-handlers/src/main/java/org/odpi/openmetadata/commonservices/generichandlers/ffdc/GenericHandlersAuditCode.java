@@ -124,12 +124,12 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                                          "https://egeria-project.org/services/generic-handlers/"),
 
     /**
-     * OMAG-GENERIC-HANDLERS-0024 - Governance engine with {0} userId has successfully claimed engine action {1}
+     * OMAG-GENERIC-HANDLERS-0024 - Governance engine with {0} userId has successfully claimed engine action {1}, changing its status from {2} to {3}
      */
     SUCCESSFUL_ACTION_CLAIM_REQUEST("OMAG-GENERIC-HANDLERS-0024",
                                     AuditLogRecordSeverityLevel.STARTUP,
-                         "Governance engine with {0} userId has successfully claimed engine action {1}",
-                         "The engine action is updated to show that the governance engine has claimed it and that its status is now WAITING.  This will be successful if the governance engine is the first to claim the engine action and it is in APPROVED status.",
+                         "Governance engine with {0} userId has successfully claimed engine action {1}, changing its status from {2} to {3}",
+                         "The engine action is updated to show that the governance engine has claimed it and that its status is now ACTIVATING.  This will be successful if the governance engine is the first to claim the engine action and it is in APPROVED status.",
                          "Validate that only one of the governance engines successfully claims the engine action.",
                          "https://egeria-project.org/services/generic-handlers/"),
 

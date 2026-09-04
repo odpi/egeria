@@ -574,15 +574,15 @@ final class SubscriptionFvtTestSupport
 
         /*
          * Jacquard is refreshed even when the catalogue is already complete, and that is not wasted work:
-         * refreshing is also what activates the Baudot Subscription Manager, so a run that skips it has no
-         * subscription manager at all - subscriptions are taken out and nothing ever delivers them.  Where
-         * the products already exist Jacquard finds each one and moves on, which is far cheaper than building
-         * them.
+         * refreshing is also what hands each product's notification types to the Baudot Subscription Manager
+         * as catalog targets, so a run that skips it may leave the manager with nothing to look after -
+         * subscriptions are taken out and nothing ever delivers them.  Where the products already exist
+         * Jacquard finds each one and moves on, which is far cheaper than building them.
          */
         if (catalogueIsComplete(openMetadataStore, productDefinitions))
         {
             System.out.println("subscription-fvt: the product catalogue is already complete - refreshing Jacquard to"
-                                       + " start the subscription manager, but not rebuilding it");
+                                       + " register the notification types with the subscription manager, but not rebuilding it");
         }
 
         OMAGPlatformExtension.getIntegrationDaemonClient()
@@ -821,12 +821,64 @@ final class SubscriptionFvtTestSupport
             emptyPassLimit--;
         }
 
+        purgedCount = purgedCount + purgeRetiredElements(openMetadataStore);
         purgedCount = purgedCount + purgeLeftoverGovernanceWork(openMetadataStore);
 
         if (purgedCount > 0)
         {
             System.out.println("subscription-fvt: purged " + purgedCount + " leftover test element(s) from a previous run before starting");
         }
+    }
+
+
+    /**
+     * The qualified names of elements that an earlier version of the content pack defined and this one does
+     * not.  A repository that persists between runs keeps them, and everything anchored to them, for ever.
+     * <br>
+     * The Baudot subscription manager was a watchdog governance service before it became an integration
+     * connector.  Every notification the watchdog form sent was anchored to its governance service element,
+     * and by the time the connector form arrived there were over twenty thousand of them - enough that
+     * sweeping notifications by type, as {@link #purgeLeftoverGovernanceWork} does, took hours.  Purging the
+     * anchor takes them all with it in one cascade.
+     */
+    private static final List<String> RETIRED_QUALIFIED_NAMES = List.of("baudot-subscription-manager-governance-service",
+                                                                         "EgeriaWatchdog::baudot-subscription-manager");
+
+
+    /**
+     * Purge the elements that a previous version of the content pack defined and this one has retired, along
+     * with everything anchored to them.  Harmless when they are not there - which, after the first run against
+     * a repository, they are not.
+     *
+     * @param openMetadataStore store to purge through
+     * @return number of elements purged
+     */
+    private static int purgeRetiredElements(OpenMetadataStore openMetadataStore)
+    {
+        int purgedCount = 0;
+
+        for (String qualifiedName : RETIRED_QUALIFIED_NAMES)
+        {
+            try
+            {
+                OpenMetadataElement retiredElement = openMetadataStore.getMetadataElementByUniqueName(qualifiedName,
+                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name);
+
+                if (retiredElement != null)
+                {
+                    System.out.println("subscription-fvt: purging retired element " + qualifiedName
+                                               + " and everything anchored to it");
+                    purgeElement(openMetadataStore, retiredElement.getElementGUID());
+                    purgedCount++;
+                }
+            }
+            catch (Exception ignored)
+            {
+                // Not there - the normal case on every run but the first against a repository.
+            }
+        }
+
+        return purgedCount;
     }
 
 
@@ -850,9 +902,15 @@ final class SubscriptionFvtTestSupport
      * names a subscription after the destination it delivers to, and a PostgreSQL schema name cannot carry
      * the hyphens {@link #TEST_MARKER} is written with - so the marker sweep above cannot see them either.
      * <br>
+     * Notifications are swept too.  The Baudot subscription manager creates one for every subscriber it
+     * notifies - over a thousand in a run - and nothing else removes them, so they would accumulate run after
+     * run.  They are attached to the notification types they came from, and every read of a notification type
+     * drags its notifications back with it, so the pile makes each refresh of the subscription manager slower
+     * than the last for no benefit: a notification from an earlier run tells nobody anything.
+     * <br>
      * Purging by type is safe here because this is a dedicated FVT repository: nothing but this suite creates
-     * engine actions or subscriptions in it - the catalogue Jacquard builds contains the <em>offers</em> of a
-     * subscription, never a subscription itself.
+     * engine actions, subscriptions or notifications in it - the catalogue Jacquard builds contains the
+     * <em>offers</em> of a subscription, never a subscription itself.
      *
      * @param openMetadataStore store to purge through
      * @return number of elements purged
@@ -864,7 +922,8 @@ final class SubscriptionFvtTestSupport
 
         for (String typeName : List.of(OpenMetadataType.ENGINE_ACTION.typeName,
                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
-                                       OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName))
+                                       OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName,
+                                       OpenMetadataType.NOTIFICATION.typeName))
         {
             QueryOptions queryOptions = new QueryOptions();
 

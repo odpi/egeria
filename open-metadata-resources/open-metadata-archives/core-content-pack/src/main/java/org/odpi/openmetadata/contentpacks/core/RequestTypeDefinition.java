@@ -119,24 +119,6 @@ public enum RequestTypeDefinition
                 ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
-     * baudot-subscription-manager
-     */
-    BAUDOT_SUBSCRIPTION_MANAGER(GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceRequestType(),
-                                null,
-                                null,
-                                null,
-                                GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
-                                GovernanceServiceDefinition.BAUDOT_SUBSCRIPTION_MANAGER,
-                                GovernanceActionTypeDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGovernanceActionTypeGUID(),
-                                GovernanceDomain.DATA_SHARING.getOrdinal(),
-                                null,
-                                ProductSolutionComponent.SUBSCRIPTION_MANAGER.getGUID(),
-                                ProductSolutionComponent.SUBSCRIPTION_MANAGER.getDisplayName(),
-                                ProductSolutionComponent.SUBSCRIPTION_MANAGER.getDescription(),
-                                ContentCollectionDefinition.WATCHDOG_ACTIONS,
-                                ContentPackDefinition.PRODUCTS_CONTENT_PACK),
-
-    /**
      * award-karma-points
      */
     AWARD_KARMA_POINTS(GovernanceActionTypeDefinition.AWARD_KARMA_POINTS.getGovernanceRequestType(),

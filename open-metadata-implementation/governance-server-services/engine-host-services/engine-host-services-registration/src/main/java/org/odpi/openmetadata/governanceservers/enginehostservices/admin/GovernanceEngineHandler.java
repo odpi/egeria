@@ -186,6 +186,17 @@ public abstract class GovernanceEngineHandler
     /**
      * Request that the governance engine refresh its configuration by calling the metadata server.
      * This request ensures that the latest configuration is in use.
+     * <br><br>
+     * Configuration only.  This used to sweep for engine actions this engine had not started as well, on both
+     * the throttled and the full path - but every caller that wants the sweep already asks for it separately,
+     * so it ran twice on each of their cycles, and the two callers that want nothing but the configuration
+     * (the out topic's engine-configuration-change listener, and
+     * {@link #validateGovernanceEngineInitialized}) were made to sweep whether they wanted to or not.
+     * <br><br>
+     * Keeping the sweep with the caller also keeps it in the right order.  In the refresh thread's first pass
+     * the sweep has to follow {@code restartServices}, because restart re-runs every engine action this engine
+     * has claimed and not finished - so a sweep that ran first would claim and start new actions that restart
+     * would then start a second time.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user id is not allowed to access configuration
@@ -204,20 +215,8 @@ public abstract class GovernanceEngineHandler
             if (diff < configurationRefreshIntervalMS)
             {
                 /*
-                 * The configuration was reloaded recently enough, so it is not read again - but engine actions
-                 * are not configuration, and the sweep that picks up the ones this engine has not started must
-                 * not be skipped along with it.
-                 *
-                 * That sweep is what makes the engine self-healing.  An engine action is created as REQUESTED
-                 * and moves to APPROVED a moment later; the out topic event announcing it is handled by
-                 * re-reading the action, and an engine that reads it in the instant before it is approved
-                 * simply does nothing - there is no retry, because nothing tells the engine to look again.
-                 * Behind the configuration throttle that miss lasted until the next configuration refresh fell
-                 * due, which is ten minutes at the earliest and, since the refresh thread sleeps far longer
-                 * than that between cycles, in practice much more.  The action sat at APPROVED with an engine
-                 * that was running, willing and idle.
+                 * The configuration was reloaded recently enough, so it is not read again.
                  */
-                startMissedEngineActions();
                 return;
             }
         }
@@ -255,7 +254,6 @@ public abstract class GovernanceEngineHandler
             this.governanceEngineProperties = governanceEngineElement.getProperties();
 
             refreshAllServiceConfig();
-            startMissedEngineActions();
         }
     }
 

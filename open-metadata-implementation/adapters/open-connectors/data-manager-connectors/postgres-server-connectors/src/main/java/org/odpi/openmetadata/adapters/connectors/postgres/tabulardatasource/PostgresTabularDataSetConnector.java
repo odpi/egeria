@@ -379,7 +379,12 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
 
     /**
      * Write the requested data record.  The first data record is record 0.
-     * This process reads the entire file, inserts the record in the right place and writes it out again.
+     * <br><br>
+     * A relational table has no row order to insert into, so the row number is not used; the record is
+     * written the same way as {@link #appendRecord}: as an upsert keyed on the identifier columns when the
+     * column descriptions have been set and mark some, and as a plain insert otherwise.  A plain insert was
+     * used here before, and it meant a data set delivered a second time to the same table - which is what a
+     * refresh subscription does - failed on every row already there.
      *
      * @param requestedRowNumber  long
      * @param dataValues Map of column descriptions to strings, each string is the value for the column.
@@ -394,7 +399,7 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Wr
         {
             try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
             {
-                jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
+                jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLWriteStatement(dataValues));
                 databaseConnection.commit();
             }
         }

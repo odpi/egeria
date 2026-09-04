@@ -166,14 +166,13 @@ public class EngineConfigurationRefreshThread implements Runnable
 
             /*
              * The engine is configured and any services interrupted by a previous shutdown have been
-             * restarted.  From here on this thread keeps the engine current by calling refreshConfig on a
-             * short cycle.  That single call covers both things this engine needs to keep noticing, because
-             * refreshConfig throttles itself:
+             * restarted.  From here on this thread keeps the engine current on a short cycle, asking for two
+             * things on each pass:
              *
-             *   - on most passes the configuration is still fresh, so it does nothing but sweep for engine
-             *     actions that were requested for this engine and have not been started;
-             *   - once the configuration is old enough it reloads the engine definition and its governance
-             *     services as well.
+             *   - refreshConfig, which throttles itself, so on most passes it does nothing and once the
+             *     configuration is old enough it reloads the engine definition and its governance services;
+             *   - the sweep for engine actions that were requested for this engine and have not been started,
+             *     which is wanted on every pass and so is asked for separately.
              *
              * The reason this cycle is short is that it is what the engine host falls back on when it does not
              * hear an event.  An engine action normally arrives on the out topic, which is prompt; this is
@@ -202,6 +201,13 @@ public class EngineConfigurationRefreshThread implements Runnable
                     if (governanceEngineHandler != null)
                     {
                         governanceEngineHandler.refreshConfig();
+
+                        /*
+                         * The sweep is asked for explicitly, because refreshConfig is configuration only and
+                         * throttles itself - so on most passes it does nothing at all, and the sweep would be
+                         * throttled along with it.
+                         */
+                        governanceEngineHandler.startMissedEngineActions();
                     }
                 }
                 catch (Exception error)

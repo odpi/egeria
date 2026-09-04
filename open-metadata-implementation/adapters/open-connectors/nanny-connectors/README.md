@@ -65,7 +65,7 @@ The digital products support subscriptions.  The active subscriptions are manage
 
 In tribute to [Emile Baudot](https://en.wikipedia.org/wiki/%C3%89mile_Baudot)
 
-The Baudot Subscription Manager is an integration connector that manages the subscriptions to the Jacquard digital products in the digital product catalog.
+The Baudot Subscription Manager is a dynamic integration connector that manages the subscriptions to the Jacquard digital products in the digital product catalog.  Each product's notification types are handed to it by Jacquard as catalog targets.  On every refresh - on the interval configured for it in the integration daemon, or when a refresh is requested through the daemon's REST API - it sends the welcome, one-time and periodic notifications that each notification type's subscribers are due; changes to a notification type's monitored resources are notified as the change events arrive.
 
 ## Wedgwood Data Provisioner
 
