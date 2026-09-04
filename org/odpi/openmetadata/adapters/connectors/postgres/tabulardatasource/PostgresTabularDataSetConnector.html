@@ -322,7 +322,12 @@ implements <a href="../../../../frameworks/connectors/tabulardatasets/WritableTa
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;dataValues)</span>
                  throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Write the requested data record.  The first data record is record 0.
- This process reads the entire file, inserts the record in the right place and writes it out again.</div>
+ <br><br>
+ A relational table has no row order to insert into, so the row number is not used; the record is
+ written the same way as <a href="#appendRecord(java.util.List)"><code>appendRecord(java.util.List&lt;java.lang.String&gt;)</code></a>: as an upsert keyed on the identifier columns when the
+ column descriptions have been set and mark some, and as a plain insert otherwise.  A plain insert was
+ used here before, and it meant a data set delivered a second time to the same table - which is what a
+ refresh subscription does - failed on every row already there.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#writeRecord(long,java.util.List)">writeRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>

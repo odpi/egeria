@@ -20,6 +20,7 @@ org.odpi.openmetadata.adapters.connectors.apachekafka.survey.ffdc
 org.odpi.openmetadata.adapters.connectors.babbage
 org.odpi.openmetadata.adapters.connectors.babbage.ffdc
 org.odpi.openmetadata.adapters.connectors.baudot
+org.odpi.openmetadata.adapters.connectors.baudot.controls
 org.odpi.openmetadata.adapters.connectors.baudot.ffdc
 org.odpi.openmetadata.adapters.connectors.controls
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile
@@ -87,6 +88,7 @@ org.odpi.openmetadata.adapters.connectors.integration.smartcollections
 org.odpi.openmetadata.adapters.connectors.integration.smartcollections.controls
 org.odpi.openmetadata.adapters.connectors.integration.smartcollections.ffdc
 org.odpi.openmetadata.adapters.connectors.jacquard
+org.odpi.openmetadata.adapters.connectors.jacquard.controls
 org.odpi.openmetadata.adapters.connectors.jacquard.ffdc
 org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog
 org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint

@@ -129,17 +129,17 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#BARDOT_STARTED" class="member-name-link">BARDOT_STARTED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">JACQUARD-HARVESTER-0006 - The {0} integration connector has initiated the Badot Subscription Manager running as engine action {1} with {2} action targets</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0009 - The {0} integration connector has stopped its monitoring of open metadata from server {1} on platform {2} and is shutting down</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CREATED_SUPPORTING_DEFINITION" class="member-name-link">CREATED_SUPPORTING_DEFINITION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CREATED_SUPPORTING_DEFINITION" class="member-name-link">CREATED_SUPPORTING_DEFINITION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0010 - The {0} integration connector has created a new {1} supporting definition with GUID {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DUPLICATE_CATALOG_TARGETS_REMOVED" class="member-name-link">DUPLICATE_CATALOG_TARGETS_REMOVED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">JACQUARD-HARVESTER-0025 - The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#HARVESTING_CATALOG_TARGETS" class="member-name-link">HARVESTING_CATALOG_TARGETS</a></code></div>
 <div class="col-last odd-row-color">
@@ -177,36 +177,40 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0002 - Integration connector {0} cannot determine if tabular data source {1} has changed since it has no last update time column</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REFRESH_CATALOG_TARGET" class="member-name-link">REFRESH_CATALOG_TARGET</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NO_SUBSCRIPTION_MANAGER" class="member-name-link">NO_SUBSCRIPTION_MANAGER</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">JACQUARD-HARVESTER-0006 - The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types will not be handed to a subscription manager and their subscribers will not be notified</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#REFRESH_CATALOG_TARGET" class="member-name-link">REFRESH_CATALOG_TARGET</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0019 - The {0} integration connector is refreshing the {1} data set for digital product {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#RETRIEVING_OPEN_METADATA_PRODUCT" class="member-name-link">RETRIEVING_OPEN_METADATA_PRODUCT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#RETRIEVING_OPEN_METADATA_PRODUCT" class="member-name-link">RETRIEVING_OPEN_METADATA_PRODUCT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">JACQUARD-HARVESTER-0016 - The {0} integration connector has retrieved an existing digital product {1} called {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#RETRIEVING_SUPPORTING_DEFINITION" class="member-name-link">RETRIEVING_SUPPORTING_DEFINITION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#RETRIEVING_SUPPORTING_DEFINITION" class="member-name-link">RETRIEVING_SUPPORTING_DEFINITION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0015 - The {0} integration connector has retrieved a new {1} supporting definition with GUID {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#STARTING_CONNECTOR" class="member-name-link">STARTING_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#STARTING_CONNECTOR" class="member-name-link">STARTING_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">JACQUARD-HARVESTER-0011 - The {0} integration connector is starting its harvesting of open metadata from server {1} on platform {2} into digital products</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNLINKING_ELEMENTS" class="member-name-link">UNLINKING_ELEMENTS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNLINKING_ELEMENTS" class="member-name-link">UNLINKING_ELEMENTS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">JACQUARD-HARVESTER-0026 - The {0} integration connector is unlinking {1} element {2} from {3} element {4} to remove relationship {5}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UPDATED_OPEN_METADATA_PRODUCT" class="member-name-link">UPDATED_OPEN_METADATA_PRODUCT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UPDATED_OPEN_METADATA_PRODUCT" class="member-name-link">UPDATED_OPEN_METADATA_PRODUCT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0018 - The {0} integration connector has updated an existing digital product {1} called {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UPDATED_SUPPORTING_DEFINITION" class="member-name-link">UPDATED_SUPPORTING_DEFINITION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UPDATED_SUPPORTING_DEFINITION" class="member-name-link">UPDATED_SUPPORTING_DEFINITION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">JACQUARD-HARVESTER-0025 - The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3}</div>
 </div>
 </div>
@@ -291,10 +295,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="BARDOT_STARTED">
-<h3>BARDOT_STARTED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">BARDOT_STARTED</span></div>
-<div class="block">JACQUARD-HARVESTER-0006 - The {0} integration connector has initiated the Badot Subscription Manager running as engine action {1} with {2} action targets</div>
+<section class="detail" id="NO_SUBSCRIPTION_MANAGER">
+<h3>NO_SUBSCRIPTION_MANAGER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">NO_SUBSCRIPTION_MANAGER</span></div>
+<div class="block">JACQUARD-HARVESTER-0006 - The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types will not be handed to a subscription manager and their subscribers will not be notified</div>
 </section>
 </li>
 <li>
@@ -323,6 +327,13 @@ the order they are declared.</div>
 <h3>NEW_OPEN_METADATA_PRODUCT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">NEW_OPEN_METADATA_PRODUCT</span></div>
 <div class="block">JACQUARD-HARVESTER-0012 - The {0} integration connector has created a new digital product {1} called {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DUPLICATE_CATALOG_TARGETS_REMOVED">
+<h3>DUPLICATE_CATALOG_TARGETS_REMOVED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">DUPLICATE_CATALOG_TARGETS_REMOVED</span></div>
+<div class="block">JACQUARD-HARVESTER-0025 - The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3}</div>
 </section>
 </li>
 <li>
