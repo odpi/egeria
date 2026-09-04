@@ -20,6 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * Each integration connector is optionally linked via the CatalogTarget relationship to one or more elements that the integration connector
  * is working on. The catalogTargetElement contains details of the entity that represents the catalog target.
  * It is extracted from entity proxy two of the catalog target relationship.
+ * <br><br>
+ * The element is held as it was retrieved with the catalog target: its header and properties, and the relationship
+ * that makes it a target.  What is attached to the element is not retrieved with it.  A caller that needs to see
+ * the attachments reads them on demand - and says how much - through the getters on RequestedCatalogTarget in
+ * the Open Integration Framework, which is where every catalog target that a connector processes ends up.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -127,9 +132,10 @@ public class CatalogTarget extends CatalogTargetProperties
 
 
     /**
-     * Return details of the catalog target element.
+     * Return the catalog target element as it was retrieved with the catalog target: header, properties and
+     * the catalog target relationship, with nothing attached.
      *
-     * @return element stub
+     * @return element, with its attachments not populated
      */
     public OpenMetadataRootElement getCatalogTargetElement()
     {

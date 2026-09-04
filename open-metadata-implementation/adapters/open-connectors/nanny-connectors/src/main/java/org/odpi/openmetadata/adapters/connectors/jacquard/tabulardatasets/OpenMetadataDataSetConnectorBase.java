@@ -41,6 +41,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextClientBase;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -246,6 +249,46 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
      * @throws ConnectorCheckedException unable to refresh
      */
     public abstract void refreshCache() throws ConnectorCheckedException;
+
+
+    /**
+     * Options for reading an element whose header and properties are all that will be used - which is every
+     * element a data set connector turns into a record.  With the default options the client assembles the
+     * element's whole graph to the default depth, one related-elements call per element per level; a data set
+     * of thirty valid values cost nearly three hundred calls to load, and a connector has one such data set per
+     * product.
+     *
+     * @param client the client the options are for
+     * @return get options with no related elements
+     */
+    protected GetOptions getHeaderAndPropertiesOptions(ConnectorContextClientBase client)
+    {
+        GetOptions getOptions = client.getGetOptions();
+
+        getOptions.setGraphQueryDepth(0);
+
+        return getOptions;
+    }
+
+
+    /**
+     * Paged query options for retrieving elements whose header and properties are all that will be used.
+     *
+     * @param client the client the options are for
+     * @param startFrom paging start
+     * @param pageSize page size
+     * @return query options with no related elements
+     */
+    protected QueryOptions getHeaderAndPropertiesQueryOptions(ConnectorContextClientBase client,
+                                                              int                        startFrom,
+                                                              int                        pageSize)
+    {
+        QueryOptions queryOptions = client.getQueryOptions(startFrom, pageSize);
+
+        queryOptions.setGraphQueryDepth(0);
+
+        return queryOptions;
+    }
 
 
     /**

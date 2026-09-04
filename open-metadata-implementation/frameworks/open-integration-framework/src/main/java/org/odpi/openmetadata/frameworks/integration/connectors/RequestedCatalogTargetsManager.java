@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,9 +115,21 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
             AssetClient assetClient = integrationContext.getAssetClient();
             int startFrom = 0;
 
+            /*
+             * Each catalog target comes back as its element's header and properties and the relationship that
+             * makes it a target - enough to identify it and to build the connector to it - and nothing attached to
+             * the element.  A processor that needs to see what is attached asks for it, and says how much, through
+             * RequestedCatalogTarget.getCatalogTargetElement(); the full read is still the default there.  With
+             * the default options here, every target's whole graph was assembled to the default depth before a
+             * refresh could begin, one related-elements call per element per level, whether or not any processor
+             * would look at it.
+             */
+            QueryOptions queryOptions = assetClient.getQueryOptions(startFrom, integrationContext.getMaxPageSize());
+
+            queryOptions.setGraphQueryDepth(0);
+
             List<OpenMetadataRootElement> catalogTargetList  = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                             assetClient.getQueryOptions(startFrom,
-                                                                                             integrationContext.getMaxPageSize()));
+                                                                                             queryOptions);
 
             while (catalogTargetList != null)
             {
@@ -217,6 +230,13 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
                             auditLog.logMessage(methodName,
                                                 OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
                                                                                                             requestedCatalogTarget.getCatalogTargetName()));
+
+                            /*
+                             * The element read on demand during the last refresh is forgotten, so that this
+                             * refresh reads it afresh if it asks for it.
+                             */
+                            requestedCatalogTarget.clearRetrievedCatalogTargetElement();
+
                             catalogTargetProcessorBase.refresh();
                         }
                         catch (Exception error)

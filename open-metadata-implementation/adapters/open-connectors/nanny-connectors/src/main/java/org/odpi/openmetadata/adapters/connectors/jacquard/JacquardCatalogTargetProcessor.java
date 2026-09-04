@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 
 import java.util.Date;
 import java.util.List;
@@ -199,7 +200,16 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
                     Date dataScopeLastUpdateTime = null;
 
                     AssetClient             dataSetClient = integrationContext.getAssetClient(OpenMetadataType.DATA_SET.typeName);
-                    OpenMetadataRootElement dataSet       = dataSetClient.getAssetByGUID(getCatalogTargetElement().getElementHeader().getGUID(), null);
+                    /*
+                     * The catalog target is the data set, and only its header is needed - the DataScope
+                     * classification is on it - so it is read with nothing attached.  A product data set's graph
+                     * includes its schema, field by field.
+                     */
+                    GetOptions headerOnly = dataSetClient.getGetOptions();
+
+                    headerOnly.setGraphQueryDepth(0);
+
+                    OpenMetadataRootElement dataSet       = this.getCatalogTargetElement(headerOnly);
 
                     if (dataSet.getElementHeader().getDataScope() != null)
                     {

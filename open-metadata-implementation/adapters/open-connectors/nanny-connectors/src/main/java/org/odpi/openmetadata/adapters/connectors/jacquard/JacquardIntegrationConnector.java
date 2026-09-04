@@ -69,6 +69,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 
 import java.util.*;
 
@@ -565,7 +566,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * If the product is already defined, then extract its element.  This works for products and product families.
          */
-        OpenMetadataRootElement productElement = classificationExplorerClient.getRootElementByUniqueName(productDefinition.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, collectionClient.getGetOptions());
+        OpenMetadataRootElement productElement = classificationExplorerClient.getRootElementByUniqueName(productDefinition.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, this.headerAndProperties(collectionClient));
 
         DigitalProductProperties digitalProductProperties = this.getDigitalProductProperties(productDefinition);
 
@@ -600,7 +601,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                  productGUID,
                                                                                                  productDefinition.getProductName()));
 
-            productElement = collectionClient.getCollectionByGUID(productGUID, collectionClient.getGetOptions());
+            productElement = collectionClient.getCollectionByGUID(productGUID, this.headerAndProperties(collectionClient));
         }
         else
         {
@@ -627,7 +628,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         personRoleProperties.setDisplayName("Product Manager for " + productDefinition.getProductName());
         personRoleProperties.setDescription(ProductRoleDefinition.PRODUCT_MANAGER.getDescription());
 
-        OpenMetadataRootElement productManagerElement = classificationExplorerClient.getRootElementByUniqueName(personRoleProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, collectionClient.getGetOptions());
+        OpenMetadataRootElement productManagerElement = classificationExplorerClient.getRootElementByUniqueName(personRoleProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, this.headerAndProperties(collectionClient));
 
         if (productManagerElement == null)
         {
@@ -658,7 +659,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                         personRoleProperties,
                                                                         assignmentScopeProperties);
 
-            productManagerElement = classificationExplorerClient.getRootElementByGUID(productManagerGUID, collectionClient.getGetOptions());
+            productManagerElement = classificationExplorerClient.getRootElementByGUID(productManagerGUID, this.headerAndProperties(collectionClient));
 
             if (productDefinition.getCommunity() != null)
             {
@@ -824,7 +825,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
             OpenMetadataRootElement dataSpecElement = classificationExplorerClient.getRootElementByUniqueName(dataSpecProperties.getQualifiedName(),
                                                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                              classificationExplorerClient.getGetOptions());
+                                                                                                              this.headerAndProperties(classificationExplorerClient));
             if (dataSpecElement == null)
             {
                 CollectionClient    collectionClient    = integrationContext.getCollectionClient(OpenMetadataType.DATA_SPEC_COLLECTION.typeName);
@@ -843,7 +844,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                         dataSpecProperties,
                                                                         dataDescriptionProperties);
 
-                dataSpecElement = collectionClient.getCollectionByGUID(dataSpecGUID, collectionClient.getGetOptions());
+                dataSpecElement = collectionClient.getCollectionByGUID(dataSpecGUID, this.headerAndProperties(collectionClient));
             }
 
             DataStructureClient dataStructureClient = integrationContext.getDataStructureClient();
@@ -856,7 +857,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             dataStructureProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
             dataStructureProperties.setNamePatterns(Collections.singletonList(productDefinition.getDataSpecTableName()));
 
-            OpenMetadataRootElement dataStructureElement = classificationExplorerClient.getRootElementByUniqueName(dataStructureProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, dataStructureClient.getGetOptions());
+            OpenMetadataRootElement dataStructureElement = classificationExplorerClient.getRootElementByUniqueName(dataStructureProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, this.headerAndProperties(dataStructureClient));
 
             if (dataStructureElement == null)
             {
@@ -1069,6 +1070,63 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         }
 
         return null;
+    }
+
+
+    /**
+     * Options for reading an element whose header and properties are all this connector will use - which is
+     * every element it looks up by name or GUID while building the catalogue, bar the one that reads
+     * specification properties (see {@link #withRelationships}).  With the default options the client assembles
+     * the element's whole graph to the default depth, one related-elements call per element per level, and a
+     * product's graph includes its notification types and everything ever attached to them; verifying 126
+     * products cost 7,200 such calls.
+     *
+     * @param client the client the options are for
+     * @return get options with no related elements
+     */
+    private GetOptions headerAndProperties(ConnectorContextClientBase client)
+    {
+        GetOptions getOptions = client.getGetOptions();
+
+        getOptions.setGraphQueryDepth(0);
+
+        return getOptions;
+    }
+
+
+    /**
+     * Query options for a related-elements query whose results' header and properties are all that will be used.
+     *
+     * @param client the client the options are for
+     * @return query options with no further related elements
+     */
+    private QueryOptions headerAndPropertiesQuery(ConnectorContextClientBase client)
+    {
+        QueryOptions queryOptions = client.getQueryOptions();
+
+        queryOptions.setGraphQueryDepth(0);
+
+        return queryOptions;
+    }
+
+
+    /**
+     * Options for reading an element together with the elements one hop away over the named relationship
+     * types, and nothing else.
+     *
+     * @param client the client the options are for
+     * @param relationshipTypeNames the relationships to follow
+     * @return get options
+     */
+    private GetOptions withRelationships(ConnectorContextClientBase client,
+                                         String...                  relationshipTypeNames)
+    {
+        GetOptions getOptions = client.getGetOptions();
+
+        getOptions.setGraphQueryDepth(1);
+        getOptions.setIncludeOnlyRelationships(List.of(relationshipTypeNames));
+
+        return getOptions;
     }
 
 
@@ -1298,7 +1356,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         NotificationTypeProperties notificationTypeProperties = getNotificationTypeProperties(productSubscriptionDefinition, productHeader, productName);
 
-        OpenMetadataRootElement notificationTypeElement = classificationExplorerClient.getRootElementByUniqueName(notificationTypeProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, classificationExplorerClient.getGetOptions());
+        OpenMetadataRootElement notificationTypeElement = classificationExplorerClient.getRootElementByUniqueName(notificationTypeProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, this.headerAndProperties(classificationExplorerClient));
 
         if (notificationTypeElement == null)
         {
@@ -1483,7 +1541,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         String processQualifiedName = OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName + "::" + productName + "::" + ResourceUse.CREATE_SUBSCRIPTION.getResourceUse() + "::" + productSubscriptionDefinition.getIdentifier();
 
-        OpenMetadataRootElement subscriptionGovernanceActionProcessElement = classificationExplorerClient.getRootElementByUniqueName(processQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, classificationExplorerClient.getGetOptions());
+        OpenMetadataRootElement subscriptionGovernanceActionProcessElement = classificationExplorerClient.getRootElementByUniqueName(processQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, this.headerAndProperties(classificationExplorerClient));
 
         if (subscriptionGovernanceActionProcessElement == null)
         {
@@ -1596,7 +1654,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
              */
             GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName);
 
-            OpenMetadataRootElement governanceActionProcess = governanceDefinitionClient.getGovernanceDefinitionByGUID(governanceActionProcessGUID, governanceDefinitionClient.getGetOptions());
+            OpenMetadataRootElement governanceActionProcess = governanceDefinitionClient.getGovernanceDefinitionByGUID(governanceActionProcessGUID, this.withRelationships(governanceDefinitionClient, OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName));
 
             if (governanceActionProcess.getSpecificationProperties() != null)
             {
@@ -1715,7 +1773,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
                 OpenMetadataRootElement notificationTypeElement = classificationExplorerClient.getRootElementByUniqueName(notificationTypeQualifiedName,
                                                                                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                                          classificationExplorerClient.getGetOptions());
+                                                                                                                          this.headerAndProperties(classificationExplorerClient));
 
                 if ((notificationTypeElement != null) && (productSubscriptionDefinition.isAddMonitoredResource()))
                 {
@@ -1762,7 +1820,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
             String qualifiedName = productDefinition.getQualifiedName() + "_" + productDefinition.getAssetIdentifier();
 
-            OpenMetadataRootElement assetElement = classificationExplorerClient.getRootElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, classificationExplorerClient.getGetOptions());
+            OpenMetadataRootElement assetElement = classificationExplorerClient.getRootElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, this.headerAndProperties(classificationExplorerClient));
 
             String assetGUID;
 
@@ -1874,7 +1932,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
             OpenMetadataRootElement connectionElement = classificationExplorerClient.getRootElementByUniqueName(qualifiedName + "_connection",
                                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                                classificationExplorerClient.getGetOptions());
+                                                                                                                this.headerAndProperties(classificationExplorerClient));
 
             if (connectionElement == null)
             {
@@ -2150,7 +2208,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         List<OpenMetadataRootElement> connectorTypes = classificationExplorerClient.getRelatedRootElements(connectionGUID,
                                                                                                            1,
                                                                                                            OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
-                                                                                                           classificationExplorerClient.getQueryOptions());
+                                                                                                           this.headerAndPropertiesQuery(classificationExplorerClient));
         boolean correctConnectorTypeInPlace = false;
 
         if (connectorTypes != null)
@@ -2233,7 +2291,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         List<OpenMetadataRootElement> endpoints = classificationExplorerClient.getRelatedRootElements(connectionGUID,
                                                                                                       1,
                                                                                                       OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
-                                                                                                      classificationExplorerClient.getQueryOptions());
+                                                                                                      this.headerAndPropertiesQuery(classificationExplorerClient));
         if (endpoints != null)
         {
             for (OpenMetadataRootElement endpoint : endpoints)
@@ -2315,7 +2373,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     {
         final String methodName = "verifyConnectionConfigurationProperties";
 
-        OpenMetadataRootElement connectionElement = connectionClient.getConnectionByGUID(connectionGUID, connectionClient.getGetOptions());
+        OpenMetadataRootElement connectionElement = connectionClient.getConnectionByGUID(connectionGUID, this.headerAndProperties(connectionClient));
 
         if ((connectionElement != null) && (connectionElement.getProperties() instanceof ConnectionProperties connectionProperties))
         {

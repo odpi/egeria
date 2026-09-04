@@ -109,7 +109,7 @@ public class ValidMetadataValueDataSetConnector extends DynamicOpenMetadataDataS
             }
 
             List<OpenMetadataRootElement> validValueSet = validValueDefinitionClient.getValidValueDefinitionsByIdentifier(identifierPropertyValue,
-                                                                                                                          validValueDefinitionClient.getQueryOptions(startFrom, pageSize));
+                                                                                                                          this.getHeaderAndPropertiesQueryOptions(validValueDefinitionClient, startFrom, pageSize));
 
             while (validValueSet != null)
             {
@@ -126,7 +126,7 @@ public class ValidMetadataValueDataSetConnector extends DynamicOpenMetadataDataS
 
                 startFrom += pageSize;
                 validValueSet = validValueDefinitionClient.getValidValueDefinitionsByIdentifier(identifierPropertyValue,
-                                                                                                validValueDefinitionClient.getQueryOptions(startFrom, pageSize));
+                                                                                                this.getHeaderAndPropertiesQueryOptions(validValueDefinitionClient, startFrom, pageSize));
             }
         }
         catch (Exception error)

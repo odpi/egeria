@@ -89,7 +89,7 @@ public abstract class OpenMetadataRootDataSetConnectorBase extends OpenMetadataD
                 try
                 {
                     existingValue = classificationExplorerClient.getRootElementByGUID(existingValue.getElementHeader().getGUID(),
-                                                                                      classificationExplorerClient.getGetOptions());
+                                                                                      this.getHeaderAndPropertiesOptions(classificationExplorerClient));
 
                 }
                 catch (Exception error)
@@ -174,6 +174,11 @@ public abstract class OpenMetadataRootDataSetConnectorBase extends OpenMetadataD
             ClassificationExplorerClient classificationExplorerClient = connectorContext.getClassificationExplorerClient(metadataTypeName);
 
             SearchOptions searchOptions = classificationExplorerClient.getSearchOptions(startFrom, pageSize);
+
+            /*
+             * A record is made from the element's header and properties, so nothing attached to it is asked for.
+             */
+            searchOptions.setGraphQueryDepth(0);
 
             /*
              * Retrieving by creation date/time ensure the order is preserved.
