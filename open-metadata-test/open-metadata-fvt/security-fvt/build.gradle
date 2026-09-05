@@ -1,0 +1,110 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module is a Functional Verification Test (FVT) suite for the **metadata-security** module: the
+// authorization decisions that the platform and every server on it delegate to the open metadata security
+// connectors.  It is the companion of auth-fvt.  That suite asks "who are you?" - logging on, tokens,
+// passwords; this one asks "what may you do?" - and the two questions are answered by different code.
+//
+// The subject is the whole chain rather than any one class in it:
+//
+//   * OpenMetadataPlatformSecurityVerifier and OpenMetadataServerSecurityVerifier (metadata-security-server)
+//     are what the admin services, platform services, multi-tenant services and generic handlers call;
+//   * they delegate to a connector built on the base classes in metadata-security-connectors, whose
+//     defaults refuse everything;
+//   * the connector under test is the one shipped with the platform, the Open Metadata Access Security
+//     Connector, reading its user directory and access controls from a YAML secrets store.
+//
+// None of this had a functional test.  The interfaces have unit tests for their message sets, and the
+// other suites either exclude the security connector entirely or install it with a directory that
+// contains only their own administrator - so "the connector recognises the user" was the only decision
+// that had ever been exercised.  Which lists a user has to be on to configure a server, whether a zone
+// really hides an element from a search, and whether an operation-specific list overrides the DEFAULT
+// one were all untested.
+//
+// Like auth-fvt it needs no database, no broker and no content packs: an in-memory repository and a
+// generated user directory.  It runs in about a minute.  It is opt-in, like every other FVT suite:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:security-fvt:test -PrunSecurityFvt
+
+dependencies {
+    // The platform itself, run in-process.  user-authn is NOT excluded: the platform runs with real
+    // authentication, so every client here has to present a bearer token for the user it is acting as,
+    // which is what makes "this user was refused" mean something.
+    testImplementation project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')
+
+    // Connectors needed to configure and run an in-memory metadata access store, plus the two that are
+    // the subject: the YAML secrets store holding the user directory and access controls, and the Open
+    // Metadata Access Security Connector that reads them.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:metadata-security-connectors:open-metadata-access-security-connector')
+
+    // Clients used to configure, start and operate the server, and to manage user accounts and access
+    // controls through the platform.  These are the callers of the platform security verifier.
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-api')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+
+    // The Open Metadata Store client, through which the element-level tests create, read, update and
+    // delete metadata as different users.  Every call it makes passes through the server security verifier.
+    testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+
+    // Frameworks: the connection beans the security connection is built from, the user account and
+    // access control beans exchanged with the platform, and the element beans the store returns.
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:common-services:ffdc-services')
+    testImplementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
+
+    // In-process Spring Boot startup/shutdown
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+
+    // Reading the user directory YAML directly, to check what the platform persisted
+    testImplementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Open Metadata Security Functional Verification Tests (security-fvt)'
+
+// The property is read here, at configuration time, rather than inside the onlyIf closure.  onlyIf is
+// evaluated during execution, and reaching for `project` then is unsupported with the configuration
+// cache.
+def runThisSuite = project.hasProperty('runSecurityFvt')
+
+test {
+    useJUnitPlatform()
+
+    // Optional, opt-in suite - see the note at the top of this file.
+    onlyIf { runThisSuite }
+
+    // Single JVM fork - the tests share one running platform (see OMAGPlatformExtension) and one user
+    // directory file that the access control tests write to, so they must not run concurrently.
+    maxParallelForks = 1
+    timeout = java.time.Duration.ofMinutes(10)
+    testLogging.showStandardStreams = true
+}
+
+// Resolves logging conflicts between the various connectors pulled in by the platform chassis
+jvmDependencyConflicts {
+    logging {
+        enforceLogback()
+    }
+}

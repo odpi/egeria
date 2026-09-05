@@ -1270,7 +1270,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                 if (classification.getName().equals(OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName))
                 {
                     List<String> owners = repositoryHelper.getStringArrayProperty(connectorName,
-                                                                                  OpenMetadataProperty.USER_ID.name,
+                                                                                  OpenMetadataProperty.USER_IDS.name,
                                                                                   classification.getProperties(),
                                                                                   methodName);
 

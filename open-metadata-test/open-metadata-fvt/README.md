@@ -137,6 +137,20 @@ against each suite below.
   ./gradlew :open-metadata-test:open-metadata-fvt:server-fvt:test -PrunServerFvt
   ```
 
+* **[security-fvt](security-fvt)** - exercises the **metadata-security** module: the authorization decisions
+  that the platform, the servers on it and the generic handlers delegate to the open metadata security
+  connectors. It is auth-fvt's companion - that suite asks *who are you?*, this one asks *what may you do?* -
+  and it runs the Open Metadata Access Security Connector, the one shipped with the platform, as both the
+  platform security connector and a server's security connector, against a generated user directory of
+  accounts, roles, groups and governance zones. It covers the three platform roles, the server and service
+  doors, the zone rules for reading, creating, updating and deleting elements, the dynamic groups built from
+  account type, ownership and maintenance history, and access control management through the platform. It
+  needs no database and loads no archives, so it runs in about a minute. Its first run found that the
+  `instanceOwner` dynamic group admitted everyone, which has been fixed - [its README](security-fvt) records it.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:security-fvt:test -PrunSecurityFvt
+  ```
 
 
 

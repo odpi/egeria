@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.odpi.openmetadata.securityfvt" level="INFO" />
+
+    <!-- A refused request is the expected outcome of most tests here, and each one is logged as an error
+         by the REST exception handler on the way out of the server and again on the way into the client.
+         Keep that expected noise out of the build output. -->
+    <logger name="org.odpi.openmetadata.userauthn" level="OFF" />
+    <logger name="org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler" level="OFF" />
+
+    <root level="warn">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>
