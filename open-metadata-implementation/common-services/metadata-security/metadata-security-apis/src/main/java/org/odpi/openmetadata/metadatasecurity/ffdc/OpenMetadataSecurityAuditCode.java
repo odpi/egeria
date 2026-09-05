@@ -83,14 +83,24 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OPEN-METADATA-SECURITY-0007 - User {0} is not authorized to issue {1} requests for service {2} on server {3}
+     * OPEN-METADATA-SECURITY-0007 - User {0} is not authorized to use the {1} service on server {2}
      */
     UNAUTHORIZED_SERVICE_ACCESS("OPEN-METADATA-SECURITY-0007",
                                 AuditLogRecordSeverityLevel.SECURITY,
-                                "User {0} is not authorized to issue {1} requests for service {2} on server {3}",
+                                "User {0} is not authorized to use the {1} service on server {2}",
                                 "The security service detected an unauthorized access to a service.",
                                 "Review the security policies and settings to determine whether this user should be able to call this service.  Either update the settings or investigate why the user issued the request.",
                                 "https://egeria-project.org/features/metadata-security/overview/"),
+
+    /**
+     * OPEN-METADATA-SECURITY-0010 - User {0} is not authorized to issue {1} requests to the {2} service on server {3}
+     */
+    UNAUTHORIZED_SERVICE_OPERATION_ACCESS("OPEN-METADATA-SECURITY-0010",
+                                          AuditLogRecordSeverityLevel.SECURITY,
+                                          "User {0} is not authorized to issue {1} requests to the {2} service on server {3}",
+                                          "The security service detected an unauthorized request for an operation of a service.",
+                                          "Review the security policies and settings to determine whether this user should be able to issue this operation on this service.  Either update the settings or investigate why the user issued the request.",
+                                          "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
      * OPEN-METADATA-SECURITY-0008 - User {0} is not authorized to attach feedback to element {1}

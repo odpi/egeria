@@ -17,7 +17,7 @@ import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.INVESTIGAT
 import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.METADATA_STORE_NAME;
 import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.OPERATOR_USER_ID;
 import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.UNAUTHORIZED_PLATFORM_ACCESS;
-import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.UNAUTHORIZED_SERVICE_ACCESS;
+import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.UNAUTHORIZED_SERVICE_OPERATION_ACCESS;
 import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.assertRefused;
 
 /**
@@ -39,9 +39,10 @@ import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.assertRef
  * <br><br>
  * Two verifiers take part.  The platform's verifier is asked first, on every administration call.  Once a
  * server has a security connection in its configuration document, the server's own verifier is asked as
- * well - as server administrator for a change, as server operator for a read - and its refusals carry the
- * service-access identifier, 403-003, where the platform's carry 403-001.  The tests assert the identifier
- * so that they show which verifier refused.
+ * well, for the same role the platform asked for: investigator to read the document, administrator to
+ * change it, operator for the read that starts the server.  Its refusals carry the service-operation
+ * identifier, 403-006, and name the administration service, the operation and the server, where the
+ * platform's carry 403-001; the tests assert the identifier so that they show which verifier refused.
  * <br><br>
  * Every refusal is checked for the user it names, both in the exception's userId and in its message.  The
  * administration API's client used to rebuild a refusal without the userId the server sent - its exception
@@ -180,24 +181,23 @@ public class PlatformSecurityFVT
 
     /**
      * Once a server has its own security connector, reading its configuration document is also put to
-     * that connector - as a server <em>operator</em> check, not an investigator one.  So the investigator,
-     * who passed the platform's check, is refused by the store's connector with the service-access
-     * identifier; and the operator, who is on the platform-services control the connector consults for
-     * that check, is admitted.
+     * that connector - and as the same investigator check the platform made, so the investigator who
+     * passed the platform's check passes the store's too.  The operator, who holds the investigator role
+     * as well, can read it likewise.
+     * <br><br>
+     * The first run of this suite found the store's connector being asked for an <em>operator</em> on this
+     * read, which refused the investigator a document the platform had just said they could see.  The
+     * admin store now asks both verifiers for the same role.
      *
      * @throws Exception unexpected failure in the test
      */
     @Test
-    void readingAServersConfigurationIsAlsoPutToTheServersOwnConnector() throws Exception
+    void readingAServersConfigurationIsPutToTheServersOwnConnectorAsAnInvestigator() throws Exception
     {
         OMAGServerConfigurationClient investigatorClient = SecurityFvtTestSupport.configurationClientAs(INVESTIGATOR_USER_ID, METADATA_STORE_NAME);
 
-        UserNotAuthorizedException error = assertRefused(UNAUTHORIZED_SERVICE_ACCESS,
-                                                         INVESTIGATOR_USER_ID,
-                                                         investigatorClient::getOMAGServerConfig,
-                                                         "Reading the store's configuration as the investigator");
-
-        assertMessageNamesUser(error, INVESTIGATOR_USER_ID);
+        assertEquals(METADATA_STORE_NAME, investigatorClient.getOMAGServerConfig().getLocalServerName(),
+                     "The investigator should be able to read the configuration of a server with its own security connector");
 
         OMAGServerConfigurationClient operatorClient = SecurityFvtTestSupport.configurationClientAs(OPERATOR_USER_ID, METADATA_STORE_NAME);
 
@@ -211,10 +211,11 @@ public class PlatformSecurityFVT
      * Both are governed by the platform-services control, which the investigator is not on.
      * <br><br>
      * The two refusals come from different verifiers.  A change to the document is refused by the
-     * platform's verifier, before anything is loaded.  An activation first loads the document, and loading
-     * puts the read to the server's own connector as a server operator check - so it is the store's
-     * connector that refuses the investigator, with the service-access identifier, and the platform's
-     * operator check is never reached.  Either way the investigator does not start the server.
+     * platform's verifier, before anything is loaded.  An activation first loads the document for start-up,
+     * and that load puts the read to the server's own connector as a server operator check - starting a
+     * server is an operator's job whichever verifier is asked - so it is the store's connector that refuses
+     * the investigator, with the service-access identifier, and the platform's operator check is never
+     * reached.  Either way the investigator does not start the server.
      *
      * @throws Exception unexpected failure in the test
      */
@@ -235,13 +236,15 @@ public class PlatformSecurityFVT
 
         PlatformServicesClient platformClient = SecurityFvtTestSupport.platformClientAs(INVESTIGATOR_USER_ID);
 
-        error = assertRefused(UNAUTHORIZED_SERVICE_ACCESS,
+        error = assertRefused(UNAUTHORIZED_SERVICE_OPERATION_ACCESS,
                               INVESTIGATOR_USER_ID,
                               () -> platformClient.activateWithStoredConfig(METADATA_STORE_NAME),
                               "Activating a server as the investigator");
 
         assertTrue(error.getReportedErrorMessage().contains("operations"),
                    "The refusal should be the server's operator check.  Message: " + error.getReportedErrorMessage());
+        assertTrue(error.getReportedErrorMessage().contains(METADATA_STORE_NAME),
+                   "The refusal should name the server.  Message: " + error.getReportedErrorMessage());
     }
 
 
@@ -262,7 +265,7 @@ public class PlatformSecurityFVT
     {
         OMAGServerConfigurationClient configurationClient = SecurityFvtTestSupport.configurationClientAs(OPERATOR_USER_ID, METADATA_STORE_NAME);
 
-        UserNotAuthorizedException error = assertRefused(UNAUTHORIZED_SERVICE_ACCESS,
+        UserNotAuthorizedException error = assertRefused(UNAUTHORIZED_SERVICE_OPERATION_ACCESS,
                                                          OPERATOR_USER_ID,
                                                          () -> configurationClient.setMaxPageSize(SecurityFvtTestSupport.MAX_PAGE_SIZE),
                                                          "Changing the store's configuration as the operator");
@@ -270,6 +273,8 @@ public class PlatformSecurityFVT
         assertMessageNamesUser(error, OPERATOR_USER_ID);
         assertTrue(error.getReportedErrorMessage().contains("configuration"),
                    "The refusal should say it was the configuration request that was refused.  Message: " + error.getReportedErrorMessage());
+        assertTrue(error.getReportedErrorMessage().contains(METADATA_STORE_NAME),
+                   "The refusal should name the server.  Message: " + error.getReportedErrorMessage());
     }
 
 

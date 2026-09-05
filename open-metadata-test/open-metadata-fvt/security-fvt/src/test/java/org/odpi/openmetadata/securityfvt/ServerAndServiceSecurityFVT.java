@@ -4,16 +4,20 @@ package org.odpi.openmetadata.securityfvt;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.ADMIN_USER_ID;
 import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.CONTRACTOR_USER_ID;
 import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.DIGITAL_USER_ID;
 import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.DISABLED_USER_ID;
 import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.EMPLOYEE_USER_ID;
 import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.EXTERNAL_USER_ID;
+import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.METADATA_STORE_NAME;
+import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.STORE_SERVICE_NAME;
 import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.UNKNOWN_USER_ID;
 import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.UNAUTHORIZED_SERVER_ACCESS;
 import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.UNAUTHORIZED_SERVICE_ACCESS;
@@ -110,13 +114,14 @@ public class ServerAndServiceSecurityFVT
 
 
     /**
-     * A contractor is admitted to the server and refused the service.
+     * A contractor is admitted to the server and refused the service, and the refusal names the service
+     * and the server.
      * <br><br>
      * The message identifier is what shows the contractor got past the first check: a refusal at the
-     * server would be 403-002, as it is for the external user above.  The message itself does not say
-     * which service refused the user - the service-access message names only the operation, and for a
-     * whole-service refusal that is "any" - so the identifier is the only thing to assert on.  The
-     * service is named in the audit log record the connector writes, not in the exception.
+     * server would be 403-002, as it is for the external user above.  The first run of this suite found
+     * the message naming only the operation - "any", for a whole-service refusal - so that this refusal
+     * and the external user's could be told apart only by their identifiers; the whole-service refusal
+     * now has a message of its own.
      *
      * @throws Exception unexpected failure in the test
      */
@@ -125,10 +130,15 @@ public class ServerAndServiceSecurityFVT
     {
         EgeriaOpenMetadataStoreClient client = SecurityFvtTestSupport.storeClientAs(CONTRACTOR_USER_ID);
 
-        assertRefused(UNAUTHORIZED_SERVICE_ACCESS,
-                      CONTRACTOR_USER_ID,
-                      () -> makeARequest(client, CONTRACTOR_USER_ID),
-                      "A request to the store service as a contractor");
+        UserNotAuthorizedException error = assertRefused(UNAUTHORIZED_SERVICE_ACCESS,
+                                                         CONTRACTOR_USER_ID,
+                                                         () -> makeARequest(client, CONTRACTOR_USER_ID),
+                                                         "A request to the store service as a contractor");
+
+        assertTrue(error.getReportedErrorMessage().contains(STORE_SERVICE_NAME),
+                   "The refusal should name the service.  Message: " + error.getReportedErrorMessage());
+        assertTrue(error.getReportedErrorMessage().contains(METADATA_STORE_NAME),
+                   "The refusal should name the server.  Message: " + error.getReportedErrorMessage());
     }
 
 
