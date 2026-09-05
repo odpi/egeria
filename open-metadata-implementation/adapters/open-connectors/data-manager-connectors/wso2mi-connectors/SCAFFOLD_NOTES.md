@@ -22,7 +22,20 @@ Tracks odpi/egeria#9245. This is a **v1 scaffold**, not a finished connector.
 
 1. ~~Compile against a full Egeria build~~ — **done.** `./gradlew :...:wso2mi-connectors:compileJava` is `BUILD SUCCESSFUL` (JDK 17). The module builds cleanly against the framework.
 2. **Auth wiring — open design point with the maintainers (#9245).** WSO2 MI's Management API is a two-step exchange: Basic-auth `GET /management/login` → bearer token → subsequent calls. The current `WSO2MIResourceConnector` obtains the base REST client from `RESTClientFactory` (which applies the configured Basic credentials) for the login call and holds the token on the connector. This needs to be reconciled with whatever session-token pattern Egeria prefers — Mandy pointed at the "client-side secret" pattern; the exact fit for a *username + password → session token* flow (rather than a static secret) is the question posted on #9245.
-3. **Integration connector body.** Decide `IntegrationConnectorBase` (single instance, current stub) vs `DynamicIntegrationConnectorBase` + a catalog-target processor (as `OracleServerIntegrationConnector`). Then implement the `APIInfo` → asset mapping: resolve the open metadata type for a deployed REST API, apply the include/exclude filters, make it idempotent (skip already-catalogued APIs), emit the audit codes.
+3. **Integration connector body** — researched; here is the concrete plan (from reading `OracleServerCatalogTargetProcessor` / `PostgresServerCatalogTargetProcessor`):
+
+   a. **Switch to `DynamicIntegrationConnectorBase`** + a `WSO2MICatalogTargetProcessor extends CatalogTargetProcessorBase`. Each Micro Integrator instance is a catalog target with its own embedded `WSO2MIResourceConnector`. `WSO2MIIntegrationConnector.getNewRequestedCatalogTargetSkeleton()` returns the processor (mirror `OracleServerIntegrationConnector` lines 70-140).
+
+   b. **`WSO2MITemplateType`** enum with a template name + a fixed template GUID per element kind (mirror `OracleTemplateType`). v1 needs one: the deployed-API asset template. The template itself is a metadata element that ships in the connector-configuration-factory / content packs — coordinate with maintainers on where it lives.
+
+   c. **Per-API catalog logic** in the processor's `refreshCatalogTarget()`:
+      - `resourceConnector.listAPIs()` → for each `APIInfo`
+      - `integrationContext.elementShouldBeCatalogued(apiName, excluded, included)` — the include/exclude filter is built in
+      - resolve `qualifiedName` from the template + placeholder properties (`propertyHelper.getResolvedStringPropertyFromTemplate`)
+      - `openMetadataStore.getMetadataElementByUniqueName(qualifiedName, ...)` — if non-null, `auditLog.logMessage(SKIPPING_API)` (idempotency)
+      - else `openMetadataStore.getMetadataElementFromTemplate(<DeployedAPI type>, <MI-instance anchor GUID>, false, ..., templateGUID, ..., placeholderProperties, <capability GUID>, CAPABILITY_ASSET_USE_RELATIONSHIP, useProps, true)` → returns the new element GUID; `auditLog.logMessage(CATALOGED_API)`
+
+   d. **Open metadata type for a deployed REST API** — `OpenMetadataType.DEPLOYED_API` exists; confirm it's the right one vs a generic `Asset`/`DeployedConnector`, and whether the MI instance itself should be a `SoftwareServer` + `SoftwareCapability` (as the DB connectors do for the DB server + DB manager).
 4. **Template types.** `WSO2MITemplateType` + template GUIDs, wired into the provider (`supportedTemplateTypes`), following `OracleTemplateType`.
 5. **Tests.** `ffdc` `AuditCodeTest` / `ErrorCodeTest` (mirror the Oracle/UC ones); a mocked-REST test for `WSO2MIResourceConnector.login()` + `listAPIs()`.
 6. **Docs.** A page under `site/docs` and a `connector-configuration-factory` entry, if the maintainers want the connector shipped in the default configuration.
