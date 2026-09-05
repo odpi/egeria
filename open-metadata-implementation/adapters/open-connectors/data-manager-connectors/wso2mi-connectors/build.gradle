@@ -1,0 +1,42 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+plugins {
+    id 'application'
+    id "com.gradleup.shadow"
+}
+
+// Artifact names are taken from the directory by default, set in settings.gradle to override
+// The 'name' for the maven artifact, and description are set here
+description = 'WSO2 Micro Integrator Connectors for Egeria'
+
+dependencies {
+    compileOnly 'org.slf4j:slf4j-api'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-integration-framework')
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testCompileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testImplementation 'org.testng:testng'
+    compileOnly 'org.springframework:spring-core'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+}
+
+application {
+    mainClass = ''
+}
+
+shadowJar {
+    archiveClassifier = 'jar-with-dependencies'
+}

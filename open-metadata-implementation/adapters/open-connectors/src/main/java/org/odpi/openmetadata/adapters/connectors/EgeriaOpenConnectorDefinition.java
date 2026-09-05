@@ -1489,6 +1489,28 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                            DeployedImplementationType.REST_API.getAssociatedTypeName(),
                            DeployedImplementationType.REST_API.getDeployedImplementationType()),
 
+    WSO2MI_RESOURCE_CONNECTOR(575,
+                              "e285c3b8-6a00-4856-8ea3-86b3e91c8ca2",
+                              "Egeria::ResourceConnector::DataManagerCatalog::WSO2MicroIntegrator",
+                              "WSO2 Micro Integrator REST Connector",
+                              "Connector that provides access to a WSO2 Micro Integrator instance through its Management API.",
+                              "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/data-manager-connectors/wso2mi-connectors",
+                              "org.odpi.openmetadata.adapters.connectors.wso2mi.resource.WSO2MIResourceProvider",
+                              ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                              DeployedImplementationType.REST_API.getAssociatedTypeName(),
+                              DeployedImplementationType.REST_API.getDeployedImplementationType()),
+
+    WSO2MI_INTEGRATION_CONNECTOR(576,
+                                 "ffc4fbaf-4d50-48ea-9362-e5bedc0da6a6",
+                                 "Egeria::IntegrationConnector::DataManagerCatalog::WSO2MicroIntegrator",
+                                 "Catalog APIs deployed on a WSO2 Micro Integrator",
+                                 "Catalogs the REST APIs deployed on a WSO2 Micro Integrator instance as open metadata assets.",
+                                 "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/data-manager-connectors/wso2mi-connectors",
+                                 "org.odpi.openmetadata.adapters.connectors.wso2mi.catalog.WSO2MIIntegrationProvider",
+                                 ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                 DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                 DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
+
     ;
 
 
