@@ -66,14 +66,11 @@ public abstract class DynamicIntegrationConnectorBase extends IntegrationConnect
                 }
                 catch (Exception error)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logException(methodName,
-                                              OIFAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(connectorName,
-                                                                                                            error.getClass().getName(),
-                                                                                                            error.getMessage()),
-                                              error);
-                    }
+                    logExceptionRecord(methodName,
+                                       OIFAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(connectorName,
+                                                                                                     error.getClass().getName(),
+                                                                                                     error.getMessage()),
+                                       error);
 
                     throw new ConnectorCheckedException(OIFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                           error.getClass().getName(),
@@ -126,12 +123,12 @@ public abstract class DynamicIntegrationConnectorBase extends IntegrationConnect
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                             error.getClass().getName(),
-                                                                                             methodName,
-                                                                                             error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                          error.getClass().getName(),
+                                                                                          methodName,
+                                                                                          error.getMessage()),
+                                   error);
             }
         }
     }

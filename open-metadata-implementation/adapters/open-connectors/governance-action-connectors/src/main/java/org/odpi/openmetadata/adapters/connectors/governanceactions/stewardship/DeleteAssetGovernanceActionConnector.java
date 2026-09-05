@@ -92,7 +92,7 @@ public class DeleteAssetGovernanceActionConnector extends GeneralGovernanceActio
                 outputGuards.add(ManageAssetGuard.DELETE_COMPLETE.getName());
             }
 
-            auditLog.logMessage(methodName, messageDefinition);
+            logRecord(methodName, messageDefinition);
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);
         }

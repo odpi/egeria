@@ -18,6 +18,8 @@ dependencies {
     compileOnly 'commons-io:commons-io'
     testImplementation 'org.testng:testng'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
 
 }
 

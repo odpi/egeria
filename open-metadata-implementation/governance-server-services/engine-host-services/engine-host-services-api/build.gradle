@@ -16,10 +16,18 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-api')
     implementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-client')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testImplementation 'org.testng:testng'
 }
 
 description = 'Engine Host Services API'
 
 java {
     withJavadocJar()
+}
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }

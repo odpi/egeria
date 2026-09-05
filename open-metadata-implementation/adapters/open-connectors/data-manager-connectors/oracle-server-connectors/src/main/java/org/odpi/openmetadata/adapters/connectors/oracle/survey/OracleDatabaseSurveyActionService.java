@@ -56,9 +56,9 @@ public class OracleDatabaseSurveyActionService extends SurveyActionServiceConnec
 
             if (databaseName == null)
             {
-                auditLog.logMessage(methodName, OracleAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                    assetStore.getQualifiedName(),
-                                                                                                    assetStore.getAssetGUID()));
+                logRecord(methodName, OracleAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
+                                                                                          assetStore.getQualifiedName(),
+                                                                                          assetStore.getAssetGUID()));
             }
             else
             {

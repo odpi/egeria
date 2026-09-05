@@ -21,13 +21,13 @@ The KafkaOpenMetadataTopicConnectorErrorCode is used to define first failure dat
 
 | Message Id | HTTP Code | Message |
 |---|---|---|
-| [OCF-KAFKA-TOPIC-CONNECTOR-400-001 ](#ocf-kafka-topic-connector-400-001-) | 400 | An unexpected {0} exception was caught while sending an event to topic {1}.  The message in the exception was: {2} |
-| [OCF-KAFKA-TOPIC-CONNECTOR-400-002 ](#ocf-kafka-topic-connector-400-002-) | 400 | Egeria was unable to initialize a connection to a Kafka cluster.  The message in the exception was: {0} |
-| [OCF-KAFKA-TOPIC-CONNECTOR-400-003 ](#ocf-kafka-topic-connector-400-003-) | 400 | Egeria encountered an exception while attempting to connect a message producer to a Kafka.  The message in the exception was: {0} |
+| [OCF-KAFKA-TOPIC-CONNECTOR-400-001](#ocf-kafka-topic-connector-400-001) | 400 | An unexpected {0} exception was caught while sending an event to topic {1}.  The message in the exception was: {2} |
+| [OCF-KAFKA-TOPIC-CONNECTOR-400-002](#ocf-kafka-topic-connector-400-002) | 400 | Egeria was unable to initialize a connection to a Kafka cluster.  The message in the exception was: {0} |
+| [OCF-KAFKA-TOPIC-CONNECTOR-400-003](#ocf-kafka-topic-connector-400-003) | 400 | Egeria encountered an exception while attempting to connect a message producer to a Kafka.  The message in the exception was: {0} |
 
 ----
 
-### OCF-KAFKA-TOPIC-CONNECTOR-400-001 
+### OCF-KAFKA-TOPIC-CONNECTOR-400-001
 
 > An unexpected {0} exception was caught while sending an event to topic {1}.  The message in the exception was: {2}
 
@@ -48,7 +48,7 @@ Review the exception that was returned from the send.
 
 ----
 
-### OCF-KAFKA-TOPIC-CONNECTOR-400-002 
+### OCF-KAFKA-TOPIC-CONNECTOR-400-002
 
 > Egeria was unable to initialize a connection to a Kafka cluster.  The message in the exception was: {0}
 
@@ -69,7 +69,7 @@ Ensure that Kafka is available
 
 ----
 
-### OCF-KAFKA-TOPIC-CONNECTOR-400-003 
+### OCF-KAFKA-TOPIC-CONNECTOR-400-003
 
 > Egeria encountered an exception while attempting to connect a message producer to a Kafka.  The message in the exception was: {0}
 

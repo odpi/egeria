@@ -238,11 +238,11 @@ No action is required.  This message is for monitoring the set up of the data sh
 
 **System action**
 
-The connector is initiating its refreshing of a data sharing hub.
+The connector is reading the data fields from a CSV file so that it can refresh a data sharing hub.
 
 **User action**
 
-No action is required.  This message is for monitoring the activity of the data sharing hub management.
+No action is required.  This message identifies the CSV file that the data fields are being read from.
 
 
 ----

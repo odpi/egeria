@@ -28,7 +28,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                           AuditLogRecordSeverityLevel.STARTUP,
                           "The Open Metadata Security Service {0} for OMAG Server Platform {1} is initializing",
                           "The local server has started up a new instance of the Open Metadata Platform Security Service Connector.",
-                          "No action is required.  This is part of the normal operation of the service.",
+                          "No action is required.  This is part of the normal start up of the OMAG Server Platform.",
                           "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
@@ -38,7 +38,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                       AuditLogRecordSeverityLevel.SHUTDOWN,
                       "The Open Metadata Security Service {0} for OMAG Server Platform {1} is shutting down",
                       "The local administrator has requested shut down of the Open Metadata Platform Security Service Connector.",
-                      "No action is required.  This is part of the normal operation of the service.",
+                      "No action is required.  This is part of the normal shut down of the OMAG Server Platform.",
                       "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
@@ -48,7 +48,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                          AuditLogRecordSeverityLevel.STARTUP,
                          "The Open Metadata Security Service {0} for server {1} is initializing",
                          "The local server has started up a new instance of the Open Metadata Server Security Service Connector.",
-                         "No action is required.  This is part of the normal operation of the service.",
+                         "No action is required.  This is part of the normal start up of the server.",
                          "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
@@ -58,7 +58,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                      AuditLogRecordSeverityLevel.SHUTDOWN,
                      "The Open Metadata Security Service {0} for server {1} is shutting down",
                      "The local administrator has requested shut down of the Open Metadata Server Security Service Connector.",
-                     "No action is required.  This is part of the normal operation of the service.",
+                     "No action is required.  This is part of the normal shut down of the server.",
                      "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
@@ -78,10 +78,9 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     UNAUTHORIZED_SERVER_ACCESS("OPEN-METADATA-SECURITY-0006",
                                AuditLogRecordSeverityLevel.SECURITY,
                                "User {0} is not authorized to issue a request to server {1}",
-                               "The security service detected an unauthorized access to a service.",
-                               "Review the security policies and settings to determine if this access should be allowed or not." +
-                                       "  Take action to either change the security sessions or determine the reason for the unauthorized request.",
-                                       "https://egeria-project.org/features/metadata-security/overview/"),
+                               "The security service detected an unauthorized access to a server.",
+                               "Review the security policies and settings to determine whether this user should be able to issue requests to this server.  Either update the settings or investigate why the user issued the request.",
+                               "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
      * OPEN-METADATA-SECURITY-0007 - User {0} is not authorized to issue {1} requests for service {2} on server {3}
@@ -90,9 +89,8 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                 AuditLogRecordSeverityLevel.SECURITY,
                                 "User {0} is not authorized to issue {1} requests for service {2} on server {3}",
                                 "The security service detected an unauthorized access to a service.",
-                                "Review the security policies and settings to determine if this access should be allowed or not." +
-                                        "  Take action to either change the security sessions or determine the reason for the unauthorized request.",
-                                        "https://egeria-project.org/features/metadata-security/overview/"),
+                                "Review the security policies and settings to determine whether this user should be able to call this service.  Either update the settings or investigate why the user issued the request.",
+                                "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
      * OPEN-METADATA-SECURITY-0008 - User {0} is not authorized to attach feedback to element {1}
@@ -100,10 +98,9 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     UNAUTHORIZED_ADD_FEEDBACK("OPEN-METADATA-SECURITY-0008",
                               AuditLogRecordSeverityLevel.SECURITY,
                               "User {0} is not authorized to attach feedback to element {1}",
-                              "The security service detected an unauthorized change to an element.",
-                              "Review the security policies and settings to determine if this access should be allowed or not." +
-                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request.",
-                                      "https://egeria-project.org/features/metadata-security/overview/"),
+                              "The security service detected an unauthorized attempt to attach feedback to an element.",
+                              "Review the security policies and settings to determine whether this user should be able to attach feedback to this element.  Either update the settings or investigate why the user issued the request.",
+                              "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
      * OPEN-METADATA-SECURITY-0009 - User {0} is not authorized to change the zone membership of element {1} from {2} to {3}
@@ -111,10 +108,9 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     UNAUTHORIZED_ZONE_CHANGE("OPEN-METADATA-SECURITY-0009",
                              AuditLogRecordSeverityLevel.SECURITY,
                              "User {0} is not authorized to change the zone membership of element {1} from {2} to {3}",
-                             "The security service detected an unauthorized change to an element.",
-                             "Review the security policies and settings to determine if this access should be allowed or not." +
-                                     "  Take action to either change the security sessions or determine the reason for the unauthorized request.",
-                                     "https://egeria-project.org/features/metadata-security/overview/"),
+                             "The security service detected an unauthorized change to the zone membership of an element.",
+                             "Review the security policies and settings to determine whether this user should be able to move elements between these governance zones.  Either update the settings or investigate why the user issued the request.",
+                             "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
      * OPEN-METADATA-SECURITY-0011 - User {0} is not authorized to issue operation {1} on {2} anchor element {3}
@@ -123,9 +119,8 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                AuditLogRecordSeverityLevel.SECURITY,
                                "User {0} is not authorized to issue operation {1} on {2} anchor element {3}",
                                "The security service detected an unauthorized access to a member of the anchor element.",
-                               "Review the security policies and settings to determine if this access should be allowed or not." +
-                                       "  Take action to either change the security sessions or determine the reason for the unauthorized request.",
-                                       "https://egeria-project.org/features/metadata-security/overview/"),
+                               "Review the security policies and settings to determine whether this user should be able to issue this operation on the anchor element and its members.  Either update the settings or investigate why the user issued the request.",
+                               "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
      * OPEN-METADATA-SECURITY-0015 - User {0} is not authorized to access open metadata type {1} ({2}) on server {3}
@@ -134,9 +129,8 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                              AuditLogRecordSeverityLevel.SECURITY,
                              "User {0} is not authorized to access open metadata type {1} ({2}) on server {3}",
                              "The security service detected an unauthorized access of an open metadata type.",
-                             "Review the security policies and settings to determine if this access should be allowed or not." +
-                                     "  Take action to either change the security sessions or determine the reason for the unauthorized request.",
-                                     "https://egeria-project.org/features/metadata-security/overview/"),
+                             "Review the security policies and settings to determine whether this user should be able to access this open metadata type.  Either update the settings or investigate why the user issued the request.",
+                             "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
      * OPEN-METADATA-SECURITY-0016 - User {0} is not authorized to change open metadata type {1} ({2}) on server {3}
@@ -145,9 +139,8 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                              AuditLogRecordSeverityLevel.SECURITY,
                              "User {0} is not authorized to change open metadata type {1} ({2}) on server {3}",
                              "The security service detected an unauthorized change of an open metadata type.",
-                             "Review the security policies and settings to determine if this access should be allowed or not." +
-                                     "  Take action to either change the security sessions or determine the reason for the unauthorized request.",
-                                     "https://egeria-project.org/features/metadata-security/overview/"),
+                             "Review the security policies and settings to determine whether this user should be able to change this open metadata type.  Either update the settings or investigate why the user issued the request.",
+                             "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
      * OPEN-METADATA-SECURITY-0017 - User {0} is not authorized to create an open metadata instance of type {1} on server {2}
@@ -155,10 +148,9 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     UNAUTHORIZED_INSTANCE_CREATE("OPEN-METADATA-SECURITY-0017",
                                  AuditLogRecordSeverityLevel.SECURITY,
                                  "User {0} is not authorized to create an open metadata instance of type {1} on server {2}",
-                                 "The security service detected an unauthorized access of an open metadata type.",
-                                 "Review the security policies and settings to determine if this access should be allowed or not." +
-                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request.",
-                                         "https://egeria-project.org/features/metadata-security/overview/"),
+                                 "The security service detected an unauthorized attempt to create an open metadata instance.",
+                                 "Review the security policies and settings to determine whether this user should be able to create instances of this open metadata type.  Either update the settings or investigate why the user issued the request.",
+                                 "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
      * OPEN-METADATA-SECURITY-0018 - User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}
@@ -167,9 +159,8 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                  AuditLogRecordSeverityLevel.SECURITY,
                                  "User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}",
                                  "The security service detected an unauthorized access of an open metadata instance.",
-                                 "Review the security policies and settings to determine if this access should be allowed or not." +
-                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request.",
-                                         "https://egeria-project.org/features/metadata-security/overview/"),
+                                 "Review the security policies and settings to determine whether this user should be able to access this open metadata instance.  Either update the settings or investigate why the user issued the request.",
+                                 "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
      * OPEN-METADATA-SECURITY-0019 - User {0} is not authorized to change open metadata type {1} of type {2} on server {3} using method {4}
@@ -178,9 +169,8 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                  AuditLogRecordSeverityLevel.SECURITY,
                                  "User {0} is not authorized to change open metadata type {1} of type {2} on server {3} using method {4}",
                                  "The security service detected an unauthorized change of an open metadata instance.",
-                                 "Review the security policies and settings to determine if this access should be allowed or not." +
-                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request.",
-                                         "https://egeria-project.org/features/metadata-security/overview/"),
+                                 "Review the security policies and settings to determine whether this user should be able to change this open metadata instance.  Either update the settings or investigate why the user issued the request.",
+                                 "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
      * OPEN-METADATA-SECURITY-0020 - User {0} is not authorized to issue operation {1} on {2} element {3}

@@ -61,7 +61,6 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
     private String   clientUserId     = null;
     private String   targetRootURL    = null;
 
-    protected AuditLog auditLog         = null;
     protected final String   connectorName;
     protected       ConnectorContextBase connectorContext = null;
     protected final PropertyHelper       propertyHelper   = new PropertyHelper();

@@ -142,13 +142,10 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                                 }
                                 else
                                 {
-                                    if (auditLog != null)
-                                    {
-                                        auditLog.logMessage(methodName,
-                                                            BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(
-                                                                    connectorName,
-                                                                    dataFile.toString()));
-                                    }
+                                    logRecord(methodName,
+                                              BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(
+                                                      connectorName,
+                                                      dataFile.toString()));
                                 }
                             }
                         }
@@ -160,17 +157,13 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
-                                                  error.getClass().getName(),
-                                                  connectorName,
-                                                  directoryToMonitor.directoryFile.getAbsolutePath(),
-                                                  error.getMessage()),
-                                          error);
-
-                }
+                logExceptionRecord(methodName,
+                                   BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
+                                           error.getClass().getName(),
+                                           connectorName,
+                                           directoryToMonitor.directoryFile.getAbsolutePath(),
+                                           error.getMessage()),
+                                   error);
 
                 throw new FileException(
                         BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(error.getClass().getName(),

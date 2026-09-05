@@ -48,7 +48,7 @@ public enum OMAGConnectorErrorCode implements ExceptionMessageSet
      */
     UNEXPECTED_EXCEPTION(500, "OMAG-CONNECTORS-500-001",
                          "The {0} Egeria connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector cannot contact the OMAG Infrastructure.",
+                         "The connector is unable to complete the requested operation and returns this exception to its caller.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
                          "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 

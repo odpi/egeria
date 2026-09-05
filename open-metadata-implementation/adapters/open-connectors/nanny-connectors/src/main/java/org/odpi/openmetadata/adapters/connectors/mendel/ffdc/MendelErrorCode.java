@@ -34,15 +34,6 @@ public enum MendelErrorCode implements ExceptionMessageSet
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
                          "https://egeria-project.org/features/duplicate-management/overview/"),
 
-    /**
-     * MENDEL-DUPLICATE-MANAGER-500-002 - The {0} watchdog action service is unable to register a listener for open metadata events due to a {1} exception with message {2}
-     */
-    UNABLE_TO_REGISTER_LISTENER(500, "MENDEL-DUPLICATE-MANAGER-500-002",
-                                "The {0} watchdog action service is unable to register a listener for open metadata events due to a {1} exception with message {2}",
-                                "The service is unable to start because it receives no notification of new or updated duplicate links.",
-                                "Use the details from the error message to determine the cause of the error and restart the service once it is resolved.",
-                                "https://egeria-project.org/features/duplicate-management/overview/"),
-
     ;
 
     private final ExceptionMessageDefinition messageDefinition;

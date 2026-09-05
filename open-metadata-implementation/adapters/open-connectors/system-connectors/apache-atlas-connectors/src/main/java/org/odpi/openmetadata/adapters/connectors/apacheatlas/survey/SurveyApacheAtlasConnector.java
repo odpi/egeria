@@ -729,15 +729,12 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                 /*
                  * There is a root schema type, but it is of the wrong type.
                  */
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        AtlasSurveyAuditCode.WRONG_ROOT_SCHEMA_TYPE.getMessageDefinition(assetGUID,
-                                                                                                         assetUniverse.getSchemaType().getRelatedElement().getElementHeader().getType().getTypeName(),
-                                                                                                         OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName,
-                                                                                                         surveyActionServiceName,
-                                                                                                         assetUniverse.getSchemaType().toString()));
-                }
+                logRecord(methodName,
+                          AtlasSurveyAuditCode.WRONG_ROOT_SCHEMA_TYPE.getMessageDefinition(assetGUID,
+                                                                                           assetUniverse.getSchemaType().getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                                                           OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName,
+                                                                                           surveyActionServiceName,
+                                                                                           assetUniverse.getSchemaType().toString()));
 
                 throw new ConnectorCheckedException(AtlasSurveyErrorCode.WRONG_ROOT_SCHEMA_TYPE.getMessageDefinition(assetGUID,
                                                                                                                      assetUniverse.getSchemaType().getRelatedElement().getElementHeader().getType().getTypeName(),
@@ -784,11 +781,8 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
         }
         else
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    AtlasSurveyAuditCode.MISSING_ASSET_UNIVERSE.getMessageDefinition(surveyActionServiceName));
-            }
+            logRecord(methodName,
+                      AtlasSurveyAuditCode.MISSING_ASSET_UNIVERSE.getMessageDefinition(surveyActionServiceName));
 
             throw new ConnectorCheckedException(AtlasSurveyErrorCode.MISSING_ASSET_UNIVERSE.getMessageDefinition(surveyActionServiceName),
                                                 this.getClass().getName(),

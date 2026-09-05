@@ -157,7 +157,7 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
 
             if (messageDefinition != null)
             {
-                auditLog.logMessage(methodName, messageDefinition);
+                logRecord(methodName, messageDefinition);
             }
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);

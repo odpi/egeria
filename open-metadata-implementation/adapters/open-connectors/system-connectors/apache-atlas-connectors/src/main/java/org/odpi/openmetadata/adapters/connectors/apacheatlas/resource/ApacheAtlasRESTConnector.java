@@ -34,7 +34,6 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
     public static final String SERVICE_TYPE              = "open_metadata_ecosystem";
 
 
-    private AuditLog                  auditLog            = null;
     private String                    atlasServerName    = "Apache Atlas";
     private String                    targetRootURL      = null;
     private String                    connectorName      = "Apache Atlas REST Connector";
@@ -161,16 +160,13 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      ApacheAtlasAuditCode.BAD_CONFIGURATION.getMessageDefinition(connectorName,
-                                                                                                  error.getClass().getName(),
-                                                                                                  targetRootURL,
-                                                                                                  methodName,
-                                                                                                  error.getMessage()),
-                                      error);
-            }
+            logExceptionRecord(methodName,
+                               ApacheAtlasAuditCode.BAD_CONFIGURATION.getMessageDefinition(connectorName,
+                                                                                           error.getClass().getName(),
+                                                                                           targetRootURL,
+                                                                                           methodName,
+                                                                                           error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(ApacheAtlasErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                error.getClass().getName(),
@@ -2399,14 +2395,14 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
                                       boolean   logMessage,
                                       Exception error) throws PropertyServerException
     {
-        if ((auditLog != null) && (logMessage))
+        if (logMessage)
         {
-            auditLog.logException(methodName,
-                                  ApacheAtlasAuditCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
-                                                                                                       atlasServerName,
-                                                                                                       targetRootURL,
-                                                                                                       error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               ApacheAtlasAuditCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                                    atlasServerName,
+                                                                                                    targetRootURL,
+                                                                                                    error.getMessage()),
+                               error);
         }
 
         throw new PropertyServerException(ApacheAtlasErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,

@@ -98,13 +98,10 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
         {
             log.debug("Retrieving open metadata archive from file");
 
-            if (auditLog != null)
-            {
-                final String actionDescription = "Opening open metadata archive";
+            final String actionDescription = "Opening open metadata archive";
 
-                auditLog.logMessage(actionDescription,
-                                    FileBasedOpenMetadataArchiveStoreConnectorAuditCode.OPENING_FILE.getMessageDefinition(archiveStoreName));
-            }
+            logRecord(actionDescription,
+                      FileBasedOpenMetadataArchiveStoreConnectorAuditCode.OPENING_FILE.getMessageDefinition(archiveStoreName));
 
             String configStoreFileContents = FileUtils.readFileToString(archiveStoreFile, "UTF-8");
 
@@ -115,14 +112,11 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
             /*
              * The archive file is not found, create an empty one ...
              */
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      FileBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName,
-                                                                                                                        ioException.getClass().getName(),
-                                                                                                                        ioException.getMessage()),
-                                      ioException);
-            }
+            logExceptionRecord(methodName,
+                               FileBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName,
+                                                                                                                 ioException.getClass().getName(),
+                                                                                                                 ioException.getMessage()),
+                               ioException);
 
 
             log.error("Error opening archive", ioException);

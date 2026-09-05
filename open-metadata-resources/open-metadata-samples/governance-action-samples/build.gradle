@@ -19,6 +19,9 @@ dependencies {
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     compileOnly 'commons-io:commons-io'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testImplementation 'org.testng:testng'
+    testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
 
 }
 
@@ -26,4 +29,10 @@ description = 'Governance Action Samples'
 
 java {
     withJavadocJar()
+}
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }

@@ -9,7 +9,7 @@ The OGFAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 3 |
+| **Number of messages** | 2 |
 | **Message identifiers begin** | `OPEN-GOVERNANCE-ACTION-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.opengovernance.ffdc.OGFAuditCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-governance-framework](../../open-metadata-implementation/frameworks/open-governance-framework) |
@@ -23,7 +23,6 @@ The OGFAuditCode is used to define the message content for the Audit Log.
 |---|---|---|
 | [OPEN-GOVERNANCE-ACTION-0001](#open-governance-action-0001) | INFO | The {0} service is issuing a notification to subscriber {1} of type {2} for notification type {3} (notification count = {4}) |
 | [OPEN-GOVERNANCE-ACTION-0002](#open-governance-action-0002) | ERROR | Subscriber {0} for notification type {1} is of a type {2}, but the {3} service only supports the following subscriber type(s): {4} |
-| [OPEN-GOVERNANCE-ACTION-0003](#open-governance-action-0003) | EXCEPTION | The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3} |
 
 ----
 
@@ -65,27 +64,6 @@ The governance service ignores this subscriber.
 **User action**
 
 Remove this subscriber from the notification type and replace it with a subscriber type that is supported.
-
-
-----
-
-### OPEN-GOVERNANCE-ACTION-0003
-
-> The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}
-
-|  |  |
-|---|---|
-| **Java constant** | `OGFAuditCode.UNEXPECTED_EXCEPTION` |
-| **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
-| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
-
-**System action**
-
-The governance service cannot perform the requested governance action on one or more metadata elements in the metadata repository.
-
-**User action**
-
-Use the details from the error message to determine the cause of the error and retry the request once it is resolved.
 
 
 ----

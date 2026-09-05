@@ -23,8 +23,16 @@ dependencies {
 
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.slf4j:slf4j-api'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testImplementation 'org.testng:testng'
 }
 
 java {
     withJavadocJar()
+}
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }

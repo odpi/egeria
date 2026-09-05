@@ -41,7 +41,7 @@ public enum OSFErrorCode implements ExceptionMessageSet
      */
     NO_EMBEDDED_SURVEY_ACTION_SERVICES(400, "OPEN-SURVEY-400-002",
             "No embedded survey action services supplied to the survey action pipeline {0}",
-            "The survey action pipeline is not able to survey action which survey action services to run.",
+            "The survey action pipeline is not able to determine which survey action services to run.",
             "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action pipeline service.  Once the cause is resolved, retry the survey action request.",
             "https://egeria-project.org/frameworks/osf/overview/"),
 
@@ -49,7 +49,7 @@ public enum OSFErrorCode implements ExceptionMessageSet
      * OPEN-SURVEY-400-003 - No embedded survey action services supplied to the survey action pipeline {0}
      */
     INVALID_EMBEDDED_SURVEY_ACTION_SERVICE(400, "OPEN-SURVEY-400-003",
-            "No embedded survey action services supplied to the survey action pipeline {0}",
+            "One of the connectors embedded in the survey action service {0} is not a survey action service",
             "The survey action pipeline is not able to discover which survey action services to run.",
             "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action pipeline service or the associated open survey action engine.  Once the cause is resolved, retry the survey action request.",
             "https://egeria-project.org/frameworks/osf/overview/"),
@@ -102,7 +102,7 @@ public enum OSFErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "OPEN-SURVEY-500-001",
                          "Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}",
                          "The survey action service failed during its operation.",
-                         "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action service.  Once the cause is resolved, retry the survey action request.",
+                         "Use the details from the error message to determine the cause of the error.  Once it is resolved, retry the survey action request.",
                          "https://egeria-project.org/frameworks/osf/overview/"),
 
     ;

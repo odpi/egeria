@@ -28,7 +28,6 @@ public abstract class RepositoryGovernanceServiceConnector extends ConnectorBase
      */
     protected String                      repositoryGovernanceServiceName = "<Unknown>";
     protected RepositoryGovernanceContext repositoryGovernanceContext     = null;
-    protected AuditLog                    auditLog                        = null;
 
 
     /**

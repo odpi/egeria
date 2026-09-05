@@ -50,7 +50,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
     NO_OMAS_SERVER_NAME("INTEGRATION-DAEMON-SERVICES-0004",
                         AuditLogRecordSeverityLevel.ERROR,
                        "Integration daemon {0} is not configured with the name for the server running its partner OMAS {1}",
-                      "The service is not able to connect to the open metadata ecosystem.  It fails to start.",
+                      "The service does not know which server to call for its partner OMAS.  It fails to start.",
                      "Add the server name of the OMAG server where the partner OMAS is running " +
                                 "to this integration service's configuration.",
                                 "https://egeria-project.org/services/integration-daemon-services/"),
@@ -298,7 +298,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                              AuditLogRecordSeverityLevel.INFO,
                              "Integration connector {0} is refreshing again in {1} integration daemon",
                              "The thread is about to call refresh() on the integration connector hosted in this daemon.",
-                             "Ensure that the connector does not report any errors during the refresh processing.",
+                             "No action is required, but the interval between these messages shows how often this connector is refreshing.",
                              "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
@@ -361,9 +361,8 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                             AuditLogRecordSeverityLevel.EXCEPTION,
                         "Failed to process a change to integration connector {0}.  The exception was {1} with error message {2}",
                         "The integration daemon cannot process the change to a integration connector.  The exception explains the reason.",
-                        "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to " +
-                                "refresh the configuration of the integration group by calling the integration daemon's refreshConfig service.",
-                                "https://egeria-project.org/services/integration-daemon-services/"),
+                        "Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to refresh the configuration of this integration connector by calling the integration daemon's refreshConfig service.",
+                        "https://egeria-project.org/services/integration-daemon-services/"),
 
     /**
      * INTEGRATION-DAEMON-SERVICES-0056 - Refresh of all integration connector configuration has completed for integration group {0}

@@ -85,9 +85,9 @@ public class DB2LUWServerSurveyActionService extends SurveyActionServiceConnecto
 
             if (validDatabases.isEmpty())
             {
-                auditLog.logMessage(methodName, DB2LUWAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                    assetStore.getQualifiedName(),
-                                                                                                    assetStore.getAssetGUID()));
+                logRecord(methodName, DB2LUWAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
+                                                                                          assetStore.getQualifiedName(),
+                                                                                          assetStore.getAssetGUID()));
             }
             else
             {

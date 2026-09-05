@@ -86,12 +86,9 @@ public class OMAGServerPlatformCatalogConnector extends DynamicIntegrationConnec
         /*
          * Record the start
          */
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OMAGConnectorAuditCode.EGERIA_CONNECTOR_START.getMessageDefinition(connectorName,
-                                                                                                   monitoredPlatforms.toString()));
-        }
+        logRecord(methodName,
+                  OMAGConnectorAuditCode.EGERIA_CONNECTOR_START.getMessageDefinition(connectorName,
+                                                                                     monitoredPlatforms.toString()));
 
         try
         {
@@ -141,11 +138,11 @@ public class OMAGServerPlatformCatalogConnector extends DynamicIntegrationConnec
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                 error.getClass().getName(),
-                                                                                                 methodName,
-                                                                                                 error.getMessage()));
+            logRecord(methodName,
+                      OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                       error.getClass().getName(),
+                                                                                       methodName,
+                                                                                       error.getMessage()));
         }
     }
 

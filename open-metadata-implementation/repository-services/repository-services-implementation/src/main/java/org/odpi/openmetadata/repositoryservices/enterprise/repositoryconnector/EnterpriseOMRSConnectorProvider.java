@@ -70,12 +70,11 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
                                            String                       localMetadataCollectionId)
     {
         super();
-        super.setConnectorComponentDescription(OMRSAuditingComponent.ENTERPRISE_REPOSITORY_CONNECTOR);
-
+        super.connectorComponentDescription = OMRSAuditingComponent.ENTERPRISE_REPOSITORY_CONNECTOR;
 
         Class<?>    connectorClass = EnterpriseOMRSRepositoryConnector.class;
 
-        super.setConnectorClassName(connectorClass.getName());
+        super.connectorClassName = connectorClass.getName();
 
         this.connectorManager = connectorManager;
         this.repositoryContentManager = repositoryContentManager;

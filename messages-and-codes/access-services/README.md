@@ -17,7 +17,7 @@ This directory documents 38 messages in 6 message sets.  Return to the [messages
 | [OCFServicesErrorCode](OCFServicesErrorCode.md) | Exception messages | `CONNECTED-ASSET-SERVICES-` | 2 | <https://egeria-project.org/services/ocf-metadata-management/> |
 | [OMFServicesAuditCode](OMFServicesAuditCode.md) | Audit log messages | `OMF-SERVICES-` | 11 | <https://egeria-project.org/services/framework-services/> |
 | [OMFServicesErrorCode](OMFServicesErrorCode.md) | Exception messages | `OMF-SERVICES-` | 7 | <https://egeria-project.org/services/framework-services/> |
-| [OpenGovernanceAuditCode](OpenGovernanceAuditCode.md) | Audit log messages | `O-` | 9 | <https://egeria-project.org/services/gaf-metadata-management/> |
+| [OpenGovernanceAuditCode](OpenGovernanceAuditCode.md) | Audit log messages | `OPEN-GOVERNANCE-` | 9 | <https://egeria-project.org/services/gaf-metadata-management/> |
 | [OpenGovernanceErrorCode](OpenGovernanceErrorCode.md) | Exception messages | `OPEN-GOVERNANCE-` | 5 | <https://egeria-project.org/services/gaf-metadata-management/> |
 
 

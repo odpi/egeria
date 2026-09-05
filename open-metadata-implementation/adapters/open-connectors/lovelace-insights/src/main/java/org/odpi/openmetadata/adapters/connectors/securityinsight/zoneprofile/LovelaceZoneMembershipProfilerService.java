@@ -92,9 +92,9 @@ public class LovelaceZoneMembershipProfilerService extends GeneralGovernanceActi
                                                                                classificationBuilder.getNewElementProperties(zoneMembershipProfile));
                         }
 
-                        auditLog.logMessage(methodName, LovelaceInsightAuditCode.GOVERNANCE_ZONE_PROCESSED.getMessageDefinition(governanceServiceName,
-                                                                                                                                governanceZoneProperties.getIdentifier(),
-                                                                                                                                governanceZoneElement.getElementHeader().getGUID()));
+                        logRecord(methodName, LovelaceInsightAuditCode.GOVERNANCE_ZONE_PROCESSED.getMessageDefinition(governanceServiceName,
+                                                                                                                      governanceZoneProperties.getIdentifier(),
+                                                                                                                      governanceZoneElement.getElementHeader().getGUID()));
                     }
                 }
 
@@ -103,7 +103,7 @@ public class LovelaceZoneMembershipProfilerService extends GeneralGovernanceActi
                 governanceZoneElements = governanceDefinitionClient.findGovernanceDefinitions(null, searchOptions);
             }
 
-            auditLog.logMessage(methodName, messageDefinition);
+            logRecord(methodName, messageDefinition);
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);
         }

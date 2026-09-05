@@ -78,12 +78,12 @@ public class HarvestSurveysConnector extends DynamicIntegrationConnectorBase imp
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                        error.getClass().getName(),
-                                                                                                        methodName,
-                                                                                                        error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                     error.getClass().getName(),
+                                                                                                     methodName,
+                                                                                                     error.getMessage()),
+                                   error);
             }
         }
     }

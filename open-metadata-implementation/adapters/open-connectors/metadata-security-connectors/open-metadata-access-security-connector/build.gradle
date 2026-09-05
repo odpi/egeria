@@ -14,6 +14,9 @@ dependencies {
     compileOnly project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
     compileOnly project(':open-metadata-implementation:user-security:token-manager')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testImplementation 'org.testng:testng'
+    testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
 
 }
 
@@ -21,4 +24,10 @@ description = 'Open Metadata Access Security Connector'
 
 java {
     withJavadocJar()
+}
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }

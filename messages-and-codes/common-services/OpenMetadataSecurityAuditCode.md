@@ -66,7 +66,7 @@ The local server has started up a new instance of the Open Metadata Platform Sec
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required.  This is part of the normal start up of the OMAG Server Platform.
 
 
 ----
@@ -87,7 +87,7 @@ The local administrator has requested shut down of the Open Metadata Platform Se
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required.  This is part of the normal shut down of the OMAG Server Platform.
 
 
 ----
@@ -108,7 +108,7 @@ The local server has started up a new instance of the Open Metadata Server Secur
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required.  This is part of the normal start up of the server.
 
 
 ----
@@ -129,7 +129,7 @@ The local administrator has requested shut down of the Open Metadata Server Secu
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required.  This is part of the normal shut down of the server.
 
 
 ----
@@ -167,11 +167,11 @@ Review the security policies and settings to determine if this access should be 
 
 **System action**
 
-The security service detected an unauthorized access to a service.
+The security service detected an unauthorized access to a server.
 
 **User action**
 
-Review the security policies and settings to determine if this access should be allowed or not.  Take action to either change the security sessions or determine the reason for the unauthorized request.
+Review the security policies and settings to determine whether this user should be able to issue requests to this server.  Either update the settings or investigate why the user issued the request.
 
 
 ----
@@ -192,7 +192,7 @@ The security service detected an unauthorized access to a service.
 
 **User action**
 
-Review the security policies and settings to determine if this access should be allowed or not.  Take action to either change the security sessions or determine the reason for the unauthorized request.
+Review the security policies and settings to determine whether this user should be able to call this service.  Either update the settings or investigate why the user issued the request.
 
 
 ----
@@ -209,11 +209,11 @@ Review the security policies and settings to determine if this access should be 
 
 **System action**
 
-The security service detected an unauthorized change to an element.
+The security service detected an unauthorized attempt to attach feedback to an element.
 
 **User action**
 
-Review the security policies and settings to determine if this access should be allowed or not.  Take action to either change the security sessions or determine the reason for the unauthorized request.
+Review the security policies and settings to determine whether this user should be able to attach feedback to this element.  Either update the settings or investigate why the user issued the request.
 
 
 ----
@@ -230,11 +230,11 @@ Review the security policies and settings to determine if this access should be 
 
 **System action**
 
-The security service detected an unauthorized change to an element.
+The security service detected an unauthorized change to the zone membership of an element.
 
 **User action**
 
-Review the security policies and settings to determine if this access should be allowed or not.  Take action to either change the security sessions or determine the reason for the unauthorized request.
+Review the security policies and settings to determine whether this user should be able to move elements between these governance zones.  Either update the settings or investigate why the user issued the request.
 
 
 ----
@@ -255,7 +255,7 @@ The security service detected an unauthorized access to a member of the anchor e
 
 **User action**
 
-Review the security policies and settings to determine if this access should be allowed or not.  Take action to either change the security sessions or determine the reason for the unauthorized request.
+Review the security policies and settings to determine whether this user should be able to issue this operation on the anchor element and its members.  Either update the settings or investigate why the user issued the request.
 
 
 ----
@@ -276,7 +276,7 @@ The security service detected an unauthorized access of an open metadata type.
 
 **User action**
 
-Review the security policies and settings to determine if this access should be allowed or not.  Take action to either change the security sessions or determine the reason for the unauthorized request.
+Review the security policies and settings to determine whether this user should be able to access this open metadata type.  Either update the settings or investigate why the user issued the request.
 
 
 ----
@@ -297,7 +297,7 @@ The security service detected an unauthorized change of an open metadata type.
 
 **User action**
 
-Review the security policies and settings to determine if this access should be allowed or not.  Take action to either change the security sessions or determine the reason for the unauthorized request.
+Review the security policies and settings to determine whether this user should be able to change this open metadata type.  Either update the settings or investigate why the user issued the request.
 
 
 ----
@@ -314,11 +314,11 @@ Review the security policies and settings to determine if this access should be 
 
 **System action**
 
-The security service detected an unauthorized access of an open metadata type.
+The security service detected an unauthorized attempt to create an open metadata instance.
 
 **User action**
 
-Review the security policies and settings to determine if this access should be allowed or not.  Take action to either change the security sessions or determine the reason for the unauthorized request.
+Review the security policies and settings to determine whether this user should be able to create instances of this open metadata type.  Either update the settings or investigate why the user issued the request.
 
 
 ----
@@ -339,7 +339,7 @@ The security service detected an unauthorized access of an open metadata instanc
 
 **User action**
 
-Review the security policies and settings to determine if this access should be allowed or not.  Take action to either change the security sessions or determine the reason for the unauthorized request.
+Review the security policies and settings to determine whether this user should be able to access this open metadata instance.  Either update the settings or investigate why the user issued the request.
 
 
 ----
@@ -360,7 +360,7 @@ The security service detected an unauthorized change of an open metadata instanc
 
 **User action**
 
-Review the security policies and settings to determine if this access should be allowed or not.  Take action to either change the security sessions or determine the reason for the unauthorized request.
+Review the security policies and settings to determine whether this user should be able to change this open metadata instance.  Either update the settings or investigate why the user issued the request.
 
 
 ----

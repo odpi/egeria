@@ -99,9 +99,9 @@ public class MSSQLServerSurveyActionService extends SurveyActionServiceConnector
 
                 if (validDatabases.isEmpty())
                 {
-                    auditLog.logMessage(methodName, MSSQLAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                      assetStore.getQualifiedName(),
-                                                                                                      assetStore.getAssetGUID()));
+                    logRecord(methodName, MSSQLAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
+                                                                                            assetStore.getQualifiedName(),
+                                                                                            assetStore.getAssetGUID()));
                 }
                 else
                 {

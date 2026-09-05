@@ -32,7 +32,6 @@ import java.util.*;
  */
 public class OMAGServerPlatformConnector extends ConnectorBase implements AuditLoggingComponent
 {
-    private AuditLog auditLog = null;
     private String   connectorName = "OMAG Server Platform Connector";
 
     private String   targetRootURL = null;
@@ -144,13 +143,10 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName, OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                 error.getClass().getName(),
-                                                                                                                 methodName,
-                                                                                                                 error.getMessage()));
-            }
+            logRecord(methodName, OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()));
             throw new ConnectorCheckedException(OMAGConnectorErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                  error.getClass().getName(),
                                                                                                                  methodName,

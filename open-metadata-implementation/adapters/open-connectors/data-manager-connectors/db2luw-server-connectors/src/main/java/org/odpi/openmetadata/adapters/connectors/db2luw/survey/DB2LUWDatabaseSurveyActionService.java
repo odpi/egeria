@@ -58,9 +58,9 @@ public class DB2LUWDatabaseSurveyActionService extends SurveyActionServiceConnec
 
             if (databaseName == null)
             {
-                auditLog.logMessage(methodName, DB2LUWAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                    assetStore.getQualifiedName(),
-                                                                                                    assetStore.getAssetGUID()));
+                logRecord(methodName, DB2LUWAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
+                                                                                          assetStore.getQualifiedName(),
+                                                                                          assetStore.getAssetGUID()));
             }
             else
             {

@@ -55,7 +55,6 @@ import java.util.Properties;
  */
 public class JDBCResourceConnector extends ConnectorBase implements AuditLoggingComponent
 {
-    private AuditLog                        auditLog           = null;
     private String                          jdbcDatabaseName   = null;
     private String                          jdbcDatabaseURL    = null;
     private HikariDataSource                jdbcDataSource     = null;
@@ -342,12 +341,9 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         {
             dataSourceProperties.setProperty(keepAlivePropertyName, "true");
 
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    JDBCAuditCode.CONNECTION_KEEPALIVE_ENABLED.getMessageDefinition(jdbcDatabaseName,
-                                                                                                    keepAlivePropertyName));
-            }
+            logRecord(methodName,
+                      JDBCAuditCode.CONNECTION_KEEPALIVE_ENABLED.getMessageDefinition(jdbcDatabaseName,
+                                                                                      keepAlivePropertyName));
         }
     }
 
@@ -378,15 +374,12 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
                 }
                 catch (NumberFormatException notANumber)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logException(methodName,
-                                              JDBCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
-                                                                                                      notANumber.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      notANumber.getMessage()),
-                                              notANumber);
-                    }
+                    logExceptionRecord(methodName,
+                                       JDBCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                               notANumber.getClass().getName(),
+                                                                                               methodName,
+                                                                                               notANumber.getMessage()),
+                                       notANumber);
                 }
             }
         }
@@ -1107,12 +1100,12 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
             int rowsInserted = preparedStatement.executeUpdate();
 
-            if ((rowsInserted > 1) && (auditLog != null))
+            if (rowsInserted > 1)
             {
-                auditLog.logMessage(methodName,
-                                    JDBCAuditCode.UNEXPECTED_ROW_COUNT_FROM_DATABASE.getMessageDefinition(jdbcDatabaseName,
-                                                                                                          Integer.toString(rowsInserted),
-                                                                                                          sqlCommand));
+                logRecord(methodName,
+                          JDBCAuditCode.UNEXPECTED_ROW_COUNT_FROM_DATABASE.getMessageDefinition(jdbcDatabaseName,
+                                                                                                Integer.toString(rowsInserted),
+                                                                                                sqlCommand));
             }
 
             preparedStatement.close();
@@ -1252,12 +1245,9 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
         if (jdbcDataSource != null)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    JDBCAuditCode.CONNECTOR_STOPPING.getMessageDefinition(jdbcDatabaseName,
-                                                                                          Integer.toString(jdbcDataSource.getHikariPoolMXBean() == null ? 0 : jdbcDataSource.getHikariPoolMXBean().getTotalConnections())));
-            }
+            logRecord(methodName,
+                      JDBCAuditCode.CONNECTOR_STOPPING.getMessageDefinition(jdbcDatabaseName,
+                                                                            Integer.toString(jdbcDataSource.getHikariPoolMXBean() == null ? 0 : jdbcDataSource.getHikariPoolMXBean().getTotalConnections())));
 
             try
             {

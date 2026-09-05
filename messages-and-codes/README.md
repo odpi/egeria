@@ -27,8 +27,8 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
-| Exception messages | 66 | 621 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 104 | 956 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Exception messages | 66 | 619 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
+| Audit log messages | 104 | 953 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -81,14 +81,14 @@ The message sets are grouped to match the part of Egeria that defines them.
 
 | Area | Message sets | Messages | Description |
 |---|---|---|---|
-| [Frameworks](frameworks) | 11 | 122 | The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely. |
+| [Frameworks](frameworks) | 11 | 119 | The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely. |
 | [Common Services](common-services) | 11 | 181 | The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time. |
 | [Access Services](access-services) | 6 | 38 | The access services provide the domain-specific APIs and events that run in a metadata access server. |
 | [Generic View Services](view-server-generic-services) | 15 | 75 | The generic view services provide the REST APIs used by user interfaces to work with any type of open metadata element. |
 | [View Services](view-services) | 25 | 122 | The view services provide the REST APIs used by user interfaces such as Egeria UI.  Each view service supports a particular type of user or task. |
 | [Engine Services](engine-services) | 8 | 59 | The engine services run the governance services of a particular governance service type in an Engine Host server. |
 | [Governance Server Services](governance-server-services) | 4 | 87 | The governance server services host the connectors and governance services that run outside of a metadata access server - such as the integration daemon and the engine host. |
-| [Repository Services](repository-services) | 2 | 316 | The Open Metadata Repository Services (OMRS) manage the exchange of metadata between the repositories of an open metadata repository cohort.  This is the oldest and largest set of messages in Egeria. |
+| [Repository Services](repository-services) | 2 | 315 | The Open Metadata Repository Services (OMRS) manage the exchange of metadata between the repositories of an open metadata repository cohort.  This is the oldest and largest set of messages in Egeria. |
 | [Administration Services](admin-services) | 2 | 53 | The administration services configure and control the servers running on the OMAG Server Platform. |
 | [Server Operations](server-operations) | 2 | 31 | The server operations services report on the servers that are running on an OMAG Server Platform. |
 | [User Security](user-security) | 1 | 1 | The user security services authenticate the callers of the OMAG Server Platform's REST APIs. |
@@ -100,7 +100,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [Event Bus Connectors](connectors/event-bus-connectors) | 2 | 22 | These connectors send and receive events over the event bus - typically Apache Kafka. |
 | [Governance Action Connectors](connectors/governance-action-connectors) | 2 | 47 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
 | [File Survey Connectors](connectors/file-survey-connectors) | 1 | 5 | These survey action services analyse the content of files and folders and record what they find in a survey report. |
-| [Nanny Connectors](connectors/nanny-connectors) | 16 | 98 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
+| [Nanny Connectors](connectors/nanny-connectors) | 16 | 97 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
 | [Lovelace Insights](connectors/lovelace-insights) | 2 | 7 | These connectors analyse the harvested observability data and turn it into insight reports. |
 | [Report Generating Connectors](connectors/report-generating-connectors) | 1 | 2 | These connectors turn the contents of the open metadata ecosystem into human-readable documents. |
 | [Secrets Store Connectors](connectors/secrets-store-connectors) | 2 | 5 | These connectors supply the credentials that other connectors need when they call a third party technology. |
@@ -177,12 +177,10 @@ Every message identifier begins with a prefix that names the component that rais
 | `LOVELACE-INSIGHTS-` | Audit log messages | 5 | [LovelaceInsightAuditCode](connectors/lovelace-insights/LovelaceInsightAuditCode.md) |
 | `LOVELACE-INSIGHTS-500-` | Exception messages | 2 | [LovelaceInsightErrorCode](connectors/lovelace-insights/LovelaceInsightErrorCode.md) |
 | `MENDEL-DUPLICATE-MANAGER-` | Audit log messages | 18 | [MendelAuditCode](connectors/nanny-connectors/MendelAuditCode.md) |
-| `MENDEL-DUPLICATE-MANAGER-500-` | Exception messages | 2 | [MendelErrorCode](connectors/nanny-connectors/MendelErrorCode.md) |
+| `MENDEL-DUPLICATE-MANAGER-500-` | Exception messages | 1 | [MendelErrorCode](connectors/nanny-connectors/MendelErrorCode.md) |
 | `METADATA-OBSERVABILITY-` | Audit log messages | 10 | [OpenMetadataObservabilityAuditCode](common-services/OpenMetadataObservabilityAuditCode.md) |
 | `MSSQL-CONNECTOR-` | Audit log messages | 6 | [MSSQLAuditCode](connectors/data-manager-connectors/MSSQLAuditCode.md) |
 | `MSSQL-CONNECTOR-` | Exception messages | 2 | [MSSQLErrorCode](connectors/data-manager-connectors/MSSQLErrorCode.md) |
-| `O-` | Audit log messages | 9 | [OpenGovernanceAuditCode](access-services/OpenGovernanceAuditCode.md) |
-| `O-` | Exception messages | 20 | [OpenMetadataSecurityErrorCode](common-services/OpenMetadataSecurityErrorCode.md) |
 | `OCF-` | Exception messages | 26 | [OCFErrorCode](frameworks/OCFErrorCode.md) |
 | `OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-` | Audit log messages | 1 | [DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode](connectors/repository-services-connectors/DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.md) |
 | `OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-400-` | Exception messages | 2 | [DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode](connectors/repository-services-connectors/DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode.md) |
@@ -213,7 +211,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `OMES-WATCHDOG-ACTION-400-` | Exception messages | 3 | [WatchdogActionErrorCode](engine-services/WatchdogActionErrorCode.md) |
 | `OMF-SERVICES-` | Audit log messages | 11 | [OMFServicesAuditCode](access-services/OMFServicesAuditCode.md) |
 | `OMF-SERVICES-` | Exception messages | 7 | [OMFServicesErrorCode](access-services/OMFServicesErrorCode.md) |
-| `OMRS-` | Exception messages | 189 | [OMRSErrorCode](repository-services/OMRSErrorCode.md) |
+| `OMRS-` | Exception messages | 188 | [OMRSErrorCode](repository-services/OMRSErrorCode.md) |
 | `OMRS-AUDIT-` | Audit log messages | 127 | [OMRSAuditCode](repository-services/OMRSAuditCode.md) |
 | `OMVS-ACTION-AUTHOR-` | Audit log messages | 5 | [ActionAuthorAuditCode](view-services/ActionAuthorAuditCode.md) |
 | `OMVS-ACTOR-MANAGER-` | Audit log messages | 5 | [ActorManagerAuditCode](view-server-generic-services/ActorManagerAuditCode.md) |
@@ -257,15 +255,17 @@ Every message identifier begins with a prefix that names the component that rais
 | `OMVS-VALID-METADATA-` | Audit log messages | 5 | [ValidMetadataAuditCode](view-server-generic-services/ValidMetadataAuditCode.md) |
 | `OPEN-API-INTEGRATION-CONNECTOR-` | Audit log messages | 14 | [OpenAPIIntegrationConnectorAuditCode](connectors/integration-connectors/OpenAPIIntegrationConnectorAuditCode.md) |
 | `OPEN-API-INTEGRATION-CONNECTOR-` | Exception messages | 2 | [OpenAPIIntegrationConnectorErrorCode](connectors/integration-connectors/OpenAPIIntegrationConnectorErrorCode.md) |
+| `OPEN-GOVERNANCE-` | Audit log messages | 9 | [OpenGovernanceAuditCode](access-services/OpenGovernanceAuditCode.md) |
 | `OPEN-GOVERNANCE-` | Exception messages | 5 | [OpenGovernanceErrorCode](access-services/OpenGovernanceErrorCode.md) |
-| `OPEN-GOVERNANCE-ACTION-` | Audit log messages | 3 | [OGFAuditCode](frameworks/OGFAuditCode.md) |
+| `OPEN-GOVERNANCE-ACTION-` | Audit log messages | 2 | [OGFAuditCode](frameworks/OGFAuditCode.md) |
 | `OPEN-GOVERNANCE-ACTION-` | Exception messages | 2 | [OGFErrorCode](frameworks/OGFErrorCode.md) |
 | `OPEN-LINEAGE-INTEGRATION-CONNECTOR-` | Audit log messages | 2 | [OpenLineageIntegrationConnectorAuditCode](connectors/integration-connectors/OpenLineageIntegrationConnectorAuditCode.md) |
 | `OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-` | Exception messages | 2 | [OpenLineageIntegrationConnectorErrorCode](connectors/integration-connectors/OpenLineageIntegrationConnectorErrorCode.md) |
-| `OPEN-METADATA-` | Audit log messages | 16 | [OMFAuditCode](frameworks/OMFAuditCode.md) |
+| `OPEN-METADATA-` | Audit log messages | 14 | [OMFAuditCode](frameworks/OMFAuditCode.md) |
 | `OPEN-METADATA-` | Exception messages | 31 | [OMFErrorCode](frameworks/OMFErrorCode.md) |
 | `OPEN-METADATA-ACCESS-SECURITY-` | Audit log messages | 1 | [MetadataSecurityAuditCode](connectors/metadata-security-connectors/MetadataSecurityAuditCode.md) |
 | `OPEN-METADATA-SECURITY-` | Audit log messages | 26 | [OpenMetadataSecurityAuditCode](common-services/OpenMetadataSecurityAuditCode.md) |
+| `OPEN-METADATA-SECURITY-` | Exception messages | 20 | [OpenMetadataSecurityErrorCode](common-services/OpenMetadataSecurityErrorCode.md) |
 | `OPEN-SURVEY-` | Audit log messages | 8 | [OSFAuditCode](frameworks/OSFAuditCode.md) |
 | `OPEN-SURVEY-` | Exception messages | 8 | [OSFErrorCode](frameworks/OSFErrorCode.md) |
 | `OPEN-WATCHDOG-` | Exception messages | 2 | [OWFErrorCode](frameworks/OWFErrorCode.md) |

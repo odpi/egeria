@@ -264,12 +264,12 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                     error.getClass().getName(),
-                                                                                                                     methodName,
-                                                                                                                     error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                  error.getClass().getName(),
+                                                                                                                  methodName,
+                                                                                                                  error.getMessage()),
+                               error);
         }
     }
 
@@ -304,13 +304,13 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                     error.getClass().getName(),
-                                                                                                                     methodName,
-                                                                                                                     error.getMessage()),
-                                  jsonEvent,
-                                  error);
+            logExceptionRecord(methodName,
+                               OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                  error.getClass().getName(),
+                                                                                                                  methodName,
+                                                                                                                  error.getMessage()),
+                               jsonEvent,
+                               error);
         }
     }
 

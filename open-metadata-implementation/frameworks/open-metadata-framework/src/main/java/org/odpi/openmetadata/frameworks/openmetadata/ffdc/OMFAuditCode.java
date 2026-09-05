@@ -158,25 +158,6 @@ public enum OMFAuditCode implements AuditLogMessageSet
                                 "https://egeria-project.org/concepts/notification-type/"),
 
     /**
-     * OPEN-METADATA-0020 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where only one notification is sent to each subscriber
-     */
-    ONE_TIME_NOTIFICATION_TYPE( "OPEN-METADATA-0020",
-                                AuditLogRecordSeverityLevel.INFO,
-                                "The {0} service is refreshing its cache for configured notification type {1} ({2}) where only one notification is sent to each subscriber",
-                                "The governance service sends a notification to each subscriber registered when the service starts up and then monitors for new subscribers in order to send them a notification.",
-                                "This notification pattern was selected because multipleNotificationsPermitted is set to false. Validate that this is the right pattern.",
-                                "https://egeria-project.org/concepts/notification-type/"),
-
-    /**
-     * OPEN-METADATA-0021 - The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.  The next scheduled notification will be sent at {4}
-     */
-    PERIODIC_NOTIFICATION_TYPE("OPEN-METADATA-0021",
-                               AuditLogRecordSeverityLevel.INFO,
-                               "The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.  The next scheduled notification will be sent at {4}",
-                               "The governance service sends a notification to each subscriber registered when the service starts up and then monitors for new subscribers in order to send them notifications.  Additional notifications are sent to each active subscriber every notification interval.",
-                               "This notification pattern was selected because multipleNotificationsPermitted is set to true and notificationInterval is greater than 0. Validate that this is the intended behaviour and the notification interval is appropriate.",
-                               "https://egeria-project.org/concepts/notification-type/"),
-    /**
      * OPEN-METADATA-0025 - The Open Metadata Store has received an unexpected {0} exception while formatting a response during method {1}.  The message was: {2}
      */
     UNEXPECTED_CONVERTER_EXCEPTION("OPEN-METADATA-0025",

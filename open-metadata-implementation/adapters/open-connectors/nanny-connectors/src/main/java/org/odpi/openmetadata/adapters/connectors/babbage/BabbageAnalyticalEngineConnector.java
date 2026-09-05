@@ -38,9 +38,9 @@ public class BabbageAnalyticalEngineConnector extends DynamicIntegrationConnecto
 
         final String methodName = "start";
 
-        auditLog.logMessage(methodName, BabbageAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
-                                                                                                 integrationContext.getMetadataAccessServer(),
-                                                                                                 integrationContext.getMetadataAccessServerPlatformURLRoot()));
+        logRecord(methodName, BabbageAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
+                                                                                       integrationContext.getMetadataAccessServer(),
+                                                                                       integrationContext.getMetadataAccessServerPlatformURLRoot()));
     }
 
 
@@ -88,9 +88,9 @@ public class BabbageAnalyticalEngineConnector extends DynamicIntegrationConnecto
     {
         final String methodName = "disconnect";
 
-        auditLog.logMessage(methodName, BabbageAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName,
-                                                                                                 integrationContext.getMetadataAccessServer(),
-                                                                                                 integrationContext.getMetadataAccessServerPlatformURLRoot()));
+        logRecord(methodName, BabbageAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName,
+                                                                                       integrationContext.getMetadataAccessServer(),
+                                                                                       integrationContext.getMetadataAccessServerPlatformURLRoot()));
 
         super.disconnect();
     }

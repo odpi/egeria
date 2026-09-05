@@ -239,7 +239,7 @@ This message is used to capture user activity.
 
 **User action**
 
-No action is required, but this message can be used to capture user activity information.
+No action is required, but this message can be used to capture which services and operations a user is calling.
 
 
 ----

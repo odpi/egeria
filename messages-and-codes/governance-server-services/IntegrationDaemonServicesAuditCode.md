@@ -114,7 +114,7 @@ Add the platform URL root of the OMAG server where the partner OMAS is running t
 
 **System action**
 
-The service is not able to connect to the open metadata ecosystem.  It fails to start.
+The service does not know which server to call for its partner OMAS.  It fails to start.
 
 **User action**
 
@@ -538,7 +538,7 @@ The thread is about to call refresh() on the integration connector hosted in thi
 
 **User action**
 
-Ensure that the connector does not report any errors during the refresh processing.
+No action is required, but the interval between these messages shows how often this connector is refreshing.
 
 
 ----
@@ -643,7 +643,7 @@ The integration daemon cannot process the change to a integration connector.  Th
 
 **User action**
 
-Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to refresh the configuration of the integration group by calling the integration daemon's refreshConfig service.
+Review the error messages and resolve the cause of the problem.  Once resolved, it is possible to refresh the configuration of this integration connector by calling the integration daemon's refreshConfig service.
 
 
 ----

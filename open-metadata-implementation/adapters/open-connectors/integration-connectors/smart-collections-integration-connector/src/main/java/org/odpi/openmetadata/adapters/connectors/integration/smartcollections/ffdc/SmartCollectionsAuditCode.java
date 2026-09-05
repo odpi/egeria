@@ -27,7 +27,7 @@ public enum SmartCollectionsAuditCode implements AuditLogMessageSet
                            AuditLogRecordSeverityLevel.INFO,
                            "Connector {0} is refreshing the membership of results set {1}",
                            "The connector is about to run the saved query attached to the results set and update its membership to match the results.",
-                           "No user action is required.",
+                           "No action is required.  This message records that a refresh of the results set has begun.",
                            "https://egeria-project.org/concepts/integration-connector/"),
 
     /**
@@ -47,7 +47,7 @@ public enum SmartCollectionsAuditCode implements AuditLogMessageSet
                           AuditLogRecordSeverityLevel.INFO,
                           "Connector {0} completed the membership refresh of results set {1}: {2} members added, {3} members removed",
                           "The connector has finished comparing the results of the saved query with the current membership of the results set.",
-                          "No user action is required.",
+                          "No action is required, but the counts in this message show how much the membership of the results set changed.",
                           "https://egeria-project.org/concepts/integration-connector/"),
 
     /**

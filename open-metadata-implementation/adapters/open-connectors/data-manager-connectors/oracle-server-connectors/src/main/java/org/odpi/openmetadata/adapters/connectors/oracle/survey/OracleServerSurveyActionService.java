@@ -100,9 +100,9 @@ public class OracleServerSurveyActionService extends SurveyActionServiceConnecto
 
                 if (validDatabases.isEmpty())
                 {
-                    auditLog.logMessage(methodName, OracleAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                        assetStore.getQualifiedName(),
-                                                                                                        assetStore.getAssetGUID()));
+                    logRecord(methodName, OracleAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
+                                                                                              assetStore.getQualifiedName(),
+                                                                                              assetStore.getAssetGUID()));
                 }
                 else
                 {

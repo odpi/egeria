@@ -118,11 +118,11 @@ public class APIBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCon
             }
             catch (Exception error)
             {
-                auditLog.logMessage(methodName, OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                                   error.getClass().getName(),
-                                                                                                                                   methodName,
-                                                                                                                                   error.getMessage()),
-                                    logStoreURL);
+                logRecord(methodName, OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                         error.getClass().getName(),
+                                                                                                                         methodName,
+                                                                                                                         error.getMessage()),
+                          logStoreURL);
             }
         }
         else

@@ -14,7 +14,6 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 public abstract class OpenMetadataArchiveStoreConnector extends ConnectorBase implements OpenMetadataArchiveStore,
                                                                                          AuditLoggingComponent
 {
-    protected AuditLog auditLog = null;
 
 
     /**

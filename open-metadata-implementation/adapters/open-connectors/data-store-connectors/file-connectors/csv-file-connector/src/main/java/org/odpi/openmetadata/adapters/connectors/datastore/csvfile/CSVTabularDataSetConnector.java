@@ -104,12 +104,12 @@ public class CSVTabularDataSetConnector extends ConnectorBase implements Readabl
                     }
                     catch (Exception exception)
                     {
-                        auditLog.logException(methodName,
-                                              CSVFileConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                                                  exception.getClass().getName(),
-                                                                                                                  methodName,
-                                                                                                                  exception.getMessage()),
-                                              exception);
+                        logExceptionRecord(methodName,
+                                           CSVFileConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                                               exception.getClass().getName(),
+                                                                                                               methodName,
+                                                                                                               exception.getMessage()),
+                                           exception);
 
                         throw new ConnectorCheckedException(CSVFileConnectorErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                                         exception.getClass().getName(),

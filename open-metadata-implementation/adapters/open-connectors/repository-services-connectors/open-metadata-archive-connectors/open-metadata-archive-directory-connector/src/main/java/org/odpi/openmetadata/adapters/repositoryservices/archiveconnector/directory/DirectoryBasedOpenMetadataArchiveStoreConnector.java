@@ -363,16 +363,13 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
         {
             log.debug("Unusable Archive Store :(", error);
 
-            if (auditLog != null)
-            {
-                final String actionDescription = "Unable to open archive directory";
+            final String actionDescription = "Unable to open archive directory";
 
-                auditLog.logException(actionDescription,
-                                      DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName,
-                                                                                                                             error.getClass().getName(),
-                                                                                                                             error.getMessage()),
-                                      error);
-            }
+            logExceptionRecord(actionDescription,
+                               DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName,
+                                                                                                                      error.getClass().getName(),
+                                                                                                                      error.getMessage()),
+                               error);
         }
     }
 

@@ -35,7 +35,6 @@ public abstract class WatchdogActionServiceConnector extends ConnectorBase imple
 
     protected String          watchdogActionServiceName = "<Unknown>";
     protected WatchdogContext watchdogContext           = null;
-    protected AuditLog        auditLog                  = null;
     protected List<Connector> embeddedConnectors        = null;
 
     /**

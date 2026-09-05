@@ -201,14 +201,11 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                 }
                 catch (Exception completionError)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logException(methodName,
-                                              GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
-                                                                                                                                       completionError.getClass().getName(),
-                                                                                                                                       completionError.getMessage()),
-                                              error);
-                    }
+                    logExceptionRecord(methodName,
+                                       GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
+                                                                                                                                completionError.getClass().getName(),
+                                                                                                                                completionError.getMessage()),
+                                       error);
                 }
             }
 
@@ -223,14 +220,11 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                 }
                 catch (Exception error)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logException(methodName,
-                                              GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
-                                                                                                                                       error.getClass().getName(),
-                                                                                                                                       error.getMessage()),
-                                              error);
-                    }
+                    logExceptionRecord(methodName,
+                                       GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
+                                                                                                                                error.getClass().getName(),
+                                                                                                                                error.getMessage()),
+                                       error);
                 }
             }
         }

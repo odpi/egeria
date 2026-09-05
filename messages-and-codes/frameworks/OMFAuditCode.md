@@ -9,7 +9,7 @@ The OMFAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 16 |
+| **Number of messages** | 14 |
 | **Message identifiers begin** | `OPEN-METADATA-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFAuditCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-metadata-framework](../../open-metadata-implementation/frameworks/open-metadata-framework) |
@@ -33,8 +33,6 @@ The OMFAuditCode is used to define the message content for the Audit Log.
 | [OPEN-METADATA-0017](#open-metadata-0017) | INFO | File change notification for connector {0} of kind {1} for path {2} |
 | [OPEN-METADATA-0018](#open-metadata-0018) | INFO | The {0} service is not yet monitoring notification type {1} because it is planned to start at {2} |
 | [OPEN-METADATA-0019](#open-metadata-0019) | INFO | The {0} service has stopped monitoring notification type {1} because it has passed its completion date of {2} |
-| [OPEN-METADATA-0020](#open-metadata-0020) | INFO | The {0} service is refreshing its cache for configured notification type {1} ({2}) where only one notification is sent to each subscriber |
-| [OPEN-METADATA-0021](#open-metadata-0021) | INFO | The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.  The next scheduled notification will be sent at {4} |
 | [OPEN-METADATA-0025](#open-metadata-0025) | EXCEPTION | The Open Metadata Store has received an unexpected {0} exception while formatting a response during method {1} for service {2}.  The message was: {3} |
 
 ----
@@ -321,50 +319,6 @@ The notification type is no longer monitored and its subscribers receive no furt
 **User action**
 
 No action is required if the completion date is intended.  Extend it if the notification type should still be delivering to its subscribers.
-
-
-----
-
-### OPEN-METADATA-0020
-
-> The {0} service is refreshing its cache for configured notification type {1} ({2}) where only one notification is sent to each subscriber
-
-|  |  |
-|---|---|
-| **Java constant** | `OMFAuditCode.ONE_TIME_NOTIFICATION_TYPE` |
-| **Severity** | INFO - The server is providing information about its normal operation. |
-| **Message inserts** | `{0}`, `{1}`, `{2}` |
-| **Further reading** | <https://egeria-project.org/concepts/notification-type/> |
-
-**System action**
-
-The governance service sends a notification to each subscriber registered when the service starts up and then monitors for new subscribers in order to send them a notification.
-
-**User action**
-
-This notification pattern was selected because multipleNotificationsPermitted is set to false. Validate that this is the right pattern.
-
-
-----
-
-### OPEN-METADATA-0021
-
-> The {0} governance service is refreshing its cache for configured notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule every {3} minutes.  The next scheduled notification will be sent at {4}
-
-|  |  |
-|---|---|
-| **Java constant** | `OMFAuditCode.PERIODIC_NOTIFICATION_TYPE` |
-| **Severity** | INFO - The server is providing information about its normal operation. |
-| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
-| **Further reading** | <https://egeria-project.org/concepts/notification-type/> |
-
-**System action**
-
-The governance service sends a notification to each subscriber registered when the service starts up and then monitors for new subscribers in order to send them notifications.  Additional notifications are sent to each active subscriber every notification interval.
-
-**User action**
-
-This notification pattern was selected because multipleNotificationsPermitted is set to true and notificationInterval is greater than 0. Validate that this is the intended behaviour and the notification interval is appropriate.
 
 
 ----

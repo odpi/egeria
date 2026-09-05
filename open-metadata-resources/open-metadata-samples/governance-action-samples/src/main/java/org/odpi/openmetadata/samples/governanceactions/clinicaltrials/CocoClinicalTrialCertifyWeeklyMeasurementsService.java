@@ -482,7 +482,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
 
             if (messageDefinition != null)
             {
-                auditLog.logMessage(methodName, messageDefinition);
+                logRecord(methodName, messageDefinition);
             }
 
             surveyContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);

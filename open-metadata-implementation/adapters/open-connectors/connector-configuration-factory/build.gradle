@@ -29,6 +29,8 @@ dependencies {
         implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
         implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
     }
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testImplementation 'org.testng:testng'
 
 }
 
@@ -36,4 +38,10 @@ description = 'Connector Configuration Factory'
 
 java {
     withJavadocJar()
+}
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }

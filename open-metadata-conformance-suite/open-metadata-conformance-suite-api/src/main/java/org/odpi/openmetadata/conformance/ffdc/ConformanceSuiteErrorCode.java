@@ -44,7 +44,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     NULL_USER_ID(400, "CONFORMANCE-SUITE-400-002",
             "OMAG server {0} has been called with a null username (userId)",
-            "The system cannot configure the local server.",
+            "The system cannot determine which user the request is on behalf of and so it is unable to process it.",
             "The user name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly.",
             "https://egeria-project.org/guides/cts/"),
 
@@ -53,7 +53,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_TEST_CASE_ID(400, "CONFORMANCE-SUITE-400-003",
             "Unable to create a report for a test case with unknown identifier {0}",
-            "The system cannot create the report.",
+            "The system cannot create the report because no test case with this identifier has run in this conformance suite instance.",
             "Validate the test case identifier with the messages being produced by the audit log  and the conformance suite documentation.",
             "https://egeria-project.org/guides/cts/"),
 
@@ -62,7 +62,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_WORKBENCH_ID(400, "CONFORMANCE-SUITE-400-004",
             "Unable to create a report for a workbench with unknown identifier {0}",
-            "The system cannot create the report.",
+            "The system cannot create the report because no workbench with this identifier is configured in this conformance suite instance.",
             "Validate the workbench identifier with the messages being produced by the audit log and the conformance suite documentation.",
             "https://egeria-project.org/guides/cts/"),
 
@@ -80,7 +80,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_PROFILE_NAME(400, "CONFORMANCE-SUITE-400-023",
             "Unable to create a report for a profile with unknown name {0}",
-            "The system cannot create the report.",
+            "The system cannot create the report because no profile with this name is defined by the workbenches in this conformance suite instance.",
             "Validate the profile name with the messages being produced by the audit log and the conformance suite documentation.",
             "https://egeria-project.org/guides/cts/"),
 
@@ -99,7 +99,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     NO_ENTERPRISE_CONNECTOR_MANAGER(500, "CONFORMANCE-SUITE-500-002",
             "The Egeria Conformance Suite located in OMAG server {0} has not been passed an enterprise connector manager",
             "The conformance suite cannot issue metadata requests to the technologies under test.",
-            "This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved.",
+            "This is an internal logic error in the initialization of the conformance suite.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved.",
             "https://egeria-project.org/guides/cts/"),
 
     /**
@@ -108,7 +108,7 @@ public enum ConformanceSuiteErrorCode implements ExceptionMessageSet
     DUPLICATE_TEST_CASE(500, "CONFORMANCE-SUITE-500-003",
             "The Egeria Conformance Suite testing technology {0} of type {1} has created two test cases with the same id of {2}",
             "The conformance suite cannot process one of the test cases.",
-            "This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved.",
+            "This is an internal logic error in the workbench that generated the test cases.  Create a git issue at https://github.com/odpi/egeria/issues, quoting the duplicated test case id, to get this resolved.",
             "https://egeria-project.org/guides/cts/"),
 
     /**

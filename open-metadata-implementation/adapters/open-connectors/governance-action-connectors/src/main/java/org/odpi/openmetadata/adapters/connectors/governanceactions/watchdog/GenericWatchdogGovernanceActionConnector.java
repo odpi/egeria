@@ -183,24 +183,18 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
             }
             catch (Exception nestedError)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
-                                                                                                                                   nestedError.getClass().getName(),
-                                                                                                                                   nestedError.getMessage()),
-                                          nestedError);
-                }
+                logExceptionRecord(methodName,
+                                   GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
+                                                                                                                            nestedError.getClass().getName(),
+                                                                                                                            nestedError.getMessage()),
+                                   nestedError);
             }
 
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      GovernanceActionConnectorsAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(governanceServiceName,
-                                                                                                                           error.getClass().getName(),
-                                                                                                                           error.getMessage()),
-                                      error);
-            }
+            logExceptionRecord(methodName,
+                               GovernanceActionConnectorsAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(governanceServiceName,
+                                                                                                                    error.getClass().getName(),
+                                                                                                                    error.getMessage()),
+                               error);
 
             throw new GovernanceServiceException(GovernanceActionConnectorsErrorCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(governanceServiceName,
                                                                                                                                       error.getClass().getName(),
@@ -367,14 +361,11 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
 
             try
             {
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        GovernanceActionConnectorsAuditCode.INITIATE_PROCESS.getMessageDefinition(governanceServiceName,
-                                                                                                                  processName,
-                                                                                                                  requestParametersString,
-                                                                                                                  actionTargetsString));
-                }
+                logRecord(methodName,
+                          GovernanceActionConnectorsAuditCode.INITIATE_PROCESS.getMessageDefinition(governanceServiceName,
+                                                                                                    processName,
+                                                                                                    requestParametersString,
+                                                                                                    actionTargetsString));
 
                 governanceContext.initiateGovernanceActionProcess(processName,
                                                                   requestParameters,
@@ -386,17 +377,14 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
             }
             catch (OMFCheckedExceptionBase nestedError)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          GovernanceActionConnectorsAuditCode.INITIATE_PROCESS_EXCEPTION.getMessageDefinition(governanceServiceName,
-                                                                                                                              nestedError.getClass().getName(),
-                                                                                                                              processName,
-                                                                                                                              requestParametersString,
-                                                                                                                              actionTargetsString,
-                                                                                                                              nestedError.getMessage()),
-                                          nestedError);
-                }
+                logExceptionRecord(methodName,
+                                   GovernanceActionConnectorsAuditCode.INITIATE_PROCESS_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                       nestedError.getClass().getName(),
+                                                                                                                       processName,
+                                                                                                                       requestParametersString,
+                                                                                                                       actionTargetsString,
+                                                                                                                       nestedError.getMessage()),
+                                   nestedError);
 
                 try
                 {
@@ -407,17 +395,14 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
                 }
                 catch (Exception contextError)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logException(methodName,
-                                              GovernanceActionConnectorsAuditCode.INITIATE_PROCESS_EXCEPTION.getMessageDefinition(governanceServiceName,
-                                                                                                                                  contextError.getClass().getName(),
-                                                                                                                                  processName,
-                                                                                                                                  requestParametersString,
-                                                                                                                                  actionTargetsString,
-                                                                                                                                  contextError.getMessage()),
-                                              contextError);
-                    }
+                    logExceptionRecord(methodName,
+                                       GovernanceActionConnectorsAuditCode.INITIATE_PROCESS_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                           contextError.getClass().getName(),
+                                                                                                                           processName,
+                                                                                                                           requestParametersString,
+                                                                                                                           actionTargetsString,
+                                                                                                                           contextError.getMessage()),
+                                       contextError);
                 }
 
                 throw new GovernanceServiceException(nestedError.getMessage(), nestedError);

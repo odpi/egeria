@@ -77,12 +77,12 @@ public class OracleTabularDataSetConnector extends ConnectorBase implements Writ
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(OracleErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                             exception.getClass().getName(),
@@ -122,12 +122,12 @@ public class OracleTabularDataSetConnector extends ConnectorBase implements Writ
                     }
                     catch (Exception exception)
                     {
-                        auditLog.logException(methodName,
-                                              OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                                      exception.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      exception.getMessage()),
-                                              exception);
+                        logExceptionRecord(methodName,
+                                           OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                                   exception.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   exception.getMessage()),
+                                           exception);
 
                         throw new ConnectorCheckedException(OracleErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                                         exception.getClass().getName(),
@@ -184,12 +184,12 @@ public class OracleTabularDataSetConnector extends ConnectorBase implements Writ
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(OracleErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                             exception.getClass().getName(),
@@ -236,12 +236,12 @@ public class OracleTabularDataSetConnector extends ConnectorBase implements Writ
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(OracleErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                             exception.getClass().getName(),
@@ -277,12 +277,12 @@ public class OracleTabularDataSetConnector extends ConnectorBase implements Writ
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(OracleErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                             exception.getClass().getName(),
@@ -351,12 +351,12 @@ public class OracleTabularDataSetConnector extends ConnectorBase implements Writ
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(OracleErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                             exception.getClass().getName(),

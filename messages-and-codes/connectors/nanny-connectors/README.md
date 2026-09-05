@@ -6,7 +6,7 @@
 
 The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed.
 
-This directory documents 98 messages in 16 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 97 messages in 16 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -26,7 +26,7 @@ This directory documents 98 messages in 16 message sets.  Return to the [message
 | [LiskovAuditCode](LiskovAuditCode.md) | Audit log messages | `LISKOV-DATA-HUB-MANAGER-` | 13 | <https://egeria-project.org/concepts/data-sharing-hub/> |
 | [LiskovErrorCode](LiskovErrorCode.md) | Exception messages | `LISKOV-DATA-HUB-MANAGER-500-` | 1 | <https://egeria-project.org/concepts/data-sharing-hub/> |
 | [MendelAuditCode](MendelAuditCode.md) | Audit log messages | `MENDEL-DUPLICATE-MANAGER-` | 18 | <https://egeria-project.org/features/duplicate-management/overview/> |
-| [MendelErrorCode](MendelErrorCode.md) | Exception messages | `MENDEL-DUPLICATE-MANAGER-500-` | 2 | <https://egeria-project.org/features/duplicate-management/overview/> |
+| [MendelErrorCode](MendelErrorCode.md) | Exception messages | `MENDEL-DUPLICATE-MANAGER-500-` | 1 | <https://egeria-project.org/features/duplicate-management/overview/> |
 | [TabularDataAuditCode](TabularDataAuditCode.md) | Audit log messages | `TABULAR-METADATA-CONNECTORS-` | 6 | <https://egeria-project.org/concepts/tabular-data-set-connector/> |
 | [TabularDataErrorCode](TabularDataErrorCode.md) | Exception messages | `REFERENCE-DATA-CONNECTORS-` | 10 | <https://egeria-project.org/concepts/tabular-data-set-connector/> |
 

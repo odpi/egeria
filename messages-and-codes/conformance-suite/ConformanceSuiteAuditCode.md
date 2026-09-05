@@ -76,7 +76,7 @@ The Open Metadata Conformance Suite has completed initialization of a new workbe
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required.  This message confirms that the workbench is ready to run its test cases.
 
 
 ----
@@ -139,7 +139,7 @@ The Open Metadata Conformance Workbench has completed running its tests.
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required.  The results of this workbench are available in the conformance report.
 
 
 ----
@@ -160,7 +160,7 @@ The Open Metadata Conformance Workbench has completed running the tests it drive
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required, but expect further test case messages from this workbench as events arrive from the cohort.
 
 
 ----
@@ -181,7 +181,7 @@ The Open Metadata Conformance Service has started on of the workbenches from the
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required.  This message records which test case is about to run.
 
 
 ----
@@ -202,7 +202,7 @@ The Open Metadata Conformance Test Case has completed running its tests. Retriev
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required, but retrieve the report if this message shows unsuccessful assertions or unexpected exceptions.
 
 
 ----
@@ -219,11 +219,11 @@ No action is required.  This is part of the normal operation of the service.
 
 **System action**
 
-The Open Metadata Conformance Test Case has completed running its tests. Retrieve the report to find out more details.
+The Open Metadata Conformance Test Case has completed running its tests and supplied a completion message.  Retrieve the report to find out more details.
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required, but review the completion message and retrieve the report for the detailed results of this test case.
 
 
 ----
@@ -244,7 +244,7 @@ The Open Metadata Conformance Suite is initializing.
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required.  This message records the metadata collection id of the repository that the conformance suite uses for its own metadata.
 
 
 ----
@@ -265,7 +265,7 @@ The Open Metadata Conformance Suite is able to start running tests.
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required.  This message confirms that the technology under test is visible to the conformance suite and that testing can begin.
 
 
 ----
@@ -328,7 +328,7 @@ This server will no longer receive metadata instances from the conformance tests
 
 **User action**
 
-No action is required.  This is part of the normal operation of the service.
+No action is required if this server was expected to leave the cohort.  If it is the technology under test, restart it and rerun the affected workbenches.
 
 
 ----

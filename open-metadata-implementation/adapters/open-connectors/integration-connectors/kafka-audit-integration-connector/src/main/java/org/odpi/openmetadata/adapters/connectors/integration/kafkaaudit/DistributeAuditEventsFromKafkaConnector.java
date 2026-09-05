@@ -54,12 +54,12 @@ public class DistributeAuditEventsFromKafkaConnector extends DynamicIntegrationC
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      DistributeKafkaAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                         error.getClass().getName(),
+                logExceptionRecord(methodName,
+                                   DistributeKafkaAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                      error.getClass().getName(),
 
-                                                                                                         error.getMessage()),
-                                      error);
+                                                                                                      error.getMessage()),
+                                   error);
             }
         }
     }

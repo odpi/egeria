@@ -99,7 +99,7 @@ public class CreateAssetGovernanceActionConnector extends GeneralGovernanceActio
                 outputGuards.add(ManageAssetGuard.SET_UP_COMPLETE.getName());
             }
 
-            auditLog.logMessage(methodName, messageDefinition);
+            logRecord(methodName, messageDefinition);
 
             if (outputActionTargets.isEmpty())
             {

@@ -163,20 +163,14 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
 
         super.start();
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName, OMRSAuditCode.STARTING_REAL_CONNECTOR.getMessageDefinition());
-        }
+        logRecord(methodName, OMRSAuditCode.STARTING_REAL_CONNECTOR.getMessageDefinition());
 
         if (realLocalConnector != null)
         {
             realLocalConnector.start();
         }
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName, OMRSAuditCode.STARTED_REAL_CONNECTOR.getMessageDefinition());
-        }
+        logRecord(methodName, OMRSAuditCode.STARTED_REAL_CONNECTOR.getMessageDefinition());
 
         if (realEventMapper != null)
         {

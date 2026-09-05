@@ -28,7 +28,7 @@ public enum RESTClientConnectorErrorCode implements ExceptionMessageSet
     /**
      * CLIENT-SIDE-REST-API-CONNECTOR-503-002 - A client-side exception {0} was received by method {1} from API call {2} to server {3} on platform {4}.  The error message was {5}
      */
-    CLIENT_SIDE_REST_API_ERROR(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-002 ",
+    CLIENT_SIDE_REST_API_ERROR(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-002",
             "A client-side exception {0} was received by method {1} from API call {2} to server {3} on platform {4}.  The error message was {5}",
             "The client has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
             "Review the error message to determine the cause of the error.  Check that the server is running and the URL is correct. " +
@@ -40,7 +40,7 @@ public enum RESTClientConnectorErrorCode implements ExceptionMessageSet
     /**
      * CLIENT-SIDE-REST-API-CONNECTOR-503-004 - REST API call {0} to server {1} on platform {2} returned an unsuccessful HTTP status {3}.  The response body was: {4}
      */
-    UNSUCCESSFUL_HTTP_RESPONSE(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-004 ",
+    UNSUCCESSFUL_HTTP_RESPONSE(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-004",
             "REST API call {0} to server {1} on platform {2} returned an unsuccessful HTTP status {3}.  The response body was: {4}",
             "The remote server rejected the request, or was not able to process it, before returning a body of the expected type.",
             "Review the HTTP status and response body to determine the cause of the error, correct the request and retry.",

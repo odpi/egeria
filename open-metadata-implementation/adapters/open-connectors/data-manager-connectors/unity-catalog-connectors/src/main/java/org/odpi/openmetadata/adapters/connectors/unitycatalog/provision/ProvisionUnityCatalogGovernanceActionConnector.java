@@ -125,7 +125,7 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends GeneralGover
                 }
             }
 
-            auditLog.logMessage(methodName, messageDefinition);
+            logRecord(methodName, messageDefinition);
 
             if (outputActionTargets.isEmpty())
             {

@@ -37,7 +37,7 @@ public enum ConformanceSuiteAuditCode implements AuditLogMessageSet
                           AuditLogRecordSeverityLevel.INFO,
              "The Open Metadata Conformance Workbench {0} has initialized",
              "The Open Metadata Conformance Suite has completed initialization of a new workbench.",
-             "No action is required.  This is part of the normal operation of the service.",
+             "No action is required.  This message confirms that the workbench is ready to run its test cases.",
              "https://egeria-project.org/guides/cts/"),
 
     /**
@@ -67,7 +67,7 @@ public enum ConformanceSuiteAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.INFO,
              "The Open Metadata Conformance Workbench {0} has finished",
              "The Open Metadata Conformance Workbench has completed running its tests.",
-             "No action is required.  This is part of the normal operation of the service.",
+             "No action is required.  The results of this workbench are available in the conformance report.",
              "https://egeria-project.org/guides/cts/"),
 
     /**
@@ -78,7 +78,7 @@ public enum ConformanceSuiteAuditCode implements AuditLogMessageSet
                              AuditLogRecordSeverityLevel.INFO,
              "The Open Metadata Conformance Workbench {0} has completed its synchronous tests, further test cases may be triggered from incoming events",
              "The Open Metadata Conformance Workbench has completed running the tests it drives synchronously.  Further test activity will be triggered by incoming events from the cohort.",
-             "No action is required.  This is part of the normal operation of the service.",
+             "No action is required, but expect further test case messages from this workbench as events arrive from the cohort.",
              "https://egeria-project.org/guides/cts/"),
 
     /**
@@ -88,7 +88,7 @@ public enum ConformanceSuiteAuditCode implements AuditLogMessageSet
                            AuditLogRecordSeverityLevel.INFO,
              "The Open Metadata Conformance Test Case {0} is initializing; see {1} for documentation",
              "The Open Metadata Conformance Service has started on of the workbenches from the conformance suite.",
-             "No action is required.  This is part of the normal operation of the service.",
+             "No action is required.  This message records which test case is about to run.",
              "https://egeria-project.org/guides/cts/"),
 
     /**
@@ -99,7 +99,7 @@ public enum ConformanceSuiteAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.DECISION,
              "The Open Metadata Conformance Test Case {0} has completed with {1} successful assertions, {2} unsuccessful assertions, {3} unexpected exceptions and {4} discovered properties.",
              "The Open Metadata Conformance Test Case has completed running its tests. Retrieve the report to find out more details.",
-             "No action is required.  This is part of the normal operation of the service.",
+             "No action is required, but retrieve the report if this message shows unsuccessful assertions or unexpected exceptions.",
              "https://egeria-project.org/guides/cts/"),
 
     /**
@@ -109,8 +109,8 @@ public enum ConformanceSuiteAuditCode implements AuditLogMessageSet
     TEST_CASE_COMPLETED_SUCCESSFULLY("CONFORMANCE-SUITE-0014",
                                      AuditLogRecordSeverityLevel.DECISION,
              "The Open Metadata Conformance Test Case {0} has completed with {1} successful assertions, {2} unsuccessful assertions, {3} unexpected exceptions and {4} discovered properties.  The message on completion was: {5}",
-             "The Open Metadata Conformance Test Case has completed running its tests. Retrieve the report to find out more details.",
-             "No action is required.  This is part of the normal operation of the service.",
+             "The Open Metadata Conformance Test Case has completed running its tests and supplied a completion message.  Retrieve the report to find out more details.",
+             "No action is required, but review the completion message and retrieve the report for the detailed results of this test case.",
              "https://egeria-project.org/guides/cts/"),
 
     /**
@@ -120,7 +120,7 @@ public enum ConformanceSuiteAuditCode implements AuditLogMessageSet
                               AuditLogRecordSeverityLevel.INFO,
              "The Open Metadata Conformance Suite has access to the local repository with metadata collection id {0}",
              "The Open Metadata Conformance Suite is initializing.",
-             "No action is required.  This is part of the normal operation of the service.",
+             "No action is required.  This message records the metadata collection id of the repository that the conformance suite uses for its own metadata.",
              "https://egeria-project.org/guides/cts/"),
 
     /**
@@ -131,7 +131,7 @@ public enum ConformanceSuiteAuditCode implements AuditLogMessageSet
                             AuditLogRecordSeverityLevel.INFO,
              "The technology under test with a server name of {0} connected to the same cohort as the Open Metadata Conformance Suite with metadata collection id {1}",
              "The Open Metadata Conformance Suite is able to start running tests.",
-             "No action is required.  This is part of the normal operation of the service.",
+             "No action is required.  This message confirms that the technology under test is visible to the conformance suite and that testing can begin.",
              "https://egeria-project.org/guides/cts/"),
 
     /**
@@ -162,7 +162,7 @@ public enum ConformanceSuiteAuditCode implements AuditLogMessageSet
                         AuditLogRecordSeverityLevel.INFO,
              "Server {0} with metadata collection id {1} has left the cohort",
              "This server will no longer receive metadata instances from the conformance tests.",
-             "No action is required.  This is part of the normal operation of the service.",
+             "No action is required if this server was expected to leave the cohort.  If it is the technology under test, restart it and rerun the affected workbenches.",
              "https://egeria-project.org/guides/cts/"),
 
     /**

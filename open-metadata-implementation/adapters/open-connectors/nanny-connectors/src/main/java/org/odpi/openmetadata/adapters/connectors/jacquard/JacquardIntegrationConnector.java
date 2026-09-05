@@ -147,9 +147,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         try
         {
-            auditLog.logMessage(methodName, JacquardAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
-                                                                                                      integrationContext.getMetadataAccessServer(),
-                                                                                                      integrationContext.getMetadataAccessServerPlatformURLRoot()));
+            logRecord(methodName, JacquardAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
+                                                                                            integrationContext.getMetadataAccessServer(),
+                                                                                            integrationContext.getMetadataAccessServerPlatformURLRoot()));
 
             if ((secretsStoreConnectorMap == null) || (secretsStoreConnectorMap.isEmpty()))
             {
@@ -194,9 +194,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
             if (subscriptionManagerGUID == null)
             {
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.NO_SUBSCRIPTION_MANAGER.getMessageDefinition(connectorName,
-                                                                                                   JacquardConfigurationProperty.SUBSCRIPTION_MANAGER_GUID.getName()));
+                logRecord(methodName,
+                          JacquardAuditCode.NO_SUBSCRIPTION_MANAGER.getMessageDefinition(connectorName,
+                                                                                         JacquardConfigurationProperty.SUBSCRIPTION_MANAGER_GUID.getName()));
             }
             else
             {
@@ -220,11 +220,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             /*
              * OK so this is really unexpected.
              */
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                            error.getClass().getName(),
-                                                                                            methodName,
-                                                                                            error.getMessage()));
+            logRecord(methodName,
+                      JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                  error.getClass().getName(),
+                                                                                  methodName,
+                                                                                  error.getMessage()));
 
             throw new ConnectorCheckedException(JacquardErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                             error.getClass().getName(),
@@ -252,7 +252,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * Determine the existing catalog targets - these are tabular data sources that are set up.
          */
-        auditLog.logMessage(methodName, JacquardAuditCode.HARVESTING_CATALOG_TARGETS.getMessageDefinition(integrationContext.getConnectorName()));
+        logRecord(methodName, JacquardAuditCode.HARVESTING_CATALOG_TARGETS.getMessageDefinition(integrationContext.getConnectorName()));
         List<RequestedCatalogTarget> requestedCatalogTargets = catalogTargetsManager.retrieveKnownCatalogTargets(integrationContext,
                                                                                                                  this);
 
@@ -269,9 +269,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * Call each of the insight harvesters to check they have their catalog targets set up.
          */
-        auditLog.logMessage(methodName, JacquardAuditCode.HARVESTING_VALID_VALUES.getMessageDefinition(integrationContext.getConnectorName()));
+        logRecord(methodName, JacquardAuditCode.HARVESTING_VALID_VALUES.getMessageDefinition(integrationContext.getConnectorName()));
         harvestValidMetadataValues(existingDataSources, subscriptionManagerGUID);
-        auditLog.logMessage(methodName, JacquardAuditCode.HARVESTING_REFERENCE_DATA_SETS.getMessageDefinition(integrationContext.getConnectorName()));
+        logRecord(methodName, JacquardAuditCode.HARVESTING_REFERENCE_DATA_SETS.getMessageDefinition(integrationContext.getConnectorName()));
         harvestReferenceDataSets(existingDataSources, subscriptionManagerGUID);
 
         /*
@@ -342,12 +342,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                      */
                                     if (! this.logDuplicateElementDetected(error, methodName))
                                     {
-                                        auditLog.logException(methodName,
-                                                              JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                          error.getClass().getName(),
-                                                                                                                          methodName,
-                                                                                                                          error.getMessage()),
-                                                              error);
+                                        logExceptionRecord(methodName,
+                                                           JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                       error.getClass().getName(),
+                                                                                                                       methodName,
+                                                                                                                       error.getMessage()),
+                                                           error);
                                     }
                                 }
                             }
@@ -470,12 +470,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                      */
                                     if (! this.logDuplicateElementDetected(error, methodName))
                                     {
-                                        auditLog.logException(methodName,
-                                                              JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                          error.getClass().getName(),
-                                                                                                                          methodName,
-                                                                                                                          error.getMessage()),
-                                                              error);
+                                        logExceptionRecord(methodName,
+                                                           JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                       error.getClass().getName(),
+                                                                                                                       methodName,
+                                                                                                                       error.getMessage()),
+                                                           error);
                                     }
                                 }
                             }
@@ -567,10 +567,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 }
             }
 
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.DUPLICATE_ELEMENT_DETECTED.getMessageDefinition(connectorName,
-                                                                                                  qualifiedName,
-                                                                                                  subject));
+            logRecord(methodName,
+                      JacquardAuditCode.DUPLICATE_ELEMENT_DETECTED.getMessageDefinition(connectorName,
+                                                                                        qualifiedName,
+                                                                                        subject));
             return true;
         }
 
@@ -676,28 +676,28 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                    digitalProductProperties,
                                                                    null);
 
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.NEW_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
-                                                                                                 productGUID,
-                                                                                                 productDefinition.getProductName()));
+            logRecord(methodName,
+                      JacquardAuditCode.NEW_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
+                                                                                       productGUID,
+                                                                                       productDefinition.getProductName()));
 
             productElement = collectionClient.getCollectionByGUID(productGUID, this.headerAndProperties(collectionClient));
         }
         else
         {
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.RETRIEVING_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
-                                                                                                        productElement.getElementHeader().getGUID(),
-                                                                                                        productDefinition.getProductName()));
+            logRecord(methodName,
+                      JacquardAuditCode.RETRIEVING_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
+                                                                                              productElement.getElementHeader().getGUID(),
+                                                                                              productDefinition.getProductName()));
 
             if (collectionClient.updateCollection(productElement.getElementHeader().getGUID(),
                                                   collectionClient.getUpdateOptions(true),
                                                   digitalProductProperties))
             {
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.UPDATED_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
-                                                                                                        productElement.getElementHeader().getGUID(),
-                                                                                                        productDefinition.getProductName()));
+                logRecord(methodName,
+                          JacquardAuditCode.UPDATED_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
+                                                                                              productElement.getElementHeader().getGUID(),
+                                                                                              productDefinition.getProductName()));
             }
         }
 
@@ -1278,10 +1278,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         if (duplicatesRemoved > 0)
         {
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.DUPLICATE_CATALOG_TARGETS_REMOVED.getMessageDefinition(connectorName,
-                                                                                                         Integer.toString(duplicatesRemoved),
-                                                                                                         Integer.toString(ownCatalogTargets.size())));
+            logRecord(methodName,
+                      JacquardAuditCode.DUPLICATE_CATALOG_TARGETS_REMOVED.getMessageDefinition(connectorName,
+                                                                                               Integer.toString(duplicatesRemoved),
+                                                                                               Integer.toString(ownCatalogTargets.size())));
         }
     }
 
@@ -1549,11 +1549,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                   notificationTypeClient.getUpdateOptions(true),
                                                                   updatedProperties);
 
-                auditLog.logMessage("addNotificationType",
-                                    JacquardAuditCode.UPDATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                         OpenMetadataType.NOTIFICATION_TYPE.typeName,
-                                                                                                         existingProperties.getDisplayName(),
-                                                                                                         notificationTypeGUID));
+                logRecord("addNotificationType",
+                          JacquardAuditCode.UPDATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                               OpenMetadataType.NOTIFICATION_TYPE.typeName,
+                                                                                               existingProperties.getDisplayName(),
+                                                                                               notificationTypeGUID));
             }
 
             this.registerWithSubscriptionManager(notificationTypeGUID, subscriptionManagerGUID);
@@ -1958,11 +1958,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 /*
                  * Log new product
                  */
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                         dataSetProperties.getTypeName(),
-                                                                                                         dataSetProperties.getDisplayName(),
-                                                                                                         assetGUID));
+                logRecord(methodName,
+                          JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                               dataSetProperties.getTypeName(),
+                                                                                               dataSetProperties.getDisplayName(),
+                                                                                               assetGUID));
             }
             else
             {
@@ -2056,10 +2056,10 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                   connectionProperties,
                                                                   null);
 
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 connectionProperties.getTypeName(),
-                                                                                                 connectionProperties.getDisplayName(), connectionGUID));
+        logRecord(methodName,
+                  JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                       connectionProperties.getTypeName(),
+                                                                                       connectionProperties.getDisplayName(), connectionGUID));
 
         /*
          * Pass on all the secrets stores to the product asset.  These secret stores are set up
@@ -2102,11 +2102,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
                 secretsStoreConnectionGUID = connectionClient.createConnection(newElementOptions, null, secretsStoreConnection, embeddedConnectionProperties);
 
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                         secretsStoreConnection.getTypeName(),
-                                                                                                         secretsStoreConnection.getDisplayName(),
-                                                                                                         secretsStoreConnectionGUID));
+                logRecord(methodName,
+                          JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                               secretsStoreConnection.getTypeName(),
+                                                                                               secretsStoreConnection.getDisplayName(),
+                                                                                               secretsStoreConnectionGUID));
 
                 /*
                  * Link connector type to connection.
@@ -2116,13 +2116,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                              new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
                                                              null);
 
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                            secretsStoreConnection.getTypeName(),
-                                                                                            secretsStoreConnectionGUID,
-                                                                                            OpenMetadataType.CONNECTOR_TYPE.typeName,
-                                                                                            secretsConnectorConnection.getConnectorType().getGUID(),
-                                                                                            OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
+                logRecord(methodName,
+                          JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                  secretsStoreConnection.getTypeName(),
+                                                                                  secretsStoreConnectionGUID,
+                                                                                  OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                                                  secretsConnectorConnection.getConnectorType().getGUID(),
+                                                                                  OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
 
                 /*
                  * Add secrets store location as an endpoint.
@@ -2138,19 +2138,19 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
                 String secretsStoreEndpointGUID = endpointClient.createEndpoint(newElementOptions, null, secretsStoreEndpoint, null);
 
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                         secretsStoreEndpoint.getTypeName(),
-                                                                                                         secretsStoreEndpoint.getDisplayName(),
-                                                                                                         secretsStoreEndpointGUID));
+                logRecord(methodName,
+                          JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                               secretsStoreEndpoint.getTypeName(),
+                                                                                               secretsStoreEndpoint.getDisplayName(),
+                                                                                               secretsStoreEndpointGUID));
 
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                            secretsStoreConnection.getTypeName(),
-                                                                                            secretsStoreConnectionGUID,
-                                                                                            secretsStoreEndpoint.getTypeName(),
-                                                                                            secretsStoreEndpointGUID,
-                                                                                            OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+                logRecord(methodName,
+                          JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                  secretsStoreConnection.getTypeName(),
+                                                                                  secretsStoreConnectionGUID,
+                                                                                  secretsStoreEndpoint.getTypeName(),
+                                                                                  secretsStoreEndpointGUID,
+                                                                                  OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
             }
             else
             {
@@ -2165,13 +2165,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                         new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
                                                         embeddedConnectionProperties);
 
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                            connectionProperties.getTypeName(),
-                                                                                            connectionGUID,
-                                                                                            OpenMetadataType.CONNECTION.typeName,
-                                                                                            secretsStoreConnectionGUID,
-                                                                                            OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName));
+                logRecord(methodName,
+                          JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                  connectionProperties.getTypeName(),
+                                                                                  connectionGUID,
+                                                                                  OpenMetadataType.CONNECTION.typeName,
+                                                                                  secretsStoreConnectionGUID,
+                                                                                  OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName));
             }
         }
 
@@ -2184,13 +2184,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                      new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
                                                      null);
 
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                    connectionProperties.getTypeName(),
-                                                                                    connectionGUID,
-                                                                                    OpenMetadataType.CONNECTOR_TYPE.typeName,
-                                                                                    connectorTypeGUID,
-                                                                                    OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
+        logRecord(methodName,
+                  JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                          connectionProperties.getTypeName(),
+                                                                          connectionGUID,
+                                                                          OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                                          connectorTypeGUID,
+                                                                          OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
 
         /*
          * Create an endpoint to carry the URL of the platform needed to connect to the metadata store.
@@ -2211,19 +2211,19 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         String endpointGUID = endpointClient.createEndpoint(newElementOptions, null, endpointProperties, null);
 
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 endpointProperties.getTypeName(),
-                                                                                                 endpointProperties.getDisplayName(),
-                                                                                                 endpointGUID));
+        logRecord(methodName,
+                  JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                       endpointProperties.getTypeName(),
+                                                                                       endpointProperties.getDisplayName(),
+                                                                                       endpointGUID));
 
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                    connectionProperties.getTypeName(),
-                                                                                    connectionGUID,
-                                                                                    endpointProperties.getTypeName(),
-                                                                                    endpointGUID,
-                                                                                    OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+        logRecord(methodName,
+                  JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                          connectionProperties.getTypeName(),
+                                                                          connectionGUID,
+                                                                          endpointProperties.getTypeName(),
+                                                                          endpointGUID,
+                                                                          OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
             }
             else
             {
@@ -2325,13 +2325,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                        linkedConnectorTypeGUID,
                                                                        connectionClient.getDeleteOptions(false));
 
-                        auditLog.logMessage(methodName,
-                                            JacquardAuditCode.UNLINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                                      OpenMetadataType.CONNECTION.typeName,
-                                                                                                      connectionGUID,
-                                                                                                      OpenMetadataType.CONNECTOR_TYPE.typeName,
-                                                                                                      linkedConnectorTypeGUID,
-                                                                                                      OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
+                        logRecord(methodName,
+                                  JacquardAuditCode.UNLINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                            OpenMetadataType.CONNECTION.typeName,
+                                                                                            connectionGUID,
+                                                                                            OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                                                            linkedConnectorTypeGUID,
+                                                                                            OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
                     }
                 }
             }
@@ -2344,13 +2344,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                          new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
                                                          null);
 
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                        OpenMetadataType.CONNECTION.typeName,
-                                                                                        connectionGUID,
-                                                                                        OpenMetadataType.CONNECTOR_TYPE.typeName,
-                                                                                        connectorTypeGUID,
-                                                                                        OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
+            logRecord(methodName,
+                      JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                              OpenMetadataType.CONNECTION.typeName,
+                                                                              connectionGUID,
+                                                                              OpenMetadataType.CONNECTOR_TYPE.typeName,
+                                                                              connectorTypeGUID,
+                                                                              OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
         }
     }
 
@@ -2404,11 +2404,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                       endpointClient.getUpdateOptions(true),
                                                       updatedProperties);
 
-                        auditLog.logMessage(methodName,
-                                            JacquardAuditCode.UPDATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                                 OpenMetadataType.ENDPOINT.typeName,
-                                                                                                                 endpointProperties.getDisplayName(),
-                                                                                                                 endpoint.getElementHeader().getGUID()));
+                        logRecord(methodName,
+                                  JacquardAuditCode.UPDATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                       OpenMetadataType.ENDPOINT.typeName,
+                                                                                                       endpointProperties.getDisplayName(),
+                                                                                                       endpoint.getElementHeader().getGUID()));
                     }
                 }
             }
@@ -2435,11 +2435,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         String endpointGUID = endpointClient.createEndpoint(newElementOptions, null, endpointProperties, null);
 
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 endpointProperties.getTypeName(),
-                                                                                                 endpointProperties.getDisplayName(),
-                                                                                                 endpointGUID));
+        logRecord(methodName,
+                  JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                       endpointProperties.getTypeName(),
+                                                                                       endpointProperties.getDisplayName(),
+                                                                                       endpointGUID));
     }
 
 
@@ -2487,11 +2487,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                   connectionClient.getUpdateOptions(true),
                                                   updatedProperties);
 
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.UPDATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                         OpenMetadataType.CONNECTION.typeName,
-                                                                                                         connectionProperties.getDisplayName(),
-                                                                                                         connectionGUID));
+                logRecord(methodName,
+                          JacquardAuditCode.UPDATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                               OpenMetadataType.CONNECTION.typeName,
+                                                                                               connectionProperties.getDisplayName(),
+                                                                                               connectionGUID));
             }
         }
     }
@@ -2711,11 +2711,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             {
                 if (collection != null)
                 {
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                                productFolderDefinition.getTypeName(),
-                                                                                                                productFolderDefinition.getDisplayName(),
-                                                                                                                collection.getElementHeader().getGUID()));
+                    logRecord(methodName,
+                              JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                      productFolderDefinition.getTypeName(),
+                                                                                                      productFolderDefinition.getDisplayName(),
+                                                                                                      collection.getElementHeader().getGUID()));
 
                     return collection.getElementHeader().getGUID();
                 }
@@ -2768,11 +2768,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                   initialClassifications,
                                                                   collectionProperties,
                                                                   null);
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 productFolderDefinition.getTypeName(),
-                                                                                                 productFolderDefinition.getDisplayName(),
-                                                                                                 collectionGUID));
+        logRecord(methodName,
+                  JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                       productFolderDefinition.getTypeName(),
+                                                                                       productFolderDefinition.getDisplayName(),
+                                                                                       collectionGUID));
 
         return collectionGUID;
     }
@@ -2846,11 +2846,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             {
                 if (term != null)
                 {
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                                OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                                                                                glossaryTermDefinition.getDisplayName(),
-                                                                                                                term.getElementHeader().getGUID()));
+                    logRecord(methodName,
+                              JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                      OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                                                      glossaryTermDefinition.getDisplayName(),
+                                                                                                      term.getElementHeader().getGUID()));
 
                     glossaryTermClient.updateGlossaryTerm(term.getElementHeader().getGUID(), glossaryTermClient.getUpdateOptions(true), glossaryTermProperties);
                     return term.getElementHeader().getGUID();
@@ -2887,11 +2887,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                         glossaryTermProperties,
                                                                         null);
 
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                                                                 glossaryTermDefinition.getDisplayName(),
-                                                                                                 glossaryTermGUID));
+        logRecord(methodName,
+                  JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                       OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                                       glossaryTermDefinition.getDisplayName(),
+                                                                                       glossaryTermGUID));
 
         return glossaryTermGUID;
     }
@@ -2964,11 +2964,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             {
                 if (perspective != null)
                 {
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                                OpenMetadataType.PERSPECTIVE.typeName,
-                                                                                                                perspectiveDefinition.getDisplayName(),
-                                                                                                                perspective.getElementHeader().getGUID()));
+                    logRecord(methodName,
+                              JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                      OpenMetadataType.PERSPECTIVE.typeName,
+                                                                                                      perspectiveDefinition.getDisplayName(),
+                                                                                                      perspective.getElementHeader().getGUID()));
 
                     perspectiveClient.updatePerspective(perspective.getElementHeader().getGUID(), perspectiveClient.getUpdateOptions(true), perspectiveProperties);
                     return perspective.getElementHeader().getGUID();
@@ -3005,11 +3005,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                  perspectiveProperties,
                                                                  null);
 
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 OpenMetadataType.PERSPECTIVE.typeName,
-                                                                                                 perspectiveDefinition.getDisplayName(),
-                                                                                                 perspective));
+        logRecord(methodName,
+                  JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                       OpenMetadataType.PERSPECTIVE.typeName,
+                                                                                       perspectiveDefinition.getDisplayName(),
+                                                                                       perspective));
 
         return perspective;
     }
@@ -3086,11 +3086,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             {
                 if (question != null)
                 {
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                                OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                                                                                productQuestionDefinition.getDisplayName(),
-                                                                                                                question.getElementHeader().getGUID()));
+                    logRecord(methodName,
+                              JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                      OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                                                      productQuestionDefinition.getDisplayName(),
+                                                                                                      question.getElementHeader().getGUID()));
 
                     glossaryTermClient.updateGlossaryTerm(question.getElementHeader().getGUID(), glossaryTermClient.getUpdateOptions(true), glossaryTermProperties);
                     return question.getElementHeader().getGUID();
@@ -3131,11 +3131,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                     glossaryTermProperties,
                                                                     null);
 
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                                                                 productQuestionDefinition.getDisplayName(),
-                                                                                                 questionGUID));
+        logRecord(methodName,
+                  JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                       OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                                       productQuestionDefinition.getDisplayName(),
+                                                                                       questionGUID));
 
         if (productQuestionDefinition.getFolder() != null)
         {
@@ -3215,11 +3215,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             {
                 if (existingCommunity != null)
                 {
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                                OpenMetadataType.COMMUNITY.typeName,
-                                                                                                                productCommunityDefinition.getDisplayName(),
-                                                                                                                existingCommunity.getElementHeader().getGUID()));
+                    logRecord(methodName,
+                              JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                      OpenMetadataType.COMMUNITY.typeName,
+                                                                                                      productCommunityDefinition.getDisplayName(),
+                                                                                                      existingCommunity.getElementHeader().getGUID()));
 
                     communityClient.updateCommunity(existingCommunity.getElementHeader().getGUID(), communityClient.getUpdateOptions(true), communityProperties);
                     return existingCommunity.getElementHeader().getGUID();
@@ -3251,11 +3251,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                communityProperties,
                                                                assignmentScopeProperties);
 
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 OpenMetadataType.COMMUNITY.typeName,
-                                                                                                 productCommunityDefinition.getDisplayName(),
-                                                                                                 communityGUID));
+        logRecord(methodName,
+                  JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                       OpenMetadataType.COMMUNITY.typeName,
+                                                                                       productCommunityDefinition.getDisplayName(),
+                                                                                       communityGUID));
 
         return communityGUID;
     }
@@ -3328,11 +3328,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             {
                 if (relatedNoteLog != null)
                 {
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                                OpenMetadataType.NOTE_LOG.typeName,
-                                                                                                                "Notifications for " + productCommunityDefinition.getDisplayName(),
-                                                                                                                relatedNoteLog.getRelatedElement().getElementHeader().getGUID()));
+                    logRecord(methodName,
+                              JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                      OpenMetadataType.NOTE_LOG.typeName,
+                                                                                                      "Notifications for " + productCommunityDefinition.getDisplayName(),
+                                                                                                      relatedNoteLog.getRelatedElement().getElementHeader().getGUID()));
 
                     noteLogClient.updateNoteLog(relatedNoteLog.getRelatedElement().getElementHeader().getGUID(), noteLogClient.getUpdateOptions(true), noteLogProperties);
                     return relatedNoteLog.getRelatedElement().getElementHeader().getGUID();
@@ -3353,11 +3353,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                          null,
                                                          noteLogProperties);
 
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 OpenMetadataType.NOTE_LOG.typeName,
-                                                                                                 noteLogProperties.getDisplayName(),
-                                                                                                 noteLogGUID));
+        logRecord(methodName,
+                  JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                       OpenMetadataType.NOTE_LOG.typeName,
+                                                                                       noteLogProperties.getDisplayName(),
+                                                                                       noteLogGUID));
         return noteLogGUID;
     }
 
@@ -3433,11 +3433,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             {
                 if (dataField != null)
                 {
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                                OpenMetadataType.DATA_FIELD.typeName,
-                                                                                                                dataFieldDefinition.getDisplayName(),
-                                                                                                                dataField.getElementHeader().getGUID()));
+                    logRecord(methodName,
+                              JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                      OpenMetadataType.DATA_FIELD.typeName,
+                                                                                                      dataFieldDefinition.getDisplayName(),
+                                                                                                      dataField.getElementHeader().getGUID()));
 
                     dataFieldClient.updateDataField(dataField.getElementHeader().getGUID(), dataFieldClient.getUpdateOptions(true), dataFieldProperties);
                     return dataField.getElementHeader().getGUID();
@@ -3486,11 +3486,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                      classificationExplorerClient.getMakeAnchorOptions(false));
             }
         }
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 OpenMetadataType.DATA_FIELD.typeName,
-                                                                                                 dataFieldDefinition.getDisplayName(),
-                                                                                                 dataFieldGUID));
+        logRecord(methodName,
+                  JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                       OpenMetadataType.DATA_FIELD.typeName,
+                                                                                       dataFieldDefinition.getDisplayName(),
+                                                                                       dataFieldGUID));
 
         return dataFieldGUID;
     }
@@ -3597,11 +3597,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             {
                 if (existingGovernanceDefinition != null)
                 {
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                                governanceDefinition.getType(),
-                                                                                                                governanceDefinition.getDisplayName(),
-                                                                                                                existingGovernanceDefinition.getElementHeader().getGUID()));
+                    logRecord(methodName,
+                              JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                      governanceDefinition.getType(),
+                                                                                                      governanceDefinition.getDisplayName(),
+                                                                                                      existingGovernanceDefinition.getElementHeader().getGUID()));
 
                     governanceDefinitionClient.updateGovernanceDefinition(existingGovernanceDefinition.getElementHeader().getGUID(),
                                                                           governanceDefinitionClient.getUpdateOptions(true),
@@ -3625,11 +3625,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                 governanceDefinitionProperties,
                                                                                                 null);
 
-        auditLog.logMessage(methodName,
-                            JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                 governanceDefinition.getType(),
-                                                                                                 governanceDefinition.getDisplayName(),
-                                                                                                 governanceDefinitionGUID));
+        logRecord(methodName,
+                  JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                       governanceDefinition.getType(),
+                                                                                       governanceDefinition.getDisplayName(),
+                                                                                       governanceDefinitionGUID));
 
         return governanceDefinitionGUID;
     }
@@ -3793,11 +3793,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                      */
                     newSolutionComponentQNames.add(solutionComponentProperties.getQualifiedName());
 
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                             OpenMetadataType.SOLUTION_COMPONENT.typeName,
-                                                                                                             solutionComponentDefinition.getDisplayName(),
-                                                                                                             componentGUID));
+                    logRecord(methodName,
+                              JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                   OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                                   solutionComponentDefinition.getDisplayName(),
+                                                                                                   componentGUID));
                 }
 
                 qualifiedNameToGUIDMap.put(componentQualifiedName, componentGUID);
@@ -3820,13 +3820,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                     componentLinkOptions,
                                                                     solutionLinkingWireProperties);
 
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                                OpenMetadataType.SOLUTION_COMPONENT.typeName,
-                                                                                                solutionComponentWire.getComponent1().getQualifiedName(),
-                                                                                                OpenMetadataType.SOLUTION_COMPONENT.typeName,
-                                                                                                solutionComponentWire.getComponent2().getQualifiedName(),
-                                                                                                OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName));
+                    logRecord(methodName,
+                              JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                      OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                      solutionComponentWire.getComponent1().getQualifiedName(),
+                                                                                      OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                      solutionComponentWire.getComponent2().getQualifiedName(),
+                                                                                      OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName));
                 }
             }
 
@@ -3845,13 +3845,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                    componentLinkOptions,
                                                                    solutionComponentActorProperties);
 
-                auditLog.logMessage(methodName,
-                                    JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                            solutionComponentActor.getSolutionRole().getTypeName(),
-                                                                                            solutionComponentActor.getSolutionRole().getQualifiedName(),
-                                                                                            OpenMetadataType.SOLUTION_COMPONENT.typeName,
-                                                                                            solutionComponentActor.getSolutionComponent().getQualifiedName(),
-                                                                                            OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName));
+                logRecord(methodName,
+                          JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                  solutionComponentActor.getSolutionRole().getTypeName(),
+                                                                                  solutionComponentActor.getSolutionRole().getQualifiedName(),
+                                                                                  OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                  solutionComponentActor.getSolutionComponent().getQualifiedName(),
+                                                                                  OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName));
             }
 
             /*
@@ -4019,11 +4019,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                   peerDuplicateLinkProperties,
                                                                                   peerOptions);
 
-                        auditLog.logMessage(methodName,
-                                            JacquardAuditCode.LINKING_DUPLICATE_SOLUTION_COMPONENTS.getMessageDefinition(connectorName,
-                                                                                                                         solutionComponentDefinition.getDisplayName(),
-                                                                                                                         jacquardComponentGUID,
-                                                                                                                         peerComponentGUID));
+                        logRecord(methodName,
+                                  JacquardAuditCode.LINKING_DUPLICATE_SOLUTION_COMPONENTS.getMessageDefinition(connectorName,
+                                                                                                               solutionComponentDefinition.getDisplayName(),
+                                                                                                               jacquardComponentGUID,
+                                                                                                               peerComponentGUID));
                     }
 
                     if (peerComponentHeader.getKnownDuplicate() == null)
@@ -4041,12 +4041,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                  error.getClass().getName(),
-                                                                                                  methodName + "(" + solutionComponentDefinition.getDisplayName() + ")",
-                                                                                                  error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                               error.getClass().getName(),
+                                                                                               methodName + "(" + solutionComponentDefinition.getDisplayName() + ")",
+                                                                                               error.getMessage()),
+                                   error);
             }
         }
     }
@@ -4184,11 +4184,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             {
                 if (solutionBlueprint != null)
                 {
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                                OpenMetadataType.SOLUTION_BLUEPRINT.typeName,
-                                                                                                                productSolutionBlueprint.getDisplayName(),
-                                                                                                                solutionBlueprint.getElementHeader().getGUID()));
+                    logRecord(methodName,
+                              JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                      OpenMetadataType.SOLUTION_BLUEPRINT.typeName,
+                                                                                                      productSolutionBlueprint.getDisplayName(),
+                                                                                                      solutionBlueprint.getElementHeader().getGUID()));
 
                     solutionBlueprintClient.updateCollection(solutionBlueprint.getElementHeader().getGUID(), solutionBlueprintClient.getUpdateOptions(true), solutionBlueprintProperties);
                     return solutionBlueprint.getElementHeader().getGUID();
@@ -4206,11 +4206,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         if (blueprintGUID != null)
         {
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                     OpenMetadataType.SOLUTION_BLUEPRINT.typeName,
-                                                                                                     productSolutionBlueprint.getDisplayName(),
-                                                                                                     blueprintGUID));
+            logRecord(methodName,
+                      JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                           OpenMetadataType.SOLUTION_BLUEPRINT.typeName,
+                                                                                           productSolutionBlueprint.getDisplayName(),
+                                                                                           blueprintGUID));
         }
 
         return blueprintGUID;
@@ -4332,19 +4332,19 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                        actorRoleProperties,
                                                        null);
 
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                     productRoleDefinition.getTypeName(),
-                                                                                                     productRoleDefinition.getDisplayName(),
-                                                                                                     roleGUID));
+            logRecord(methodName,
+                      JacquardAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                           productRoleDefinition.getTypeName(),
+                                                                                           productRoleDefinition.getDisplayName(),
+                                                                                           roleGUID));
         }
         else
         {
-            auditLog.logMessage(methodName,
-                                JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                                        productRoleDefinition.getTypeName(),
-                                                                                                        productRoleDefinition.getDisplayName(),
-                                                                                                        roleGUID));
+            logRecord(methodName,
+                      JacquardAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                              productRoleDefinition.getTypeName(),
+                                                                                              productRoleDefinition.getDisplayName(),
+                                                                                              roleGUID));
         }
 
         return roleGUID;
@@ -4411,12 +4411,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
              * and the harvest is what repairs the connection: the product could never recover, and every
              * other product was refreshed by nobody in the meantime.
              */
-            auditLog.logException(methodName,
-                                  JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                              error.getClass().getName(),
-                                                                                              methodName + "(" + retrievedCatalogTarget.getCatalogTargetName() + ")",
-                                                                                              error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           error.getClass().getName(),
+                                                                                           methodName + "(" + retrievedCatalogTarget.getCatalogTargetName() + ")",
+                                                                                           error.getMessage()),
+                               error);
 
             return new RequestedCatalogTarget(retrievedCatalogTarget, catalogTargetContext, connectorToTarget);
         }
@@ -4432,9 +4432,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     {
         final String methodName = "disconnect";
 
-        auditLog.logMessage(methodName, JacquardAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName,
-                                                                                                  integrationContext.getMetadataAccessServer(),
-                                                                                                  integrationContext.getMetadataAccessServerPlatformURLRoot()));
+        logRecord(methodName, JacquardAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName,
+                                                                                        integrationContext.getMetadataAccessServer(),
+                                                                                        integrationContext.getMetadataAccessServerPlatformURLRoot()));
 
         super.disconnect();
     }

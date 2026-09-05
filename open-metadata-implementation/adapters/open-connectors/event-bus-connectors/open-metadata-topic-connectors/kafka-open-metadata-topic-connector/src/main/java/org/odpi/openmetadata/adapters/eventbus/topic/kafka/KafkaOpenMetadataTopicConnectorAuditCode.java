@@ -30,22 +30,22 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
     SERVICE_PRODUCER_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0002",
                                 AuditLogRecordSeverityLevel.STARTUP,
                                 "{0} properties passed to the Apache Kafka Producer for topic {1}",
-                                "The server is registering to receive events from Apache Kafka using the properties associated with this log record.",
-                                "No action is required.  This is part of the normal operation of the server.",
+                                "The server is configuring its Apache Kafka producer using the properties associated with this log record.",
+                                "No action is required, but these properties are useful when diagnosing problems sending events to this topic.",
                                 "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
     SERVICE_CONSUMER_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0003",
                                 AuditLogRecordSeverityLevel.STARTUP,
                                 "{0} properties passed to the Apache Kafka Consumer for topic {1}",
                                 "The server is registering to receive events from Apache Kafka using the properties associated with this log record.",
-                                "No action is required.  This is part of the normal operation of the server.",
+                                "No action is required, but these properties are useful when diagnosing problems receiving events from this topic.",
                                 "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
     SERVICE_SHUTDOWN("OCF-KAFKA-TOPIC-CONNECTOR-0004",
                      AuditLogRecordSeverityLevel.SHUTDOWN,
                      "The Apache Kafka connector for topic {0} is shutting down",
                      "The local server has requested shut down of the Apache Kafka connector.",
-                     "No action is required.  This is part of the normal operation of the server.",
+                     "No action is required.  This is part of the normal shut down of the server.",
                      "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
     NULL_ADDITIONAL_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0005",
@@ -59,7 +59,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
                                       AuditLogRecordSeverityLevel.ERROR,
                                       "The Apache Kafka connector for topic {0} has been set up with configuration properties that produced the {1} exception when read.  This is the error message: {2}",
                                       "An exception occurred reading the configuration properties.  This means that the server is not able to send and receive events on the topic.",
-                                      "This problem must be fixed before the server can exchange metadata.  The properties are supplied on the event bus admin command.",
+                                      "Use the exception message to correct the configuration properties supplied on the event bus admin command.  This problem must be fixed before the server can exchange metadata.",
                                       "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
     NO_TOPIC_NAME("OCF-KAFKA-TOPIC-CONNECTOR-0007",
@@ -73,7 +73,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
                               AuditLogRecordSeverityLevel.ERROR,
                               "The connector listening on topic {0} received an unexpected exception {1} from Apache Kafka.  The message in the exception was {2}",
                               "A call to receive events from Apache Kafka failed with an exception.",
-                              "Use the information in the event and the exception message, along with other messages to determine the source of the error.",
+                              "Use the exception message, along with the Apache Kafka logs, to determine why the topic could not be read.",
                               "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
     EXCEPTION_DISTRIBUTING_EVENT("OCF-KAFKA-TOPIC-CONNECTOR-0009",
@@ -87,14 +87,14 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
                          AuditLogRecordSeverityLevel.STARTUP,
                          "The Apache Kafka producer for topic {0} is starting up with {1} buffered messages",
                          "The local server has started the Apache Kafka connector.",
-                         "No action is required.  This is part of the normal operation of the server.",
+                         "No action is required, but a non-zero count of buffered messages shows events that were still waiting to be sent when the connector last stopped.",
                          "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
     KAFKA_PRODUCER_SHUTDOWN("OCF-KAFKA-TOPIC-CONNECTOR-0011",
                             AuditLogRecordSeverityLevel.SHUTDOWN,
                             "The Apache Kafka producer for topic {0} is shutting down after sending {2} messages and with {1} unsent messages",
-                            "The local server has requested shut down of the Apache Kafka connector.",
-                            "No action is required.  This is part of the normal operation of the server.",
+                            "The Apache Kafka connector is closing its producer.  The counts of sent and unsent messages are in this message.",
+                            "No action is required if the count of unsent messages is zero.  If it is not, check this audit log for send failures on this topic.",
                             "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
     EVENT_SEND_IN_ERROR_LOOP("OCF-KAFKA-TOPIC-CONNECTOR-0012",
@@ -107,14 +107,14 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
                                      "the server will send the buffered events.  ",
                                      "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
-    MISSING_PROPERTY( "OCF-KAFKA-TOPIC-CONNECTOR-0013 ",
+    MISSING_PROPERTY( "OCF-KAFKA-TOPIC-CONNECTOR-0013",
                       AuditLogRecordSeverityLevel.ERROR,
                       "Property {0} is missing from the Kafka Event Bus configuration",
                       "The system cannot connect to the event bus.",
                       "Add the missing property to the event bus properties in the server configuration.",
                       "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
-    SERVICE_FAILED_INITIALIZING( "OCF-KAFKA-TOPIC-CONNECTOR-0014 ",
+    SERVICE_FAILED_INITIALIZING( "OCF-KAFKA-TOPIC-CONNECTOR-0014",
                                  AuditLogRecordSeverityLevel.ERROR,
                                  "Connecting to bootstrap Apache Kafka Broker {0}",
                                  "The local server has failed to started up the Apache Kafka connector, Kafka Broker is unavailable",
@@ -146,10 +146,8 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
                                      AuditLogRecordSeverityLevel.INFO,
                                      "The Egeria client was rebalanced by Kafka and failed to commit already consumed events",
                                      "If this was experienced in a production environment check the kafka heartbeat and batch processing settings.",
-                                     "Check the OMAG Server's audit log and Kafka error logs for related messages that " +
-                                             "indicate the cause of this error.  Work to clear the underlying error.  " +
-                                             "Once fixed, it may be necessary to restart the server to cause a reconnect to Kafka.",
-                                             "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
+                                     "Some events may be delivered to the server more than once.  If this happens regularly, review the Kafka heartbeat and batch processing settings so that this consumer is not rebalanced part way through a batch.",
+                                     "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
     ERROR_CONNECTING_KAFKA_PRODUCER("OCF-KAFKA-TOPIC-CONNECTOR-0019",
                                     AuditLogRecordSeverityLevel.EXCEPTION,

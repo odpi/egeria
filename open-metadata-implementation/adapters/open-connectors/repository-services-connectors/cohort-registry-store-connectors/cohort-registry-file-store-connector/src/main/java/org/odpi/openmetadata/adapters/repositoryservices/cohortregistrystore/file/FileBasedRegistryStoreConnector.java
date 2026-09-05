@@ -99,12 +99,9 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
         }
         else
         {
-            if (auditLog != null)
-            {
-                String actionDescription = "Saving Local Registration to Registry Store";
+            String actionDescription = "Saving Local Registration to Registry Store";
 
-                auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
-            }
+            logRecord(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
 
             log.debug("Null local registration passed to saveLocalRegistration :(");
         }
@@ -230,12 +227,9 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
         }
         else
         {
-            if (auditLog != null)
-            {
-                String actionDescription = "Saving a Remote Registration to Cohort Registry Store";
+            String actionDescription = "Saving a Remote Registration to Cohort Registry Store";
 
-                auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
-            }
+            logRecord(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
 
             log.debug("Null remote registration passed to saveRemoteRegistration :(");
         }
@@ -291,12 +285,9 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
         }
         else
         {
-            if (auditLog != null)
-            {
-                String actionDescription = "Retrieving Remote Registration from Cohort Registry Store";
+            String actionDescription = "Retrieving Remote Registration from Cohort Registry Store";
 
-                auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
-            }
+            logRecord(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
 
             log.debug("Null metadataCollectionId passed to retrieveRemoteRegistration :(");
         }
@@ -340,24 +331,18 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             {
                 log.debug("No remote registration");
 
-                if (auditLog != null)
-                {
-                    String actionDescription = "Removing Remote Registration from Cohort Registry Store";
+                String actionDescription = "Removing Remote Registration from Cohort Registry Store";
 
-                    auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.MISSING_MEMBER_REGISTRATION.getMessageDefinition(metadataCollectionId, registryStoreName));
-                }
+                logRecord(actionDescription, FileBasedRegistryStoreConnectorAuditCode.MISSING_MEMBER_REGISTRATION.getMessageDefinition(metadataCollectionId, registryStoreName));
 
                 log.debug("MetadataCollectionId : " + metadataCollectionId + " passed to removeRemoteRegistration not found :(");
             }
         }
         else
         {
-            if (auditLog != null)
-            {
-                String actionDescription = "Removing Remote Registration from Cohort Registry Store";
+            String actionDescription = "Removing Remote Registration from Cohort Registry Store";
 
-                auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
-            }
+            logRecord(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition(registryStoreName));
 
             log.debug("Null metadataCollectionId passed to removeRemoteRegistration :(");
         }
@@ -417,12 +402,9 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             /*
              * The registry file is not found, create a new one ...
              */
-            if (auditLog != null)
-            {
-                String actionDescription = "Retrieving Cohort Registry Store Properties";
+            String actionDescription = "Retrieving Cohort Registry Store Properties";
 
-                auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.CREATE_REGISTRY_FILE.getMessageDefinition(registryStoreName));
-            }
+            logRecord(actionDescription, FileBasedRegistryStoreConnectorAuditCode.CREATE_REGISTRY_FILE.getMessageDefinition(registryStoreName));
 
             log.debug("New Cohort Registry Store", ioException);
         }
@@ -449,97 +431,94 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                             Map<String, MemberRegistration>  serverNameTestMap,
                             Map<String, MemberRegistration>  endpointAddressTestMap)
     {
-        if (auditLog != null)
+        String actionDescription = "saveRegistryStore";
+
+        if (testMember != null)
         {
-            String actionDescription = "saveRegistryStore";
-
-            if (testMember != null)
+            if ((testMember.getMetadataCollectionId() == null) || (testMember.getMetadataCollectionId().length() == 0))
             {
-                if ((testMember.getMetadataCollectionId() == null) || (testMember.getMetadataCollectionId().length() == 0))
+                logRecord(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_REGISTERED_MC_ID.getMessageDefinition(testMember.getServerName()));
+            }
+            else
+            {
+                MemberRegistration duplicateMember = metadataCollectionIdTestMap.put(testMember.getMetadataCollectionId(), testMember);
+
+                if (duplicateMember != null)
                 {
-                    auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_REGISTERED_MC_ID.getMessageDefinition(testMember.getServerName()));
+                    logRecord(actionDescription,
+                              FileBasedRegistryStoreConnectorAuditCode.DUPLICATE_REGISTERED_MC_ID.getMessageDefinition(testMember.getMetadataCollectionId(),
+                                                                                            testMember.getServerName(),
+                                                                                            duplicateMember.getServerName()),
+                             testMember.toString() + " " + duplicateMember.toString());
                 }
-                else
+            }
+
+
+            if ((testMember.getServerName() == null) || (testMember.getServerName().length() == 0))
+            {
+                logRecord(actionDescription,
+                          FileBasedRegistryStoreConnectorAuditCode.NULL_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getMetadataCollectionId()),
+                          testMember.toString());
+            }
+            else
+            {
+                MemberRegistration duplicateMember = serverNameTestMap.put(testMember.getServerName(), testMember);
+                if (duplicateMember != null)
                 {
-                    MemberRegistration duplicateMember = metadataCollectionIdTestMap.put(testMember.getMetadataCollectionId(), testMember);
+                    logRecord(actionDescription,
+                              FileBasedRegistryStoreConnectorAuditCode.DUPLICATE_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getServerName(),
+                                                                                                  testMember.getMetadataCollectionId(),
+                                                                                                  duplicateMember.getMetadataCollectionId()),
+                             testMember.toString() + " " + duplicateMember.toString());
+                }
+            }
+
+            Connection repositoryConnection = testMember.getRepositoryConnection();
+
+            if (repositoryConnection != null)
+            {
+                Endpoint endpoint   = repositoryConnection.getEndpoint();
+                String   serverAddress = null;
+
+                if (endpoint != null)
+                {
+                    serverAddress = endpoint.getNetworkAddress();
+                }
+
+                if (serverAddress != null)
+                {
+                    MemberRegistration duplicateMember = endpointAddressTestMap.put(serverAddress, testMember);
 
                     if (duplicateMember != null)
                     {
-                        auditLog.logMessage(actionDescription,
-                                            FileBasedRegistryStoreConnectorAuditCode.DUPLICATE_REGISTERED_MC_ID.getMessageDefinition(testMember.getMetadataCollectionId(),
-                                                                                                          testMember.getServerName(),
-                                                                                                          duplicateMember.getServerName()),
-                                           testMember.toString() + " " + duplicateMember.toString());
-                    }
-                }
-
-
-                if ((testMember.getServerName() == null) || (testMember.getServerName().length() == 0))
-                {
-                    auditLog.logMessage(actionDescription,
-                                        FileBasedRegistryStoreConnectorAuditCode.NULL_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getMetadataCollectionId()),
-                                        testMember.toString());
-                }
-                else
-                {
-                    MemberRegistration duplicateMember = serverNameTestMap.put(testMember.getServerName(), testMember);
-                    if (duplicateMember != null)
-                    {
-                        auditLog.logMessage(actionDescription,
-                                            FileBasedRegistryStoreConnectorAuditCode.DUPLICATE_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getServerName(),
-                                                                                                                testMember.getMetadataCollectionId(),
-                                                                                                                duplicateMember.getMetadataCollectionId()),
-                                           testMember.toString() + " " + duplicateMember.toString());
-                    }
-                }
-
-                Connection repositoryConnection = testMember.getRepositoryConnection();
-
-                if (repositoryConnection != null)
-                {
-                    Endpoint endpoint   = repositoryConnection.getEndpoint();
-                    String   serverAddress = null;
-
-                    if (endpoint != null)
-                    {
-                        serverAddress = endpoint.getNetworkAddress();
-                    }
-
-                    if (serverAddress != null)
-                    {
-                        MemberRegistration duplicateMember = endpointAddressTestMap.put(serverAddress, testMember);
-
-                        if (duplicateMember != null)
-                        {
-                            auditLog.logMessage(actionDescription,
-                                                FileBasedRegistryStoreConnectorAuditCode.DUPLICATE_REGISTERED_SERVER_ADDR.getMessageDefinition(testMember.getServerName(),
-                                                                                testMember.getMetadataCollectionId(),
-                                                                                serverAddress,
-                                                                                duplicateMember.getServerName(),
-                                                                                duplicateMember.getMetadataCollectionId()),
-                                               testMember.toString() + " " + duplicateMember.toString());
-                        }
-                    }
-                    else
-                    {
-                        auditLog.logMessage(actionDescription,
-                                            FileBasedRegistryStoreConnectorAuditCode.NULL_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getServerName(),
-                                                                                                           testMember.getMetadataCollectionId()),
-                                            testMember.toString());
+                        logRecord(actionDescription,
+                                  FileBasedRegistryStoreConnectorAuditCode.DUPLICATE_REGISTERED_SERVER_ADDR.getMessageDefinition(testMember.getServerName(),
+                                                                  testMember.getMetadataCollectionId(),
+                                                                  serverAddress,
+                                                                  duplicateMember.getServerName(),
+                                                                  duplicateMember.getMetadataCollectionId()),
+                                 testMember.toString() + " " + duplicateMember.toString());
                     }
                 }
                 else
                 {
-                    auditLog.logMessage(actionDescription,
-                                        FileBasedRegistryStoreConnectorAuditCode.NULL_REGISTERED_SERVER_CONNECTION.getMessageDefinition(testMember.getServerName(),
-                                                                                                             testMember.getMetadataCollectionId()),
-                                       testMember.toString());
+                    logRecord(actionDescription,
+                              FileBasedRegistryStoreConnectorAuditCode.NULL_REGISTERED_SERVER_NAME.getMessageDefinition(testMember.getServerName(),
+                                                                                             testMember.getMetadataCollectionId()),
+                              testMember.toString());
                 }
             }
             else
             {
-                auditLog.logMessage(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition());
+                logRecord(actionDescription,
+                          FileBasedRegistryStoreConnectorAuditCode.NULL_REGISTERED_SERVER_CONNECTION.getMessageDefinition(testMember.getServerName(),
+                                                                                               testMember.getMetadataCollectionId()),
+                         testMember.toString());
             }
+        }
+        else
+        {
+            logRecord(actionDescription, FileBasedRegistryStoreConnectorAuditCode.NULL_MEMBER_REGISTRATION.getMessageDefinition());
         }
     }
 
@@ -618,14 +597,11 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
         }
         catch (IOException   ioException)
         {
-            if (auditLog != null)
-            {
-                String actionDescription = "Writing Cohort Registry Store Properties";
+            String actionDescription = "Writing Cohort Registry Store Properties";
 
-                auditLog.logException(actionDescription,
-                                      FileBasedRegistryStoreConnectorAuditCode.UNUSABLE_REGISTRY_FILE.getMessageDefinition(registryStoreName),
-                                      ioException);
-            }
+            logExceptionRecord(actionDescription,
+                               FileBasedRegistryStoreConnectorAuditCode.UNUSABLE_REGISTRY_FILE.getMessageDefinition(registryStoreName),
+                               ioException);
 
             log.debug("Unusable Cohort Registry Store :(", ioException);
         }
