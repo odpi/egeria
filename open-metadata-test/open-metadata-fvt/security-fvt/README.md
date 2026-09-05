@@ -88,9 +88,9 @@ server the way any userId does: as the path parameter of the store's REST API.
 * the administrator can create a server configuration; the operator and the investigator cannot
 * the investigator can list servers and read the configuration of a server with no connector of its own
 * the investigator cannot change a configuration or start a server; the operator can look at a running server
-* once a server has its own connector, reading its configuration is put to that connector too, as an
-  operator check, and changing it as an administrator check - so the operator, admitted by the platform, is
-  refused by the store's connector
+* once a server has its own connector, reading its configuration is put to that connector too, as the same
+  investigator check, and changing it as an administrator check - so the operator, admitted by the platform,
+  is refused a change by the store's connector, and the investigator is admitted a read by both
 * a valid account with no platform role is refused even the investigator's view
 
 [ServerAndServiceSecurityFVT](src/test/java/org/odpi/openmetadata/securityfvt/ServerAndServiceSecurityFVT.java) -
@@ -98,7 +98,8 @@ server the way any userId does: as the path parameter of the store's REST API.
 
 * employees and digital accounts are admitted to both
 * an external user is refused at the server (`403-002`)
-* a contractor is admitted to the server and refused the service (`403-003`)
+* a contractor is admitted to the server and refused the service (`403-003`), and the refusal names the
+  service and the server
 * a disabled account, and an identity not in the directory, are refused as unknown (`403-017`) before
   either control is consulted
 
@@ -154,17 +155,27 @@ reads it from the response's exception properties. The server sent it; the clien
 administration client now reads it the same way, and the tests assert the userId directly on every
 refusal, whichever API it came through.
 
-### Correct, but worth knowing
+### Fixed: a server's own connector asked for an operator on a read of its configuration document
 
-* **A server's own connector is consulted on reads of its configuration document, as an operator check.**
-  The platform asks for an investigator; the server, once it has a security connection, asks for an
-  operator. So an investigator who can read a plain server's configuration is refused the store's - and
-  an activation, which starts by loading the document, is refused by the store's connector before the
-  platform's operator check is reached. The suite records this rather than judging it.
-* **A service-level refusal does not name the service.** The `403-003` message names only the operation,
-  which for a whole-service refusal is `any`. The service is in the audit log record the connector writes,
-  not in the exception. So a contractor refused the store service can be told apart from an external user
-  refused the server only by the message identifier, which is what the tests assert.
+The platform asks for an investigator to read a configuration document. The admin store, once the document
+named a security connection, then asked the server's own connector for an *operator* on the same read - so
+an investigator who could read a plain server's configuration was refused the store's. `getServerConfig`
+now asks the server's connector for an investigator, matching the platform. The three roles now line up
+the same way through both verifiers: investigator to read the document, administrator to change it,
+operator for the start-up read that activates the server - which is why an activation by the investigator
+is still refused, by the store's connector, before the platform's operator check is reached.
+
+### Fixed: a service-level refusal did not name the service
+
+The `403-003` message named only the operation, which for a whole-service refusal was `any`, so a
+contractor refused the store service could be told apart from an external user refused the server only by
+the message identifier. There are now two messages: `403-003` for a user who may not use the service at
+all, naming the service and the server, and `403-006` for a user who may use the service but not the
+requested operation, naming the operation as well. The audit log records were split the same way
+(`0007` and `0010`). The server administrator, operator and investigator checks that a server's own
+connector makes report through the second message, naming the administration service.
+
+### Correct, but worth knowing
 * **A search never reports a refusal.** An element the user may not see is left out of the results, and
   the audit log records it as a filtered element. The tests pair the empty result with a search by a user
   who can see the element, so that "not found" is shown to be the security connector's doing.

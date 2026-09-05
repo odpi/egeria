@@ -783,10 +783,10 @@ public class OMAGServerAdminStoreServices extends TokenController
                 }
                 else
                 {
-                    securityVerifier.validateUserAsServerOperator(userId);
+                    securityVerifier.validateUserAsServerInvestigator(userId);
                     if (delegatingUserId != null)
                     {
-                        securityVerifier.validateUserAsServerOperator(delegatingUserId);
+                        securityVerifier.validateUserAsServerInvestigator(delegatingUserId);
                     }
                 }
             }

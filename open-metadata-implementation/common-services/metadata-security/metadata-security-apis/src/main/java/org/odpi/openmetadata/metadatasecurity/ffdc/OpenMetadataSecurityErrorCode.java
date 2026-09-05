@@ -71,17 +71,30 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                        "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OPEN-METADATA-SECURITY-403-003 - User {0} is not authorized to issue {1} requests
+     * OPEN-METADATA-SECURITY-403-003 - User {0} is not authorized to use the {1} service on server {2}
      */
     UNAUTHORIZED_SERVICE_ACCESS(403, "OPEN-METADATA-SECURITY-403-003",
-                                "User {0} is not authorized to issue {1} requests",
+                                "User {0} is not authorized to use the {1} service on server {2}",
                                 "The system cannot process a request from the user because they do not have access to the " +
-                                        "requested services. The request fails with a UserNotAuthorizedException exception.",
+                                        "requested service. The request fails with a UserNotAuthorizedException exception.",
                                 "Determine whether the user should have access to the requested service. If they should have, take steps to add " +
                                         "them to the authorized list of users.  If this user should not " +
                                         "have access, investigate where the request came from to determine if the system is under attack, or it was a" +
                                         " mistake.",
                                         "https://egeria-project.org/features/metadata-security/overview/"),
+
+    /**
+     * OPEN-METADATA-SECURITY-403-006 - User {0} is not authorized to issue {1} requests to the {2} service on server {3}
+     */
+    UNAUTHORIZED_SERVICE_OPERATION_ACCESS(403, "OPEN-METADATA-SECURITY-403-006",
+                                          "User {0} is not authorized to issue {1} requests to the {2} service on server {3}",
+                                          "The system cannot process a request from the user because they do not have access to the " +
+                                                  "requested operation of the service. The request fails with a UserNotAuthorizedException exception.",
+                                          "Determine whether the user should be able to issue this operation on the requested service. If they should, take steps to add " +
+                                                  "them to the authorized list of users for the operation.  If this user should not " +
+                                                  "have access, investigate where the request came from to determine if the system is under attack, or it was a" +
+                                                  " mistake.",
+                                          "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
      * OPEN-METADATA-SECURITY-403-004 - User {0} is not authorized to attach feedback to element {1}

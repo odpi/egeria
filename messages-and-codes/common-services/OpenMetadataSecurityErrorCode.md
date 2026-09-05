@@ -9,7 +9,7 @@ The OpenMetadataSecurityErrorCode is used to define first failure data capture (
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 20 |
+| **Number of messages** | 21 |
 | **Message identifiers begin** | `OPEN-METADATA-SECURITY-` |
 | **Java class** | `org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode` |
 | **Module** | [open-metadata-implementation/common-services/metadata-security/metadata-security-apis](../../open-metadata-implementation/common-services/metadata-security/metadata-security-apis) |
@@ -25,7 +25,8 @@ The OpenMetadataSecurityErrorCode is used to define first failure data capture (
 | [OPEN-METADATA-SECURITY-400-002](#open-metadata-security-400-002) | 400 | The OMAG server {0} has been configured with a bad connection to its security connector.  Error message is {1}. Connection is {2} |
 | [OPEN-METADATA-SECURITY-403-001](#open-metadata-security-403-001) | 403 | User {0} is not authorized to issue {1} request to {2} |
 | [OPEN-METADATA-SECURITY-403-002](#open-metadata-security-403-002) | 403 | User {0} is not authorized to issue a request to server {1} |
-| [OPEN-METADATA-SECURITY-403-003](#open-metadata-security-403-003) | 403 | User {0} is not authorized to issue {1} requests |
+| [OPEN-METADATA-SECURITY-403-003](#open-metadata-security-403-003) | 403 | User {0} is not authorized to use the {1} service on server {2} |
+| [OPEN-METADATA-SECURITY-403-006](#open-metadata-security-403-006) | 403 | User {0} is not authorized to issue {1} requests to the {2} service on server {3} |
 | [OPEN-METADATA-SECURITY-403-004](#open-metadata-security-403-004) | 403 | User {0} is not authorized to attach feedback to element {1} |
 | [OPEN-METADATA-SECURITY-403-005](#open-metadata-security-403-005) | 403 | User {0} is not authorized to change the zone membership for element {1} from {2} to {3} |
 | [OPEN-METADATA-SECURITY-403-007](#open-metadata-security-403-007) | 403 | User {0} is not authorized to issue operation {1} on {2} anchor element {3} |
@@ -130,21 +131,42 @@ Determine whether the user should have access to the server.  If they should hav
 
 ### OPEN-METADATA-SECURITY-403-003
 
-> User {0} is not authorized to issue {1} requests
+> User {0} is not authorized to use the {1} service on server {2}
 
 |  |  |
 |---|---|
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_ACCESS` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
-| **Message inserts** | `{0}`, `{1}` |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
 
 **System action**
 
-The system cannot process a request from the user because they do not have access to the requested services. The request fails with a UserNotAuthorizedException exception.
+The system cannot process a request from the user because they do not have access to the requested service. The request fails with a UserNotAuthorizedException exception.
 
 **User action**
 
 Determine whether the user should have access to the requested service. If they should have, take steps to add them to the authorized list of users.  If this user should not have access, investigate where the request came from to determine if the system is under attack, or it was a mistake.
+
+
+----
+
+### OPEN-METADATA-SECURITY-403-006
+
+> User {0} is not authorized to issue {1} requests to the {2} service on server {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_OPERATION_ACCESS` |
+| **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The system cannot process a request from the user because they do not have access to the requested operation of the service. The request fails with a UserNotAuthorizedException exception.
+
+**User action**
+
+Determine whether the user should be able to issue this operation on the requested service. If they should, take steps to add them to the authorized list of users for the operation.  If this user should not have access, investigate where the request came from to determine if the system is under attack, or it was a mistake.
 
 
 ----

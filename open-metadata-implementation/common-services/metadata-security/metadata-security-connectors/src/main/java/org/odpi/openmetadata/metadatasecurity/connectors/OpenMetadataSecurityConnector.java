@@ -184,8 +184,61 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
 
 
     /**
-     * Write an audit log message and throw exception to record an
-     * unauthorized access.
+     * Return the name to report as the server in a message: the server this connector is running in, or
+     * the platform if the connector is the platform's rather than a server's.
+     *
+     * @return server or platform name
+     */
+    private String getReportedServerName()
+    {
+        if (serverName != null)
+        {
+            return serverName;
+        }
+
+        if (platformName != null)
+        {
+            return platformName;
+        }
+
+        return unknownTypeName;
+    }
+
+
+    /**
+     * Write an audit log message and throw exception to record an unauthorized access to a whole service.
+     * Use this when the user may not use the service at all; use
+     * {@link #throwUnauthorizedServiceAccess(String, String, String, String)} when the user may use the
+     * service but not the requested operation.
+     *
+     * @param userId calling user
+     * @param serviceName name of service
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the authorization check failed
+     */
+    protected void throwUnauthorizedServiceAccess(String   userId,
+                                                  String   serviceName,
+                                                  String   methodName) throws UserNotAuthorizedException
+    {
+        String reportedServerName = getReportedServerName();
+
+        logRecord(methodName,
+                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId,
+                                                                                                 serviceName,
+                                                                                                 reportedServerName));
+
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId,
+                                                                                                                            serviceName,
+                                                                                                                            reportedServerName),
+                                             this.getClass().getName(),
+                                             methodName,
+                                             userId);
+    }
+
+
+    /**
+     * Write an audit log message and throw exception to record an unauthorized request for an operation
+     * of a service.
      *
      * @param userId calling user
      * @param serviceName name of service
@@ -198,13 +251,18 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
                                                   String   serviceOperationName,
                                                   String   methodName) throws UserNotAuthorizedException
     {
-        logRecord(methodName,
-                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId,
-                                                                                                 serviceOperationName,
-                                                                                                 serviceName,
-                                                                                                 serverName));
+        String reportedServerName = getReportedServerName();
 
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId, serviceOperationName),
+        logRecord(methodName,
+                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_OPERATION_ACCESS.getMessageDefinition(userId,
+                                                                                                           serviceOperationName,
+                                                                                                           serviceName,
+                                                                                                           reportedServerName));
+
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_OPERATION_ACCESS.getMessageDefinition(userId,
+                                                                                                                                      serviceOperationName,
+                                                                                                                                      serviceName,
+                                                                                                                                      reportedServerName),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);
@@ -845,9 +903,8 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
                                                                         PropertyServerException
     {
         final String  methodName = "validateUserForService";
-        final String  serviceOperationName = "any";
 
-        throwUnauthorizedServiceAccess(userId, serviceName, serviceOperationName, methodName);
+        throwUnauthorizedServiceAccess(userId, serviceName, methodName);
     }
 
 

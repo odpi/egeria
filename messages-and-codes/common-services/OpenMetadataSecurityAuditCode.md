@@ -9,7 +9,7 @@ The OpenMetadataSecurityAuditCode is used to define the message content for the 
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 26 |
+| **Number of messages** | 27 |
 | **Message identifiers begin** | `OPEN-METADATA-SECURITY-` |
 | **Java class** | `org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode` |
 | **Module** | [open-metadata-implementation/common-services/metadata-security/metadata-security-apis](../../open-metadata-implementation/common-services/metadata-security/metadata-security-apis) |
@@ -27,7 +27,8 @@ The OpenMetadataSecurityAuditCode is used to define the message content for the 
 | [OPEN-METADATA-SECURITY-0004](#open-metadata-security-0004) | SHUTDOWN | The Open Metadata Security Service {0} for server {1} is shutting down |
 | [OPEN-METADATA-SECURITY-0005](#open-metadata-security-0005) | SECURITY | User {0} is not authorized to issue a {1} request to OMAG Server Platform {2} |
 | [OPEN-METADATA-SECURITY-0006](#open-metadata-security-0006) | SECURITY | User {0} is not authorized to issue a request to server {1} |
-| [OPEN-METADATA-SECURITY-0007](#open-metadata-security-0007) | SECURITY | User {0} is not authorized to issue {1} requests for service {2} on server {3} |
+| [OPEN-METADATA-SECURITY-0007](#open-metadata-security-0007) | SECURITY | User {0} is not authorized to use the {1} service on server {2} |
+| [OPEN-METADATA-SECURITY-0010](#open-metadata-security-0010) | SECURITY | User {0} is not authorized to issue {1} requests to the {2} service on server {3} |
 | [OPEN-METADATA-SECURITY-0008](#open-metadata-security-0008) | SECURITY | User {0} is not authorized to attach feedback to element {1} |
 | [OPEN-METADATA-SECURITY-0009](#open-metadata-security-0009) | SECURITY | User {0} is not authorized to change the zone membership of element {1} from {2} to {3} |
 | [OPEN-METADATA-SECURITY-0011](#open-metadata-security-0011) | SECURITY | User {0} is not authorized to issue operation {1} on {2} anchor element {3} |
@@ -178,13 +179,13 @@ Review the security policies and settings to determine whether this user should 
 
 ### OPEN-METADATA-SECURITY-0007
 
-> User {0} is not authorized to issue {1} requests for service {2} on server {3}
+> User {0} is not authorized to use the {1} service on server {2}
 
 |  |  |
 |---|---|
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_ACCESS` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
-| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
 
 **System action**
 
@@ -193,6 +194,27 @@ The security service detected an unauthorized access to a service.
 **User action**
 
 Review the security policies and settings to determine whether this user should be able to call this service.  Either update the settings or investigate why the user issued the request.
+
+
+----
+
+### OPEN-METADATA-SECURITY-0010
+
+> User {0} is not authorized to issue {1} requests to the {2} service on server {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_OPERATION_ACCESS` |
+| **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The security service detected an unauthorized request for an operation of a service.
+
+**User action**
+
+Review the security policies and settings to determine whether this user should be able to issue this operation on this service.  Either update the settings or investigate why the user issued the request.
 
 
 ----

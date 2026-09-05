@@ -360,20 +360,67 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
 
     /**
-     * Build an ordered map of operation name to security list, for {@link #appendControl}.
+     * Build an ordered map of one operation name to its security list, for {@link #appendControl}.
+     * Ordered so that the generated file reads in the order the control was written here.
      *
-     * @param values alternating operation name and list
+     * @param operation operation name
+     * @param securityList roles, groups and users permitted the operation
      * @return ordered map
      */
-    @SuppressWarnings("unchecked")
-    private static Map<String, List<String>> lists(Object... values)
+    private static Map<String, List<String>> lists(String       operation,
+                                                   List<String> securityList)
     {
         Map<String, List<String>> result = new LinkedHashMap<>();
 
-        for (int i = 0; i < values.length; i += 2)
-        {
-            result.put((String) values[i], (List<String>) values[i + 1]);
-        }
+        result.put(operation, securityList);
+
+        return result;
+    }
+
+
+    /**
+     * Build an ordered map of two operation names to their security lists.
+     *
+     * @param operation1 first operation name
+     * @param securityList1 its security list
+     * @param operation2 second operation name
+     * @param securityList2 its security list
+     * @return ordered map
+     */
+    private static Map<String, List<String>> lists(String       operation1,
+                                                   List<String> securityList1,
+                                                   String       operation2,
+                                                   List<String> securityList2)
+    {
+        Map<String, List<String>> result = lists(operation1, securityList1);
+
+        result.put(operation2, securityList2);
+
+        return result;
+    }
+
+
+    /**
+     * Build an ordered map of three operation names to their security lists.
+     *
+     * @param operation1 first operation name
+     * @param securityList1 its security list
+     * @param operation2 second operation name
+     * @param securityList2 its security list
+     * @param operation3 third operation name
+     * @param securityList3 its security list
+     * @return ordered map
+     */
+    private static Map<String, List<String>> lists(String       operation1,
+                                                   List<String> securityList1,
+                                                   String       operation2,
+                                                   List<String> securityList2,
+                                                   String       operation3,
+                                                   List<String> securityList3)
+    {
+        Map<String, List<String>> result = lists(operation1, securityList1, operation2, securityList2);
+
+        result.put(operation3, securityList3);
 
         return result;
     }
