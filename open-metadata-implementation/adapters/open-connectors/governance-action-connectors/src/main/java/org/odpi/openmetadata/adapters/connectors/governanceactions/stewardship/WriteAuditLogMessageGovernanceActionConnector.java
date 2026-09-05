@@ -49,7 +49,7 @@ public class WriteAuditLogMessageGovernanceActionConnector extends GeneralGovern
 
             AuditLogMessageDefinition auditLogMessageDefinition = GovernanceActionConnectorsAuditCode.BLANK_INFO_LOG_MESSAGE.getMessageDefinition(messageText);
 
-            auditLog.logMessage(methodName, auditLogMessageDefinition);
+            logRecord(methodName, auditLogMessageDefinition);
 
             outputGuards.add(WriteAuditLogGuard.MESSAGE_WRITTEN.getName());
             governanceContext.recordCompletionStatus(WriteAuditLogGuard.MESSAGE_WRITTEN.getCompletionStatus(),

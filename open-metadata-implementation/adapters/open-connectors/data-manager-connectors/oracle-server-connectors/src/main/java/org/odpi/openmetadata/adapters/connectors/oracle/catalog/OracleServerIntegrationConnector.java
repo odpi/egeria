@@ -56,9 +56,9 @@ public class OracleServerIntegrationConnector extends DynamicIntegrationConnecto
 
         if (defaultFriendshipGUID != null)
         {
-            auditLog.logMessage(methodName,
-                                OracleAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
-                                                                                    defaultFriendshipGUID));
+            logRecord(methodName,
+                      OracleAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
+                                                                          defaultFriendshipGUID));
         }
 
         for (OracleTemplateType templateType : OracleTemplateType.values())

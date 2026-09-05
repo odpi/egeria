@@ -104,9 +104,9 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                      "https://egeria-project.org/services/gaf-metadata-management/"),
 
     /**
-     * OMES-GOVERNANCE-ACTION-0015 - The Open Governance Framework received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3}
+     * OPEN-GOVERNANCE-0015 - The Open Governance Framework received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3}
      */
-    WATCHDOG_EVENT_FAILURE("OMES-GOVERNANCE-ACTION-0015",
+    WATCHDOG_EVENT_FAILURE("OPEN-GOVERNANCE-0015",
                            AuditLogRecordSeverityLevel.ERROR,
                            "The Open Governance Framework (OGF) received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3}",
                            "The engine services detected an error while processing a watchdog event.",

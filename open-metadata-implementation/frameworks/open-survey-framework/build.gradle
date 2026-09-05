@@ -13,6 +13,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-governance-framework')
     implementation 'commons-io:commons-io'
     testImplementation 'org.testng:testng'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
 }
 
 description = 'Open Survey Framework (OSF)'

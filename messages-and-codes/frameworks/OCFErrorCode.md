@@ -104,7 +104,7 @@ Update the connection configuration to include a valid connectorType definition.
 
 **System action**
 
-The system cannot create the requested connector instance without information on the type of connection required.
+The system cannot create the requested connector instance because the connectorType does not name the factory class that builds it.
 
 **User action**
 
@@ -150,7 +150,7 @@ The system cannot create the requested connector instance because the Connector 
 
 **User action**
 
-Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.
+Update the connection configuration so that the connectorProviderClassName property of the connection's connectorType names a class that implements ConnectorProvider.  Then retry the request.
 
 
 ----
@@ -171,7 +171,7 @@ The system cannot create the requested connector instance because the Connector 
 
 **User action**
 
-Verify that the Connector Provider and Connector jar files are properly configured in the process.  Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.
+Use the exception message to determine why the connector provider class failed to initialize.  Correct the class or its dependencies, or update the connection to use a different connector provider.  Then retry the request.
 
 
 ----
@@ -251,7 +251,7 @@ Add embedded connections to the virtual connection and retry the request.
 
 **System action**
 
-The integration context returns an exception on the invalid request.
+The integration context returns an exception because the name is already recording a counter statistic.
 
 **User action**
 
@@ -272,11 +272,11 @@ Change the connector logic to use a different name for the statistic.
 
 **System action**
 
-The integration context returns an exception on the invalid request.
+The integration context returns an exception because the name is already recording a property statistic.
 
 **User action**
 
-Change the connector logic to use a different name for the statistic.
+Change the connector logic to use a name that is not already recording a property statistic.
 
 
 ----
@@ -293,11 +293,11 @@ Change the connector logic to use a different name for the statistic.
 
 **System action**
 
-The integration context returns an exception on the invalid request.
+The integration context returns an exception because the name is already recording a timestamp statistic.
 
 **User action**
 
-Change the connector logic to use a different name for the statistic.
+Change the connector logic to use a name that is not already recording a timestamp statistic.
 
 
 ----
@@ -528,7 +528,7 @@ The system cannot create the requested connector instance because the Connector'
 
 **User action**
 
-Verify that the Connector Provider and Connector jar files are properly configured in the process.  Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.
+Verify that the jar file containing the connector class is installed in the process alongside its connector provider.  Then retry the request.
 
 
 ----
@@ -549,7 +549,7 @@ The system cannot create the requested connector instance because the Connector'
 
 **User action**
 
-Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.
+Correct the connector provider so that it creates a class that implements the Connector interface, or update the connection to use a connector provider that does.  Then retry the request.
 
 
 ----
@@ -591,7 +591,7 @@ The system detected an error during connector processing and was unable to creat
 
 **User action**
 
-The root cause of the error is captured in previous reported messages.
+Review the connector provider's logic to determine why it returned no connector for this connection.
 
 
 ----

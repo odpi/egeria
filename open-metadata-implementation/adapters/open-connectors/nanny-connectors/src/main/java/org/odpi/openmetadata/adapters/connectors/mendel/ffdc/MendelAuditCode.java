@@ -226,7 +226,7 @@ public enum MendelAuditCode implements AuditLogMessageSet
                         "The {0} integration connector has registered a listener for open metadata events",
                         "The connector has worked through the duplicate links that were waiting for it when it started, and now " +
                                 "reviews new and updated duplicate links as they occur rather than waiting for its next refresh.",
-                        "No action is required.  This message is for monitoring the start up of the automated duplicate manager.",
+                        "No action is required.  This message confirms that the connector now processes duplicate links as they change, rather than only on its refresh cycle.",
                         "https://egeria-project.org/features/duplicate-management/overview/"),
 
     /**

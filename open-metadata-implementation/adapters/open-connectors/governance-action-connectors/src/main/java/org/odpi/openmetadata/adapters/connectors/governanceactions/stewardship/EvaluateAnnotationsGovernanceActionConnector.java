@@ -178,7 +178,7 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
                 outputGuards.add(EvaluateAnnotationsGuard.ACTIONS_ACTIONED.getName());
             }
 
-            auditLog.logMessage(methodName, messageDefinition);
+            logRecord(methodName, messageDefinition);
 
             if (outputActionTargets.isEmpty())
             {

@@ -56,9 +56,9 @@ public class MSSQLDatabaseSurveyActionService extends SurveyActionServiceConnect
 
             if (databaseName == null)
             {
-                auditLog.logMessage(methodName, MSSQLAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                  assetStore.getQualifiedName(),
-                                                                                                  assetStore.getAssetGUID()));
+                logRecord(methodName, MSSQLAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
+                                                                                        assetStore.getQualifiedName(),
+                                                                                        assetStore.getAssetGUID()));
             }
             else
             {

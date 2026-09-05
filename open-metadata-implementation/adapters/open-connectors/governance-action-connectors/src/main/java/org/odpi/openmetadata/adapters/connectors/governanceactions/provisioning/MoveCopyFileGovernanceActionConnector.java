@@ -523,12 +523,9 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
 
             if ((connectionLinks == null) || (connectionLinks.getElementList() == null) || (connectionLinks.getElementList().isEmpty()))
             {
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                          GovernanceActionConnectorsAuditCode.NO_LINKED_CONNECTION.getMessageDefinition(governanceServiceName,
-                                                                                                                        asset.getElementGUID()));
-                }
+                logRecord(methodName,
+                            GovernanceActionConnectorsAuditCode.NO_LINKED_CONNECTION.getMessageDefinition(governanceServiceName,
+                                                                                                          asset.getElementGUID()));
             }
             else if (connectionLinks.getElementList().size() > 1)
             {
@@ -548,14 +545,11 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
                             {
                                 if (! networkAddress.equals(pathName))
                                 {
-                                    if (auditLog != null)
-                                    {
-                                        auditLog.logMessage(methodName,
-                                                            GovernanceActionConnectorsAuditCode.TOO_MANY_CONNECTIONS.getMessageDefinition(governanceServiceName,
-                                                                                                                                          Integer.toString(connectionLinks.getElementList().size()),
-                                                                                                                                          asset.getElementGUID(),
-                                                                                                                                          connectionLinks.toString()));
-                                    }
+                                    logRecord(methodName,
+                                              GovernanceActionConnectorsAuditCode.TOO_MANY_CONNECTIONS.getMessageDefinition(governanceServiceName,
+                                                                                                                            Integer.toString(connectionLinks.getElementList().size()),
+                                                                                                                            asset.getElementGUID(),
+                                                                                                                            connectionLinks.toString()));
 
                                     pathName = null;
                                     break;
@@ -582,14 +576,11 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      GovernanceActionConnectorsAuditCode.ENDPOINT_EXCEPTION.getMessageDefinition(governanceServiceName,
-                                                                                                                  error.getClass().getName(),
-                                                                                                                  error.getMessage()),
-                                      error);
-            }
+            logExceptionRecord(methodName,
+                               GovernanceActionConnectorsAuditCode.ENDPOINT_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                           error.getClass().getName(),
+                                                                                                           error.getMessage()),
+                               error);
         }
 
         /*
@@ -601,12 +592,9 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
                                                     properties,
                                                     methodName);
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                GovernanceActionConnectorsAuditCode.QUALIFIED_NAME_PATH_NAME.getMessageDefinition(governanceServiceName,
-                                                                                                                  pathName));
-        }
+        logRecord(methodName,
+                  GovernanceActionConnectorsAuditCode.QUALIFIED_NAME_PATH_NAME.getMessageDefinition(governanceServiceName,
+                                                                                                    pathName));
 
         return pathName;
     }
@@ -639,12 +627,9 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
             /*
              * The connection comes from the RelatedMetadataElement.  If it is null then this is a bug in the governance action framework (GAF).
              */
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    GovernanceActionConnectorsAuditCode.NO_RELATED_ASSET.getMessageDefinition(governanceServiceName,
-                                                                                                              connectionLink.toString()));
-            }
+            logRecord(methodName,
+                      GovernanceActionConnectorsAuditCode.NO_RELATED_ASSET.getMessageDefinition(governanceServiceName,
+                                                                                                connectionLink.toString()));
         }
         else
         {
@@ -656,26 +641,20 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
 
             if ((endpointLinks == null) || (endpointLinks.getElementList() == null) || (endpointLinks.getElementList().isEmpty()))
             {
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        GovernanceActionConnectorsAuditCode.NO_LINKED_ENDPOINT.getMessageDefinition(governanceServiceName,
-                                                                                                                    assetGUID,
-                                                                                                                    connection.getElementGUID()));
-                }
+                logRecord(methodName,
+                          GovernanceActionConnectorsAuditCode.NO_LINKED_ENDPOINT.getMessageDefinition(governanceServiceName,
+                                                                                                      assetGUID,
+                                                                                                      connection.getElementGUID()));
             }
             else if (endpointLinks.getElementList().size() > 1)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        GovernanceActionConnectorsAuditCode.TOO_MANY_ENDPOINTS.getMessageDefinition(governanceServiceName,
-                                                                                                                    assetGUID,
-                                                                                                                    connection.getElementGUID(),
-                                                                                                                    Integer.toString(
-                                                                                                                            endpointLinks.getElementList().size()),
-                                                                                                                    endpointLinks.toString()));
-                }
+                logRecord(methodName,
+                          GovernanceActionConnectorsAuditCode.TOO_MANY_ENDPOINTS.getMessageDefinition(governanceServiceName,
+                                                                                                      assetGUID,
+                                                                                                      connection.getElementGUID(),
+                                                                                                      Integer.toString(
+                                                                                                              endpointLinks.getElementList().size()),
+                                                                                                      endpointLinks.toString()));
             }
             else
             {
@@ -683,12 +662,9 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
 
                 if (endpoint == null)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logMessage(methodName,
-                                            GovernanceActionConnectorsAuditCode.NO_RELATED_ASSET.getMessageDefinition(governanceServiceName,
-                                                                                                                      endpointLinks.getElementList().get(0).toString()));
-                    }
+                    logRecord(methodName,
+                              GovernanceActionConnectorsAuditCode.NO_RELATED_ASSET.getMessageDefinition(governanceServiceName,
+                                                                                                        endpointLinks.getElementList().get(0).toString()));
                 }
                 else
                 {
@@ -851,11 +827,11 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         {
             String assetTemplateGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFileTemplateQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
 
-            if ((assetTemplateGUID == null) && (auditLog != null))
+            if (assetTemplateGUID == null)
             {
-                auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(governanceServiceName,
-                                                                                                                          destinationFileTemplateQualifiedName,
-                                                                                                                          MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName()));
+                logRecord(methodName, GovernanceActionConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(governanceServiceName,
+                                                                                                                destinationFileTemplateQualifiedName,
+                                                                                                                MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName()));
             }
 
             /*

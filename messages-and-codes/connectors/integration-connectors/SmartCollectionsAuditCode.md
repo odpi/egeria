@@ -44,7 +44,7 @@ The connector is about to run the saved query attached to the results set and up
 
 **User action**
 
-No user action is required.
+No action is required.  This message records that a refresh of the results set has begun.
 
 
 ----
@@ -86,7 +86,7 @@ The connector has finished comparing the results of the saved query with the cur
 
 **User action**
 
-No user action is required.
+No action is required, but the counts in this message show how much the membership of the results set changed.
 
 
 ----

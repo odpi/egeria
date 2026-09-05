@@ -101,12 +101,12 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
                         }
                         catch (Exception exception)
                         {
-                            auditLog.logException(methodName,
-                                                  PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                              exception.getClass().getName(),
-                                                                                                              methodName,
-                                                                                                              exception.getMessage()),
-                                                  exception);
+                            logExceptionRecord(methodName,
+                                               PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           exception.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           exception.getMessage()),
+                                               exception);
 
                             throw new OMRSRuntimeException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                                        exception.getClass().getName(),
@@ -152,7 +152,7 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
     {
         final String methodName = "validateRepositoryControlTable";
 
-        auditLog.logMessage(methodName, PostgresAuditCode.STARTING_REPOSITORY.getMessageDefinition(repositoryName, jdbcResourceConnector.getDatabaseName()));
+        logRecord(methodName, PostgresAuditCode.STARTING_REPOSITORY.getMessageDefinition(repositoryName, jdbcResourceConnector.getDatabaseName()));
 
         String schemaName = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_SCHEMA.getName(),
                                                                  connectionBean.getConfigurationProperties());
@@ -221,11 +221,11 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName, PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName, PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                               error);
 
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            error.getClass().getName(),
@@ -249,7 +249,7 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
     {
         final String methodName = "loadDDL";
 
-        auditLog.logMessage(methodName, PostgresAuditCode.CONFIRMING_REPOSITORY_SCHEMA.getMessageDefinition(repositoryName, schemaName));
+        logRecord(methodName, PostgresAuditCode.CONFIRMING_REPOSITORY_SCHEMA.getMessageDefinition(repositoryName, schemaName));
 
         /*
          * The connection is returned to the pool when this block exits.  Because the connector runs with auto-commit
@@ -269,11 +269,11 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName, PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName, PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                               error);
 
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            error.getClass().getName(),
@@ -346,7 +346,7 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
             repositoryMode = "read-write";
         }
 
-        auditLog.logMessage(methodName, PostgresAuditCode.REPOSITORY_MODE.getMessageDefinition(repositoryName, repositoryMode));
+        logRecord(methodName, PostgresAuditCode.REPOSITORY_MODE.getMessageDefinition(repositoryName, repositoryMode));
 
         return "read-only".equals(repositoryMode);
     }
@@ -367,11 +367,11 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
 
         if (defaultAsOfTime == null)
         {
-            auditLog.logMessage(methodName, PostgresAuditCode.DEFAULT_AS_OF_TIME.getMessageDefinition(repositoryName, "'null'"));
+            logRecord(methodName, PostgresAuditCode.DEFAULT_AS_OF_TIME.getMessageDefinition(repositoryName, "'null'"));
         }
         else
         {
-            auditLog.logMessage(methodName, PostgresAuditCode.DEFAULT_AS_OF_TIME.getMessageDefinition(repositoryName, defaultAsOfTime.toString()));
+            logRecord(methodName, PostgresAuditCode.DEFAULT_AS_OF_TIME.getMessageDefinition(repositoryName, defaultAsOfTime.toString()));
         }
 
         return defaultAsOfTime;

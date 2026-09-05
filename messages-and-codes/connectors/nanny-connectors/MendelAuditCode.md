@@ -331,7 +331,7 @@ The connector has worked through the duplicate links that were waiting for it wh
 
 **User action**
 
-No action is required.  This message is for monitoring the start up of the automated duplicate manager.
+No action is required.  This message confirms that the connector now processes duplicate links as they change, rather than only on its refresh cycle.
 
 
 ----

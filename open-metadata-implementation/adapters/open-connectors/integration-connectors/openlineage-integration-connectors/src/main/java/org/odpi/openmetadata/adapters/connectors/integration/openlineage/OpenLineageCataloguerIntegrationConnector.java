@@ -205,23 +205,20 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             }
             catch (Exception error)
             {
-                if (auditLog != null)
+                String stringEvent = rawEvent;
+
+                if (rawEvent == null)
                 {
-                    String stringEvent = rawEvent;
-
-                    if (rawEvent == null)
-                    {
-                        stringEvent = event.toString();
-                    }
-
-                    auditLog.logException(methodName,
-                                          OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                             error.getClass().getName(),
-                                                                                                                             methodName,
-                                                                                                                             error.getMessage()),
-                                          stringEvent,
-                                          error);
+                    stringEvent = event.toString();
                 }
+
+                logExceptionRecord(methodName,
+                                   OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                      error.getClass().getName(),
+                                                                                                                      methodName,
+                                                                                                                      error.getMessage()),
+                                   stringEvent,
+                                   error);
             }
         }
     }

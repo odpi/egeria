@@ -121,7 +121,7 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                           AuditLogRecordSeverityLevel.ACTIVITY,
                           "User {0} issued REST API call to operation {1} of service {2} on server {3}",
                           "This message is used to capture user activity.",
-                          "No action is required, but this message can be used to capture user activity information.",
+                          "No action is required, but this message can be used to capture which services and operations a user is calling.",
                           "https://egeria-project.org/services/common-services/"),
     ;
 

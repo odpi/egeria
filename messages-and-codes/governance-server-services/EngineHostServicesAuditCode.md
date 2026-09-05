@@ -169,11 +169,11 @@ Check that the jar containing the engine service's admin class is visible to the
 
 **System action**
 
-A new OMAG server has been started that is configured to run as an engine host.  Within the engine host are one or more Open Metadata Engine Services (OMESs) that host governance services (connectors) to actively govern open metadata and the digital landscape it represents.
+The engine host services are starting the Open Metadata Engine Services (OMESs) configured for this server.  Each engine service hosts the governance services for one type of governance engine.
 
 **User action**
 
-Verify that the start up sequence goes on to initialize the configured engine services and engines.
+Verify that each configured engine service reports that it has started, along with the governance engines that it hosts.
 
 
 ----
@@ -379,11 +379,11 @@ This problem may be caused because the engine host services has been configured 
 
 **System action**
 
-The engine host services continues to run.  The engine host services will start up the governance engines and they will operate with whatever configuration that they can retrieve.  Periodically the engine host services willretry the request to retrieve the connection information.  Without the connection, the engine host services will not be notified of changes to the governance engines' configuration
+The engine host services are listening for configuration changes for this governance engine and apply them as they occur.
 
 **User action**
 
-This problem may be caused because the engine host services has been configured with the wrong location for the metadata server, or the metadata server is not running the Governance Engine OMAS service or the metadata server is not running at all.  Investigate the status of the metadata server to ensure it is running and correctly configured.  Once it is ready, either restart the server, or issue the refresh-config command or wait for the engine host services to retry the configuration request.
+No action is required.  This message confirms that changes to this governance engine's configuration reach the engine host services without a restart.
 
 
 ----

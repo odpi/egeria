@@ -31,7 +31,6 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     protected String                  metadataCollectionName = null;
     protected OMRSMetadataCollection  metadataCollection     = null;
 
-    protected AuditLog                auditLog = null;
 
 
 

@@ -30,6 +30,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:ocf-metadata-management:ocf-metadata-client')
     testImplementation 'org.testng:testng'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
 }
 
 description = 'Multi-Tenant Services'

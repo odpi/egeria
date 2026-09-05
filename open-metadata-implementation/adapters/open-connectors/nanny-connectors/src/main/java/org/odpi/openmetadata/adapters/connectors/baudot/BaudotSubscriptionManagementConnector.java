@@ -66,9 +66,9 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
 
         final String methodName = "start";
 
-        auditLog.logMessage(methodName, BaudotAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
-                                                                                                integrationContext.getMetadataAccessServer(),
-                                                                                                integrationContext.getMetadataAccessServerPlatformURLRoot()));
+        logRecord(methodName, BaudotAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
+                                                                                      integrationContext.getMetadataAccessServer(),
+                                                                                      integrationContext.getMetadataAccessServerPlatformURLRoot()));
 
         /*
          * Listening starts now, before the first refresh, rather than being left to the base class - which
@@ -86,11 +86,11 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  OIFAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(connectorName,
-                                                                                                error.getClass().getName(),
-                                                                                                error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               OIFAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(connectorName,
+                                                                                             error.getClass().getName(),
+                                                                                             error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(OIFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                        error.getClass().getName(),
@@ -131,10 +131,10 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
          * a subscription that is never delivered looks the same from outside as one that has not been asked
          * for, and the difference is visible here and nowhere else.
          */
-        auditLog.logMessage(methodName,
-                            BaudotAuditCode.REFRESH_COMPLETE.getMessageDefinition(connectorName,
-                                                                                  Integer.toString(notificationTypeCount),
-                                                                                  Integer.toString(monitoredResources.size())));
+        logRecord(methodName,
+                  BaudotAuditCode.REFRESH_COMPLETE.getMessageDefinition(connectorName,
+                                                                        Integer.toString(notificationTypeCount),
+                                                                        Integer.toString(monitoredResources.size())));
     }
 
 
@@ -244,12 +244,12 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  BaudotAuditCode.EVENT_PROCESSING_FAILED.getMessageDefinition(connectorName,
-                                                                                               error.getClass().getName(),
-                                                                                               event.getElementHeader().getGUID(),
-                                                                                               error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               BaudotAuditCode.EVENT_PROCESSING_FAILED.getMessageDefinition(connectorName,
+                                                                                            error.getClass().getName(),
+                                                                                            event.getElementHeader().getGUID(),
+                                                                                            error.getMessage()),
+                               error);
         }
     }
 
@@ -302,21 +302,21 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
             }
             else
             {
-                auditLog.logMessage(methodName,
-                                    BaudotAuditCode.UNREADABLE_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
-                                                                                                      monitoredResource.getNotificationTypeDisplayName(),
-                                                                                                      notificationTypeGUID));
+                logRecord(methodName,
+                          BaudotAuditCode.UNREADABLE_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
+                                                                                            monitoredResource.getNotificationTypeDisplayName(),
+                                                                                            notificationTypeGUID));
             }
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  BaudotAuditCode.NOTIFICATION_TYPE_REFRESH_FAILED.getMessageDefinition(connectorName,
-                                                                                                        monitoredResource.getNotificationTypeDisplayName(),
-                                                                                                        notificationTypeGUID,
-                                                                                                        error.getClass().getName(),
-                                                                                                        error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               BaudotAuditCode.NOTIFICATION_TYPE_REFRESH_FAILED.getMessageDefinition(connectorName,
+                                                                                                     monitoredResource.getNotificationTypeDisplayName(),
+                                                                                                     notificationTypeGUID,
+                                                                                                     error.getClass().getName(),
+                                                                                                     error.getMessage()),
+                               error);
         }
     }
 
@@ -360,10 +360,7 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
     {
         final String methodName = "disconnect";
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName, BaudotAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
-        }
+        logRecord(methodName, BaudotAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
 
         super.disconnect();
     }

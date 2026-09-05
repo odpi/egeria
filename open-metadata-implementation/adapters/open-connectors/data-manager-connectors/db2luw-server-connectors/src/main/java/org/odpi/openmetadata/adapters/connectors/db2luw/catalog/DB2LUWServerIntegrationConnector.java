@@ -56,9 +56,9 @@ public class DB2LUWServerIntegrationConnector extends DynamicIntegrationConnecto
 
         if (defaultFriendshipGUID != null)
         {
-            auditLog.logMessage(methodName,
-                                DB2LUWAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
-                                                                                    defaultFriendshipGUID));
+            logRecord(methodName,
+                      DB2LUWAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
+                                                                          defaultFriendshipGUID));
         }
 
         for (DB2LUWTemplateType templateType : DB2LUWTemplateType.values())

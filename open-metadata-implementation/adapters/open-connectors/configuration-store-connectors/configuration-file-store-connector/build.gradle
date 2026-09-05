@@ -17,6 +17,8 @@ dependencies {
     testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation 'org.testng:testng'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
 }
 
 description = 'Configuration File Store Connector'

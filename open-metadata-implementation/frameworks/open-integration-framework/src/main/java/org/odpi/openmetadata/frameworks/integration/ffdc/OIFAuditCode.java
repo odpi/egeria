@@ -180,8 +180,8 @@ public enum OIFAuditCode implements AuditLogMessageSet
     MEMBER_ACTION ("OIF-CONNECTOR-0019",
                     AuditLogRecordSeverityLevel.ACTION,
                     "The {0} connector is recommending the {1} action to take for element {2}",
-                    "The connector stops processing.",
-                    "Using information from the element, the set up of the connector, and the connector's logic to determine why this 'should not occur' case has happened.",
+                    "The connector logs the action it has selected for the element and carries on processing.",
+                    "No action is required.  This message traces the decision that the connector made about each element it processed.",
                     "https://egeria-project.org/frameworks/oif/overview/"),
 
     ;

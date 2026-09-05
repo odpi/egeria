@@ -23,7 +23,6 @@ import java.util.Map;
 
 public class OSSUnityCatalogResourceConnector extends ConnectorBase implements AuditLoggingComponent
 {
-    private AuditLog auditLog      = null;
     private String   connectorName = "Unity Catalog Connector";
 
     private String targetRootURL  = null;
@@ -131,15 +130,12 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                         error.getClass().getName(),
-                                                                                         methodName,
-                                                                                         error.getMessage()),
-                                      error);
-            }
+            logExceptionRecord(methodName,
+                               UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                  error.getClass().getName(),
+                                                                                  methodName,
+                                                                                  error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(UCErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                       error.getClass().getName(),
@@ -1409,13 +1405,13 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
                                       boolean   logMessage,
                                       Exception error) throws PropertyServerException
     {
-        if ((auditLog != null) && (logMessage))
+        if (logMessage)
         {
-            auditLog.logMessage(methodName,
-                                UCAuditCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
-                                                                                            ucInstanceName,
-                                                                                            targetRootURL,
-                                                                                            error.getMessage()));
+            logRecord(methodName,
+                      UCAuditCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                  ucInstanceName,
+                                                                                  targetRootURL,
+                                                                                  error.getMessage()));
         }
 
         throw new PropertyServerException(UCErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,

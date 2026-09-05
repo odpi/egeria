@@ -213,12 +213,12 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                                           directoryToMonitor.directoryName,
                                           null);
             }
-            else if (auditLog != null)
+            else
             {
-                auditLog.logMessage(methodName,
-                                    BasicFilesIntegrationConnectorsAuditCode.FILES_LOCATION_NOT_FOUND.getMessageDefinition(pathName,
-                                                                                                                           connectorName,
-                                                                                                                           sourceName));
+                logRecord(methodName,
+                          BasicFilesIntegrationConnectorsAuditCode.FILES_LOCATION_NOT_FOUND.getMessageDefinition(pathName,
+                                                                                                                 connectorName,
+                                                                                                                 sourceName));
             }
         }
 
@@ -299,12 +299,12 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS.getMessageDefinition(error.getClass().getName(),
-                                                                                                                                        connectorName,
-                                                                                                                                        methodName,
-                                                                                                                                        connectorName,
-                                                                                                                                        error.getMessage()));
+            logRecord(methodName,
+                      BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS.getMessageDefinition(error.getClass().getName(),
+                                                                                                                              connectorName,
+                                                                                                                              methodName,
+                                                                                                                              connectorName,
+                                                                                                                              error.getMessage()));
 
             throw new ConnectorCheckedException(
                     BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS.getMessageDefinition(error.getClass().getName(),
@@ -392,22 +392,22 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                                 }
                                 else
                                 {
-                                    auditLog.logMessage(methodName,
-                                                        BasicFilesIntegrationConnectorsAuditCode.BAD_METADATA_SOURCE.getMessageDefinition(
-                                                                connectorName,
-                                                                catalogTargetProperties.getCatalogTargetName(),
-                                                                catalogTargetProperties.getMetadataSourceQualifiedName(),
-                                                                methodName));
+                                    logRecord(methodName,
+                                              BasicFilesIntegrationConnectorsAuditCode.BAD_METADATA_SOURCE.getMessageDefinition(
+                                                      connectorName,
+                                                      catalogTargetProperties.getCatalogTargetName(),
+                                                      catalogTargetProperties.getMetadataSourceQualifiedName(),
+                                                      methodName));
                                 }
                             }
                             catch (Exception error)
                             {
-                                auditLog.logMessage(methodName,
-                                                    BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(
-                                                            connectorName,
-                                                            error.getClass().getName(),
-                                                            methodName,
-                                                            error.getMessage()));
+                                logRecord(methodName,
+                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(
+                                                  connectorName,
+                                                  error.getClass().getName(),
+                                                  methodName,
+                                                  error.getMessage()));
                             }
                         }
 
@@ -524,14 +524,14 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
             }
             catch (Exception error)
             {
-                auditLog.logMessage(methodName,
-                                    BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME.getMessageDefinition(
-                                            error.getClass().getName(),
-                                            connectorName,
-                                            methodName,
-                                            dataFolderFile.getName(),
-                                            dataFolderFile.getAbsolutePath(),
-                                            error.getMessage()));
+                logRecord(methodName,
+                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME.getMessageDefinition(
+                                  error.getClass().getName(),
+                                  connectorName,
+                                  methodName,
+                                  dataFolderFile.getName(),
+                                  dataFolderFile.getAbsolutePath(),
+                                  error.getMessage()));
 
                 throw new FileException(
                         BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME.getMessageDefinition(
@@ -571,15 +571,12 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID.getMessageDefinition(error.getClass().getName(),
-                                                                                                                                                connectorName,
-                                                                                                                                                methodName,
-                                                                                                                                                folderElementGUID,
-                                                                                                                                                error.getMessage()));
-            }
+            logRecord(methodName,
+                      BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID.getMessageDefinition(error.getClass().getName(),
+                                                                                                                                  connectorName,
+                                                                                                                                  methodName,
+                                                                                                                                  folderElementGUID,
+                                                                                                                                  error.getMessage()));
 
             throw new FileException(
                     BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID.getMessageDefinition(error.getClass().getName(),
@@ -635,36 +632,30 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
 
                 fileClient.deleteAsset(cataloguedElement.getElementHeader().getGUID(), deleteOptions);
 
-                if (auditLog != null)
+                if (deleteOptions.getDeleteMethod() == DeleteMethod.ARCHIVE)
                 {
-                    if (deleteOptions.getDeleteMethod() == DeleteMethod.ARCHIVE)
-                    {
-                        auditLog.logMessage(methodName,
-                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_ARCHIVED.getMessageDefinition(connectorName,
-                                                                                                                             pathName,
-                                                                                                                             cataloguedElement.getElementHeader().getGUID()));
-                    }
-                    else
-                    {
-                        auditLog.logMessage(methodName,
-                                            BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_DELETED.getMessageDefinition(connectorName,
-                                                                                                                            pathName,
-                                                                                                                            cataloguedElement.getElementHeader().getGUID()));
-                    }
+                    logRecord(methodName,
+                              BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_ARCHIVED.getMessageDefinition(connectorName,
+                                                                                                               pathName,
+                                                                                                               cataloguedElement.getElementHeader().getGUID()));
+                }
+                else
+                {
+                    logRecord(methodName,
+                              BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_DELETED.getMessageDefinition(connectorName,
+                                                                                                              pathName,
+                                                                                                              cataloguedElement.getElementHeader().getGUID()));
                 }
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
-                                                  error.getClass().getName(),
-                                                  connectorName,
-                                                  file.getAbsolutePath(),
-                                                  error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
+                                           error.getClass().getName(),
+                                           connectorName,
+                                           file.getAbsolutePath(),
+                                           error.getMessage()),
+                                   error);
             }
         }
     }
@@ -716,17 +707,14 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                                         fileLocationName);
         }
 
-        if (auditLog != null)
-        {
-            auditLog.logException(methodName,
-                                  BasicFilesIntegrationConnectorsAuditCode.BAD_CONFIGURATION.getMessageDefinition(connectorName,
-                                                                                                                  ConfigException.class.getName(),
-                                                                                                                  fileLocationName,
-                                                                                                                  fileLocationSource,
-                                                                                                                  methodName,
-                                                                                                                  error.getMessage()),
-                                  error);
-        }
+        logExceptionRecord(methodName,
+                           BasicFilesIntegrationConnectorsAuditCode.BAD_CONFIGURATION.getMessageDefinition(connectorName,
+                                                                                                           ConfigException.class.getName(),
+                                                                                                           fileLocationName,
+                                                                                                           fileLocationSource,
+                                                                                                           methodName,
+                                                                                                           error.getMessage()),
+                           error);
 
         throw error;
     }
@@ -742,11 +730,8 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
     {
         final String methodName = "disconnect";
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                BasicFilesIntegrationConnectorsAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
-        }
+        logRecord(methodName,
+                  BasicFilesIntegrationConnectorsAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
 
         super.disconnect();
     }

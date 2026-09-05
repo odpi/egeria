@@ -118,12 +118,9 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     {
         super.start();
 
-        if (auditLog != null)
-        {
-            final String actionDescription = "start";
+        final String actionDescription = "start";
 
-            auditLog.logMessage(actionDescription, OMRSAuditCode.STARTING_ENTERPRISE_CONNECTOR.getMessageDefinition(callingServiceName));
-        }
+        logRecord(actionDescription, OMRSAuditCode.STARTING_ENTERPRISE_CONNECTOR.getMessageDefinition(callingServiceName));
 
         if (connectorManager != null)
         {
@@ -150,12 +147,9 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     {
         super.disconnect();
 
-        if (auditLog != null)
-        {
-            final String actionDescription = "disconnect";
+        final String actionDescription = "disconnect";
 
-            auditLog.logMessage(actionDescription, OMRSAuditCode.DISCONNECTING_ENTERPRISE_CONNECTOR.getMessageDefinition(callingServiceName));
-        }
+        logRecord(actionDescription, OMRSAuditCode.DISCONNECTING_ENTERPRISE_CONNECTOR.getMessageDefinition(callingServiceName));
 
         if ((connectorManager != null) && (connectorConsumerId != null))
         {
@@ -557,28 +551,22 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
             {
                 remoteCohortConnectors.add(new FederatedConnector(metadataCollectionId, remoteConnector));
 
-                if (auditLog != null)
-                {
-                    final String actionDescription = "Processing incoming registration request from remote cohort member";
+                final String actionDescription = "Processing incoming registration request from remote cohort member";
 
-                    auditLog.logMessage(actionDescription,
-                                        OMRSAuditCode.NEW_REMOTE_MEMBER_DEPLOYED.getMessageDefinition(remoteConnector.getServerName(),
-                                                                                                      metadataCollectionId,
-                                                                                                      callingServiceName));
-                }
+                logRecord(actionDescription,
+                          OMRSAuditCode.NEW_REMOTE_MEMBER_DEPLOYED.getMessageDefinition(remoteConnector.getServerName(),
+                                                                                        metadataCollectionId,
+                                                                                        callingServiceName));
             }
             else
             {
                 federatedConnector.refresh(metadataCollectionId, remoteConnector);
-                if (auditLog != null)
-                {
-                    final String actionDescription = "Processing incoming registration request from remote cohort member";
+                final String actionDescription = "Processing incoming registration request from remote cohort member";
 
-                    auditLog.logMessage(actionDescription,
-                                        OMRSAuditCode.REMOTE_MEMBER_DEPLOY_REFRESH.getMessageDefinition(remoteConnector.getServerName(),
-                                                                                                        metadataCollectionId,
-                                                                                                        callingServiceName));
-                }
+                logRecord(actionDescription,
+                          OMRSAuditCode.REMOTE_MEMBER_DEPLOY_REFRESH.getMessageDefinition(remoteConnector.getServerName(),
+                                                                                          metadataCollectionId,
+                                                                                          callingServiceName));
             }
         }
     }
@@ -605,14 +593,11 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
             }
         }
 
-        if (auditLog != null)
-        {
-            final String actionDescription = "Processing incoming registration request from remote cohort member";
+        final String actionDescription = "Processing incoming registration request from remote cohort member";
 
-            auditLog.logMessage(actionDescription,
-                                OMRSAuditCode.REMOTE_MEMBER_UNDEPLOYED.getMessageDefinition(metadataCollectionId,
-                                                                                            callingServiceName));
-        }
+        logRecord(actionDescription,
+                  OMRSAuditCode.REMOTE_MEMBER_UNDEPLOYED.getMessageDefinition(metadataCollectionId,
+                                                                              callingServiceName));
     }
 
 

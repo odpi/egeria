@@ -170,6 +170,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      *
      * @param messageDefinition description of the audit log record including specific resources involved
      * @param actionDescription calling method
+     * @param exception the exception associated with the message
      */
     protected void logExceptionRecord(String                    actionDescription,
                                       AuditLogMessageDefinition messageDefinition,
@@ -182,6 +183,36 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
         else
         {
             System.out.println(messageDefinition.getSeverity().getName() + " " + messageFormatter.getFormattedMessage(messageDefinition));
+
+            StringWriter stackTrace = new StringWriter();
+            exception.printStackTrace(new PrintWriter(stackTrace));
+
+            System.out.println(stackTrace);
+        }
+    }
+
+
+    /**
+     * Log an audit log record for an event, decision, error, or exception detected by the OMRS.
+     *
+     * @param messageDefinition description of the audit log record including specific resources involved
+     * @param actionDescription calling method
+     * @param additionalInformation supporting information
+     * @param exception the exception associated with the message
+     */
+    protected void logExceptionRecord(String                    actionDescription,
+                                      AuditLogMessageDefinition messageDefinition,
+                                      String                    additionalInformation,
+                                      Exception                 exception)
+    {
+        if (auditLog != null)
+        {
+            auditLog.logException(actionDescription, messageDefinition, additionalInformation, exception);
+        }
+        else
+        {
+            System.out.println(messageDefinition.getSeverity().getName() + " " + messageFormatter.getFormattedMessage(messageDefinition));
+            System.out.println(additionalInformation);
 
             StringWriter stackTrace = new StringWriter();
             exception.printStackTrace(new PrintWriter(stackTrace));

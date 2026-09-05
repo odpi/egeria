@@ -105,13 +105,10 @@ public class ZonePublisherGovernanceActionConnector extends GeneralGovernanceAct
                     {
                         OpenMetadataElement element = actionTarget.getTargetElement();
 
-                        if (auditLog != null)
-                        {
-                            auditLog.logMessage(methodName,
-                                                GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,
-                                                                                                                       element.getElementGUID(),
-                                                                                                                       "<null>"));
-                        }
+                        logRecord(methodName,
+                                  GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,
+                                                                                                         element.getElementGUID(),
+                                                                                                         "<null>"));
 
                         governanceContext.getOpenMetadataStore().declassifyMetadataElementInStore(element.getElementGUID(),
                                                                                                   OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
@@ -138,10 +135,10 @@ public class ZonePublisherGovernanceActionConnector extends GeneralGovernanceAct
                         OpenMetadataElement element = actionTarget.getTargetElement();
 
 
-                        auditLog.logMessage(methodName,
-                                            GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,
-                                                                                                                   element.getElementGUID(),
-                                                                                                                   publishZones.toString()));
+                        logRecord(methodName,
+                                  GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,
+                                                                                                         element.getElementGUID(),
+                                                                                                         publishZones.toString()));
 
                         governanceContext.getOpenMetadataStore().classifyMetadataElementInStore(element.getElementGUID(),
                                                                                                 OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
@@ -156,7 +153,7 @@ public class ZonePublisherGovernanceActionConnector extends GeneralGovernanceAct
 
             if (messageDefinition != null)
             {
-                auditLog.logMessage(methodName, messageDefinition);
+                logRecord(methodName, messageDefinition);
             }
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);

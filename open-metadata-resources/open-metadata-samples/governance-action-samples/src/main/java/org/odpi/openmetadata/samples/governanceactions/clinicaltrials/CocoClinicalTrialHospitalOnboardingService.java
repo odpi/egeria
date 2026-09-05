@@ -365,7 +365,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
             if (messageDefinition != null)
             {
-                auditLog.logMessage(methodName, messageDefinition);
+                logRecord(methodName, messageDefinition);
             }
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);
@@ -566,12 +566,12 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                             /*
                                              * Hospital has correct certification.
                                              */
-                                            auditLog.logMessage(methodName,
-                                                                GovernanceActionSamplesAuditCode.CERTIFIED_HOSPITAL.getMessageDefinition(governanceServiceName,
-                                                                                                                                         hospitalName,
-                                                                                                                                         hospitalGUID,
-                                                                                                                                         clinicalTrialName,
-                                                                                                                                         projectGUID));
+                                            logRecord(methodName,
+                                                      GovernanceActionSamplesAuditCode.CERTIFIED_HOSPITAL.getMessageDefinition(governanceServiceName,
+                                                                                                                               hospitalName,
+                                                                                                                               hospitalGUID,
+                                                                                                                               clinicalTrialName,
+                                                                                                                               projectGUID));
                                             return hospitalContactDetails;
                                         }
                                     }
@@ -1105,9 +1105,9 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
             }
             catch (IOException error)
             {
-                auditLog.logMessage(methodName,
-                                    GovernanceActionSamplesAuditCode.NO_LANDING_FOLDER.getMessageDefinition(governanceServiceName,
-                                                                                                            pathName));
+                logRecord(methodName,
+                          GovernanceActionSamplesAuditCode.NO_LANDING_FOLDER.getMessageDefinition(governanceServiceName,
+                                                                                                  pathName));
             }
         }
     }

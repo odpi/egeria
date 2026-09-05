@@ -52,11 +52,11 @@ public class OpenLineageEventReceiverIntegrationConnector extends DynamicIntegra
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                   error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
+            logRecord(methodName,
+                      OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                         error.getClass().getName(),
+                                                                                                         methodName,
+                                                                                                         error.getMessage()));
         }
     }
 

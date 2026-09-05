@@ -138,16 +138,13 @@ public class CSVLineageImporterConnector extends IntegrationConnectorBase
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    CSVLineageImporterAuditCode.UNEXPECTED_EXC_RETRIEVING_FOLDER.getMessageDefinition(error.getClass().getName(),
-                                                                                                                      connectorName,
-                                                                                                                      methodName,
-                                                                                                                      fileName,
-                                                                                                                      fileName,
-                                                                                                                      error.getMessage()));
-            }
+            logRecord(methodName,
+                      CSVLineageImporterAuditCode.UNEXPECTED_EXC_RETRIEVING_FOLDER.getMessageDefinition(error.getClass().getName(),
+                                                                                                        connectorName,
+                                                                                                        methodName,
+                                                                                                        fileName,
+                                                                                                        fileName,
+                                                                                                        error.getMessage()));
 
             throw new ConnectorCheckedException(
                     CSVLineageImporterErrorCode.UNEXPECTED_EXC_RETRIEVING_FOLDER.getMessageDefinition(error.getClass().getName(),

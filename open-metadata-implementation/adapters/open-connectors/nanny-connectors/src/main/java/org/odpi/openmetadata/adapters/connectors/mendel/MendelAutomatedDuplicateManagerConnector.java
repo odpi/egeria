@@ -164,11 +164,11 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
             clusterSize = configuredClusterSize;
         }
 
-        auditLog.logMessage(methodName,
-                            MendelAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
-                                                                                    integrationContext.getMetadataAccessServer(),
-                                                                                    integrationContext.getMetadataAccessServerPlatformURLRoot(),
-                                                                                    Integer.toString(clusterSize)));
+        logRecord(methodName,
+                  MendelAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
+                                                                          integrationContext.getMetadataAccessServer(),
+                                                                          integrationContext.getMetadataAccessServerPlatformURLRoot(),
+                                                                          Integer.toString(clusterSize)));
     }
 
 
@@ -203,12 +203,12 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                            error.getClass().getName(),
-                                                                                            methodName,
-                                                                                            error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                         error.getClass().getName(),
+                                                                                         methodName,
+                                                                                         error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(MendelErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                           error.getClass().getName(),
@@ -286,16 +286,16 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
             {
                 integrationContext.registerListener(this);
 
-                auditLog.logMessage(methodName,
-                                    MendelAuditCode.LISTENER_REGISTERED.getMessageDefinition(connectorName));
+                logRecord(methodName,
+                          MendelAuditCode.LISTENER_REGISTERED.getMessageDefinition(connectorName));
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      MendelAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(connectorName,
-                                                                                                        error.getClass().getName(),
-                                                                                                        error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   MendelAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(connectorName,
+                                                                                                     error.getClass().getName(),
+                                                                                                     error.getMessage()),
+                                   error);
             }
         }
     }
@@ -397,12 +397,12 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                            error.getClass().getName(),
-                                                                                            methodName,
-                                                                                            error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                         error.getClass().getName(),
+                                                                                         methodName,
+                                                                                         error.getMessage()),
+                               error);
         }
     }
 
@@ -475,12 +475,12 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
                     /*
                      * One duplicate link that can not be processed must not stop the rest being reviewed.
                      */
-                    auditLog.logException(methodName,
-                                          MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                    error.getClass().getName(),
-                                                                                                    methodName,
-                                                                                                    error.getMessage()),
-                                          error);
+                    logExceptionRecord(methodName,
+                                       MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                 error.getClass().getName(),
+                                                                                                 methodName,
+                                                                                                 error.getMessage()),
+                                       error);
                 }
             }
         }
@@ -613,11 +613,11 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
                                                                           this.getMakeAnchorOptions(classificationExplorerClient, endTwoHeader));
         }
 
-        auditLog.logMessage(methodName,
-                            MendelAuditCode.DUPLICATES_VALIDATED.getMessageDefinition(connectorName,
-                                                                                      duplicateLinkGUID,
-                                                                                      endOneGUID,
-                                                                                      endTwoGUID));
+        logRecord(methodName,
+                  MendelAuditCode.DUPLICATES_VALIDATED.getMessageDefinition(connectorName,
+                                                                            duplicateLinkGUID,
+                                                                            endOneGUID,
+                                                                            endTwoGUID));
     }
 
 
@@ -688,12 +688,12 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
                                                        null,
                                                        actionTargets);
 
-        auditLog.logMessage(methodName,
-                            MendelAuditCode.STEWARD_ACTION_REQUESTED.getMessageDefinition(connectorName,
-                                                                                          toDoGUID,
-                                                                                          duplicateLinkGUID,
-                                                                                          endOneGUID,
-                                                                                          endTwoGUID));
+        logRecord(methodName,
+                  MendelAuditCode.STEWARD_ACTION_REQUESTED.getMessageDefinition(connectorName,
+                                                                                toDoGUID,
+                                                                                duplicateLinkGUID,
+                                                                                endOneGUID,
+                                                                                endTwoGUID));
     }
 
 
@@ -765,11 +765,11 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
             {
                 this.retireDuplicateLink(duplicateLink);
 
-                auditLog.logMessage(methodName,
-                                    MendelAuditCode.OWN_VALIDATION_WITHDRAWN.getMessageDefinition(connectorName,
-                                                                                                   duplicateLink.getRelationshipGUID(),
-                                                                                                   endOne.getGUID(),
-                                                                                                   endTwo.getGUID()));
+                logRecord(methodName,
+                          MendelAuditCode.OWN_VALIDATION_WITHDRAWN.getMessageDefinition(connectorName,
+                                                                                         duplicateLink.getRelationshipGUID(),
+                                                                                         endOne.getGUID(),
+                                                                                         endTwo.getGUID()));
 
                 /*
                  * Retiring the link does not break up a consolidated cluster - the members go on being reached
@@ -778,11 +778,11 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
                  */
                 if (this.isConsolidated(endOne) || this.isConsolidated(endTwo))
                 {
-                    auditLog.logMessage(methodName,
-                                        MendelAuditCode.CONSOLIDATED_CLUSTER_WEAKENED.getMessageDefinition(connectorName,
-                                                                                                            duplicateLink.getRelationshipGUID(),
-                                                                                                            endOne.getGUID(),
-                                                                                                            endTwo.getGUID()));
+                    logRecord(methodName,
+                              MendelAuditCode.CONSOLIDATED_CLUSTER_WEAKENED.getMessageDefinition(connectorName,
+                                                                                                  duplicateLink.getRelationshipGUID(),
+                                                                                                  endOne.getGUID(),
+                                                                                                  endTwo.getGUID()));
                 }
             }
             catch (Exception error)
@@ -790,12 +790,12 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
                 /*
                  * One duplicate link that can not be processed must not stop the rest being reconsidered.
                  */
-                auditLog.logException(methodName,
-                                      MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                error.getClass().getName(),
-                                                                                                methodName,
-                                                                                                error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                             error.getClass().getName(),
+                                                                                             methodName,
+                                                                                             error.getMessage()),
+                                   error);
             }
         }
     }
@@ -958,18 +958,18 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
 
                     classificationExplorerClient.clearKnownDuplicateClassification(candidateElement.getGUID(), metadataSourceOptions);
 
-                    auditLog.logMessage(methodName,
-                                        MendelAuditCode.RETIRED_DUPLICATE.getMessageDefinition(connectorName,
-                                                                                               candidateElement.getGUID()));
+                    logRecord(methodName,
+                              MendelAuditCode.RETIRED_DUPLICATE.getMessageDefinition(connectorName,
+                                                                                     candidateElement.getGUID()));
                 }
                 catch (Exception error)
                 {
-                    auditLog.logException(methodName,
-                                          MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                    error.getClass().getName(),
-                                                                                                    methodName,
-                                                                                                    error.getMessage()),
-                                          error);
+                    logExceptionRecord(methodName,
+                                       MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                 error.getClass().getName(),
+                                                                                                 methodName,
+                                                                                                 error.getMessage()),
+                                       error);
                 }
             }
         }
@@ -1038,12 +1038,12 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
                 }
                 catch (Exception error)
                 {
-                    auditLog.logException(methodName,
-                                          MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                    error.getClass().getName(),
-                                                                                                    methodName,
-                                                                                                    error.getMessage()),
-                                          error);
+                    logExceptionRecord(methodName,
+                                       MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                 error.getClass().getName(),
+                                                                                                 methodName,
+                                                                                                 error.getMessage()),
+                                       error);
                 }
             }
         }
@@ -1321,10 +1321,10 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
                                                           personRoleProperties,
                                                           null);
 
-        auditLog.logMessage(methodName,
-                            MendelAuditCode.NEW_STEWARD_ROLE.getMessageDefinition(connectorName,
-                                                                                  stewardRoleName,
-                                                                                  stewardRoleGUID));
+        logRecord(methodName,
+                  MendelAuditCode.NEW_STEWARD_ROLE.getMessageDefinition(connectorName,
+                                                                        stewardRoleName,
+                                                                        stewardRoleGUID));
 
         return stewardRoleGUID;
     }
@@ -1340,10 +1340,10 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
     {
         final String methodName = "disconnect";
 
-        auditLog.logMessage(methodName,
-                            MendelAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName,
-                                                                                    integrationContext.getMetadataAccessServer(),
-                                                                                    integrationContext.getMetadataAccessServerPlatformURLRoot()));
+        logRecord(methodName,
+                  MendelAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName,
+                                                                          integrationContext.getMetadataAccessServer(),
+                                                                          integrationContext.getMetadataAccessServerPlatformURLRoot()));
 
         super.disconnect();
     }

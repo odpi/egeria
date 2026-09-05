@@ -77,12 +77,12 @@ public class MSSQLTabularDataSetConnector extends ConnectorBase implements Writa
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(MSSQLErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                           exception.getClass().getName(),
@@ -122,12 +122,12 @@ public class MSSQLTabularDataSetConnector extends ConnectorBase implements Writa
                     }
                     catch (Exception exception)
                     {
-                        auditLog.logException(methodName,
-                                              MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                                      exception.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      exception.getMessage()),
-                                              exception);
+                        logExceptionRecord(methodName,
+                                           MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                                   exception.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   exception.getMessage()),
+                                           exception);
 
                         throw new ConnectorCheckedException(MSSQLErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                                       exception.getClass().getName(),
@@ -184,12 +184,12 @@ public class MSSQLTabularDataSetConnector extends ConnectorBase implements Writa
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(MSSQLErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                           exception.getClass().getName(),
@@ -236,12 +236,12 @@ public class MSSQLTabularDataSetConnector extends ConnectorBase implements Writa
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(MSSQLErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                           exception.getClass().getName(),
@@ -277,12 +277,12 @@ public class MSSQLTabularDataSetConnector extends ConnectorBase implements Writa
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(MSSQLErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                           exception.getClass().getName(),
@@ -349,12 +349,12 @@ public class MSSQLTabularDataSetConnector extends ConnectorBase implements Writa
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(MSSQLErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                           exception.getClass().getName(),

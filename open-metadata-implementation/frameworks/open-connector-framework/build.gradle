@@ -21,6 +21,7 @@ dependencies {
     // types from open-metadata-framework, so consumers need it on their own compile classpath too
     api project(':open-metadata-implementation:frameworks:open-metadata-framework')
     testImplementation 'org.testng:testng'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
 }
 
 description = 'Open Connector Framework (OCF)'

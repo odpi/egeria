@@ -9,7 +9,7 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 189 |
+| **Number of messages** | 188 |
 | **Message identifiers begin** | `OMRS-` |
 | **Java class** | `org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode` |
 | **Module** | [open-metadata-implementation/repository-services/repository-services-apis](../../open-metadata-implementation/repository-services/repository-services-apis) |
@@ -206,7 +206,6 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 | [OMRS-REPOSITORY-HELPER-503-002](#omrs-repository-helper-503-002) | 503 | A caller {0} has passed an invalid parameter to the repository helper {1} operation as part of the {2} request resulting in an unexpected exception {3} with message {4} |
 | [OMRS-REST-API-503-001](#omrs-rest-api-503-001) | 503 | There is no local repository to support REST API call {0} |
 | [OMRS-REST-API-503-002](#omrs-rest-api-503-002) | 503 | There is no enterprise repository to support REST API call {0} |
-| [OMRS-REST-API-503-003](#omrs-rest-api-503-003) | 503 | There is no metadata highway to support REST API call {0} |
 | [OMRS-REST-API-503-004](#omrs-rest-api-503-004) | 503 | A null response was received from REST API call {0} to repository {1} |
 | [OMRS-REST-API-503-005](#omrs-rest-api-503-005) | 503 | Unable to create REST Client for repository {0}.  The error message was {1} |
 | [OMRS-REST-API-503-006](#omrs-rest-api-503-006) | 503 | A client-side exception was received from API call {0} to repository {1}.  The error message was {2} |
@@ -4094,27 +4093,6 @@ The server has received a call on its open metadata enterprise repository REST A
 **User action**
 
 Ensure that the enterprise repository services have been activated in the server. If they are active and the server is supposed to have the enterprise repository services, correct the server's configuration document to include these services and restart the server.
-
-
-----
-
-### OMRS-REST-API-503-003
-
-> There is no metadata highway to support REST API call {0}
-
-|  |  |
-|---|---|
-| **Java constant** | `OMRSErrorCode.NO_METADATA_HIGHWAY` |
-| **HTTP error code** | 503 - Service Unavailable - the service needed to process the request is not running |
-| **Message inserts** | `{0}` |
-
-**System action**
-
-The server has received a call on its metadata highway REST API services but cannot process it because the metadata highway services are not active.
-
-**User action**
-
-Ensure that the metadata highway services have been activated in the server. If they are supposed to be active, correct the server's configuration document to include these services and restart the server.
 
 
 ----

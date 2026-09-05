@@ -1794,15 +1794,6 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "https://egeria-project.org/services/omrs/"),
 
     /**
-     * OMRS-REST-API-503-003 - There is no metadata highway to support REST API call {0}
-     */
-    NO_METADATA_HIGHWAY(503, "OMRS-REST-API-503-003",
-            "There is no metadata highway to support REST API call {0}",
-            "The server has received a call on its metadata highway REST API services but cannot process it because the metadata highway services are not active.",
-            "Ensure that the metadata highway services have been activated in the server. If they are supposed to be active, correct the server's configuration document to include these services and restart the server.",
-            "https://egeria-project.org/services/omrs/"),
-
-    /**
      * OMRS-REST-API-503-004 - A null response was received from REST API call {0} to repository {1}
      */
     NULL_RESPONSE_FROM_API(503, "OMRS-REST-API-503-004",

@@ -216,7 +216,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                 outputGuards.add(ManageDigitalSubscriptionGuard.SET_UP_COMPLETE.getName());
             }
 
-            auditLog.logMessage(methodName, messageDefinition);
+            logRecord(methodName, messageDefinition);
 
             if (outputActionTargets.isEmpty())
             {

@@ -41,15 +41,6 @@ public enum OGFAuditCode implements AuditLogMessageSet
                              "Remove this subscriber from the notification type and replace it with a subscriber type that is supported.",
                              "https://egeria-project.org/frameworks/ogf/overview/"),
 
-    /**
-     * OPEN-GOVERNANCE-ACTION-0003 - The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}
-     */
-    UNEXPECTED_EXCEPTION("OPEN-GOVERNANCE-ACTION-0003",
-                         AuditLogRecordSeverityLevel.EXCEPTION,
-                         "The {0} governance service received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The governance service cannot perform the requested governance action on one or more metadata elements in the metadata repository.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
-                         "https://egeria-project.org/frameworks/ogf/overview/"),
     ;
 
 

@@ -128,7 +128,7 @@ public class CatalogTargetAssetGovernanceActionConnector extends GeneralGovernan
                 outputGuards.add(CatalogTargetAssetGuard.SET_UP_COMPLETE.getName());
             }
 
-            auditLog.logMessage(methodName, messageDefinition);
+            logRecord(methodName, messageDefinition);
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);
         }

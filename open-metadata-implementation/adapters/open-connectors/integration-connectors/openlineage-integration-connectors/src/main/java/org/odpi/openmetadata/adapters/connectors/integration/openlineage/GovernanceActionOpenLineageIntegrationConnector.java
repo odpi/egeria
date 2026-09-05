@@ -78,12 +78,12 @@ public class GovernanceActionOpenLineageIntegrationConnector extends Integration
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                     error.getClass().getName(),
-                                                                                                                     methodName,
-                                                                                                                     error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                  error.getClass().getName(),
+                                                                                                                  methodName,
+                                                                                                                  error.getMessage()),
+                               error);
         }
     }
 
@@ -140,32 +140,26 @@ public class GovernanceActionOpenLineageIntegrationConnector extends Integration
             }
             catch (InvalidParameterException | UserNotAuthorizedException error)
             {
-                if (auditLog != null)
-                {
-                    String stringEvent = event.toString();
+                String stringEvent = event.toString();
 
-                    auditLog.logMessage(methodName,
-                                        OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                           error.getClass().getName(),
-                                                                                                                           methodName,
-                                                                                                                           error.getMessage()),
-                                        stringEvent);
-                }
+                logRecord(methodName,
+                          OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                          stringEvent);
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    String stringEvent = event.toString();
+                String stringEvent = event.toString();
 
-                    auditLog.logException(methodName,
-                                          OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                             error.getClass().getName(),
-                                                                                                                             methodName,
-                                                                                                                             error.getMessage()),
-                                          stringEvent,
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                      error.getClass().getName(),
+                                                                                                                      methodName,
+                                                                                                                      error.getMessage()),
+                                   stringEvent,
+                                   error);
             }
         }
     }

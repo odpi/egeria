@@ -26,7 +26,6 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
     protected List<Connector>                  embeddedConnectors = null;
     protected List<OpenMetadataTopicConnector> eventBusConnectors = new ArrayList<>();
     protected String                           connectionName     = "<Unknown>";
-    protected AuditLog                         auditLog           = null;
 
     /**
      * Set up the list of connectors that this virtual connector will use to support its interface.

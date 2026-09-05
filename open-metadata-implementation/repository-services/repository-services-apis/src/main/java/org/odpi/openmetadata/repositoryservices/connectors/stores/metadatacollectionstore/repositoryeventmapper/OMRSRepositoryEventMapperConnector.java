@@ -34,7 +34,6 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
     protected String                       localServerType           = null;
     protected String                       localOrganizationName     = null;
     protected String                       localServerUserId         = null;
-    protected AuditLog                     auditLog                  = null;
 
     private List<OpenMetadataTopicConnector> eventBusConnectors = new ArrayList<>();
 
@@ -218,12 +217,9 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
             eventBusConnector.start();
         }
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OMRSAuditCode.EVENT_MAPPER_LISTENER_STARTED.getMessageDefinition(repositoryEventMapperName),
-                               this.getConnection().toString());
-        }
+        logRecord(methodName,
+                  OMRSAuditCode.EVENT_MAPPER_LISTENER_STARTED.getMessageDefinition(repositoryEventMapperName),
+                 this.getConnection().toString());
     }
 
 
@@ -247,11 +243,8 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
             eventBusConnector.disconnect();
         }
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OMRSAuditCode.EVENT_MAPPER_LISTENER_DISCONNECTED.getMessageDefinition(repositoryEventMapperName),
-                               this.getConnection().toString());
-        }
+        logRecord(methodName,
+                  OMRSAuditCode.EVENT_MAPPER_LISTENER_DISCONNECTED.getMessageDefinition(repositoryEventMapperName),
+                 this.getConnection().toString());
     }
 }

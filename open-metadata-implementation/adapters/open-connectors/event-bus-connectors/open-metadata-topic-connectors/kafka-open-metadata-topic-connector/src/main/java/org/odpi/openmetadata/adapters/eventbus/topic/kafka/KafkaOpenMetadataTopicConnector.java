@@ -181,28 +181,19 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                     consumerProperties.put("group.id", serverId);
                 }
 
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(actionDescription,
-                                        KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING.getMessageDefinition(topicName, serverId, consumerProperties.getProperty("bootstrap.servers")));
-                }
+                logRecord(actionDescription,
+                          KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING.getMessageDefinition(topicName, serverId, consumerProperties.getProperty("bootstrap.servers")));
             }
             else
             {
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(actionDescription,
-                                        KafkaOpenMetadataTopicConnectorAuditCode.NULL_ADDITIONAL_PROPERTIES.getMessageDefinition(topicName));
-                }
+                logRecord(actionDescription,
+                          KafkaOpenMetadataTopicConnectorAuditCode.NULL_ADDITIONAL_PROPERTIES.getMessageDefinition(topicName));
             }
         }
         else
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(actionDescription,
-                                    KafkaOpenMetadataTopicConnectorAuditCode.NO_TOPIC_NAME.getMessageDefinition());
-            }
+            logRecord(actionDescription,
+                      KafkaOpenMetadataTopicConnectorAuditCode.NO_TOPIC_NAME.getMessageDefinition());
         }
     }
 
@@ -247,12 +238,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         }
         catch (Exception   error)
         {
-            if( auditLog != null)
-            {
-                auditLog.logMessage(actionDescription,
-                                    KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_CONFIG_PROPERTIES.getMessageDefinition(topicName, error.getClass().getName(),
-                                    error.getMessage()));
-            }
+            logRecord(actionDescription,
+                      KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_CONFIG_PROPERTIES.getMessageDefinition(topicName, error.getClass().getName(),
+                      error.getMessage()));
         }
     }
 
@@ -347,10 +335,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         if (!up)
         {
             final String actionDescription = "waitForThisBroker";
-            if (auditLog != null)
-            {
-                auditLog.logMessage(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_FAILED_INITIALIZING.getMessageDefinition(topicName));
-            }
+            logRecord(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_FAILED_INITIALIZING.getMessageDefinition(topicName));
 
             throw new ConnectorCheckedException(KafkaOpenMetadataTopicConnectorErrorCode.ERROR_ATTEMPTING_KAFKA_INITIALIZATION.getMessageDefinition(kafkaStatus.getLastException().getClass().getName(),
                     topicName,
@@ -481,15 +466,13 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             } catch (InterruptedException e) {
                 //expected exception and don't care
             } catch (Exception error) {
-                if (auditLog != null) {
-                    final String command = "consumerThread.join";
-                    auditLog.logException(actionDescription,
-                            KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                    topicName,
-                                    command,
-                                    error.getMessage()),
-                            error);
-                }
+                final String command = "consumerThread.join";
+                logExceptionRecord(actionDescription,
+                     KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                             topicName,
+                             command,
+                             error.getMessage()),
+                     error);
             }
         }
         if (producerThread != null) {
@@ -498,23 +481,18 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             } catch (InterruptedException e) {
                 //expected and don't care
             } catch (Exception error) {
-                if (auditLog != null) {
-                    final String command = "producerThread.join";
+                final String command = "producerThread.join";
 
-                    auditLog.logException(actionDescription,
-                            KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                    topicName,
-                                    command,
-                                    error.getMessage()),
-                            error);
-                }
+                logExceptionRecord(actionDescription,
+                     KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                             topicName,
+                             command,
+                             error.getMessage()),
+                     error);
             }
         }
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(topicName));
-        }
+        logRecord(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(topicName));
     }
     
     /**

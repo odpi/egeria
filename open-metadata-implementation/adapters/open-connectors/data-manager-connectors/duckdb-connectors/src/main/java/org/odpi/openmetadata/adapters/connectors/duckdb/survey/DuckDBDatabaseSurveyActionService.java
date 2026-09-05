@@ -62,10 +62,10 @@ public class DuckDBDatabaseSurveyActionService extends SurveyActionServiceConnec
 
             if (databaseName == null)
             {
-                auditLog.logMessage(methodName, DuckDBAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(surveyActionServiceName,
-                                                                                                            "null",
-                                                                                                            methodName,
-                                                                                                            "The connected DuckDB database has no name"));
+                logRecord(methodName, DuckDBAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(surveyActionServiceName,
+                                                                                                  "null",
+                                                                                                  methodName,
+                                                                                                  "The connected DuckDB database has no name"));
             }
             else
             {

@@ -16,6 +16,8 @@ dependencies {
     testImplementation 'org.testng:testng'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.apache.commons:commons-lang3'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
 
 }
 

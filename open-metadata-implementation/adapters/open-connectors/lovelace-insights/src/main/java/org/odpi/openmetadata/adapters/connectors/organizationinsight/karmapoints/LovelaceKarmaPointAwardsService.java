@@ -80,7 +80,7 @@ public class LovelaceKarmaPointAwardsService extends WatchdogActionServiceConnec
                                                                                                                                  error.getClass().getName(),
                                                                                                                                  methodName,
                                                                                                                                  error.getMessage());
-                auditLog.logException(methodName, completionMessage, error);
+                logExceptionRecord(methodName, completionMessage, error);
 
                 watchdogContext.recordCompletionStatus(WatchdogActionGuard.MONITORING_FAILED.getCompletionStatus(),
                                                        outputGuards,
@@ -90,24 +90,18 @@ public class LovelaceKarmaPointAwardsService extends WatchdogActionServiceConnec
             }
             catch (Exception nestedError)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          LovelaceInsightAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(watchdogActionServiceName,
-                                                                                                                        nestedError.getClass().getName(),
-                                                                                                                        nestedError.getMessage()),
-                                          nestedError);
-                }
+                logExceptionRecord(methodName,
+                                   LovelaceInsightAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                 nestedError.getClass().getName(),
+                                                                                                                 nestedError.getMessage()),
+                                   nestedError);
             }
 
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      LovelaceInsightAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(watchdogActionServiceName,
-                                                                                                                error.getClass().getName(),
-                                                                                                                error.getMessage()),
-                                      error);
-            }
+            logExceptionRecord(methodName,
+                               LovelaceInsightAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(watchdogActionServiceName,
+                                                                                                         error.getClass().getName(),
+                                                                                                         error.getMessage()),
+                               error);
 
             throw new GovernanceServiceException(LovelaceInsightErrorCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(watchdogActionServiceName,
                                                                                                                            error.getClass().getName(),
@@ -246,11 +240,11 @@ public class LovelaceKarmaPointAwardsService extends WatchdogActionServiceConnec
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                LovelaceInsightAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
-                                                                                                   error.getClass().getName(),
-                                                                                                   methodName,
-                                                                                                   error.getMessage()));
+            logRecord(methodName,
+                      LovelaceInsightAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
+                                                                                         error.getClass().getName(),
+                                                                                         methodName,
+                                                                                         error.getMessage()));
         }
     }
 
@@ -285,11 +279,11 @@ public class LovelaceKarmaPointAwardsService extends WatchdogActionServiceConnec
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                LovelaceInsightAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
-                                                                                                   error.getClass().getName(),
-                                                                                                   methodName,
-                                                                                                   error.getMessage()));
+            logRecord(methodName,
+                      LovelaceInsightAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
+                                                                                         error.getClass().getName(),
+                                                                                         methodName,
+                                                                                         error.getMessage()));
         }
     }
 
@@ -326,11 +320,11 @@ public class LovelaceKarmaPointAwardsService extends WatchdogActionServiceConnec
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                LovelaceInsightAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
-                                                                                                   error.getClass().getName(),
-                                                                                                   methodName,
-                                                                                                   error.getMessage()));
+            logRecord(methodName,
+                      LovelaceInsightAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
+                                                                                         error.getClass().getName(),
+                                                                                         methodName,
+                                                                                         error.getMessage()));
         }
     }
 

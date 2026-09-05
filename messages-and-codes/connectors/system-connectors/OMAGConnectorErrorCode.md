@@ -81,7 +81,7 @@ The server's name is configured in the connector's connection additionalProperti
 
 **System action**
 
-The connector cannot contact the OMAG Infrastructure.
+The connector is unable to complete the requested operation and returns this exception to its caller.
 
 **User action**
 

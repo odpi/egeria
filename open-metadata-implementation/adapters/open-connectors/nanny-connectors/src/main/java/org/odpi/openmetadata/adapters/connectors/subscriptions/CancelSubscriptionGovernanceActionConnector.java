@@ -103,7 +103,7 @@ public class CancelSubscriptionGovernanceActionConnector extends GeneralGovernan
                 outputGuards.add(ManageAssetGuard.DELETE_COMPLETE.getName());
             }
 
-            auditLog.logMessage(methodName, messageDefinition);
+            logRecord(methodName, messageDefinition);
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, outputActionTargets, messageDefinition);
         }

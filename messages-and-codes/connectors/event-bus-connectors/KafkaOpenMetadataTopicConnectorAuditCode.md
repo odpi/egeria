@@ -33,8 +33,8 @@ The KafkaOpenMetadataTopicConnectorAuditCode is used to define the message conte
 | [OCF-KAFKA-TOPIC-CONNECTOR-0010](#ocf-kafka-topic-connector-0010) | STARTUP | The Apache Kafka producer for topic {0} is starting up with {1} buffered messages |
 | [OCF-KAFKA-TOPIC-CONNECTOR-0011](#ocf-kafka-topic-connector-0011) | SHUTDOWN | The Apache Kafka producer for topic {0} is shutting down after sending {2} messages and with {1} unsent messages |
 | [OCF-KAFKA-TOPIC-CONNECTOR-0012](#ocf-kafka-topic-connector-0012) | ERROR | Unable to send event on topic {0}.  {1} events successfully sent; {2} events buffered. Latest error message is {3} |
-| [OCF-KAFKA-TOPIC-CONNECTOR-0013 ](#ocf-kafka-topic-connector-0013-) | ERROR | Property {0} is missing from the Kafka Event Bus configuration |
-| [OCF-KAFKA-TOPIC-CONNECTOR-0014 ](#ocf-kafka-topic-connector-0014-) | ERROR | Connecting to bootstrap Apache Kafka Broker {0} |
+| [OCF-KAFKA-TOPIC-CONNECTOR-0013](#ocf-kafka-topic-connector-0013) | ERROR | Property {0} is missing from the Kafka Event Bus configuration |
+| [OCF-KAFKA-TOPIC-CONNECTOR-0014](#ocf-kafka-topic-connector-0014) | ERROR | Connecting to bootstrap Apache Kafka Broker {0} |
 | [OCF-KAFKA-TOPIC-CONNECTOR-0015](#ocf-kafka-topic-connector-0015) | STARTUP | The local server is attempting to connect to Kafka brokers at {0} [ attempt {1} of {2} ] |
 | [OCF-KAFKA-TOPIC-CONNECTOR-0016](#ocf-kafka-topic-connector-0016) | SHUTDOWN | An unexpected error {0} was encountered while closing the kafka topic connector for {1}: action {2} and error message {3} |
 | [OCF-KAFKA-TOPIC-CONNECTOR-0017](#ocf-kafka-topic-connector-0017) | EXCEPTION | An unexpected error {0} was encountered while committing consumed event offsets to topic {1}: error message is {2} |
@@ -76,11 +76,11 @@ No action is required.  This is part of the normal operation of the server.
 
 **System action**
 
-The server is registering to receive events from Apache Kafka using the properties associated with this log record.
+The server is configuring its Apache Kafka producer using the properties associated with this log record.
 
 **User action**
 
-No action is required.  This is part of the normal operation of the server.
+No action is required, but these properties are useful when diagnosing problems sending events to this topic.
 
 
 ----
@@ -101,7 +101,7 @@ The server is registering to receive events from Apache Kafka using the properti
 
 **User action**
 
-No action is required.  This is part of the normal operation of the server.
+No action is required, but these properties are useful when diagnosing problems receiving events from this topic.
 
 
 ----
@@ -122,7 +122,7 @@ The local server has requested shut down of the Apache Kafka connector.
 
 **User action**
 
-No action is required.  This is part of the normal operation of the server.
+No action is required.  This is part of the normal shut down of the server.
 
 
 ----
@@ -164,7 +164,7 @@ An exception occurred reading the configuration properties.  This means that the
 
 **User action**
 
-This problem must be fixed before the server can exchange metadata.  The properties are supplied on the event bus admin command.
+Use the exception message to correct the configuration properties supplied on the event bus admin command.  This problem must be fixed before the server can exchange metadata.
 
 
 ----
@@ -206,7 +206,7 @@ A call to receive events from Apache Kafka failed with an exception.
 
 **User action**
 
-Use the information in the event and the exception message, along with other messages to determine the source of the error.
+Use the exception message, along with the Apache Kafka logs, to determine why the topic could not be read.
 
 
 ----
@@ -248,7 +248,7 @@ The local server has started the Apache Kafka connector.
 
 **User action**
 
-No action is required.  This is part of the normal operation of the server.
+No action is required, but a non-zero count of buffered messages shows events that were still waiting to be sent when the connector last stopped.
 
 
 ----
@@ -265,11 +265,11 @@ No action is required.  This is part of the normal operation of the server.
 
 **System action**
 
-The local server has requested shut down of the Apache Kafka connector.
+The Apache Kafka connector is closing its producer.  The counts of sent and unsent messages are in this message.
 
 **User action**
 
-No action is required.  This is part of the normal operation of the server.
+No action is required if the count of unsent messages is zero.  If it is not, check this audit log for send failures on this topic.
 
 
 ----
@@ -295,7 +295,7 @@ Review the operational status of Apache Kafka to ensure it is running and the to
 
 ----
 
-### OCF-KAFKA-TOPIC-CONNECTOR-0013 
+### OCF-KAFKA-TOPIC-CONNECTOR-0013
 
 > Property {0} is missing from the Kafka Event Bus configuration
 
@@ -316,7 +316,7 @@ Add the missing property to the event bus properties in the server configuration
 
 ----
 
-### OCF-KAFKA-TOPIC-CONNECTOR-0014 
+### OCF-KAFKA-TOPIC-CONNECTOR-0014
 
 > Connecting to bootstrap Apache Kafka Broker {0}
 
@@ -416,7 +416,7 @@ If this was experienced in a production environment check the kafka heartbeat an
 
 **User action**
 
-Check the OMAG Server's audit log and Kafka error logs for related messages that indicate the cause of this error.  Work to clear the underlying error.  Once fixed, it may be necessary to restart the server to cause a reconnect to Kafka.
+Some events may be delivered to the server more than once.  If this happens regularly, review the Kafka heartbeat and batch processing settings so that this consumer is not rebalanced part way through a batch.
 
 
 ----

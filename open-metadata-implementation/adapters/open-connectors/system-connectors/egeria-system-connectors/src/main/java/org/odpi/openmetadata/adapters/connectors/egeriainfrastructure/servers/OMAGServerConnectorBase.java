@@ -28,7 +28,6 @@ import java.util.List;
 public abstract class OMAGServerConnectorBase extends ConnectorBase implements AuditLoggingComponent,
                                                                                VirtualConnectorExtension
 {
-    private AuditLog auditLog      = null;
     private String   connectorName;
     private String   platformName = "Local OMAG Server Platform";
     private String   targetRootURL = null;

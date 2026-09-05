@@ -434,7 +434,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
 
             if (messageDefinition != null)
             {
-                auditLog.logMessage(methodName, messageDefinition);
+                logRecord(methodName, messageDefinition);
             }
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);
@@ -716,10 +716,10 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
             }
             catch (IOException error)
             {
-                auditLog.logMessage(methodName,
-                                    GovernanceActionSamplesAuditCode.NO_VOLUME_DIRECTORY.getMessageDefinition(governanceServiceName,
-                                                                                                              pathName,
-                                                                                                              volumeGUID));
+                logRecord(methodName,
+                          GovernanceActionSamplesAuditCode.NO_VOLUME_DIRECTORY.getMessageDefinition(governanceServiceName,
+                                                                                                    pathName,
+                                                                                                    volumeGUID));
             }
         }
     }

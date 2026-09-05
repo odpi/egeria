@@ -34,8 +34,8 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends DynamicIntegratio
 
         if (connectionBean.getEndpoint() != null)
         {
-            auditLog.logMessage(methodName,
-                                UCAuditCode.IGNORING_ENDPOINT.getMessageDefinition(connectorName));
+            logRecord(methodName,
+                      UCAuditCode.IGNORING_ENDPOINT.getMessageDefinition(connectorName));
         }
 
         if ((embeddedConnectors != null) && (!embeddedConnectors.isEmpty()))
@@ -44,8 +44,8 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends DynamicIntegratio
             {
                 if (embeddedConnector instanceof OSSUnityCatalogResourceConnector)
                 {
-                    auditLog.logMessage(methodName,
-                                        UCAuditCode.IGNORING_ENDPOINT.getMessageDefinition(connectorName));
+                    logRecord(methodName,
+                              UCAuditCode.IGNORING_ENDPOINT.getMessageDefinition(connectorName));
                 }
             }
         }

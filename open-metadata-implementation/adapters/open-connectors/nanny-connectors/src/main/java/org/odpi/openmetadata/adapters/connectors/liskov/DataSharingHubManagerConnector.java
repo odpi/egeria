@@ -47,9 +47,9 @@ public class DataSharingHubManagerConnector extends DynamicIntegrationConnectorB
 
         final String methodName = "start";
 
-        auditLog.logMessage(methodName, LiskovAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
-                                                                                                integrationContext.getMetadataAccessServer(),
-                                                                                                integrationContext.getMetadataAccessServerPlatformURLRoot()));
+        logRecord(methodName, LiskovAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
+                                                                                      integrationContext.getMetadataAccessServer(),
+                                                                                      integrationContext.getMetadataAccessServerPlatformURLRoot()));
     }
 
 
@@ -109,9 +109,9 @@ public class DataSharingHubManagerConnector extends DynamicIntegrationConnectorB
                         /*
                          * This is a new data sharing hub.  Add it as a catalog target.
                          */
-                        auditLog.logMessage(methodName, LiskovAuditCode.NEW_DATA_HUB.getMessageDefinition(connectorName,
-                                                                                                          dataSharingHubProperties.getDisplayName(),
-                                                                                                          dataSharingHub.getElementHeader().getGUID()));
+                        logRecord(methodName, LiskovAuditCode.NEW_DATA_HUB.getMessageDefinition(connectorName,
+                                                                                                dataSharingHubProperties.getDisplayName(),
+                                                                                                dataSharingHub.getElementHeader().getGUID()));
 
                         CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
                         catalogTargetProperties.setCatalogTargetName(dataSharingHubProperties.getDisplayName() + "(" + dataSharingHub.getElementHeader().getGUID() + ")");
@@ -129,11 +129,11 @@ public class DataSharingHubManagerConnector extends DynamicIntegrationConnectorB
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                LiskovAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                          error.getClass().getName(),
-                                                                                          methodName,
-                                                                                          error.getMessage()));
+            logRecord(methodName,
+                      LiskovAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                error.getClass().getName(),
+                                                                                methodName,
+                                                                                error.getMessage()));
         }
 
         super.refresh();
@@ -184,9 +184,9 @@ public class DataSharingHubManagerConnector extends DynamicIntegrationConnectorB
     {
         final String methodName = "disconnect";
 
-        auditLog.logMessage(methodName, LiskovAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName,
-                                                                                                integrationContext.getMetadataAccessServer(),
-                                                                                                integrationContext.getMetadataAccessServerPlatformURLRoot()));
+        logRecord(methodName, LiskovAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName,
+                                                                                      integrationContext.getMetadataAccessServer(),
+                                                                                      integrationContext.getMetadataAccessServerPlatformURLRoot()));
 
         super.disconnect();
     }

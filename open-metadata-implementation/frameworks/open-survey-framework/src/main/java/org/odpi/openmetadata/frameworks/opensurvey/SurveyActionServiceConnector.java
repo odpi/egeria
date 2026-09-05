@@ -51,7 +51,6 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
     protected String          surveyActionServiceName  = "<Unknown>";
     protected SurveyContext   surveyContext            = null;
-    protected AuditLog        auditLog                 = null;
     protected List<Connector> embeddedConnectors       = null;
     protected String          csvFileConnectorTypeGUID = null;
 
@@ -601,16 +600,16 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
             if (newLogFile)
             {
-                auditLog.logMessage(methodName,
-                                    OSFAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                        logFileName,
-                                                                                        assetGUID));
+                logRecord(methodName,
+                          OSFAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                              logFileName,
+                                                                              assetGUID));
             }
             else
             {
-                auditLog.logMessage(methodName,
-                                    OSFAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                       logFileName));
+                logRecord(methodName,
+                          OSFAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                             logFileName));
             }
 
             for (Map<String, String> properties : propertyList)
@@ -737,16 +736,16 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
         if (newLogFile)
         {
-            auditLog.logMessage(methodName,
-                                OSFAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                    logFileName,
-                                                                                    assetGUID));
+            logRecord(methodName,
+                      OSFAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                          logFileName,
+                                                                          assetGUID));
         }
         else
         {
-            auditLog.logMessage(methodName,
-                                OSFAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                   logFileName));
+            logRecord(methodName,
+                      OSFAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                         logFileName));
         }
 
         for (String name : names)
@@ -852,16 +851,16 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
         if (newLogFile)
         {
-            auditLog.logMessage(methodName,
-                                OSFAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                    logFileName,
-                                                                                    assetGUID));
+            logRecord(methodName,
+                      OSFAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                          logFileName,
+                                                                          assetGUID));
         }
         else
         {
-            auditLog.logMessage(methodName,
-                                OSFAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                   logFileName));
+            logRecord(methodName,
+                      OSFAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                         logFileName));
         }
 
         for (String fileName : nameCounts.keySet())
@@ -967,16 +966,16 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
         if (newLogFile)
         {
-            auditLog.logMessage(methodName,
-                                OSFAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                    logFileName,
-                                                                                    assetGUID));
+            logRecord(methodName,
+                      OSFAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                          logFileName,
+                                                                          assetGUID));
         }
         else
         {
-            auditLog.logMessage(methodName,
-                                OSFAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                   logFileName));
+            logRecord(methodName,
+                      OSFAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                         logFileName));
         }
 
         for (String fileName : nameDescriptions.keySet())

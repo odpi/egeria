@@ -149,7 +149,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
 
         if ((requestedCatalogTargets == null) || (requestedCatalogTargets.isEmpty()))
         {
-            auditLog.logMessage(methodName, OIFAuditCode.NO_CATALOG_TARGETS.getMessageDefinition(connectorName));
+            logRecord(methodName, OIFAuditCode.NO_CATALOG_TARGETS.getMessageDefinition(connectorName));
         }
         else
         {
@@ -161,33 +161,33 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
                     {
                         try
                         {
-                            auditLog.logMessage(methodName,
-                                                OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
-                                                                                                            requestedCatalogTarget.getCatalogTargetName()));
+                            logRecord(methodName,
+                                      OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                                  requestedCatalogTarget.getCatalogTargetName()));
                             catalogTargetIntegrator.integrateCatalogTarget(requestedCatalogTarget);
                         }
                         catch (Exception error)
                         {
-                            auditLog.logMessage(methodName,
-                                                OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                       error.getClass().getName(),
-                                                                                                       methodName + "::" + requestedCatalogTarget.getCatalogTargetName(),
-                                                                                                       error.getMessage()));
+                            logRecord(methodName,
+                                      OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                             error.getClass().getName(),
+                                                                                             methodName + "::" + requestedCatalogTarget.getCatalogTargetName(),
+                                                                                             error.getMessage()));
                         }
                     }
                 }
             }
             catch (Exception error)
             {
-                auditLog.logMessage(methodName,
-                                    OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                           error.getClass().getName(),
-                                                                                           methodName,
-                                                                                           error.getMessage()));
+                logRecord(methodName,
+                          OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                 error.getClass().getName(),
+                                                                                 methodName,
+                                                                                 error.getMessage()));
             }
 
-            auditLog.logMessage(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
-                                                                                                        Integer.toString(requestedCatalogTargets.size())));
+            logRecord(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
+                                                                                              Integer.toString(requestedCatalogTargets.size())));
         }
     }
 
@@ -210,7 +210,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
 
         if ((requestedCatalogTargets == null) || (requestedCatalogTargets.isEmpty()))
         {
-            auditLog.logMessage(methodName, OIFAuditCode.NO_CATALOG_TARGETS.getMessageDefinition(connectorName));
+            logRecord(methodName, OIFAuditCode.NO_CATALOG_TARGETS.getMessageDefinition(connectorName));
         }
         else
         {
@@ -223,33 +223,33 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
                     {
                         try
                         {
-                            auditLog.logMessage(methodName,
-                                                OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
-                                                                                                            requestedCatalogTarget.getCatalogTargetName()));
+                            logRecord(methodName,
+                                      OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                                  requestedCatalogTarget.getCatalogTargetName()));
                             catalogTargetEventProcessor.passEventToCatalogTarget(requestedCatalogTarget, event);
                         }
                         catch (Exception error)
                         {
-                            auditLog.logMessage(methodName,
-                                                OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                       error.getClass().getName(),
-                                                                                                       methodName + "::" + requestedCatalogTarget.getCatalogTargetName(),
-                                                                                                       error.getMessage()));
+                            logRecord(methodName,
+                                      OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                             error.getClass().getName(),
+                                                                                             methodName + "::" + requestedCatalogTarget.getCatalogTargetName(),
+                                                                                             error.getMessage()));
                         }
                     }
                 }
             }
             catch (Exception error)
             {
-                auditLog.logMessage(methodName,
-                                    OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                           error.getClass().getName(),
-                                                                                           methodName,
-                                                                                           error.getMessage()));
+                logRecord(methodName,
+                          OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                 error.getClass().getName(),
+                                                                                 methodName,
+                                                                                 error.getMessage()));
             }
 
-            auditLog.logMessage(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
-                                                                                                        Integer.toString(requestedCatalogTargets.size())));
+            logRecord(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
+                                                                                              Integer.toString(requestedCatalogTargets.size())));
         }
     }
 
@@ -292,11 +292,8 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
             catalogTargetsManager.disconnect();
         }
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OIFAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
-        }
+        logRecord(methodName,
+                  OIFAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
 
         super.disconnect();
     }

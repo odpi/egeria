@@ -26,7 +26,6 @@ import java.util.Set;
  */
 public class ApacheKafkaAdminConnector extends ConnectorBase implements AuditLoggingComponent
 {
-    private AuditLog auditLog      = null;
     private String   targetRootURL = null;
     private String   connectorName = "Apache Kafka Admin Connector";
 
@@ -141,12 +140,12 @@ public class ApacheKafkaAdminConnector extends ConnectorBase implements AuditLog
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  ApacheKafkaAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                 error.getClass().getName(),
-                                                                                                 methodName,
-                                                                                                 error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               ApacheKafkaAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                              error.getClass().getName(),
+                                                                                              methodName,
+                                                                                              error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(ApacheKafkaErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                error.getClass().getName(),

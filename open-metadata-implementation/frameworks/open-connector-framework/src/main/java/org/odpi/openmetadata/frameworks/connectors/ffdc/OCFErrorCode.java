@@ -51,7 +51,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     NULL_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-004",
             "Null Connector Provider passed in connection {0}",
-            "The system cannot create the requested connector instance without information on the type of connection required.",
+            "The system cannot create the requested connector instance because the connectorType does not name the factory class that builds it.",
             "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.",
             "https://egeria-project.org/frameworks/ocf/overview/"),
 
@@ -70,7 +70,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
     NOT_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-006",
             "Class {0} passed in connection {1} is not a Connector Provider",
             "The system cannot create the requested connector instance because the Connector Provider's class does not implement org.odpi.openmetadata.ConnectorProvider.",
-            "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.",
+            "Update the connection configuration so that the connectorProviderClassName property of the connection's connectorType names a class that implements ConnectorProvider.  Then retry the request.",
             "https://egeria-project.org/frameworks/ocf/overview/"),
 
     /**
@@ -79,7 +79,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
     INVALID_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-008",
             "Connector Provider class {0} passed in connection {1} resulted in a {2} exception with error message of {3}",
             "The system cannot create the requested connector instance because the Connector Provider's class is failing to initialize in the JVM.  This has resulted in an exception in the class loader.",
-            "Verify that the Connector Provider and Connector jar files are properly configured in the process.  Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.",
+            "Use the exception message to determine why the connector provider class failed to initialize.  Correct the class or its dependencies, or update the connection to use a different connector provider.  Then retry the request.",
             "https://egeria-project.org/frameworks/ocf/overview/"),
 
     MALFORMED_DATE_CONFIGURATION_PROPERTY(400, "OCF-CONNECTION-400-011",
@@ -115,7 +115,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     ALREADY_COUNTER_NAME(400, "OCF-STATISTICS-400-001",
                          "The {0} is already in use as a counter statistic and can not be used by the {1} method to {2}",
-                         "The integration context returns an exception on the invalid request.",
+                         "The integration context returns an exception because the name is already recording a counter statistic.",
                          "Change the connector logic to use a different name for the statistic.",
                          "https://egeria-project.org/frameworks/ocf/overview/"),
 
@@ -124,8 +124,8 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     ALREADY_PROPERTY_NAME(400, "OCF-STATISTICS-400-002",
                           "The {0} is already in use as a property statistic and can not be used by the {1} method to {2}",
-                          "The integration context returns an exception on the invalid request.",
-                          "Change the connector logic to use a different name for the statistic.",
+                          "The integration context returns an exception because the name is already recording a property statistic.",
+                          "Change the connector logic to use a name that is not already recording a property statistic.",
                           "https://egeria-project.org/frameworks/ocf/overview/"),
 
     /**
@@ -133,8 +133,8 @@ public enum OCFErrorCode implements ExceptionMessageSet
      */
     ALREADY_TIMESTAMP_NAME(400, "OCF-STATISTICS-400-003",
                            "The {0} is already in use as a timestamp statistic and can not be used by the {1} method to {2}",
-                           "The integration context returns an exception on the invalid request.",
-                           "Change the connector logic to use a different name for the statistic.",
+                           "The integration context returns an exception because the name is already recording a timestamp statistic.",
+                           "Change the connector logic to use a name that is not already recording a timestamp statistic.",
                            "https://egeria-project.org/frameworks/ocf/overview/"),
 
     /**
@@ -236,7 +236,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
     UNKNOWN_CONNECTOR(500,"OCF-CONNECTOR-500-007",
             "Unknown Connector Java class {0} for Connector {1}",
             "The system cannot create the requested connector instance because the Connector's class is not known to the JVM.  This may be because the Connector Provider's jar is not installed in the local JVM or the wrong Java class name has been configured in the connection.",
-            "Verify that the Connector Provider and Connector jar files are properly configured in the process.  Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.",
+            "Verify that the jar file containing the connector class is installed in the process alongside its connector provider.  Then retry the request.",
             "https://egeria-project.org/frameworks/ocf/overview/"),
 
     /**
@@ -245,7 +245,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
     NOT_CONNECTOR(500,"OCF-CONNECTOR-500-008",
             "Java class {0} for connector named {1} does not implement the Connector interface",
             "The system cannot create the requested connector instance because the Connector's class does not implement org.odpi.openmetadata.Connector.",
-            "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request.",
+            "Correct the connector provider so that it creates a class that implements the Connector interface, or update the connection to use a connector provider that does.  Then retry the request.",
             "https://egeria-project.org/frameworks/ocf/overview/"),
 
     /**
@@ -263,7 +263,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
     NULL_CONNECTOR(500, "OCF-CONNECTION-500-011",
             "Connector Provider {0} returned a null connector instance for connection {1}",
             "The system detected an error during connector processing and was unable to create a connector.",
-            "The root cause of the error is captured in previous reported messages.",
+            "Review the connector provider's logic to determine why it returned no connector for this connection.",
             "https://egeria-project.org/frameworks/ocf/overview/"),
 
     ;

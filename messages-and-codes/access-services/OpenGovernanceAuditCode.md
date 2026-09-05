@@ -10,7 +10,7 @@ The OpenGovernanceAuditCode is used to define the message content for the OMRS A
 |---|---|
 | **Type of message** | Audit log messages |
 | **Number of messages** | 9 |
-| **Message identifiers begin** | `O-` |
+| **Message identifiers begin** | `OPEN-GOVERNANCE-` |
 | **Java class** | `org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenGovernanceAuditCode` |
 | **Module** | [open-metadata-implementation/access-services/gaf-metadata-management/gaf-metadata-api](../../open-metadata-implementation/access-services/gaf-metadata-management/gaf-metadata-api) |
 | **Source** | [OpenGovernanceAuditCode.java](../../open-metadata-implementation/access-services/gaf-metadata-management/gaf-metadata-api/src/main/java/org/odpi/openmetadata/frameworkservices/gaf/ffdc/OpenGovernanceAuditCode.java) |
@@ -28,7 +28,7 @@ The OpenGovernanceAuditCode is used to define the message content for the OMRS A
 | [OPEN-GOVERNANCE-0006](#open-governance-0006) | ERROR | The Open Metadata Store Services are unable to initialize a new instance; error message is {0} |
 | [OPEN-GOVERNANCE-0011](#open-governance-0011) | SHUTDOWN | The Open Governance Service caught an unexpected {0} exception whilst shutting down the out topic listeners. The error message was: {1} |
 | [OPEN-GOVERNANCE-0012](#open-governance-0012) | SHUTDOWN | The Open Metadata Store Services are shutting down its instance for server {0} |
-| [OMES-GOVERNANCE-ACTION-0015](#omes-governance-action-0015) | ERROR | The Open Governance Framework (OGF) received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3} |
+| [OPEN-GOVERNANCE-0015](#open-governance-0015) | ERROR | The Open Governance Framework (OGF) received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3} |
 | [OPEN-GOVERNANCE-0021](#open-governance-0021) | ERROR | Failed to publish watchdog event to Watchdog Governance Action Service for governance engine {0}.  The exception was {1} with error message {2} |
 
 ----
@@ -180,7 +180,7 @@ This is part of the normal shutdown of the service.  Verify that all resources h
 
 ----
 
-### OMES-GOVERNANCE-ACTION-0015
+### OPEN-GOVERNANCE-0015
 
 > The Open Governance Framework (OGF) received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3}
 

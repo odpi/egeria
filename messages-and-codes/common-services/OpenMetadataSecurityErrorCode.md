@@ -10,7 +10,7 @@ The OpenMetadataSecurityErrorCode is used to define first failure data capture (
 |---|---|
 | **Type of message** | Exception messages |
 | **Number of messages** | 20 |
-| **Message identifiers begin** | `O-` |
+| **Message identifiers begin** | `OPEN-METADATA-SECURITY-` |
 | **Java class** | `org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode` |
 | **Module** | [open-metadata-implementation/common-services/metadata-security/metadata-security-apis](../../open-metadata-implementation/common-services/metadata-security/metadata-security-apis) |
 | **Source** | [OpenMetadataSecurityErrorCode.java](../../open-metadata-implementation/common-services/metadata-security/metadata-security-apis/src/main/java/org/odpi/openmetadata/metadatasecurity/ffdc/OpenMetadataSecurityErrorCode.java) |
@@ -21,30 +21,30 @@ The OpenMetadataSecurityErrorCode is used to define first failure data capture (
 
 | Message Id | HTTP Code | Message |
 |---|---|---|
-| [OMAG-PLATFORM-SECURITY-400-001](#omag-platform-security-400-001) | 400 | The OMAG server platform has been configured with a bad connection to its platform security connector.  Error message is {0}. Connection is {1} |
-| [OMAG-PLATFORM-SECURITY-400-002](#omag-platform-security-400-002) | 400 | The OMAG server {0} has been configured with a bad connection to its security connector.  Error message is {1}. Connection is {2} |
-| [OMAG-PLATFORM-SECURITY-403-001](#omag-platform-security-403-001) | 403 | User {0} is not authorized to issue {1} request to {2} |
-| [OMAG-SERVER-SECURITY-403-002](#omag-server-security-403-002) | 403 | User {0} is not authorized to issue a request to server {1} |
-| [OMAG-SERVER-SECURITY-403-003](#omag-server-security-403-003) | 403 | User {0} is not authorized to issue {1} requests |
-| [OMAG-SERVER-SECURITY-403-004](#omag-server-security-403-004) | 403 | User {0} is not authorized to attach feedback to element {1} |
-| [OMAG-SERVER-SECURITY-403-005](#omag-server-security-403-005) | 403 | User {0} is not authorized to change the zone membership for element {1} from {2} to {3} |
-| [OMAG-SERVER-SECURITY-403-007](#omag-server-security-403-007) | 403 | User {0} is not authorized to issue operation {1} on {2} anchor element {3} |
-| [OMAG-SERVER-SECURITY-403-008](#omag-server-security-403-008) | 403 | User {0} is not authorized to create an element of type {1} |
-| [OMAG-SERVER-SECURITY-403-011](#omag-server-security-403-011) | 403 | User {0} is not authorized to access open metadata type {1} ({2}) on server {3} |
-| [OMAG-SERVER-SECURITY-403-012](#omag-server-security-403-012) | 403 | User {0} is not authorized to change open metadata type {1} ({2}) on server {3} |
-| [OMAG-SERVER-SECURITY-403-013](#omag-server-security-403-013) | 403 | User {0} is not authorized to access open metadata instance {1} of type {2} on server {3} |
-| [OMAG-SERVER-SECURITY-403-014](#omag-server-security-403-014) | 403 | User {0} is not authorized to change open metadata instance {1} of type {2} on server {3} |
-| [OMAG-SERVER-SECURITY-403-016](#omag-server-security-403-016) | 403 | {0} connections are connected to the asset with unique identifier {1} but the user {2} is not permitted to use any of them; the calling method is {3} |
+| [OPEN-METADATA-SECURITY-400-001](#open-metadata-security-400-001) | 400 | The OMAG server platform has been configured with a bad connection to its platform security connector.  Error message is {0}. Connection is {1} |
+| [OPEN-METADATA-SECURITY-400-002](#open-metadata-security-400-002) | 400 | The OMAG server {0} has been configured with a bad connection to its security connector.  Error message is {1}. Connection is {2} |
+| [OPEN-METADATA-SECURITY-403-001](#open-metadata-security-403-001) | 403 | User {0} is not authorized to issue {1} request to {2} |
+| [OPEN-METADATA-SECURITY-403-002](#open-metadata-security-403-002) | 403 | User {0} is not authorized to issue a request to server {1} |
+| [OPEN-METADATA-SECURITY-403-003](#open-metadata-security-403-003) | 403 | User {0} is not authorized to issue {1} requests |
+| [OPEN-METADATA-SECURITY-403-004](#open-metadata-security-403-004) | 403 | User {0} is not authorized to attach feedback to element {1} |
+| [OPEN-METADATA-SECURITY-403-005](#open-metadata-security-403-005) | 403 | User {0} is not authorized to change the zone membership for element {1} from {2} to {3} |
+| [OPEN-METADATA-SECURITY-403-007](#open-metadata-security-403-007) | 403 | User {0} is not authorized to issue operation {1} on {2} anchor element {3} |
+| [OPEN-METADATA-SECURITY-403-008](#open-metadata-security-403-008) | 403 | User {0} is not authorized to create an element of type {1} |
+| [OPEN-METADATA-SECURITY-403-011](#open-metadata-security-403-011) | 403 | User {0} is not authorized to access open metadata type {1} ({2}) on server {3} |
+| [OPEN-METADATA-SECURITY-403-012](#open-metadata-security-403-012) | 403 | User {0} is not authorized to change open metadata type {1} ({2}) on server {3} |
+| [OPEN-METADATA-SECURITY-403-013](#open-metadata-security-403-013) | 403 | User {0} is not authorized to access open metadata instance {1} of type {2} on server {3} |
+| [OPEN-METADATA-SECURITY-403-014](#open-metadata-security-403-014) | 403 | User {0} is not authorized to change open metadata instance {1} of type {2} on server {3} |
+| [OPEN-METADATA-SECURITY-403-016](#open-metadata-security-403-016) | 403 | {0} connections are connected to the asset with unique identifier {1} but the user {2} is not permitted to use any of them; the calling method is {3} |
 | [OPEN-METADATA-SECURITY-403-017](#open-metadata-security-403-017) | 403 | User {0} is not recognized |
 | [OPEN-METADATA-SECURITY-403-018](#open-metadata-security-403-018) | 403 | Exception {0} occurred when retrieving user {1}; the exception message was {2} |
-| [OMAG-SERVER-SECURITY-403-020](#omag-server-security-403-020) | 403 | User {0} is not authorized to issue an operation {1} on {2} element {3} |
-| [OMAG-SERVER-SECURITY-403-025](#omag-server-security-403-025) | 403 | Security access control {0} is not recognized |
-| [OMAG-SERVER-SECURITY-403-026](#omag-server-security-403-026) | 403 | Exception {0} occurred when retrieving security access control {1}; the exception message was {2} |
-| [OMAG-SERVER-SECURITY-500-002](#omag-server-security-500-002) | 500 | Element {0} is not visible to user {1}; it has been filtered from the search results |
+| [OPEN-METADATA-SECURITY-403-020](#open-metadata-security-403-020) | 403 | User {0} is not authorized to issue an operation {1} on {2} element {3} |
+| [OPEN-METADATA-SECURITY-403-025](#open-metadata-security-403-025) | 403 | Security access control {0} is not recognized |
+| [OPEN-METADATA-SECURITY-403-026](#open-metadata-security-403-026) | 403 | Exception {0} occurred when retrieving security access control {1}; the exception message was {2} |
+| [OPEN-METADATA-SECURITY-500-002](#open-metadata-security-500-002) | 500 | Element {0} is not visible to user {1}; it has been filtered from the search results |
 
 ----
 
-### OMAG-PLATFORM-SECURITY-400-001
+### OPEN-METADATA-SECURITY-400-001
 
 > The OMAG server platform has been configured with a bad connection to its platform security connector.  Error message is {0}. Connection is {1}
 
@@ -60,12 +60,12 @@ The system cannot validate the users issuing platform requests.
 
 **User action**
 
-Review the error message to determine the cause of the problem.
+Review the error message to determine the cause of the problem and correct the connection supplied for the platform security connector.  Then restart the OMAG Server Platform.
 
 
 ----
 
-### OMAG-PLATFORM-SECURITY-400-002
+### OPEN-METADATA-SECURITY-400-002
 
 > The OMAG server {0} has been configured with a bad connection to its security connector.  Error message is {1}. Connection is {2}
 
@@ -81,12 +81,12 @@ The system cannot validate the users issuing requests to this server.
 
 **User action**
 
-Review the error message to determine the cause of the problem.
+Review the error message to determine the cause of the problem and correct the connection for the server's security connector in the server's configuration document.  Then restart the server.
 
 
 ----
 
-### OMAG-PLATFORM-SECURITY-403-001
+### OPEN-METADATA-SECURITY-403-001
 
 > User {0} is not authorized to issue {1} request to {2}
 
@@ -107,7 +107,7 @@ Determine if this is a configuration error, a mistake or the platform is under a
 
 ----
 
-### OMAG-SERVER-SECURITY-403-002
+### OPEN-METADATA-SECURITY-403-002
 
 > User {0} is not authorized to issue a request to server {1}
 
@@ -128,7 +128,7 @@ Determine whether the user should have access to the server.  If they should hav
 
 ----
 
-### OMAG-SERVER-SECURITY-403-003
+### OPEN-METADATA-SECURITY-403-003
 
 > User {0} is not authorized to issue {1} requests
 
@@ -149,7 +149,7 @@ Determine whether the user should have access to the requested service. If they 
 
 ----
 
-### OMAG-SERVER-SECURITY-403-004
+### OPEN-METADATA-SECURITY-403-004
 
 > User {0} is not authorized to attach feedback to element {1}
 
@@ -170,7 +170,7 @@ Using information about the element and the user, determine if this result is ex
 
 ----
 
-### OMAG-SERVER-SECURITY-403-005
+### OPEN-METADATA-SECURITY-403-005
 
 > User {0} is not authorized to change the zone membership for element {1} from {2} to {3}
 
@@ -191,7 +191,7 @@ Using information about the element, the zones and the user, determine if this r
 
 ----
 
-### OMAG-SERVER-SECURITY-403-007
+### OPEN-METADATA-SECURITY-403-007
 
 > User {0} is not authorized to issue operation {1} on {2} anchor element {3}
 
@@ -212,7 +212,7 @@ Using knowledge about the user and the element, determine if this is the correct
 
 ----
 
-### OMAG-SERVER-SECURITY-403-008
+### OPEN-METADATA-SECURITY-403-008
 
 > User {0} is not authorized to create an element of type {1}
 
@@ -233,7 +233,7 @@ Using knowledge about the user and the element, determine if this is the correct
 
 ----
 
-### OMAG-SERVER-SECURITY-403-011
+### OPEN-METADATA-SECURITY-403-011
 
 > User {0} is not authorized to access open metadata type {1} ({2}) on server {3}
 
@@ -254,7 +254,7 @@ Determine if the user should be allowed access to the type information or not.  
 
 ----
 
-### OMAG-SERVER-SECURITY-403-012
+### OPEN-METADATA-SECURITY-403-012
 
 > User {0} is not authorized to change open metadata type {1} ({2}) on server {3}
 
@@ -275,7 +275,7 @@ The ability to change types is typically limited to a restricted group of users.
 
 ----
 
-### OMAG-SERVER-SECURITY-403-013
+### OPEN-METADATA-SECURITY-403-013
 
 > User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}
 
@@ -296,7 +296,7 @@ Determine if the user should have access to this metadata instance and if they s
 
 ----
 
-### OMAG-SERVER-SECURITY-403-014
+### OPEN-METADATA-SECURITY-403-014
 
 > User {0} is not authorized to change open metadata instance {1} of type {2} on server {3}
 
@@ -317,7 +317,7 @@ Determine if the user should have access to this metadata instance and if they s
 
 ----
 
-### OMAG-SERVER-SECURITY-403-016
+### OPEN-METADATA-SECURITY-403-016
 
 > {0} connections are connected to the asset with unique identifier {1} but the user {2} is not permitted to use any of them; the calling method is {3}
 
@@ -380,7 +380,7 @@ Use the information in the exception to determine the cause of this error.  The 
 
 ----
 
-### OMAG-SERVER-SECURITY-403-020
+### OPEN-METADATA-SECURITY-403-020
 
 > User {0} is not authorized to issue an operation {1} on {2} element {3}
 
@@ -401,7 +401,7 @@ Review the security policies and settings to determine if this access to the ele
 
 ----
 
-### OMAG-SERVER-SECURITY-403-025
+### OPEN-METADATA-SECURITY-403-025
 
 > Security access control {0} is not recognized
 
@@ -422,7 +422,7 @@ Track down the source of the request and correct the name of the control - or ad
 
 ----
 
-### OMAG-SERVER-SECURITY-403-026
+### OPEN-METADATA-SECURITY-403-026
 
 > Exception {0} occurred when retrieving security access control {1}; the exception message was {2}
 
@@ -443,7 +443,7 @@ Use the information in the exception to determine the cause of this error.  The 
 
 ----
 
-### OMAG-SERVER-SECURITY-500-002
+### OPEN-METADATA-SECURITY-500-002
 
 > Element {0} is not visible to user {1}; it has been filtered from the search results
 

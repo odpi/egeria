@@ -21,12 +21,12 @@ The RESTClientConnectorErrorCode is used to define first failure data capture (F
 
 | Message Id | HTTP Code | Message |
 |---|---|---|
-| [CLIENT-SIDE-REST-API-CONNECTOR-503-002 ](#client-side-rest-api-connector-503-002-) | 503 | A client-side exception {0} was received by method {1} from API call {2} to server {3} on platform {4}.  The error message was {5} |
-| [CLIENT-SIDE-REST-API-CONNECTOR-503-004 ](#client-side-rest-api-connector-503-004-) | 503 | REST API call {0} to server {1} on platform {2} returned an unsuccessful HTTP status {3}.  The response body was: {4} |
+| [CLIENT-SIDE-REST-API-CONNECTOR-503-002](#client-side-rest-api-connector-503-002) | 503 | A client-side exception {0} was received by method {1} from API call {2} to server {3} on platform {4}.  The error message was {5} |
+| [CLIENT-SIDE-REST-API-CONNECTOR-503-004](#client-side-rest-api-connector-503-004) | 503 | REST API call {0} to server {1} on platform {2} returned an unsuccessful HTTP status {3}.  The response body was: {4} |
 
 ----
 
-### CLIENT-SIDE-REST-API-CONNECTOR-503-002 
+### CLIENT-SIDE-REST-API-CONNECTOR-503-002
 
 > A client-side exception {0} was received by method {1} from API call {2} to server {3} on platform {4}.  The error message was {5}
 
@@ -47,7 +47,7 @@ Review the error message to determine the cause of the error.  Check that the se
 
 ----
 
-### CLIENT-SIDE-REST-API-CONNECTOR-503-004 
+### CLIENT-SIDE-REST-API-CONNECTOR-503-004
 
 > REST API call {0} to server {1} on platform {2} returned an unsuccessful HTTP status {3}.  The response body was: {4}
 

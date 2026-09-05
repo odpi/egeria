@@ -23,7 +23,7 @@ The OSF error code is used to define first failure data capture (FFDC) for error
 |---|---|---|
 | [OPEN-SURVEY-400-001](#open-survey-400-001) | 400 | No survey context supplied to the survey action service {0} |
 | [OPEN-SURVEY-400-002](#open-survey-400-002) | 400 | No embedded survey action services supplied to the survey action pipeline {0} |
-| [OPEN-SURVEY-400-003](#open-survey-400-003) | 400 | No embedded survey action services supplied to the survey action pipeline {0} |
+| [OPEN-SURVEY-400-003](#open-survey-400-003) | 400 | One of the connectors embedded in the survey action service {0} is not a survey action service |
 | [OPEN-SURVEY-400-005](#open-survey-400-005) | 400 | Asset {0} is of type {1} but survey action service {2} only supports the following asset type(s): {3} |
 | [OPEN-SURVEY-400-006](#open-survey-400-006) | 400 | The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3} |
 | [OPEN-SURVEY-400-007](#open-survey-400-007) | 400 | The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached |
@@ -65,7 +65,7 @@ This may be a configuration or a code error.  Look for other error messages and 
 
 **System action**
 
-The survey action pipeline is not able to survey action which survey action services to run.
+The survey action pipeline is not able to determine which survey action services to run.
 
 **User action**
 
@@ -76,7 +76,7 @@ This may be a configuration or a code error.  Look for other error messages and 
 
 ### OPEN-SURVEY-400-003
 
-> No embedded survey action services supplied to the survey action pipeline {0}
+> One of the connectors embedded in the survey action service {0} is not a survey action service
 
 |  |  |
 |---|---|
@@ -195,7 +195,7 @@ The survey action service failed during its operation.
 
 **User action**
 
-This may be a configuration or a code error.  Look for other error messages and review the code of the survey action service.  Once the cause is resolved, retry the survey action request.
+Use the details from the error message to determine the cause of the error.  Once it is resolved, retry the survey action request.
 
 
 ----

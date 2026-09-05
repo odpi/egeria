@@ -17,10 +17,9 @@ public class EnterpriseOMRSConnection extends Connection
     {
         super(new Connection());
 
-        Connection    connectionBean = this;
         ConnectorType connectorType = new ConnectorType();
 
         connectorType.setConnectorProviderClassName(EnterpriseOMRSConnectorProvider.class.getName());
-        connectionBean.setConnectorType(connectorType);
+        super.setConnectorType(connectorType);
     }
 }

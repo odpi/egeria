@@ -21,7 +21,7 @@ This directory documents 181 messages in 11 message sets.  Return to the [messag
 | [OMAGServerInstanceErrorCode](OMAGServerInstanceErrorCode.md) | Exception messages | `OMAG-MULTI-TENANT-` | 12 | <https://egeria-project.org/services/multi-tenant/> |
 | [OpenMetadataObservabilityAuditCode](OpenMetadataObservabilityAuditCode.md) | Audit log messages | `METADATA-OBSERVABILITY-` | 10 | <https://egeria-project.org/services/common-services/> |
 | [OpenMetadataSecurityAuditCode](OpenMetadataSecurityAuditCode.md) | Audit log messages | `OPEN-METADATA-SECURITY-` | 26 | <https://egeria-project.org/features/metadata-security/overview/> |
-| [OpenMetadataSecurityErrorCode](OpenMetadataSecurityErrorCode.md) | Exception messages | `O-` | 20 | <https://egeria-project.org/features/metadata-security/overview/> |
+| [OpenMetadataSecurityErrorCode](OpenMetadataSecurityErrorCode.md) | Exception messages | `OPEN-METADATA-SECURITY-` | 20 | <https://egeria-project.org/features/metadata-security/overview/> |
 | [RepositoryHandlerAuditCode](RepositoryHandlerAuditCode.md) | Audit log messages | `OMAG-REPOSITORY-HANDLER-` | 10 | <https://egeria-project.org/services/repository-handler/> |
 | [RepositoryHandlerErrorCode](RepositoryHandlerErrorCode.md) | Exception messages | `OMAG-REPOSITORY-HANDLER-` | 26 | <https://egeria-project.org/services/repository-handler/> |
 

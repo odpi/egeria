@@ -56,9 +56,9 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
 
             if (databaseName == null)
             {
-                auditLog.logMessage(methodName, PostgresAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                    assetStore.getQualifiedName(),
-                                                                                                    assetStore.getAssetGUID()));
+                logRecord(methodName, PostgresAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
+                                                                                          assetStore.getQualifiedName(),
+                                                                                          assetStore.getAssetGUID()));
             }
             else
             {

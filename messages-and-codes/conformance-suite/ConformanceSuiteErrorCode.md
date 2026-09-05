@@ -67,7 +67,7 @@ The local server name is supplied by the caller to the OMAG server. This call ne
 
 **System action**
 
-The system cannot configure the local server.
+The system cannot determine which user the request is on behalf of and so it is unable to process it.
 
 **User action**
 
@@ -88,7 +88,7 @@ The user name is supplied by the caller to the OMAG server. This call needs to b
 
 **System action**
 
-The system cannot create the report.
+The system cannot create the report because no test case with this identifier has run in this conformance suite instance.
 
 **User action**
 
@@ -109,7 +109,7 @@ Validate the test case identifier with the messages being produced by the audit 
 
 **System action**
 
-The system cannot create the report.
+The system cannot create the report because no workbench with this identifier is configured in this conformance suite instance.
 
 **User action**
 
@@ -151,7 +151,7 @@ Change the setting of the enterprise access service to ensure it is enabled.
 
 **System action**
 
-The system cannot create the report.
+The system cannot create the report because no profile with this name is defined by the workbenches in this conformance suite instance.
 
 **User action**
 
@@ -197,7 +197,7 @@ The conformance suite cannot issue metadata requests to the technologies under t
 
 **User action**
 
-This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved.
+This is an internal logic error in the initialization of the conformance suite.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved.
 
 
 ----
@@ -218,7 +218,7 @@ The conformance suite cannot process one of the test cases.
 
 **User action**
 
-This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved.
+This is an internal logic error in the workbench that generated the test cases.  Create a git issue at https://github.com/odpi/egeria/issues, quoting the duplicated test case id, to get this resolved.
 
 
 ----

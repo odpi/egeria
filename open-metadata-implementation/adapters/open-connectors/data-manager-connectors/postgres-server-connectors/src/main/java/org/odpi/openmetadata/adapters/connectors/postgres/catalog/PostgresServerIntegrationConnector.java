@@ -56,9 +56,9 @@ public class PostgresServerIntegrationConnector extends DynamicIntegrationConnec
 
         if (defaultFriendshipGUID != null)
         {
-            auditLog.logMessage(methodName,
-                                PostgresAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
-                                                                                       defaultFriendshipGUID));
+            logRecord(methodName,
+                      PostgresAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
+                                                                             defaultFriendshipGUID));
         }
 
         for (PostgreSQLTemplateType templateType : PostgreSQLTemplateType.values())

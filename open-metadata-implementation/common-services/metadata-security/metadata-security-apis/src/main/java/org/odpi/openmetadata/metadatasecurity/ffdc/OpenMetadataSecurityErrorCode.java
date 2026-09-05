@@ -28,27 +28,27 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
 {
     /**
-     * OMAG-PLATFORM-SECURITY-400-001 - The OMAG server platform has been configured with a bad connection to its platform security connector.  Error message is {0}. Connection is {1}
+     * OPEN-METADATA-SECURITY-400-001 - The OMAG server platform has been configured with a bad connection to its platform security connector.  Error message is {0}. Connection is {1}
      */
-    BAD_PLATFORM_SECURITY_CONNECTION(400, "OMAG-PLATFORM-SECURITY-400-001",
+    BAD_PLATFORM_SECURITY_CONNECTION(400, "OPEN-METADATA-SECURITY-400-001",
                                      "The OMAG server platform has been configured with a bad connection to its platform security connector.  Error message is {0}. Connection is {1}",
                                      "The system cannot validate the users issuing platform requests.",
-                                     "Review the error message to determine the cause of the problem.",
+                                     "Review the error message to determine the cause of the problem and correct the connection supplied for the platform security connector.  Then restart the OMAG Server Platform.",
                                      "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-PLATFORM-SECURITY-400-002 - The OMAG server {0} has been configured with a bad connection to its security connector.  Error message is {1}. Connection is {2}
+     * OPEN-METADATA-SECURITY-400-002 - The OMAG server {0} has been configured with a bad connection to its security connector.  Error message is {1}. Connection is {2}
      */
-    BAD_SERVER_SECURITY_CONNECTION(400, "OMAG-PLATFORM-SECURITY-400-002",
+    BAD_SERVER_SECURITY_CONNECTION(400, "OPEN-METADATA-SECURITY-400-002",
                                    "The OMAG server {0} has been configured with a bad connection to its security connector.  Error message is {1}. Connection is {2}",
                                    "The system cannot validate the users issuing requests to this server.",
-                                   "Review the error message to determine the cause of the problem.",
+                                   "Review the error message to determine the cause of the problem and correct the connection for the server's security connector in the server's configuration document.  Then restart the server.",
                                    "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-PLATFORM-SECURITY-403-001 - User {0} is not authorized to issue request to {1}
+     * OPEN-METADATA-SECURITY-403-001 - User {0} is not authorized to issue request to {1}
      */
-    UNAUTHORIZED_PLATFORM_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-001",
+    UNAUTHORIZED_PLATFORM_ACCESS(403, "OPEN-METADATA-SECURITY-403-001",
                                  "User {0} is not authorized to issue {1} request to {2}",
                                  "The system cannot process a request from the user because they do not have access to the requested platform" +
                                          " services.  The request fails with a UserNotAuthorizedException exception.",
@@ -58,9 +58,9 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                          "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-002 - User {0} is not authorized to issue a request to server {1}
+     * OPEN-METADATA-SECURITY-403-002 - User {0} is not authorized to issue a request to server {1}
      */
-    UNAUTHORIZED_SERVER_ACCESS(403, "OMAG-SERVER-SECURITY-403-002",
+    UNAUTHORIZED_SERVER_ACCESS(403, "OPEN-METADATA-SECURITY-403-002",
                                 "User {0} is not authorized to issue a request to server {1}",
                                 "The system cannot process a request from the user because they do not have access to the requested " +
                                        "OMAG server.  The request fails with a UserNotAuthorizedException exception.",
@@ -71,9 +71,9 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                        "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-003 - User {0} is not authorized to issue {1} requests
+     * OPEN-METADATA-SECURITY-403-003 - User {0} is not authorized to issue {1} requests
      */
-    UNAUTHORIZED_SERVICE_ACCESS(403, "OMAG-SERVER-SECURITY-403-003",
+    UNAUTHORIZED_SERVICE_ACCESS(403, "OPEN-METADATA-SECURITY-403-003",
                                 "User {0} is not authorized to issue {1} requests",
                                 "The system cannot process a request from the user because they do not have access to the " +
                                         "requested services. The request fails with a UserNotAuthorizedException exception.",
@@ -84,9 +84,9 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                         "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-004 - User {0} is not authorized to attach feedback to element {1}
+     * OPEN-METADATA-SECURITY-403-004 - User {0} is not authorized to attach feedback to element {1}
      */
-    UNAUTHORIZED_ADD_FEEDBACK(403, "OMAG-SERVER-SECURITY-403-004",
+    UNAUTHORIZED_ADD_FEEDBACK(403, "OPEN-METADATA-SECURITY-403-004",
                               "User {0} is not authorized to attach feedback to element {1}",
                               "The system cannot process a request from the user because they do not have access to augment the " +
                                         "requested element.  The request fails with a UserNotAuthorizedException exception.",
@@ -95,9 +95,9 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                         "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-005 - User {0} is not authorized to change the zone membership for element {1} from {2} to {3}
+     * OPEN-METADATA-SECURITY-403-005 - User {0} is not authorized to change the zone membership for element {1} from {2} to {3}
      */
-    UNAUTHORIZED_ZONE_CHANGE(403, "OMAG-SERVER-SECURITY-403-005",
+    UNAUTHORIZED_ZONE_CHANGE(403, "OPEN-METADATA-SECURITY-403-005",
                              "User {0} is not authorized to change the zone membership for element {1} from {2} to {3}",
                              "The system cannot process a request from the user because they do not have access to update " +
                                      "the requested element.  The request fails with a UserNotAuthorizedException exception.",
@@ -106,9 +106,9 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                      "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-007 - User {0} is not authorized to issue operation {1} on {2} anchor element {3}
+     * OPEN-METADATA-SECURITY-403-007 - User {0} is not authorized to issue operation {1} on {2} anchor element {3}
      */
-    UNAUTHORIZED_ANCHOR_ACCESS(403, "OMAG-SERVER-SECURITY-403-007",
+    UNAUTHORIZED_ANCHOR_ACCESS(403, "OPEN-METADATA-SECURITY-403-007",
                                "User {0} is not authorized to issue operation {1} on {2} anchor element {3}",
                                "The system cannot process a request from the user because they do not have access to the " +
                                       "requested element.  The request fails with a UserNotAuthorizedException exception.",
@@ -117,9 +117,9 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                       "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-008 - User {0} is not authorized to create an element of type {1}
+     * OPEN-METADATA-SECURITY-403-008 - User {0} is not authorized to create an element of type {1}
      */
-    UNAUTHORIZED_INSTANCE_CREATE(403, "OMAG-SERVER-SECURITY-403-008",
+    UNAUTHORIZED_INSTANCE_CREATE(403, "OPEN-METADATA-SECURITY-403-008",
                               "User {0} is not authorized to create an element of type {1}",
                               "The system cannot process a request from the user because they do not have authority to create " +
                                       "an element of the requested type.  The request fails with a UserNotAuthorizedException exception.",
@@ -128,9 +128,9 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                       "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-011 - User {0} is not authorized to access open metadata type {1} ({2}) on server {3}
+     * OPEN-METADATA-SECURITY-403-011 - User {0} is not authorized to access open metadata type {1} ({2}) on server {3}
      */
-    UNAUTHORIZED_TYPE_ACCESS(403, "OMAG-SERVER-SECURITY-403-011",
+    UNAUTHORIZED_TYPE_ACCESS(403, "OPEN-METADATA-SECURITY-403-011",
                               "User {0} is not authorized to access open metadata type {1} ({2}) on server {3}",
                               "The system cannot process a request from the user because they do not have access to the " +
                                      "necessary services and/or resources to retrieve type information.  The request fails with a " +
@@ -140,9 +140,9 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                      "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-012 - User {0} is not authorized to change open metadata type {1} ({2}) on server {3}
+     * OPEN-METADATA-SECURITY-403-012 - User {0} is not authorized to change open metadata type {1} ({2}) on server {3}
      */
-    UNAUTHORIZED_TYPE_CHANGE(403, "OMAG-SERVER-SECURITY-403-012",
+    UNAUTHORIZED_TYPE_CHANGE(403, "OPEN-METADATA-SECURITY-403-012",
                              "User {0} is not authorized to change open metadata type {1} ({2}) on server {3}",
                              "The system cannot process a request from the user because they do not have access to " +
                                      "update an open metadata type.  The request fails with a UserNotAuthorizedException exception.",
@@ -152,9 +152,9 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                      "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-013 - User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}
+     * OPEN-METADATA-SECURITY-403-013 - User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}
      */
-    UNAUTHORIZED_INSTANCE_ACCESS(403, "OMAG-SERVER-SECURITY-403-013",
+    UNAUTHORIZED_INSTANCE_ACCESS(403, "OPEN-METADATA-SECURITY-403-013",
                              "User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}",
                              "The system cannot process a request from the user because they do not have read access to the " +
                                          "requested metadata.  The request fails with a UserNotAuthorizedException exception.",
@@ -163,9 +163,9 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                          "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-014 - User {0} is not authorized to change open metadata instance {1} of type {2} on server {3}
+     * OPEN-METADATA-SECURITY-403-014 - User {0} is not authorized to change open metadata instance {1} of type {2} on server {3}
      */
-    UNAUTHORIZED_INSTANCE_CHANGE(403, "OMAG-SERVER-SECURITY-403-014",
+    UNAUTHORIZED_INSTANCE_CHANGE(403, "OPEN-METADATA-SECURITY-403-014",
                              "User {0} is not authorized to change open metadata instance {1} of type {2} on server {3}",
                              "The system cannot process a request from the user because they do not have access to " +
                                          "make changes to the requested metadata instance.  The request fails with a UserNotAuthorizedException exception.",
@@ -174,9 +174,9 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                          "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-016 - {0} connections are connected to the asset with unique identifier {1} but the user {2} is not permitted to use any of them; the calling method is {3}
+     * OPEN-METADATA-SECURITY-403-016 - {0} connections are connected to the asset with unique identifier {1} but the user {2} is not permitted to use any of them; the calling method is {3}
      */
-    NO_CONNECTIONS_ALLOWED(403, "OMAG-SERVER-SECURITY-403-016",
+    NO_CONNECTIONS_ALLOWED(403, "OPEN-METADATA-SECURITY-403-016",
                                "{0} connections are connected to the asset with unique identifier {1} but the user {2} is not permitted to use any of them; the calling method is {3}",
                                "The system cannot process a request because the calling user does not have sufficient privileges.",
                                "No action is required if this user should not have access to the connection.  To gain access to the connection, either the security credentials of the user need changing, or a different userId is required.",
@@ -201,9 +201,9 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                             "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-020 - User {0} is not authorized to issue an operation {1} on {2} element {3}
+     * OPEN-METADATA-SECURITY-403-020 - User {0} is not authorized to issue an operation {1} on {2} element {3}
      */
-    UNAUTHORIZED_ELEMENT_ACCESS(403, "OMAG-SERVER-SECURITY-403-020",
+    UNAUTHORIZED_ELEMENT_ACCESS(403, "OPEN-METADATA-SECURITY-403-020",
                                 "User {0} is not authorized to issue an operation {1} on {2} element {3}",
                                 "The security service detected an unauthorized access to a glossary.",
                                 "Review the security policies and settings to determine if this access to the element should be allowed or not." +
@@ -211,27 +211,27 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                          "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-025 - Security access control {0} is not recognized
+     * OPEN-METADATA-SECURITY-403-025 - Security access control {0} is not recognized
      */
-    UNKNOWN_CONTROL(403, "OMAG-SERVER-SECURITY-403-025",
+    UNKNOWN_CONTROL(403, "OPEN-METADATA-SECURITY-403-025",
                     "Security access control {0} is not recognized",
                     "The security service has received a request for an unknown control.",
                     "Track down the source of the request and correct the name of the control - or add the missing control to the secrets store.",
                     "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-403-026 - Exception {0} occurred when retrieving security access control {1}; the exception message was {2}
+     * OPEN-METADATA-SECURITY-403-026 - Exception {0} occurred when retrieving security access control {1}; the exception message was {2}
      */
-    FAILED_TO_RETRIEVE_CONTROL(403,"OMAG-SERVER-SECURITY-403-026",
+    FAILED_TO_RETRIEVE_CONTROL(403,"OPEN-METADATA-SECURITY-403-026",
                                "Exception {0} occurred when retrieving security access control {1}; the exception message was {2}",
                                "An exception occurred when the security service tried to retrieve a security access control.",
                                "Use the information in the exception to determine the cause of this error.  The control will not be returned to the calling user.",
                                "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
-     * OMAG-SERVER-SECURITY-500-002 - Element {1} is not visible to user {0}; it has been filtered from the search results
+     * OPEN-METADATA-SECURITY-500-002 - Element {1} is not visible to user {0}; it has been filtered from the search results
      */
-    FILTERED_ELEMENT(500, "OMAG-SERVER-SECURITY-500-002",
+    FILTERED_ELEMENT(500, "OPEN-METADATA-SECURITY-500-002",
                      "Element {0} is not visible to user {1}; it has been filtered from the search results",
                      "The system has filtered an element from the results because the user does not have the necessary permissions to access it.",
                      "The element is filtered from the results.",

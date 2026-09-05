@@ -77,12 +77,12 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(DB2LUWErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                             exception.getClass().getName(),
@@ -122,12 +122,12 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
                     }
                     catch (Exception exception)
                     {
-                        auditLog.logException(methodName,
-                                              DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                                      exception.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      exception.getMessage()),
-                                              exception);
+                        logExceptionRecord(methodName,
+                                           DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                                   exception.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   exception.getMessage()),
+                                           exception);
 
                         throw new ConnectorCheckedException(DB2LUWErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                                         exception.getClass().getName(),
@@ -184,12 +184,12 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(DB2LUWErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                             exception.getClass().getName(),
@@ -236,12 +236,12 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(DB2LUWErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                             exception.getClass().getName(),
@@ -277,12 +277,12 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(DB2LUWErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                             exception.getClass().getName(),
@@ -350,12 +350,12 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
 
             throw new ConnectorCheckedException(DB2LUWErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
                                                                                                             exception.getClass().getName(),

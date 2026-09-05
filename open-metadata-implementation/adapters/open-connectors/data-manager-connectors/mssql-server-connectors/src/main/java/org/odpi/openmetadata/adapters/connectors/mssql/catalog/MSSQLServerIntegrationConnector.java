@@ -56,9 +56,9 @@ public class MSSQLServerIntegrationConnector extends DynamicIntegrationConnector
 
         if (defaultFriendshipGUID != null)
         {
-            auditLog.logMessage(methodName,
-                                MSSQLAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
-                                                                                   defaultFriendshipGUID));
+            logRecord(methodName,
+                      MSSQLAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
+                                                                         defaultFriendshipGUID));
         }
 
         for (MSSQLTemplateType templateType : MSSQLTemplateType.values())

@@ -155,9 +155,9 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             /*
              * Scan the folder (and sub-folders) and count up its contents
              */
-            auditLog.logMessage(methodName, SurveyServiceAuditCode.SURVEYING_FOLDER.getMessageDefinition(surveyActionServiceName,
-                                                                                                         rootFolder.getCanonicalPath(),
-                                                                                                         analysisLevel));
+            logRecord(methodName, SurveyServiceAuditCode.SURVEYING_FOLDER.getMessageDefinition(surveyActionServiceName,
+                                                                                               rootFolder.getCanonicalPath(),
+                                                                                               analysisLevel));
 
             annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
@@ -372,10 +372,10 @@ public class FolderSurveyService extends SurveyActionServiceConnector
                     {
                         final String methodName = "Profile Folder";
 
-                        auditLog.logException(methodName, SurveyServiceAuditCode.FILE_IO_ERROR.getMessageDefinition(methodName,
-                                                                                                                    nestedFile.getPath(),
-                                                                                                                    invalidFile.getMessage()),
-                                              invalidFile);
+                        logExceptionRecord(methodName, SurveyServiceAuditCode.FILE_IO_ERROR.getMessageDefinition(methodName,
+                                                                                                                 nestedFile.getPath(),
+                                                                                                                 invalidFile.getMessage()),
+                                           invalidFile);
 
                         folderProfile.saveInaccessibleFile(nestedFile.getPath(),
                                                            invalidFile.getClass().getName(),

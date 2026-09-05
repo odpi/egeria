@@ -40,12 +40,9 @@ public class OMFOutTopicServerConnector extends OpenMetadataTopicSenderConnector
             String eventString = OBJECT_WRITER.writeValueAsString(event);
             super.sendEvent(eventString).join();
 
-            if (super.auditLog != null)
-            {
-                super.auditLog.logMessage(methodName,
-                                          OMFServicesAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.getEventType().getEventTypeName()),
-                                          eventString);
-            }
+            logRecord(methodName,
+                      OMFServicesAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.getEventType().getEventTypeName()),
+                      eventString);
         }
         catch (CompletionException error)
         {

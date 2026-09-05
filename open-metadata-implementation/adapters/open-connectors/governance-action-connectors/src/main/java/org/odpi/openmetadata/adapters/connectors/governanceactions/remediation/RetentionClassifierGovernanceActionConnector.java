@@ -146,11 +146,11 @@ public class RetentionClassifierGovernanceActionConnector extends GeneralGoverna
                         {
                             OpenMetadataElement element = actionTarget.getTargetElement();
 
-                            auditLog.logMessage(methodName,
-                                                GovernanceActionConnectorsAuditCode.SETTING_RETENTION.getMessageDefinition(governanceServiceName,
-                                                                                                                           element.getElementGUID(),
-                                                                                                                           dateToArchive.toString(),
-                                                                                                                           dateToDelete.toString()));
+                            logRecord(methodName,
+                                      GovernanceActionConnectorsAuditCode.SETTING_RETENTION.getMessageDefinition(governanceServiceName,
+                                                                                                                 element.getElementGUID(),
+                                                                                                                 dateToArchive.toString(),
+                                                                                                                 dateToDelete.toString()));
 
                             governanceContext.getOpenMetadataStore().classifyMetadataElementInStore(element.getElementGUID(),
                                                                                                     OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
@@ -166,7 +166,7 @@ public class RetentionClassifierGovernanceActionConnector extends GeneralGoverna
 
             if (messageDefinition != null)
             {
-                auditLog.logMessage(methodName, messageDefinition);
+                logRecord(methodName, messageDefinition);
             }
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);

@@ -15,7 +15,6 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 public abstract class OMRSCohortRegistryStoreConnectorBase extends ConnectorBase implements OMRSCohortRegistryStore,
                                                                                             AuditLoggingComponent
 {
-    protected AuditLog auditLog = null;
 
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it

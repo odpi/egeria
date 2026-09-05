@@ -44,9 +44,9 @@ public class DuckDBDatabaseIntegrationConnector extends DynamicIntegrationConnec
 
         if (defaultFriendshipGUID != null)
         {
-            auditLog.logMessage(methodName,
-                                DuckDBAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
-                                                                                     defaultFriendshipGUID));
+            logRecord(methodName,
+                      DuckDBAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
+                                                                           defaultFriendshipGUID));
         }
     }
 

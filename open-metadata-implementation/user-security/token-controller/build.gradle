@@ -41,6 +41,8 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     runtimeOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
     compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testImplementation 'org.testng:testng'
 }
 
 description = 'Token Controller (for View Services)'
@@ -50,3 +52,8 @@ java {
     withJavadocJar()
 }
 
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
+}

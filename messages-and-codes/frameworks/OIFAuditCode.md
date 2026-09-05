@@ -367,11 +367,11 @@ Check that the type of element is that which was expected.  If not, this may be 
 
 **System action**
 
-The connector stops processing.
+The connector logs the action it has selected for the element and carries on processing.
 
 **User action**
 
-Using information from the element, the set up of the connector, and the connector's logic to determine why this 'should not occur' case has happened.
+No action is required.  This message traces the decision that the connector made about each element it processed.
 
 
 ----

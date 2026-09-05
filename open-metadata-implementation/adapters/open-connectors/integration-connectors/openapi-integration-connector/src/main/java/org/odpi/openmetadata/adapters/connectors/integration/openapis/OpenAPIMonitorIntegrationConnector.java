@@ -141,21 +141,18 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
         /*
          * Record the configuration
          */
-        if (auditLog != null)
+        if (targetRootURL != null)
         {
-            if (targetRootURL != null)
-            {
-                auditLog.logMessage(methodName,
-                                    OpenAPIIntegrationConnectorAuditCode.CONNECTOR_CONFIGURATION_WITH_ENDPOINT.getMessageDefinition(connectorName,
-                                                                                                                                    targetRootURL,
-                                                                                                                                    templateQualifiedName));
-            }
-            else
-            {
-                auditLog.logMessage(methodName,
-                                    OpenAPIIntegrationConnectorAuditCode.CONNECTOR_CONFIGURATION_NO_ENDPOINT.getMessageDefinition(connectorName,
-                                                                                                                                  templateQualifiedName));
-            }
+            logRecord(methodName,
+                      OpenAPIIntegrationConnectorAuditCode.CONNECTOR_CONFIGURATION_WITH_ENDPOINT.getMessageDefinition(connectorName,
+                                                                                                                      targetRootURL,
+                                                                                                                      templateQualifiedName));
+        }
+        else
+        {
+            logRecord(methodName,
+                      OpenAPIIntegrationConnectorAuditCode.CONNECTOR_CONFIGURATION_NO_ENDPOINT.getMessageDefinition(connectorName,
+                                                                                                                    templateQualifiedName));
         }
     }
 
@@ -187,14 +184,11 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        OpenAPIIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                       error.getClass().getName(),
-                                                                                                                       methodName,
-                                                                                                                       error.getMessage()));
-                }
+                logRecord(methodName,
+                          OpenAPIIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                         error.getClass().getName(),
+                                                                                                         methodName,
+                                                                                                         error.getMessage()));
             }
         }
     }
@@ -224,16 +218,11 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    OpenAPIIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                   error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
-
-
-            }
+            logRecord(methodName,
+                      OpenAPIIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                     error.getClass().getName(),
+                                                                                                     methodName,
+                                                                                                     error.getMessage()));
         }
     }
 
@@ -260,13 +249,10 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                      */
                     if (restClients.get(endpointProperties.getNetworkAddress()) == null)
                     {
-                        if (auditLog != null)
-                        {
-                            auditLog.logMessage(methodName,
-                                                OpenAPIIntegrationConnectorAuditCode.NEW_ENDPOINT.getMessageDefinition(connectorName,
-                                                                                                                       endpointProperties.getDisplayName(),
-                                                                                                                       endpointProperties.getNetworkAddress()));
-                        }
+                        logRecord(methodName,
+                                  OpenAPIIntegrationConnectorAuditCode.NEW_ENDPOINT.getMessageDefinition(connectorName,
+                                                                                                         endpointProperties.getDisplayName(),
+                                                                                                         endpointProperties.getNetworkAddress()));
 
                         RESTClient restClient = new RESTClient(connectorName,
                                                                endpointProperties.getNetworkAddress(),
@@ -278,33 +264,23 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                 }
                 catch (Exception error)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logMessage(methodName,
-                                            OpenAPIIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                           error.getClass().getName(),
-                                                                                                                           methodName,
-                                                                                                                           error.getMessage()));
-
-
-                    }
+                    logRecord(methodName,
+                              OpenAPIIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()));
                 }
             }
         }
         else
         {
-            if (auditLog != null)
-            {
-                final String elementType = "Endpoint";
+            final String elementType = "Endpoint";
 
-                auditLog.logMessage(methodName,
-                                    OpenAPIIntegrationConnectorAuditCode.BAD_ENDPOINT.getMessageDefinition(connectorName,
-                                                                                                           elementType,
-                                                                                                           methodName,
-                                                                                                           endpointElement.getElementHeader().getGUID()));
-
-
-            }
+            logRecord(methodName,
+                      OpenAPIIntegrationConnectorAuditCode.BAD_ENDPOINT.getMessageDefinition(connectorName,
+                                                                                             elementType,
+                                                                                             methodName,
+                                                                                             endpointElement.getElementHeader().getGUID()));
         }
     }
 
@@ -321,25 +297,15 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
 
         if (targetRootURL != null)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    OpenAPIIntegrationConnectorAuditCode.CONNECTOR_REFRESH_WITH_ENDPOINT.getMessageDefinition(connectorName,
-                                                                                                                              targetRootURL));
-
-
-            }
+            logRecord(methodName,
+                      OpenAPIIntegrationConnectorAuditCode.CONNECTOR_REFRESH_WITH_ENDPOINT.getMessageDefinition(connectorName,
+                                                                                                                targetRootURL));
         }
         else
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    OpenAPIIntegrationConnectorAuditCode.CONNECTOR_REFRESH_ALL_ENDPOINTS.getMessageDefinition(connectorName,
-                                                                                                                              Integer.toString(restClients.size())));
-
-
-            }
+            logRecord(methodName,
+                      OpenAPIIntegrationConnectorAuditCode.CONNECTOR_REFRESH_ALL_ENDPOINTS.getMessageDefinition(connectorName,
+                                                                                                                Integer.toString(restClients.size())));
         }
 
         for (String url : restClients.keySet())
@@ -401,13 +367,10 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
             title = openAPISpecification.getInfo().getTitle();
         }
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OpenAPIIntegrationConnectorAuditCode.RETRIEVED_OPEN_API_SPEC.getMessageDefinition(connectorName,
-                                                                                                                  url,
-                                                                                                                  title));
-        }
+        logRecord(methodName,
+                  OpenAPIIntegrationConnectorAuditCode.RETRIEVED_OPEN_API_SPEC.getMessageDefinition(connectorName,
+                                                                                                    url,
+                                                                                                    title));
 
         String endpointGUID = this.getEndpointGUID(url, openAPISpecification);
 
@@ -607,14 +570,11 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
 
             apiGUID = apiClient.createAsset(newElementOptions, null, properties, null);
 
-            if (auditLog != null)
-            {
-                auditLog.logMessage("getAPIGUID",
-                                    OpenAPIIntegrationConnectorAuditCode.NEW_DEPLOYED_API.getMessageDefinition(connectorName,
-                                                                                                                apiQualifiedName,
-                                                                                                                apiGUID,
-                                                                                                                url));
-            }
+            logRecord("getAPIGUID",
+                      OpenAPIIntegrationConnectorAuditCode.NEW_DEPLOYED_API.getMessageDefinition(connectorName,
+                                                                                                  apiQualifiedName,
+                                                                                                  apiGUID,
+                                                                                                  url));
         }
 
         /*
@@ -784,16 +744,13 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
 
             apiOperationGUID = schemaTypeClient.createSchemaType(newElementOptions, null, properties, new APIOperationsProperties());
 
-            if (auditLog != null)
-            {
-                auditLog.logMessage("getAPIOperationGUID",
-                                    OpenAPIIntegrationConnectorAuditCode.NEW_API_OPERATION.getMessageDefinition(connectorName,
-                                                                                                                 apiOperationQualifiedName,
-                                                                                                                 apiOperationGUID,
-                                                                                                                 pathName,
-                                                                                                                 command.toUpperCase(),
-                                                                                                                 apiGUID));
-            }
+            logRecord("getAPIOperationGUID",
+                      OpenAPIIntegrationConnectorAuditCode.NEW_API_OPERATION.getMessageDefinition(connectorName,
+                                                                                                   apiOperationQualifiedName,
+                                                                                                   apiOperationGUID,
+                                                                                                   pathName,
+                                                                                                   command.toUpperCase(),
+                                                                                                   apiGUID));
         }
 
         return apiOperationGUID;
@@ -1654,11 +1611,8 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
 
 
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OpenAPIIntegrationConnectorAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
-        }
+        logRecord(methodName,
+                  OpenAPIIntegrationConnectorAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
 
         super.disconnect();
     }

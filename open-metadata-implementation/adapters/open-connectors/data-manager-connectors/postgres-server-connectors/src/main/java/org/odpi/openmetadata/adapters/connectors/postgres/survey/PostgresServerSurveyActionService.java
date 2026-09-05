@@ -94,9 +94,9 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
 
                 if (validDatabases.isEmpty())
                 {
-                    auditLog.logMessage(methodName, PostgresAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
-                                                                                                        assetStore.getQualifiedName(),
-                                                                                                        assetStore.getAssetGUID()));
+                    logRecord(methodName, PostgresAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
+                                                                                              assetStore.getQualifiedName(),
+                                                                                              assetStore.getAssetGUID()));
                 }
                 else
                 {
