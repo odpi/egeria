@@ -50,13 +50,13 @@ ext {
     snappyVersion = '1.1.10.8'
 
     // This must be kept in step with the version of the springboot plugin in settings.gradle
-    springbootVersion = '3.5.16'
+    springbootVersion = '4.1.1'
 
     testngVersion = '7.12.0'
     swaggerVersion = '2.2.54'
     log4jVersion = '2.26.1'
     jacksonjdk8Version = '2.22.2'
-    springdocStarterVersion = '2.8.17'
+    springdocStarterVersion = '3.1.0'
     snakeYamlVersion = '2.6'
 }
 
