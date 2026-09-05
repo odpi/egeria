@@ -12,6 +12,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
+
 
 /**
  * AdminClientRESTExceptionHandler is managing the receipt of exceptions in the response from a REST call
@@ -103,6 +105,24 @@ public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
      */
     private void throwUserNotAuthorizedException(FFDCResponseBase restResult) throws UserNotAuthorizedException
     {
+        /*
+         * The server records the refused user in the exception properties (see
+         * RESTExceptionHandler.captureUserNotAuthorizedException); carry it into the exception so that a
+         * caller can tell which user was refused, as the clients built on the common handler can.
+         */
+        String              userId              = null;
+        Map<String, Object> exceptionProperties = restResult.getExceptionProperties();
+
+        if (exceptionProperties != null)
+        {
+            Object userIdObject = exceptionProperties.get("userId");
+
+            if (userIdObject != null)
+            {
+                userId = userIdObject.toString();
+            }
+        }
+
         UserNotAuthorizedException error = new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
                                                                           this.getClass().getName(),
                                                                           restResult.getActionDescription(),
@@ -112,10 +132,10 @@ public class AdminClientRESTExceptionHandler extends RESTExceptionHandler
                                                                           restResult.getExceptionSystemAction(),
                                                                           restResult.getExceptionUserAction(),
                                                                           restResult.getExceptionCausedBy(),
-                                                                          null,
-                                                                          restResult.getExceptionProperties());
+                                                                          userId,
+                                                                          exceptionProperties);
 
-                                                                          error.setReportedURL(restResult.getExceptionURL());
+        error.setReportedURL(restResult.getExceptionURL());
 
         log.error("User Not Authorized Exception", error);
         throw error;
