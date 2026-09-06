@@ -1,5 +1,6 @@
 # Egeria-user-authn
 @baseURL=https://localhost:7443
+@viewServer=view-server
 
 ###
 # @name Application info
@@ -10,7 +11,7 @@ GET {{baseURL}}/api/public/app/info
 GET {{baseURL}}/api/about
 
 ###
-# @name Token (RequestBody)
+# @name User Login
 POST {{baseURL}}/api/token
 Content-Type: application/json
 
@@ -20,4 +21,35 @@ Content-Type: application/json
 }
 
 > {% client.global.set("token", response.body); %}
+
+###
+# @name User Login (server)
+POST {{baseURL}}/servers/{{viewServer}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# @name User Logout
+# Invalidate the user's token supplied in the request
+# https://egeria-project.org/features/metadata-security/overview
+DELETE {{baseURL}}/api/token/logout
+Authorization: Bearer {{token}}
+
+
+###
+# @name User Logout (server)
+# Invalidate the user's token supplied in the request
+# https://egeria-project.org/features/metadata-security/overview
+DELETE {{baseURL}}/servers/{{viewServer}}/api/token/logout
+Authorization: Bearer {{token}}
+
+
+
+
 

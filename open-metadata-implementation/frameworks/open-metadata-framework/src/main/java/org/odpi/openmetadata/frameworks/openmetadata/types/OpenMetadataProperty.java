@@ -3491,6 +3491,61 @@ public enum OpenMetadataProperty
                             "900",
                             "58d24cf3-df31-4c2a-bdd9-ea281372382e"),
 
+    /**
+     * The type of data quality check.
+     */
+    CHECK_TYPE("checkType", DataType.STRING, DataType.STRING.getDisplayName(), "The type of data quality check: text (described for humans), library (a standard metric), sql (a query) or custom (run by a named engine).", "library", "da60ee63-0b10-4915-98ad-17285476b47e"),
+
+    /**
+     * The name of the standard metric evaluated by a data quality check.
+     */
+    METRIC("metric", DataType.STRING, DataType.STRING.getDisplayName(), "The name of the standard metric evaluated by a data quality check, for example nullValues, missingValues, invalidValues, duplicateValues or rowCount.", "nullValues", "7231f083-9325-41e9-ba85-6416a1a479c3"),
+
+    /**
+     * The severity of a failure of the rule.
+     */
+    SEVERITY("severity", DataType.STRING, DataType.STRING.getDisplayName(), "The severity of a failure of the rule, for example info, warning or error.", "error", "eae8d5b4-5cb8-4482-bb3d-5ebb3142da45"),
+
+    /**
+     * The business impact of a failure of the rule.
+     */
+    BUSINESS_IMPACT("businessImpact", DataType.STRING, DataType.STRING.getDisplayName(), "The business impact of a failure of the rule, for example operational or regulatory.", "operational", "c2f97cca-ff02-4d69-9b28-5530fab1e217"),
+
+    /**
+     * The schedule configuration for the scheduler.
+     */
+    SCHEDULE("schedule", DataType.STRING, DataType.STRING.getDisplayName(), "The schedule configuration for the scheduler, for example a cron expression.", "0 20 * * *", "543c0385-8616-4ea7-b58f-accfdc133dbc"),
+
+    /**
+     * The name of the scheduler that runs the check.
+     */
+    SCHEDULER("scheduler", DataType.STRING, DataType.STRING.getDisplayName(), "The name of the scheduler that runs the check, for example cron.", "cron", "06a640be-a072-4f52-84e4-284d40d6a453"),
+
+    /**
+     * The name of the engine that runs a custom data quality check.
+     */
+    QUALITY_ENGINE("qualityEngine", DataType.STRING, DataType.STRING.getDisplayName(), "The name of the engine that runs a custom data quality check, for example soda or great-expectations.", "soda", "bb603228-0b5f-4073-ba68-92866e27816d"),
+
+    /**
+     * The operator used to compare the measured value with the threshold values.
+     */
+    COMPARISON_OPERATOR("comparisonOperator", DataType.STRING, DataType.STRING.getDisplayName(), "The operator used to compare the measured value with the threshold values, for example mustBe, mustNotBe, mustBeGreaterThan, mustBeGreaterOrEqualTo, mustBeLessThan, mustBeLessOrEqualTo, mustBeBetween or mustNotBeBetween.", "mustBeGreaterThan", "0d319153-8edd-42d0-97e6-eae70daea355"),
+
+    /**
+     * The threshold values that the measured value is compared with.
+     */
+    THRESHOLD_VALUES("thresholdValues", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "The threshold values that the measured value is compared with.  Most operators take one value; the between operators take two.", "[1000000]", "827ad38f-4baa-4360-9a93-08fce9782771"),
+
+    /**
+     * Indicates whether the data field is part of the key used to partition the data.
+     */
+    IS_PARTITION_KEY("isPartitionKey", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Indicates whether the data field is part of the key used to partition the data.", null, "cb58580e-7ddc-45b6-88fc-3d2fa2f94be5"),
+
+    /**
+     * Position of the data field in the partition key, starting from 1.
+     */
+    PARTITION_KEY_POSITION("partitionKeyPosition", DataType.INT, DataType.INT.getDisplayName(), "Position of the data field in the partition key, starting from 1.", "1", "961d1524-321b-462c-91ee-6f138e059c21"),
+
     ;
 
 

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adapters.connectors.apachekafka.integration.KafkaTo
 import org.odpi.openmetadata.adapters.connectors.babbage.BabbageAnalyticalEngineProvider;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMSecretsFilesMonitorIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.bitol.*;
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductSolutionComponent;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.liskov.DataSharingHubManagerProvider;
@@ -458,6 +459,167 @@ public enum IntegrationConnectorDefinition
                                     IntegrationGroupDefinition.EGERIA,
                                     ContentPackDefinition.EGERIA_CONTENT_PACK),
 
+    /**
+     * Monitors file directories (such as a git checkout) for Bitol data contract (ODCS) and data product (ODPS) documents and publishes new and changed documents to the Bitol listeners in the integration daemon.
+     */
+    BITOL_FILES_RECEIVER("ff1a88bc-2aba-4ed4-8f76-f6c929973a3e",
+                         "BitolFilesReceiverIntegrationConnector",
+                         "Monitors file directories (such as a git checkout) for Bitol data contract (ODCS) and data product (ODPS) documents and publishes new and changed documents to the Bitol listeners in the integration daemon.",
+                         BitolFilesReceiverIntegrationProvider.class.getName(),
+                         "BitolFilesReceiver",
+                         "bitolfilesnpa",
+                         null,
+                         null,
+                         "loading-bay/bitol",
+                         null,
+                         60,
+                         new DeployedImplementationTypeDefinition[]{
+                                 DeployedImplementationType.FILE_SYSTEM_DIRECTORY},
+                         "a54eba78-f094-4c66-8002-3526000e9e9d",
+                         "Bitol Files Receiver",
+                         "Monitors file directories for Bitol data contract and data product documents and publishes the new and changed documents to the Bitol listeners registered in the same integration daemon.",
+                         false,
+                         null,
+                         null,
+                         null,
+                         null,
+                         IntegrationGroupDefinition.BITOL,
+                         ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
+     * Receives the Bitol data contract (ODCS) and data product (ODPS) documents published to the Apache Kafka topics attached as catalog targets.
+     */
+    BITOL_EVENT_RECEIVER("3dd2b79b-9905-4566-9fb2-6a91f74c7495",
+                         "BitolEventReceiverIntegrationConnector",
+                         "Receives the Bitol data contract (ODCS) and data product (ODPS) documents published to the Apache Kafka topics attached as catalog targets.",
+                         BitolEventReceiverIntegrationProvider.class.getName(),
+                         "BitolEventReceiver",
+                         "bitoleventsnpa",
+                         null,
+                         null,
+                         null,
+                         null,
+                         60,
+                         null,
+                         "7cddf3c3-e6d5-4199-a16a-cb43fc38ed01",
+                         "Bitol Event Receiver",
+                         "Receives Bitol documents from Apache Kafka topics attached as catalog targets and publishes them to the Bitol listeners registered in the same integration daemon.",
+                         false,
+                         null,
+                         null,
+                         null,
+                         null,
+                         IntegrationGroupDefinition.BITOL,
+                         ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
+     * Catalogs the Bitol data product (ODPS) documents received by the integration daemon as digital products.
+     */
+    BITOL_DATA_PRODUCT_CATALOGUER("90164e1c-2020-4bc2-a745-877cecd30d06",
+                                  "BitolDataProductCataloguerIntegrationConnector",
+                                  "Catalogs the Bitol data product (ODPS) documents received by the integration daemon as digital products.",
+                                  DataProductCataloguerIntegrationProvider.class.getName(),
+                                  "BitolDataProductCataloguer",
+                                  "bitolprodcatnpa",
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  60,
+                                  null,
+                                  "87d00050-1dc2-4c72-9491-810e09248055",
+                                  "Bitol Data Product Cataloguer",
+                                  "Catalogs each Bitol data product document received by the integration daemon as a digital product with solution ports for its input and output ports.",
+                                  true,
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  IntegrationGroupDefinition.BITOL,
+                                  ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
+     * Catalogs the Bitol data contract (ODCS) documents received by the integration daemon as data sharing agreements.
+     */
+    BITOL_DATA_CONTRACT_CATALOGUER("7c692c85-1e97-4280-9007-f80a74990a5b",
+                                   "BitolDataContractCataloguerIntegrationConnector",
+                                   "Catalogs the Bitol data contract (ODCS) documents received by the integration daemon as data sharing agreements.",
+                                   DataContractCataloguerIntegrationProvider.class.getName(),
+                                   "BitolDataContractCataloguer",
+                                   "bitolcontcatnpa",
+                                   null,
+                                   null,
+                                   null,
+                                   null,
+                                   60,
+                                   null,
+                                   "f7f66cb8-624f-4414-8def-e0f47b6a07cd",
+                                   "Bitol Data Contract Cataloguer",
+                                   "Catalogs each Bitol data contract document received by the integration daemon as a data sharing agreement with its schema, quality rules, service levels, servers and security roles.",
+                                   true,
+                                   null,
+                                   null,
+                                   null,
+                                   null,
+                                   IntegrationGroupDefinition.BITOL,
+                                   ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
+     * Stores every Bitol document received by the integration daemon as a file in the directories attached as catalog targets.
+     */
+    BITOL_FILE_STORE("28a4ede2-c85a-4f60-85e0-fe3d6c1c767a",
+                     "BitolFileStoreIntegrationConnector",
+                     "Stores every Bitol document received by the integration daemon as a file in the directories attached as catalog targets.",
+                     FileBasedBitolStoreProvider.class.getName(),
+                     "BitolFileStore",
+                     "bitolstorenpa",
+                     null,
+                     null,
+                     "logs/bitol",
+                     null,
+                     60,
+                     new DeployedImplementationTypeDefinition[]{
+                             DeployedImplementationType.FILE_SYSTEM_DIRECTORY},
+                     "7e23f5ec-93ec-4c71-816d-f96734aba909",
+                     "Bitol File Store",
+                     "Writes every Bitol document published in the integration daemon to the file system, organized by kind, identifier and version, ready to be committed to a git repository.",
+                     false,
+                     null,
+                     null,
+                     null,
+                     null,
+                     IntegrationGroupDefinition.BITOL,
+                     ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
+     * Generates Bitol data product (ODPS) and data contract (ODCS) documents from the digital products and data sharing agreements in open metadata and publishes them to the Bitol listeners in the integration daemon.
+     */
+    BITOL_DOCUMENT_PUBLISHER("0b98e734-bc14-4332-b8af-f4f4222e07f5",
+                             "BitolDocumentPublisherIntegrationConnector",
+                             "Generates Bitol data product (ODPS) and data contract (ODCS) documents from the digital products and data sharing agreements in open metadata and publishes them to the Bitol listeners in the integration daemon.",
+                             BitolDocumentPublisherIntegrationProvider.class.getName(),
+                             "BitolDocumentPublisher",
+                             "bitolpubnpa",
+                             null,
+                             null,
+                             null,
+                             null,
+                             60,
+                             null,
+                             "bf1e3b4b-95c0-431d-9e4c-2ad91d66e555",
+                             "Bitol Document Publisher",
+                             "Generates Bitol documents from the digital products and data sharing agreements in open metadata whenever they change, and for the members of the digital product catalogs attached as catalog targets.",
+                             true,
+                             null,
+                             null,
+                             null,
+                             null,
+                             IntegrationGroupDefinition.BITOL,
+                             ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
+     * Publishes open lineage events to the APIs attached as catalog targets.
+     */
     OPEN_LINEAGE_API_PUBLISHER("2156bc98-973a-4859-908d-4ccc96f53cc5",
                                "OpenLineageAPIPublisherIntegrationConnector",
                                "Publishes open lineage events to the APIs attached as catalog targets.",

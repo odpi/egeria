@@ -1,0 +1,25 @@
+apiVersion: v0.9.0
+kind: DataProduct
+id: 064c4630-8aad-4dc0-ba95-0f69940e6b18
+status: active
+name: Simple Data Product
+version: v1.0.0
+
+description:
+  purpose: Simple test data product
+  limitations: None
+  usage: Testing purposes only
+
+tags: ['test', 'simple']
+
+inputPorts:
+- name: source-data
+  version: 1.0.0
+  contractId: 12345678-1234-1234-1234-123456789abc
+
+outputPorts:
+- name: processed-data
+  description: "Processed output data"
+  type: tables
+  version: 1.0.0
+  contractId: 87654321-4321-4321-4321-cba987654321 

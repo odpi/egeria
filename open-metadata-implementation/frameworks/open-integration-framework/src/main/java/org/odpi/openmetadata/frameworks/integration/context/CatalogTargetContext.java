@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentManager;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
@@ -35,6 +36,8 @@ public class CatalogTargetContext extends IntegrationContext
      * @param openMetadataClient client to access open metadata store
      * @param openMetadataEventClient client to access open metadata events
      * @param connectedAssetClient client for working with connectors
+     * @param openLineageListenerManager distributes open lineage events to listeners
+     * @param bitolDocumentManager distributes Bitol documents (ODCS data contracts and ODPS data products) to listeners
      * @param governanceConfiguration client for managing catalog targets
      * @param openGovernanceClient client for initiating governance actions
      * @param auditLog logging destination
@@ -55,6 +58,7 @@ public class CatalogTargetContext extends IntegrationContext
                                 OpenMetadataEventClient    openMetadataEventClient,
                                 ConnectedAssetClient       connectedAssetClient,
                                 OpenLineageListenerManager openLineageListenerManager,
+                                BitolDocumentManager       bitolDocumentManager,
                                 GovernanceConfiguration    governanceConfiguration,
                                 OpenGovernanceClient       openGovernanceClient,
                                 AuditLog                   auditLog,
@@ -75,6 +79,7 @@ public class CatalogTargetContext extends IntegrationContext
               openMetadataEventClient,
               connectedAssetClient,
               openLineageListenerManager,
+              bitolDocumentManager,
               governanceConfiguration,
               openGovernanceClient,
               auditLog,

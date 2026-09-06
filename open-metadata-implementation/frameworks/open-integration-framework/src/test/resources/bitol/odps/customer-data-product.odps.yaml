@@ -1,0 +1,121 @@
+apiVersion: v0.9.0
+kind: DataProduct
+
+name: Customer Data Product
+id: fbe8d147-28db-4f1d-bedf-a3fe9f458427
+domain: seller
+status: draft
+tenant: RetailCorp
+
+description:
+  purpose: Enterprise view of a customer.
+  limitations: No known limitations.
+  usage: Check the various artefacts for their own description.
+
+tags: ['customer']
+
+inputPorts:
+- name: payments 
+  version: 1.0.0
+  contractId: dbb7b1eb-7628-436e-8914-2a00638ba6db
+- name: payments
+  version: 2.0.0
+  contractId: dbb7b1eb-7628-436e-8914-2a00638ba6da
+- name: onlinetransactions
+  version: 1.0.0
+  contractId: ec2a112d-5cfe-49f3-8760-f9cfb4597544
+- name: onlinetransactions
+  version: 1.1.0
+  contractId: ec2a112d-5cfe-49f3-8760-f9cfb4597547
+  tags: ["transactions"]
+  customProperties:
+    - property: "transactions_version"
+      value: "1.1.0"
+  authoritativeDefinitions:
+    - type: "data_dictionary"
+      url: "https://mydata/dictionary"
+
+outputPorts:
+- name: rawtransactions
+  description: "Raw Transactions"
+  type: tables
+  version: 1.0.0
+  contractId: c2798941-1b7e-4b03-9e0d-955b1a872b32
+- name: rawtransactions
+  description: "Raw Transactions"
+  type: tables
+  version: 2.0.0
+  contractId: c2798941-1b7e-4b03-9e0d-955b1a872b33
+  tags: ["transactions"]
+  customProperties:
+    - property: "transactions_version"
+      value: "2.0.0"
+  authoritativeDefinitions:
+    - type: "data_dictionary"
+      url: "https://mydata/dictionary"
+  sbom:
+  - type: "external"
+    url: "https://mysbomserver/mysbom"
+  inputContracts:
+  - id: dbb7b1eb-7628-436e-8914-2a00638ba6db
+    version: 2.0.0
+  - id: ec2a112d-5cfe-49f3-8760-f9cfb4597544
+    version: 1.0.0
+        
+- name: consolidatedtransactions 
+  description: "Consolidated transactions"
+  type: tables
+  version: 1.0.0
+  contractId: a44978be-1fe0-4226-b840-1b715bc25c63
+
+- name: fulltransactionswithreturns 
+  description: "Full transactions with returns"
+  type: tables
+  version: 0.3.0
+  contractId: ef769969-0cbe-4188-876f-bb00abadaee4
+
+managementPorts:
+- content: dictionary
+  type: topic
+  name: tpc-dict-update
+  description: Kafka topic for dictionary updates
+  tags: ["kafka"]
+  customProperties:
+    - property: "kafka_topic"
+      value: "true"
+  authoritativeDefinitions:
+    - type: "kafka_topic"
+      url: "https://mykafka/topic"
+
+support:
+- channel: "Data Team Slack"
+  url: "https://retailcorp.slack.com/archives/C1234567890"
+  description: "Primary support channel for data product questions"
+  tool: "slack"
+  scope: "interactive"
+- channel: "Email Support"
+  url: "mailto:data-support@retailcorp.com"
+  description: "Email support for urgent issues"
+  tool: "email"
+  scope: "issues"
+
+team:
+  name: "Data Team"
+  description: "The Data Team is responsible for the data product."
+  tags: ["data", "team"]
+  customProperties:
+    - property: "data_team"
+      value: "true"
+  members:
+  - username: "john.doe@retailcorp.com"
+    name: "John Doe"
+    description: "Data Product Owner"
+    role: "owner"
+    dateIn: "2023-01-15"
+  - username: "jane.smith@retailcorp.com"
+    name: "Jane Smith"
+    description: "Data Steward"
+    role: "data steward"
+    dateIn: "2023-02-01"
+
+productCreatedTs: "2023-01-15T10:30:00Z" 

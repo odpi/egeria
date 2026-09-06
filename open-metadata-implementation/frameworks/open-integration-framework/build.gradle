@@ -14,6 +14,7 @@ dependencies {
     testImplementation 'org.testng:testng'
     implementation 'commons-io:commons-io'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
     testImplementation project(':open-metadata-test:open-metadata-ut')
 }
 

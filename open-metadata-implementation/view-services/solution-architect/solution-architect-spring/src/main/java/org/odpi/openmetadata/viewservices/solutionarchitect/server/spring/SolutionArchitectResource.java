@@ -2070,6 +2070,216 @@ public class SolutionArchitectResource
         return restAPI.detachConceptBeadExtension(serverName, extendedBeadGUID, extensionBeadGUID, requestBody);
     }
 
+
+    /* =====================================================================================================================
+     * Solution ports
+     */
+
+    /**
+     * Create a solution port.
+     *
+     * @param serverName  name of called server.
+     * @param requestBody properties for the solution port.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-ports")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createSolutionPort",
+            description="Create a solution port.  A solution port describes an input or output of a solution component.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public GUIDResponse createSolutionPort(@PathVariable
+                                           String                serverName,
+                                           @RequestBody (required = false)
+                                           NewElementRequestBody requestBody)
+    {
+        return restAPI.createSolutionPort(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a solution port using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName  calling user
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-ports/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createSolutionPortFromTemplate",
+            description="Create a new metadata element to represent a solution port using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public GUIDResponse createSolutionPortFromTemplate(@PathVariable
+                                                       String              serverName,
+                                                       @RequestBody (required = false)
+                                                       TemplateRequestBody requestBody)
+    {
+        return restAPI.createSolutionPortFromTemplate(serverName, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a solution port.
+     *
+     * @param serverName       name of called server.
+     * @param solutionPortGUID unique identifier of the solution port (returned from create)
+     * @param requestBody      properties for the element.
+     *
+     * @return boolean or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-ports/{solutionPortGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateSolutionPort",
+            description="Update the properties of a solution port.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public BooleanResponse updateSolutionPort(@PathVariable
+                                              String                   serverName,
+                                              @PathVariable
+                                              String                   solutionPortGUID,
+                                              @RequestBody (required = false)
+                                              UpdateElementRequestBody requestBody)
+    {
+        return restAPI.updateSolutionPort(serverName, solutionPortGUID, requestBody);
+    }
+
+
+    /**
+     * Delete a solution port.
+     *
+     * @param serverName       name of called server
+     * @param solutionPortGUID unique identifier of the element to delete
+     * @param requestBody      description of the delete request.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-ports/{solutionPortGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteSolutionPort",
+            description="Delete a solution port.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public VoidResponse deleteSolutionPort(@PathVariable
+                                           String                   serverName,
+                                           @PathVariable
+                                           String                   solutionPortGUID,
+                                           @RequestBody (required = false)
+                                           DeleteElementRequestBody requestBody)
+    {
+        return restAPI.deleteSolutionPort(serverName, solutionPortGUID, requestBody);
+    }
+
+
+    /**
+     * Returns the list of solution ports with a particular name.
+     *
+     * @param serverName  name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-ports/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSolutionPortsByName",
+            description="Returns the list of solution ports with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public OpenMetadataRootElementsResponse getSolutionPortsByName(@PathVariable
+                                                                   String            serverName,
+                                                                   @RequestBody (required = false)
+                                                                   FilterRequestBody requestBody)
+    {
+        return restAPI.getSolutionPortsByName(serverName, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of solution port metadata elements that contain the search string.
+     *
+     * @param serverName  name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-ports/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findSolutionPorts",
+            description="Retrieve the list of solution port metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public OpenMetadataRootElementsResponse findSolutionPorts(@PathVariable
+                                                              String                  serverName,
+                                                              @RequestBody (required = false)
+                                                              SearchStringRequestBody requestBody)
+    {
+        return restAPI.findSolutionPorts(serverName, requestBody);
+    }
+
+
+    /**
+     * Return the properties of a specific solution port.
+     *
+     * @param serverName       name of the service to route the request to
+     * @param solutionPortGUID unique identifier of the required element
+     * @param requestBody      options for the request
+     *
+     * @return matching metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-ports/{solutionPortGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSolutionPortByGUID",
+            description="Return the properties of a specific solution port.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-component"))
+
+    public OpenMetadataRootElementResponse getSolutionPortByGUID(@PathVariable
+                                                                 String         serverName,
+                                                                 @PathVariable
+                                                                 String         solutionPortGUID,
+                                                                 @RequestBody (required = false)
+                                                                 GetRequestBody requestBody)
+    {
+        return restAPI.getSolutionPortByGUID(serverName, solutionPortGUID, requestBody);
+    }
+
     /**
      * Attach a solution port to the solution component that exposes it.
      *

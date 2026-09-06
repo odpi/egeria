@@ -3893,6 +3893,16 @@ public enum OpenMetadataType
                          NamingStandardRuleProperties.class),
 
     /**
+     * A rule that checks the quality of data, for example that a data field has no null values or that a data set has an expected number of rows.
+     */
+    DATA_QUALITY_RULE("b0546c6b-c364-47d7-9efa-4b07d542594a",
+                      "DataQualityRule",
+                      OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
+                      "dc0bb1c0-0a9f-4f0f-946b-905d56032ead",
+                      "A rule that checks the quality of data, for example that a data field has no null values or that a data set has an expected number of rows.",
+                      DataQualityRuleProperties.class),
+
+    /**
      * Describes a collection of related naming standard rules.
      */
     NAMING_STANDARD_RULE_SET_COLLECTION("ba70f506-1f81-4890-bb4f-1cb1d99c939e",

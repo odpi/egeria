@@ -185,11 +185,11 @@ public enum JacquardAuditCode implements AuditLogMessageSet
      * JACQUARD-HARVESTER-0020 - The {0} integration connector is maintaining the DataScope classification for the {1} data set for digital product {2}
      */
     MAINTAINED_DATA_SCOPE("JACQUARD-HARVESTER-0020",
-                           AuditLogRecordSeverityLevel.INFO,
-                           "The {0} integration connector is refreshing the {1} is maintaining the DataScope classification for the {1} data set for digital product {2}",
-                           "The connector is maintaining the change record for a particular digital product. Details of its review are attached to the data asset for the product using the DataScope classification.",
-                           "No action is required.  This message is for monitoring the refresh activity of the digital products.",
-                           "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
+                          AuditLogRecordSeverityLevel.INFO,
+                          "The {0} integration connector is maintaining the DataScope classification for the {1} data set for digital product {2}",
+                          "The connector is maintaining the change record for a particular digital product. Details of its review are attached to the data asset for the product using the DataScope classification.",
+                          "No action is required.  This message is for monitoring the refresh activity of the digital products.",
+                          "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
     /**
      * JACQUARD-HARVESTER-0021 - The {0} integration connector is harvesting valid values
