@@ -523,6 +523,28 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
     /**
      * A data file containing user accounts, groups, roles, and security controls, encoded in YAML format.
      */
+    OPEN_DATA_CONTRACT_FILE("f1933715-f61b-432e-8e9c-91783c4419f2",
+                            "Open Data Contract Standard (ODCS) File",
+                            DeployedImplementationType.YAML_FILE,
+                            OpenMetadataType.YAML_FILE.typeName,
+                            null,
+                            "A YAML file containing a Bitol Open Data Contract Standard (ODCS) document that describes a dataset and the agreement for sharing it.",
+                            "https://egeria-project.org/features/digital-product-management/overview/"),
+
+    /**
+     * A YAML file containing a Bitol Open Data Product Standard (ODPS) document that describes a data product and its ports.
+     */
+    OPEN_DATA_PRODUCT_FILE("d6da10ec-03d5-472e-b6ac-5382adebe8e5",
+                           "Open Data Product Standard (ODPS) File",
+                           DeployedImplementationType.YAML_FILE,
+                           OpenMetadataType.YAML_FILE.typeName,
+                           null,
+                           "A YAML file containing a Bitol Open Data Product Standard (ODPS) document that describes a data product and its ports.",
+                           "https://egeria-project.org/features/digital-product-management/overview/"),
+
+    /**
+     * A YAML encoded file containing a secrets store read by the YAMLSecretsStoreConnector.
+     */
     YAML_SECRETS_COLLECTION_FILE("6480544e-bf2e-4024-90ac-dcd166f17248",
                                  "YAML File Secrets Collection",
                                  DeployedImplementationType.KEYSTORE_FILE,

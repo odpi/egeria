@@ -215,4 +215,21 @@ public class OpenLineageRunEvent
     {
         this.outputs = outputs;
     }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public String toString()
+    {
+        return "OpenLineageRunEvent{" +
+                "run=" + run +
+                ", job=" + job +
+                ", inputs=" + inputs +
+                ", outputs=" + outputs +
+                '}';
+    }
 }

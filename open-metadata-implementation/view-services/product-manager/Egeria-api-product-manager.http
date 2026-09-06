@@ -259,3 +259,131 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Bitol documents: Open Data Contract Standard (ODCS) data contracts and Open Data Product Standard (ODPS) data
+# products.  A document may be published to an integration daemon (asynchronous - the daemon's Bitol listeners
+# catalog, store and distribute it), imported directly (synchronous - the agreement or digital product is created
+# and its GUID returned), or generated from an existing agreement or digital product.
+#
+# @integrationDaemonGUID is the GUID of the integration daemon's SoftwareServer asset in the catalog.
+# =====================================================================================================================
+
+###
+# @name publishDataContractString
+# Send a data contract (YAML or JSON) to an integration daemon for its Bitol listeners.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/integration-daemons/{{integrationDaemonGUID}}/data-contracts/publish-document-string
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+apiVersion: v3.1.0
+kind: DataContract
+id: 6d0f4b2a-9c1e-4a7f-8b3d-2e5f6a7b8c9d
+name: Hampton Hospital weekly measurements
+version: 1.0.0
+status: active
+
+###
+# @name publishDataProductString
+# Send a data product (YAML or JSON) to an integration daemon for its Bitol listeners.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/integration-daemons/{{integrationDaemonGUID}}/data-products/publish-document-string
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+apiVersion: v1.0.0
+kind: DataProduct
+id: 4f0b9a5e-2c31-4b6a-9d7e-1a2b3c4d5e6f
+name: Teddy Bear Drop Foot Weekly Measurements
+version: 1.0.0
+status: active
+
+###
+# @name importDataContractString
+# Catalog a data contract (YAML or JSON) directly as an Agreement classified as a DataSharingAgreement.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/data-contracts/import-document-string
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+apiVersion: v3.1.0
+kind: DataContract
+id: 6d0f4b2a-9c1e-4a7f-8b3d-2e5f6a7b8c9d
+name: Hampton Hospital weekly measurements
+version: 1.0.0
+status: active
+schema:
+  - name: weekly_measurements
+    physicalType: csv
+    properties:
+      - name: PatientId
+        logicalType: integer
+        primaryKey: true
+      - name: Date
+        logicalType: date
+      - name: AngleLeft
+        logicalType: integer
+      - name: AngleRight
+        logicalType: integer
+
+###
+# @name importDataContract
+# Catalog a data contract bean (JSON) directly as an Agreement classified as a DataSharingAgreement.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/data-contracts/import-document
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "apiVersion" : "v3.1.0",
+  "kind" : "DataContract",
+  "id" : "6d0f4b2a-9c1e-4a7f-8b3d-2e5f6a7b8c9d",
+  "name" : "Hampton Hospital weekly measurements",
+  "version" : "1.0.0",
+  "status" : "active"
+}
+
+###
+# @name importDataProductString
+# Catalog a data product (YAML or JSON) directly as a DigitalProduct.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/data-products/import-document-string
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+apiVersion: v1.0.0
+kind: DataProduct
+id: 4f0b9a5e-2c31-4b6a-9d7e-1a2b3c4d5e6f
+name: Teddy Bear Drop Foot Weekly Measurements
+version: 1.0.0
+status: active
+domain: clinical-trials
+inputPorts:
+  - name: hampton-hospital-weekly-measurements
+    version: 1.0.0
+    contractId: 6d0f4b2a-9c1e-4a7f-8b3d-2e5f6a7b8c9d
+
+###
+# @name importDataProduct
+# Catalog a data product bean (JSON) directly as a DigitalProduct.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/data-products/import-document
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "apiVersion" : "v1.0.0",
+  "kind" : "DataProduct",
+  "id" : "4f0b9a5e-2c31-4b6a-9d7e-1a2b3c4d5e6f",
+  "name" : "Teddy Bear Drop Foot Weekly Measurements",
+  "version" : "1.0.0",
+  "status" : "active",
+  "domain" : "clinical-trials"
+}
+
+###
+# @name generateDataContract
+# Generate the ODCS document for an agreement.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/agreements/{{agreementGUID}}/data-contract-document
+Authorization: Bearer {{token}}
+
+###
+# @name generateDataProduct
+# Generate the ODPS document for a digital product.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/digital-products/{{digitalProductGUID}}/data-product-document
+Authorization: Bearer {{token}}

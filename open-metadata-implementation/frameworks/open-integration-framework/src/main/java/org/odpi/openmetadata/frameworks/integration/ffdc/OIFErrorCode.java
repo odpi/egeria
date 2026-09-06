@@ -63,6 +63,15 @@ public enum OIFErrorCode implements ExceptionMessageSet
                                 "The caller has requested a connector work with the wrong type of connector to the third party technology.  It should be reconfigured with the correct type of connector and rerun.",
                                 "https://egeria-project.org/frameworks/oif/overview/"),
 
+    /**
+     * OIF-CONNECTOR-400-005 - Element {0} passed to method {1} is of type {2}, but a Bitol {3} document can only be generated from an element of type {4}
+     */
+    WRONG_ELEMENT_TYPE_FOR_BITOL_DOCUMENT(400, "OIF-CONNECTOR-400-005",
+                                "Element {0} passed to method {1} is of type {2}, but a Bitol {3} document can only be generated from an element of type {4}",
+                                "The generator raises an exception and no document is produced.",
+                                "The caller has asked for a Bitol document for the wrong kind of element.  Pass a digital product for an ODPS document, or a data sharing agreement for an ODCS document.",
+                                "https://egeria-project.org/frameworks/oif/overview/"),
+
 
     /**
      * OIF-CONNECTOR-500-001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}

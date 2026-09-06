@@ -41,6 +41,14 @@ public enum ContentPackDefinition
                               "OpenLineageContentPack.omarchive"),
 
     /**
+     * Receive Bitol Open Data Contract Standard (ODCS) and Open Data Product Standard (ODPS) documents from files and Apache Kafka topics, catalog them as data sharing agreements and digital products, and generate and store the documents for the digital products and agreements defined in open metadata.
+     */
+    BITOL_CONTENT_PACK("ffa11611-3531-4455-b055-b4b29b640992",
+                       "BitolContentPack",
+                       "Receive Bitol Open Data Contract Standard (ODCS) and Open Data Product Standard (ODPS) documents from files and Apache Kafka topics, catalog them as data sharing agreements and digital products, and generate and store the documents for the digital products and agreements defined in open metadata.",
+                       "BitolContentPack.omarchive"),
+
+    /**
      * Reference data, templates, connectors, and governance services for working with Unity Catalog.
      */
     UNITY_CATALOG_CONTENT_PACK("e6756296-3fa3-4aa3-9450-0dc44b8beae2",

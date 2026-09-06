@@ -5,6 +5,10 @@ package org.odpi.openmetadata.frameworks.integration.context;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener;
+import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentManager;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
+import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
@@ -42,6 +46,7 @@ public class IntegrationContext extends ConnectorContextBase
 {
     protected final OpenMetadataEventClient    openMetadataEventClient;
     private final   OpenLineageListenerManager openLineageListenerManager;
+    private final   BitolDocumentManager       bitolDocumentManager;
 
     protected final OpenGovernanceClient      openGovernanceClient;
     protected final ConnectedAssetClient      connectedAssetClient;
@@ -74,6 +79,8 @@ public class IntegrationContext extends ConnectorContextBase
      * @param openMetadataClient        client to access open metadata store
      * @param openMetadataEventClient   client to access open metadata events
      * @param connectedAssetClient      client for working with connectors
+     * @param openLineageListenerManager distributes open lineage events to listeners
+     * @param bitolDocumentManager distributes Bitol documents (ODCS data contracts and ODPS data products) to listeners
      * @param governanceConfiguration   client for managing catalog targets
      * @param openGovernanceClient      client for initiating governance actions
      * @param auditLog                  logging destination
@@ -94,6 +101,7 @@ public class IntegrationContext extends ConnectorContextBase
                               OpenMetadataEventClient    openMetadataEventClient,
                               ConnectedAssetClient       connectedAssetClient,
                               OpenLineageListenerManager openLineageListenerManager,
+                              BitolDocumentManager       bitolDocumentManager,
                               GovernanceConfiguration    governanceConfiguration,
                               OpenGovernanceClient       openGovernanceClient,
                               AuditLog                   auditLog,
@@ -115,6 +123,7 @@ public class IntegrationContext extends ConnectorContextBase
               deleteMethod);
 
         this.openLineageListenerManager = openLineageListenerManager;
+        this.bitolDocumentManager       = bitolDocumentManager;
         this.governanceConfiguration    = governanceConfiguration;
         this.openGovernanceClient       = openGovernanceClient;
         this.connectedAssetClient       = connectedAssetClient;
@@ -187,6 +196,7 @@ public class IntegrationContext extends ConnectorContextBase
                                         openMetadataEventClient,
                                         connectedAssetClient,
                                         openLineageListenerManager,
+                                        bitolDocumentManager,
                                         governanceConfiguration,
                                         openGovernanceClient,
                                         auditLog,
@@ -233,6 +243,82 @@ public class IntegrationContext extends ConnectorContextBase
     public void publishOpenLineageRunEvent(OpenLineageRunEvent event)
     {
         openLineageListenerManager.publishOpenLineageRunEvent(event);
+    }
+
+
+    /* ======================================================================================
+     * Register a listener to receive Bitol documents (ODCS data contracts and ODPS data products).
+     */
+
+    /**
+     * The listener is implemented by the integration connector.  Once it is registered with the context, its processDataContract()
+     * and processDataProduct() methods are called each time a Bitol document is published to the integration daemon.
+     *
+     * @param listener listener to call
+     */
+    public void registerBitolListener(BitolDocumentListener listener)
+    {
+        bitolDocumentManager.registerListener(listener);
+    }
+
+
+    /**
+     * Called when an integration connector wishes to publish a Bitol document of either kind.  The document is parsed, routed by
+     * its kind property and passed to each of the registered Bitol document listeners.
+     *
+     * @param rawDocument YAML or JSON payload
+     */
+    public void publishBitolDocument(String rawDocument)
+    {
+        bitolDocumentManager.publishBitolDocument(rawDocument);
+    }
+
+
+    /**
+     * Called when an integration connector wishes to publish an Open Data Contract Standard (ODCS) data contract.  The document is
+     * parsed and passed to each of the registered Bitol document listeners.
+     *
+     * @param rawDocument YAML or JSON payload
+     */
+    public void publishDataContract(String rawDocument)
+    {
+        bitolDocumentManager.publishDataContract(rawDocument);
+    }
+
+
+    /**
+     * Called when an integration connector wishes to publish an Open Data Contract Standard (ODCS) data contract.  The bean is
+     * serialized and passed, with the bean, to each of the registered Bitol document listeners.
+     *
+     * @param dataContract bean for the document
+     */
+    public void publishDataContract(DataContract dataContract)
+    {
+        bitolDocumentManager.publishDataContract(dataContract);
+    }
+
+
+    /**
+     * Called when an integration connector wishes to publish an Open Data Product Standard (ODPS) data product.  The document is
+     * parsed and passed to each of the registered Bitol document listeners.
+     *
+     * @param rawDocument YAML or JSON payload
+     */
+    public void publishDataProduct(String rawDocument)
+    {
+        bitolDocumentManager.publishDataProduct(rawDocument);
+    }
+
+
+    /**
+     * Called when an integration connector wishes to publish an Open Data Product Standard (ODPS) data product.  The bean is
+     * serialized and passed, with the bean, to each of the registered Bitol document listeners.
+     *
+     * @param dataProduct bean for the document
+     */
+    public void publishDataProduct(DataProduct dataProduct)
+    {
+        bitolDocumentManager.publishDataProduct(dataProduct);
     }
 
 
@@ -555,7 +641,7 @@ public class IntegrationContext extends ConnectorContextBase
      */
 
     /**
-     * Convert a canonical name to a name in snake case.  Snake case is all in lower case with dashes between
+     * Convert a canonical name to a name in snake case.  Snake case is all in lower case with underscores between
      * the words.
      *
      * @param name string to convert
@@ -669,22 +755,24 @@ public class IntegrationContext extends ConnectorContextBase
 
         for (char value : c)
         {
-            /*
-             * Skip space characters
-             */
-            if (! Character.isSpaceChar(value))
+            if (stringBuilder.isEmpty())
             {
-                if (stringBuilder.isEmpty())
-                {
-                    /*
-                     * Make sure first character is lower case
-                     */
-                    stringBuilder.append(Character.toLowerCase(value));
-                }
-                else
-                {
-                    stringBuilder.append(value);
-                }
+                /*
+                 * Make sure first character is upper case
+                 */
+                stringBuilder.append(Character.toUpperCase(value));
+            }
+            else if (Character.isUpperCase(value))
+            {
+                /*
+                 * Insert space before upper case character
+                 */
+                stringBuilder.append(' ');
+                stringBuilder.append(value);
+            }
+            else
+            {
+                stringBuilder.append(value);
             }
         }
 

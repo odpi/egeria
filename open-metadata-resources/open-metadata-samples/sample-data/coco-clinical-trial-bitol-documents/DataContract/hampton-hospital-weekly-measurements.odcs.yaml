@@ -1,0 +1,142 @@
+# SPDX-License-Identifier: CC-BY-4.0
+# Copyright Contributors to the ODPi Egeria project.
+apiVersion: v3.1.0
+kind: DataContract
+id: 6d0f4b2a-9c1e-4a7f-8b3d-2e5f6a7b8c9d
+name: Hampton Hospital weekly measurements
+version: 1.0.0
+status: active
+domain: clinical-trials
+tenant: CocoPharmaceuticals
+dataProduct: Teddy Bear Drop Foot Weekly Measurements
+description:
+  purpose: Data sharing agreement between Hampton Hospital and Coco Pharmaceuticals for the weekly drop foot angle measurements of the patients taking part in the Teddy Bear Drop Foot clinical trial (PROJ-CT-TBDF).
+  limitations: Measurements are pseudonymized before they leave the hospital.  The hospital retains the mapping from trial patient identifier to patient, which is never shared.  Files may only be used for the purposes of the clinical trial.
+  usage: One CSV file per week, delivered to the landing area folder allocated to the hospital.  A restatement file replaces the values of an earlier week.
+schema:
+  - name: weekly_measurements
+    physicalType: csv
+    physicalName: week{n}.csv
+    businessName: Weekly measurements
+    description: The drop foot angle measurements taken for each patient during one week of the trial.
+    tags:
+      - clinical-trial
+      - PROJ-CT-TBDF
+    dataGranularityDescription: One row per patient per week.
+    properties:
+      - name: PatientId
+        logicalType: integer
+        physicalType: int
+        businessName: Patient identifier
+        description: The identifier allocated to the patient for the clinical trial.  It does not identify the patient outside the trial.
+        primaryKey: true
+        primaryKeyPosition: 1
+        required: true
+        classification: confidential
+        examples:
+          - 13
+          - 14
+        quality:
+          - type: library
+            metric: nullValues
+            mustBe: 0
+            description: Every measurement must belong to a patient.
+      - name: Date
+        logicalType: date
+        physicalType: date
+        businessName: Measurement date
+        description: The date on which the measurements were taken.
+        required: true
+        logicalTypeOptions:
+          format: yyyy-MM-dd
+        examples:
+          - "2024-05-31"
+      - name: AngleLeft
+        logicalType: integer
+        physicalType: int
+        businessName: Left foot angle
+        description: The angle, in degrees, that the patient can raise their left foot.
+        required: true
+        quality:
+          - type: library
+            metric: valueRange
+            mustBeBetween:
+              - 0
+              - 90
+            description: Angles are measured in degrees between the sole of the foot and the floor.
+        examples:
+          - 85
+      - name: AngleRight
+        logicalType: integer
+        physicalType: int
+        businessName: Right foot angle
+        description: The angle, in degrees, that the patient can raise their right foot.
+        required: true
+        quality:
+          - type: library
+            metric: valueRange
+            mustBeBetween:
+              - 0
+              - 90
+            description: Angles are measured in degrees between the sole of the foot and the floor.
+        examples:
+          - 69
+servers:
+  - server: hampton-landing-area
+    type: local
+    environment: production
+    path: landing-area/hospitals/hampton/clinical-trials/drop-foot/weekly-measurements
+    format: csv
+    description: The landing area folder into which Hampton Hospital delivers its weekly measurement files.
+slaProperties:
+  - property: frequency
+    value: 1
+    unit: w
+    element: weekly_measurements
+    driver: operational
+  - property: latency
+    value: 2
+    unit: d
+    element: weekly_measurements.Date
+    driver: operational
+  - property: retention
+    value: 10
+    unit: y
+    element: weekly_measurements
+    driver: regulatory
+support:
+  - channel: hampton-clinical-trials
+    tool: email
+    scope: issues
+    url: mailto:clinical-trials@hampton.example.org
+    description: Contact for problems with the measurements supplied by Hampton Hospital.
+team:
+  - username: grantable
+    name: Grant Able
+    role: Hospital Clinical Trial Contact
+    dateIn: "2024-05-01"
+  - username: tanyatidie
+    name: Tanya Tidie
+    role: Clinical Trial Data Steward
+    dateIn: "2024-05-01"
+roles:
+  - role: clinical-trial-data-onboarding
+    access: write
+    description: The onboarding pipeline that moves the weekly measurement files from the landing area into the data lake.
+  - role: clinical-trial-data-steward
+    access: read
+    firstLevelApprovers: Tanya Tidie
+    description: Data stewards validating the measurements.
+tags:
+  - clinical-trial
+  - PROJ-CT-TBDF
+  - hospital
+customProperties:
+  - property: clinicalTrialId
+    value: PROJ-CT-TBDF
+  - property: hospitalName
+    value: Hampton Hospital
+authoritativeDefinitions:
+  - type: businessDefinition
+    url: https://egeria-project.org/practices/coco-pharmaceuticals/scenarios/onboarding-hospital-data/
+contractCreatedTs: "2024-05-01T09:00:00Z"

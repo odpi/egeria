@@ -664,7 +664,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      */
 
     /**
-     * Convert a canonical name to a name in snake case.  Snake case is all in lower case with dashes between
+     * Convert a canonical name to a name in snake case.  Snake case is all in lower case with underscores between
      * the words.
      *
      * @param name string to convert
@@ -778,22 +778,24 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
         for (char value : c)
         {
-            /*
-             * Skip space characters
-             */
-            if (! Character.isSpaceChar(value))
+            if (stringBuilder.isEmpty())
             {
-                if (stringBuilder.isEmpty())
-                {
-                    /*
-                     * Make sure first character is lower case
-                     */
-                    stringBuilder.append(Character.toLowerCase(value));
-                }
-                else
-                {
-                    stringBuilder.append(value);
-                }
+                /*
+                 * Make sure first character is upper case
+                 */
+                stringBuilder.append(Character.toUpperCase(value));
+            }
+            else if (Character.isUpperCase(value))
+            {
+                /*
+                 * Insert space before upper case character
+                 */
+                stringBuilder.append(' ');
+                stringBuilder.append(value);
+            }
+            else
+            {
+                stringBuilder.append(value);
             }
         }
 

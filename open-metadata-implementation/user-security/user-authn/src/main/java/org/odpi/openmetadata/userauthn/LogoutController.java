@@ -4,13 +4,13 @@ package org.odpi.openmetadata.userauthn;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.odpi.openmetadata.userauthn.auth.TokenClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -38,14 +38,15 @@ public class LogoutController
      * @param request HTTP request
      * @throws HttpClientErrorException problem with the request
      */
-    @GetMapping("/api/token/logout")
+    @DeleteMapping("/api/token/logout")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="platformLogout",
                description="Invalidate the user's token supplied in the request.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/features/metadata-security/overview"))
 
-    public void platformLogout(HttpServletRequest request) throws HttpClientErrorException
+    public String platformLogout(HttpServletRequest request) throws HttpClientErrorException
     {
         String token = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("Authorization");
 
@@ -53,6 +54,8 @@ public class LogoutController
         {
            tokenClient.del(token);
         }
+
+        return "OK";
     }
 
 
@@ -62,14 +65,15 @@ public class LogoutController
      * @param serverName HTTP request
      * @throws HttpClientErrorException problem with the request
      */
-    @GetMapping("/servers/{serverName}/api/token/logout")
+    @DeleteMapping("/servers/{serverName}/api/token/logout")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="serverLogout",
             description="Invalidate the user's token supplied in the request.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/features/metadata-security/overview"))
 
-    public void serverLogout(@PathVariable String serverName) throws HttpClientErrorException
+    public String serverLogout(@PathVariable String serverName) throws HttpClientErrorException
     {
         if (RequestContextHolder.getRequestAttributes() != null)
         {
@@ -80,5 +84,7 @@ public class LogoutController
                 tokenClient.del(token);
             }
         }
+
+        return "OK";
     }
 }
