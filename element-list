@@ -67,6 +67,8 @@ org.odpi.openmetadata.adapters.connectors.integration.basicfiles
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception
+org.odpi.openmetadata.adapters.connectors.integration.bitol
+org.odpi.openmetadata.adapters.connectors.integration.bitol.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter
 org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.jdbc
@@ -243,6 +245,7 @@ org.odpi.openmetadata.contentpacks.core.apacheatlas
 org.odpi.openmetadata.contentpacks.core.apachekafka
 org.odpi.openmetadata.contentpacks.core.apis
 org.odpi.openmetadata.contentpacks.core.base
+org.odpi.openmetadata.contentpacks.core.bitol
 org.odpi.openmetadata.contentpacks.core.core
 org.odpi.openmetadata.contentpacks.core.db2luw
 org.odpi.openmetadata.contentpacks.core.digitalproducts
@@ -303,6 +306,11 @@ org.odpi.openmetadata.frameworks.connectors.mapper
 org.odpi.openmetadata.frameworks.connectors.properties.beans
 org.odpi.openmetadata.frameworks.connectors.properties.users
 org.odpi.openmetadata.frameworks.connectors.tabulardatasets
+org.odpi.openmetadata.frameworks.integration.bitol
+org.odpi.openmetadata.frameworks.integration.bitol.common
+org.odpi.openmetadata.frameworks.integration.bitol.mapping
+org.odpi.openmetadata.frameworks.integration.bitol.odcs
+org.odpi.openmetadata.frameworks.integration.bitol.odps
 org.odpi.openmetadata.frameworks.integration.connectors
 org.odpi.openmetadata.frameworks.integration.context
 org.odpi.openmetadata.frameworks.integration.contextmanager
@@ -664,6 +672,7 @@ org.odpi.openmetadata.viewservices.productcatalog.server
 org.odpi.openmetadata.viewservices.productcatalog.server.spring
 org.odpi.openmetadata.viewservices.productmanager.admin
 org.odpi.openmetadata.viewservices.productmanager.ffdc
+org.odpi.openmetadata.viewservices.productmanager.rest
 org.odpi.openmetadata.viewservices.productmanager.server
 org.odpi.openmetadata.viewservices.productmanager.server.spring
 org.odpi.openmetadata.viewservices.projectmanager.admin

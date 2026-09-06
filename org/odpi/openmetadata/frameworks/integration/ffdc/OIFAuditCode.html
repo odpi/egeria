@@ -137,6 +137,22 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0018 - The {0} connector has detected a missing or invalid {1} property in method {2} - element is: {3}</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#BITOL_FORMAT_ERROR" class="member-name-link">BITOL_FORMAT_ERROR</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OIF-CONNECTOR-0020 - A {0} exception with message {1} occurred when parsing Bitol document: {2}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#BITOL_PUBLISH_ERROR" class="member-name-link">BITOL_PUBLISH_ERROR</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OIF-CONNECTOR-0021 - A {0} exception with message {1} occurred when a listening integration connector tried to process a Bitol document</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#BITOL_UNEXPECTED_KIND" class="member-name-link">BITOL_UNEXPECTED_KIND</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OIF-CONNECTOR-0023 - The integration daemon received a Bitol document of kind {0} through the {1} method which expects {2}; the document begins: {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#BITOL_UNSUPPORTED_VERSION" class="member-name-link">BITOL_UNSUPPORTED_VERSION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OIF-CONNECTOR-0022 - The integration daemon received a {0} document with identifier {1} and apiVersion {2} which is not supported by Egeria's beans</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0014 - The {0} integration connector has stopped its monitoring and is shutting down</div>
@@ -363,6 +379,34 @@ the order they are declared.</div>
 <h3>MEMBER_ACTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">MEMBER_ACTION</span></div>
 <div class="block">OIF-CONNECTOR-0019 - The {0} connector is recommending the {1} action to take for element {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BITOL_FORMAT_ERROR">
+<h3>BITOL_FORMAT_ERROR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">BITOL_FORMAT_ERROR</span></div>
+<div class="block">OIF-CONNECTOR-0020 - A {0} exception with message {1} occurred when parsing Bitol document: {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BITOL_PUBLISH_ERROR">
+<h3>BITOL_PUBLISH_ERROR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">BITOL_PUBLISH_ERROR</span></div>
+<div class="block">OIF-CONNECTOR-0021 - A {0} exception with message {1} occurred when a listening integration connector tried to process a Bitol document</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BITOL_UNSUPPORTED_VERSION">
+<h3>BITOL_UNSUPPORTED_VERSION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">BITOL_UNSUPPORTED_VERSION</span></div>
+<div class="block">OIF-CONNECTOR-0022 - The integration daemon received a {0} document with identifier {1} and apiVersion {2} which is not supported by Egeria's beans</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BITOL_UNEXPECTED_KIND">
+<h3>BITOL_UNEXPECTED_KIND</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">BITOL_UNEXPECTED_KIND</span></div>
+<div class="block">OIF-CONNECTOR-0023 - The integration daemon received a Bitol document of kind {0} through the {1} method which expects {2}; the document begins: {3}</div>
 </section>
 </li>
 </ul>

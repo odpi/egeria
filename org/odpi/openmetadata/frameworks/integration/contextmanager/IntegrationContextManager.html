@@ -91,7 +91,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></code></dd>
+<dd><code><a href="../bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a></code>, <code><a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
@@ -100,7 +100,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">IntegrationContextManager</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></span></div>
+implements <a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a>, <a href="../bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a></span></div>
 <div class="block">IntegrationContextManager is the base class for the context manager that is implemented by each integration service.</div>
 </section>
 <section class="summary">
@@ -215,14 +215,44 @@ implements <a href="../openlineage/OpenLineageListenerManager.html" title="inter
 <div class="block">Initialize server properties for the context manager.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(java.lang.String)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishBitolDocument(java.lang.String)" class="member-name-link">publishBitolDocument</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawDocument)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Called each time an open lineage run event is published to the integration daemon.</div>
+<div class="block">Publish a Bitol document of either kind.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="../openlineage/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunEvent</a>&nbsp;event)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataContract(java.lang.String)" class="member-name-link">publishDataContract</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawDocument)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Publish an Open Data Contract Standard (ODCS) data contract.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)" class="member-name-link">publishDataContract</a><wbr>(<a href="../bitol/odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Publish an Open Data Contract Standard (ODCS) data contract.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataProduct(java.lang.String)" class="member-name-link">publishDataProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawDocument)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Publish an Open Data Product Standard (ODPS) data product.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)" class="member-name-link">publishDataProduct</a><wbr>(<a href="../bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Publish an Open Data Product Standard (ODPS) data product.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(java.lang.String)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called each time an open lineage run event is published to the integration daemon.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="../openlineage/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunEvent</a>&nbsp;event)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called each time an open lineage run event is published to the integration demon.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener)" class="member-name-link">registerListener</a><wbr>(<a href="../bitol/BitolDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentListener</a>&nbsp;listener)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The listener is implemented by the integration connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener)" class="member-name-link">registerListener</a><wbr>(<a href="../openlineage/OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a>&nbsp;listener)</code></div>
@@ -539,6 +569,87 @@ implements <a href="../openlineage/OpenLineageListenerManager.html" title="inter
 <dd><code><a href="../openlineage/OpenLineageListenerManager.html#publishOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent)">publishOpenLineageRunEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>event</code> - bean for the event</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="registerListener(org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener)">
+<h3>registerListener</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerListener</span><wbr><span class="parameters">(<a href="../bitol/BitolDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentListener</a>&nbsp;listener)</span></div>
+<div class="block">The listener is implemented by the integration connector.  Once it is registered with the context, its processDataContract()
+ and processDataProduct() methods are called each time a Bitol document is published to the integration daemon.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../bitol/BitolDocumentManager.html#registerListener(org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener)">registerListener</a></code>&nbsp;in interface&nbsp;<code><a href="../bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>listener</code> - listener to call</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishBitolDocument(java.lang.String)">
+<h3>publishBitolDocument</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishBitolDocument</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawDocument)</span></div>
+<div class="block">Publish a Bitol document of either kind.  The document is parsed and routed to the listeners according to its "kind" property.
+ If the document can not be parsed into Egeria's beans but its kind can be determined, the raw document is still passed to the
+ listeners (with a null bean) so that it can be stored or forwarded.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../bitol/BitolDocumentManager.html#publishBitolDocument(java.lang.String)">publishBitolDocument</a></code>&nbsp;in interface&nbsp;<code><a href="../bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>rawDocument</code> - document in YAML or JSON format</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDataContract(java.lang.String)">
+<h3>publishDataContract</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDataContract</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawDocument)</span></div>
+<div class="block">Publish an Open Data Contract Standard (ODCS) data contract.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../bitol/BitolDocumentManager.html#publishDataContract(java.lang.String)">publishDataContract</a></code>&nbsp;in interface&nbsp;<code><a href="../bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>rawDocument</code> - document in YAML or JSON format</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)">
+<h3>publishDataContract</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDataContract</span><wbr><span class="parameters">(<a href="../bitol/odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</span></div>
+<div class="block">Publish an Open Data Contract Standard (ODCS) data contract.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../bitol/BitolDocumentManager.html#publishDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)">publishDataContract</a></code>&nbsp;in interface&nbsp;<code><a href="../bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>dataContract</code> - bean for the document</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDataProduct(java.lang.String)">
+<h3>publishDataProduct</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDataProduct</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawDocument)</span></div>
+<div class="block">Publish an Open Data Product Standard (ODPS) data product.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../bitol/BitolDocumentManager.html#publishDataProduct(java.lang.String)">publishDataProduct</a></code>&nbsp;in interface&nbsp;<code><a href="../bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>rawDocument</code> - document in YAML or JSON format</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)">
+<h3>publishDataProduct</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDataProduct</span><wbr><span class="parameters">(<a href="../bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</span></div>
+<div class="block">Publish an Open Data Product Standard (ODPS) data product.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../bitol/BitolDocumentManager.html#publishDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)">publishDataProduct</a></code>&nbsp;in interface&nbsp;<code><a href="../bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>dataProduct</code> - bean for the document</dd>
 </dl>
 </section>
 </li>

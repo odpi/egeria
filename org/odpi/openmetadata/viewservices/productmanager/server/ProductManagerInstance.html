@@ -112,10 +112,10 @@ loadScripts(document, 'script');</script>
 <code><a href="../../../commonservices/multitenant/OMVSServiceInstance.html#remoteServerName">remoteServerName</a>, <a href="../../../commonservices/multitenant/OMVSServiceInstance.html#remoteServerURL">remoteServerURL</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.commonservices.multitenant.AuditableServerServiceInstance">Fields inherited from class&nbsp;org.odpi.openmetadata.commonservices.multitenant.<a href="../../../commonservices/multitenant/AuditableServerServiceInstance.html" title="class in org.odpi.openmetadata.commonservices.multitenant">AuditableServerServiceInstance</a></h3>
-<code><a href="../../../commonservices/multitenant/AuditableServerServiceInstance.html#auditLog">auditLog</a>, <a href="../../../commonservices/multitenant/AuditableServerServiceInstance.html#localServerUserId">localServerUserId</a></code></div>
+<code><a href="../../../commonservices/multitenant/AuditableServerServiceInstance.html#localServerUserId">localServerUserId</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance">Fields inherited from class&nbsp;org.odpi.openmetadata.commonservices.multitenant.<a href="../../../commonservices/multitenant/OMAGServerServiceInstance.html" title="class in org.odpi.openmetadata.commonservices.multitenant">OMAGServerServiceInstance</a></h3>
-<code><a href="../../../commonservices/multitenant/OMAGServerServiceInstance.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="../../../commonservices/multitenant/OMAGServerServiceInstance.html#maxPageSize">maxPageSize</a>, <a href="../../../commonservices/multitenant/OMAGServerServiceInstance.html#securityVerifier">securityVerifier</a>, <a href="../../../commonservices/multitenant/OMAGServerServiceInstance.html#serverName">serverName</a>, <a href="../../../commonservices/multitenant/OMAGServerServiceInstance.html#serviceName">serviceName</a></code></div>
+<code><a href="../../../commonservices/multitenant/OMAGServerServiceInstance.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="../../../commonservices/multitenant/OMAGServerServiceInstance.html#securityVerifier">securityVerifier</a>, <a href="../../../commonservices/multitenant/OMAGServerServiceInstance.html#serverName">serverName</a>, <a href="../../../commonservices/multitenant/OMAGServerServiceInstance.html#serviceName">serviceName</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -155,7 +155,17 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/CollectionHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">CollectionHandler</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionHandler()" class="member-name-link">getCollectionHandler</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the open metadata handler.</div>
+<div class="block">Return the collection handler.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectedAssetClient()" class="member-name-link">getConnectedAssetClient</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the connected asset client.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorContext(java.lang.String)" class="member-name-link">getConnectorContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a connector context for the calling user.</div>
 </div>
 </div>
 </div>
@@ -202,9 +212,9 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of this server</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>localServerUserId</code> - userId used for server initiated actions</dd>
-<dd><code>localServerSecretsStoreProvider</code> - secrets store connector for bearer token</dd>
-<dd><code>localServerSecretsStoreLocation</code> - secrets store location for bearer token</dd>
-<dd><code>localServerSecretsStoreCollection</code> - secrets store collection for bearer token</dd>
+<dd><code>localServerSecretsStoreProvider</code> - class name of the secrets store connector for bearer token</dd>
+<dd><code>localServerSecretsStoreLocation</code> - location of the secrets store</dd>
+<dd><code>localServerSecretsStoreCollection</code> - collection within the secrets store</dd>
 <dd><code>maxPageSize</code> - maximum page size</dd>
 <dd><code>remoteServerName</code> - remote server name</dd>
 <dd><code>remoteServerURL</code> - remote server URL</dd>
@@ -222,10 +232,38 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="getConnectorContext(java.lang.String)">
+<h3>getConnectorContext</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a></span>&nbsp;<span class="element-name">getConnectorContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span></div>
+<div class="block">Return a connector context for the calling user.  This is the object that the Open Integration Framework's
+ Bitol mappers and generators work through; it gives them the same clients that an integration connector has.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dt>Returns:</dt>
+<dd>connector context</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getCollectionHandler()">
 <h3>getCollectionHandler</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/CollectionHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">CollectionHandler</a></span>&nbsp;<span class="element-name">getCollectionHandler</span>()</div>
-<div class="block">Return the open metadata handler.</div>
+<div class="block">Return the collection handler.  This handler is from the Open Metadata Framework (OMF) and is for accessing and
+ maintaining collections, including digital products and their families.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>handler</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getConnectedAssetClient()">
+<h3>getConnectedAssetClient</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a></span>&nbsp;<span class="element-name">getConnectedAssetClient</span>()</div>
+<div class="block">Return the connected asset client.  This client is from the Open Connector Framework (OCF) and is used to create
+ connectors to the assets catalogued in open metadata - in particular the integration daemons that distribute
+ Bitol documents.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>client</dd>

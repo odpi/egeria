@@ -283,6 +283,26 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve a list of the view services registered on the platform</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataContract(java.lang.String)" class="member-name-link">publishDataContract</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;document)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Pass an Open Data Contract Standard (ODCS) data contract to the integration daemon.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)" class="member-name-link">publishDataContract</a><wbr>(<a href="../../../../frameworks/integration/bitol/odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Pass an Open Data Contract Standard (ODCS) data contract to the integration daemon.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataProduct(java.lang.String)" class="member-name-link">publishDataProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;document)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Pass an Open Data Product Standard (ODPS) data product to the integration daemon.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)" class="member-name-link">publishDataProduct</a><wbr>(<a href="../../../../frameworks/integration/bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Pass an Open Data Product Standard (ODPS) data product to the integration daemon.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageEvent(io.openlineage.client.OpenLineage.RunEvent)" class="member-name-link">publishOpenLineageEvent</a><wbr>(io.openlineage.client.OpenLineage.RunEvent&nbsp;event)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Pass an open lineage event to the integration service.</div>
@@ -1343,6 +1363,82 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>event</code> - open lineage event to publish.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the caller is not authorized to call the service</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem processing the request</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDataContract(java.lang.String)">
+<h3>publishDataContract</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDataContract</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;document)</span>
+                         throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
+<div class="block">Pass an Open Data Contract Standard (ODCS) data contract to the integration daemon.  It will pass it on to the integration
+ connectors that have registered a listener for Bitol documents.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>document</code> - data contract in YAML or JSON format.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the caller is not authorized to call the service</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem processing the request</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)">
+<h3>publishDataContract</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDataContract</span><wbr><span class="parameters">(<a href="../../../../frameworks/integration/bitol/odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</span>
+                         throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
+<div class="block">Pass an Open Data Contract Standard (ODCS) data contract to the integration daemon.  It will pass it on to the integration
+ connectors that have registered a listener for Bitol documents.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataContract</code> - data contract bean.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the caller is not authorized to call the service</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem processing the request</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDataProduct(java.lang.String)">
+<h3>publishDataProduct</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDataProduct</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;document)</span>
+                        throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
+<div class="block">Pass an Open Data Product Standard (ODPS) data product to the integration daemon.  It will pass it on to the integration
+ connectors that have registered a listener for Bitol documents.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>document</code> - data product in YAML or JSON format.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the caller is not authorized to call the service</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem processing the request</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)">
+<h3>publishDataProduct</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDataProduct</span><wbr><span class="parameters">(<a href="../../../../frameworks/integration/bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</span>
+                        throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
+<div class="block">Pass an Open Data Product Standard (ODPS) data product to the integration daemon.  It will pass it on to the integration
+ connectors that have registered a listener for Bitol documents.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataProduct</code> - data product bean.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid</dd>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the caller is not authorized to call the service</dd>

@@ -148,6 +148,45 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Detach a product manager from a digital product.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/DataContractResponse.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">DataContractResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generateDataContract(java.lang.String,java.lang.String)" class="member-name-link">generateDataContract</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;agreementGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Generate the Open Data Contract Standard (ODCS) document for an agreement.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/DataProductResponse.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">DataProductResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generateDataProduct(java.lang.String,java.lang.String)" class="member-name-link">generateDataProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Generate the Open Data Product Standard (ODPS) document for a digital product.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#importDataContract(java.lang.String,java.lang.String)" class="member-name-link">importDataContract</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;document)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Catalog an Open Data Contract Standard (ODCS) data contract, supplied as a YAML or JSON string, directly in open
+ metadata as an Agreement classified as a DataSharingAgreement.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#importDataContract(java.lang.String,org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)" class="member-name-link">importDataContract</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../frameworks/integration/bitol/odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Catalog an Open Data Contract Standard (ODCS) data contract bean directly in open metadata as an Agreement
+ classified as a DataSharingAgreement.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#importDataProduct(java.lang.String,java.lang.String)" class="member-name-link">importDataProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;document)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Catalog an Open Data Product Standard (ODPS) data product, supplied as a YAML or JSON string, directly in open
+ metadata as a DigitalProduct.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#importDataProduct(java.lang.String,org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)" class="member-name-link">importDataProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../frameworks/integration/bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Catalog an Open Data Product Standard (ODPS) data product bean directly in open metadata as a DigitalProduct.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkDigitalProductDependency(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)" class="member-name-link">linkDigitalProductDependency</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumerDigitalProductGUID,
@@ -163,6 +202,34 @@ loadScripts(document, 'script');</script>
  <a href="../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Attach a product manager to a digital product.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataContract(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">publishDataContract</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;document)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Pass an Open Data Contract Standard (ODCS) data contract, as a YAML or JSON string, to an integration daemon.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataContract(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)" class="member-name-link">publishDataContract</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
+ <a href="../../../frameworks/integration/bitol/odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Pass an Open Data Contract Standard (ODCS) data contract bean to an integration daemon.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataProduct(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">publishDataProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;document)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Pass an Open Data Product Standard (ODPS) data product, as a YAML or JSON string, to an integration daemon.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDataProduct(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)" class="member-name-link">publishDataProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
+ <a href="../../../frameworks/integration/bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Pass an Open Data Product Standard (ODPS) data product bean to an integration daemon.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDigitalProductDependency(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateRelationshipRequestBody)" class="member-name-link">updateDigitalProductDependency</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -335,6 +402,197 @@ loadScripts(document, 'script');</script>
  This is a multi-link relationship, so this request removes every digital product dependency relationship
  between the two elements.  Use the request that takes the relationship's own unique identifier to
  remove just one of them.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDataContract(java.lang.String,java.lang.String,java.lang.String)">
+<h3>publishDataContract</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">publishDataContract</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;document)</span></div>
+<div class="block">Pass an Open Data Contract Standard (ODCS) data contract, as a YAML or JSON string, to an integration daemon.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>serverGUID</code> - unique identifier of the integration daemon's software server asset</dd>
+<dd><code>document</code> - data contract to publish</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDataContract(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)">
+<h3>publishDataContract</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">publishDataContract</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
+ <a href="../../../frameworks/integration/bitol/odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</span></div>
+<div class="block">Pass an Open Data Contract Standard (ODCS) data contract bean to an integration daemon.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>serverGUID</code> - unique identifier of the integration daemon's software server asset</dd>
+<dd><code>dataContract</code> - data contract to publish</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDataProduct(java.lang.String,java.lang.String,java.lang.String)">
+<h3>publishDataProduct</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">publishDataProduct</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;document)</span></div>
+<div class="block">Pass an Open Data Product Standard (ODPS) data product, as a YAML or JSON string, to an integration daemon.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>serverGUID</code> - unique identifier of the integration daemon's software server asset</dd>
+<dd><code>document</code> - data product to publish</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDataProduct(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)">
+<h3>publishDataProduct</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">publishDataProduct</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
+ <a href="../../../frameworks/integration/bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</span></div>
+<div class="block">Pass an Open Data Product Standard (ODPS) data product bean to an integration daemon.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>serverGUID</code> - unique identifier of the integration daemon's software server asset</dd>
+<dd><code>dataProduct</code> - data product to publish</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="importDataContract(java.lang.String,java.lang.String)">
+<h3>importDataContract</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">importDataContract</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;document)</span></div>
+<div class="block">Catalog an Open Data Contract Standard (ODCS) data contract, supplied as a YAML or JSON string, directly in open
+ metadata as an Agreement classified as a DataSharingAgreement.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>document</code> - data contract to catalog</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the agreement (null if the document was skipped) or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="importDataContract(java.lang.String,org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)">
+<h3>importDataContract</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">importDataContract</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../frameworks/integration/bitol/odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</span></div>
+<div class="block">Catalog an Open Data Contract Standard (ODCS) data contract bean directly in open metadata as an Agreement
+ classified as a DataSharingAgreement.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>dataContract</code> - data contract to catalog</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the agreement (null if the document was skipped) or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="importDataProduct(java.lang.String,java.lang.String)">
+<h3>importDataProduct</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">importDataProduct</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;document)</span></div>
+<div class="block">Catalog an Open Data Product Standard (ODPS) data product, supplied as a YAML or JSON string, directly in open
+ metadata as a DigitalProduct.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>document</code> - data product to catalog</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the digital product (null if the document was skipped) or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="importDataProduct(java.lang.String,org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)">
+<h3>importDataProduct</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">importDataProduct</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../frameworks/integration/bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</span></div>
+<div class="block">Catalog an Open Data Product Standard (ODPS) data product bean directly in open metadata as a DigitalProduct.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>dataProduct</code> - data product to catalog</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the digital product (null if the document was skipped) or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="generateDataContract(java.lang.String,java.lang.String)">
+<h3>generateDataContract</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/DataContractResponse.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">DataContractResponse</a></span>&nbsp;<span class="element-name">generateDataContract</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;agreementGUID)</span></div>
+<div class="block">Generate the Open Data Contract Standard (ODCS) document for an agreement.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>agreementGUID</code> - unique identifier of the agreement</dd>
+<dt>Returns:</dt>
+<dd>data contract or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="generateDataProduct(java.lang.String,java.lang.String)">
+<h3>generateDataProduct</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/DataProductResponse.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">DataProductResponse</a></span>&nbsp;<span class="element-name">generateDataProduct</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductGUID)</span></div>
+<div class="block">Generate the Open Data Product Standard (ODPS) document for a digital product.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>digitalProductGUID</code> - unique identifier of the digital product</dd>
+<dt>Returns:</dt>
+<dd>data product or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
 </dl>
 </section>
 </li>

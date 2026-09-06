@@ -129,6 +129,30 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The Baudot Subscription Manager notifies the subscribers of the digital products' notification types.</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#BITOL_DATA_CONTRACT_CATALOGUER" class="member-name-link">BITOL_DATA_CONTRACT_CATALOGUER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Catalogs the Bitol data contract (ODCS) documents received by the integration daemon as data sharing agreements.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#BITOL_DATA_PRODUCT_CATALOGUER" class="member-name-link">BITOL_DATA_PRODUCT_CATALOGUER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Catalogs the Bitol data product (ODPS) documents received by the integration daemon as digital products.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#BITOL_DOCUMENT_PUBLISHER" class="member-name-link">BITOL_DOCUMENT_PUBLISHER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Generates Bitol data product (ODPS) and data contract (ODCS) documents from the digital products and data sharing agreements in open metadata and publishes them to the Bitol listeners in the integration daemon.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#BITOL_EVENT_RECEIVER" class="member-name-link">BITOL_EVENT_RECEIVER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Receives the Bitol data contract (ODCS) and data product (ODPS) documents published to the Apache Kafka topics attached as catalog targets.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#BITOL_FILE_STORE" class="member-name-link">BITOL_FILE_STORE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Stores every Bitol document received by the integration daemon as a file in the directories attached as catalog targets.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#BITOL_FILES_RECEIVER" class="member-name-link">BITOL_FILES_RECEIVER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Monitors file directories (such as a git checkout) for Bitol data contract (ODCS) and data product (ODPS) documents and publishes new and changed documents to the Bitol listeners in the integration daemon.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONTENT_PACK_CATALOGUER" class="member-name-link">CONTENT_PACK_CATALOGUER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#DB2LUW_SERVER_CATALOGUER" class="member-name-link">DB2LUW_SERVER_CATALOGUER</a></code></div>
@@ -152,7 +176,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="#OMAG_SERVER_PLATFORM_CATALOGUER" class="member-name-link">OMAG_SERVER_PLATFORM_CATALOGUER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE_API_PUBLISHER" class="member-name-link">OPEN_LINEAGE_API_PUBLISHER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Publishes open lineage events to the APIs attached as catalog targets.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#OPEN_LINEAGE_CATALOGUER" class="member-name-link">OPEN_LINEAGE_CATALOGUER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE_FILE_PUBLISHER" class="member-name-link">OPEN_LINEAGE_FILE_PUBLISHER</a></code></div>
@@ -453,9 +479,52 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="BITOL_FILES_RECEIVER">
+<h3>BITOL_FILES_RECEIVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">BITOL_FILES_RECEIVER</span></div>
+<div class="block">Monitors file directories (such as a git checkout) for Bitol data contract (ODCS) and data product (ODPS) documents and publishes new and changed documents to the Bitol listeners in the integration daemon.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BITOL_EVENT_RECEIVER">
+<h3>BITOL_EVENT_RECEIVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">BITOL_EVENT_RECEIVER</span></div>
+<div class="block">Receives the Bitol data contract (ODCS) and data product (ODPS) documents published to the Apache Kafka topics attached as catalog targets.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BITOL_DATA_PRODUCT_CATALOGUER">
+<h3>BITOL_DATA_PRODUCT_CATALOGUER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">BITOL_DATA_PRODUCT_CATALOGUER</span></div>
+<div class="block">Catalogs the Bitol data product (ODPS) documents received by the integration daemon as digital products.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BITOL_DATA_CONTRACT_CATALOGUER">
+<h3>BITOL_DATA_CONTRACT_CATALOGUER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">BITOL_DATA_CONTRACT_CATALOGUER</span></div>
+<div class="block">Catalogs the Bitol data contract (ODCS) documents received by the integration daemon as data sharing agreements.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BITOL_FILE_STORE">
+<h3>BITOL_FILE_STORE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">BITOL_FILE_STORE</span></div>
+<div class="block">Stores every Bitol document received by the integration daemon as a file in the directories attached as catalog targets.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BITOL_DOCUMENT_PUBLISHER">
+<h3>BITOL_DOCUMENT_PUBLISHER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">BITOL_DOCUMENT_PUBLISHER</span></div>
+<div class="block">Generates Bitol data product (ODPS) and data contract (ODCS) documents from the digital products and data sharing agreements in open metadata and publishes them to the Bitol listeners in the integration daemon.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="OPEN_LINEAGE_API_PUBLISHER">
 <h3>OPEN_LINEAGE_API_PUBLISHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_API_PUBLISHER</span></div>
+<div class="block">Publishes open lineage events to the APIs attached as catalog targets.</div>
 </section>
 </li>
 <li>

@@ -121,12 +121,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#platformLogout(jakarta.servlet.http.HttpServletRequest)" class="member-name-link">platformLogout</a><wbr>(jakarta.servlet.http.HttpServletRequest&nbsp;request)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove details of the token.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#serverLogout(java.lang.String)" class="member-name-link">serverLogout</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove details of the token.</div>
@@ -165,9 +165,9 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="platformLogout(jakarta.servlet.http.HttpServletRequest)">
 <h3>platformLogout</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/api/token/logout")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">platformLogout</span><wbr><span class="parameters">(jakarta.servlet.http.HttpServletRequest&nbsp;request)</span>
-                    throws <span class="exceptions">org.springframework.web.client.HttpClientErrorException</span></div>
+<div class="member-signature"><span class="annotations">@DeleteMapping("/api/token/logout")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">platformLogout</span><wbr><span class="parameters">(jakarta.servlet.http.HttpServletRequest&nbsp;request)</span>
+                      throws <span class="exceptions">org.springframework.web.client.HttpClientErrorException</span></div>
 <div class="block">Remove details of the token.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -180,10 +180,10 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="serverLogout(java.lang.String)">
 <h3>serverLogout</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/servers/{serverName}/api/token/logout")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">serverLogout</span><wbr><span class="parameters">(@PathVariable
+<div class="member-signature"><span class="annotations">@DeleteMapping("/servers/{serverName}/api/token/logout")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">serverLogout</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span>
-                  throws <span class="exceptions">org.springframework.web.client.HttpClientErrorException</span></div>
+                    throws <span class="exceptions">org.springframework.web.client.HttpClientErrorException</span></div>
 <div class="block">Remove details of the token.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
