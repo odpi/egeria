@@ -32,6 +32,10 @@ public class DataScopeProperties extends ClassificationBeanProperties
     private float               maxHeight               = 0F;
     private Date                dataCollectionStartTime = null;
     private Date                dataCollectionEndTime   = null;
+    private Date                dataValidityStartTime   = null;
+    private Date                dataValidityEndTime     = null;
+    private Date                dataCoverageStartTime   = null;
+    private Date                dataCoverageEndTime     = null;
     private Map<String, String> scopeElements           = null;
     private Map<String, String> additionalProperties    = null;
 
@@ -65,6 +69,10 @@ public class DataScopeProperties extends ClassificationBeanProperties
             minHeight               = template.getMinHeight();
             dataCollectionStartTime = template.getDataCollectionStartTime();
             dataCollectionEndTime   = template.getDataCollectionEndTime();
+            dataValidityStartTime   = template.getDataValidityStartTime();
+            dataValidityEndTime     = template.getDataValidityEndTime();
+            dataCoverageStartTime   = template.getDataCoverageStartTime();
+            dataCoverageEndTime     = template.getDataCoverageEndTime();
             scopeElements           = template.getScopeElements();
             additionalProperties    = template.getAdditionalProperties();
         }
@@ -247,6 +255,95 @@ public class DataScopeProperties extends ClassificationBeanProperties
     }
 
 
+
+    /**
+     * Return the start time that the data is valid.
+     *
+     * @return date
+     */
+    public Date getDataValidityStartTime()
+    {
+        return dataValidityStartTime;
+    }
+
+
+    /**
+     * Set up the start time that the data is valid.
+     *
+     * @param dataValidityStartTime date
+     */
+    public void setDataValidityStartTime(Date dataValidityStartTime)
+    {
+        this.dataValidityStartTime = dataValidityStartTime;
+    }
+
+
+    /**
+     * Return the end time that the data is valid.
+     *
+     * @return date
+     */
+    public Date getDataValidityEndTime()
+    {
+        return dataValidityEndTime;
+    }
+
+
+    /**
+     * Set up the end time that the data is valid.
+     *
+     * @param dataValidityEndTime date
+     */
+    public void setDataValidityEndTime(Date dataValidityEndTime)
+    {
+        this.dataValidityEndTime = dataValidityEndTime;
+    }
+
+
+    /**
+     * Return the start time of the period that the data covers.
+     *
+     * @return date
+     */
+    public Date getDataCoverageStartTime()
+    {
+        return dataCoverageStartTime;
+    }
+
+
+    /**
+     * Set up the start time of the period that the data covers.
+     *
+     * @param dataCoverageStartTime date
+     */
+    public void setDataCoverageStartTime(Date dataCoverageStartTime)
+    {
+        this.dataCoverageStartTime = dataCoverageStartTime;
+    }
+
+
+    /**
+     * Return the end time of the period that the data covers.
+     *
+     * @return date
+     */
+    public Date getDataCoverageEndTime()
+    {
+        return dataCoverageEndTime;
+    }
+
+
+    /**
+     * Set up the end time of the period that the data covers.
+     *
+     * @param dataCoverageEndTime date
+     */
+    public void setDataCoverageEndTime(Date dataCoverageEndTime)
+    {
+        this.dataCoverageEndTime = dataCoverageEndTime;
+    }
+
+
     /**
      * Return the map of scope elements that defines the scope of the data.
      *
@@ -308,6 +405,10 @@ public class DataScopeProperties extends ClassificationBeanProperties
                 ", maxHeight=" + maxHeight +
                 ", dataCollectionStartTime=" + dataCollectionStartTime +
                 ", dataCollectionEndTime=" + dataCollectionEndTime +
+                ", dataValidityStartTime=" + dataValidityStartTime +
+                ", dataValidityEndTime=" + dataValidityEndTime +
+                ", dataCoverageStartTime=" + dataCoverageStartTime +
+                ", dataCoverageEndTime=" + dataCoverageEndTime +
                 ", scopeElements=" + scopeElements +
                 ", additionalProperties=" + additionalProperties +
                 "} " + super.toString();
@@ -336,6 +437,10 @@ public class DataScopeProperties extends ClassificationBeanProperties
                 Float.compare(maxHeight, that.maxHeight) == 0 &&
                 Objects.equals(dataCollectionStartTime, that.dataCollectionStartTime) &&
                 Objects.equals(dataCollectionEndTime, that.dataCollectionEndTime) &&
+                Objects.equals(dataValidityStartTime, that.dataValidityStartTime) &&
+                Objects.equals(dataValidityEndTime, that.dataValidityEndTime) &&
+                Objects.equals(dataCoverageStartTime, that.dataCoverageStartTime) &&
+                Objects.equals(dataCoverageEndTime, that.dataCoverageEndTime) &&
                 Objects.equals(scopeElements, that.scopeElements) &&
                 Objects.equals(additionalProperties, that.additionalProperties);
     }
@@ -349,6 +454,8 @@ public class DataScopeProperties extends ClassificationBeanProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), minLongitude, minLatitude, maxLongitude, maxLatitude, minHeight,
-                            maxHeight, dataCollectionStartTime, dataCollectionEndTime, scopeElements, additionalProperties);
+                            maxHeight, dataCollectionStartTime, dataCollectionEndTime, dataValidityStartTime,
+                            dataValidityEndTime, dataCoverageStartTime, dataCoverageEndTime, scopeElements,
+                            additionalProperties);
     }
 }

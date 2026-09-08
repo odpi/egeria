@@ -1775,6 +1775,18 @@ public class OpenMetadataElementBuilder
                                     elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                                        OpenMetadataProperty.DATA_COLLECTION_END_TIME.name,
                                                                                        dataLensProperties.getDataCollectionEndTime());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.DATA_VALIDITY_START_TIME.name,
+                                                                                       dataLensProperties.getDataValidityStartTime());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.DATA_VALIDITY_END_TIME.name,
+                                                                                       dataLensProperties.getDataValidityEndTime());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.DATA_COVERAGE_START_TIME.name,
+                                                                                       dataLensProperties.getDataCoverageStartTime());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.DATA_COVERAGE_END_TIME.name,
+                                                                                       dataLensProperties.getDataCoverageEndTime());
                                     elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                                             OpenMetadataProperty.SCOPE_ELEMENTS.name,
                                                                                             dataLensProperties.getScopeElements());

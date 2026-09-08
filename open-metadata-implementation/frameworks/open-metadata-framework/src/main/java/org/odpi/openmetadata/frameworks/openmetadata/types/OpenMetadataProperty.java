@@ -2383,15 +2383,34 @@ public enum OpenMetadataProperty
     MAX_HEIGHT("maxHeight", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the height above ground is relevant, this is the highest height that the data covers.", null, "cd188a84-17b7-410a-8aba-6195141268ec"),
 
     /**
-     * If the data is bound by time, this is the start time.
+     * This is the start time that the data collection begins.
      */
-    DATA_COLLECTION_START_TIME("dataCollectionStartTime", DataType.DATE, DataType.DATE.getDisplayName(), "If the data is bound by time, this is the start time.", null, "f0e16621-0a71-40df-8679-0117c6ee2ecd"),
+    DATA_COLLECTION_START_TIME("dataCollectionStartTime", DataType.DATE, DataType.DATE.getDisplayName(), "This is the start time that the data collection begins.", null, "f0e16621-0a71-40df-8679-0117c6ee2ecd"),
 
     /**
-     * If the data is bound by time, this is the end time.
+     * This is the end time that the data collection ends.
      */
-    DATA_COLLECTION_END_TIME("dataCollectionEndTime", DataType.DATE, DataType.DATE.getDisplayName(), "If the data is bound by time, this is the end time.", null, "f216c3c4-247e-425b-9186-5c0d6a242d77"),
+    DATA_COLLECTION_END_TIME("dataCollectionEndTime", DataType.DATE, DataType.DATE.getDisplayName(), "This is the end time that the data collection ends.", null, "f216c3c4-247e-425b-9186-5c0d6a242d77"),
 
+    /**
+     * This is the start time that the data is valid.
+     */
+    DATA_VALIDITY_START_TIME("dataValidityStartTime", DataType.DATE, DataType.DATE.getDisplayName(), "This is the start time that the data is valid.", null, "5490ebd4-51da-4e4d-a328-8ad60ddfbb0e"),
+
+    /**
+     * This is the end time that the data is valid.
+     */
+    DATA_VALIDITY_END_TIME("dataValidityEndTime", DataType.DATE, DataType.DATE.getDisplayName(), "This is the end time that the data is valid.", null, "29eb3313-1cb8-4cd4-b912-571a23891cb6"),
+
+    /**
+     * If the data is bound by time, this is the start time that the data coverage begins.
+     */
+    DATA_COVERAGE_START_TIME("dataCoverageStartTime", DataType.DATE, DataType.DATE.getDisplayName(), "If the data is bound by time, this is the start time that the data coverage begins.", null, "b2bbb51b-2729-4b55-90cd-86fd05793649"),
+
+    /**
+     * If the data is bound by time, this is the end time that the data coverage ends.
+     */
+    DATA_COVERAGE_END_TIME("dataCoverageEndTime", DataType.DATE, DataType.DATE.getDisplayName(), "If the data is bound by time, this is the end time that the data coverage ends.", null, "06bae474-cb65-4af5-9801-17af9a06e072"),
 
     /**
      * Labels that apply to the referenceable.

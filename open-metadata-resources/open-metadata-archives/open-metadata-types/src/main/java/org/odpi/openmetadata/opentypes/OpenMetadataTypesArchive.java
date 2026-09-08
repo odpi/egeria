@@ -161,9 +161,13 @@ public class OpenMetadataTypesArchive
         update0025Locations();
         update0110Actors();
         update0112People();
+        update0130Projects();
         update0205ConnectionLinkage();
+        update0210DataStores();
         update0221DocumentStores();
         update0423SecurityDefinitions();
+        update0430DevelopmentControls();
+        update0438NamingStandards();
         update0451Notifications();
         update0505SchemaAttributes();
         add0280SoftwareDevelopmentAssets();
@@ -212,6 +216,31 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setMultiLink(true);
 
         return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0130Projects()
+    {
+        this.archiveBuilder.addClassificationDef(getInvestigationClassification());
+    }
+
+
+    /**
+     * Investigation identifies a project that is seeking to answer a question, or discover information.
+     *
+     * @return classification def
+     */
+    private ClassificationDef getInvestigationClassification()
+    {
+        return archiveHelper.getClassificationDef(OpenMetadataType.INVESTIGATION_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.PROJECT_KIND_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.PROJECT.typeName),
+                                                  false);
     }
 
 
@@ -292,6 +321,50 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName));
         typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0210DataStores()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataScopeClassification());
+    }
+
+
+    /**
+     * DataScope gains the validity and coverage time periods.  The data collection times say when the data was
+     * gathered; the validity times say when the data is valid; and the coverage times say which period of time
+     * the data describes.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDataScopeClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_SCOPE_CLASSIFICATION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_VALIDITY_START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_VALIDITY_END_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COVERAGE_START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COVERAGE_END_TIME));
+
+        typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
     }
@@ -396,6 +469,76 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SECURITY_ROLES));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0438NamingStandards()
+    {
+        this.archiveBuilder.addClassificationDef(getNamingStandardsVocabularyClassification());
+    }
+
+
+    /**
+     * NamingStandardsVocabulary identifies a glossary whose terms are the name parts used to build
+     * names that follow the organization's naming standards.
+     *
+     * @return classification def
+     */
+    private ClassificationDef getNamingStandardsVocabularyClassification()
+    {
+        return archiveHelper.getClassificationDef(OpenMetadataType.NAMING_STANDARDS_VOCABULARY_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_KIND_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY.typeName),
+                                                  false);
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0430DevelopmentControls()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataLensEntity());
+    }
+
+
+    /**
+     * DataLens gains the validity and coverage time periods, to match DataScope.  The data collection times say
+     * when the data was gathered; the validity times say when the data is valid; and the coverage times say which
+     * period of time the data describes.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDataLensEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_LENS.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_VALIDITY_START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_VALIDITY_END_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COVERAGE_START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COVERAGE_END_TIME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
