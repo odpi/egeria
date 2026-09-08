@@ -746,11 +746,19 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color"><code><a href="#DATA_COLLECTION_END_TIME" class="member-name-link">DATA_COLLECTION_END_TIME</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">If the data is bound by time, this is the end time.</div>
+<div class="block">This is the end time that the data collection ends.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#DATA_COLLECTION_START_TIME" class="member-name-link">DATA_COLLECTION_START_TIME</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">If the data is bound by time, this is the start time.</div>
+<div class="block">This is the start time that the data collection begins.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DATA_COVERAGE_END_TIME" class="member-name-link">DATA_COVERAGE_END_TIME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">If the data is bound by time, this is the end time that the data coverage ends.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DATA_COVERAGE_START_TIME" class="member-name-link">DATA_COVERAGE_START_TIME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">If the data is bound by time, this is the start time that the data coverage begins.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#DATA_CREATE_COUNT" class="member-name-link">DATA_CREATE_COUNT</a></code></div>
 <div class="col-last even-row-color">
@@ -787,6 +795,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="#DATA_UPDATE_COUNT" class="member-name-link">DATA_UPDATE_COUNT</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Number of places in the code where data is updated.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DATA_VALIDITY_END_TIME" class="member-name-link">DATA_VALIDITY_END_TIME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">This is the end time that the data is valid.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DATA_VALIDITY_START_TIME" class="member-name-link">DATA_VALIDITY_START_TIME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">This is the start time that the data is valid.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#DATABASE_INSTANCE" class="member-name-link">DATABASE_INSTANCE</a></code></div>
 <div class="col-last odd-row-color">
@@ -6121,14 +6137,42 @@ the order they are declared.</div>
 <section class="detail" id="DATA_COLLECTION_START_TIME">
 <h3>DATA_COLLECTION_START_TIME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">DATA_COLLECTION_START_TIME</span></div>
-<div class="block">If the data is bound by time, this is the start time.</div>
+<div class="block">This is the start time that the data collection begins.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DATA_COLLECTION_END_TIME">
 <h3>DATA_COLLECTION_END_TIME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">DATA_COLLECTION_END_TIME</span></div>
-<div class="block">If the data is bound by time, this is the end time.</div>
+<div class="block">This is the end time that the data collection ends.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATA_VALIDITY_START_TIME">
+<h3>DATA_VALIDITY_START_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">DATA_VALIDITY_START_TIME</span></div>
+<div class="block">This is the start time that the data is valid.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATA_VALIDITY_END_TIME">
+<h3>DATA_VALIDITY_END_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">DATA_VALIDITY_END_TIME</span></div>
+<div class="block">This is the end time that the data is valid.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATA_COVERAGE_START_TIME">
+<h3>DATA_COVERAGE_START_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">DATA_COVERAGE_START_TIME</span></div>
+<div class="block">If the data is bound by time, this is the start time that the data coverage begins.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATA_COVERAGE_END_TIME">
+<h3>DATA_COVERAGE_END_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></span>&nbsp;<span class="element-name">DATA_COVERAGE_END_TIME</span></div>
+<div class="block">If the data is bound by time, this is the end time that the data coverage ends.</div>
 </section>
 </li>
 <li>
