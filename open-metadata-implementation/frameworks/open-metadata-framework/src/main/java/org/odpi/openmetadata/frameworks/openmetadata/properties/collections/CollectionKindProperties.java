@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.Des
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.CanonicalVocabularyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.NamingStandardsVocabularyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.TaxonomyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
@@ -35,6 +36,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CanonicalVocabularyProperties.class, name = "CanonicalVocabularyProperties"),
                 @JsonSubTypes.Type(value = DataSharingAgreementProperties.class, name = "DataSharingAgreementProperties"),
                 @JsonSubTypes.Type(value = EditingCollectionProperties.class, name = "EditingCollectionProperties"),
+                @JsonSubTypes.Type(value = NamingStandardsVocabularyProperties.class, name = "NamingStandardsVocabularyProperties"),
                 @JsonSubTypes.Type(value = ScopingCollectionProperties.class, name = "ScopingCollectionProperties"),
                 @JsonSubTypes.Type(value = StagingCollectionProperties.class, name = "StagingCollectionProperties"),
                 @JsonSubTypes.Type(value = TaxonomyProperties.class, name = "TaxonomyProperties"),

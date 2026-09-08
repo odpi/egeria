@@ -976,6 +976,64 @@ public class ProjectManagerResource
 
 
     /**
+     * Classify a project to say that it is an investigation that is seeking to answer a question.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/investigation")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setProjectAsInvestigation",
+            description="Classify a project to say that it is an investigation that is seeking to answer a question.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse setProjectAsInvestigation(@PathVariable String serverName,
+                                                  @PathVariable String projectGUID,
+                                                  @RequestBody (required = false)
+                                                  NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setProjectAsInvestigation(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the investigation designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/projects/{projectGUID}/investigation/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearProjectAsInvestigation",
+            description="Remove the investigation designation from a project.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/project"))
+
+    public VoidResponse clearProjectAsInvestigation(@PathVariable String serverName,
+                                                    @PathVariable String projectGUID,
+                                                    @RequestBody (required = false)
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearProjectAsInvestigation(serverName, projectGUID, requestBody);
+    }
+
+
+    /**
      * Classify a project to say that it is managing the development of a glossary.
      *
      * @param serverName name of the server to route the request to

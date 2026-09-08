@@ -377,6 +377,10 @@ Content-Type: application/json
 }
 
 ###
+
+@agreementGUID=add guid here
+
+###
 # @name generateDataContract
 # Generate the ODCS document for an agreement.
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/agreements/{{agreementGUID}}/data-contract-document
