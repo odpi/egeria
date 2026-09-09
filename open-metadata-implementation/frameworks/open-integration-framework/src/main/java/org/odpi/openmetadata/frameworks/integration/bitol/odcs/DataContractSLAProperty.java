@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolCustomProperty;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolAuthoritativeDefinition;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -31,6 +34,8 @@ public class DataContractSLAProperty
     private String description = null;
     private String scheduler = null;
     private String schedule = null;
+    private List<BitolCustomProperty> customProperties = null;
+    private List<BitolAuthoritativeDefinition> authoritativeDefinitions = null;
 
 
     /**
@@ -262,6 +267,50 @@ public class DataContractSLAProperty
 
 
     /**
+     * Return the custom properties of this service level property.
+     *
+     * @return List<BitolCustomProperty>
+     */
+    public List<BitolCustomProperty> getCustomProperties()
+    {
+        return customProperties;
+    }
+
+
+    /**
+     * Set up the custom properties of this service level property.
+     *
+     * @param customProperties List<BitolCustomProperty>
+     */
+    public void setCustomProperties(List<BitolCustomProperty> customProperties)
+    {
+        this.customProperties = customProperties;
+    }
+
+
+    /**
+     * Return links to the sources that define this service level property.
+     *
+     * @return List<BitolAuthoritativeDefinition>
+     */
+    public List<BitolAuthoritativeDefinition> getAuthoritativeDefinitions()
+    {
+        return authoritativeDefinitions;
+    }
+
+
+    /**
+     * Set up links to the sources that define this service level property.
+     *
+     * @param authoritativeDefinitions List<BitolAuthoritativeDefinition>
+     */
+    public void setAuthoritativeDefinitions(List<BitolAuthoritativeDefinition> authoritativeDefinitions)
+    {
+        this.authoritativeDefinitions = authoritativeDefinitions;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -280,6 +329,8 @@ public class DataContractSLAProperty
                        ", description='" + description + '\'' +
                        ", scheduler='" + scheduler + '\'' +
                        ", schedule='" + schedule + '\'' +
+                       ", customProperties=" + customProperties +
+                       ", authoritativeDefinitions=" + authoritativeDefinitions +
                        '}';
     }
 
@@ -311,7 +362,9 @@ public class DataContractSLAProperty
                        Objects.equals(driver, that.driver) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(scheduler, that.scheduler) &&
-                       Objects.equals(schedule, that.schedule);
+                       Objects.equals(schedule, that.schedule) &&
+                       Objects.equals(customProperties, that.customProperties) &&
+                       Objects.equals(authoritativeDefinitions, that.authoritativeDefinitions);
     }
 
 
@@ -323,6 +376,6 @@ public class DataContractSLAProperty
     @Override
     public int hashCode()
     {
-        return Objects.hash(id, property, value, valueExt, unit, element, driver, description, scheduler, schedule);
+        return Objects.hash(id, property, value, valueExt, unit, element, driver, description, scheduler, schedule, customProperties, authoritativeDefinitions);
     }
 }

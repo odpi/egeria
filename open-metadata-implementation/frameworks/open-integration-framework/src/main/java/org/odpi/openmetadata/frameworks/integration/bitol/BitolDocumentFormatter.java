@@ -160,9 +160,35 @@ public class BitolDocumentFormatter
      * @return list of beans
      * @throws IOException problem parsing the JSON
      */
+    public static <T> T fromJSONFragment(String   json,
+                                         Class<T> type) throws IOException
+    {
+        if ((json == null) || (json.isBlank()))
+        {
+            return null;
+        }
+
+        return newJSONMapper().readValue(json, type);
+    }
+
+
+    /**
+     * Parse a JSON fragment holding a list of beans, as written by toJSONFragment.
+     *
+     * @param json json text (may be null)
+     * @param type element type
+     * @param <T> element type
+     * @return list or null
+     * @throws IOException problem parsing
+     */
     public static <T> List<T> fromJSONFragmentList(String   json,
                                                    Class<T> beanClass) throws IOException
     {
+        if ((json == null) || (json.isBlank()))
+        {
+            return null;
+        }
+
         return JSON_MAPPER.readValue(json, JSON_MAPPER.getTypeFactory().constructCollectionType(List.class, beanClass));
     }
 

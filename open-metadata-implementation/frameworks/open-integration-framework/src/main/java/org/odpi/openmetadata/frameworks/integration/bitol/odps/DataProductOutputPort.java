@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolAuthoritat
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolCustomProperty;
 
 import java.util.List;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSynonym;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolContext;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -34,6 +36,10 @@ public class DataProductOutputPort
     private List<String>                       tags = null;
     private List<BitolCustomProperty>          customProperties = null;
     private List<BitolAuthoritativeDefinition> authoritativeDefinitions = null;
+    private String id = null;
+    private Boolean deprecated = null;
+    private List<BitolSynonym> synonyms = null;
+    private BitolContext context = null;
 
 
     /**
@@ -265,6 +271,94 @@ public class DataProductOutputPort
 
 
     /**
+     * Return the stable identifier of this port.
+     *
+     * @return String
+     */
+    public String getId()
+    {
+        return id;
+    }
+
+
+    /**
+     * Set up the stable identifier of this port.
+     *
+     * @param id String
+     */
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+
+    /**
+     * Return whether this port is deprecated and should not be used in new implementations.
+     *
+     * @return Boolean
+     */
+    public Boolean getDeprecated()
+    {
+        return deprecated;
+    }
+
+
+    /**
+     * Set up whether this port is deprecated and should not be used in new implementations.
+     *
+     * @param deprecated Boolean
+     */
+    public void setDeprecated(Boolean deprecated)
+    {
+        this.deprecated = deprecated;
+    }
+
+
+    /**
+     * Return the alternative names for this port.
+     *
+     * @return List<BitolSynonym>
+     */
+    public List<BitolSynonym> getSynonyms()
+    {
+        return synonyms;
+    }
+
+
+    /**
+     * Set up the alternative names for this port.
+     *
+     * @param synonyms List<BitolSynonym>
+     */
+    public void setSynonyms(List<BitolSynonym> synonyms)
+    {
+        this.synonyms = synonyms;
+    }
+
+
+    /**
+     * Return the AI and semantic context block for this port.
+     *
+     * @return BitolContext
+     */
+    public BitolContext getContext()
+    {
+        return context;
+    }
+
+
+    /**
+     * Set up the AI and semantic context block for this port.
+     *
+     * @param context BitolContext
+     */
+    public void setContext(BitolContext context)
+    {
+        this.context = context;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -283,6 +377,10 @@ public class DataProductOutputPort
                        ", tags=" + tags +
                        ", customProperties=" + customProperties +
                        ", authoritativeDefinitions=" + authoritativeDefinitions +
+                       ", id=" + id +
+                       ", deprecated=" + deprecated +
+                       ", synonyms=" + synonyms +
+                       ", context=" + context +
                        '}';
     }
 
@@ -314,7 +412,11 @@ public class DataProductOutputPort
                        Objects.equals(inputContracts, that.inputContracts) &&
                        Objects.equals(tags, that.tags) &&
                        Objects.equals(customProperties, that.customProperties) &&
-                       Objects.equals(authoritativeDefinitions, that.authoritativeDefinitions);
+                       Objects.equals(authoritativeDefinitions, that.authoritativeDefinitions) &&
+                       Objects.equals(id, that.id) &&
+                       Objects.equals(deprecated, that.deprecated) &&
+                       Objects.equals(synonyms, that.synonyms) &&
+                       Objects.equals(context, that.context);
     }
 
 
@@ -326,6 +428,6 @@ public class DataProductOutputPort
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, description, type, version, contractId, sbom, inputContracts, tags, customProperties, authoritativeDefinitions);
+        return Objects.hash(name, description, type, version, contractId, sbom, inputContracts, tags, customProperties, authoritativeDefinitions, id, deprecated, synonyms, context);
     }
 }

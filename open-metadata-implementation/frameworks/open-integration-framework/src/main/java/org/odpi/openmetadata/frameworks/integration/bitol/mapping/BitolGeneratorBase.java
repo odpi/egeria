@@ -2,6 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.integration.bitol.mapping;
 
+import java.io.IOException;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSynonym;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolContext;
+import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolAuthoritativeDefinition;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolCustomProperty;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDescription;
@@ -104,6 +108,7 @@ public abstract class BitolGeneratorBase
             }
 
             document.setCustomProperties(getCustomProperties(additionalProperties));
+            document.setContext(getContext(additionalProperties));
         }
         else
         {
@@ -177,6 +182,17 @@ public abstract class BitolGeneratorBase
         if (additionalProperties == null)
         {
             return null;
+        }
+
+        /*
+         * When the cataloguer kept the full list (because an entry carried a vendor, description or id) it is
+         * used as it stands.
+         */
+        List<BitolCustomProperty> detailed = fromJSONList(getBitolValue(additionalProperties, BitolMapperBase.CUSTOM_PROPERTIES_JSON), BitolCustomProperty.class);
+
+        if (detailed != null)
+        {
+            return detailed;
         }
 
         List<BitolCustomProperty> customProperties = new ArrayList<>();
@@ -465,5 +481,84 @@ public abstract class BitolGeneratorBase
         }
 
         return "null";
+    }
+
+    /**
+     * Parse a JSON fragment kept in an additional property by the cataloguer.
+     *
+     * @param json json text (may be null)
+     * @param type bean type
+     * @param <T> bean type
+     * @return bean or null if absent or unreadable
+     */
+    protected static <T> T fromJSON(String   json,
+                                    Class<T> type)
+    {
+        try
+        {
+            return BitolDocumentFormatter.fromJSONFragment(json, type);
+        }
+        catch (IOException error)
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Parse a JSON fragment holding a list, kept in an additional property by the cataloguer.
+     *
+     * @param json json text (may be null)
+     * @param type element type
+     * @param <T> element type
+     * @return list or null if absent or unreadable
+     */
+    protected static <T> List<T> fromJSONList(String   json,
+                                              Class<T> type)
+    {
+        try
+        {
+            return BitolDocumentFormatter.fromJSONFragmentList(json, type);
+        }
+        catch (IOException error)
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Return the synonyms kept as JSON on an element.
+     *
+     * @param additionalProperties additional properties of the element
+     * @return synonyms or null
+     */
+    protected static List<BitolSynonym> getSynonyms(Map<String, String> additionalProperties)
+    {
+        return fromJSONList(getBitolValue(additionalProperties, BitolMapperBase.SYNONYMS_JSON), BitolSynonym.class);
+    }
+
+
+    /**
+     * Return the AI context kept as JSON on an element.
+     *
+     * @param additionalProperties additional properties of the element
+     * @return context or null
+     */
+    protected static BitolContext getContext(Map<String, String> additionalProperties)
+    {
+        return fromJSON(getBitolValue(additionalProperties, BitolMapperBase.CONTEXT_JSON), BitolContext.class);
+    }
+
+
+    /**
+     * Return whether an element was recorded as deprecated.
+     *
+     * @param additionalProperties additional properties of the element
+     * @return true if deprecated, otherwise null so the flag is omitted from the document
+     */
+    protected static Boolean getDeprecated(Map<String, String> additionalProperties)
+    {
+        return "true".equals(getBitolValue(additionalProperties, BitolMapperBase.DEPRECATED)) ? Boolean.TRUE : null;
     }
 }

@@ -30,6 +30,8 @@ public class DataProductInputPort
     private List<String>                       tags = null;
     private List<BitolCustomProperty>          customProperties = null;
     private List<BitolAuthoritativeDefinition> authoritativeDefinitions = null;
+    private String id = null;
+    private Boolean deprecated = null;
 
 
     /**
@@ -173,6 +175,50 @@ public class DataProductInputPort
 
 
     /**
+     * Return the stable identifier of this port.
+     *
+     * @return String
+     */
+    public String getId()
+    {
+        return id;
+    }
+
+
+    /**
+     * Set up the stable identifier of this port.
+     *
+     * @param id String
+     */
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+
+    /**
+     * Return whether this port is deprecated and should not be used in new implementations.
+     *
+     * @return Boolean
+     */
+    public Boolean getDeprecated()
+    {
+        return deprecated;
+    }
+
+
+    /**
+     * Set up whether this port is deprecated and should not be used in new implementations.
+     *
+     * @param deprecated Boolean
+     */
+    public void setDeprecated(Boolean deprecated)
+    {
+        this.deprecated = deprecated;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -187,6 +233,8 @@ public class DataProductInputPort
                        ", tags=" + tags +
                        ", customProperties=" + customProperties +
                        ", authoritativeDefinitions=" + authoritativeDefinitions +
+                       ", id=" + id +
+                       ", deprecated=" + deprecated +
                        '}';
     }
 
@@ -214,7 +262,9 @@ public class DataProductInputPort
                        Objects.equals(contractId, that.contractId) &&
                        Objects.equals(tags, that.tags) &&
                        Objects.equals(customProperties, that.customProperties) &&
-                       Objects.equals(authoritativeDefinitions, that.authoritativeDefinitions);
+                       Objects.equals(authoritativeDefinitions, that.authoritativeDefinitions) &&
+                       Objects.equals(id, that.id) &&
+                       Objects.equals(deprecated, that.deprecated);
     }
 
 
@@ -226,6 +276,6 @@ public class DataProductInputPort
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, version, contractId, tags, customProperties, authoritativeDefinitions);
+        return Objects.hash(name, version, contractId, tags, customProperties, authoritativeDefinitions, id, deprecated);
     }
 }

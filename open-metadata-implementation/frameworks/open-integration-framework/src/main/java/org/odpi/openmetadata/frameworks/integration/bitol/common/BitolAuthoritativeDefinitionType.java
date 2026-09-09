@@ -32,7 +32,27 @@ public enum BitolAuthoritativeDefinitionType
     /**
      * A link to the implementation of the element, for example a JDBC URL.
      */
-    IMPLEMENTATION               ("implementation", "A link to the implementation of the element, for example a JDBC URL.");
+    IMPLEMENTATION               ("implementation", "A link to the implementation of the element, for example a JDBC URL."),
+
+    /**
+     * The canonical URL of the element.
+     */
+    CANONICAL_URL                ("canonicalUrl", "The canonical URL of the element."),
+
+    /**
+     * A link to the glossary entry that defines the element.
+     */
+    GLOSSARY                     ("glossary", "A link to the glossary entry that defines the element."),
+
+    /**
+     * A link to the ontology concept that defines the element.
+     */
+    ONTOLOGY                     ("ontology", "A link to the ontology concept that defines the element."),
+
+    /**
+     * A link to the taxonomy node that classifies the element.
+     */
+    TAXONOMY                     ("taxonomy", "A link to the taxonomy node that classifies the element.");
 
     private final String value;
     private final String description;

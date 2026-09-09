@@ -31,7 +31,7 @@ public class DataContract extends BitolDocument
     /**
      * The version of the Open Data Contract Standard that this bean is aligned with.  It is the default apiVersion for new documents.
      */
-    public static final String CURRENT_API_VERSION = "v3.1.0";
+    public static final String CURRENT_API_VERSION = "v3.2.0";
 
 
     private String                         dataProduct = null;

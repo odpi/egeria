@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolContext;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -27,6 +28,7 @@ public class DataContractSchemaObject extends DataContractSchemaElement
     private List<DataContractSchemaProperty> properties = null;
     private List<DataContractRelationship>   relationships = null;
     private List<DataContractQualityRule>    quality = null;
+    private BitolContext context = null;
 
 
     /**
@@ -148,6 +150,28 @@ public class DataContractSchemaObject extends DataContractSchemaElement
 
 
     /**
+     * Return the AI and semantic context block for this schema object.
+     *
+     * @return BitolContext
+     */
+    public BitolContext getContext()
+    {
+        return context;
+    }
+
+
+    /**
+     * Set up the AI and semantic context block for this schema object.
+     *
+     * @param context BitolContext
+     */
+    public void setContext(BitolContext context)
+    {
+        this.context = context;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -161,6 +185,7 @@ public class DataContractSchemaObject extends DataContractSchemaElement
                        ", properties=" + properties +
                        ", relationships=" + relationships +
                        ", quality=" + quality +
+                       ", context=" + context +
                        "} " + super.toString();
     }
 
@@ -191,7 +216,8 @@ public class DataContractSchemaObject extends DataContractSchemaElement
                        Objects.equals(dataGranularityDescription, that.dataGranularityDescription) &&
                        Objects.equals(properties, that.properties) &&
                        Objects.equals(relationships, that.relationships) &&
-                       Objects.equals(quality, that.quality);
+                       Objects.equals(quality, that.quality) &&
+                       Objects.equals(context, that.context);
     }
 
 
@@ -203,6 +229,6 @@ public class DataContractSchemaObject extends DataContractSchemaElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), logicalType, dataGranularityDescription, properties, relationships, quality);
+        return Objects.hash(super.hashCode(), logicalType, dataGranularityDescription, properties, relationships, quality, context);
     }
 }

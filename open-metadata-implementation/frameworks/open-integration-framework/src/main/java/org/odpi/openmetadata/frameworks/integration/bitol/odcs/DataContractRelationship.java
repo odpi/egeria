@@ -31,6 +31,7 @@ public class DataContractRelationship
     private List<String>              from = null;
     private List<String>              to = null;
     private List<BitolCustomProperty> customProperties = null;
+    private String id = null;
 
 
     /**
@@ -134,6 +135,28 @@ public class DataContractRelationship
 
 
     /**
+     * Return the stable identifier of the relationship.
+     *
+     * @return String
+     */
+    public String getId()
+    {
+        return id;
+    }
+
+
+    /**
+     * Set up the stable identifier of the relationship.
+     *
+     * @param id String
+     */
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -146,6 +169,7 @@ public class DataContractRelationship
                        ", from=" + from +
                        ", to=" + to +
                        ", customProperties=" + customProperties +
+                       ", id=" + id +
                        '}';
     }
 
@@ -171,7 +195,8 @@ public class DataContractRelationship
         return Objects.equals(type, that.type) &&
                        Objects.equals(from, that.from) &&
                        Objects.equals(to, that.to) &&
-                       Objects.equals(customProperties, that.customProperties);
+                       Objects.equals(customProperties, that.customProperties) &&
+                       Objects.equals(id, that.id);
     }
 
 
@@ -183,6 +208,6 @@ public class DataContractRelationship
     @Override
     public int hashCode()
     {
-        return Objects.hash(type, from, to, customProperties);
+        return Objects.hash(type, from, to, customProperties, id);
     }
 }

@@ -52,7 +52,17 @@ public enum DataContractLogicalType
     /**
      * A true or false value.
      */
-    BOOLEAN  ("boolean", "A true or false value.");
+    BOOLEAN  ("boolean", "A true or false value."),
+
+    /**
+     * A key/value (dictionary) structure whose key and value are described by the map object of the property.
+     */
+    MAP      ("map", "A key/value (dictionary) structure whose key and value are described by the map object of the property."),
+
+    /**
+     * A fixed-dimension dense numeric array for embeddings and similarity search.
+     */
+    VECTOR   ("vector", "A fixed-dimension dense numeric array for embeddings and similarity search.");
 
     private final String value;
     private final String description;

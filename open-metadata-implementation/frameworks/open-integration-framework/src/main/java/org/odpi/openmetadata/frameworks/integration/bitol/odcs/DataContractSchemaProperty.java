@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.integration.bitol.odcs;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +44,9 @@ public class DataContractSchemaProperty extends DataContractSchemaElement
     private List<DataContractQualityRule>    quality = null;
     private List<DataContractSchemaProperty> properties = null;
     private DataContractSchemaProperty       items = null;
+    private List<DataContractEnumValue> enumValues = null;
+    private DataContractSchemaMap map = null;
+    private String semanticType = null;
 
 
     /**
@@ -472,6 +476,74 @@ public class DataContractSchemaProperty extends DataContractSchemaElement
 
 
     /**
+     * Return the enumeration of allowed values for this property (the enum array in the document).
+     *
+     * @return List<DataContractEnumValue>
+     */
+    @JsonProperty("enum")
+    public List<DataContractEnumValue> getEnumValues()
+    {
+        return enumValues;
+    }
+
+
+    /**
+     * Set up the enumeration of allowed values for this property (the enum array in the document).
+     *
+     * @param enumValues List<DataContractEnumValue>
+     */
+    @JsonProperty("enum")
+    public void setEnumValues(List<DataContractEnumValue> enumValues)
+    {
+        this.enumValues = enumValues;
+    }
+
+
+    /**
+     * Return the key and value definitions when the logical type is map.
+     *
+     * @return DataContractSchemaMap
+     */
+    public DataContractSchemaMap getMap()
+    {
+        return map;
+    }
+
+
+    /**
+     * Set up the key and value definitions when the logical type is map.
+     *
+     * @param map DataContractSchemaMap
+     */
+    public void setMap(DataContractSchemaMap map)
+    {
+        this.map = map;
+    }
+
+
+    /**
+     * Return the semantic role of the property: column (the default), measure or dimension.
+     *
+     * @return String
+     */
+    public String getSemanticType()
+    {
+        return semanticType;
+    }
+
+
+    /**
+     * Set up the semantic role of the property: column (the default), measure or dimension.
+     *
+     * @param semanticType String
+     */
+    public void setSemanticType(String semanticType)
+    {
+        this.semanticType = semanticType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -499,6 +571,9 @@ public class DataContractSchemaProperty extends DataContractSchemaElement
                        ", quality=" + quality +
                        ", properties=" + properties +
                        ", items=" + items +
+                       ", enumValues=" + enumValues +
+                       ", map=" + map +
+                       ", semanticType=" + semanticType +
                        "} " + super.toString();
     }
 
@@ -543,7 +618,10 @@ public class DataContractSchemaProperty extends DataContractSchemaElement
                        Objects.equals(relationships, that.relationships) &&
                        Objects.equals(quality, that.quality) &&
                        Objects.equals(properties, that.properties) &&
-                       Objects.equals(items, that.items);
+                       Objects.equals(items, that.items) &&
+                       Objects.equals(enumValues, that.enumValues) &&
+                       Objects.equals(map, that.map) &&
+                       Objects.equals(semanticType, that.semanticType);
     }
 
 
@@ -555,6 +633,6 @@ public class DataContractSchemaProperty extends DataContractSchemaElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), logicalType, logicalTypeOptions, primaryKey, primaryKeyPosition, required, unique, partitioned, partitionKeyPosition, classification, encryptedName, transformSourceObjects, transformLogic, transformDescription, examples, criticalDataElement, relationships, quality, properties, items);
+        return Objects.hash(super.hashCode(), logicalType, logicalTypeOptions, primaryKey, primaryKeyPosition, required, unique, partitioned, partitionKeyPosition, classification, encryptedName, transformSourceObjects, transformLogic, transformDescription, examples, criticalDataElement, relationships, quality, properties, items, enumValues, map, semanticType);
     }
 }

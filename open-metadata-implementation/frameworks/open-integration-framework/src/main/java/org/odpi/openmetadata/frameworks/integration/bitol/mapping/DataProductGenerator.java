@@ -112,6 +112,9 @@ public class DataProductGenerator extends BitolGeneratorBase
             }
 
             dataProduct.setProductCreatedTs(getBitolValue(properties.getAdditionalProperties(), "productCreatedTs"));
+            dataProduct.setType(getBitolValue(properties.getAdditionalProperties(), "type"));
+            dataProduct.setDeprecated(getDeprecated(properties.getAdditionalProperties()));
+            dataProduct.setSynonyms(getSynonyms(properties.getAdditionalProperties()));
         }
 
         if (dataProduct.getDomain() == null)
@@ -181,6 +184,8 @@ public class DataProductGenerator extends BitolGeneratorBase
                 managementPort.setType(endpoint.getProtocol());
                 managementPort.setContent((getBitolValue(endpoint.getAdditionalProperties(), "content") != null) ? getBitolValue(endpoint.getAdditionalProperties(), "content") : endpoint.getCategory());
                 managementPort.setChannel(getBitolValue(endpoint.getAdditionalProperties(), "channel"));
+                managementPort.setId(getBitolValue(endpoint.getAdditionalProperties(), "id"));
+                managementPort.setDeprecated(getDeprecated(endpoint.getAdditionalProperties()));
                 managementPort.setCustomProperties(getCustomProperties(endpoint.getAdditionalProperties()));
 
                 if (managementPort.getName() != null)
@@ -267,6 +272,8 @@ public class DataProductGenerator extends BitolGeneratorBase
     {
         DataProductInputPort inputPort = new DataProductInputPort();
 
+        inputPort.setId(getBitolValue(portProperties.getAdditionalProperties(), "id"));
+        inputPort.setDeprecated(getDeprecated(portProperties.getAdditionalProperties()));
         inputPort.setName(portProperties.getDisplayName());
         inputPort.setVersion((portProperties.getVersionIdentifier() != null) ? portProperties.getVersionIdentifier() : "1.0.0");
         inputPort.setContractId(getContractId(port, portProperties));
@@ -291,6 +298,10 @@ public class DataProductGenerator extends BitolGeneratorBase
         DataProductOutputPort outputPort           = new DataProductOutputPort();
         Map<String, String>   additionalProperties = portProperties.getAdditionalProperties();
 
+        outputPort.setId(getBitolValue(additionalProperties, "id"));
+        outputPort.setDeprecated(getDeprecated(additionalProperties));
+        outputPort.setSynonyms(getSynonyms(additionalProperties));
+        outputPort.setContext(getContext(additionalProperties));
         outputPort.setName(portProperties.getDisplayName());
         outputPort.setDescription(portProperties.getDescription());
         outputPort.setVersion((portProperties.getVersionIdentifier() != null) ? portProperties.getVersionIdentifier() : "1.0.0");
@@ -300,21 +311,29 @@ public class DataProductGenerator extends BitolGeneratorBase
         outputPort.setAuthoritativeDefinitions(getAuthoritativeDefinitions(port));
         outputPort.setCustomProperties(getCustomProperties(additionalProperties));
 
-        String sbomURLs = getBitolValue(additionalProperties, "sbom");
+        String sbomJSON = getBitolValue(additionalProperties, "sbom");
 
-        if (sbomURLs != null)
+        if (sbomJSON != null)
         {
-            List<DataProductSBOM> sboms = new ArrayList<>();
+            List<DataProductSBOM> sboms = fromJSONList(sbomJSON, DataProductSBOM.class);
 
-            for (String url : sbomURLs.split(",\\s*"))
+            if (sboms == null)
             {
-                if (! url.isBlank())
-                {
-                    DataProductSBOM sbom = new DataProductSBOM();
+                /*
+                 * Products catalogued before the SBOM list was kept as JSON hold a comma-separated list of URLs.
+                 */
+                sboms = new ArrayList<>();
 
-                    sbom.setType("external");
-                    sbom.setUrl(url.trim());
-                    sboms.add(sbom);
+                for (String url : sbomJSON.split(",\\s*"))
+                {
+                    if (! url.isBlank())
+                    {
+                        DataProductSBOM sbom = new DataProductSBOM();
+
+                        sbom.setType("external");
+                        sbom.setUrl(url.trim());
+                        sboms.add(sbom);
+                    }
                 }
             }
 

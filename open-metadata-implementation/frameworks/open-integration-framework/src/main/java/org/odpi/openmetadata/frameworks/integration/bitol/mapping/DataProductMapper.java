@@ -188,6 +188,10 @@ public class DataProductMapper extends BitolMapperBase
             properties.getAdditionalProperties().put(ADDITIONAL_PROPERTY_PREFIX + "productCreatedTs", dataProduct.getProductCreatedTs());
         }
 
+        putIfPresent(properties.getAdditionalProperties(), "type", dataProduct.getType());
+        addPortExtensions(null, dataProduct.getDeprecated(), properties.getAdditionalProperties());
+        putIfPresent(properties.getAdditionalProperties(), SYNONYMS_JSON, toJSON(dataProduct.getSynonyms()));
+
         return properties;
     }
 
@@ -305,6 +309,7 @@ public class DataProductMapper extends BitolMapperBase
                     Map<String, String> additionalProperties = new HashMap<>();
 
                     addContractId(port.getContractId(), additionalProperties);
+                    addPortExtensions(port.getId(), port.getDeprecated(), additionalProperties);
                     addCustomProperties(port.getCustomProperties(), additionalProperties);
 
                     String portGUID = createOrUpdatePort(productGUID,
@@ -332,29 +337,16 @@ public class DataProductMapper extends BitolMapperBase
                     Map<String, String> additionalProperties = new HashMap<>();
 
                     addContractId(port.getContractId(), additionalProperties);
+                    addPortExtensions(port.getId(), port.getDeprecated(), additionalProperties);
+                    putIfPresent(additionalProperties, SYNONYMS_JSON, toJSON(port.getSynonyms()));
+                    putIfPresent(additionalProperties, CONTEXT_JSON, toJSON(port.getContext()));
 
                     if (port.getType() != null)
                     {
                         additionalProperties.put(ADDITIONAL_PROPERTY_PREFIX + "type", port.getType());
                     }
 
-                    if (port.getSbom() != null)
-                    {
-                        List<String> sbomURLs = new ArrayList<>();
-
-                        for (DataProductSBOM sbom : port.getSbom())
-                        {
-                            if ((sbom != null) && (sbom.getUrl() != null))
-                            {
-                                sbomURLs.add(sbom.getUrl());
-                            }
-                        }
-
-                        if (! sbomURLs.isEmpty())
-                        {
-                            additionalProperties.put(ADDITIONAL_PROPERTY_PREFIX + "sbom", String.join(", ", sbomURLs));
-                        }
-                    }
+                    putIfPresent(additionalProperties, "sbom", toJSON(port.getSbom()));
 
                     if (port.getInputContracts() != null)
                     {
@@ -557,6 +549,7 @@ public class DataProductMapper extends BitolMapperBase
                     {
                         additionalProperties.put(ADDITIONAL_PROPERTY_PREFIX + "channel", managementPort.getChannel());
                     }
+                    addPortExtensions(managementPort.getId(), managementPort.getDeprecated(), additionalProperties);
                     addCustomProperties(managementPort.getCustomProperties(), additionalProperties);
                     properties.setAdditionalProperties(additionalProperties);
 
@@ -581,6 +574,26 @@ public class DataProductMapper extends BitolMapperBase
                     linkAuthoritativeDefinitions(managementPort.getAuthoritativeDefinitions(), endpointGUID);
                 }
             }
+        }
+    }
+
+    /**
+     * Record the stable identifier and the deprecated flag of a port (or the product itself) in its additional
+     * properties.
+     *
+     * @param id stable identifier (may be null)
+     * @param deprecated deprecated flag (may be null)
+     * @param additionalProperties map to add to
+     */
+    private void addPortExtensions(String              id,
+                                   Boolean             deprecated,
+                                   Map<String, String> additionalProperties)
+    {
+        putIfPresent(additionalProperties, "id", id);
+
+        if (Boolean.TRUE.equals(deprecated))
+        {
+            additionalProperties.put(ADDITIONAL_PROPERTY_PREFIX + DEPRECATED, "true");
         }
     }
 }

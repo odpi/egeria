@@ -49,7 +49,7 @@ public class DataContractTest
     {
         DataContract contract = YAML_MAPPER.readValue(readResource("bitol/odcs/full-example.odcs.yaml"), DataContract.class);
 
-        assertEquals(contract.getApiVersion(), "v3.1.0");
+        assertEquals(contract.getApiVersion(), "v3.2.0");
         assertEquals(contract.getId(), "53581432-6c55-4ba2-a65f-72344a91553a");
         assertEquals(contract.getVersion(), "1.1.0");
         assertEquals(BitolStatus.fromValue(contract.getStatus()), BitolStatus.ACTIVE);
@@ -201,7 +201,7 @@ public class DataContractTest
         assertEquals(nullValues.getCustomProperties().get(2).getValue(), "Greater than");
 
         DataContractSchemaObject receivers = contract.getSchema().get(1);
-        assertEquals(receivers.getProperties().size(), 4);
+        assertEquals(receivers.getProperties().size(), 5);
         assertEquals(receivers.getProperties().get(0).getUnique(), Boolean.TRUE);
         assertEquals(receivers.getProperties().get(0).getRequired(), Boolean.TRUE);
         assertFalse(receivers.getProperties().get(3).getRequired());
