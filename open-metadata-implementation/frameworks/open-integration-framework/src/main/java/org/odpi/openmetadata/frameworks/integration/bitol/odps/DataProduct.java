@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSupportCha
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolTeam;
 
 import java.util.List;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSynonym;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -31,7 +32,7 @@ public class DataProduct extends BitolDocument
     /**
      * The version of the Open Data Product Standard that this bean is aligned with.  It is the default apiVersion for new documents.
      */
-    public static final String CURRENT_API_VERSION = "v1.0.0";
+    public static final String CURRENT_API_VERSION = "v1.1.0";
 
 
     private List<DataProductInputPort>      inputPorts = null;
@@ -40,6 +41,9 @@ public class DataProduct extends BitolDocument
     private List<BitolSupportChannel>       support = null;
     private BitolTeam                       team = null;
     private String                          productCreatedTs = null;
+    private String type = null;
+    private Boolean deprecated = null;
+    private List<BitolSynonym> synonyms = null;
 
 
     /**
@@ -214,6 +218,72 @@ public class DataProduct extends BitolDocument
 
 
     /**
+     * Return the architectural type of the data product, for example sourceAligned, aggregate or consumerAligned.
+     *
+     * @return String
+     */
+    public String getType()
+    {
+        return type;
+    }
+
+
+    /**
+     * Set up the architectural type of the data product, for example sourceAligned, aggregate or consumerAligned.
+     *
+     * @param type String
+     */
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+
+    /**
+     * Return whether this data product is deprecated and should not be used in new implementations.
+     *
+     * @return Boolean
+     */
+    public Boolean getDeprecated()
+    {
+        return deprecated;
+    }
+
+
+    /**
+     * Set up whether this data product is deprecated and should not be used in new implementations.
+     *
+     * @param deprecated Boolean
+     */
+    public void setDeprecated(Boolean deprecated)
+    {
+        this.deprecated = deprecated;
+    }
+
+
+    /**
+     * Return the alternative names for this data product.
+     *
+     * @return List<BitolSynonym>
+     */
+    public List<BitolSynonym> getSynonyms()
+    {
+        return synonyms;
+    }
+
+
+    /**
+     * Set up the alternative names for this data product.
+     *
+     * @param synonyms List<BitolSynonym>
+     */
+    public void setSynonyms(List<BitolSynonym> synonyms)
+    {
+        this.synonyms = synonyms;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -228,6 +298,9 @@ public class DataProduct extends BitolDocument
                        ", support=" + support +
                        ", team=" + team +
                        ", productCreatedTs='" + productCreatedTs + '\'' +
+                       ", type=" + type +
+                       ", deprecated=" + deprecated +
+                       ", synonyms=" + synonyms +
                        "} " + super.toString();
     }
 
@@ -259,7 +332,10 @@ public class DataProduct extends BitolDocument
                        Objects.equals(managementPorts, that.managementPorts) &&
                        Objects.equals(support, that.support) &&
                        Objects.equals(team, that.team) &&
-                       Objects.equals(productCreatedTs, that.productCreatedTs);
+                       Objects.equals(productCreatedTs, that.productCreatedTs) &&
+                       Objects.equals(type, that.type) &&
+                       Objects.equals(deprecated, that.deprecated) &&
+                       Objects.equals(synonyms, that.synonyms);
     }
 
 
@@ -271,6 +347,6 @@ public class DataProduct extends BitolDocument
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), inputPorts, outputPorts, managementPorts, support, team, productCreatedTs);
+        return Objects.hash(super.hashCode(), inputPorts, outputPorts, managementPorts, support, team, productCreatedTs, type, deprecated, synonyms);
     }
 }

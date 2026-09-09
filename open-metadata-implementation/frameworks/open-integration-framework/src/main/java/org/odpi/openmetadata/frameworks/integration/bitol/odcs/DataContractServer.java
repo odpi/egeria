@@ -41,7 +41,7 @@ public class DataContractServer
     private String                    dataset = null;
     private String                    schema = null;
     private String                    host = null;
-    private Integer                   port = null;
+    private Object                   port = null;
     private String                    location = null;
     private String                    endpointUrl = null;
     private String                    path = null;
@@ -56,6 +56,10 @@ public class DataContractServer
     private String                    stream = null;
     private List<BitolCustomProperty> customProperties = null;
     private Map<String, Object>       additionalProperties = null;
+    private String encoding = null;
+    private String workgroup = null;
+    private String catalogUrl = null;
+    private String namespace = null;
 
 
     /**
@@ -331,22 +335,22 @@ public class DataContractServer
 
 
     /**
-     * Return the port number of the server.
+     * Return the port number of the server.  It is normally an integer but may be a string holding a variable reference such as ${DB_PORT}.
      *
      * @return integer value or null if not specified
      */
-    public Integer getPort()
+    public Object getPort()
     {
         return port;
     }
 
 
     /**
-     * Set up the port number of the server.
+     * Set up the port number of the server.  It is normally an integer but may be a string holding a variable reference such as ${DB_PORT}.
      *
      * @param port integer value or null if not specified
      */
-    public void setPort(Integer port)
+    public void setPort(Object port)
     {
         this.port = port;
     }
@@ -682,6 +686,94 @@ public class DataContractServer
 
 
     /**
+     * Return the character encoding of the data payloads exposed through this server, for example UTF-8.
+     *
+     * @return String
+     */
+    public String getEncoding()
+    {
+        return encoding;
+    }
+
+
+    /**
+     * Set up the character encoding of the data payloads exposed through this server, for example UTF-8.
+     *
+     * @param encoding String
+     */
+    public void setEncoding(String encoding)
+    {
+        this.encoding = encoding;
+    }
+
+
+    /**
+     * Return the Amazon Athena workgroup.
+     *
+     * @return String
+     */
+    public String getWorkgroup()
+    {
+        return workgroup;
+    }
+
+
+    /**
+     * Set up the Amazon Athena workgroup.
+     *
+     * @param workgroup String
+     */
+    public void setWorkgroup(String workgroup)
+    {
+        this.workgroup = workgroup;
+    }
+
+
+    /**
+     * Return the URL of an Apache Iceberg REST catalog.
+     *
+     * @return String
+     */
+    public String getCatalogUrl()
+    {
+        return catalogUrl;
+    }
+
+
+    /**
+     * Set up the URL of an Apache Iceberg REST catalog.
+     *
+     * @param catalogUrl String
+     */
+    public void setCatalogUrl(String catalogUrl)
+    {
+        this.catalogUrl = catalogUrl;
+    }
+
+
+    /**
+     * Return the namespace within an Apache Iceberg catalog.
+     *
+     * @return String
+     */
+    public String getNamespace()
+    {
+        return namespace;
+    }
+
+
+    /**
+     * Set up the namespace within an Apache Iceberg catalog.
+     *
+     * @param namespace String
+     */
+    public void setNamespace(String namespace)
+    {
+        this.namespace = namespace;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -717,6 +809,10 @@ public class DataContractServer
                        ", stream='" + stream + '\'' +
                        ", customProperties=" + customProperties +
                        ", additionalProperties=" + additionalProperties +
+                       ", encoding=" + encoding +
+                       ", workgroup=" + workgroup +
+                       ", catalogUrl=" + catalogUrl +
+                       ", namespace=" + namespace +
                        '}';
     }
 
@@ -765,7 +861,11 @@ public class DataContractServer
                        Objects.equals(warehouse, that.warehouse) &&
                        Objects.equals(stream, that.stream) &&
                        Objects.equals(customProperties, that.customProperties) &&
-                       Objects.equals(additionalProperties, that.additionalProperties);
+                       Objects.equals(additionalProperties, that.additionalProperties) &&
+                       Objects.equals(encoding, that.encoding) &&
+                       Objects.equals(workgroup, that.workgroup) &&
+                       Objects.equals(catalogUrl, that.catalogUrl) &&
+                       Objects.equals(namespace, that.namespace);
     }
 
 
@@ -777,6 +877,6 @@ public class DataContractServer
     @Override
     public int hashCode()
     {
-        return Objects.hash(id, server, type, description, environment, roles, account, catalog, database, dataset, schema, host, port, location, endpointUrl, path, format, delimiter, project, region, regionName, serviceName, stagingDir, warehouse, stream, customProperties, additionalProperties);
+        return Objects.hash(id, server, type, description, environment, roles, account, catalog, database, dataset, schema, host, port, location, endpointUrl, path, format, delimiter, project, region, regionName, serviceName, stagingDir, warehouse, stream, customProperties, additionalProperties, encoding, workgroup, catalogUrl, namespace);
     }
 }

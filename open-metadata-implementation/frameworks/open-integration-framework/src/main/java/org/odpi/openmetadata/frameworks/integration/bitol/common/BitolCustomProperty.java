@@ -25,6 +25,7 @@ public class BitolCustomProperty
     private String property = null;
     private Object value = null;
     private String description = null;
+    private String vendor = null;
 
 
     /**
@@ -124,6 +125,28 @@ public class BitolCustomProperty
 
 
     /**
+     * Return the vendor, provider or external system associated with this custom property (a stable lowercase identifier such as confluent or soda).
+     *
+     * @return String
+     */
+    public String getVendor()
+    {
+        return vendor;
+    }
+
+
+    /**
+     * Set up the vendor, provider or external system associated with this custom property (a stable lowercase identifier such as confluent or soda).
+     *
+     * @param vendor String
+     */
+    public void setVendor(String vendor)
+    {
+        this.vendor = vendor;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -136,6 +159,7 @@ public class BitolCustomProperty
                        ", property='" + property + '\'' +
                        ", value=" + value +
                        ", description='" + description + '\'' +
+                       ", vendor=" + vendor +
                        '}';
     }
 
@@ -161,7 +185,8 @@ public class BitolCustomProperty
         return Objects.equals(id, that.id) &&
                        Objects.equals(property, that.property) &&
                        Objects.equals(value, that.value) &&
-                       Objects.equals(description, that.description);
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(vendor, that.vendor);
     }
 
 
@@ -173,6 +198,6 @@ public class BitolCustomProperty
     @Override
     public int hashCode()
     {
-        return Objects.hash(id, property, value, description);
+        return Objects.hash(id, property, value, description, vendor);
     }
 }

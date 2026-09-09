@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.integration.bitol.mapping;
 
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractSchemaMap;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractEnumValue;
 import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
@@ -57,6 +59,8 @@ public class DataContractGenerator extends BitolGeneratorBase
 {
     private static final String SCHEMA_SEGMENT = "Schema";
     private static final String ITEMS_SEGMENT  = "items";
+    private static final String MAP_KEY_SEGMENT = "key";
+    private static final String MAP_VALUE_SEGMENT = "value";
 
 
     /**
@@ -237,6 +241,9 @@ public class DataContractGenerator extends BitolGeneratorBase
                     schemaObject.setAuthoritativeDefinitions(getAuthoritativeDefinitions(structure));
                     schemaObject.setCustomProperties(getCustomProperties(additionalProperties));
                     schemaObject.setQuality(getQualityRules(structure));
+                    schemaObject.setDeprecated(getDeprecated(additionalProperties));
+                    schemaObject.setSynonyms(getSynonyms(additionalProperties));
+                    schemaObject.setContext(getContext(additionalProperties));
 
                     List<DataContractSchemaProperty> properties    = new ArrayList<>();
                     List<DataContractRelationship>   relationships = new ArrayList<>();
@@ -336,6 +343,10 @@ public class DataContractGenerator extends BitolGeneratorBase
         property.setAuthoritativeDefinitions(getAuthoritativeDefinitions(field));
         property.setCustomProperties(getCustomProperties(additionalProperties));
         property.setQuality(getQualityRules(field));
+        property.setSemanticType(getBitolValue(additionalProperties, "semanticType"));
+        property.setEnumValues(fromJSONList(getBitolValue(additionalProperties, "enum"), DataContractEnumValue.class));
+        property.setDeprecated(getDeprecated(additionalProperties));
+        property.setSynonyms(getSynonyms(additionalProperties));
 
         ElementClassification primaryKey = field.getElementHeader().getPrimaryKey();
 
@@ -390,6 +401,7 @@ public class DataContractGenerator extends BitolGeneratorBase
                         {
                             relationship.setType(linkProperties.getRelationshipTypeName());
                         }
+                        relationship.setId(getBitolValue(linkProperties.getAdditionalProperties(), "id"));
                         relationship.setCustomProperties(getCustomProperties(linkProperties.getAdditionalProperties()));
                     }
 
@@ -414,21 +426,39 @@ public class DataContractGenerator extends BitolGeneratorBase
             {
                 if ((nested != null) && (nested.getRelatedElement() != null))
                 {
-                    boolean isItems = false;
+                    String role = null;
 
                     if (nested.getRelatedElement().getProperties() instanceof ReferenceableProperties nestedProperties1)
                     {
-                        isItems = (nestedProperties1.getQualifiedName() != null) && (nestedProperties1.getQualifiedName().endsWith(BitolMapperBase.SEPARATOR + ITEMS_SEGMENT));
+                        role = getNestedRole(nestedProperties1.getQualifiedName());
                     }
 
                     DataContractSchemaProperty nestedProperty = getSchemaProperty(nested.getRelatedElement().getElementHeader().getGUID(), objectName, relationships);
 
                     if (nestedProperty != null)
                     {
-                        if (isItems)
+                        if (ITEMS_SEGMENT.equals(role))
                         {
                             nestedProperty.setName(null);
                             property.setItems(nestedProperty);
+                        }
+                        else if ((MAP_KEY_SEGMENT.equals(role)) || (MAP_VALUE_SEGMENT.equals(role)))
+                        {
+                            if (property.getMap() == null)
+                            {
+                                property.setMap(new DataContractSchemaMap());
+                            }
+
+                            nestedProperty.setName(null);
+
+                            if (MAP_KEY_SEGMENT.equals(role))
+                            {
+                                property.getMap().setKey(nestedProperty);
+                            }
+                            else
+                            {
+                                property.getMap().setValue(nestedProperty);
+                            }
                         }
                         else
                         {
@@ -442,6 +472,30 @@ public class DataContractGenerator extends BitolGeneratorBase
         }
 
         return property;
+    }
+
+
+    /**
+     * Return the role of a nested field from the last segment of its qualified name: items, key or value for the
+     * fields the cataloguer creates for array items and map keys and values, otherwise null.
+     *
+     * @param qualifiedName qualified name of the nested field
+     * @return role or null
+     */
+    private static String getNestedRole(String qualifiedName)
+    {
+        if (qualifiedName != null)
+        {
+            for (String role : new String[]{ITEMS_SEGMENT, MAP_KEY_SEGMENT, MAP_VALUE_SEGMENT})
+            {
+                if (qualifiedName.endsWith(BitolMapperBase.SEPARATOR + role))
+                {
+                    return role;
+                }
+            }
+        }
+
+        return null;
     }
 
 
@@ -578,6 +632,12 @@ public class DataContractGenerator extends BitolGeneratorBase
         if ((value = getBitolValue(additionalProperties, "minProperties")) != null)   { options.setMinProperties(parseInt(value)); anySet = true; }
         if ((value = getBitolValue(additionalProperties, "maxProperties")) != null)   { options.setMaxProperties(parseInt(value)); anySet = true; }
         if ((value = getBitolValue(additionalProperties, "requiredProperties")) != null) { options.setRequired(List.of(value.split(",\\s*"))); anySet = true; }
+        if ((value = getBitolValue(additionalProperties, "dimensions")) != null)      { options.setDimensions(parseInt(value)); anySet = true; }
+        if ((value = getBitolValue(additionalProperties, "elementType")) != null)     { options.setElementType(value); anySet = true; }
+        if ((value = getBitolValue(additionalProperties, "distanceMetric")) != null)  { options.setDistanceMetric(value); anySet = true; }
+        if ((value = getBitolValue(additionalProperties, "normalized")) != null)      { options.setNormalized(Boolean.valueOf(value)); anySet = true; }
+        if ((value = getBitolValue(additionalProperties, "embeddingModel")) != null)  { options.setEmbeddingModel(value); anySet = true; }
+        if ((value = getBitolValue(additionalProperties, "embeddingModelVersion")) != null) { options.setEmbeddingModelVersion(value); anySet = true; }
 
         return anySet ? options : null;
     }
@@ -1024,12 +1084,21 @@ public class DataContractGenerator extends BitolGeneratorBase
                 server.setStagingDir(getBitolValue(additionalProperties, "stagingDir"));
                 server.setWarehouse(getBitolValue(additionalProperties, "warehouse"));
                 server.setStream(getBitolValue(additionalProperties, "stream"));
+                server.setEncoding(getBitolValue(additionalProperties, "encoding"));
+                server.setWorkgroup(getBitolValue(additionalProperties, "workgroup"));
+                server.setCatalogUrl(getBitolValue(additionalProperties, "catalogUrl"));
+                server.setNamespace(getBitolValue(additionalProperties, "namespace"));
 
                 String port = getBitolValue(additionalProperties, "port");
 
                 if (port != null)
                 {
-                    server.setPort(parseInt(port));
+                    /*
+                     * A port is normally a number, but may be a variable reference such as ${DB_PORT}.
+                     */
+                    Integer portNumber = parseInt(port);
+
+                    server.setPort((portNumber != null) ? portNumber : port);
                 }
 
                 if ((server.getHost() == null) && (server.getLocation() == null) && (server.getEndpointUrl() == null) && (server.getPath() == null))

@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.integration.bitol.mapping;
 
+import java.io.IOException;
+import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolAuthoritativeDefinition;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolCustomProperty;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDescription;
@@ -68,6 +70,27 @@ public abstract class BitolMapperBase
     /**
      * Separator used in qualified names.
      */
+    /**
+     * Name of the additional property that holds the full custom properties list as JSON when an entry carries a
+     * vendor, description or id.
+     */
+    public static final String CUSTOM_PROPERTIES_JSON = "customProperties";
+
+    /**
+     * Name of the additional property that holds the AI context block as JSON.
+     */
+    public static final String CONTEXT_JSON = "context";
+
+    /**
+     * Name of the additional property that holds the synonyms as JSON.
+     */
+    public static final String SYNONYMS_JSON = "synonyms";
+
+    /**
+     * Name of the additional property that records that an element is deprecated.
+     */
+    public static final String DEPRECATED = "deprecated";
+
     public static final String SEPARATOR = "::";
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -326,6 +349,7 @@ public abstract class BitolMapperBase
 
         addDescriptionDetails(document.getDescription(), additionalProperties);
         addCustomProperties(document.getCustomProperties(), additionalProperties);
+        putIfPresent(additionalProperties, CONTEXT_JSON, toJSON(document.getContext()));
 
         properties.setAdditionalProperties(additionalProperties);
     }
@@ -411,14 +435,73 @@ public abstract class BitolMapperBase
     {
         if (customProperties != null)
         {
+            boolean detailed = false;
+
             for (BitolCustomProperty customProperty : customProperties)
             {
                 if ((customProperty != null) && (customProperty.getProperty() != null))
                 {
                     additionalProperties.put(customProperty.getProperty(),
                                              (customProperty.getValue() == null) ? "" : customProperty.getValue().toString());
+
+                    if ((customProperty.getVendor() != null) || (customProperty.getDescription() != null) || (customProperty.getId() != null))
+                    {
+                        detailed = true;
+                    }
                 }
             }
+
+            /*
+             * The vendor attribution, description and id of a custom property have no place in a simple name/value
+             * map, so the full list is also kept as JSON when any of them is present.
+             */
+            if (detailed)
+            {
+                putIfPresent(additionalProperties, CUSTOM_PROPERTIES_JSON, toJSON(customProperties));
+            }
+        }
+    }
+
+
+    /**
+     * Add a value to the additional properties under the bitol prefix if it is present.
+     *
+     * @param additionalProperties map to add to
+     * @param name property name (without prefix)
+     * @param value value (may be null)
+     */
+    protected static void putIfPresent(Map<String, String> additionalProperties,
+                                       String              name,
+                                       String              value)
+    {
+        if (value != null)
+        {
+            additionalProperties.put(ADDITIONAL_PROPERTY_PREFIX + name, value);
+        }
+    }
+
+
+    /**
+     * Format a bean (or list of beans) from a document as a JSON fragment for an additional property, so that it can
+     * be regenerated without loss.
+     *
+     * @param bean bean (may be null)
+     * @return json text or null
+     */
+    protected String toJSON(Object bean)
+    {
+        if (bean == null)
+        {
+            return null;
+        }
+
+        try
+        {
+            return BitolDocumentFormatter.toJSONFragment(bean);
+        }
+        catch (IOException error)
+        {
+            return null;
         }
     }
 

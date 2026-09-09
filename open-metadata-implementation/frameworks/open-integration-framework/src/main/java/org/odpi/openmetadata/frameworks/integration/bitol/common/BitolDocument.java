@@ -61,6 +61,7 @@ public abstract class BitolDocument
     private List<String>                       tags = null;
     private List<BitolCustomProperty>          customProperties = null;
     private List<BitolAuthoritativeDefinition> authoritativeDefinitions = null;
+    private BitolContext context = null;
 
 
     /**
@@ -358,6 +359,28 @@ public abstract class BitolDocument
 
 
     /**
+     * Return the AI and semantic context block for the document (instructions, verified statements and constraints).
+     *
+     * @return BitolContext
+     */
+    public BitolContext getContext()
+    {
+        return context;
+    }
+
+
+    /**
+     * Set up the AI and semantic context block for the document (instructions, verified statements and constraints).
+     *
+     * @param context BitolContext
+     */
+    public void setContext(BitolContext context)
+    {
+        this.context = context;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -378,6 +401,7 @@ public abstract class BitolDocument
                        ", tags=" + tags +
                        ", customProperties=" + customProperties +
                        ", authoritativeDefinitions=" + authoritativeDefinitions +
+                       ", context=" + context +
                        '}';
     }
 
@@ -411,7 +435,8 @@ public abstract class BitolDocument
                        Objects.equals(description, that.description) &&
                        Objects.equals(tags, that.tags) &&
                        Objects.equals(customProperties, that.customProperties) &&
-                       Objects.equals(authoritativeDefinitions, that.authoritativeDefinitions);
+                       Objects.equals(authoritativeDefinitions, that.authoritativeDefinitions) &&
+                       Objects.equals(context, that.context);
     }
 
 
@@ -423,6 +448,6 @@ public abstract class BitolDocument
     @Override
     public int hashCode()
     {
-        return Objects.hash(apiVersion, kind, id, name, version, status, domain, tenant, description, tags, customProperties, authoritativeDefinitions);
+        return Objects.hash(apiVersion, kind, id, name, version, status, domain, tenant, description, tags, customProperties, authoritativeDefinitions, context);
     }
 }

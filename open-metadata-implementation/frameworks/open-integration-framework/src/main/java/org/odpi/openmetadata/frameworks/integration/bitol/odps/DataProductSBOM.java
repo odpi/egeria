@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolCustomProperty;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolAuthoritativeDefinition;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,6 +25,10 @@ public class DataProductSBOM
 {
     private String type = null;
     private String url = null;
+    private String id = null;
+    private List<String> tags = null;
+    private List<BitolCustomProperty> customProperties = null;
+    private List<BitolAuthoritativeDefinition> authoritativeDefinitions = null;
 
 
     /**
@@ -77,6 +84,94 @@ public class DataProductSBOM
 
 
     /**
+     * Return the stable identifier of this SBOM reference.
+     *
+     * @return String
+     */
+    public String getId()
+    {
+        return id;
+    }
+
+
+    /**
+     * Set up the stable identifier of this SBOM reference.
+     *
+     * @param id String
+     */
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+
+    /**
+     * Return the tags attached to this SBOM reference.
+     *
+     * @return List<String>
+     */
+    public List<String> getTags()
+    {
+        return tags;
+    }
+
+
+    /**
+     * Set up the tags attached to this SBOM reference.
+     *
+     * @param tags List<String>
+     */
+    public void setTags(List<String> tags)
+    {
+        this.tags = tags;
+    }
+
+
+    /**
+     * Return the custom properties of this SBOM reference.
+     *
+     * @return List<BitolCustomProperty>
+     */
+    public List<BitolCustomProperty> getCustomProperties()
+    {
+        return customProperties;
+    }
+
+
+    /**
+     * Set up the custom properties of this SBOM reference.
+     *
+     * @param customProperties List<BitolCustomProperty>
+     */
+    public void setCustomProperties(List<BitolCustomProperty> customProperties)
+    {
+        this.customProperties = customProperties;
+    }
+
+
+    /**
+     * Return links to the authoritative build record for this SBOM.
+     *
+     * @return List<BitolAuthoritativeDefinition>
+     */
+    public List<BitolAuthoritativeDefinition> getAuthoritativeDefinitions()
+    {
+        return authoritativeDefinitions;
+    }
+
+
+    /**
+     * Set up links to the authoritative build record for this SBOM.
+     *
+     * @param authoritativeDefinitions List<BitolAuthoritativeDefinition>
+     */
+    public void setAuthoritativeDefinitions(List<BitolAuthoritativeDefinition> authoritativeDefinitions)
+    {
+        this.authoritativeDefinitions = authoritativeDefinitions;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -87,6 +182,10 @@ public class DataProductSBOM
         return "DataProductSBOM{" +
                        "type='" + type + '\'' +
                        ", url='" + url + '\'' +
+                       ", id=" + id +
+                       ", tags=" + tags +
+                       ", customProperties=" + customProperties +
+                       ", authoritativeDefinitions=" + authoritativeDefinitions +
                        '}';
     }
 
@@ -110,7 +209,11 @@ public class DataProductSBOM
         }
         DataProductSBOM that = (DataProductSBOM) objectToCompare;
         return Objects.equals(type, that.type) &&
-                       Objects.equals(url, that.url);
+                       Objects.equals(url, that.url) &&
+                       Objects.equals(id, that.id) &&
+                       Objects.equals(tags, that.tags) &&
+                       Objects.equals(customProperties, that.customProperties) &&
+                       Objects.equals(authoritativeDefinitions, that.authoritativeDefinitions);
     }
 
 
@@ -122,6 +225,6 @@ public class DataProductSBOM
     @Override
     public int hashCode()
     {
-        return Objects.hash(type, url);
+        return Objects.hash(type, url, id, tags, customProperties, authoritativeDefinitions);
     }
 }

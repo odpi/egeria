@@ -31,24 +31,47 @@ public class BitolDocumentTest
      * Example ODCS documents from https://github.com/bitol-io/open-data-contract-standard/tree/main/docs/examples
      */
     static final String[] ODCS_EXAMPLES = {
+            "actian-servers.odcs.yaml",
             "all-data-types.odcs.yaml",
             "all-schema-types.odcs.yaml",
+            "authoritative-definitions.odcs.yaml",
             "azure-server.odcs.yaml",
             "basic-four-dpo.odcs.yaml",
+            "basic-pricing.odcs.yaml",
             "column-accuracy.odcs.yaml",
             "column-completeness.odcs.yaml",
             "column-custom.odcs.yaml",
             "column-validity.odcs.yaml",
+            "custom-properties.odcs.yaml",
             "database-table-sla.odcs.yaml",
+            "deprecated.odcs.yaml",
+            "enum.odcs.yaml",
+            "exasol-server.odcs.yaml",
             "full-example.odcs.yaml",
+            "hana-server.odcs.yaml",
+            "iceberg-server.odcs.yaml",
             "kafka-schema.odcs.yaml",
             "kafka-schemaregistry.odcs.yaml",
             "kafka-server.odcs.yaml",
+            "map.odcs.yaml",
+            "measures-and-dimensions.odcs.yaml",
             "postgresql-adventureworks-contract.odcs.yaml",
+            "property-without-logicaltype.odcs.yaml",
+            "relationships.odcs.yaml",
+            "s3-server-encoding.odcs.yaml",
             "service-and-operational-roles.odcs.yaml",
+            "sla-extensions.odcs.yaml",
+            "stable-id-special-characters.odcs.yaml",
+            "support-channels.odcs.yaml",
             "table-column-description.odcs.yaml",
             "table-column.odcs.yaml",
             "table-columns-with-partition.odcs.yaml",
+            "tags.odcs.yaml",
+            "team.odcs.yaml",
+            "teradata-server.odcs.yaml",
+            "variables.odcs.yaml",
+            "vector.odcs.yaml",
+            "vendor.odcs.yaml"
     };
 
     /**
@@ -56,7 +79,10 @@ public class BitolDocumentTest
      */
     static final String[] ODPS_EXAMPLES = {
             "customer-data-product.odps.yaml",
+            "deprecated-data-product.odps.yaml",
             "simple-data-product.odps.yaml",
+            "variables.odps.yaml",
+            "vendor-custom-properties.odps.yaml"
     };
 
     static final ObjectMapper YAML_MAPPER = BitolDocumentFormatter.newYAMLMapper();

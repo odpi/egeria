@@ -46,6 +46,12 @@ public class DataContractLogicalTypeOptions
     private Integer             maxItems = null;
     private Boolean             uniqueItems = null;
     private Map<String, Object> additionalProperties = null;
+    private Integer dimensions = null;
+    private String elementType = null;
+    private String distanceMetric = null;
+    private Boolean normalized = null;
+    private String embeddingModel = null;
+    private String embeddingModelVersion = null;
 
 
     /**
@@ -474,6 +480,138 @@ public class DataContractLogicalTypeOptions
 
 
     /**
+     * Return the fixed length of a vector.
+     *
+     * @return Integer
+     */
+    public Integer getDimensions()
+    {
+        return dimensions;
+    }
+
+
+    /**
+     * Set up the fixed length of a vector.
+     *
+     * @param dimensions Integer
+     */
+    public void setDimensions(Integer dimensions)
+    {
+        this.dimensions = dimensions;
+    }
+
+
+    /**
+     * Return the numeric type of the elements of a vector.
+     *
+     * @return String
+     */
+    public String getElementType()
+    {
+        return elementType;
+    }
+
+
+    /**
+     * Set up the numeric type of the elements of a vector.
+     *
+     * @param elementType String
+     */
+    public void setElementType(String elementType)
+    {
+        this.elementType = elementType;
+    }
+
+
+    /**
+     * Return the distance metric used with a vector, for example cosine.
+     *
+     * @return String
+     */
+    public String getDistanceMetric()
+    {
+        return distanceMetric;
+    }
+
+
+    /**
+     * Set up the distance metric used with a vector, for example cosine.
+     *
+     * @param distanceMetric String
+     */
+    public void setDistanceMetric(String distanceMetric)
+    {
+        this.distanceMetric = distanceMetric;
+    }
+
+
+    /**
+     * Return whether the vectors are normalized.
+     *
+     * @return Boolean
+     */
+    public Boolean getNormalized()
+    {
+        return normalized;
+    }
+
+
+    /**
+     * Set up whether the vectors are normalized.
+     *
+     * @param normalized Boolean
+     */
+    public void setNormalized(Boolean normalized)
+    {
+        this.normalized = normalized;
+    }
+
+
+    /**
+     * Return the identifier of the model used to produce the vectors.
+     *
+     * @return String
+     */
+    public String getEmbeddingModel()
+    {
+        return embeddingModel;
+    }
+
+
+    /**
+     * Set up the identifier of the model used to produce the vectors.
+     *
+     * @param embeddingModel String
+     */
+    public void setEmbeddingModel(String embeddingModel)
+    {
+        this.embeddingModel = embeddingModel;
+    }
+
+
+    /**
+     * Return the version of the embedding model.
+     *
+     * @return String
+     */
+    public String getEmbeddingModelVersion()
+    {
+        return embeddingModelVersion;
+    }
+
+
+    /**
+     * Set up the version of the embedding model.
+     *
+     * @param embeddingModelVersion String
+     */
+    public void setEmbeddingModelVersion(String embeddingModelVersion)
+    {
+        this.embeddingModelVersion = embeddingModelVersion;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -500,6 +638,12 @@ public class DataContractLogicalTypeOptions
                        ", maxItems=" + maxItems +
                        ", uniqueItems=" + uniqueItems +
                        ", additionalProperties=" + additionalProperties +
+                       ", dimensions=" + dimensions +
+                       ", elementType=" + elementType +
+                       ", distanceMetric=" + distanceMetric +
+                       ", normalized=" + normalized +
+                       ", embeddingModel=" + embeddingModel +
+                       ", embeddingModelVersion=" + embeddingModelVersion +
                        '}';
     }
 
@@ -539,7 +683,13 @@ public class DataContractLogicalTypeOptions
                        Objects.equals(minItems, that.minItems) &&
                        Objects.equals(maxItems, that.maxItems) &&
                        Objects.equals(uniqueItems, that.uniqueItems) &&
-                       Objects.equals(additionalProperties, that.additionalProperties);
+                       Objects.equals(additionalProperties, that.additionalProperties) &&
+                       Objects.equals(dimensions, that.dimensions) &&
+                       Objects.equals(elementType, that.elementType) &&
+                       Objects.equals(distanceMetric, that.distanceMetric) &&
+                       Objects.equals(normalized, that.normalized) &&
+                       Objects.equals(embeddingModel, that.embeddingModel) &&
+                       Objects.equals(embeddingModelVersion, that.embeddingModelVersion);
     }
 
 
@@ -551,6 +701,6 @@ public class DataContractLogicalTypeOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(minLength, maxLength, pattern, format, minimum, exclusiveMinimum, maximum, exclusiveMaximum, multipleOf, timezone, defaultTimezone, minProperties, maxProperties, required, minItems, maxItems, uniqueItems, additionalProperties);
+        return Objects.hash(minLength, maxLength, pattern, format, minimum, exclusiveMinimum, maximum, exclusiveMaximum, multipleOf, timezone, defaultTimezone, minProperties, maxProperties, required, minItems, maxItems, uniqueItems, additionalProperties, dimensions, elementType, distanceMetric, normalized, embeddingModel, embeddingModelVersion);
     }
 }

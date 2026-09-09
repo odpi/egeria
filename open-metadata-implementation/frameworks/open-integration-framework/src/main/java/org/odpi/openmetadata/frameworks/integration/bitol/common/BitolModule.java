@@ -27,5 +27,6 @@ public final class BitolModule extends SimpleModule
         super("BitolModule");
 
         addDeserializer(BitolTeam.class, new BitolTeamDeserializer());
+        addDeserializer(BitolContext.class, new BitolContextDeserializer());
     }
 }

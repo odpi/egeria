@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolAuthoritat
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolCustomProperty;
 
 import java.util.List;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSynonym;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -33,6 +34,8 @@ public class DataContractSchemaElement
     private List<String>                       tags = null;
     private List<BitolCustomProperty>          customProperties = null;
     private List<BitolAuthoritativeDefinition> authoritativeDefinitions = null;
+    private Boolean deprecated = null;
+    private List<BitolSynonym> synonyms = null;
 
 
     /**
@@ -242,6 +245,50 @@ public class DataContractSchemaElement
 
 
     /**
+     * Return whether this element is deprecated and should not be used in new implementations.
+     *
+     * @return Boolean
+     */
+    public Boolean getDeprecated()
+    {
+        return deprecated;
+    }
+
+
+    /**
+     * Set up whether this element is deprecated and should not be used in new implementations.
+     *
+     * @param deprecated Boolean
+     */
+    public void setDeprecated(Boolean deprecated)
+    {
+        this.deprecated = deprecated;
+    }
+
+
+    /**
+     * Return the alternative names for this element.
+     *
+     * @return List<BitolSynonym>
+     */
+    public List<BitolSynonym> getSynonyms()
+    {
+        return synonyms;
+    }
+
+
+    /**
+     * Set up the alternative names for this element.
+     *
+     * @param synonyms List<BitolSynonym>
+     */
+    public void setSynonyms(List<BitolSynonym> synonyms)
+    {
+        this.synonyms = synonyms;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -259,6 +306,8 @@ public class DataContractSchemaElement
                        ", tags=" + tags +
                        ", customProperties=" + customProperties +
                        ", authoritativeDefinitions=" + authoritativeDefinitions +
+                       ", deprecated=" + deprecated +
+                       ", synonyms=" + synonyms +
                        '}';
     }
 
@@ -289,7 +338,9 @@ public class DataContractSchemaElement
                        Objects.equals(description, that.description) &&
                        Objects.equals(tags, that.tags) &&
                        Objects.equals(customProperties, that.customProperties) &&
-                       Objects.equals(authoritativeDefinitions, that.authoritativeDefinitions);
+                       Objects.equals(authoritativeDefinitions, that.authoritativeDefinitions) &&
+                       Objects.equals(deprecated, that.deprecated) &&
+                       Objects.equals(synonyms, that.synonyms);
     }
 
 
@@ -301,6 +352,6 @@ public class DataContractSchemaElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(id, name, physicalName, physicalType, businessName, description, tags, customProperties, authoritativeDefinitions);
+        return Objects.hash(id, name, physicalName, physicalType, businessName, description, tags, customProperties, authoritativeDefinitions, deprecated, synonyms);
     }
 }

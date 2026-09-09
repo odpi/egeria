@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.integration.bitol.mapping;
 
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSynonym;
 import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
@@ -76,6 +77,8 @@ public class DataContractMapper extends BitolMapperBase
 {
     private static final String SCHEMA_SEGMENT   = "Schema";
     private static final String ITEMS_SEGMENT    = "items";
+    private static final String MAP_KEY_SEGMENT  = "key";
+    private static final String MAP_VALUE_SEGMENT = "value";
     private static final String QUALITY_SEGMENT  = "Quality";
     private static final String SLA_SEGMENT      = "SLA";
     private static final String SERVER_SEGMENT   = "Server";
@@ -305,6 +308,8 @@ public class DataContractMapper extends BitolMapperBase
                 putIfPresent(additionalProperties, "physicalType", schemaObject.getPhysicalType());
                 putIfPresent(additionalProperties, "logicalType", schemaObject.getLogicalType());
                 putIfPresent(additionalProperties, "dataGranularityDescription", schemaObject.getDataGranularityDescription());
+                addElementExtensions(schemaObject.getDeprecated(), schemaObject.getSynonyms(), additionalProperties);
+                putIfPresent(additionalProperties, CONTEXT_JSON, toJSON(schemaObject.getContext()));
                 addCustomProperties(schemaObject.getCustomProperties(), additionalProperties);
                 properties.setAdditionalProperties(additionalProperties);
 
@@ -532,7 +537,56 @@ public class DataContractMapper extends BitolMapperBase
                           result);
         }
 
+        /*
+         * A map is represented by two nested fields, one for the key and one for the value.
+         */
+        if (property.getMap() != null)
+        {
+            DataContractSchemaProperty key   = property.getMap().getKey();
+            DataContractSchemaProperty value = property.getMap().getValue();
+
+            if (key != null)
+            {
+                if (key.getName() == null)
+                {
+                    key.setName(property.getName() + "[" + MAP_KEY_SEGMENT + "]");
+                }
+
+                linkDataField(key, agreementGUID, fieldGUID, OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName, qualifiedName + SEPARATOR + MAP_KEY_SEGMENT, version, 1, result);
+            }
+
+            if (value != null)
+            {
+                if (value.getName() == null)
+                {
+                    value.setName(property.getName() + "[" + MAP_VALUE_SEGMENT + "]");
+                }
+
+                linkDataField(value, agreementGUID, fieldGUID, OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName, qualifiedName + SEPARATOR + MAP_VALUE_SEGMENT, version, 2, result);
+            }
+        }
+
         return fieldGUID;
+    }
+
+
+    /**
+     * Record the deprecated flag and the synonyms of a schema element in its additional properties.
+     *
+     * @param deprecated deprecated flag (may be null)
+     * @param synonyms synonyms (may be null)
+     * @param additionalProperties map to add to
+     */
+    private void addElementExtensions(Boolean             deprecated,
+                                      List<BitolSynonym>  synonyms,
+                                      Map<String, String> additionalProperties)
+    {
+        if (Boolean.TRUE.equals(deprecated))
+        {
+            additionalProperties.put(ADDITIONAL_PROPERTY_PREFIX + DEPRECATED, "true");
+        }
+
+        putIfPresent(additionalProperties, SYNONYMS_JSON, toJSON(synonyms));
     }
 
 
@@ -575,6 +629,24 @@ public class DataContractMapper extends BitolMapperBase
         putIfPresent(additionalProperties, "encryptedName", property.getEncryptedName());
         putIfPresent(additionalProperties, "transformLogic", property.getTransformLogic());
         putIfPresent(additionalProperties, "transformDescription", property.getTransformDescription());
+        putIfPresent(additionalProperties, "semanticType", property.getSemanticType());
+        putIfPresent(additionalProperties, "enum", toJSON(property.getEnumValues()));
+        addElementExtensions(property.getDeprecated(), property.getSynonyms(), additionalProperties);
+
+        if (property.getSynonyms() != null)
+        {
+            List<String> aliases = new ArrayList<>();
+
+            for (BitolSynonym synonym : property.getSynonyms())
+            {
+                if ((synonym != null) && (synonym.getSynonym() != null))
+                {
+                    aliases.add(synonym.getSynonym());
+                }
+            }
+
+            properties.setAliases(aliases.isEmpty() ? null : aliases);
+        }
 
         if ((property.getPrimaryKeyPosition() != null) && (property.getPrimaryKeyPosition() > 0))
         {
@@ -627,6 +699,12 @@ public class DataContractMapper extends BitolMapperBase
             putIfPresent(additionalProperties, "minItems", toStringValue(options.getMinItems()));
             putIfPresent(additionalProperties, "maxItems", toStringValue(options.getMaxItems()));
             putIfPresent(additionalProperties, "uniqueItems", toStringValue(options.getUniqueItems()));
+            putIfPresent(additionalProperties, "dimensions", toStringValue(options.getDimensions()));
+            putIfPresent(additionalProperties, "elementType", options.getElementType());
+            putIfPresent(additionalProperties, "distanceMetric", options.getDistanceMetric());
+            putIfPresent(additionalProperties, "normalized", toStringValue(options.getNormalized()));
+            putIfPresent(additionalProperties, "embeddingModel", options.getEmbeddingModel());
+            putIfPresent(additionalProperties, "embeddingModelVersion", options.getEmbeddingModelVersion());
 
             if (options.getRequired() != null)
             {
@@ -773,6 +851,7 @@ public class DataContractMapper extends BitolMapperBase
                 linkProperties.setRelationshipTypeName(relationship.getType());
 
                 Map<String, String> additionalProperties = new HashMap<>();
+                putIfPresent(additionalProperties, "id", relationship.getId());
                 addCustomProperties(relationship.getCustomProperties(), additionalProperties);
 
                 if (! additionalProperties.isEmpty())
@@ -1271,6 +1350,10 @@ public class DataContractMapper extends BitolMapperBase
                 putIfPresent(additionalProperties, "stagingDir", server.getStagingDir());
                 putIfPresent(additionalProperties, "warehouse", server.getWarehouse());
                 putIfPresent(additionalProperties, "stream", server.getStream());
+                putIfPresent(additionalProperties, "encoding", server.getEncoding());
+                putIfPresent(additionalProperties, "workgroup", server.getWorkgroup());
+                putIfPresent(additionalProperties, "catalogUrl", server.getCatalogUrl());
+                putIfPresent(additionalProperties, "namespace", server.getNamespace());
 
                 if (server.getAdditionalProperties() != null)
                 {
@@ -1545,21 +1628,4 @@ public class DataContractMapper extends BitolMapperBase
         return namePatterns.isEmpty() ? null : namePatterns;
     }
 
-
-    /**
-     * Add a value to the additional properties under the bitol prefix if it is present.
-     *
-     * @param additionalProperties map to add to
-     * @param name property name (without prefix)
-     * @param value value (may be null)
-     */
-    private static void putIfPresent(Map<String, String> additionalProperties,
-                                     String              name,
-                                     String              value)
-    {
-        if (value != null)
-        {
-            additionalProperties.put(ADDITIONAL_PROPERTY_PREFIX + name, value);
-        }
-    }
 }

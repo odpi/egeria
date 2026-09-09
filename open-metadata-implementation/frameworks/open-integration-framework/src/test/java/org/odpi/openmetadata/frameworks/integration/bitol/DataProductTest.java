@@ -19,6 +19,7 @@ import java.util.List;
 import static org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentTest.YAML_MAPPER;
 import static org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentTest.readResource;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 
 /**
@@ -43,13 +44,16 @@ public class DataProductTest
     {
         DataProduct product = YAML_MAPPER.readValue(readResource("bitol/odps/customer-data-product.odps.yaml"), DataProduct.class);
 
-        assertEquals(product.getApiVersion(), "v0.9.0");
+        assertEquals(product.getApiVersion(), "v1.1.0");
         assertEquals(product.getName(), "Customer Data Product");
         assertEquals(product.getId(), "fbe8d147-28db-4f1d-bedf-a3fe9f458427");
         assertEquals(product.getDomain(), "seller");
         assertEquals(BitolStatus.fromValue(product.getStatus()), BitolStatus.DRAFT);
         assertEquals(product.getTenant(), "RetailCorp");
-        assertNull(product.getVersion());
+        assertEquals(product.getVersion(), "v1.1.0");
+        assertEquals(product.getType(), "aggregate");
+        assertNotNull(product.getSynonyms());
+        assertNotNull(product.getContext());
         assertEquals(product.getDescription().getPurpose(), "Enterprise view of a customer.");
         assertEquals(product.getDescription().getLimitations(), "No known limitations.");
         assertEquals(product.getTags(), List.of("customer"));
@@ -77,9 +81,10 @@ public class DataProductTest
         assertEquals(rawTransactionsV2.getType(), "tables");
         assertEquals(rawTransactionsV2.getVersion(), "2.0.0");
         assertEquals(rawTransactionsV2.getContractId(), "c2798941-1b7e-4b03-9e0d-955b1a872b33");
-        assertEquals(rawTransactionsV2.getSbom().size(), 1);
+        assertEquals(rawTransactionsV2.getSbom().size(), 2);
+        assertEquals(rawTransactionsV2.getSbom().get(0).getId(), "sbom-runtime");
         assertEquals(rawTransactionsV2.getSbom().get(0).getType(), "external");
-        assertEquals(rawTransactionsV2.getSbom().get(0).getUrl(), "https://mysbomserver/mysbom");
+        assertEquals(rawTransactionsV2.getSbom().get(0).getUrl(), "https://mysbomserver/transactions/runtime.cdx.json");
         assertEquals(rawTransactionsV2.getInputContracts().size(), 2);
         assertEquals(rawTransactionsV2.getInputContracts().get(0).getId(), "dbb7b1eb-7628-436e-8914-2a00638ba6db");
         assertEquals(rawTransactionsV2.getInputContracts().get(0).getVersion(), "2.0.0");

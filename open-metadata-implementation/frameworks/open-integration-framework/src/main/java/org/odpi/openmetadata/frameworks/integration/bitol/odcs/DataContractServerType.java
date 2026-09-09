@@ -177,7 +177,58 @@ public enum DataContractServerType
     /**
      * A server type not covered by the other values.
      */
-    CUSTOM    ("custom", "A server type not covered by the other values.");
+    CUSTOM    ("custom", "A server type not covered by the other values."),
+
+    /**
+     * Actian Zen (synonym of zen).
+     */
+    BTRIEVE   ("btrieve", "Actian Zen (synonym of zen)."),
+
+
+    /**
+     * Exasol in-memory analytics database.
+     */
+    EXASOL    ("exasol", "Exasol in-memory analytics database."),
+
+    /**
+     * Actian NoSQL FastObjects (synonym of poet).
+     */
+    FASTOBJECTS("fastobjects", "Actian NoSQL FastObjects (synonym of poet)."),
+
+    /**
+     * SAP HANA database.
+     */
+    HANA      ("hana", "SAP HANA database."),
+
+    /**
+     * Apache Iceberg catalog accessed through the Iceberg REST API.
+     */
+    ICEBERG   ("iceberg", "Apache Iceberg catalog accessed through the Iceberg REST API."),
+
+    /**
+     * Actian Ingres OLTP database.
+     */
+    INGRES    ("ingres", "Actian Ingres OLTP database."),
+
+    /**
+     * Actian NoSQL FastObjects object database.
+     */
+    POET      ("poet", "Actian NoSQL FastObjects object database."),
+
+    /**
+     * Teradata Vantage.
+     */
+    TERADATA  ("teradata", "Teradata Vantage."),
+
+    /**
+     * Actian analytics engine (Vector).
+     */
+    VECTORWISE("vectorwise", "Actian analytics engine (Vector)."),
+
+    /**
+     * Actian NoSQL object database.
+     */
+    VERSANT   ("versant", "Actian NoSQL object database.");
 
     private final String value;
     private final String description;
