@@ -127,9 +127,28 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color"><code><a href="#context" class="member-name-link">context</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#SEPARATOR" class="member-name-link">SEPARATOR</a></code></div>
+<div class="col-second even-row-color"><code><a href="#CONTEXT_JSON" class="member-name-link">CONTEXT_JSON</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Separator used in qualified names.</div>
+<div class="block">Name of the additional property that holds the AI context block as JSON.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#CUSTOM_PROPERTIES_JSON" class="member-name-link">CUSTOM_PROPERTIES_JSON</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Name of the additional property that holds the full custom properties list as JSON when an entry carries a
+ vendor, description or id.</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#DEPRECATED" class="member-name-link">DEPRECATED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Name of the additional property that records that an element is deprecated.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#SEPARATOR" class="member-name-link">SEPARATOR</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#SYNONYMS_JSON" class="member-name-link">SYNONYMS_JSON</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Name of the additional property that holds the synonyms as JSON.</div>
 </div>
 </div>
 </section>
@@ -269,11 +288,24 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Parse an ISO date (yyyy-MM-dd) from the document.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContentStatus(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties)" class="member-name-link">setContentStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;status,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>protected static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#putIfPresent(java.util.Map,java.lang.String,java.lang.String)" class="member-name-link">putIfPresent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;value)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Add a value to the additional properties under the bitol prefix if it is present.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContentStatus(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties)" class="member-name-link">setContentStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;status,
  <a href="../../../openmetadata/properties/AuthoredReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AuthoredReferenceableProperties</a>&nbsp;properties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Map a Bitol status onto the content status of an element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toJSON(java.lang.Object)" class="member-name-link">toJSON</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;bean)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Format a bean (or list of beans) from a document as a JSON fragment for an additional property, so that it can
+ be regenerated without loss.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toStringValue(java.lang.Object)" class="member-name-link">toStringValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</code></div>
@@ -313,10 +345,70 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="CUSTOM_PROPERTIES_JSON">
+<h3>CUSTOM_PROPERTIES_JSON</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">CUSTOM_PROPERTIES_JSON</span></div>
+<div class="block">Name of the additional property that holds the full custom properties list as JSON when an entry carries a
+ vendor, description or id.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.bitol.mapping.BitolMapperBase.CUSTOM_PROPERTIES_JSON">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="CONTEXT_JSON">
+<h3>CONTEXT_JSON</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">CONTEXT_JSON</span></div>
+<div class="block">Name of the additional property that holds the AI context block as JSON.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.bitol.mapping.BitolMapperBase.CONTEXT_JSON">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="SYNONYMS_JSON">
+<h3>SYNONYMS_JSON</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">SYNONYMS_JSON</span></div>
+<div class="block">Name of the additional property that holds the synonyms as JSON.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.bitol.mapping.BitolMapperBase.SYNONYMS_JSON">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="DEPRECATED">
+<h3>DEPRECATED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">DEPRECATED</span></div>
+<div class="block">Name of the additional property that records that an element is deprecated.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.bitol.mapping.BitolMapperBase.DEPRECATED">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="SEPARATOR">
 <h3>SEPARATOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">SEPARATOR</span></div>
-<div class="block">Separator used in qualified names.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -515,6 +607,35 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>customProperties</code> - custom properties from the document (may be null)</dd>
 <dd><code>additionalProperties</code> - map to add to</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="putIfPresent(java.util.Map,java.lang.String,java.lang.String)">
+<h3>putIfPresent</h3>
+<div class="member-signature"><span class="modifiers">protected static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">putIfPresent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;value)</span></div>
+<div class="block">Add a value to the additional properties under the bitol prefix if it is present.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>additionalProperties</code> - map to add to</dd>
+<dd><code>name</code> - property name (without prefix)</dd>
+<dd><code>value</code> - value (may be null)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toJSON(java.lang.Object)">
+<h3>toJSON</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toJSON</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;bean)</span></div>
+<div class="block">Format a bean (or list of beans) from a document as a JSON fragment for an additional property, so that it can
+ be regenerated without loss.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>bean</code> - bean (may be null)</dd>
+<dt>Returns:</dt>
+<dd>json text or null</dd>
 </dl>
 </section>
 </li>

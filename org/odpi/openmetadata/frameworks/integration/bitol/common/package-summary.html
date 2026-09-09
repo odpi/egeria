@@ -118,43 +118,60 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">BitolAuthoritativeDefinitionType lists the standard types of link to an authoritative source of information about an element.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BitolCustomProperty.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolCustomProperty</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BitolContext.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolContext</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">This class represents the AI and semantic context block of a data contract, schema object, data product or output port (ODCS v3.2.0 and ODPS v1.1.0, RFC 0038).</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BitolContextConstraint.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolContextConstraint</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">This class represents negative guidance for AI agents in the AI context of a data contract, schema object, data product or output port: something that must not be done with the element (RFC 0038).</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BitolContextDeserializer.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolContextDeserializer</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">BitolContextDeserializer reads the AI context block, which ODCS v3.2.0 allows to be written either as an object
+ or as a plain string that is equivalent to supplying the instructions alone.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BitolCustomProperty.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolCustomProperty</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">This class represents a custom (key/value) property that can be attached to most elements of a Bitol Open Data
  Contract Standard (ODCS) or Open Data Product Standard (ODPS) document.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BitolDescription.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolDescription</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BitolDescription.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolDescription</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">This class represents the high-level description of a Bitol Open Data Contract Standard (ODCS) data contract
  or Open Data Product Standard (ODPS) data product.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BitolDocument.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolDocument</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BitolDocument.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolDocument</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">BitolDocument is the abstract root of the documents defined by the Bitol standards: the Open Data Contract
  Standard (ODCS) DataContract and the Open Data Product Standard (ODPS) DataProduct.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BitolModule.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolModule</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BitolModule.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolModule</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">BitolModule is a Jackson module that adds the lenient handling needed to read the range of documents found in
  the wild: for example ODCS v3.0 documents that supply the team as a bare list of members rather than the
  team object introduced in v3.1.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="BitolStatus.html" title="enum class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolStatus</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="BitolStatus.html" title="enum class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolStatus</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">BitolStatus lists the standard lifecycle status values of a Bitol data contract (ODCS) or data product (ODPS).</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BitolSupportChannel.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolSupportChannel</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BitolSupportChannel.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolSupportChannel</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">This class represents a support or communication channel for a Bitol Open Data Contract Standard (ODCS) data
  contract or Open Data Product Standard (ODPS) data product.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="BitolSupportScope.html" title="enum class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolSupportScope</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="BitolSupportScope.html" title="enum class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolSupportScope</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">BitolSupportScope lists the standard scopes of a support or communication channel.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="BitolSupportTool.html" title="enum class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolSupportTool</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="BitolSupportTool.html" title="enum class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolSupportTool</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">BitolSupportTool lists the standard tools that host a support or communication channel.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BitolSynonym.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolSynonym</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">This class represents an alternative name for a data product, schema object or schema property, recorded so that catalogs, AI tools and natural language interfaces can resolve business vocabulary to the underlying element (ODCS v3.2.0 and ODPS v1.1.0, RFC 0041).</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="BitolTeam.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolTeam</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
@@ -169,6 +186,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">This class represents a member of the team responsible for a Bitol Open Data Contract Standard (ODCS) data
  contract or Open Data Product Standard (ODPS) data product.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BitolVerifiedStatement.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolVerifiedStatement</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">This class represents a canonical question, optionally with its verified answer, in the AI context of a data contract, schema object, data product or output port (RFC 0038).</div>
 </div>
 </div>
 </div>

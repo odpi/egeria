@@ -129,6 +129,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../common/BitolAuthoritativeDefinition.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolAuthoritativeDefinition</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAuthoritativeDefinitions()" class="member-name-link">getAuthoritativeDefinitions</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return links to the sources that define this service level property.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../common/BitolCustomProperty.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolCustomProperty</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCustomProperties()" class="member-name-link">getCustomProperties</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the custom properties of this service level property.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -183,6 +193,16 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code based on properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuthoritativeDefinitions(java.util.List)" class="member-name-link">setAuthoritativeDefinitions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../common/BitolAuthoritativeDefinition.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolAuthoritativeDefinition</a>&gt;&nbsp;authoritativeDefinitions)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up links to the sources that define this service level property.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCustomProperties(java.util.List)" class="member-name-link">setCustomProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../common/BitolCustomProperty.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolCustomProperty</a>&gt;&nbsp;customProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the custom properties of this service level property.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDescription(java.lang.String)" class="member-name-link">setDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</code></div>
@@ -488,6 +508,50 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>schedule</code> - string schedule</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getCustomProperties()">
+<h3>getCustomProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../common/BitolCustomProperty.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolCustomProperty</a>&gt;</span>&nbsp;<span class="element-name">getCustomProperties</span>()</div>
+<div class="block">Return the custom properties of this service level property.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>List<BitolCustomProperty></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setCustomProperties(java.util.List)">
+<h3>setCustomProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCustomProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../common/BitolCustomProperty.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolCustomProperty</a>&gt;&nbsp;customProperties)</span></div>
+<div class="block">Set up the custom properties of this service level property.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>customProperties</code> - List<BitolCustomProperty></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAuthoritativeDefinitions()">
+<h3>getAuthoritativeDefinitions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../common/BitolAuthoritativeDefinition.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolAuthoritativeDefinition</a>&gt;</span>&nbsp;<span class="element-name">getAuthoritativeDefinitions</span>()</div>
+<div class="block">Return links to the sources that define this service level property.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>List<BitolAuthoritativeDefinition></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setAuthoritativeDefinitions(java.util.List)">
+<h3>setAuthoritativeDefinitions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAuthoritativeDefinitions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../common/BitolAuthoritativeDefinition.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.common">BitolAuthoritativeDefinition</a>&gt;&nbsp;authoritativeDefinitions)</span></div>
+<div class="block">Set up links to the sources that define this service level property.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>authoritativeDefinitions</code> - List<BitolAuthoritativeDefinition></dd>
 </dl>
 </section>
 </li>
