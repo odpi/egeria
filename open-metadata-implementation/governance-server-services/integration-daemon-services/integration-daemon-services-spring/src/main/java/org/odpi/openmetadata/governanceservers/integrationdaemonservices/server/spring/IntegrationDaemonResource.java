@@ -99,6 +99,58 @@ public class IntegrationDaemonResource
 
 
     /**
+     * Pass an Open Data Contract Standard (ODCS) data contract to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for Bitol documents.
+     *
+     * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
+     * @param document data contract (YAML or JSON) to publish.
+     * @return void or exception
+     */
+    @PostMapping(path = "/publish-data-contract")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="publishDataContract",
+            description="Send an Open Data Contract Standard (ODCS) data contract, in YAML or JSON, to the integration daemon.  It will pass it on to the integration connectors that have" +
+                    " registered a listener for Bitol documents.",
+            externalDocs=@ExternalDocumentation(description="Open Data Contract Standard",
+                    url="https://bitol-io.github.io/open-data-contract-standard/"))
+
+    VoidResponse publishDataContract(@PathVariable String serverName,
+                                     @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
+                                     @RequestBody  String document)
+    {
+        return restAPI.publishDataContract(serverName, delegatingUserId, document);
+    }
+
+
+    /**
+     * Pass an Open Data Product Standard (ODPS) data product to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for Bitol documents.
+     *
+     * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
+     * @param document data product (YAML or JSON) to publish.
+     * @return void or exception
+     */
+    @PostMapping(path = "/publish-data-product")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="publishDataProduct",
+            description="Send an Open Data Product Standard (ODPS) data product, in YAML or JSON, to the integration daemon.  It will pass it on to the integration connectors that have" +
+                    " registered a listener for Bitol documents.",
+            externalDocs=@ExternalDocumentation(description="Open Data Product Standard",
+                    url="https://bitol-io.github.io/open-data-product-standard/"))
+
+    VoidResponse publishDataProduct(@PathVariable String serverName,
+                                    @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
+                                    @RequestBody  String document)
+    {
+        return restAPI.publishDataProduct(serverName, delegatingUserId, document);
+    }
+
+
+    /**
      * Return the status of each of the integration services and integration groups running in the integration daemon.
      *
      * @param serverName integration daemon name

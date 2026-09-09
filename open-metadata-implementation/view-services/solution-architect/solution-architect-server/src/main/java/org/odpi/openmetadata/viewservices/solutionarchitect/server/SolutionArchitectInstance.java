@@ -25,6 +25,7 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
     private final InformationSupplyChainHandler informationSupplyChainHandler;
     private final CollectionHandler             solutionBlueprintHandler;
     private final SolutionComponentHandler      solutionComponentHandler;
+    private final SolutionPortHandler           solutionPortHandler;
     private final ConceptModelElementHandler    conceptModelElementHandler;
 
 
@@ -73,6 +74,11 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
                                                                 myDescription.getViewServiceFullName(),
                                                                 openMetadataClient);
 
+        solutionPortHandler = new SolutionPortHandler(serverName,
+                                                      auditLog,
+                                                      myDescription.getViewServiceFullName(),
+                                                      openMetadataClient);
+
         solutionBlueprintHandler = new CollectionHandler(serverName,
                                                          auditLog,
                                                          myDescription.getViewServiceFullName(),
@@ -104,6 +110,17 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
     public SolutionComponentHandler getSolutionComponentHandler()
     {
         return solutionComponentHandler;
+    }
+
+
+    /**
+     * Return the solution port handler.
+     *
+     * @return client
+     */
+    public SolutionPortHandler getSolutionPortHandler()
+    {
+        return solutionPortHandler;
     }
 
 

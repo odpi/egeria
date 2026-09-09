@@ -159,10 +159,15 @@ public class OpenMetadataTypesArchive
          */
         update0010BaseModel();
         update0025Locations();
+        update0110Actors();
         update0112People();
+        update0130Projects();
         update0205ConnectionLinkage();
+        update0210DataStores();
         update0221DocumentStores();
         update0423SecurityDefinitions();
+        update0430DevelopmentControls();
+        update0438NamingStandards();
         update0451Notifications();
         update0505SchemaAttributes();
         add0280SoftwareDevelopmentAssets();
@@ -174,6 +179,9 @@ public class OpenMetadataTypesArchive
         update0710DigitalServices();
         update0735SolutionPortsAndWires();
         update0770LineageMapping();
+        update0420GovernanceControls();
+        update0534RelationalSchemas();
+        update0580DataDictionaries();
     }
 
     /*
@@ -208,6 +216,31 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setMultiLink(true);
 
         return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0130Projects()
+    {
+        this.archiveBuilder.addClassificationDef(getInvestigationClassification());
+    }
+
+
+    /**
+     * Investigation identifies a project that is seeking to answer a question, or discover information.
+     *
+     * @return classification def
+     */
+    private ClassificationDef getInvestigationClassification()
+    {
+        return archiveHelper.getClassificationDef(OpenMetadataType.INVESTIGATION_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.PROJECT_KIND_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.PROJECT.typeName),
+                                                  false);
     }
 
 
@@ -288,6 +321,50 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName));
         typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0210DataStores()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataScopeClassification());
+    }
+
+
+    /**
+     * DataScope gains the validity and coverage time periods.  The data collection times say when the data was
+     * gathered; the validity times say when the data is valid; and the coverage times say which period of time
+     * the data describes.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDataScopeClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_SCOPE_CLASSIFICATION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_VALIDITY_START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_VALIDITY_END_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COVERAGE_START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COVERAGE_END_TIME));
+
+        typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
     }
@@ -392,6 +469,76 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SECURITY_ROLES));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0438NamingStandards()
+    {
+        this.archiveBuilder.addClassificationDef(getNamingStandardsVocabularyClassification());
+    }
+
+
+    /**
+     * NamingStandardsVocabulary identifies a glossary whose terms are the name parts used to build
+     * names that follow the organization's naming standards.
+     *
+     * @return classification def
+     */
+    private ClassificationDef getNamingStandardsVocabularyClassification()
+    {
+        return archiveHelper.getClassificationDef(OpenMetadataType.NAMING_STANDARDS_VOCABULARY_CLASSIFICATION,
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_KIND_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY.typeName),
+                                                  false);
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0430DevelopmentControls()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataLensEntity());
+    }
+
+
+    /**
+     * DataLens gains the validity and coverage time periods, to match DataScope.  The data collection times say
+     * when the data was gathered; the validity times say when the data is valid; and the coverage times say which
+     * period of time the data describes.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDataLensEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_LENS.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_VALIDITY_START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_VALIDITY_END_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COVERAGE_START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COVERAGE_END_TIME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -1162,6 +1309,48 @@ public class OpenMetadataTypesArchive
     }
 
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Widen ContactThrough so that any referenceable - not just an actor profile - can have contact details.  Digital
+     * products and data sharing agreements record their support channels this way.
+     */
+    private void update0110Actors()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateContactThroughRelationship());
+    }
+
+
+    /**
+     * End 1 of ContactThrough becomes Referenceable (it was ActorProfile).
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateContactThroughRelationship()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        final String                     end1AttributeName            = "contactDetails";
+        final String                     end1AttributeDescription     = "Contact details owner.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                                    end1AttributeName,
+                                                                                    end1AttributeDescription,
+                                                                                    end1AttributeDescriptionGUID,
+                                                                                    RelationshipEndCardinality.AT_MOST_ONE);
+        typeDefPatch.setEndDef1(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
     /**
      * SubscribingActionProcess creates a subscription to a digital resource.
      *
@@ -1173,5 +1362,130 @@ public class OpenMetadataTypesArchive
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName));
     }
 
-}
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 
+    /**
+     * Add the DataQualityRule governance control used to capture the data quality checks defined in data contracts.
+     */
+    private void update0420GovernanceControls()
+    {
+        this.archiveBuilder.addEntityDef(getDataQualityRuleEntity());
+    }
+
+
+    /**
+     * DataQualityRule describes a check on the quality of data, for example that a data field has no null values or that a
+     * data set has an expected number of rows.  It captures the check in the terms used by data contract standards such as the
+     * Bitol Open Data Contract Standard: the quality dimension, the type of check, the metric or expression evaluated and the
+     * comparison against the threshold values.  It is linked to the data structures, data fields or assets it governs using
+     * the GovernedBy relationship.
+     *
+     * @return entity definition
+     */
+    private EntityDef getDataQualityRuleEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_QUALITY_RULE,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_RULE.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALITY_DIMENSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CHECK_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.METRIC));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SEVERITY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.BUSINESS_IMPACT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.METHOD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UNITS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCHEDULE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCHEDULER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALITY_ENGINE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPARISON_OPERATOR));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.THRESHOLD_VALUES));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Allow the PrimaryKey classification to be attached to a DataField as well as a RelationalColumn, so that a data
+     * specification can record which of its fields identify a record.
+     */
+    private void update0534RelationalSchemas()
+    {
+        this.archiveBuilder.addTypeDefPatch(updatePrimaryKeyClassification());
+    }
+
+
+    /**
+     * The valid entity types of a classification are replaced (not merged) by a patch, so the existing RelationalColumn is
+     * listed alongside the new DataField.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updatePrimaryKeyClassification()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefLink> validEntityDefs = new ArrayList<>();
+
+        validEntityDefs.add(new TypeDefLink(this.archiveBuilder.getEntityDef(OpenMetadataType.RELATIONAL_COLUMN.typeName)));
+        validEntityDefs.add(new TypeDefLink(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FIELD.typeName)));
+
+        typeDefPatch.setValidEntityDefs(validEntityDefs);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Add the attributes to DataField that data contract standards describe for a field: whether it is part of the partition
+     * key and its position in that key, and whether its values may be duplicated (the complement of "unique").
+     */
+    private void update0580DataDictionaries()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataFieldEntity());
+    }
+
+
+    /**
+     * Add isPartitionKey, partitionKeyPosition and allowsDuplicateValues to DataField.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDataFieldEntity()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FIELD.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_PARTITION_KEY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PARTITION_KEY_POSITION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ALLOWS_DUPLICATE_VALUES));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+}

@@ -20,6 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = NamingStandardRuleProperties.class, name = "NamingStandardRuleProperties"),
+                @JsonSubTypes.Type(value = DataQualityRuleProperties.class, name = "DataQualityRuleProperties"),
         })
 public class GovernanceRuleProperties extends GovernanceControlProperties
 {

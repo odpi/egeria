@@ -38,6 +38,15 @@ public enum IntegrationGroupDefinition
     /**
      * Dynamic integration group containing integration connectors for working with Egeria's infrastructure.
      */
+    BITOL("bbbcb2ff-1a21-47a8-9cf8-e4aa17d1c387",
+          "Egeria:IntegrationGroup:Bitol",
+          "BitolIntegrationGroup",
+          "Dynamic integration group containing integration connectors for working with Bitol data contract (ODCS) and data product (ODPS) documents.",
+          ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
+     * Dynamic integration group containing integration connectors for working with Egeria's infrastructure.
+     */
     EGERIA("502c6eb0-a9d5-4a65-97dc-5cd5a4f10c36",
           "Egeria:IntegrationGroup:Egeria",
           "EgeriaIntegrationGroup",

@@ -152,6 +152,64 @@ Content-Type: application/json
 }
 
 ###
+# @name setGlossaryAsNamingStandardsVocabulary
+# Classify a glossary to declare that it describes the terms used in naming standards.
+# The terms in this type of glossary are the name parts that are combined to form names
+# that follow the organization's naming standards.
+#
+# @param serverName name of the server to route the request to
+# @param glossaryGUID unique identifier of the metadata element to classify
+# @param requestBody properties for the classification
+#
+# @return  void or
+# InvalidParameterException  one of the parameters is invalid
+# UserNotAuthorizedException the user is not authorized to issue this request
+# PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/{glossaryGUID}/is-naming-standards-vocabulary
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "NamingStandardsVocabularyProperties"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearGlossaryAsNamingStandardsVocabulary
+# Remove the naming standards vocabulary designation from the glossary.
+#
+# @param serverName name of the server to route the request to
+# @param glossaryGUID unique identifier of the metadata element to update
+# @param requestBody correlation properties for the external asset manager
+#
+# @return  void or
+# InvalidParameterException  one of the parameters is invalid
+# UserNotAuthorizedException the user is not authorized to issue this request
+# PropertyServerException    a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/{glossaryGUID}/is-naming-standards-vocabulary/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
 #===============================================================================
 # A glossary typically contains many glossary terms, linked with relationships.
 # https://egeria-project.org/concepts/glossary-term

@@ -184,6 +184,49 @@ public enum OIFAuditCode implements AuditLogMessageSet
                     "No action is required.  This message traces the decision that the connector made about each element it processed.",
                     "https://egeria-project.org/frameworks/oif/overview/"),
 
+    /**
+     * OIF-CONNECTOR-0020 - A {0} exception with message {1} occurred when parsing Bitol document: {2}
+     */
+    BITOL_FORMAT_ERROR("OIF-CONNECTOR-0020",
+                       AuditLogRecordSeverityLevel.ERROR,
+                       "A {0} exception with message {1} occurred when parsing Bitol document: {2}",
+                       "The integration daemon cannot parse an incoming Bitol document (an Open Data Contract Standard data contract or an Open Data Product Standard data product) into Egeria's beans.  " +
+                               "This may be due to either (1) an invalid document, or (2) Egeria's beans not supporting an advancement in the Bitol standard.  " +
+                               "If the kind of document can be determined, the raw document is passed to the listening connectors with a null bean so that it can still be stored or forwarded; otherwise it is discarded.",
+                       "Verify the format of the document against the Bitol standard.  If incorrect, seek the source of the document.  If correct, look to enhance Egeria's Bitol beans.",
+                       "https://egeria-project.org/frameworks/oif/overview/"),
+
+    /**
+     * OIF-CONNECTOR-0021 - A {0} exception with message {1} occurred when a listening integration connector tried to process a Bitol document
+     */
+    BITOL_PUBLISH_ERROR("OIF-CONNECTOR-0021",
+                        AuditLogRecordSeverityLevel.EXCEPTION,
+                        "A {0} exception with message {1} occurred when a listening integration connector tried to process a Bitol document",
+                        "The integration daemon has caught the exception and will continue to pass the document to the remaining listening integration connectors.",
+                        "Look at the resulting stack trace to understand what went wrong in the integration connector that was processing the Bitol document, and correct either the connector or the document.",
+                        "https://egeria-project.org/frameworks/oif/overview/"),
+
+    /**
+     * OIF-CONNECTOR-0022 - The integration daemon received a {0} document with identifier {1} and apiVersion {2} which is not supported by Egeria's beans
+     */
+    BITOL_UNSUPPORTED_VERSION("OIF-CONNECTOR-0022",
+                              AuditLogRecordSeverityLevel.ERROR,
+                              "The integration daemon received a {0} document with identifier {1} and apiVersion {2} which is not supported by Egeria's beans",
+                              "Egeria supports Open Data Contract Standard v3.x and Open Data Product Standard v1.x documents.  Older documents, such as ODCS v2.x, have a different structure.  " +
+                                      "The raw document is passed to the listening connectors with a null bean so that it can still be stored or forwarded, but it will not be catalogued.",
+                              "Convert the document to a supported version of the standard, for example with the datacontract CLI, and publish it again.",
+                              "https://egeria-project.org/frameworks/oif/overview/"),
+
+    /**
+     * OIF-CONNECTOR-0023 - The integration daemon received a Bitol document of kind {0} through the {1} method which expects {2}; the document begins: {3}
+     */
+    BITOL_UNEXPECTED_KIND("OIF-CONNECTOR-0023",
+                          AuditLogRecordSeverityLevel.ERROR,
+                          "The integration daemon received a Bitol document of kind {0} through the {1} method which expects {2}; the document begins: {3}",
+                          "The document is discarded because it can not be routed to the listening connectors.",
+                          "Check the kind property of the document.  A DataContract should be published through publishDataContract and a DataProduct through publishDataProduct; publishBitolDocument accepts either.",
+                          "https://egeria-project.org/frameworks/oif/overview/"),
+
     ;
 
     private final String                      logMessageId;

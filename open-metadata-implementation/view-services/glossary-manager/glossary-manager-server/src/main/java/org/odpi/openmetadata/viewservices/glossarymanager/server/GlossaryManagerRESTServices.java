@@ -283,6 +283,119 @@ public class GlossaryManagerRESTServices extends TokenController
 
 
 
+    /**
+     * Classify a glossary to declare that it describes the terms used in naming standards.  The terms in this
+     * type of glossary are the name parts that are combined to form names that follow the organization's
+     * naming standards.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryGUID unique identifier of the metadata element to classify
+     * @param requestBody properties for the classification
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setGlossaryAsNamingStandardsVocabulary(String                       serverName,
+                                                               String                       glossaryGUID,
+                                                               NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setGlossaryAsNamingStandardsVocabulary";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof NamingStandardsVocabularyProperties properties)
+                {
+                    handler.setGlossaryAsNamingStandardsVocabulary(userId, glossaryGUID, properties, requestBody);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setGlossaryAsNamingStandardsVocabulary(userId, glossaryGUID, null, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NamingStandardsVocabularyProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.setGlossaryAsNamingStandardsVocabulary(userId, glossaryGUID, null, null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Remove the naming standards vocabulary designation from the glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryGUID unique identifier of the metadata element to update
+     * @param requestBody correlation properties for the external asset manager
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearGlossaryAsNamingStandardsVocabulary(String                    serverName,
+                                                                 String                    glossaryGUID,
+                                                                 MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "clearGlossaryAsNamingStandardsVocabulary";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
+
+            handler.clearGlossaryAsNamingStandardsVocabulary(userId, glossaryGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+
     /* ===============================================================================
      * A glossary typically contains many glossary terms, linked with relationships.
      */

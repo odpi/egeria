@@ -1787,6 +1787,111 @@ public class ProjectManagerRESTServices extends TokenController
 
 
     /**
+     * Classify a project to say that it is an investigation that is seeking to answer a question.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setProjectAsInvestigation(String                       serverName,
+                                                  String                       projectGUID,
+                                                  NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setProjectAsInvestigation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setProjectAsInvestigation(userId, projectGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof InvestigationProperties properties)
+            {
+                handler.setProjectAsInvestigation(userId, projectGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setProjectAsInvestigation(userId, projectGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(InvestigationProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the investigation designation from a project.
+     *
+     * @param serverName name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param requestBody options for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearProjectAsInvestigation(String                          serverName,
+                                                    String                          projectGUID,
+                                                    DeleteClassificationRequestBody requestBody)
+    {
+        final String methodName = "clearProjectAsInvestigation";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
+            handler.clearProjectAsInvestigation(userId, projectGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
      * Classify a project to say that it is managing the development of a glossary.
      *
      * @param serverName name of the server to route the request to

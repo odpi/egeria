@@ -299,6 +299,15 @@ Content-Type: text/plain
 
 content-packs/OpenLineageContentPack.omarchive
 
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/BitolContentPack.omarchive
+
 ###
 # Add the file name for an open Metadata Archive that should be loaded each time the server starts.
 POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
@@ -971,6 +980,15 @@ Content-Type: application/json
       "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
       "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
       "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenLineage"
+    },
+    {
+      "class": "IntegrationGroupConfig",
+      "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+      "omagserverName" : "active-metadata-store",
+      "secretsStoreProvider" : "~{secretsStoreProvider}~",
+      "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+      "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+      "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Bitol"
     },
     {
         "class": "IntegrationGroupConfig",

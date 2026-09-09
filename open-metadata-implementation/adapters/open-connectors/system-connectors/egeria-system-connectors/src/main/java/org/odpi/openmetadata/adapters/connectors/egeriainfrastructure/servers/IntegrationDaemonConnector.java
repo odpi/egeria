@@ -5,6 +5,8 @@ package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers;
 
 import io.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
+import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -218,5 +220,77 @@ public class IntegrationDaemonConnector extends OMAGServerConnectorBase
                                                                            PropertyServerException
     {
         extractor.publishOpenLineageEvent(event);
+    }
+
+
+    /**
+     * Pass an Open Data Contract Standard (ODCS) data contract to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for Bitol documents.
+     *
+     * @param document data contract in YAML or JSON format.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException a problem processing the request
+     */
+    public void publishDataContract(String document) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        extractor.publishDataContract(document);
+    }
+
+
+    /**
+     * Pass an Open Data Contract Standard (ODCS) data contract to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for Bitol documents.
+     *
+     * @param dataContract data contract bean.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException a problem processing the request
+     */
+    public void publishDataContract(DataContract dataContract) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        extractor.publishDataContract(dataContract);
+    }
+
+
+    /**
+     * Pass an Open Data Product Standard (ODPS) data product to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for Bitol documents.
+     *
+     * @param document data product in YAML or JSON format.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException a problem processing the request
+     */
+    public void publishDataProduct(String document) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        extractor.publishDataProduct(document);
+    }
+
+
+    /**
+     * Pass an Open Data Product Standard (ODPS) data product to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for Bitol documents.
+     *
+     * @param dataProduct data product bean.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException a problem processing the request
+     */
+    public void publishDataProduct(DataProduct dataProduct) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        extractor.publishDataProduct(dataProduct);
     }
 }

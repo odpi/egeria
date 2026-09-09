@@ -116,6 +116,7 @@ public class ConnectorContextBase
     private final   SearchKeywordClient            searchKeywordClient;
     private final   SoftwareCapabilityClient       softwareCapabilityClient;
     private final   SolutionComponentClient        solutionComponentClient;
+    private final   SolutionPortClient             solutionPortClient;
     private final   SpecificationPropertyClient    specificationPropertyClient;
     private final   StorageVolumeClient            storageVolumeClient;
     private final   SkillClient                    skillClient;
@@ -672,6 +673,17 @@ public class ConnectorContextBase
                                                                    openMetadataClient,
                                                                    auditLog,
                                                                    maxPageSize);
+
+        this.solutionPortClient = new SolutionPortClient(this,
+                                                         localServerName,
+                                                         localServiceName,
+                                                         connectorUserId,
+                                                         connectorGUID,
+                                                         externalSourceGUID,
+                                                         externalSourceName,
+                                                         openMetadataClient,
+                                                         auditLog,
+                                                         maxPageSize);
 
         this.specificationPropertyClient = new SpecificationPropertyClient(this,
                                                                            localServerName,
@@ -1435,6 +1447,18 @@ public class ConnectorContextBase
     public SolutionComponentClient getSolutionComponentClient()
     {
         return solutionComponentClient;
+    }
+
+
+    /**
+     * Return the client for working with solution ports.  This client is from the Open Metadata Framework (OMF) and is for
+     * defining the ports of solution components and the delegations between them.
+     *
+     * @return client
+     */
+    public SolutionPortClient getSolutionPortClient()
+    {
+        return solutionPortClient;
     }
 
 

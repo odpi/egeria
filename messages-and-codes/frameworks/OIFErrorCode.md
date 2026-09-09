@@ -9,7 +9,7 @@ The OIFErrorCode is used to define the message content for the OMRS Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 7 |
+| **Number of messages** | 8 |
 | **Message identifiers begin** | `OIF-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.integration.ffdc.OIFErrorCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-integration-framework](../../open-metadata-implementation/frameworks/open-integration-framework) |
@@ -25,6 +25,7 @@ The OIFErrorCode is used to define the message content for the OMRS Audit Log.
 | [OIF-CONNECTOR-400-002](#oif-connector-400-002) | 400 | Catalog target {0} is of type {1} but the {2} connector only supports the following type(s): {3} |
 | [OIF-CONNECTOR-400-003](#oif-connector-400-003) | 400 | Catalog target {0} has a connection that is missing property {1} and connector {2} cannot proceed |
 | [OIF-CONNECTOR-400-004](#oif-connector-400-004) | 400 | Catalog target {0} has a connector of type {1} but the {2} connector only supports the following type(s) of connector: {3} |
+| [OIF-CONNECTOR-400-005](#oif-connector-400-005) | 400 | Element {0} passed to method {1} is of type {2}, but a Bitol {3} document can only be generated from an element of type {4} |
 | [OIF-CONNECTOR-500-001](#oif-connector-500-001) | 500 | The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3} |
 | [OIF-CONNECTOR-500-003](#oif-connector-500-003) | 500 | The {0} connector has detected a missing or invalid {1} property in method {2} - element is: {3} |
 | [OIF-CONNECTOR-500-004](#oif-connector-500-004) | 500 | The {0} connector has detected that element {1} which should be of type {2} has bean properties of {3} rather than {4} in method {5} - element is {6} |
@@ -111,6 +112,27 @@ The connector skips the catalog target because it is not able to communicate wit
 **User action**
 
 The caller has requested a connector work with the wrong type of connector to the third party technology.  It should be reconfigured with the correct type of connector and rerun.
+
+
+----
+
+### OIF-CONNECTOR-400-005
+
+> Element {0} passed to method {1} is of type {2}, but a Bitol {3} document can only be generated from an element of type {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFErrorCode.WRONG_ELEMENT_TYPE_FOR_BITOL_DOCUMENT` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The generator raises an exception and no document is produced.
+
+**User action**
+
+The caller has asked for a Bitol document for the wrong kind of element.  Pass a digital product for an ODPS document, or a data sharing agreement for an ODCS document.
 
 
 ----

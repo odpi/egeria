@@ -8,6 +8,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
+import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
+import org.odpi.openmetadata.viewservices.productmanager.rest.DataContractResponse;
+import org.odpi.openmetadata.viewservices.productmanager.rest.DataProductResponse;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductDependencyProperties;
 import org.odpi.openmetadata.viewservices.productmanager.server.ProductManagerRESTServices;
@@ -233,5 +237,279 @@ public class ProductManagerResource
                                                        DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachDigitalProductDependency(serverName, consumerDigitalProductGUID, consumedDigitalProductGUID, requestBody);
+    }
+
+
+    /* =====================================================================================================================
+     * Bitol documents: Open Data Contract Standard (ODCS) data contracts and Open Data Product Standard (ODPS) data products.
+     */
+
+    /**
+     * Pass an Open Data Contract Standard (ODCS) data contract, in YAML or JSON, to an integration daemon.  It will pass it on to
+     * the integration connectors that have registered a listener for Bitol documents.
+     *
+     * @param serverName name of called server
+     * @param serverGUID unique identifier of the integration daemon's software server asset
+     * @param document data contract to publish
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/integration-daemons/{serverGUID}/data-contracts/publish-document-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="publishDataContractString",
+            description="Send an Open Data Contract Standard (ODCS) data contract, in YAML or JSON, to an integration daemon.  It will pass it on to the integration connectors that have" +
+                    " registered a listener for Bitol documents.",
+            externalDocs=@ExternalDocumentation(description="Open Data Contract Standard",
+                    url="https://bitol-io.github.io/open-data-contract-standard/"))
+
+    public VoidResponse publishDataContract(@PathVariable String serverName,
+                                            @PathVariable String serverGUID,
+                                            @RequestBody  String document)
+    {
+        return restAPI.publishDataContract(serverName, serverGUID, document);
+    }
+
+
+    /**
+     * Pass an Open Data Contract Standard (ODCS) data contract bean to an integration daemon.  It will pass it on to
+     * the integration connectors that have registered a listener for Bitol documents.
+     *
+     * @param serverName name of called server
+     * @param serverGUID unique identifier of the integration daemon's software server asset
+     * @param dataContract data contract to publish
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/integration-daemons/{serverGUID}/data-contracts/publish-document")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="publishDataContract",
+            description="Send an Open Data Contract Standard (ODCS) data contract bean to an integration daemon.  It will pass it on to the integration connectors that have" +
+                    " registered a listener for Bitol documents.",
+            externalDocs=@ExternalDocumentation(description="Open Data Contract Standard",
+                    url="https://bitol-io.github.io/open-data-contract-standard/"))
+
+    public VoidResponse publishDataContract(@PathVariable String       serverName,
+                                            @PathVariable String       serverGUID,
+                                            @RequestBody  DataContract dataContract)
+    {
+        return restAPI.publishDataContract(serverName, serverGUID, dataContract);
+    }
+
+
+    /**
+     * Pass an Open Data Product Standard (ODPS) data product, in YAML or JSON, to an integration daemon.  It will pass it on to
+     * the integration connectors that have registered a listener for Bitol documents.
+     *
+     * @param serverName name of called server
+     * @param serverGUID unique identifier of the integration daemon's software server asset
+     * @param document data product to publish
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/integration-daemons/{serverGUID}/data-products/publish-document-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="publishDataProductString",
+            description="Send an Open Data Product Standard (ODPS) data product, in YAML or JSON, to an integration daemon.  It will pass it on to the integration connectors that have" +
+                    " registered a listener for Bitol documents.",
+            externalDocs=@ExternalDocumentation(description="Open Data Product Standard",
+                    url="https://bitol-io.github.io/open-data-product-standard/"))
+
+    public VoidResponse publishDataProduct(@PathVariable String serverName,
+                                           @PathVariable String serverGUID,
+                                           @RequestBody  String document)
+    {
+        return restAPI.publishDataProduct(serverName, serverGUID, document);
+    }
+
+
+    /**
+     * Pass an Open Data Product Standard (ODPS) data product bean to an integration daemon.  It will pass it on to
+     * the integration connectors that have registered a listener for Bitol documents.
+     *
+     * @param serverName name of called server
+     * @param serverGUID unique identifier of the integration daemon's software server asset
+     * @param dataProduct data product to publish
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/integration-daemons/{serverGUID}/data-products/publish-document")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="publishDataProduct",
+            description="Send an Open Data Product Standard (ODPS) data product bean to an integration daemon.  It will pass it on to the integration connectors that have" +
+                    " registered a listener for Bitol documents.",
+            externalDocs=@ExternalDocumentation(description="Open Data Product Standard",
+                    url="https://bitol-io.github.io/open-data-product-standard/"))
+
+    public VoidResponse publishDataProduct(@PathVariable String      serverName,
+                                           @PathVariable String      serverGUID,
+                                           @RequestBody  DataProduct dataProduct)
+    {
+        return restAPI.publishDataProduct(serverName, serverGUID, dataProduct);
+    }
+
+
+    /**
+     * Catalog an Open Data Contract Standard (ODCS) data contract, supplied as YAML or JSON, directly in open metadata.
+     *
+     * @param serverName name of called server
+     * @param document data contract to catalog
+     * @return unique identifier of the resulting agreement or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/data-contracts/import-document-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="importDataContractString",
+            description="Catalog an Open Data Contract Standard (ODCS) data contract, supplied as YAML or JSON, directly in open metadata as an Agreement" +
+                    " classified as a DataSharingAgreement.  The unique identifier of the agreement is returned.",
+            externalDocs=@ExternalDocumentation(description="Open Data Contract Standard",
+                    url="https://bitol-io.github.io/open-data-contract-standard/"))
+
+    public GUIDResponse importDataContract(@PathVariable String serverName,
+                                           @RequestBody  String document)
+    {
+        return restAPI.importDataContract(serverName, document);
+    }
+
+
+    /**
+     * Catalog an Open Data Contract Standard (ODCS) data contract bean directly in open metadata.
+     *
+     * @param serverName name of called server
+     * @param dataContract data contract to catalog
+     * @return unique identifier of the resulting agreement or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/data-contracts/import-document")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="importDataContract",
+            description="Catalog an Open Data Contract Standard (ODCS) data contract bean directly in open metadata as an Agreement" +
+                    " classified as a DataSharingAgreement.  The unique identifier of the agreement is returned.",
+            externalDocs=@ExternalDocumentation(description="Open Data Contract Standard",
+                    url="https://bitol-io.github.io/open-data-contract-standard/"))
+
+    public GUIDResponse importDataContract(@PathVariable String       serverName,
+                                           @RequestBody  DataContract dataContract)
+    {
+        return restAPI.importDataContract(serverName, dataContract);
+    }
+
+
+    /**
+     * Catalog an Open Data Product Standard (ODPS) data product, supplied as YAML or JSON, directly in open metadata.
+     *
+     * @param serverName name of called server
+     * @param document data product to catalog
+     * @return unique identifier of the resulting digital product or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/data-products/import-document-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="importDataProductString",
+            description="Catalog an Open Data Product Standard (ODPS) data product, supplied as YAML or JSON, directly in open metadata as a DigitalProduct." +
+                    "  The unique identifier of the digital product is returned.",
+            externalDocs=@ExternalDocumentation(description="Open Data Product Standard",
+                    url="https://bitol-io.github.io/open-data-product-standard/"))
+
+    public GUIDResponse importDataProduct(@PathVariable String serverName,
+                                          @RequestBody  String document)
+    {
+        return restAPI.importDataProduct(serverName, document);
+    }
+
+
+    /**
+     * Catalog an Open Data Product Standard (ODPS) data product bean directly in open metadata.
+     *
+     * @param serverName name of called server
+     * @param dataProduct data product to catalog
+     * @return unique identifier of the resulting digital product or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/data-products/import-document")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="importDataProduct",
+            description="Catalog an Open Data Product Standard (ODPS) data product bean directly in open metadata as a DigitalProduct." +
+                    "  The unique identifier of the digital product is returned.",
+            externalDocs=@ExternalDocumentation(description="Open Data Product Standard",
+                    url="https://bitol-io.github.io/open-data-product-standard/"))
+
+    public GUIDResponse importDataProduct(@PathVariable String      serverName,
+                                          @RequestBody  DataProduct dataProduct)
+    {
+        return restAPI.importDataProduct(serverName, dataProduct);
+    }
+
+
+    /**
+     * Generate the Open Data Contract Standard (ODCS) document for an agreement.
+     *
+     * @param serverName name of called server
+     * @param agreementGUID unique identifier of the agreement
+     * @return data contract or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @GetMapping(path = "/agreements/{agreementGUID}/data-contract-document")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="generateDataContract",
+            description="Generate the Open Data Contract Standard (ODCS) document that describes an agreement (typically one classified as a DataSharingAgreement).",
+            externalDocs=@ExternalDocumentation(description="Open Data Contract Standard",
+                    url="https://bitol-io.github.io/open-data-contract-standard/"))
+
+    public DataContractResponse generateDataContract(@PathVariable String serverName,
+                                                     @PathVariable String agreementGUID)
+    {
+        return restAPI.generateDataContract(serverName, agreementGUID);
+    }
+
+
+    /**
+     * Generate the Open Data Product Standard (ODPS) document for a digital product.
+     *
+     * @param serverName name of called server
+     * @param digitalProductGUID unique identifier of the digital product
+     * @return data product or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @GetMapping(path = "/digital-products/{digitalProductGUID}/data-product-document")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="generateDataProduct",
+            description="Generate the Open Data Product Standard (ODPS) document that describes a digital product, including the contracts referenced by its ports.",
+            externalDocs=@ExternalDocumentation(description="Open Data Product Standard",
+                    url="https://bitol-io.github.io/open-data-product-standard/"))
+
+    public DataProductResponse generateDataProduct(@PathVariable String serverName,
+                                                   @PathVariable String digitalProductGUID)
+    {
+        return restAPI.generateDataProduct(serverName, digitalProductGUID);
     }
 }

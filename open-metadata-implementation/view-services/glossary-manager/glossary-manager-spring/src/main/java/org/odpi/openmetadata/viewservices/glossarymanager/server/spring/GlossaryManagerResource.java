@@ -187,6 +187,67 @@ public class GlossaryManagerResource
     }
 
 
+    /**
+     * Classify a glossary to declare that it describes the terms used in naming standards.  The terms in this
+     * type of glossary are the name parts that are combined to form names that follow the organization's
+     * naming standards.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryGUID unique identifier of the metadata element to classify
+     * @param requestBody properties for the classification
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/{glossaryGUID}/is-naming-standards-vocabulary")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setGlossaryAsNamingStandardsVocabulary",
+            description="Classify a glossary to declare that it describes the terms used in naming standards." +
+                    "  The terms in this type of glossary are the name parts that are combined to form names" +
+                    " that follow the organization's naming standards.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
+    public VoidResponse setGlossaryAsNamingStandardsVocabulary(@PathVariable String                       serverName,
+                                                               @PathVariable String                       glossaryGUID,
+                                                               @RequestBody  NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setGlossaryAsNamingStandardsVocabulary(serverName, glossaryGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the naming standards vocabulary designation from the glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryGUID unique identifier of the metadata element to update
+     * @param requestBody correlation properties for the external asset manager
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/{glossaryGUID}/is-naming-standards-vocabulary/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearGlossaryAsNamingStandardsVocabulary",
+            description="Remove the naming standards vocabulary designation from the glossary.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
+
+    public VoidResponse clearGlossaryAsNamingStandardsVocabulary(@PathVariable String                    serverName,
+                                                                 @PathVariable String                    glossaryGUID,
+                                                                 @RequestBody(required = false)
+                                                                               MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearGlossaryAsNamingStandardsVocabulary(serverName, glossaryGUID, requestBody);
+    }
+
+
     /* ===============================================================================
      * A glossary typically contains many glossary terms, linked with relationships.
      */

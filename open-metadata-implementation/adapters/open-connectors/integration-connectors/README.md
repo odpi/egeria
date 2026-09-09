@@ -11,6 +11,12 @@ OMAG Server.
 Details of Egeria's integration connectors are found in the
 [Connector Catalog](https://egeria-project.org/connectors/#integration-connectors)
 
+* **[bitol-integration-connectors](bitol-integration-connectors)** receive, catalog, generate and store
+  [Bitol](https://bitol.io) Open Data Contract Standard (ODCS) and Open Data Product Standard (ODPS) documents:
+  receivers pick the documents up from file directories (such as a git checkout) and Apache Kafka topics, cataloguers
+  turn them into data sharing agreements and digital products, a publisher generates them from the digital products
+  and agreements in open metadata, and a file store writes them out ready to commit to git.  They are connected by the
+  integration daemon's Bitol listener mechanism, which mirrors its Open Lineage support.
 * **[csv-lineage-import-integration-connector](csv-lineage-import-integration-connector)** loads lineage
   relationships between existing open metadata elements from a CSV file.
 * **[files-integration-connectors](files-integration-connectors)** monitor changes in a file directory and

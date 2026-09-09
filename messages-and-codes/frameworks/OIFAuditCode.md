@@ -9,7 +9,7 @@ The OIFAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 16 |
+| **Number of messages** | 20 |
 | **Message identifiers begin** | `OIF-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-integration-framework](../../open-metadata-implementation/frameworks/open-integration-framework) |
@@ -37,6 +37,10 @@ The OIFAuditCode is used to define the message content for the Audit Log.
 | [OIF-CONNECTOR-0017](#oif-connector-0017) | ERROR | The {0} connector has detected a missing or invalid {1} property in method {2} - element is: {3} |
 | [OIF-CONNECTOR-0018](#oif-connector-0018) | ERROR | The {0} connector has detected that element {1} which should be of type {2} has bean properties of {3} rather than {4} in method {5} - element is {6} |
 | [OIF-CONNECTOR-0019](#oif-connector-0019) | ACTION | The {0} connector is recommending the {1} action to take for element {2} |
+| [OIF-CONNECTOR-0020](#oif-connector-0020) | ERROR | A {0} exception with message {1} occurred when parsing Bitol document: {2} |
+| [OIF-CONNECTOR-0021](#oif-connector-0021) | EXCEPTION | A {0} exception with message {1} occurred when a listening integration connector tried to process a Bitol document |
+| [OIF-CONNECTOR-0022](#oif-connector-0022) | ERROR | The integration daemon received a {0} document with identifier {1} and apiVersion {2} which is not supported by Egeria's beans |
+| [OIF-CONNECTOR-0023](#oif-connector-0023) | ERROR | The integration daemon received a Bitol document of kind {0} through the {1} method which expects {2}; the document begins: {3} |
 
 ----
 
@@ -372,6 +376,90 @@ The connector logs the action it has selected for the element and carries on pro
 **User action**
 
 No action is required.  This message traces the decision that the connector made about each element it processed.
+
+
+----
+
+### OIF-CONNECTOR-0020
+
+> A {0} exception with message {1} occurred when parsing Bitol document: {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFAuditCode.BITOL_FORMAT_ERROR` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The integration daemon cannot parse an incoming Bitol document (an Open Data Contract Standard data contract or an Open Data Product Standard data product) into Egeria's beans.  This may be due to either (1) an invalid document, or (2) Egeria's beans not supporting an advancement in the Bitol standard.  If the kind of document can be determined, the raw document is passed to the listening connectors with a null bean so that it can still be stored or forwarded; otherwise it is discarded.
+
+**User action**
+
+Verify the format of the document against the Bitol standard.  If incorrect, seek the source of the document.  If correct, look to enhance Egeria's Bitol beans.
+
+
+----
+
+### OIF-CONNECTOR-0021
+
+> A {0} exception with message {1} occurred when a listening integration connector tried to process a Bitol document
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFAuditCode.BITOL_PUBLISH_ERROR` |
+| **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+The integration daemon has caught the exception and will continue to pass the document to the remaining listening integration connectors.
+
+**User action**
+
+Look at the resulting stack trace to understand what went wrong in the integration connector that was processing the Bitol document, and correct either the connector or the document.
+
+
+----
+
+### OIF-CONNECTOR-0022
+
+> The integration daemon received a {0} document with identifier {1} and apiVersion {2} which is not supported by Egeria's beans
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFAuditCode.BITOL_UNSUPPORTED_VERSION` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+Egeria supports Open Data Contract Standard v3.x and Open Data Product Standard v1.x documents.  Older documents, such as ODCS v2.x, have a different structure.  The raw document is passed to the listening connectors with a null bean so that it can still be stored or forwarded, but it will not be catalogued.
+
+**User action**
+
+Convert the document to a supported version of the standard, for example with the datacontract CLI, and publish it again.
+
+
+----
+
+### OIF-CONNECTOR-0023
+
+> The integration daemon received a Bitol document of kind {0} through the {1} method which expects {2}; the document begins: {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFAuditCode.BITOL_UNEXPECTED_KIND` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The document is discarded because it can not be routed to the listening connectors.
+
+**User action**
+
+Check the kind property of the document.  A DataContract should be published through publishDataContract and a DataProduct through publishDataProduct; publishBitolDocument accepts either.
 
 
 ----

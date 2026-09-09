@@ -1,0 +1,109 @@
+# SPDX-License-Identifier: CC-BY-4.0
+# Copyright Contributors to the ODPi Egeria project.
+apiVersion: v3.1.0
+kind: DataContract
+id: 9a3c7e5d-2f4b-4d0c-9e6a-5b8c9d0e1f2a
+name: Validated weekly measurements
+version: 1.0.0
+status: active
+domain: clinical-trials
+tenant: CocoPharmaceuticals
+dataProduct: Teddy Bear Drop Foot Weekly Measurements
+description:
+  purpose: The certified weekly drop foot angle measurements from every hospital taking part in the Teddy Bear Drop Foot clinical trial (PROJ-CT-TBDF), as held in the clinical trial's data lake for the research team.
+  limitations: Only measurements from certified hospitals that have passed the weekly certification checks are included.  Restated values replace the originals.
+  usage: Analysis of the effectiveness of the treatment by the clinical trial's data scientists.
+schema:
+  - name: validated_weekly_measurements
+    physicalType: csv
+    businessName: Validated weekly measurements
+    description: The certified weekly measurements from all hospitals, one file per hospital per week, with the hospital recorded in each row.
+    dataGranularityDescription: One row per patient per week.
+    properties:
+      - name: HospitalName
+        logicalType: string
+        physicalType: string
+        businessName: Hospital
+        description: The hospital that supplied the measurement.
+        required: true
+        examples:
+          - Hampton Hospital
+      - name: PatientId
+        logicalType: integer
+        physicalType: int
+        businessName: Patient identifier
+        description: The identifier allocated to the patient for the clinical trial.
+        primaryKey: true
+        primaryKeyPosition: 1
+        required: true
+        classification: confidential
+      - name: Date
+        logicalType: date
+        physicalType: date
+        businessName: Measurement date
+        description: The date on which the measurements were taken.
+        primaryKey: true
+        primaryKeyPosition: 2
+        required: true
+      - name: AngleLeft
+        logicalType: integer
+        physicalType: int
+        businessName: Left foot angle
+        description: The angle, in degrees, that the patient can raise their left foot.
+        required: true
+      - name: AngleRight
+        logicalType: integer
+        physicalType: int
+        businessName: Right foot angle
+        description: The angle, in degrees, that the patient can raise their right foot.
+        required: true
+    quality:
+      - type: custom
+        engine: egeria
+        implementation: CocoClinicalTrialCertifyWeeklyMeasurementsService
+        description: Each file is certified by the clinical trial's weekly measurement certification governance service before it is added.
+servers:
+  - server: clinical-trial-data-lake
+    type: local
+    environment: production
+    path: data-lake/research/clinical-trials/drop-foot/weekly-measurements
+    format: csv
+    description: The data lake folder holding the validated measurements.
+slaProperties:
+  - property: frequency
+    value: 1
+    unit: w
+    element: validated_weekly_measurements
+    driver: operational
+  - property: retention
+    value: 10
+    unit: y
+    element: validated_weekly_measurements
+    driver: regulatory
+support:
+  - channel: clinical-trial-data-team
+    tool: email
+    scope: issues
+    url: mailto:tbdf-data@coco-pharmaceuticals.com
+team:
+  - username: tanyatidie
+    name: Tanya Tidie
+    role: Clinical Trial Data Steward
+    dateIn: "2024-05-01"
+  - username: calliequartile
+    name: Callie Quartile
+    role: Data Scientist
+    dateIn: "2024-05-01"
+roles:
+  - role: clinical-trial-researcher
+    access: read
+    firstLevelApprovers: Tessa Tube
+    description: The clinical trial's data scientists.
+tags:
+  - clinical-trial
+  - PROJ-CT-TBDF
+  - data-lake
+customProperties:
+  - property: clinicalTrialId
+    value: PROJ-CT-TBDF
+contractCreatedTs: "2024-05-01T09:00:00Z"

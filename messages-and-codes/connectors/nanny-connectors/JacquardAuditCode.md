@@ -36,7 +36,7 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 | [JACQUARD-HARVESTER-0016](#jacquard-harvester-0016) | INFO | The {0} integration connector has retrieved an existing digital product {1} called {2} |
 | [JACQUARD-HARVESTER-0018](#jacquard-harvester-0018) | INFO | The {0} integration connector has updated an existing digital product {1} called {2} |
 | [JACQUARD-HARVESTER-0019](#jacquard-harvester-0019) | INFO | The {0} integration connector is refreshing the {1} data set for digital product {2} |
-| [JACQUARD-HARVESTER-0020](#jacquard-harvester-0020) | INFO | The {0} integration connector is refreshing the {1} is maintaining the DataScope classification for the {1} data set for digital product {2} |
+| [JACQUARD-HARVESTER-0020](#jacquard-harvester-0020) | INFO | The {0} integration connector is maintaining the DataScope classification for the {1} data set for digital product {2} |
 | [JACQUARD-HARVESTER-0021](#jacquard-harvester-0021) | INFO | The {0} integration connector is harvesting valid metadata values - this may take some time ... |
 | [JACQUARD-HARVESTER-0022](#jacquard-harvester-0022) | INFO | The {0} integration connector is harvesting reference data sets - this may take some time ... |
 | [JACQUARD-HARVESTER-0023](#jacquard-harvester-0023) | INFO | The {0} integration connector is creating connectors to access the data in existing products - this may take some time ... |
@@ -400,7 +400,7 @@ No action is required.  This message is for monitoring the refresh progress of t
 
 ### JACQUARD-HARVESTER-0020
 
-> The {0} integration connector is refreshing the {1} is maintaining the DataScope classification for the {1} data set for digital product {2}
+> The {0} integration connector is maintaining the DataScope classification for the {1} data set for digital product {2}
 
 |  |  |
 |---|---|

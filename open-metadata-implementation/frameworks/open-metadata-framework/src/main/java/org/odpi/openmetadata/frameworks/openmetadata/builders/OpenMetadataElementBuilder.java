@@ -1491,6 +1491,18 @@ public class OpenMetadataElementBuilder
                                                                               dataFieldProperties.getPrecision());
 
                             elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                                  OpenMetadataProperty.IS_PARTITION_KEY.name,
+                                                                                  dataFieldProperties.getIsPartitionKey());
+
+                            elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                              OpenMetadataProperty.PARTITION_KEY_POSITION.name,
+                                                                              dataFieldProperties.getPartitionKeyPosition());
+
+                            elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                                  OpenMetadataProperty.ALLOWS_DUPLICATE_VALUES.name,
+                                                                                  dataFieldProperties.getAllowsDuplicateValues());
+
+                            elementProperties = propertyHelper.addBooleanProperty(elementProperties,
                                                                                   OpenMetadataProperty.ORDERED_VALUES.name,
                                                                                   dataFieldProperties.getOrderedValues());
 
@@ -1763,6 +1775,18 @@ public class OpenMetadataElementBuilder
                                     elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                                        OpenMetadataProperty.DATA_COLLECTION_END_TIME.name,
                                                                                        dataLensProperties.getDataCollectionEndTime());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.DATA_VALIDITY_START_TIME.name,
+                                                                                       dataLensProperties.getDataValidityStartTime());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.DATA_VALIDITY_END_TIME.name,
+                                                                                       dataLensProperties.getDataValidityEndTime());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.DATA_COVERAGE_START_TIME.name,
+                                                                                       dataLensProperties.getDataCoverageStartTime());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.DATA_COVERAGE_END_TIME.name,
+                                                                                       dataLensProperties.getDataCoverageEndTime());
                                     elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                                             OpenMetadataProperty.SCOPE_ELEMENTS.name,
                                                                                             dataLensProperties.getScopeElements());
@@ -1833,6 +1857,48 @@ public class OpenMetadataElementBuilder
                                         elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                                                   OpenMetadataProperty.NAME_PATTERNS.name,
                                                                                                   namingStandardRuleProperties.getNamePatterns());
+                                    }
+                                    else if (governanceRuleProperties instanceof DataQualityRuleProperties dataQualityRuleProperties)
+                                    {
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.QUALITY_DIMENSION.name,
+                                                                                             dataQualityRuleProperties.getQualityDimension());
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.CHECK_TYPE.name,
+                                                                                             dataQualityRuleProperties.getCheckType());
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.METRIC.name,
+                                                                                             dataQualityRuleProperties.getMetric());
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.SEVERITY.name,
+                                                                                             dataQualityRuleProperties.getSeverity());
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.BUSINESS_IMPACT.name,
+                                                                                             dataQualityRuleProperties.getBusinessImpact());
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.METHOD.name,
+                                                                                             dataQualityRuleProperties.getMethod());
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.UNITS.name,
+                                                                                             dataQualityRuleProperties.getUnits());
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.SCHEDULE.name,
+                                                                                             dataQualityRuleProperties.getSchedule());
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.SCHEDULER.name,
+                                                                                             dataQualityRuleProperties.getScheduler());
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.EXPRESSION.name,
+                                                                                             dataQualityRuleProperties.getExpression());
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.QUALITY_ENGINE.name,
+                                                                                             dataQualityRuleProperties.getQualityEngine());
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.COMPARISON_OPERATOR.name,
+                                                                                             dataQualityRuleProperties.getComparisonOperator());
+                                        elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                                  OpenMetadataProperty.THRESHOLD_VALUES.name,
+                                                                                                  dataQualityRuleProperties.getThresholdValues());
                                     }
                                 }
                                 else if (governanceControlProperties instanceof SecurityAccessControlProperties)

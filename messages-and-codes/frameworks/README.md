@@ -6,7 +6,7 @@
 
 The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely.
 
-This directory documents 119 messages in 11 message sets.  Return to the [messages and codes index](../README.md).
+This directory documents 124 messages in 11 message sets.  Return to the [messages and codes index](../README.md).
 
 
 ## Message sets
@@ -16,8 +16,8 @@ This directory documents 119 messages in 11 message sets.  Return to the [messag
 | [OCFErrorCode](OCFErrorCode.md) | Exception messages | `OCF-` | 26 | <https://egeria-project.org/frameworks/ocf/overview/> |
 | [OGFAuditCode](OGFAuditCode.md) | Audit log messages | `OPEN-GOVERNANCE-ACTION-` | 2 | <https://egeria-project.org/frameworks/ogf/overview/> |
 | [OGFErrorCode](OGFErrorCode.md) | Exception messages | `OPEN-GOVERNANCE-ACTION-` | 2 | <https://egeria-project.org/frameworks/ogf/overview/> |
-| [OIFAuditCode](OIFAuditCode.md) | Audit log messages | `OIF-CONNECTOR-` | 16 | <https://egeria-project.org/frameworks/oif/overview/> |
-| [OIFErrorCode](OIFErrorCode.md) | Exception messages | `OIF-CONNECTOR-` | 7 | <https://egeria-project.org/frameworks/oif/overview/> |
+| [OIFAuditCode](OIFAuditCode.md) | Audit log messages | `OIF-CONNECTOR-` | 20 | <https://egeria-project.org/frameworks/oif/overview/> |
+| [OIFErrorCode](OIFErrorCode.md) | Exception messages | `OIF-CONNECTOR-` | 8 | <https://egeria-project.org/frameworks/oif/overview/> |
 | [OMFAuditCode](OMFAuditCode.md) | Audit log messages | `OPEN-METADATA-` | 14 |  |
 | [OMFErrorCode](OMFErrorCode.md) | Exception messages | `OPEN-METADATA-` | 31 | <https://egeria-project.org/frameworks/omf/overview/> |
 | [OSFAuditCode](OSFAuditCode.md) | Audit log messages | `OPEN-SURVEY-` | 8 | <https://egeria-project.org/frameworks/osf/overview/> |

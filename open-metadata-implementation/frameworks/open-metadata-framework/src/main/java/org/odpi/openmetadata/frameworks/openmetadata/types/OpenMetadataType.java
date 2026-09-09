@@ -1746,6 +1746,16 @@ public enum OpenMetadataType
                               ExperimentProperties.class),
 
     /**
+     * An investigation that is being conducted to answer a question or to seek out information.
+     */
+    INVESTIGATION_CLASSIFICATION("23e81a69-147f-43b8-adbb-e63f3e9d4aef",
+                                 "Investigation",
+                                 OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                                 "4dbc7776-fcd4-472b-a0b6-a5e43ad91da3",
+                                 "An investigation that is being conducted to answer a question or to seek out information.",
+                                 InvestigationProperties.class),
+
+    /**
      * Two or more people come together to discuss a topic, agree and action or exchange information.
      */
     MEETING("6bf90c79-32f4-47ad-959c-8fff723fe744",
@@ -3893,6 +3903,16 @@ public enum OpenMetadataType
                          NamingStandardRuleProperties.class),
 
     /**
+     * A rule that checks the quality of data, for example that a data field has no null values or that a data set has an expected number of rows.
+     */
+    DATA_QUALITY_RULE("b0546c6b-c364-47d7-9efa-4b07d542594a",
+                      "DataQualityRule",
+                      OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
+                      "dc0bb1c0-0a9f-4f0f-946b-905d56032ead",
+                      "A rule that checks the quality of data, for example that a data field has no null values or that a data set has an expected number of rows.",
+                      DataQualityRuleProperties.class),
+
+    /**
      * Describes a collection of related naming standard rules.
      */
     NAMING_STANDARD_RULE_SET_COLLECTION("ba70f506-1f81-4890-bb4f-1cb1d99c939e",
@@ -3931,6 +3951,16 @@ public enum OpenMetadataType
                             "f0c88ead-509d-4f78-b5ce-04416798ec5e",
                             "Describes modifying noun or adverb, used in naming standards.",
                             ModifierProperties.class),
+
+    /**
+     * A glossary that describes the terms used in naming standards.
+     */
+    NAMING_STANDARDS_VOCABULARY_CLASSIFICATION("291e831f-cb52-492c-b7a3-e1828dbe8d13",
+                                               "NamingStandardsVocabulary",
+                                               OpenMetadataWikiPages.MODEL_0438_NAMING_STANDARDS,
+                                               "8ab7c617-1a6d-4c77-a907-680a35f32ab6",
+                                               "A glossary that describes the terms used in naming standards.",
+                                               NamingStandardsVocabularyProperties.class),
 
 
     /**
