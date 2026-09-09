@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.integration.bitol.mapping;
 
+import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProductManagementPortContent;
+import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProductManagementPortType;
+import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProductType;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
 import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProductInputContract;
@@ -188,7 +191,7 @@ public class DataProductMapper extends BitolMapperBase
             properties.getAdditionalProperties().put(ADDITIONAL_PROPERTY_PREFIX + "productCreatedTs", dataProduct.getProductCreatedTs());
         }
 
-        putIfPresent(properties.getAdditionalProperties(), "type", dataProduct.getType());
+        putIfPresent(properties.getAdditionalProperties(), "type", canonical(dataProduct.getType(), DataProductType.fromValue(dataProduct.getType())));
         addPortExtensions(null, dataProduct.getDeprecated(), properties.getAdditionalProperties());
         putIfPresent(properties.getAdditionalProperties(), SYNONYMS_JSON, toJSON(dataProduct.getSynonyms()));
 
@@ -536,8 +539,8 @@ public class DataProductMapper extends BitolMapperBase
                     properties.setDisplayName(managementPort.getName());
                     properties.setDescription(managementPort.getDescription());
                     properties.setNetworkAddress(managementPort.getUrl());
-                    properties.setProtocol(managementPort.getType());
-                    properties.setCategory(managementPort.getContent());
+                    properties.setProtocol(canonical(managementPort.getType(), DataProductManagementPortType.fromValue(managementPort.getType())));
+                    properties.setCategory(canonical(managementPort.getContent(), DataProductManagementPortContent.fromValue(managementPort.getContent())));
 
                     Map<String, String> additionalProperties = new HashMap<>();
 

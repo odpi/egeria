@@ -464,6 +464,35 @@ public abstract class BitolMapperBase
 
 
     /**
+     * Return the standard spelling of a vocabulary value when it is one of the standard values, otherwise the value
+     * as written in the document.  The enumerations are also registered as valid metadata values by the Core Content
+     * Pack, so a standard value stored this way matches the valid value exactly.
+     *
+     * @param value value from the document (may be null)
+     * @param standard the enumeration matched from the value, or null if it is not a standard value
+     * @param <E> enumeration type
+     * @return canonical value or the original
+     */
+    protected static <E extends Enum<E>> String canonical(String value,
+                                                          E      standard)
+    {
+        if (standard == null)
+        {
+            return value;
+        }
+
+        try
+        {
+            return (String) standard.getClass().getMethod("getValue").invoke(standard);
+        }
+        catch (Exception error)
+        {
+            return value;
+        }
+    }
+
+
+    /**
      * Add a value to the additional properties under the bitol prefix if it is present.
      *
      * @param additionalProperties map to add to
