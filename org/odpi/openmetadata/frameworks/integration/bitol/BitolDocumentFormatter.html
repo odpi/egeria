@@ -113,15 +113,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static &lt;T&gt;&nbsp;T</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#fromJSONFragment(java.lang.String,java.lang.Class)" class="member-name-link">fromJSONFragment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;beanClass)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Read a list of Bitol beans from a JSON fragment written by toJSONFragment.</div>
+<div class="block">Read a single Bitol bean from a JSON fragment written by toJSONFragment.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static &lt;T&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;T&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#fromJSONFragmentList(java.lang.String,java.lang.Class)" class="member-name-link">fromJSONFragmentList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;beanClass)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Parse a JSON fragment holding a list of beans, as written by toJSONFragment.</div>
+<div class="block">Read a list of Bitol beans from a JSON fragment written by toJSONFragment.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getKind(java.lang.String)" class="member-name-link">getKind</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawDocument)</code></div>
@@ -311,17 +311,17 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="fromJSONFragment(java.lang.String,java.lang.Class)">
 <h3>fromJSONFragment</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">fromJSONFragment</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</span>
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;beanClass)</span>
                               throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">Read a list of Bitol beans from a JSON fragment written by toJSONFragment.</div>
+<div class="block">Read a single Bitol bean from a JSON fragment written by toJSONFragment.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
 <dd><code>T</code> - bean type</dd>
 <dt>Parameters:</dt>
-<dd><code>json</code> - JSON string</dd>
-<dd><code>beanClass</code> - class of the list elements</dd>
+<dd><code>json</code> - JSON string (may be null)</dd>
+<dd><code>beanClass</code> - class of the bean</dd>
 <dt>Returns:</dt>
-<dd>list of beans</dd>
+<dd>bean or null if the fragment is absent</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - problem parsing the JSON</dd>
 </dl>
@@ -333,17 +333,17 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;T&gt;</span>&nbsp;<span class="element-name">fromJSONFragmentList</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;beanClass)</span>
                                         throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">Parse a JSON fragment holding a list of beans, as written by toJSONFragment.</div>
+<div class="block">Read a list of Bitol beans from a JSON fragment written by toJSONFragment.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
-<dd><code>T</code> - element type</dd>
+<dd><code>T</code> - bean type</dd>
 <dt>Parameters:</dt>
-<dd><code>json</code> - json text (may be null)</dd>
-<dd><code>type</code> - element type</dd>
+<dd><code>json</code> - JSON string (may be null)</dd>
+<dd><code>beanClass</code> - class of the list elements</dd>
 <dt>Returns:</dt>
-<dd>list or null</dd>
+<dd>list of beans or null if the fragment is absent</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - problem parsing</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - problem parsing the JSON</dd>
 </dl>
 </section>
 </li>
