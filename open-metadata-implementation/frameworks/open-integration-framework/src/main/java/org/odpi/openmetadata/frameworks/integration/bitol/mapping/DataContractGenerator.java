@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.integration.bitol.mapping;
 
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractComparisonOperator;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractSchemaMap;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractEnumValue;
 import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter;
@@ -759,16 +760,23 @@ public class DataContractGenerator extends BitolGeneratorBase
             return;
         }
 
-        switch (operator)
+        DataContractComparisonOperator comparisonOperator = DataContractComparisonOperator.fromValue(operator);
+
+        if (comparisonOperator == null)
         {
-            case "mustBe" -> qualityRule.setMustBe(toNumberOrString(thresholds.get(0)));
-            case "mustNotBe" -> qualityRule.setMustNotBe(toNumberOrString(thresholds.get(0)));
-            case "mustBeGreaterThan" -> qualityRule.setMustBeGreaterThan(toNumber(thresholds.get(0)));
-            case "mustBeGreaterOrEqualTo" -> qualityRule.setMustBeGreaterOrEqualTo(toNumber(thresholds.get(0)));
-            case "mustBeLessThan" -> qualityRule.setMustBeLessThan(toNumber(thresholds.get(0)));
-            case "mustBeLessOrEqualTo" -> qualityRule.setMustBeLessOrEqualTo(toNumber(thresholds.get(0)));
-            case "mustBeBetween" -> qualityRule.setMustBeBetween(toNumbers(thresholds));
-            case "mustNotBeBetween" -> qualityRule.setMustNotBeBetween(toNumbers(thresholds));
+            return;
+        }
+
+        switch (comparisonOperator)
+        {
+            case MUST_BE -> qualityRule.setMustBe(toNumberOrString(thresholds.get(0)));
+            case MUST_NOT_BE -> qualityRule.setMustNotBe(toNumberOrString(thresholds.get(0)));
+            case MUST_BE_GREATER_THAN -> qualityRule.setMustBeGreaterThan(toNumber(thresholds.get(0)));
+            case MUST_BE_GREATER_OR_EQUAL_TO -> qualityRule.setMustBeGreaterOrEqualTo(toNumber(thresholds.get(0)));
+            case MUST_BE_LESS_THAN -> qualityRule.setMustBeLessThan(toNumber(thresholds.get(0)));
+            case MUST_BE_LESS_OR_EQUAL_TO -> qualityRule.setMustBeLessOrEqualTo(toNumber(thresholds.get(0)));
+            case MUST_BE_BETWEEN -> qualityRule.setMustBeBetween(toNumbers(thresholds));
+            case MUST_NOT_BE_BETWEEN -> qualityRule.setMustNotBeBetween(toNumbers(thresholds));
             default -> { /* unknown operator - leave unset */ }
         }
     }

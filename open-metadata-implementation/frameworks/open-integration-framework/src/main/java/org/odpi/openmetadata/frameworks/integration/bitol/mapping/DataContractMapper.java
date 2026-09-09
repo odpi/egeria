@@ -2,6 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.integration.bitol.mapping;
 
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractSemanticType;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractSLADriver;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualityDimension;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualityMetric;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualityType;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualitySeverity;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractComparisonOperator;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSynonym;
 import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
@@ -629,7 +636,7 @@ public class DataContractMapper extends BitolMapperBase
         putIfPresent(additionalProperties, "encryptedName", property.getEncryptedName());
         putIfPresent(additionalProperties, "transformLogic", property.getTransformLogic());
         putIfPresent(additionalProperties, "transformDescription", property.getTransformDescription());
-        putIfPresent(additionalProperties, "semanticType", property.getSemanticType());
+        putIfPresent(additionalProperties, "semanticType", canonical(property.getSemanticType(), DataContractSemanticType.fromValue(property.getSemanticType())));
         putIfPresent(additionalProperties, "enum", toJSON(property.getEnumValues()));
         addElementExtensions(property.getDeprecated(), property.getSynonyms(), additionalProperties);
 
@@ -1033,11 +1040,18 @@ public class DataContractMapper extends BitolMapperBase
         properties.setDescription(qualityRule.getDescription());
         properties.setSummary(qualityRule.getDescription());
         properties.setScope(elementQualifiedName);
-        properties.setQualityDimension(qualityRule.getDimension());
-        properties.setCheckType(qualityRule.getType());
-        properties.setMetric((qualityRule.getMetric() != null) ? qualityRule.getMetric() : qualityRule.getRule());
-        properties.setSeverity(qualityRule.getSeverity());
-        properties.setBusinessImpact(qualityRule.getBusinessImpact());
+        /*
+         * The standard vocabularies are normalised through the enumerations (which are registered as valid metadata
+         * values by the Core Content Pack); values outside the standard are kept as written.
+         */
+        properties.setQualityDimension(canonical(qualityRule.getDimension(), DataContractQualityDimension.fromValue(qualityRule.getDimension())));
+        properties.setCheckType(canonical(qualityRule.getType(), DataContractQualityType.fromValue(qualityRule.getType())));
+
+        String metric = (qualityRule.getMetric() != null) ? qualityRule.getMetric() : qualityRule.getRule();
+
+        properties.setMetric(canonical(metric, DataContractQualityMetric.fromValue(metric)));
+        properties.setSeverity(canonical(qualityRule.getSeverity(), DataContractQualitySeverity.fromValue(qualityRule.getSeverity())));
+        properties.setBusinessImpact(canonical(qualityRule.getBusinessImpact(), DataContractSLADriver.fromValue(qualityRule.getBusinessImpact())));
         properties.setMethod(qualityRule.getMethod());
         properties.setUnits(qualityRule.getUnit());
         properties.setSchedule(qualityRule.getSchedule());
@@ -1091,35 +1105,35 @@ public class DataContractMapper extends BitolMapperBase
     {
         if (qualityRule.getMustBe() != null)
         {
-            return Map.entry("mustBe", List.of(String.valueOf(qualityRule.getMustBe())));
+            return Map.entry(DataContractComparisonOperator.MUST_BE.getValue(), List.of(String.valueOf(qualityRule.getMustBe())));
         }
         if (qualityRule.getMustNotBe() != null)
         {
-            return Map.entry("mustNotBe", List.of(String.valueOf(qualityRule.getMustNotBe())));
+            return Map.entry(DataContractComparisonOperator.MUST_NOT_BE.getValue(), List.of(String.valueOf(qualityRule.getMustNotBe())));
         }
         if (qualityRule.getMustBeGreaterThan() != null)
         {
-            return Map.entry("mustBeGreaterThan", List.of(qualityRule.getMustBeGreaterThan().toString()));
+            return Map.entry(DataContractComparisonOperator.MUST_BE_GREATER_THAN.getValue(), List.of(qualityRule.getMustBeGreaterThan().toString()));
         }
         if (qualityRule.getMustBeGreaterOrEqualTo() != null)
         {
-            return Map.entry("mustBeGreaterOrEqualTo", List.of(qualityRule.getMustBeGreaterOrEqualTo().toString()));
+            return Map.entry(DataContractComparisonOperator.MUST_BE_GREATER_OR_EQUAL_TO.getValue(), List.of(qualityRule.getMustBeGreaterOrEqualTo().toString()));
         }
         if (qualityRule.getMustBeLessThan() != null)
         {
-            return Map.entry("mustBeLessThan", List.of(qualityRule.getMustBeLessThan().toString()));
+            return Map.entry(DataContractComparisonOperator.MUST_BE_LESS_THAN.getValue(), List.of(qualityRule.getMustBeLessThan().toString()));
         }
         if (qualityRule.getMustBeLessOrEqualTo() != null)
         {
-            return Map.entry("mustBeLessOrEqualTo", List.of(qualityRule.getMustBeLessOrEqualTo().toString()));
+            return Map.entry(DataContractComparisonOperator.MUST_BE_LESS_OR_EQUAL_TO.getValue(), List.of(qualityRule.getMustBeLessOrEqualTo().toString()));
         }
         if (qualityRule.getMustBeBetween() != null)
         {
-            return Map.entry("mustBeBetween", toStrings(qualityRule.getMustBeBetween()));
+            return Map.entry(DataContractComparisonOperator.MUST_BE_BETWEEN.getValue(), toStrings(qualityRule.getMustBeBetween()));
         }
         if (qualityRule.getMustNotBeBetween() != null)
         {
-            return Map.entry("mustNotBeBetween", toStrings(qualityRule.getMustNotBeBetween()));
+            return Map.entry(DataContractComparisonOperator.MUST_NOT_BE_BETWEEN.getValue(), toStrings(qualityRule.getMustNotBeBetween()));
         }
 
         return null;
