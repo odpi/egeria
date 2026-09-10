@@ -107,6 +107,13 @@ against each suite below.
   Each of the four subscription types is taken out separately, and a product family is subscribed to as well
   as a single product, because a family subscription has to cover every product in the family.
 
+* **[openlineage-fvt](openlineage-fvt)** - tests the **Open Lineage integration connectors** by publishing Open
+  Lineage run events for a small pipeline into an integration daemon - through its REST API and through a Kafka
+  topic attached to the Kafka listener - and checking that the cataloguer builds the processes, data assets,
+  lineage, schema, run metrics, data scope and data quality reports they describe, and that the file publisher
+  writes every event to its log store.  Run it with
+  `./gradlew :open-metadata-test:open-metadata-fvt:openlineage-fvt:test -PrunOpenLineageFvt`.
+
   ```
   ./gradlew :open-metadata-test:open-metadata-fvt:subscription-fvt:test -PrunSubscriptionFvt
   ```

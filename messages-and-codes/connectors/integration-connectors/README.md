@@ -6,7 +6,7 @@
 
 Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor.
 
-This directory documents 77 messages in 14 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 83 messages in 14 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -23,7 +23,7 @@ This directory documents 77 messages in 14 message sets.  Return to the [message
 | [JDBCIntegrationConnectorAuditCode](JDBCIntegrationConnectorAuditCode.md) | Audit log messages | `JDBC-INTEGRATION-CONNECTOR-` | 11 | <https://egeria-project.org/concepts/integration-connector/> |
 | [OpenAPIIntegrationConnectorAuditCode](OpenAPIIntegrationConnectorAuditCode.md) | Audit log messages | `OPEN-API-INTEGRATION-CONNECTOR-` | 14 | <https://egeria-project.org/concepts/integration-connector/> |
 | [OpenAPIIntegrationConnectorErrorCode](OpenAPIIntegrationConnectorErrorCode.md) | Exception messages | `OPEN-API-INTEGRATION-CONNECTOR-` | 2 | <https://egeria-project.org/concepts/integration-connector/> |
-| [OpenLineageIntegrationConnectorAuditCode](OpenLineageIntegrationConnectorAuditCode.md) | Audit log messages | `OPEN-LINEAGE-INTEGRATION-CONNECTOR-` | 2 | <https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/> |
+| [OpenLineageIntegrationConnectorAuditCode](OpenLineageIntegrationConnectorAuditCode.md) | Audit log messages | `OPEN-LINEAGE-INTEGRATION-CONNECTOR-` | 8 | <https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/> |
 | [OpenLineageIntegrationConnectorErrorCode](OpenLineageIntegrationConnectorErrorCode.md) | Exception messages | `OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-` | 2 | <https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/> |
 | [SmartCollectionsAuditCode](SmartCollectionsAuditCode.md) | Audit log messages | `SMART-COLLECTIONS-INTEGRATION-CONNECTOR-` | 4 | <https://egeria-project.org/concepts/integration-connector/> |
 | [SmartCollectionsErrorCode](SmartCollectionsErrorCode.md) | Exception messages | `SMART-COLLECTIONS-INTEGRATION-CONNECTOR-` | 2 | <https://egeria-project.org/concepts/integration-connector/> |

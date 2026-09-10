@@ -1,0 +1,141 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+/*
+ * openlineage-fvt - functional verification of the Open Lineage integration connectors.
+ *
+ * The suite starts an OMAG Server Platform in-process, configures a metadata access store (PostgreSQL repository,
+ * Apache Kafka event bus) and an integration daemon running the Open Lineage content pack's integration group,
+ * then publishes Open Lineage run events into the daemon - both through its REST API and through a Kafka topic
+ * attached to the Kafka listener as a catalog target - and checks what the connectors made of them.
+ */
+
+dependencies {
+    /*
+     * The platform is started in-process, so the chassis is on the test classpath.  user-authn is excluded so that
+     * the suite's own (permit-all) security configuration is the only one Spring finds.
+     */
+    testImplementation(project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')) {
+        exclude group: 'org.odpi.egeria', module: 'user-authn'
+    }
+
+    /*
+     * Connectors that the servers instantiate by class name from their configuration or from the content packs.
+     */
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
+
+    /*
+     * The engine host runs the Egeria Governance Engine, whose services - including the Open Lineage Lovelace
+     * services under test - are loaded by class name from these modules.
+     */
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:lovelace-insights')
+
+    /*
+     * The connectors under test.  Their module declares its dependencies compileOnly, so the ones it needs at
+     * run time are listed here too.
+     */
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
+    testRuntimeOnly 'commons-io:commons-io'
+    testRuntimeOnly 'org.springframework:spring-web'
+
+    /*
+     * Clients used to configure and drive the servers.
+     */
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+    testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-api')
+    testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
+    /*
+     * The daemon client's publishOpenLineageEvent has an overload taking the OpenLineage Java client's event type,
+     * so that type must be resolvable when the String overload is called.
+     */
+    testCompileOnly 'io.openlineage:openlineage-java'
+    testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+    testImplementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-api')
+    testImplementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-client')
+    testImplementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-client')
+    testImplementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-api')
+    testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
+
+    /*
+     * Frameworks: the open metadata beans and clients, and the Open Lineage beans used to build the test events.
+     */
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-integration-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors')
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+
+    /*
+     * The content pack definitions: the tests assert against these enums rather than string literals so that a
+     * renamed connector or group is a compile failure here, not a puzzling timeout.
+     */
+    testImplementation project(':open-metadata-resources:open-metadata-archives:core-content-pack')
+    testImplementation project(':open-metadata-implementation:common-services:ffdc-services')
+
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+    testImplementation 'org.springframework:spring-core'
+    testImplementation 'org.springframework.security:spring-security-config'
+    testImplementation 'org.springframework.security:spring-security-web'
+    testImplementation 'org.springframework.security:spring-security-core'
+    testImplementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation 'org.postgresql:postgresql'
+
+    /*
+     * Publishing test events to the Kafka topic that the Kafka listener is watching.
+     */
+    testImplementation 'org.apache.kafka:kafka-clients'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Open Lineage Connectors Functional Verification Tests (openlineage-fvt)'
+
+/*
+ * The property is read here, at configuration time, rather than inside the onlyIf closure, which is evaluated
+ * during execution when reaching for `project` is unsupported with the configuration cache.
+ */
+def runThisSuite = project.hasProperty('runOpenLineageFvt')
+
+test {
+    useJUnitPlatform()
+
+    /*
+     * Opt-in: the suite needs the shared PostgreSQL and Kafka containers, so it never runs in an ordinary build.
+     */
+    onlyIf { runThisSuite }
+
+    maxParallelForks = 1
+    testLogging.showStandardStreams = true
+    maxHeapSize = '2g'
+
+    /*
+     * Forward -Dopenlineage.fvt.* overrides into the forked test JVM.
+     */
+    systemProperties System.properties.findAll { it.key.toString().startsWith('openlineage.fvt.') }
+}
+
+jvmDependencyConflicts {
+    logging {
+        enforceLogback()
+    }
+}

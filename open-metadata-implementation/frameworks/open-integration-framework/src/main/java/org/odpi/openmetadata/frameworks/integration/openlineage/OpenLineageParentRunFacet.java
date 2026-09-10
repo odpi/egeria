@@ -7,24 +7,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the content of an open lineage schema for a parent run facet as defined in JSON
- * spec https://openlineage.io/spec/facets/1-0-0/ParentRunFacet.json#/$defs/ParentRunFacet.
- * It is used internally in Egeria to pass this information to the integration daemon's integration connectors.
+ * This class represents the parent run facet.  It links a run to the parent run (and optionally the root run) that spawned it.
+ * It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-2-0/ParentRunFacet.json#/$defs/ParentRunFacet.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageParentRunFacet extends OpenLineageDataSetFacet
+public class OpenLineageParentRunFacet extends OpenLineageRunFacet
 {
-    private OpenLineageParentRunFacetRun run = null;
-    private OpenLineageParentRunFacetJob job = null;
+    private OpenLineageParentRunFacetRun  run = null;
+    private OpenLineageParentRunFacetJob  job = null;
+    private OpenLineageParentRunFacetRoot root = null;
 
 
     /**
@@ -32,14 +31,14 @@ public class OpenLineageParentRunFacet extends OpenLineageDataSetFacet
      */
     public OpenLineageParentRunFacet()
     {
-        super(URI.create("https://openlineage.io/spec/facets/1-0-0/ParentRunFacet.json#/$defs/ParentRunFacet"));
+        super(URI.create("https://openlineage.io/spec/facets/1-2-0/ParentRunFacet.json#/$defs/ParentRunFacet"));
     }
 
 
     /**
-     * Return details of the parent process's run.
+     * Return the parent run.
      *
-     * @return run information
+     * @return bean
      */
     public OpenLineageParentRunFacetRun getRun()
     {
@@ -48,9 +47,9 @@ public class OpenLineageParentRunFacet extends OpenLineageDataSetFacet
 
 
     /**
-     * Set up details of the parent process's run.
+     * Set up the parent run.
      *
-     * @param run run information
+     * @param run bean
      */
     public void setRun(OpenLineageParentRunFacetRun run)
     {
@@ -59,9 +58,9 @@ public class OpenLineageParentRunFacet extends OpenLineageDataSetFacet
 
 
     /**
-     * Return details of the parent process.
+     * Return the parent job.
      *
-     * @return job information
+     * @return bean
      */
     public OpenLineageParentRunFacetJob getJob()
     {
@@ -70,13 +69,35 @@ public class OpenLineageParentRunFacet extends OpenLineageDataSetFacet
 
 
     /**
-     * Set up details of the parent process.
+     * Set up the parent job.
      *
-     * @param job job information
+     * @param job bean
      */
     public void setJob(OpenLineageParentRunFacetJob job)
     {
         this.job = job;
+    }
+
+
+    /**
+     * Return the root run and job of the hierarchy.
+     *
+     * @return bean
+     */
+    public OpenLineageParentRunFacetRoot getRoot()
+    {
+        return root;
+    }
+
+
+    /**
+     * Set up the root run and job of the hierarchy.
+     *
+     * @param root bean
+     */
+    public void setRoot(OpenLineageParentRunFacetRoot root)
+    {
+        this.root = root;
     }
 
 
@@ -91,6 +112,7 @@ public class OpenLineageParentRunFacet extends OpenLineageDataSetFacet
         return "OpenLineageParentRunFacet{" +
                        "run=" + run +
                        ", job=" + job +
+                       ", root=" + root +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -121,18 +143,19 @@ public class OpenLineageParentRunFacet extends OpenLineageDataSetFacet
         }
         OpenLineageParentRunFacet that = (OpenLineageParentRunFacet) objectToCompare;
         return Objects.equals(run, that.run) &&
-                       Objects.equals(job, that.job);
+                       Objects.equals(job, that.job) &&
+                       Objects.equals(root, that.root);
     }
 
 
     /**
-     * Return hash code basa``ed on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), run, job);
+        return Objects.hash(super.hashCode(), run, job, root);
     }
 }

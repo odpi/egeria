@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.integration.openlineage;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,8 +16,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the map of input facets in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the map of input dataset facets for an input dataset.  The standard facets from the OpenLineage spec, and the custom facets
+ * registered in the OpenLineage registry, are held in named properties.  Any other facets (custom facets, or standard facets not yet modelled) are held in the
+ * additionalProperties map, keyed by their facet name, so that nothing is lost on a round trip through these beans.
+ * The map key of each facet in the JSON is the facet's key from the OpenLineage spec.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,8 +27,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class OpenLineageInputDataSetInputFacets
 {
     private OpenLineageDataQualityAssertionsInputDataSetFacet dataQualityAssertions = null;
-    private OpenLineageDataQualityMetricsInputDataSetFacet    dataQualityMetrics    = null;
-    private Map<String, OpenLineageInputDataSetInputFacet>    additionalProperties  = new LinkedHashMap<>();
+    private OpenLineageDataQualityMetricsInputDataSetFacet    dataQualityMetrics = null;
+    private OpenLineageInputStatisticsInputDataSetFacet       inputStatistics = null;
+    private OpenLineageInputSubsetInputDataSetFacet           subset = null;
+    private OpenLineageIcebergScanReportInputDataSetFacet     icebergScanReport = null;
+    private Map<String, OpenLineageInputDataSetInputFacet>    additionalProperties = new LinkedHashMap<>();
 
 
     /**
@@ -36,9 +43,9 @@ public class OpenLineageInputDataSetInputFacets
 
 
     /**
-     * Return data quality assertions facet.
+     * Return the dataQualityAssertions facet.
      *
-     * @return facet
+     * @return facet bean
      */
     public OpenLineageDataQualityAssertionsInputDataSetFacet getDataQualityAssertions()
     {
@@ -47,9 +54,9 @@ public class OpenLineageInputDataSetInputFacets
 
 
     /**
-     * Set up the data quality assertions facet.
+     * Set up the dataQualityAssertions facet.
      *
-     * @param dataQualityAssertions facet
+     * @param dataQualityAssertions facet bean
      */
     public void setDataQualityAssertions(OpenLineageDataQualityAssertionsInputDataSetFacet dataQualityAssertions)
     {
@@ -58,9 +65,9 @@ public class OpenLineageInputDataSetInputFacets
 
 
     /**
-     * Return the data quality metrics facet.
+     * Return the dataQualityMetrics facet.
      *
-     * @return facet
+     * @return facet bean
      */
     public OpenLineageDataQualityMetricsInputDataSetFacet getDataQualityMetrics()
     {
@@ -69,9 +76,9 @@ public class OpenLineageInputDataSetInputFacets
 
 
     /**
-     * Set up the data quality metrics facet.
+     * Set up the dataQualityMetrics facet.
      *
-     * @param dataQualityMetrics facet
+     * @param dataQualityMetrics facet bean
      */
     public void setDataQualityMetrics(OpenLineageDataQualityMetricsInputDataSetFacet dataQualityMetrics)
     {
@@ -80,10 +87,78 @@ public class OpenLineageInputDataSetInputFacets
 
 
     /**
-     * Return a map of additional input facets.  The name is the identifier of the facet type and the object is the facet itself.
+     * Return the inputStatistics facet.
      *
-     * @return input facet map (map from string to object)
+     * @return facet bean
      */
+    public OpenLineageInputStatisticsInputDataSetFacet getInputStatistics()
+    {
+        return inputStatistics;
+    }
+
+
+    /**
+     * Set up the inputStatistics facet.
+     *
+     * @param inputStatistics facet bean
+     */
+    public void setInputStatistics(OpenLineageInputStatisticsInputDataSetFacet inputStatistics)
+    {
+        this.inputStatistics = inputStatistics;
+    }
+
+
+    /**
+     * Return the subset facet.
+     *
+     * @return facet bean
+     */
+    public OpenLineageInputSubsetInputDataSetFacet getSubset()
+    {
+        return subset;
+    }
+
+
+    /**
+     * Set up the subset facet.
+     *
+     * @param subset facet bean
+     */
+    public void setSubset(OpenLineageInputSubsetInputDataSetFacet subset)
+    {
+        this.subset = subset;
+    }
+
+
+    /**
+     * Return the icebergScanReport facet.
+     *
+     * @return facet bean
+     */
+    public OpenLineageIcebergScanReportInputDataSetFacet getIcebergScanReport()
+    {
+        return icebergScanReport;
+    }
+
+
+    /**
+     * Set up the icebergScanReport facet.
+     *
+     * @param icebergScanReport facet bean
+     */
+    public void setIcebergScanReport(OpenLineageIcebergScanReportInputDataSetFacet icebergScanReport)
+    {
+        this.icebergScanReport = icebergScanReport;
+    }
+
+
+    /**
+     * Return any additional facets that are not modelled as named properties.  They are serialized as
+     * top-level facet entries alongside the named facets.
+     *
+     * @return map of facet name to facet
+     */
+    @JsonAnyGetter
     public Map<String, OpenLineageInputDataSetInputFacet> getAdditionalProperties()
     {
         return additionalProperties;
@@ -91,13 +166,31 @@ public class OpenLineageInputDataSetInputFacets
 
 
     /**
-     * Set up a map of additional input facets.  The name is the identifier of the facet type and the object is the facet itself.
+     * Set up any additional facets that are not modelled as named properties.
      *
-     * @param additionalProperties input facet map (map from string to object)
+     * @param additionalProperties map of facet name to facet
      */
     public void setAdditionalProperties(Map<String, OpenLineageInputDataSetInputFacet> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
+    }
+
+
+    /**
+     * Add a facet that is not modelled as a named property.  Jackson calls this for each unrecognized facet
+     * found in the JSON.
+     *
+     * @param facetName name (key) of the facet
+     * @param facet facet bean
+     */
+    @JsonAnySetter
+    public void setAdditionalProperty(String facetName, OpenLineageInputDataSetInputFacet facet)
+    {
+        if (additionalProperties == null)
+        {
+            additionalProperties = new LinkedHashMap<>();
+        }
+        additionalProperties.put(facetName, facet);
     }
 
 
@@ -112,6 +205,9 @@ public class OpenLineageInputDataSetInputFacets
         return "OpenLineageInputDataSetInputFacets{" +
                        "dataQualityAssertions=" + dataQualityAssertions +
                        ", dataQualityMetrics=" + dataQualityMetrics +
+                       ", inputStatistics=" + inputStatistics +
+                       ", subset=" + subset +
+                       ", icebergScanReport=" + icebergScanReport +
                        ", additionalProperties=" + additionalProperties +
                        '}';
     }
@@ -137,6 +233,9 @@ public class OpenLineageInputDataSetInputFacets
         OpenLineageInputDataSetInputFacets that = (OpenLineageInputDataSetInputFacets) objectToCompare;
         return Objects.equals(dataQualityAssertions, that.dataQualityAssertions) &&
                        Objects.equals(dataQualityMetrics, that.dataQualityMetrics) &&
+                       Objects.equals(inputStatistics, that.inputStatistics) &&
+                       Objects.equals(subset, that.subset) &&
+                       Objects.equals(icebergScanReport, that.icebergScanReport) &&
                        Objects.equals(additionalProperties, that.additionalProperties);
     }
 
@@ -149,6 +248,6 @@ public class OpenLineageInputDataSetInputFacets
     @Override
     public int hashCode()
     {
-        return Objects.hash(dataQualityAssertions, dataQualityMetrics, additionalProperties);
+        return Objects.hash(dataQualityAssertions, dataQualityMetrics, inputStatistics, subset, icebergScanReport, additionalProperties);
     }
 }

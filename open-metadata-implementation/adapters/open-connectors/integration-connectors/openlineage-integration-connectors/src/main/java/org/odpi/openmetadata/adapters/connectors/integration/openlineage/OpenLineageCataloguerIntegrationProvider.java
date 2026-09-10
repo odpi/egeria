@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls.OpenLineageCataloguerConfigurationProperty;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 /**
@@ -23,7 +24,9 @@ public class OpenLineageCataloguerIntegrationProvider extends IntegrationConnect
     {
         super(EgeriaOpenConnectorDefinition.OPEN_LINEAGE_CATALOGUER,
               connectorClassName,
-              null);
+              OpenLineageCataloguerConfigurationProperty.getRecognizedConfigurationProperties());
+
+        super.supportedConfigurationProperties = OpenLineageCataloguerConfigurationProperty.getConfigurationPropertyTypes();
     }
 }
 

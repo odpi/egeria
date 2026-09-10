@@ -26,6 +26,12 @@ public enum GovernanceActionTypeDefinition
     /**
      * provision-tabular-data-set
      */
+    PROFILE_OPEN_LINEAGE_RUNS("profile-open-lineage-runs",
+                              "97bea595-1791-41a8-bf3a-9f9de3518a65"),
+    REFINE_OPEN_LINEAGE_DATA_SCOPE("refine-open-lineage-data-scope",
+                                   "9711ca45-62ca-4474-85fd-3da864359691"),
+    SUMMARISE_OPEN_LINEAGE_DATA_QUALITY("summarise-open-lineage-data-quality",
+                                        "91112bdd-da1b-4f3e-8eaf-457e28c55b7a"),
     PROVISION_TABULAR("provision-tabular-data-set",
                       "bf03a1c7-ad5e-49b7-8f97-a66624243767"),
 

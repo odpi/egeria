@@ -594,6 +594,10 @@ public class PropertyHelper
                     {
                         elementHeader.setDataScope(this.getElementClassification(attachedClassification));
                     }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.RUN_METRICS_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setRunMetrics(this.getElementClassification(attachedClassification));
+                    }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName))
                     {
                         elementHeader.setDataAssetEncoding(this.getElementClassification(attachedClassification));

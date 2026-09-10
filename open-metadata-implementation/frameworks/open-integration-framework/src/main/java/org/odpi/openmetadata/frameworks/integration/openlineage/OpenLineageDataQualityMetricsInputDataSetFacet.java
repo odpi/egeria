@@ -6,24 +6,27 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
+import java.net.URI;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the data quality metrics facet in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the dataQualityMetrics input dataset facet.  It captures data quality metrics for the data read from the dataset by the run.
+ * It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-0-3/DataQualityMetricsInputDatasetFacet.json#/$defs/DataQualityMetricsInputDatasetFacet.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenLineageDataQualityMetricsInputDataSetFacet extends OpenLineageInputDataSetInputFacet
 {
-    private long                                                        rowCount = 0;
-    private long                                                        bytes = 0;
-    private OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics columnMetrics = null;
+    private Long                                                    rowCount = null;
+    private Long                                                    bytes = null;
+    private Long                                                    fileCount = null;
+    private String                                                  lastUpdated = null;
+    private Map<String, OpenLineageDataQualityMetricsColumnMetrics> columnMetrics = null;
 
 
     /**
@@ -31,70 +34,115 @@ public class OpenLineageDataQualityMetricsInputDataSetFacet extends OpenLineageI
      */
     public OpenLineageDataQualityMetricsInputDataSetFacet()
     {
+        super(URI.create("https://openlineage.io/spec/facets/1-0-3/DataQualityMetricsInputDatasetFacet.json#/$defs/DataQualityMetricsInputDatasetFacet"));
     }
 
 
     /**
-     * Return the row count metric.
+     * Return the number of rows evaluated.
      *
      * @return long
      */
-    public long getRowCount()
+    public Long getRowCount()
     {
         return rowCount;
     }
 
 
     /**
-     * Set up the row count metric.
+     * Set up the number of rows evaluated.
      *
      * @param rowCount long
      */
-    public void setRowCount(long rowCount)
+    public void setRowCount(Long rowCount)
     {
         this.rowCount = rowCount;
     }
 
 
     /**
-     * Return the number of bytes.
+     * Return the size in bytes.
      *
      * @return long
      */
-    public long getBytes()
+    public Long getBytes()
     {
         return bytes;
     }
 
 
     /**
-     * Set up the number of bytes.
+     * Set up the size in bytes.
      *
      * @param bytes long
      */
-    public void setBytes(long bytes)
+    public void setBytes(Long bytes)
     {
         this.bytes = bytes;
     }
 
 
     /**
-     * Return the list of column metrics for the data set.
+     * Return the number of files evaluated.
      *
-     * @return list of column metrics
+     * @return long
      */
-    public OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics getColumnMetrics()
+    public Long getFileCount()
+    {
+        return fileCount;
+    }
+
+
+    /**
+     * Set up the number of files evaluated.
+     *
+     * @param fileCount long
+     */
+    public void setFileCount(Long fileCount)
+    {
+        this.fileCount = fileCount;
+    }
+
+
+    /**
+     * Return the ISO-8601 timestamp of the last time the dataset was changed.
+     *
+     * @return string
+     */
+    public String getLastUpdated()
+    {
+        return lastUpdated;
+    }
+
+
+    /**
+     * Set up the ISO-8601 timestamp of the last time the dataset was changed.
+     *
+     * @param lastUpdated string
+     */
+    public void setLastUpdated(String lastUpdated)
+    {
+        this.lastUpdated = lastUpdated;
+    }
+
+
+    /**
+     * Return the metrics for each column.  The map key is the column name.
+     *
+     * @return map
+     */
+    public Map<String, OpenLineageDataQualityMetricsColumnMetrics> getColumnMetrics()
     {
         return columnMetrics;
     }
 
 
     /**
-     * Set up the list of column metrics for the data set.
+     * Set up the metrics for each column.  The map key is the column name.
      *
-     * @param columnMetrics list of column metrics
+     * @param columnMetrics map
      */
-    public void setColumnMetrics(OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics columnMetrics)
+    public void setColumnMetrics(Map<String, OpenLineageDataQualityMetricsColumnMetrics> columnMetrics)
     {
         this.columnMetrics = columnMetrics;
     }
@@ -111,6 +159,8 @@ public class OpenLineageDataQualityMetricsInputDataSetFacet extends OpenLineageI
         return "OpenLineageDataQualityMetricsInputDataSetFacet{" +
                        "rowCount=" + rowCount +
                        ", bytes=" + bytes +
+                       ", fileCount=" + fileCount +
+                       ", lastUpdated='" + lastUpdated + '\'' +
                        ", columnMetrics=" + columnMetrics +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
@@ -141,8 +191,10 @@ public class OpenLineageDataQualityMetricsInputDataSetFacet extends OpenLineageI
             return false;
         }
         OpenLineageDataQualityMetricsInputDataSetFacet that = (OpenLineageDataQualityMetricsInputDataSetFacet) objectToCompare;
-        return rowCount == that.rowCount &&
-                       bytes == that.bytes &&
+        return Objects.equals(rowCount, that.rowCount) &&
+                       Objects.equals(bytes, that.bytes) &&
+                       Objects.equals(fileCount, that.fileCount) &&
+                       Objects.equals(lastUpdated, that.lastUpdated) &&
                        Objects.equals(columnMetrics, that.columnMetrics);
     }
 
@@ -155,6 +207,6 @@ public class OpenLineageDataQualityMetricsInputDataSetFacet extends OpenLineageI
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), rowCount, bytes, columnMetrics);
+        return Objects.hash(super.hashCode(), rowCount, bytes, fileCount, lastUpdated, columnMetrics);
     }
 }

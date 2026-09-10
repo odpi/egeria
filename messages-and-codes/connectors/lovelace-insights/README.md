@@ -4,16 +4,16 @@
 
 # Lovelace Insights Messages
 
-These connectors analyse the harvested observability data and turn it into insight reports.
+These are the analytical governance services orchestrated by the Babbage Analytical Engine.  Each analyses the open metadata ecosystem, or a store of observations about it such as an OpenLineage log store, and records what it finds as classifications or survey reports on the appropriate open metadata elements.
 
-This directory documents 7 messages in 2 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 15 messages in 2 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
 
 | Message set | Type | Message identifiers | Messages | Further reading |
 |---|---|---|---|---|
-| [LovelaceInsightAuditCode](LovelaceInsightAuditCode.md) | Audit log messages | `LOVELACE-INSIGHTS-` | 5 | <https://egeria-project.org/egeria-solutions/organization-insight/overview/> |
+| [LovelaceInsightAuditCode](LovelaceInsightAuditCode.md) | Audit log messages | `LOVELACE-INSIGHTS-` | 13 |  |
 | [LovelaceInsightErrorCode](LovelaceInsightErrorCode.md) | Exception messages | `LOVELACE-INSIGHTS-500-` | 2 | <https://egeria-project.org/egeria-solutions/organization-insight/overview/> |
 
 

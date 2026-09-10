@@ -5,23 +5,28 @@ package org.odpi.openmetadata.frameworks.integration.openlineage;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the description of a field in a data set.
+ * This class represents a single field in the schema dataset facet.  Fields may be nested.
+ * It is part of the OpenLineage spec.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenLineageSchemaDataSetFacetField
 {
-    private String name;
-    private String type;
-    private String description;
+    private String                                   name = null;
+    private String                                   type = null;
+    private String                                   description = null;
+    private Long                                     ordinalPosition = null;
+    private List<OpenLineageSchemaDataSetFacetField> fields = null;
 
 
     /**
@@ -35,7 +40,7 @@ public class OpenLineageSchemaDataSetFacetField
     /**
      * Return the name of the field.
      *
-     * @return string name
+     * @return string
      */
     public String getName()
     {
@@ -46,7 +51,7 @@ public class OpenLineageSchemaDataSetFacetField
     /**
      * Set up the name of the field.
      *
-     * @param name string name
+     * @param name string
      */
     public void setName(String name)
     {
@@ -57,7 +62,7 @@ public class OpenLineageSchemaDataSetFacetField
     /**
      * Return the type of the field.
      *
-     * @return string type name
+     * @return string
      */
     public String getType()
     {
@@ -68,7 +73,7 @@ public class OpenLineageSchemaDataSetFacetField
     /**
      * Set up the type of the field.
      *
-     * @param type string type name
+     * @param type string
      */
     public void setType(String type)
     {
@@ -79,7 +84,7 @@ public class OpenLineageSchemaDataSetFacetField
     /**
      * Return the description of the field.
      *
-     * @return string description
+     * @return string
      */
     public String getDescription()
     {
@@ -90,11 +95,57 @@ public class OpenLineageSchemaDataSetFacetField
     /**
      * Set up the description of the field.
      *
-     * @param description string description
+     * @param description string
      */
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+
+    /**
+     * Return the ordinal position of the field in the schema (1-indexed).
+     *
+     * @return long
+     */
+    @JsonProperty("ordinal_position")
+    public Long getOrdinalPosition()
+    {
+        return ordinalPosition;
+    }
+
+
+    /**
+     * Set up the ordinal position of the field in the schema (1-indexed).
+     *
+     * @param ordinalPosition long
+     */
+    @JsonProperty("ordinal_position")
+    public void setOrdinalPosition(Long ordinalPosition)
+    {
+        this.ordinalPosition = ordinalPosition;
+    }
+
+
+    /**
+     * Return the nested struct fields.
+     *
+     * @return list
+     */
+    public List<OpenLineageSchemaDataSetFacetField> getFields()
+    {
+        return fields;
+    }
+
+
+    /**
+     * Set up the nested struct fields.
+     *
+     * @param fields list
+     */
+    public void setFields(List<OpenLineageSchemaDataSetFacetField> fields)
+    {
+        this.fields = fields;
     }
 
 
@@ -110,6 +161,8 @@ public class OpenLineageSchemaDataSetFacetField
                        "name='" + name + '\'' +
                        ", type='" + type + '\'' +
                        ", description='" + description + '\'' +
+                       ", ordinalPosition=" + ordinalPosition +
+                       ", fields=" + fields +
                        '}';
     }
 
@@ -134,7 +187,9 @@ public class OpenLineageSchemaDataSetFacetField
         OpenLineageSchemaDataSetFacetField that = (OpenLineageSchemaDataSetFacetField) objectToCompare;
         return Objects.equals(name, that.name) &&
                        Objects.equals(type, that.type) &&
-                       Objects.equals(description, that.description);
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(ordinalPosition, that.ordinalPosition) &&
+                       Objects.equals(fields, that.fields);
     }
 
 
@@ -146,6 +201,6 @@ public class OpenLineageSchemaDataSetFacetField
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, type, description);
+        return Objects.hash(name, type, description, ordinalPosition, fields);
     }
 }

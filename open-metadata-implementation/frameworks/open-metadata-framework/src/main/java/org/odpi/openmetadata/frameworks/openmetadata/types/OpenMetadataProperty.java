@@ -2393,6 +2393,93 @@ public enum OpenMetadataProperty
     DATA_COLLECTION_END_TIME("dataCollectionEndTime", DataType.DATE, DataType.DATE.getDisplayName(), "This is the end time that the data collection ends.", null, "f216c3c4-247e-425b-9186-5c0d6a242d77"),
 
     /**
+     * Number of runs of the process that have been recorded.
+     */
+    RUN_COUNT("runCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of runs of the process that have been recorded.", null, "848c71e0-c379-4de6-b876-16e31a30c836"),
+
+    /**
+     * Number of recorded runs of the process that failed.
+     */
+    FAILED_RUN_COUNT("failedRunCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of recorded runs of the process that failed.", null, "513513d5-f635-4bcc-bead-a831ea224ceb"),
+
+    /**
+     * Start time of the earliest recorded run of the process.
+     */
+    FIRST_RUN_START_TIME("firstRunStartTime", DataType.DATE, DataType.DATE.getDisplayName(), "Start time of the earliest recorded run of the process.", null, "c9c060f8-ebb1-48b2-9e15-f3ae8dbb4f93"),
+
+    /**
+     * Identifier of the most recent run of the process.
+     */
+    LAST_RUN_ID("lastRunId", DataType.STRING, DataType.STRING.getDisplayName(), "Identifier of the most recent run of the process.", null, "68832650-236b-4d76-9612-123a018b0a0a"),
+
+    /**
+     * Start time of the most recent run of the process.
+     */
+    LAST_RUN_START_TIME("lastRunStartTime", DataType.DATE, DataType.DATE.getDisplayName(), "Start time of the most recent run of the process.", null, "b36125f5-20ba-496c-b30b-0a1349c328e5"),
+
+    /**
+     * End time of the most recent run of the process.
+     */
+    LAST_RUN_END_TIME("lastRunEndTime", DataType.DATE, DataType.DATE.getDisplayName(), "End time of the most recent run of the process.", null, "6f0a6463-0b4f-439a-b8d3-f72e723beb6e"),
+
+    /**
+     * Status reported for the most recent run of the process, for example START, RUNNING, COMPLETE, FAIL or ABORT.
+     */
+    LAST_RUN_STATUS("lastRunStatus", DataType.STRING, DataType.STRING.getDisplayName(), "Status reported for the most recent run of the process, for example START, RUNNING, COMPLETE, FAIL or ABORT.", null, "531e212f-65f4-410b-9cdc-5b2dbf593d01"),
+
+    /**
+     * Duration of the most recent completed run of the process in milliseconds.
+     */
+    LAST_RUN_DURATION("lastRunDuration", DataType.LONG, DataType.LONG.getDisplayName(), "Duration of the most recent completed run of the process in milliseconds.", null, "f4363d77-c5d0-40ae-ac5c-07f9b60b4a6c"),
+
+    /**
+     * Sum of the durations of the recorded completed runs of the process in milliseconds.
+     */
+    TOTAL_RUN_DURATION("totalRunDuration", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the durations of the recorded completed runs of the process in milliseconds.", null, "27a30a46-a316-4905-aae3-7578107a8775"),
+
+    /**
+     * Number of rows (records) read by the most recent run of the process.
+     */
+    LAST_RUN_ROWS_READ("lastRunRowsRead", DataType.LONG, DataType.LONG.getDisplayName(), "Number of rows (records) read by the most recent run of the process.", null, "92e427a4-1670-42bc-9e6d-80f4aa582450"),
+
+    /**
+     * Number of rows (records) written by the most recent run of the process.
+     */
+    LAST_RUN_ROWS_WRITTEN("lastRunRowsWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Number of rows (records) written by the most recent run of the process.", null, "86350b43-0f9b-49fe-84b6-27293378cc89"),
+
+    /**
+     * Number of bytes read by the most recent run of the process.
+     */
+    LAST_RUN_BYTES_READ("lastRunBytesRead", DataType.LONG, DataType.LONG.getDisplayName(), "Number of bytes read by the most recent run of the process.", null, "a2232c45-a284-4ccc-bacf-6f510602a5b5"),
+
+    /**
+     * Number of bytes written by the most recent run of the process.
+     */
+    LAST_RUN_BYTES_WRITTEN("lastRunBytesWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Number of bytes written by the most recent run of the process.", null, "4a991f23-60c6-457e-b992-3616946486ba"),
+
+    /**
+     * Sum of the rows (records) read by the recorded runs of the process.
+     */
+    TOTAL_ROWS_READ("totalRowsRead", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the rows (records) read by the recorded runs of the process.", null, "7326e222-42a8-4bdd-ad57-11d47bdc9d1b"),
+
+    /**
+     * Sum of the rows (records) written by the recorded runs of the process.
+     */
+    TOTAL_ROWS_WRITTEN("totalRowsWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the rows (records) written by the recorded runs of the process.", null, "c5ef07c9-40de-4b61-b43d-40d4e3eec496"),
+
+    /**
+     * Sum of the bytes read by the recorded runs of the process.
+     */
+    TOTAL_BYTES_READ("totalBytesRead", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the bytes read by the recorded runs of the process.", null, "7ce57c70-699d-4e10-827b-6e905de23908"),
+
+    /**
+     * Sum of the bytes written by the recorded runs of the process.
+     */
+    TOTAL_BYTES_WRITTEN("totalBytesWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the bytes written by the recorded runs of the process.", null, "86cf1bb3-48c6-4700-9983-8833b0345c58"),
+
+
+
+    /**
      * This is the start time that the data is valid.
      */
     DATA_VALIDITY_START_TIME("dataValidityStartTime", DataType.DATE, DataType.DATE.getDisplayName(), "This is the start time that the data is valid.", null, "5490ebd4-51da-4e4d-a328-8ad60ddfbb0e"),

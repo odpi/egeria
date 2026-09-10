@@ -75,6 +75,87 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
                                    "No action is required except to validate that the shutdown is occurring at an appropriate time.",
                                    "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
 
+
+    /**
+     * LOVELACE-INSIGHTS-0039 - The {0} governance action service is analysing OpenLineage log store {1} for events between {2} and {3}
+     */
+    OPEN_LINEAGE_ANALYSIS_STARTED("LOVELACE-INSIGHTS-0039",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The {0} governance action service is analysing OpenLineage log store {1} for events between {2} and {3}",
+                                  "The service is reading the OpenLineage events in the log store that fall within its analysis window.",
+                                  "No action is required.  This message records the log store and window being analysed.",
+                                  "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * LOVELACE-INSIGHTS-0040 - The {0} governance action service read {1} OpenLineage events ({2} files could not be read) covering {3} jobs and {4} datasets
+     */
+    OPEN_LINEAGE_EVENTS_READ("LOVELACE-INSIGHTS-0040",
+                             AuditLogRecordSeverityLevel.INFO,
+                             "The {0} governance action service read {1} OpenLineage events ({2} files could not be read) covering {3} jobs and {4} datasets",
+                             "The service has built the run history from the log store and is starting its analysis.",
+                             "If files could not be read, check the log store for files that are not OpenLineage run events in JSON.",
+                             "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * LOVELACE-INSIGHTS-0041 - The {0} governance action service has completed, updating {1} elements with {2} from OpenLineage log store {3}
+     */
+    OPEN_LINEAGE_ANALYSIS_COMPLETED("LOVELACE-INSIGHTS-0041",
+                                    AuditLogRecordSeverityLevel.INFO,
+                                    "The {0} governance action service has completed, updating {1} elements with {2} from OpenLineage log store {3}",
+                                    "The service has finished its analysis of the log store.",
+                                    "No action is required.  This message records how many elements were updated.",
+                                    "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * LOVELACE-INSIGHTS-0042 - The {0} governance action service found {3} elements of type {1} for OpenLineage element {2} so it is skipped
+     */
+    OPEN_LINEAGE_ELEMENT_NOT_FOUND("LOVELACE-INSIGHTS-0042",
+                                   AuditLogRecordSeverityLevel.INFO,
+                                   "The {0} governance action service found {3} elements of type {1} for OpenLineage element {2} so it is skipped",
+                                   "The service only updates elements that it can identify uniquely by namespace and resource name.  Either the element has not been catalogued by the OpenLineage cataloguer, or there are duplicates awaiting resolution.",
+                                   "Ensure the OpenLineage cataloguer is running against the same events, and resolve any duplicate elements.",
+                                   "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * LOVELACE-INSIGHTS-0043 - The {0} governance action service has profiled {3} runs of job {1} into process {2}; the inferred schedule is {4}
+     */
+    OPEN_LINEAGE_PROCESS_PROFILED("LOVELACE-INSIGHTS-0043",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The {0} governance action service has profiled {3} runs of job {1} into process {2}; the inferred schedule is {4}",
+                                  "The RunMetrics classification of the process has been updated with the run profile.",
+                                  "No action is required.  This message records the process that was updated.",
+                                  "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * LOVELACE-INSIGHTS-0044 - The {0} governance action service has updated the data scope of dataset {1} (asset {2}); the write pattern is {3} and the data collection window is {4} to {5}
+     */
+    OPEN_LINEAGE_DATA_SCOPE_UPDATED("LOVELACE-INSIGHTS-0044",
+                                    AuditLogRecordSeverityLevel.INFO,
+                                    "The {0} governance action service has updated the data scope of dataset {1} (asset {2}); the write pattern is {3} and the data collection window is {4} to {5}",
+                                    "The DataScope classification of the asset has been updated from the series of writes and reads in the log store.",
+                                    "No action is required.  This message records the asset that was updated.",
+                                    "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * LOVELACE-INSIGHTS-0045 - The {0} governance action service has summarised the data quality of {1} {2} (element {3}) across {4} dimensions with an overall pass rate of {5}%
+     */
+    OPEN_LINEAGE_DATA_QUALITY_SUMMARISED("LOVELACE-INSIGHTS-0045",
+                                         AuditLogRecordSeverityLevel.INFO,
+                                         "The {0} governance action service has summarised the data quality of {1} {2} (element {3}) across {4} dimensions with an overall pass rate of {5}%",
+                                         "A survey report with a quality annotation per dimension has been attached to the element.",
+                                         "Review the survey report for dimensions with low pass rates.",
+                                         "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * LOVELACE-INSIGHTS-0046 - The {0} governance action service cannot find an OpenLineage log store to analyse (directory: {1})
+     */
+    OPEN_LINEAGE_NO_LOG_STORE("LOVELACE-INSIGHTS-0046",
+                              AuditLogRecordSeverityLevel.ERROR,
+                              "The {0} governance action service cannot find an OpenLineage log store to analyse (directory: {1})",
+                              "The service needs either an openLineageLogStore action target that is a folder asset, or a logStoreDirectory request parameter naming an existing directory.  It has stopped without performing any analysis.",
+                              "Add the log store folder as an action target of the governance action type, or set the logStoreDirectory request parameter, and rerun the service.",
+                              "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
     ;
 
     private final String                     logMessageId;

@@ -6,52 +6,73 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the map of data quality quantiles in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents a single owner of a job.
+ * It is part of the OpenLineage spec.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles
+public class OpenLineageOwnershipJobFacetOwner
 {
-    private Map<String, Double> additionalProperties = new LinkedHashMap<>();
+    private String name = null;
+    private String type = null;
 
 
     /**
      * Default constructor
      */
-    public OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles()
+    public OpenLineageOwnershipJobFacetOwner()
     {
     }
 
 
     /**
-     * Return a map of quantile measurements.
+     * Return the identifier of the owner of the job.  It is recommended to define this as a URN, for example application:foo, user:jdoe or team:data.
      *
-     * @return The property key is the quantile. Examples: 0.1 0.25 0.5 0.75 1
+     * @return string
      */
-    public Map<String, Double> getAdditionalProperties()
+    public String getName()
     {
-        return additionalProperties;
+        return name;
     }
 
 
     /**
-     * Set up a map of quantile measurements.
+     * Set up the identifier of the owner of the job.  It is recommended to define this as a URN, for example application:foo, user:jdoe or team:data.
      *
-     * @param additionalProperties The property key is the quantile. Examples: 0.1 0.25 0.5 0.75 1
+     * @param name string
      */
-    public void setAdditionalProperties(Map<String, Double> additionalProperties)
+    public void setName(String name)
     {
-        this.additionalProperties = additionalProperties;
+        this.name = name;
+    }
+
+
+    /**
+     * Return the type of the owner, for example MAINTAINER.
+     *
+     * @return string
+     */
+    public String getType()
+    {
+        return type;
+    }
+
+
+    /**
+     * Set up the type of the owner, for example MAINTAINER.
+     *
+     * @param type string
+     */
+    public void setType(String type)
+    {
+        this.type = type;
     }
 
 
@@ -63,8 +84,9 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
     @Override
     public String toString()
     {
-        return "OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles{" +
-                       "additionalProperties=" + additionalProperties +
+        return "OpenLineageOwnershipJobFacetOwner{" +
+                       "name='" + name + '\'' +
+                       ", type='" + type + '\'' +
                        '}';
     }
 
@@ -86,9 +108,9 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
         {
             return false;
         }
-        OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles
-                that = (OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles) objectToCompare;
-        return Objects.equals(additionalProperties, that.additionalProperties);
+        OpenLineageOwnershipJobFacetOwner that = (OpenLineageOwnershipJobFacetOwner) objectToCompare;
+        return Objects.equals(name, that.name) &&
+                       Objects.equals(type, that.type);
     }
 
 
@@ -100,6 +122,6 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
     @Override
     public int hashCode()
     {
-        return Objects.hash(additionalProperties);
+        return Objects.hash(name, type);
     }
 }

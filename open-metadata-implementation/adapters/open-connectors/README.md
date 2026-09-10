@@ -35,9 +35,7 @@ and repository-service-connectors.
 assessing and acting on governance issues detected in the metadata ecosystem.
 These connectors support the [OPEN Governance Framework (GAF)](../../frameworks/open-governance-framework).
 
-* **[lovelace-insights](lovelace-insights)** provides the watchdog services that monitor the changing
-open metadata ecosystem and add classifications that summarise the existing state of the metadata.
-
+* **[lovelace-insights](lovelace-insights)** provides the analytical governance services orchestrated by the Babbage Analytical Engine.  Each analyses the open metadata ecosystem, or a store of observations about it such as an OpenLineage log store, and records what it finds as classifications or survey reports on the appropriate open metadata elements.
 * **[metadata-security-connectors](metadata-security-connectors)** manage the 
 authorization of requests to Egeria's services.
 

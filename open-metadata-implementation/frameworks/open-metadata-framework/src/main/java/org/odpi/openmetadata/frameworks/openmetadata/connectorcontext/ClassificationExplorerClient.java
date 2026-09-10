@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRe
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryPropertiesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.RunMetricsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
@@ -1408,6 +1409,64 @@ public class ClassificationExplorerClient extends ConnectorContextClientBase
                                                                                                  PropertyServerException
     {
         stewardshipManagementHandler.clearDataScopeClassification(connectorUserId, elementGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a process to record statistics about its runs.
+     *
+     * @param elementGUID unique identifier of the process
+     * @param properties details of the run metrics
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void  addRunMetricsClassification(String                elementGUID,
+                                             RunMetricsProperties  properties,
+                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        stewardshipManagementHandler.addRunMetricsClassification(connectorUserId, elementGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Update the run metrics of a process.
+     *
+     * @param elementGUID unique identifier of the process
+     * @param properties details of the run metrics
+     * @param updateOptions provides a structure for the additional options when updating a classification.
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void updateRunMetricsClassification(String               elementGUID,
+                                               RunMetricsProperties properties,
+                                               UpdateOptions        updateOptions) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        stewardshipManagementHandler.updateRunMetricsClassification(connectorUserId, elementGUID, properties, updateOptions);
+    }
+
+
+    /**
+     * Remove the run metrics from a process.
+     *
+     * @param elementGUID unique identifier of the process
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void clearRunMetricsClassification(String                elementGUID,
+                                              MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        stewardshipManagementHandler.clearRunMetricsClassification(connectorUserId, elementGUID, metadataSourceOptions);
     }
 
 

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.builders;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.RunMetricsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetEncodingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.UserAccountProfileProperties;
@@ -328,6 +329,63 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                         OpenMetadataProperty.ENCODING_PROPERTIES.name,
                                                                         dataAssetEncodingProperties.getEncodingProperties());
+            }
+            else if (properties instanceof RunMetricsProperties runMetricsProperties)
+            {
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                     OpenMetadataProperty.RUN_COUNT.name,
+                                                                     runMetricsProperties.getRunCount());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                     OpenMetadataProperty.FAILED_RUN_COUNT.name,
+                                                                     runMetricsProperties.getFailedRunCount());
+                elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                     OpenMetadataProperty.FIRST_RUN_START_TIME.name,
+                                                                     runMetricsProperties.getFirstRunStartTime());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.LAST_RUN_ID.name,
+                                                                     runMetricsProperties.getLastRunId());
+                elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                     OpenMetadataProperty.LAST_RUN_START_TIME.name,
+                                                                     runMetricsProperties.getLastRunStartTime());
+                elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                     OpenMetadataProperty.LAST_RUN_END_TIME.name,
+                                                                     runMetricsProperties.getLastRunEndTime());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.LAST_RUN_STATUS.name,
+                                                                     runMetricsProperties.getLastRunStatus());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                     OpenMetadataProperty.LAST_RUN_DURATION.name,
+                                                                     runMetricsProperties.getLastRunDuration());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                     OpenMetadataProperty.TOTAL_RUN_DURATION.name,
+                                                                     runMetricsProperties.getTotalRunDuration());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                     OpenMetadataProperty.LAST_RUN_ROWS_READ.name,
+                                                                     runMetricsProperties.getLastRunRowsRead());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                     OpenMetadataProperty.LAST_RUN_ROWS_WRITTEN.name,
+                                                                     runMetricsProperties.getLastRunRowsWritten());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                     OpenMetadataProperty.LAST_RUN_BYTES_READ.name,
+                                                                     runMetricsProperties.getLastRunBytesRead());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                     OpenMetadataProperty.LAST_RUN_BYTES_WRITTEN.name,
+                                                                     runMetricsProperties.getLastRunBytesWritten());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                     OpenMetadataProperty.TOTAL_ROWS_READ.name,
+                                                                     runMetricsProperties.getTotalRowsRead());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                     OpenMetadataProperty.TOTAL_ROWS_WRITTEN.name,
+                                                                     runMetricsProperties.getTotalRowsWritten());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                     OpenMetadataProperty.TOTAL_BYTES_READ.name,
+                                                                     runMetricsProperties.getTotalBytesRead());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                     OpenMetadataProperty.TOTAL_BYTES_WRITTEN.name,
+                                                                     runMetricsProperties.getTotalBytesWritten());
+                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                        OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                        runMetricsProperties.getAdditionalProperties());
             }
             else if (properties instanceof DataScopeProperties dataScopeProperties)
             {
@@ -654,6 +712,9 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                           OpenMetadataProperty.USER_IDS.name,
                                                                           ownershipProperties.getUserIds());
+                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                        OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                        ownershipProperties.getAdditionalProperties());
             }
             else if (properties instanceof PolicyManagementPointProperties policyManagementPointProperties)
             {

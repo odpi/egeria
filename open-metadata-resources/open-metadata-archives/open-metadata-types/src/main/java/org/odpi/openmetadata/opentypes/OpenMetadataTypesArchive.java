@@ -164,10 +164,12 @@ public class OpenMetadataTypesArchive
         update0130Projects();
         update0205ConnectionLinkage();
         update0210DataStores();
+        update0215SoftwareComponents();
         update0221DocumentStores();
         update0423SecurityDefinitions();
         update0430DevelopmentControls();
         update0438NamingStandards();
+        update0445GovernanceRoles();
         update0451Notifications();
         update0505SchemaAttributes();
         add0280SoftwareDevelopmentAssets();
@@ -330,6 +332,58 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+    private void update0215SoftwareComponents()
+    {
+        this.archiveBuilder.addClassificationDef(getRunMetricsClassification());
+    }
+
+
+    /**
+     * Add the RunMetrics classification to record statistics about the runs of a process.
+     *
+     * @return classification def
+     */
+    private ClassificationDef getRunMetricsClassification()
+    {
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.RUN_METRICS_CLASSIFICATION,
+                                                                                 null,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RUN_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FAILED_RUN_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FIRST_RUN_START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_RUN_ID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_RUN_START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_RUN_END_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_RUN_STATUS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_RUN_DURATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TOTAL_RUN_DURATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_RUN_ROWS_READ));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_RUN_ROWS_WRITTEN));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_RUN_BYTES_READ));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_RUN_BYTES_WRITTEN));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TOTAL_ROWS_READ));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TOTAL_ROWS_WRITTEN));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TOTAL_BYTES_READ));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TOTAL_BYTES_WRITTEN));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
 
     private void update0210DataStores()
     {
@@ -469,6 +523,46 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SECURITY_ROLES));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0445GovernanceRoles()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateOwnershipClassification());
+    }
+
+
+    /**
+     * Add additionalProperties to the Ownership classification so that the details of the owner as known to the
+     * source of the ownership (for example the owner name and type from an OpenLineage event) can be recorded
+     * whether or not the owner is resolved to a profile in open metadata.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateOwnershipClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

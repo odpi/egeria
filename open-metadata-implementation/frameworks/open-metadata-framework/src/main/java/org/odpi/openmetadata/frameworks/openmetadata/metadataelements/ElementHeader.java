@@ -54,6 +54,7 @@ public class ElementHeader extends ElementControlHeader
     private ElementClassification       templateSubstitute       = null;
     private ElementClassification       schemaType               = null; // TypeEmbeddedAttribute
     private ElementClassification       dataScope                = null;
+    private ElementClassification       runMetrics               = null;
     private ElementClassification       dataAssetEncoding        = null;
     private ElementClassification       calculatedValue          = null;
     private ElementClassification       primaryKey               = null;
@@ -110,6 +111,7 @@ public class ElementHeader extends ElementControlHeader
             this.templateSubstitute       = template.getTemplateSubstitute();
             this.schemaType               = template.getSchemaType();
             this.dataScope                = template.getDataScope();
+            this.runMetrics               = template.getRunMetrics();
             this.dataAssetEncoding        = template.getDataAssetEncoding();
             this.calculatedValue          = template.getCalculatedValue();
             this.primaryKey               = template.getPrimaryKey();
@@ -587,6 +589,28 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
+     * Return the RunMetrics classification - used to describe how often a process runs and the volume of data it handles.
+     *
+     * @return classification
+     */
+    public ElementClassification getRunMetrics()
+    {
+        return runMetrics;
+    }
+
+
+    /**
+     * Set up the RunMetrics classification - used to describe how often a process runs and the volume of data it handles.
+     *
+     * @param runMetrics classification
+     */
+    public void setRunMetrics(ElementClassification runMetrics)
+    {
+        this.runMetrics = runMetrics;
+    }
+
+
+    /**
      * Return the DataAssetEncoding classification that describes the encoding used in the associated digital resource.
      *
      * @return classification
@@ -944,6 +968,7 @@ public class ElementHeader extends ElementControlHeader
                 ", templateSubstitute=" + templateSubstitute +
                 ", schemaType=" + schemaType +
                 ", dataScope=" + dataScope +
+                ", runMetrics=" + runMetrics +
                 ", dataAssetEncoding=" + dataAssetEncoding +
                 ", calculatedValue=" + calculatedValue +
                 ", primaryKey=" + primaryKey +
@@ -991,6 +1016,7 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(duplicateClassifications, that.duplicateClassifications) &&
                 Objects.equals(digitalResourceOrigin, that.digitalResourceOrigin) &&
                 Objects.equals(dataScope, that.dataScope) &&
+                Objects.equals(runMetrics, that.runMetrics) &&
                 Objects.equals(dataAssetEncoding, that.dataAssetEncoding) &&
                 Objects.equals(ownership, that.ownership) &&
                 Objects.equals(memento, that.memento) &&
@@ -1025,7 +1051,7 @@ public class ElementHeader extends ElementControlHeader
         return Objects.hash(super.hashCode(), guid, anchor, zoneMembership, zoneMembershipProfile, impact, criticality,
                             confidentiality, confidence, retention, governanceExpectations, governanceMeasurements,
                             executionPoints, duplicateClassifications, ownership, digitalResourceOrigin, memento,
-                            dataScope, dataAssetEncoding,
+                            dataScope, runMetrics, dataAssetEncoding,
                             template, templateSubstitute, schemaType, calculatedValue, primaryKey,
                             knownDuplicate, consolidateDuplicate,
                             securityTags, accountingCodes, securityListMembership, userAccountProfile,

@@ -68,6 +68,11 @@ public class OpenLineageArchiveWriter extends ContentPackBaseArchiveWriter
         super.createRequestTypes(ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK);
 
         /*
+         * Attach the Open Lineage analysis services to the Babbage Analytical Engine as catalog targets.
+         */
+        super.addLovelaceCatalogTargets(ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK);
+
+        /*
          * Set up the governance action process that associates a kafka topic with the open lineage listener.
          */
         List<String> additionalSolutionComponents = new ArrayList<>();

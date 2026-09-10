@@ -7,38 +7,64 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.net.URI;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for job facets in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents a job facet from the OpenLineage standard spec
+ * https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/JobFacet.  It is the superclass of the standard
+ * facets of this kind, and is also used directly to hold custom facets (or standard facets that are not yet modelled)
+ * whose properties are then found in additionalProperties.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenLineageJobFacet extends OpenLineageFacet
 {
+    private Boolean _deleted = null;
+
+
     /**
      * Default constructor
      */
     public OpenLineageJobFacet()
     {
-        super(URI.create("https://openlineage.io/spec/1-0-2/OpenLineage.json#/$defs/JobFacet"));
+        super(URI.create("https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/JobFacet"));
     }
 
 
     /**
-     * Subclass constructor
+     * Constructor for subclasses that sets up the schema URL for the facet.
      *
-     * @param schemaURL default value for schemaURL
+     * @param schemaURL URL of the JSON schema that describes this facet
      */
     public OpenLineageJobFacet(URI schemaURL)
     {
         super(schemaURL);
+    }
+
+
+    /**
+     * Return whether this facet is being deleted (set to true to delete a facet).
+     *
+     * @return boolean
+     */
+    public Boolean get_deleted()
+    {
+        return _deleted;
+    }
+
+
+    /**
+     * Set up whether this facet is being deleted (set to true to delete a facet).
+     *
+     * @param deleted boolean
+     */
+    public void set_deleted(Boolean deleted)
+    {
+        this._deleted = deleted;
     }
 
 
@@ -51,9 +77,48 @@ public class OpenLineageJobFacet extends OpenLineageFacet
     public String toString()
     {
         return "OpenLineageJobFacet{" +
-                       "_producer=" + get_producer() +
+                       "_deleted=" + _deleted +
+                       ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
                        ", additionalProperties=" + getAdditionalProperties() +
                        '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
+        OpenLineageJobFacet that = (OpenLineageJobFacet) objectToCompare;
+        return Objects.equals(_deleted, that._deleted);
+    }
+
+
+    /**
+     * Return hash code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), _deleted);
     }
 }

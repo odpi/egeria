@@ -30,6 +30,16 @@ In tribute to [Ada Lovelace](https://en.wikipedia.org/wiki/Ada_Lovelace)
 
 These are the services that are orchestrated by the Babbage Analytical Engine.  Each on performs a specific task.  They are implemented as [Governance Services](https://egeria-project.org/concepts/governance-service/) and store their analysis as classification on the appropriate open metadata element.
 
+The Lovelace services live in the [lovelace-insights](../lovelace-insights) module.  The current services are:
+
+* *Award Karma Points* - watches for contributions to the open metadata ecosystem and awards karma points to the users responsible.
+* *Build Zone Membership Profile* - populates the ZoneMembershipProfile classification of each governance zone.
+* *Profile OpenLineage Runs* - analyses the runs of each job in an OpenLineage log store and records the run profile (frequency, regularity, duration, failure rate and data volume) in the RunMetrics classification of the job's process.
+* *Refine OpenLineage Data Scope* - analyses the writes and reads of each dataset in an OpenLineage log store and refines the DataScope classification of the dataset's asset with the write pattern and data collection window.
+* *Summarise OpenLineage Data Quality* - summarises the data quality assertions and tests in an OpenLineage log store into a survey report per dataset (and per job) with the pass rate of each quality dimension.
+
+The three OpenLineage services share a log-store reader and are selected independently, so a deployment can run only the analyses it wants.  Each takes the log store folder as its `openLineageLogStore` action target (or a `logStoreDirectory` request parameter) and an `analysisWindowDays` request parameter (default 30).
+
 ## Mendel Automated Duplicate Manager
 
 In recognition of the work on genetics and inheritance by [Gregor Mendel](https://en.wikipedia.org/wiki/Gregor_Mendel) - the survivorship rules of [duplicate management](https://egeria-project.org/features/duplicate-management/overview/) decide which properties are inherited by the combined element in much the same way.

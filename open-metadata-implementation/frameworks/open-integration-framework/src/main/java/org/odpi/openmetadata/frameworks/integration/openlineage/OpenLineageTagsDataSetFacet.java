@@ -6,52 +6,53 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.net.URI;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the map of data quality quartiles in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the tags dataset facet.  It captures the tags applied to the dataset and its fields.
+ * It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-0-0/TagsDatasetFacet.json#/$defs/TagsDatasetFacet.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics
+public class OpenLineageTagsDataSetFacet extends OpenLineageDataSetFacet
 {
-    private Map<String, OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditional> additionalProperties = new LinkedHashMap<>();
+    private List<OpenLineageTagsDataSetFacetTag> tags = null;
 
 
     /**
      * Default constructor
      */
-    public OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics()
+    public OpenLineageTagsDataSetFacet()
     {
+        super(URI.create("https://openlineage.io/spec/facets/1-0-0/TagsDatasetFacet.json#/$defs/TagsDatasetFacet"));
     }
 
 
     /**
-     * Return a map of additional column based data quality metrics facets.
+     * Return the tags applied to the dataset.
      *
-     * @return map from column name to metrics
+     * @return list
      */
-    public Map<String, OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditional> getAdditionalProperties()
+    public List<OpenLineageTagsDataSetFacetTag> getTags()
     {
-        return additionalProperties;
+        return tags;
     }
 
 
     /**
-     * Set up a map of additional column based data quality metrics facets.
+     * Set up the tags applied to the dataset.
      *
-     * @param additionalProperties map from column name to metrics
+     * @param tags list
      */
-    public void setAdditionalProperties(Map<String, OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditional> additionalProperties)
+    public void setTags(List<OpenLineageTagsDataSetFacetTag> tags)
     {
-        this.additionalProperties = additionalProperties;
+        this.tags = tags;
     }
 
 
@@ -63,8 +64,12 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics
     @Override
     public String toString()
     {
-        return "OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics{" +
-                       "additionalProperties=" + additionalProperties +
+        return "OpenLineageTagsDataSetFacet{" +
+                       "tags=" + tags +
+                       ", _producer=" + get_producer() +
+                       ", _schemaURL=" + get_schemaURL() +
+                       ", _deleted=" + get_deleted() +
+                       ", additionalProperties=" + getAdditionalProperties() +
                        '}';
     }
 
@@ -86,9 +91,12 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics
         {
             return false;
         }
-        OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics
-                that = (OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics) objectToCompare;
-        return Objects.equals(additionalProperties, that.additionalProperties);
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
+        OpenLineageTagsDataSetFacet that = (OpenLineageTagsDataSetFacet) objectToCompare;
+        return Objects.equals(tags, that.tags);
     }
 
 
@@ -100,6 +108,6 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics
     @Override
     public int hashCode()
     {
-        return Objects.hash(additionalProperties);
+        return Objects.hash(super.hashCode(), tags);
     }
 }

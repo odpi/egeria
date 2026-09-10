@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBe
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -27,6 +28,7 @@ public class OwnershipProperties extends ClassificationBeanProperties
     private String       ownerTypeName     = null;
     private String       ownerPropertyName = null;
     private List<String> userIds           = null;
+    private Map<String, String> additionalProperties = null;
 
 
     /**
@@ -52,6 +54,8 @@ public class OwnershipProperties extends ClassificationBeanProperties
             owner                = template.getOwner();
             ownerTypeName        = template.getOwnerTypeName();
             ownerPropertyName    = template.getOwnerPropertyName();
+            userIds              = template.getUserIds();
+            additionalProperties = template.getAdditionalProperties();
         }
     }
 
@@ -144,6 +148,29 @@ public class OwnershipProperties extends ClassificationBeanProperties
 
 
     /**
+     * Return any additional properties describing the owner - for example the name and type of the owner as known
+     * to the source of the ownership.
+     *
+     * @return map of property name to value
+     */
+    public Map<String, String> getAdditionalProperties()
+    {
+        return additionalProperties;
+    }
+
+
+    /**
+     * Set up any additional properties describing the owner.
+     *
+     * @param additionalProperties map of property name to value
+     */
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
+    {
+        this.additionalProperties = additionalProperties;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -156,6 +183,7 @@ public class OwnershipProperties extends ClassificationBeanProperties
                 ", ownerTypeName='" + ownerTypeName + '\'' +
                 ", ownerPropertyName='" + ownerPropertyName + '\'' +
                 ", userIds=" + userIds +
+                ", additionalProperties=" + additionalProperties +
                 "} " + super.toString();
     }
 
@@ -184,7 +212,8 @@ public class OwnershipProperties extends ClassificationBeanProperties
         return Objects.equals(owner, that.owner) &&
                 Objects.equals(ownerTypeName, that.ownerTypeName) &&
                 Objects.equals(ownerPropertyName, that.ownerPropertyName) &&
-                Objects.equals(userIds, that.userIds);
+                Objects.equals(userIds, that.userIds) &&
+                Objects.equals(additionalProperties, that.additionalProperties);
     }
 
 
@@ -196,6 +225,6 @@ public class OwnershipProperties extends ClassificationBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), owner, ownerTypeName, ownerPropertyName, userIds);
+        return Objects.hash(super.hashCode(), owner, ownerTypeName, ownerPropertyName, userIds, additionalProperties);
     }
 }

@@ -11,6 +11,8 @@ import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
 import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
@@ -246,6 +248,18 @@ public class IntegrationContext extends ConnectorContextBase
     }
 
 
+    /**
+     * Called each time an open lineage job event is published to the integration daemon as a bean.  The event is
+     * delivered to each of the registered listeners.
+     *
+     * @param event bean for the event
+     */
+    public void publishOpenLineageJobEvent(OpenLineageJobEvent event)
+    {
+        openLineageListenerManager.publishOpenLineageJobEvent(event);
+    }
+
+
     /* ======================================================================================
      * Register a listener to receive Bitol documents (ODCS data contracts and ODPS data products).
      */
@@ -259,6 +273,18 @@ public class IntegrationContext extends ConnectorContextBase
     public void registerBitolListener(BitolDocumentListener listener)
     {
         bitolDocumentManager.registerListener(listener);
+    }
+
+
+    /**
+     * Called each time an open lineage dataset event is published to the integration daemon as a bean.  The event is
+     * delivered to each of the registered listeners.
+     *
+     * @param event bean for the event
+     */
+    public void publishOpenLineageDataSetEvent(OpenLineageDataSetEvent event)
+    {
+        openLineageListenerManager.publishOpenLineageDataSetEvent(event);
     }
 
 

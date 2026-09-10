@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.RunMetricsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.DigitalResourceOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
@@ -1690,6 +1691,81 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         openMetadataClient.declassifyMetadataElementInStore(userId,
                                                             elementGUID,
                                                             OpenMetadataType.DATA_SCOPE_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a process to record statistics about its runs.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the process
+     * @param properties details of the run metrics
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void  addRunMetricsClassification(String                userId,
+                                             String                elementGUID,
+                                             RunMetricsProperties  properties,
+                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.RUN_METRICS_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Update the run metrics of a process.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the process
+     * @param properties details of the run metrics
+     * @param updateOptions provides a structure for the additional options when updating a classification.
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void updateRunMetricsClassification(String               userId,
+                                               String               elementGUID,
+                                               RunMetricsProperties properties,
+                                               UpdateOptions        updateOptions) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        openMetadataClient.reclassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.RUN_METRICS_CLASSIFICATION.typeName,
+                                                            updateOptions,
+                                                            classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the run metrics from a process.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the process
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void clearRunMetricsClassification(String                userId,
+                                              String                elementGUID,
+                                              MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.RUN_METRICS_CLASSIFICATION.typeName,
                                                             metadataSourceOptions);
     }
 

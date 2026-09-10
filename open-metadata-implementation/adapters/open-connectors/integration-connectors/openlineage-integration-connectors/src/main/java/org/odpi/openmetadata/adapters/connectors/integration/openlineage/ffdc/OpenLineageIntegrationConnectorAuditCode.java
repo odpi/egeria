@@ -41,6 +41,66 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
                          "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
 
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0020 - The {0} integration connector has catalogued {1} {2} ({3}) from open lineage {4} {5}
+     */
+    ELEMENT_CATALOGUED("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0020",
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} integration connector has catalogued {1} {2} ({3}) from open lineage {4} {5}",
+                       "The connector has created a new open metadata element to represent a job, run or dataset found in an open lineage event.",
+                       "No specific action is required.  This message is to record the new element in the open metadata ecosystem.",
+                       "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0021 - The {0} integration connector has added a {1} lineage relationship from {2} to {3}
+     */
+    LINEAGE_CATALOGUED("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0021",
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} integration connector has added a {1} lineage relationship from {2} to {3}",
+                       "The connector has linked two elements together to represent a data flow, control flow, process hierarchy or column mapping found in an open lineage event.",
+                       "No specific action is required.  This message is to record the new relationship in the open metadata ecosystem.",
+                       "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0022 - The {0} integration connector is ignoring open lineage event {1} because {2}
+     */
+    EVENT_IGNORED("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0022",
+                  AuditLogRecordSeverityLevel.INFO,
+                  "The {0} integration connector is ignoring open lineage event {1} because {2}",
+                  "The connector cannot map the event to open metadata because it is missing a mandatory value, or its job or dataset matches multiple existing elements.",
+                  "Review the event and, if it is expected to be catalogued, correct the producer or remove the duplicate elements from the open metadata repository.",
+                  "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0024 - The {0} integration connector has renamed asset {1} from {2} to {3} following open lineage {4}
+     */
+    DATASET_RENAMED("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0024",
+                    AuditLogRecordSeverityLevel.INFO,
+                    "The {0} integration connector has renamed asset {1} from {2} to {3} following open lineage {4}",
+                    "An open lineage event reported a RENAME lifecycle state change for a dataset, so the names of the asset that represents it have been updated.  The previous names remain visible in the history of the element.",
+                    "No specific action is required.  Use the element's history to see the names it had before the rename.",
+                    "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0025 - The {0} integration connector has removed asset {1} ({2}) using delete method {3} following open lineage {4}
+     */
+    DATASET_DROPPED("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0025",
+                    AuditLogRecordSeverityLevel.INFO,
+                    "The {0} integration connector has removed asset {1} ({2}) using delete method {3} following open lineage {4}",
+                    "An open lineage event reported a DROP lifecycle state change for a dataset, so the asset that represents it has been archived or deleted according to the delete method configured for the connector.",
+                    "No specific action is required.  Change the connector's delete method if archived (Memento) assets are wanted instead of deleted ones, or vice versa.",
+                    "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0023 - The {0} integration connector was unable to record {1} for open lineage event {2}; the {3} exception message was: {4}
+     */
+    OPTIONAL_METADATA_FAILED("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0023",
+                             AuditLogRecordSeverityLevel.ERROR,
+                             "The {0} integration connector was unable to record {1} for open lineage event {2}; the {3} exception message was: {4}",
+                             "The lineage from the event has been catalogued, but the optional metadata (run details, schema, statistics, data quality or data scope) could not be recorded.",
+                             "Use the details from the error message to determine the cause of the error.  The optional metadata will be captured from subsequent events once the problem is resolved.",
+                             "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
     ;
 
     private final String                     logMessageId;
