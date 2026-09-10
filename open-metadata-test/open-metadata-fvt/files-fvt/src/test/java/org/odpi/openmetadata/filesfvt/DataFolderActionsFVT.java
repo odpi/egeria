@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.filesfvt;
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -177,6 +179,8 @@ public class DataFolderActionsFVT
         String actionName = FilesFvtTestSupport.governanceActionTypeQualifiedName(requestType);
 
         Map<String, String> requestParameters = new HashMap<>(FilesFvtTestSupport.folderTemplatePlaceholders(folder));
+
+        requestParameters.put(PlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getName(), DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType());
 
         String engineActionGUID = new AutomatedCurationClient().initiateGovernanceActionType(actionName,
                                                                                               requestParameters,

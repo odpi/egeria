@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.BasicFilesMonitoringConfigurationProperty;
@@ -707,6 +708,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         placeholderPropertyValues.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
         placeholderPropertyValues.put(PlaceholderProperty.FILE_SYSTEM_NAME.getName(), "");
         placeholderPropertyValues.put(PlaceholderProperty.DESCRIPTION.getName(), "Landing Area folder for " + hospitalName + "'s " + topLevelProjectName + ".");
+        placeholderPropertyValues.put(PlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getName(), DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType());
 
         return governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(OpenMetadataType.DATA_FOLDER.typeName,
                                                                                        null,

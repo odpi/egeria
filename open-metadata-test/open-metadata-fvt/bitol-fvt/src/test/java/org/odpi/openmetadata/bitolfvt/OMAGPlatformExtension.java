@@ -81,10 +81,12 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
     /**
      * The archives loaded at start-up, in dependency order.  The Core content pack supplies the reference data
-     * (file types, deployed implementation types) and the connector types that the Bitol pack builds on.
+     * (file types, deployed implementation types) and the connector types that the Bitol pack builds on; the Files
+     * content pack supplies the YAML and JSON file templates that the document files are catalogued from.
      */
     private static final List<String> ARCHIVE_FILES = List.of("OpenMetadataTypes.omarchive",
                                                               "CoreContentPack.omarchive",
+                                                              "FilesContentPack.omarchive",
                                                               "BitolContentPack.omarchive");
 
     /**

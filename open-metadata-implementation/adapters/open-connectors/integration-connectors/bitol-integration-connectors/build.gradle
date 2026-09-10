@@ -12,6 +12,8 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-integration-framework')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
+    // FilesTemplateType names the YAML and JSON file templates that the document files are catalogued from.
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'commons-io:commons-io'
     compileOnly 'org.slf4j:slf4j-api'

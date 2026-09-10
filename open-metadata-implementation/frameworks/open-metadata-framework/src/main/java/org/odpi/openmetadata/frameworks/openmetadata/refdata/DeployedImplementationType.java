@@ -543,6 +543,28 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                            "https://egeria-project.org/features/digital-product-management/overview/"),
 
     /**
+     * A JSON file containing a Bitol Open Data Contract Standard (ODCS) document that describes a dataset and the agreement for sharing it.
+     */
+    OPEN_DATA_CONTRACT_JSON_FILE("52aad6e6-54e9-40c1-95df-defb0fe2afd1",
+                                 "Open Data Contract Standard (ODCS) JSON File",
+                                 DeployedImplementationType.JSON_FILE,
+                                 OpenMetadataType.JSON_FILE.typeName,
+                                 null,
+                                 "A JSON file containing a Bitol Open Data Contract Standard (ODCS) document that describes a dataset and the agreement for sharing it.",
+                                 "https://egeria-project.org/features/digital-product-management/overview/"),
+
+    /**
+     * A JSON file containing a Bitol Open Data Product Standard (ODPS) document that describes a data product and its ports.
+     */
+    OPEN_DATA_PRODUCT_JSON_FILE("06ee0a70-6548-4288-a525-de0f269eadfb",
+                                "Open Data Product Standard (ODPS) JSON File",
+                                DeployedImplementationType.JSON_FILE,
+                                OpenMetadataType.JSON_FILE.typeName,
+                                null,
+                                "A JSON file containing a Bitol Open Data Product Standard (ODPS) document that describes a data product and its ports.",
+                                "https://egeria-project.org/features/digital-product-management/overview/"),
+
+    /**
      * A YAML encoded file containing a secrets store read by the YAMLSecretsStoreConnector.
      */
     YAML_SECRETS_COLLECTION_FILE("6480544e-bf2e-4024-90ac-dcd166f17248",

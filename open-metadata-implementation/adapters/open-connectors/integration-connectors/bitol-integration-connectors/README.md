@@ -44,6 +44,15 @@ registered in the same integration daemon instance.  On each refresh it scans th
 files whose `kind` is `DataContract` or `DataProduct`.  Hidden directories such as `.git` are skipped, and a file is only
 published again when its last modified time changes.
 
+Each file it publishes is also catalogued as a data asset, using the YAML or JSON file template from the
+[Files Content Pack](https://egeria-project.org/content-packs/files-content-pack/overview/) with the deployed implementation type
+for the document's kind and format (`Open Data Contract Standard (ODCS) File`, `Open Data Product Standard (ODPS) File`, or their
+`JSON File` variants), and linked to the agreement or digital product catalogued from the document as a `Bitol Document` resource
+(`ResourceList`).  The templates substitute the deployed implementation type from their `deployedImplementationType` placeholder.
+A file that is already catalogued is reused, and its deployed implementation type is set to the document's, since a folder
+cataloguer that found the file first will have recorded it as a plain YAML or JSON file.  If the file templates are not loaded, the document is still
+published and a single audit message (`BITOL-INTEGRATION-CONNECTOR-0012`) records that the file was not catalogued.
+
 ### Configuration
 
 This connector runs in the [Integration Daemon](https://egeria-project.org/concepts/integration-daemon).  A directory to monitor
@@ -250,6 +259,10 @@ The File-based Bitol Store integration connector writes every Bitol document pub
 Each document is stored as `{{folderName}}/{kind}/{id}/{version}.yaml` (or `.json` when the document arrived as JSON), so the store
 can be committed to a git repository as it stands.  Documents that could not be parsed are kept under
 `{{folderName}}/{kind}/unparsed/`.
+
+Each file it writes is catalogued in the same way as the files receiver catalogs the files it reads: as a data asset created from
+the YAML or JSON file template with the ODCS/ODPS deployed implementation type, linked to the catalogued agreement or digital
+product as a `Bitol Document` resource.
 
 ### Configuration
 

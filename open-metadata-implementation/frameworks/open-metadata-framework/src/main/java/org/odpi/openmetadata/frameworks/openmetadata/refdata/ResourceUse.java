@@ -22,6 +22,13 @@ public enum ResourceUse
                         null),
 
     /**
+     * The Bitol Open Data Contract Standard (ODCS) or Open Data Product Standard (ODPS) document that the element was catalogued from, or generated to.
+     */
+    BITOL_DOCUMENT("Bitol Document",
+                   "The Bitol Open Data Contract Standard (ODCS) or Open Data Product Standard (ODPS) document that the element was catalogued from, or generated to.",
+                   null),
+
+    /**
      * Run a report to retrieve data from the open metadata ecosystem.
      */
     RUN_REPORT("Run Report",

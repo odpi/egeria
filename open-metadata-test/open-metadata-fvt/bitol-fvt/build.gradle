@@ -59,6 +59,8 @@ dependencies {
     // missing one is not a compile failure, it is a connector that will not start.
     testImplementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:bitol-integration-connectors')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
+    // The document files are catalogued from the file templates named by the files connectors' FilesTemplateType.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors')
     // The Kafka receiver test creates the topic and produces a document onto it directly, as a third party would.
     testImplementation 'org.apache.kafka:kafka-clients'
