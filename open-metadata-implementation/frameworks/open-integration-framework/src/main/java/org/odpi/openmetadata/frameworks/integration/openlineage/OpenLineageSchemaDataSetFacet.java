@@ -14,16 +14,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the content of an open lineage schema for a data set facet as defined in JSON
- * spec https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet.
- * It is used internally in Egeria to pass this information to the integration daemon's integration connectors.
+ * This class represents the schema dataset facet.  It describes the fields of the dataset.
+ * It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-2-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenLineageSchemaDataSetFacet extends OpenLineageDataSetFacet
 {
-    private List<OpenLineageSchemaDataSetFacetField> fields;
+    private List<OpenLineageSchemaDataSetFacetField> fields = null;
 
 
     /**
@@ -31,12 +30,12 @@ public class OpenLineageSchemaDataSetFacet extends OpenLineageDataSetFacet
      */
     public OpenLineageSchemaDataSetFacet()
     {
-        super(URI.create("https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet"));
+        super(URI.create("https://openlineage.io/spec/facets/1-2-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet"));
     }
 
 
     /**
-     * Return the list of data files described by this schema.
+     * Return the fields of the dataset.
      *
      * @return list
      */
@@ -47,7 +46,7 @@ public class OpenLineageSchemaDataSetFacet extends OpenLineageDataSetFacet
 
 
     /**
-     * Set up the list of data files described by this schema.
+     * Set up the fields of the dataset.
      *
      * @param fields list
      */
@@ -69,6 +68,7 @@ public class OpenLineageSchemaDataSetFacet extends OpenLineageDataSetFacet
                        "fields=" + fields +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
+                       ", _deleted=" + get_deleted() +
                        ", additionalProperties=" + getAdditionalProperties() +
                        '}';
     }
@@ -101,7 +101,7 @@ public class OpenLineageSchemaDataSetFacet extends OpenLineageDataSetFacet
 
 
     /**
-     * Return hash code basa``ed on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

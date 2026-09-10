@@ -198,8 +198,10 @@ public enum MessageSetCategory
     LOVELACE_INSIGHTS("open-metadata-implementation/adapters/open-connectors/lovelace-insights",
                       "connectors/lovelace-insights",
                       "Lovelace Insights",
-                      "These connectors analyse the harvested observability data and turn it into insight " +
-                              "reports."),
+                      "These are the analytical governance services orchestrated by the Babbage Analytical Engine.  " +
+                              "Each analyses the open metadata ecosystem, or a store of observations about it such as an " +
+                              "OpenLineage log store, and records what it finds as classifications or survey reports on " +
+                              "the appropriate open metadata elements."),
 
     /**
      * Message sets defined by the connectors that generate documents from open metadata.

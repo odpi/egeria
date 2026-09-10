@@ -2162,6 +2162,16 @@ public enum OpenMetadataType
                               DataScopeProperties.class),
 
     /**
+     * Statistics about the runs of a process, maintained as its runs are observed.
+     */
+    RUN_METRICS_CLASSIFICATION("93cb37c2-df62-44d9-a142-7c41bee70798",
+                               "RunMetrics",
+                               OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
+                               "3b73ed6a-944f-4603-85ca-7319100ba2ff",
+                               "Statistics about the runs of a process, maintained as its runs are observed: how many times it has run, when, for how long and how much data it handled.",
+                               RunMetricsProperties.class),
+
+    /**
      * Description for how data is organized and represented in a data asset.
      */
     DATA_ASSET_ENCODING_CLASSIFICATION("3f6a1513-d3ea-4666-b5fd-c76477b0245e",

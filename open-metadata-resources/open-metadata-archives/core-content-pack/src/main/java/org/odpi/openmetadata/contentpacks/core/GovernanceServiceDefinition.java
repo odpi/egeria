@@ -14,6 +14,9 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.Q
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.RetentionClassifierGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.*;
+import org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.LovelaceOpenLineageDataQualitySummaryServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.LovelaceOpenLineageDataScopeServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.LovelaceOpenLineageRunProfilerServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.securityinsight.zoneprofile.LovelaceZoneMembershipProfilerServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CancelSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CreateSubscriptionGovernanceActionProvider;
@@ -484,6 +487,40 @@ public enum GovernanceServiceDefinition
                        ResourceUse.GENERATE_INSIGHT,
                        DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                        ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
+
+
+    /**
+     * Lovelace OpenLineage Run Profiler Governance Action Service
+     */
+    OPEN_LINEAGE_RUN_PROFILER("6b664a08-6045-4381-8a1e-fc2c36c913e9",
+                              "open-lineage-run-profiler-governance-service",
+                              "Lovelace OpenLineage Run Profiler Governance Action Service",
+                              new LovelaceOpenLineageRunProfilerServiceProvider(),
+                              ResourceUse.GENERATE_INSIGHT,
+                              DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                              ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
+
+    /**
+     * Lovelace OpenLineage Data Scope Governance Action Service
+     */
+    OPEN_LINEAGE_DATA_SCOPE("0980a97e-d1d2-4e2f-bab9-84f9b5ab6e9a",
+                            "open-lineage-data-scope-governance-service",
+                            "Lovelace OpenLineage Data Scope Governance Action Service",
+                            new LovelaceOpenLineageDataScopeServiceProvider(),
+                            ResourceUse.GENERATE_INSIGHT,
+                            DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                            ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
+
+    /**
+     * Lovelace OpenLineage Data Quality Summary Governance Action Service
+     */
+    OPEN_LINEAGE_DATA_QUALITY_SUMMARY("6f981877-25ca-47ec-9646-a98feff4f404",
+                                      "open-lineage-data-quality-summary-governance-service",
+                                      "Lovelace OpenLineage Data Quality Summary Governance Action Service",
+                                      new LovelaceOpenLineageDataQualitySummaryServiceProvider(),
+                                      ResourceUse.GENERATE_INSIGHT,
+                                      DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                      ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
     ;
 

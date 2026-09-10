@@ -13,9 +13,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the content of an open lineage schema for the nominal (expected) time of a job run facet as defined in JSON
- * spec https://openlineage.io/spec/facets/1-0-0/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet.
- * It is used internally in Egeria to pass this information to the integration daemon's integration connectors.
+ * This class represents the nominalTime run facet.  It captures the nominal (scheduled) start and end time of the run.
+ * It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-0-1/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,20 +24,20 @@ public class OpenLineageNominalTimeRunFacet extends OpenLineageRunFacet
     private String nominalStartTime = null;
     private String nominalEndTime = null;
 
+
     /**
      * Default constructor
      */
     public OpenLineageNominalTimeRunFacet()
     {
-        super(URI.create("https://openlineage.io/spec/facets/1-0-0/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet"));
+        super(URI.create("https://openlineage.io/spec/facets/1-0-1/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet"));
     }
 
 
     /**
-     * Return an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp representing the nominal start time (included) of the run.
-     * AKA the schedule time.
+     * Return the ISO-8601 timestamp representing the nominal start time (included) of the run. AKA the schedule time.
      *
-     * @return zoned time stamp
+     * @return string
      */
     public String getNominalStartTime()
     {
@@ -47,10 +46,9 @@ public class OpenLineageNominalTimeRunFacet extends OpenLineageRunFacet
 
 
     /**
-     * Set up an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp representing the nominal start time (included) of the run.
-     * AKA the schedule time.
+     * Set up the ISO-8601 timestamp representing the nominal start time (included) of the run. AKA the schedule time.
      *
-     * @param nominalStartTime zoned time stamp
+     * @param nominalStartTime string
      */
     public void setNominalStartTime(String nominalStartTime)
     {
@@ -59,10 +57,9 @@ public class OpenLineageNominalTimeRunFacet extends OpenLineageRunFacet
 
 
     /**
-     * Return an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp representing the nominal end time (excluded) of the run.
-     * (Should be the nominal start time of next run.)
+     * Return the ISO-8601 timestamp representing the nominal end time (excluded) of the run. AKA the schedule time.
      *
-     * @return zoned time stamp
+     * @return string
      */
     public String getNominalEndTime()
     {
@@ -71,10 +68,9 @@ public class OpenLineageNominalTimeRunFacet extends OpenLineageRunFacet
 
 
     /**
-     * Set up an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp representing the nominal end time (excluded) of the run.
-     * (Should be the nominal start time of next run.)
+     * Set up the ISO-8601 timestamp representing the nominal end time (excluded) of the run. AKA the schedule time.
      *
-     * @param nominalEndTime zoned time stamp
+     * @param nominalEndTime string
      */
     public void setNominalEndTime(String nominalEndTime)
     {
@@ -91,8 +87,8 @@ public class OpenLineageNominalTimeRunFacet extends OpenLineageRunFacet
     public String toString()
     {
         return "OpenLineageNominalTimeRunFacet{" +
-                       "nominalStartTime=" + nominalStartTime +
-                       ", nominalEndTime=" + nominalEndTime +
+                       "nominalStartTime='" + nominalStartTime + '\'' +
+                       ", nominalEndTime='" + nominalEndTime + '\'' +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
                        ", additionalProperties=" + getAdditionalProperties() +

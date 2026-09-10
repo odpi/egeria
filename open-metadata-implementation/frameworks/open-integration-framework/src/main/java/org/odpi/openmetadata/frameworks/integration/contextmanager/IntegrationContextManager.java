@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.integration.contextmanager;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -13,6 +14,8 @@ import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
@@ -244,9 +247,11 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     }
 
     /**
-     * Called each time an open lineage run event is published to the integration daemon.  The integration connector is able to
-     * work with the formatted event using the Egeria beans or reformat the open lineage run event using the supplied open lineage backend beans
-     * or another set of beans.
+     * Called each time an open lineage event is published to the integration daemon as a JSON string.  The kind of
+     * event (run, job or dataset) is determined from the properties present: a run event has a run, a dataset event
+     * has a dataset and a job event has a job but no run.  The parsed bean is delivered to the registered listeners
+     * along with the raw JSON so that a connector can work with the Egeria beans or reformat the event using another
+     * set of beans.  If the event cannot be parsed, it is delivered to the run event listeners with a null bean.
      *
      * @param rawEvent json payload received for the event
      */
@@ -255,13 +260,33 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     {
         final String methodName = "publishOpenLineageRunEvent(rawEvent)";
 
-        OpenLineageRunEvent event = null;
-
         if (rawEvent != null)
         {
             try
             {
-                event = OBJECT_READER.readValue(rawEvent, OpenLineageRunEvent.class);
+                JsonNode eventTree = OBJECT_READER.readTree(rawEvent);
+
+                if ((eventTree != null) && (eventTree.hasNonNull("dataset")) && (! eventTree.has("run")))
+                {
+                    OpenLineageDataSetEvent event = OBJECT_READER.treeToValue(eventTree, OpenLineageDataSetEvent.class);
+
+                    publishToListeners(event, rawEvent, methodName);
+                    return;
+                }
+                else if ((eventTree != null) && (eventTree.hasNonNull("job")) && (! eventTree.has("run")))
+                {
+                    OpenLineageJobEvent event = OBJECT_READER.treeToValue(eventTree, OpenLineageJobEvent.class);
+
+                    publishToListeners(event, rawEvent, methodName);
+                    return;
+                }
+                else
+                {
+                    OpenLineageRunEvent event = OBJECT_READER.readValue(rawEvent, OpenLineageRunEvent.class);
+
+                    publishToListeners(event, rawEvent, methodName);
+                    return;
+                }
             }
             catch (Exception error)
             {
@@ -274,8 +299,9 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
             }
         }
 
-        publishToListeners(event, rawEvent, methodName);
+        publishToListeners((OpenLineageRunEvent) null, rawEvent, methodName);
     }
+
 
     /**
      * Called each time an open lineage run event is published to the integration demon.  The integration connector is able to
@@ -289,13 +315,53 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     {
         final String methodName = "publishOpenLineageRunEvent(event)";
 
-        String rawEvent = null;
+        publishToListeners(event, this.getRawEvent(event, methodName), methodName);
+    }
 
+
+    /**
+     * Called each time an open lineage job event is published to the integration demon.
+     *
+     * @param event bean for the event
+     */
+    @Override
+    public synchronized void publishOpenLineageJobEvent(OpenLineageJobEvent event)
+    {
+        final String methodName = "publishOpenLineageJobEvent(event)";
+
+        publishToListeners(event, this.getRawEvent(event, methodName), methodName);
+    }
+
+
+    /**
+     * Called each time an open lineage dataset event is published to the integration demon.
+     *
+     * @param event bean for the event
+     */
+    @Override
+    public synchronized void publishOpenLineageDataSetEvent(OpenLineageDataSetEvent event)
+    {
+        final String methodName = "publishOpenLineageDataSetEvent(event)";
+
+        publishToListeners(event, this.getRawEvent(event, methodName), methodName);
+    }
+
+
+    /**
+     * Convert an event bean into its JSON representation, logging any failure.
+     *
+     * @param event event bean (any of the open lineage event types)
+     * @param methodName calling method
+     * @return JSON string or null if the event is null or cannot be serialized
+     */
+    private String getRawEvent(Object event,
+                               String methodName)
+    {
         if (event != null)
         {
             try
             {
-                rawEvent = OBJECT_WRITER.writeValueAsString(event);
+                return OBJECT_WRITER.writeValueAsString(event);
             }
             catch (Exception error)
             {
@@ -308,12 +374,12 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
             }
         }
 
-        publishToListeners(event, rawEvent, methodName);
+        return null;
     }
 
 
     /**
-     * Loop through the listeners and sending an event to each.  If a connector throws an exception, it is logged and the publishing process
+     * Loop through the listeners and sending a run event to each.  If a connector throws an exception, it is logged and the publishing process
      * continues with the other listeners.
      *
      * @param event event bean
@@ -334,13 +400,86 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
                 }
                 catch (Exception error)
                 {
-                    auditLog.logException(methodName,
-                                          OIFAuditCode.OPEN_LINEAGE_PUBLISH_ERROR.getMessageDefinition(error.getClass().getName(),
-                                                                                                                     error.getMessage()),
-                                          rawEvent,
-                                          error);
+                    logPublishError(error, rawEvent, methodName);
                 }
             }
         }
+    }
+
+
+    /**
+     * Loop through the listeners and sending a job event to each.  If a connector throws an exception, it is logged and the publishing process
+     * continues with the other listeners.
+     *
+     * @param event event bean
+     * @param rawEvent string event
+     * @param methodName calling method
+     */
+    private void publishToListeners(OpenLineageJobEvent event,
+                                    String              rawEvent,
+                                    String              methodName)
+    {
+        for (OpenLineageEventListener listener : registeredEventListeners)
+        {
+            if (listener != null)
+            {
+                try
+                {
+                    listener.processOpenLineageJobEvent(event, rawEvent);
+                }
+                catch (Exception error)
+                {
+                    logPublishError(error, rawEvent, methodName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Loop through the listeners and sending a dataset event to each.  If a connector throws an exception, it is logged and the publishing process
+     * continues with the other listeners.
+     *
+     * @param event event bean
+     * @param rawEvent string event
+     * @param methodName calling method
+     */
+    private void publishToListeners(OpenLineageDataSetEvent event,
+                                    String                  rawEvent,
+                                    String                  methodName)
+    {
+        for (OpenLineageEventListener listener : registeredEventListeners)
+        {
+            if (listener != null)
+            {
+                try
+                {
+                    listener.processOpenLineageDataSetEvent(event, rawEvent);
+                }
+                catch (Exception error)
+                {
+                    logPublishError(error, rawEvent, methodName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Log an exception thrown by a listener.
+     *
+     * @param error exception
+     * @param rawEvent string event
+     * @param methodName calling method
+     */
+    private void logPublishError(Exception error,
+                                 String    rawEvent,
+                                 String    methodName)
+    {
+        auditLog.logException(methodName,
+                              OIFAuditCode.OPEN_LINEAGE_PUBLISH_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                           error.getMessage()),
+                              rawEvent,
+                              error);
     }
 }

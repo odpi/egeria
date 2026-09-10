@@ -5581,6 +5581,380 @@ public class OpenMetadataPropertyConverterBase
      * Extract and delete the property from the supplied element properties.
      *
      * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeRunCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeRunCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.RUN_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeFailedRunCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeFailedRunCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.FAILED_RUN_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date
+     */
+    protected Date removeFirstRunStartTime(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeFirstRunStartTime";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.FIRST_RUN_START_TIME.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string
+     */
+    protected String removeLastRunId(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLastRunId";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                     OpenMetadataProperty.LAST_RUN_ID.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date
+     */
+    protected Date removeLastRunStartTime(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLastRunStartTime";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.LAST_RUN_START_TIME.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date
+     */
+    protected Date removeLastRunEndTime(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLastRunEndTime";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.LAST_RUN_END_TIME.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string
+     */
+    protected String removeLastRunStatus(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLastRunStatus";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                     OpenMetadataProperty.LAST_RUN_STATUS.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeLastRunDuration(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLastRunDuration";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.LAST_RUN_DURATION.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeTotalRunDuration(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeTotalRunDuration";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.TOTAL_RUN_DURATION.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeLastRunRowsRead(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLastRunRowsRead";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.LAST_RUN_ROWS_READ.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeLastRunRowsWritten(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLastRunRowsWritten";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.LAST_RUN_ROWS_WRITTEN.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeLastRunBytesRead(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLastRunBytesRead";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.LAST_RUN_BYTES_READ.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeLastRunBytesWritten(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLastRunBytesWritten";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.LAST_RUN_BYTES_WRITTEN.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeTotalRowsRead(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeTotalRowsRead";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.TOTAL_ROWS_READ.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeTotalRowsWritten(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeTotalRowsWritten";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.TOTAL_ROWS_WRITTEN.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeTotalBytesRead(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeTotalBytesRead";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.TOTAL_BYTES_READ.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeTotalBytesWritten(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeTotalBytesWritten";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.TOTAL_BYTES_WRITTEN.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
      * @return string name or null
      */
     protected Date removeDataCollectionStartTime(ElementProperties  elementProperties)
@@ -13291,6 +13665,29 @@ public class OpenMetadataPropertyConverterBase
                 ((DataScopeProperties)beanProperties).setScopeElements(this.removeScopeElements(elementProperties));
                 ((DataScopeProperties)beanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.RUN_METRICS_CLASSIFICATION.typeName))
+            {
+                beanProperties = new RunMetricsProperties();
+
+                ((RunMetricsProperties)beanProperties).setRunCount(this.removeRunCount(elementProperties));
+                ((RunMetricsProperties)beanProperties).setFailedRunCount(this.removeFailedRunCount(elementProperties));
+                ((RunMetricsProperties)beanProperties).setFirstRunStartTime(this.removeFirstRunStartTime(elementProperties));
+                ((RunMetricsProperties)beanProperties).setLastRunId(this.removeLastRunId(elementProperties));
+                ((RunMetricsProperties)beanProperties).setLastRunStartTime(this.removeLastRunStartTime(elementProperties));
+                ((RunMetricsProperties)beanProperties).setLastRunEndTime(this.removeLastRunEndTime(elementProperties));
+                ((RunMetricsProperties)beanProperties).setLastRunStatus(this.removeLastRunStatus(elementProperties));
+                ((RunMetricsProperties)beanProperties).setLastRunDuration(this.removeLastRunDuration(elementProperties));
+                ((RunMetricsProperties)beanProperties).setTotalRunDuration(this.removeTotalRunDuration(elementProperties));
+                ((RunMetricsProperties)beanProperties).setLastRunRowsRead(this.removeLastRunRowsRead(elementProperties));
+                ((RunMetricsProperties)beanProperties).setLastRunRowsWritten(this.removeLastRunRowsWritten(elementProperties));
+                ((RunMetricsProperties)beanProperties).setLastRunBytesRead(this.removeLastRunBytesRead(elementProperties));
+                ((RunMetricsProperties)beanProperties).setLastRunBytesWritten(this.removeLastRunBytesWritten(elementProperties));
+                ((RunMetricsProperties)beanProperties).setTotalRowsRead(this.removeTotalRowsRead(elementProperties));
+                ((RunMetricsProperties)beanProperties).setTotalRowsWritten(this.removeTotalRowsWritten(elementProperties));
+                ((RunMetricsProperties)beanProperties).setTotalBytesRead(this.removeTotalBytesRead(elementProperties));
+                ((RunMetricsProperties)beanProperties).setTotalBytesWritten(this.removeTotalBytesWritten(elementProperties));
+                ((RunMetricsProperties)beanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.DATA_VALUE_MEANING_CLASSIFICATION.typeName))
             {
                 beanProperties = new DataValueMeaningProperties();
@@ -13486,6 +13883,7 @@ public class OpenMetadataPropertyConverterBase
                 ((OwnershipProperties)beanProperties).setOwnerTypeName(this.removeOwnerTypeName(elementProperties));
                 ((OwnershipProperties)beanProperties).setOwnerPropertyName(this.removeOwnerPropertyName(elementProperties));
                 ((OwnershipProperties)beanProperties).setUserIds(this.removeUserIds(elementProperties));
+                ((OwnershipProperties)beanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
             }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.PERSONAL_PROJECT_CLASSIFICATION.typeName))
             {

@@ -2,11 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.integration.openlineage;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.net.URI;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -14,8 +17,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for facets in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the common header for facets in the OpenLineage standard spec
+ * https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/BaseFacet.  Every facet carries the URI of the producer that
+ * created it and the URL of the schema that describes it.  Any properties in the JSON that are not modelled by the
+ * subclass are held in additionalProperties so they survive a round trip through these beans.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -28,9 +33,9 @@ public abstract class OpenLineageFacet
 
 
     /**
-     * Subclass constructor
+     * Constructor that sets up the schema URL for the facet.
      *
-     * @param schemaURL default value for schemaURL
+     * @param schemaURL URL of the JSON schema that describes this facet
      */
     public OpenLineageFacet(URI schemaURL)
     {
@@ -52,7 +57,7 @@ public abstract class OpenLineageFacet
     /**
      * Set up the URI identifying the producer of this metadata. For example this could be a git url with a given tag or sha.
      *
-     * @param producer uri
+     * @param producer URI
      */
     public void set_producer(URI producer)
     {
@@ -63,7 +68,7 @@ public abstract class OpenLineageFacet
     /**
      * Return the JSON Pointer (https://tools.ietf.org/html/rfc6901) URL to the corresponding version of the schema definition for this facet.
      *
-     * @return uri
+     * @return URI
      */
     public URI get_schemaURL()
     {
@@ -74,7 +79,7 @@ public abstract class OpenLineageFacet
     /**
      * Set up the JSON Pointer (https://tools.ietf.org/html/rfc6901) URL to the corresponding version of the schema definition for this facet.
      *
-     * @param schemaURL uri
+     * @param schemaURL URI
      */
     public void set_schemaURL(URI schemaURL)
     {
@@ -83,10 +88,12 @@ public abstract class OpenLineageFacet
 
 
     /**
-     * Return a map of additional custom facets.  The name is the identifier of the facet type and the object is the facet itself.
+     * Return any properties of the facet that are not modelled by the bean.  They are serialized as top-level properties
+     * of the facet alongside the modelled properties.
      *
-     * @return custom facet map (map from string to object)
+     * @return map of property name to value
      */
+    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties()
     {
         return additionalProperties;
@@ -94,13 +101,32 @@ public abstract class OpenLineageFacet
 
 
     /**
-     * Set up a map of additional custom facets.  The name is the identifier of the facet type and the object is the facet itself.
+     * Set up any properties of the facet that are not modelled by the bean.
      *
-     * @param additionalProperties custom facet map (map from string to object)
+     * @param additionalProperties map of property name to value
      */
     public void setAdditionalProperties(Map<String, Object> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
+    }
+
+
+    /**
+     * Add a property that is not modelled by the bean.  Jackson calls this for each unrecognized property found in the JSON.
+     *
+     * @param propertyName name of the property
+     * @param propertyValue value of the property
+     */
+    @JsonAnySetter
+    public void setAdditionalProperty(String propertyName,
+                                      Object propertyValue)
+    {
+        if (additionalProperties == null)
+        {
+            additionalProperties = new LinkedHashMap<>();
+        }
+
+        additionalProperties.put(propertyName, propertyValue);
     }
 
 
@@ -113,8 +139,8 @@ public abstract class OpenLineageFacet
     public String toString()
     {
         return "OpenLineageFacet{" +
-                       "producer=" + _producer +
-                       ", schemaURL=" + _schemaURL +
+                       "_producer=" + _producer +
+                       ", _schemaURL=" + _schemaURL +
                        ", additionalProperties=" + additionalProperties +
                        '}';
     }

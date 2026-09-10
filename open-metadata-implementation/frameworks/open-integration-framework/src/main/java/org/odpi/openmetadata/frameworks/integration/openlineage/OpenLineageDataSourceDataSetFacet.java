@@ -7,23 +7,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.net.URI;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for facets in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the dataSource dataset facet.  It identifies the data source that hosts the dataset.
+ * It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-0-1/DatasourceDatasetFacet.json#/$defs/DatasourceDatasetFacet.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageDataSourceDataSetFacet extends OpenLineageFacet
+public class OpenLineageDataSourceDataSetFacet extends OpenLineageDataSetFacet
 {
     private String name = null;
-    private URI    uri  = null;
+    private URI    uri = null;
 
 
     /**
@@ -31,14 +30,14 @@ public class OpenLineageDataSourceDataSetFacet extends OpenLineageFacet
      */
     public OpenLineageDataSourceDataSetFacet()
     {
-        super (URI.create("https://openlineage.io/spec/facets/1-0-0/DatasourceDatasetFacet.json#/$defs/DatasourceDatasetFacet"));
+        super(URI.create("https://openlineage.io/spec/facets/1-0-1/DatasourceDatasetFacet.json#/$defs/DatasourceDatasetFacet"));
     }
 
 
     /**
      * Return the name of the data source.
      *
-     * @return string name
+     * @return string
      */
     public String getName()
     {
@@ -49,7 +48,7 @@ public class OpenLineageDataSourceDataSetFacet extends OpenLineageFacet
     /**
      * Set up the name of the data source.
      *
-     * @param name string name
+     * @param name string
      */
     public void setName(String name)
     {
@@ -71,7 +70,7 @@ public class OpenLineageDataSourceDataSetFacet extends OpenLineageFacet
     /**
      * Set up the URI to connect to the data source.
      *
-     * @param uri uri string
+     * @param uri uri
      */
     public void setUri(URI uri)
     {
@@ -92,6 +91,7 @@ public class OpenLineageDataSourceDataSetFacet extends OpenLineageFacet
                        ", uri=" + uri +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
+                       ", _deleted=" + get_deleted() +
                        ", additionalProperties=" + getAdditionalProperties() +
                        '}';
     }

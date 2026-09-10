@@ -13,17 +13,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the content of an open lineage documentation data set facet as defined in JSON
- * spec https://openlineage.io/spec/facets/1-0-0/OutputStatisticsOutputDatasetFacet.json#/$defs/OutputStatisticsOutputDatasetFacet.
- * It is used internally in Egeria to pass this information to the integration daemon's integration connectors.
+ * This class represents the outputStatistics output dataset facet.  It captures the volume of data written to the dataset by the run.
+ * It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-0-2/OutputStatisticsOutputDatasetFacet.json#/$defs/OutputStatisticsOutputDatasetFacet.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenLineageOutputStatisticsOutputDataSetFacet extends OpenLineageOutputDataSetOutputFacet
 {
-    private long rowCount = 0;
-    private long size = 0;
+    private Long rowCount = null;
+    private Long size = null;
+    private Long fileCount = null;
 
 
     /**
@@ -31,51 +31,73 @@ public class OpenLineageOutputStatisticsOutputDataSetFacet extends OpenLineageOu
      */
     public OpenLineageOutputStatisticsOutputDataSetFacet()
     {
-        super(URI.create("https://openlineage.io/spec/facets/1-0-0/OutputStatisticsOutputDatasetFacet.json#/$defs/OutputStatisticsOutputDatasetFacet"));
+        super(URI.create("https://openlineage.io/spec/facets/1-0-2/OutputStatisticsOutputDatasetFacet.json#/$defs/OutputStatisticsOutputDatasetFacet"));
     }
 
 
     /**
-     * Return the number of row written to the data set.
+     * Return the number of rows written to the dataset.
      *
-     * @return count
+     * @return long
      */
-    public long getRowCount()
+    public Long getRowCount()
     {
         return rowCount;
     }
 
 
     /**
-     * Set up the number of row written to the data set.
+     * Set up the number of rows written to the dataset.
      *
-     * @param rowCount count
+     * @param rowCount long
      */
-    public void setRowCount(long rowCount)
+    public void setRowCount(Long rowCount)
     {
         this.rowCount = rowCount;
     }
 
 
     /**
-     * Return the number of bytes written to the data set.
+     * Return the size in bytes written to the dataset.
      *
-     * @return number of bytes
+     * @return long
      */
-    public long getSize()
+    public Long getSize()
     {
         return size;
     }
 
 
     /**
-     * Set up the number of bytes written to the data set.
+     * Set up the size in bytes written to the dataset.
      *
-     * @param size number of bytes
+     * @param size long
      */
-    public void setSize(long size)
+    public void setSize(Long size)
     {
         this.size = size;
+    }
+
+
+    /**
+     * Return the number of files written to the dataset.
+     *
+     * @return long
+     */
+    public Long getFileCount()
+    {
+        return fileCount;
+    }
+
+
+    /**
+     * Set up the number of files written to the dataset.
+     *
+     * @param fileCount long
+     */
+    public void setFileCount(Long fileCount)
+    {
+        this.fileCount = fileCount;
     }
 
 
@@ -90,6 +112,7 @@ public class OpenLineageOutputStatisticsOutputDataSetFacet extends OpenLineageOu
         return "OpenLineageOutputStatisticsOutputDataSetFacet{" +
                        "rowCount=" + rowCount +
                        ", size=" + size +
+                       ", fileCount=" + fileCount +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -119,8 +142,9 @@ public class OpenLineageOutputStatisticsOutputDataSetFacet extends OpenLineageOu
             return false;
         }
         OpenLineageOutputStatisticsOutputDataSetFacet that = (OpenLineageOutputStatisticsOutputDataSetFacet) objectToCompare;
-        return rowCount == that.rowCount &&
-                       size == that.size;
+        return Objects.equals(rowCount, that.rowCount) &&
+                       Objects.equals(size, that.size) &&
+                       Objects.equals(fileCount, that.fileCount);
     }
 
 
@@ -132,6 +156,6 @@ public class OpenLineageOutputStatisticsOutputDataSetFacet extends OpenLineageOu
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), rowCount, size);
+        return Objects.hash(super.hashCode(), rowCount, size, fileCount);
     }
 }

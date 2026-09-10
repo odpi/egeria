@@ -1,0 +1,6 @@
+{
+  "eventTime": "2026-09-08T14:00:00Z",
+  "producer": "https://example.com/producer",
+  "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/DatasetEvent",
+  "dataset": { "namespace": "postgres://db.example.com:5432", "name": "sales.public.orders", "facets": { "schema": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-2-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet", "fields": [ { "name": "id", "type": "INTEGER" } ] }, "version": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/DatasetVersionDatasetFacet.json#/$defs/DatasetVersionDatasetFacet", "datasetVersion": "8" } } }
+}

@@ -87,7 +87,9 @@ The connection definition to use on the [administration commands that configure 
 
 ## Open Lineage Cataloguer Integration Connector
 
-The Open Lineage Cataloguer integration connector registers an OpenLineage listener with the integration daemon context and catalogues any processes described in the OpenLineage events it received that are not already known to the open metadata ecosystem.
+The Open Lineage Cataloguer integration connector registers an OpenLineage listener with the integration daemon context and catalogues what the OpenLineage events describe: jobs become processes, datasets become data assets (with their schemas), and the inputs and outputs of each run are linked to the process with lineage relationships (DataFlow, plus LineageMapping for column-level lineage and ControlFlow/ProcessHierarchy for job dependencies and parent jobs).  It always keeps run metrics (counts, timings, data volumes) in the `RunMetrics` classification of the processes.  Optionally it also catalogues each run as an element, captures the statistics and data quality results carried in the events as annotations in a survey report, and maintains the DataScope classification on the data assets written by the runs.  The mapping, and an assessment of what is better derived from a historical log store, is described in [docs/open-lineage-cataloguing.md](docs/open-lineage-cataloguing.md).
+
+The beans used to parse the events (in the Open Integration Framework) follow OpenLineage spec 2-0-2 and the current versions of all the standard facets; custom facets are retained as generic facets.
 
 ![Figure 2](docs/open-lineage-cataloguer-integration-connector.svg)
 > **Figure 2:** Operation of the Open Lineage cataloguer integration connector
@@ -109,10 +111,32 @@ This is its connection definition to use on the [administration commands that co
                     {
                         "class" : "ConnectorType",
                         "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationProvider"
+                    },
+                    "configurationProperties" :
+                    {
+                        "catalogRuns" : "false",
+                        "catalogSchemas" : "true",
+                        "captureStatistics" : "true",
+                        "captureDataQuality" : "true",
+                        "updateDataScope" : "true"
                     }
                 }
 }
 ```
+
+The configuration properties are all optional booleans.  All default to `true` except `catalogRuns`, which defaults to `false`:
+
+| Property | Controls |
+|----------|----------|
+| `catalogRuns` | A `TransientEmbeddedProcess` per run, owned by the job's process (default `false`). |
+| `catalogSchemas` | A `TabularSchemaType` and `TabularColumn`s from the schema facet (needed for column-level lineage). |
+| `captureStatistics` | `ResourceProfileAnnotation`s from the inputStatistics, outputStatistics and dataQualityMetrics facets. |
+| `captureDataQuality` | `QualityAnnotation`s from the dataQualityAssertions and test facets. |
+| `updateDataScope` | The `DataScope` classification on the data assets read and written by each run. |
+
+Switch the last three off for high-frequency jobs and derive the equivalent metadata from a log store instead (see the design note).
+
+A dataset reported with a `lifecycleStateChange` of `RENAME` has its asset's names updated in place; one reported with `DROP` has its asset archived or deleted according to the connector's configured delete method.
 
 ## Governance Action Open Lineage Integration Connector
 

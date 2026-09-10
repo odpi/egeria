@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,8 +14,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the data quality assertions facet in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the dataQualityAssertions input dataset facet.  It captures the results of data quality assertions evaluated against the input dataset.
+ * It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-1-0/DataQualityAssertionsDatasetFacet.json#/$defs/DataQualityAssertionsDatasetFacet.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -29,13 +30,14 @@ public class OpenLineageDataQualityAssertionsInputDataSetFacet extends OpenLinea
      */
     public OpenLineageDataQualityAssertionsInputDataSetFacet()
     {
+        super(URI.create("https://openlineage.io/spec/facets/1-1-0/DataQualityAssertionsDatasetFacet.json#/$defs/DataQualityAssertionsDatasetFacet"));
     }
 
 
     /**
-     * Return the list of assertions that the data set has been tested against.
+     * Return the assertions and their results.
      *
-     * @return list of assertions
+     * @return list
      */
     public List<OpenLineageDataQualityAssertionsInputDataSetFacetAssertions> getAssertions()
     {
@@ -44,9 +46,9 @@ public class OpenLineageDataQualityAssertionsInputDataSetFacet extends OpenLinea
 
 
     /**
-     * Set up the list of assertions that the data set has been tested against.
+     * Set up the assertions and their results.
      *
-     * @param assertions list of assertions
+     * @param assertions list
      */
     public void setAssertions(List<OpenLineageDataQualityAssertionsInputDataSetFacetAssertions> assertions)
     {

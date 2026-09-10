@@ -7,6 +7,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
@@ -233,6 +235,30 @@ public class IntegrationContext extends ConnectorContextBase
     public void publishOpenLineageRunEvent(OpenLineageRunEvent event)
     {
         openLineageListenerManager.publishOpenLineageRunEvent(event);
+    }
+
+
+    /**
+     * Called each time an open lineage job event is published to the integration daemon as a bean.  The event is
+     * delivered to each of the registered listeners.
+     *
+     * @param event bean for the event
+     */
+    public void publishOpenLineageJobEvent(OpenLineageJobEvent event)
+    {
+        openLineageListenerManager.publishOpenLineageJobEvent(event);
+    }
+
+
+    /**
+     * Called each time an open lineage dataset event is published to the integration daemon as a bean.  The event is
+     * delivered to each of the registered listeners.
+     *
+     * @param event bean for the event
+     */
+    public void publishOpenLineageDataSetEvent(OpenLineageDataSetEvent event)
+    {
+        openLineageListenerManager.publishOpenLineageDataSetEvent(event);
     }
 
 

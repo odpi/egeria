@@ -1,0 +1,8 @@
+{
+  "eventTime": "2026-09-08T14:00:00Z",
+  "producer": "https://example.com/producer",
+  "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/JobEvent",
+  "job": { "namespace": "airflow://prod", "name": "orders_etl.count_orders", "facets": { "documentation": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-1-0/DocumentationJobFacet.json#/$defs/DocumentationJobFacet", "description": "Counts the orders" } } },
+  "inputs": [ { "namespace": "postgres://db.example.com:5432", "name": "sales.public.orders" } ],
+  "outputs": [ { "namespace": "postgres://db.example.com:5432", "name": "sales.public.order_counts" } ]
+}

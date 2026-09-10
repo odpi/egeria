@@ -2,10 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.integration.openlineage;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -130,6 +133,7 @@ public class OpenLineageInputDataSet
      *
      * @return custom facet map (map from string to object)
      */
+    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties()
     {
         return additionalProperties;
@@ -144,6 +148,25 @@ public class OpenLineageInputDataSet
     public void setAdditionalProperties(Map<String, Object> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
+    }
+
+
+    /**
+     * Add a property that is not modelled by the bean.  Jackson calls this for each unrecognized property found in the JSON.
+     *
+     * @param propertyName name of the property
+     * @param propertyValue value of the property
+     */
+    @JsonAnySetter
+    public void setAdditionalProperty(String propertyName,
+                                      Object propertyValue)
+    {
+        if (additionalProperties == null)
+        {
+            additionalProperties = new LinkedHashMap<>();
+        }
+
+        additionalProperties.put(propertyName, propertyValue);
     }
 
 

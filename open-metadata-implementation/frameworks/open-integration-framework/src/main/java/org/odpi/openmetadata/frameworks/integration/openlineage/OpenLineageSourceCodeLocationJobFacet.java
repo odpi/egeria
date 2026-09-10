@@ -13,9 +13,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the content of an open lineage source code location job facet as defined in JSON
- * spec https://openlineage.io/spec/facets/1-0-0/SourceCodeLocationJobFacet.json#/$defs/SourceCodeLocationJobFacet.
- * It is used internally in Egeria to pass this information to the integration daemon's integration connectors.
+ * This class represents the sourceCodeLocation job facet.  It identifies where the source code for the job is held in source control.
+ * It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-1-0/SourceCodeLocationJobFacet.json#/$defs/SourceCodeLocationJobFacet.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -29,20 +28,22 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
     private String version = null;
     private String tag = null;
     private String branch = null;
+    private String pullRequestNumber = null;
+
 
     /**
      * Default constructor
      */
     public OpenLineageSourceCodeLocationJobFacet()
     {
-        super(URI.create("https://openlineage.io/spec/facets/1-0-0/SourceCodeLocationJobFacet.json#/$defs/SourceCodeLocationJobFacet"));
+        super(URI.create("https://openlineage.io/spec/facets/1-1-0/SourceCodeLocationJobFacet.json#/$defs/SourceCodeLocationJobFacet"));
     }
 
 
     /**
-     * Return the type of source code control system.
+     * Return the source control system, for example git or svn.
      *
-     * @return string name
+     * @return string
      */
     public String getType()
     {
@@ -51,9 +52,9 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
 
 
     /**
-     * Set up the type of source code control system.
+     * Set up the source control system, for example git or svn.
      *
-     * @param type string name
+     * @param type string
      */
     public void setType(String type)
     {
@@ -64,7 +65,7 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
     /**
      * Return the full http URL to locate the file.
      *
-     * @return url
+     * @return uri
      */
     public URI getUrl()
     {
@@ -75,7 +76,7 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
     /**
      * Set up the full http URL to locate the file.
      *
-     * @param url url
+     * @param url uri
      */
     public void setUrl(URI url)
     {
@@ -86,7 +87,7 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
     /**
      * Return the URL to the repository.
      *
-     * @return url
+     * @return string
      */
     public String getRepoUrl()
     {
@@ -97,7 +98,7 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
     /**
      * Set up the URL to the repository.
      *
-     * @param repoUrl url
+     * @param repoUrl string
      */
     public void setRepoUrl(String repoUrl)
     {
@@ -106,9 +107,9 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
 
 
     /**
-     * Return the path in the repo containing the source files.
+     * Return the path in the repository containing the source files.
      *
-     * @return name
+     * @return string
      */
     public String getPath()
     {
@@ -117,9 +118,9 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
 
 
     /**
-     * Set up the path in the repo containing the source files.
+     * Set up the path in the repository containing the source files.
      *
-     * @param path name
+     * @param path string
      */
     public void setPath(String path)
     {
@@ -130,7 +131,7 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
     /**
      * Return the current version deployed (not a branch name, the actual unique version).
      *
-     * @return version number
+     * @return string
      */
     public String getVersion()
     {
@@ -141,7 +142,7 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
     /**
      * Set up the current version deployed (not a branch name, the actual unique version).
      *
-     * @param version version number
+     * @param version string
      */
     public void setVersion(String version)
     {
@@ -152,7 +153,7 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
     /**
      * Return the optional tag name.
      *
-     * @return name
+     * @return string
      */
     public String getTag()
     {
@@ -163,7 +164,7 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
     /**
      * Set up the optional tag name.
      *
-     * @param tag name
+     * @param tag string
      */
     public void setTag(String tag)
     {
@@ -174,7 +175,7 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
     /**
      * Return the optional branch name.
      *
-     * @return name
+     * @return string
      */
     public String getBranch()
     {
@@ -185,11 +186,33 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
     /**
      * Set up the optional branch name.
      *
-     * @param branch name
+     * @param branch string
      */
     public void setBranch(String branch)
     {
         this.branch = branch;
+    }
+
+
+    /**
+     * Return the optional pull request or merge request number associated with a CI run.
+     *
+     * @return string
+     */
+    public String getPullRequestNumber()
+    {
+        return pullRequestNumber;
+    }
+
+
+    /**
+     * Set up the optional pull request or merge request number associated with a CI run.
+     *
+     * @param pullRequestNumber string
+     */
+    public void setPullRequestNumber(String pullRequestNumber)
+    {
+        this.pullRequestNumber = pullRequestNumber;
     }
 
 
@@ -209,8 +232,10 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
                        ", version='" + version + '\'' +
                        ", tag='" + tag + '\'' +
                        ", branch='" + branch + '\'' +
+                       ", pullRequestNumber='" + pullRequestNumber + '\'' +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
+                       ", _deleted=" + get_deleted() +
                        ", additionalProperties=" + getAdditionalProperties() +
                        '}';
     }
@@ -244,7 +269,8 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
                        Objects.equals(path, that.path) &&
                        Objects.equals(version, that.version) &&
                        Objects.equals(tag, that.tag) &&
-                       Objects.equals(branch, that.branch);
+                       Objects.equals(branch, that.branch) &&
+                       Objects.equals(pullRequestNumber, that.pullRequestNumber);
     }
 
 
@@ -256,6 +282,6 @@ public class OpenLineageSourceCodeLocationJobFacet extends OpenLineageJobFacet
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), type, url, repoUrl, path, version, tag, branch);
+        return Objects.hash(super.hashCode(), type, url, repoUrl, path, version, tag, branch, pullRequestNumber);
     }
 }

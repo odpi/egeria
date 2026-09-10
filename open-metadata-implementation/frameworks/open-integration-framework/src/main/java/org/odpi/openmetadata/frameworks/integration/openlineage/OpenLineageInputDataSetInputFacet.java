@@ -7,14 +7,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.net.URI;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for facets relating to an input data set in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents an input dataset facet (a facet describing the data read from a dataset by a particular run) from the OpenLineage standard spec
+ * https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/InputDatasetFacet.  It is the superclass of the standard
+ * facets of this kind, and is also used directly to hold custom facets (or standard facets that are not yet modelled)
+ * whose properties are then found in additionalProperties.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,14 +27,14 @@ public class OpenLineageInputDataSetInputFacet extends OpenLineageFacet
      */
     public OpenLineageInputDataSetInputFacet()
     {
-        super (URI.create("https://openlineage.io/spec/1-0-2/OpenLineage.json#/$defs/InputDatasetFacet"));
+        super(URI.create("https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/InputDatasetFacet"));
     }
 
 
     /**
-     * Subclass constructor
+     * Constructor for subclasses that sets up the schema URL for the facet.
      *
-     * @param schemaURL default value for schemaURL
+     * @param schemaURL URL of the JSON schema that describes this facet
      */
     public OpenLineageInputDataSetInputFacet(URI schemaURL)
     {

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.net.URI;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -14,14 +14,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the UUID of the parent job.
+ * This class represents the identity of a parent (or root) run referenced from the parent run facet.
+ * It is part of the OpenLineage spec.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenLineageParentRunFacetRun
 {
-    private UUID runId = null;
+    private UUID                runId = null;
+    private Map<String, Object> facets = null;
+
 
     /**
      * Default constructor
@@ -32,7 +35,7 @@ public class OpenLineageParentRunFacetRun
 
 
     /**
-     * Return the unique identifier of the parent job run.
+     * Return the globally unique ID of the run.
      *
      * @return uuid
      */
@@ -43,13 +46,35 @@ public class OpenLineageParentRunFacetRun
 
 
     /**
-     * Set up the unique identifier of the parent job run.
+     * Set up the globally unique ID of the run.
      *
      * @param runId uuid
      */
     public void setRunId(UUID runId)
     {
         this.runId = runId;
+    }
+
+
+    /**
+     * Return the selected subset of facets of the run, forwarded here for convenience.
+     *
+     * @return map
+     */
+    public Map<String, Object> getFacets()
+    {
+        return facets;
+    }
+
+
+    /**
+     * Set up the selected subset of facets of the run, forwarded here for convenience.
+     *
+     * @param facets map
+     */
+    public void setFacets(Map<String, Object> facets)
+    {
+        this.facets = facets;
     }
 
 
@@ -63,6 +88,7 @@ public class OpenLineageParentRunFacetRun
     {
         return "OpenLineageParentRunFacetRun{" +
                        "runId=" + runId +
+                       ", facets=" + facets +
                        '}';
     }
 
@@ -85,7 +111,8 @@ public class OpenLineageParentRunFacetRun
             return false;
         }
         OpenLineageParentRunFacetRun that = (OpenLineageParentRunFacetRun) objectToCompare;
-        return Objects.equals(runId, that.runId);
+        return Objects.equals(runId, that.runId) &&
+                       Objects.equals(facets, that.facets);
     }
 
 
@@ -97,6 +124,6 @@ public class OpenLineageParentRunFacetRun
     @Override
     public int hashCode()
     {
-        return Objects.hash(runId);
+        return Objects.hash(runId, facets);
     }
 }

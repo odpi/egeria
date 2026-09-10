@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -23,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class OpenLineageRunEvent
 {
     private URI                            producer;
-    private URI                            schemaURL = URI.create("https://openlineage.io/spec/1-0-2/OpenLineage.json#/$defs/RunEvent");
+    private URI                            schemaURL = URI.create("https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunEvent");
     private String                         eventType;
     private String                         eventTime;
     private OpenLineageRun                 run;
@@ -214,5 +215,67 @@ public class OpenLineageRunEvent
     public void setOutputs(List<OpenLineageOutputDataSet> outputs)
     {
         this.outputs = outputs;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
+    @Override
+    public String toString()
+    {
+        return "OpenLineageRunEvent{" +
+                       "producer=" + producer +
+                       ", schemaURL=" + schemaURL +
+                       ", eventType='" + eventType + '\'' +
+                       ", eventTime='" + eventTime + '\'' +
+                       ", run=" + run +
+                       ", job=" + job +
+                       ", inputs=" + inputs +
+                       ", outputs=" + outputs +
+                       '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        OpenLineageRunEvent that = (OpenLineageRunEvent) objectToCompare;
+        return Objects.equals(producer, that.producer) &&
+                       Objects.equals(schemaURL, that.schemaURL) &&
+                       Objects.equals(eventType, that.eventType) &&
+                       Objects.equals(eventTime, that.eventTime) &&
+                       Objects.equals(run, that.run) &&
+                       Objects.equals(job, that.job) &&
+                       Objects.equals(inputs, that.inputs) &&
+                       Objects.equals(outputs, that.outputs);
+    }
+
+
+    /**
+     * Return hash code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(producer, schemaURL, eventType, eventTime, run, job, inputs, outputs);
     }
 }

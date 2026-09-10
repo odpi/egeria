@@ -1,0 +1,240 @@
+{
+  "eventTime": "2026-09-08T14:00:00.123Z",
+  "eventType": "COMPLETE",
+  "producer": "https://github.com/OpenLineage/OpenLineage/tree/1.53.0/integration/airflow",
+  "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunEvent",
+  "run": {
+    "runId": "d46e465b-d358-4d32-83d4-df660ff614dd",
+    "facets": {
+      "parent": {
+        "_producer": "https://github.com/OpenLineage/OpenLineage/tree/1.53.0/integration/airflow",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-2-0/ParentRunFacet.json#/$defs/ParentRunFacet",
+        "run": { "runId": "f99310b4-3c3c-1a1a-2b2b-c1c1c1c1c1c1", "facets": { "nominalTime": { "nominalStartTime": "2026-09-08T13:00:00Z" } } },
+        "job": { "namespace": "airflow://prod", "name": "orders_etl", "facets": { "documentation": { "description": "The DAG" } } },
+        "root": {
+          "run": { "runId": "a1a1a1a1-b2b2-c3c3-d4d4-e5e5e5e5e5e5" },
+          "job": { "namespace": "airflow://prod", "name": "orders_etl" }
+        }
+      },
+      "nominalTime": {
+        "_producer": "https://github.com/OpenLineage/OpenLineage/tree/1.53.0/integration/airflow",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet",
+        "nominalStartTime": "2026-09-08T13:00:00Z",
+        "nominalEndTime": "2026-09-08T14:00:00Z"
+      },
+      "environmentVariables": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/EnvironmentVariablesRunFacet.json#/$defs/EnvironmentVariablesRunFacet",
+        "environmentVariables": [ { "name": "AIRFLOW_ENV", "value": "prod" }, { "name": "REGION", "value": "eu-west-1" } ]
+      },
+      "errorMessage": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/ErrorMessageRunFacet.json#/$defs/ErrorMessageRunFacet",
+        "message": "Boom",
+        "programmingLanguage": "python",
+        "stackTrace": "Traceback..."
+      },
+      "executionParameters": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/ExecutionParametersRunFacet.json#/$defs/ExecutionParametersRunFacet",
+        "parameters": [ { "key": "batch_date", "name": "Batch date", "description": "Date to process", "value": "2026-09-08" } ]
+      },
+      "externalQuery": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-2/ExternalQueryRunFacet.json#/$defs/ExternalQueryRunFacet",
+        "externalQueryId": "01b7c2d3-aaaa-bbbb-cccc-000000000001",
+        "source": "snowflake"
+      },
+      "extractionError": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-1-2/ExtractionErrorRunFacet.json#/$defs/ExtractionErrorRunFacet",
+        "totalTasks": 3,
+        "failedTasks": 1,
+        "errors": [ { "errorMessage": "cannot parse", "stackTrace": "at ...", "task": "SELECT * FROM x", "taskNumber": 2 } ]
+      },
+      "jobDependencies": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/JobDependenciesRunFacet.json#/$defs/JobDependenciesRunFacet",
+        "upstream": [ { "job": { "namespace": "airflow://prod", "name": "orders_etl.extract" }, "run": { "runId": "11111111-2222-3333-4444-555555555555" }, "dependency_type": "TRIGGER", "sequence_trigger_rule": "FINISH_TO_START", "status_trigger_rule": "ALL_SUCCESS" } ],
+        "downstream": [ { "job": { "namespace": "airflow://prod", "name": "orders_etl.report" } } ],
+        "trigger_rule": "all_success"
+      },
+      "processing_engine": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-1-1/ProcessingEngineRunFacet.json#/$defs/ProcessingEngineRunFacet",
+        "version": "2.10.1",
+        "name": "Airflow",
+        "openlineageAdapterVersion": "1.53.0"
+      },
+      "tags": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/TagsRunFacet.json#/$defs/TagsRunFacet",
+        "tags": [ { "key": "environment", "value": "production", "source": "AIRFLOW" } ]
+      },
+      "test": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/TestRunFacet.json#/$defs/TestRunFacet",
+        "tests": [ { "name": "not_null_orders_id", "status": "pass", "severity": "error", "type": "not_null", "description": "id is never null", "expected": "0", "actual": "0", "content": "select count(*) from orders where id is null", "contentType": "text/x-sql", "params": { "column": "id" } } ]
+      },
+      "gcp_composer_run": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/GcpComposerRunFacet.json#/$defs/GcpComposerRunFacet",
+        "dagRunId": "manual__2026-09-08T13:00:00+00:00"
+      },
+      "gcp_dataproc": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/GcpDataprocRunFacet.json#/$defs/GcpDataprocRunFacet",
+        "appId": "application_1", "appName": "orders", "projectId": "my-project", "clusterName": "cluster-1", "jobType": "job"
+      },
+      "airflow": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://example.com/airflow-facet.json",
+        "dag": { "dag_id": "orders_etl" },
+        "taskInstance": { "try_number": 1 }
+      }
+    }
+  },
+  "job": {
+    "namespace": "airflow://prod",
+    "name": "orders_etl.count_orders",
+    "facets": {
+      "documentation": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-1-0/DocumentationJobFacet.json#/$defs/DocumentationJobFacet",
+        "description": "Counts the orders",
+        "contentType": "text/markdown"
+      },
+      "sql": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-1-0/SQLJobFacet.json#/$defs/SQLJobFacet",
+        "query": "INSERT INTO order_counts SELECT count(*) FROM orders",
+        "dialect": "postgres"
+      },
+      "sourceCodeLocation": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-1-0/SourceCodeLocationJobFacet.json#/$defs/SourceCodeLocationJobFacet",
+        "type": "git",
+        "url": "https://github.com/example/pipelines/blob/abc123/dags/orders_etl.py",
+        "repoUrl": "https://github.com/example/pipelines",
+        "path": "dags/orders_etl.py",
+        "version": "abc123",
+        "tag": "v1.2.3",
+        "branch": "main",
+        "pullRequestNumber": "42"
+      },
+      "sourceCode": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/SourceCodeJobFacet.json#/$defs/SourceCodeJobFacet",
+        "language": "python",
+        "sourceCode": "def count(): pass"
+      },
+      "jobType": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/2-0-4/JobTypeJobFacet.json#/$defs/JobTypeJobFacet",
+        "processingType": "BATCH",
+        "integration": "AIRFLOW",
+        "jobType": "TASK",
+        "emissionPattern": { "eventTrigger": "TASK", "eventContentMode": "CUMULATIVE", "windowDuration": 60 }
+      },
+      "ownership": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/OwnershipJobFacet.json#/$defs/OwnershipJobFacet",
+        "owners": [ { "name": "team:data-platform", "type": "MAINTAINER" } ]
+      },
+      "tags": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/TagsJobFacet.json#/$defs/TagsJobFacet",
+        "tags": [ { "key": "domain", "value": "sales", "source": "USER" } ]
+      },
+      "gcp_composer_job": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/GcpComposerJobFacet.json#/$defs/GcpComposerJobFacet",
+        "environmentName": "prod-composer", "dagId": "orders_etl", "operator": "PythonOperator", "taskId": "count_orders", "airflowVersion": "2.10.1+composer", "composerVersion": "3.0.1"
+      },
+      "gcp_lineage": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/GcpLineageJobFacet.json#/$defs/GcpLineageJobFacet",
+        "displayName": "Count orders", "origin": { "sourceType": "COMPOSER", "name": "prod-composer" }
+      },
+      "lineage": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/LineageFacet.json#/$defs/LineageJobFacet",
+        "entries": [
+          { "type": "DATASET", "namespace": "postgres://db.example.com:5432", "name": "sales.public.order_counts",
+            "inputs": [ { "type": "DATASET", "namespace": "postgres://db.example.com:5432", "name": "sales.public.orders", "transformations": [ { "type": "INDIRECT", "subtype": "AGGREGATION", "description": "count", "masking": false } ] } ],
+            "fields": { "order_count": { "inputs": [ { "type": "DATASET", "namespace": "postgres://db.example.com:5432", "name": "sales.public.orders", "field": "id" } ] } } },
+          { "type": "JOB", "runId": "d46e465b-d358-4d32-83d4-df660ff614dd", "inputs": [ { "type": "JOB", "namespace": "airflow://prod", "name": "orders_etl.extract" } ] }
+        ]
+      }
+    }
+  },
+  "inputs": [
+    {
+      "namespace": "postgres://db.example.com:5432",
+      "name": "sales.public.orders",
+      "facets": {
+        "documentation": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-1-0/DocumentationDatasetFacet.json#/$defs/DocumentationDatasetFacet", "description": "Orders table", "contentType": "text/plain" },
+        "dataSource": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/DatasourceDatasetFacet.json#/$defs/DatasourceDatasetFacet", "name": "postgres://db.example.com:5432", "uri": "postgres://db.example.com:5432/sales" },
+        "schema": {
+          "_producer": "https://example.com/producer",
+          "_schemaURL": "https://openlineage.io/spec/facets/1-2-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet",
+          "fields": [
+            { "name": "id", "type": "INTEGER", "description": "Order id", "ordinal_position": 1 },
+            { "name": "customer", "type": "STRUCT", "ordinal_position": 2, "fields": [ { "name": "name", "type": "VARCHAR", "ordinal_position": 1 }, { "name": "email", "type": "VARCHAR", "ordinal_position": 2 } ] }
+          ]
+        },
+        "catalog": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-1-0/CatalogDatasetFacet.json#/$defs/CatalogDatasetFacet", "framework": "iceberg", "type": "rest", "name": "lakehouse", "metadataUri": "https://catalog.example.com", "warehouseUri": "s3://warehouse", "source": "spark", "catalogProperties": { "region": "eu-west-1" } },
+        "datasetType": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/DatasetTypeDatasetFacet.json#/$defs/DatasetTypeDatasetFacet", "datasetType": "TABLE", "subType": "EXTERNAL" },
+        "version": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/DatasetVersionDatasetFacet.json#/$defs/DatasetVersionDatasetFacet", "datasetVersion": "7" },
+        "ownership": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/OwnershipDatasetFacet.json#/$defs/OwnershipDatasetFacet", "owners": [ { "name": "user:jdoe", "type": "OWNER" } ] },
+        "storage": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/StorageDatasetFacet.json#/$defs/StorageDatasetFacet", "storageLayer": "iceberg", "fileFormat": "parquet" },
+        "symlinks": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/SymlinksDatasetFacet.json#/$defs/SymlinksDatasetFacet", "identifiers": [ { "namespace": "s3://warehouse", "name": "sales/orders", "type": "LOCATION" } ] },
+        "tags": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/TagsDatasetFacet.json#/$defs/TagsDatasetFacet", "tags": [ { "key": "pii", "value": "true", "source": "USER", "field": "customer.email" } ] },
+        "hierarchy": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/HierarchyDatasetFacet.json#/$defs/HierarchyDatasetFacet", "hierarchy": [ { "type": "DATABASE", "name": "sales" }, { "type": "SCHEMA", "name": "public" }, { "type": "TABLE", "name": "orders" } ] },
+        "dataQualityMetrics": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/DataQualityMetricsDatasetFacet.json#/$defs/DataQualityMetricsDatasetFacet", "rowCount": 1000000, "bytes": 123456789, "fileCount": 12, "lastUpdated": "2026-09-08T12:00:00Z", "columnMetrics": { "id": { "nullCount": 0, "distinctCount": 1000000, "min": 1.0, "max": 1000000.0 } } },
+        "customDatasetFacet": { "_producer": "https://example.com/producer", "_schemaURL": "https://example.com/custom.json", "anything": [ 1, 2, 3 ] }
+      },
+      "inputFacets": {
+        "dataQualityAssertions": {
+          "_producer": "https://example.com/producer",
+          "_schemaURL": "https://openlineage.io/spec/facets/1-1-0/DataQualityAssertionsDatasetFacet.json#/$defs/DataQualityAssertionsDatasetFacet",
+          "assertions": [
+            { "assertion": "not_null", "success": true, "column": "id", "severity": "error", "name": "id_not_null", "description": "id must be set", "expected": "0", "actual": "0", "content": "select count(*) from orders where id is null", "contentType": "text/x-sql", "params": { "threshold": 0 } },
+            { "assertion": "row_count_gt", "success": false }
+          ]
+        },
+        "dataQualityMetrics": {
+          "_producer": "https://example.com/producer",
+          "_schemaURL": "https://openlineage.io/spec/facets/1-0-3/DataQualityMetricsInputDatasetFacet.json#/$defs/DataQualityMetricsInputDatasetFacet",
+          "rowCount": 500, "bytes": 65536, "fileCount": 1, "lastUpdated": "2026-09-08T12:00:00Z",
+          "columnMetrics": { "id": { "nullCount": 0, "distinctCount": 500, "sum": 125250.0, "count": 500.0, "min": 1.0, "max": 500.0, "quantiles": { "0.5": 250.5, "0.9": 450.0 } } }
+        },
+        "inputStatistics": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/InputStatisticsInputDatasetFacet.json#/$defs/InputStatisticsInputDatasetFacet", "rowCount": 500, "size": 65536, "fileCount": 1 },
+        "subset": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/BaseSubsetDatasetFacet.json#/$defs/InputSubsetInputDatasetFacet", "inputCondition": { "type": "partition", "partitions": [ { "identifier": "dt=2026-09-08", "dimensions": { "dt": "2026-09-08" } } ] } },
+        "icebergScanReport": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/IcebergScanReportInputDatasetFacet.json#/$defs/IcebergScanReportInputDatasetFacet", "snapshotId": 7791, "filterDescription": "status = 'OPEN'", "schemaId": 2, "projectedFieldNames": [ "id", "status" ], "scanMetrics": { "totalPlanningDuration": 12.5, "resultDataFiles": 3.0, "skippedDataFiles": 9.0 }, "metadata": { "engine": "spark" } }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "namespace": "postgres://db.example.com:5432",
+      "name": "sales.public.order_counts",
+      "facets": {
+        "schema": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-2-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet", "fields": [ { "name": "order_count", "type": "BIGINT" } ] },
+        "columnLineage": {
+          "_producer": "https://example.com/producer",
+          "_schemaURL": "https://openlineage.io/spec/facets/1-2-0/ColumnLineageDatasetFacet.json#/$defs/ColumnLineageDatasetFacet",
+          "fields": { "order_count": { "inputFields": [ { "namespace": "postgres://db.example.com:5432", "name": "sales.public.orders", "field": "id", "transformations": [ { "type": "INDIRECT", "subtype": "AGGREGATION", "description": "count(id)", "masking": false } ] } ], "transformationDescription": "count", "transformationType": "IDENTITY" } },
+          "dataset": [ { "namespace": "postgres://db.example.com:5432", "name": "sales.public.orders", "field": "status", "transformations": [ { "type": "INDIRECT", "subtype": "FILTER" } ] } ]
+        },
+        "lifecycleStateChange": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/LifecycleStateChangeDatasetFacet.json#/$defs/LifecycleStateChangeDatasetFacet", "lifecycleStateChange": "RENAME", "previousIdentifier": { "namespace": "postgres://db.example.com:5432", "name": "sales.public.order_count" } },
+        "lineage": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/LineageFacet.json#/$defs/LineageDatasetFacet", "inputs": [ { "type": "DATASET", "namespace": "postgres://db.example.com:5432", "name": "sales.public.orders" } ], "fields": { "order_count": { "inputs": [ { "type": "DATASET", "namespace": "postgres://db.example.com:5432", "name": "sales.public.orders", "field": "id", "transformations": [ { "type": "INDIRECT", "subtype": "AGGREGATION" } ] } ] } } }
+      },
+      "outputFacets": {
+        "outputStatistics": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-2/OutputStatisticsOutputDatasetFacet.json#/$defs/OutputStatisticsOutputDatasetFacet", "rowCount": 1, "size": 8, "fileCount": 1 },
+        "subset": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/BaseSubsetDatasetFacet.json#/$defs/OutputSubsetOutputDatasetFacet", "outputCondition": { "type": "location", "locations": [ "s3://warehouse/order_counts/dt=2026-09-08" ] } },
+        "icebergCommitReport": { "_producer": "https://example.com/producer", "_schemaURL": "https://openlineage.io/spec/facets/1-0-2/IcebergCommitReportOutputDatasetFacet.json#/$defs/IcebergCommitReportOutputDatasetFacet", "snapshotId": 7792, "sequenceNumber": 15, "operation": "append", "commitMetrics": { "totalDuration": 340.0, "attempts": 1.0, "addedDataFiles": 1.0, "addedRecords": 1.0, "totalRecords": 1500.0 } }
+      }
+    }
+  ]
+}

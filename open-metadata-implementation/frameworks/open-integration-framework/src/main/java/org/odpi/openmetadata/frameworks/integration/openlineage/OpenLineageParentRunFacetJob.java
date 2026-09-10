@@ -13,16 +13,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the content of the parent open lineage job.  It is used internally in Egeria to pass this information
- * to the integration daemon's integration connectors.
+ * This class represents the identity of a parent (or root) job referenced from the parent run facet.
+ * It is part of the OpenLineage spec.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenLineageParentRunFacetJob
 {
-    private String               namespace;
-    private String               name;
+    private String              namespace = null;
+    private String              name = null;
+    private Map<String, Object> facets = null;
 
 
     /**
@@ -34,9 +35,9 @@ public class OpenLineageParentRunFacetJob
 
 
     /**
-     * Return the namespace for the job.
+     * Return the namespace containing the job.
      *
-     * @return string name
+     * @return string
      */
     public String getNamespace()
     {
@@ -45,9 +46,9 @@ public class OpenLineageParentRunFacetJob
 
 
     /**
-     * Set up the namespace for the job.
+     * Set up the namespace containing the job.
      *
-     * @param namespace string name
+     * @param namespace string
      */
     public void setNamespace(String namespace)
     {
@@ -56,9 +57,9 @@ public class OpenLineageParentRunFacetJob
 
 
     /**
-     * Return the name of the job.
+     * Return the unique name for the job within that namespace.
      *
-     * @return string name
+     * @return string
      */
     public String getName()
     {
@@ -67,13 +68,35 @@ public class OpenLineageParentRunFacetJob
 
 
     /**
-     * Set up the name of the job.
+     * Set up the unique name for the job within that namespace.
      *
-     * @param name string name
+     * @param name string
      */
     public void setName(String name)
     {
         this.name = name;
+    }
+
+
+    /**
+     * Return the selected subset of facets of the job, forwarded here for convenience.
+     *
+     * @return map
+     */
+    public Map<String, Object> getFacets()
+    {
+        return facets;
+    }
+
+
+    /**
+     * Set up the selected subset of facets of the job, forwarded here for convenience.
+     *
+     * @param facets map
+     */
+    public void setFacets(Map<String, Object> facets)
+    {
+        this.facets = facets;
     }
 
 
@@ -88,6 +111,7 @@ public class OpenLineageParentRunFacetJob
         return "OpenLineageParentRunFacetJob{" +
                        "namespace='" + namespace + '\'' +
                        ", name='" + name + '\'' +
+                       ", facets=" + facets +
                        '}';
     }
 
@@ -111,7 +135,8 @@ public class OpenLineageParentRunFacetJob
         }
         OpenLineageParentRunFacetJob that = (OpenLineageParentRunFacetJob) objectToCompare;
         return Objects.equals(namespace, that.namespace) &&
-                       Objects.equals(name, that.name);
+                       Objects.equals(name, that.name) &&
+                       Objects.equals(facets, that.facets);
     }
 
 
@@ -123,6 +148,6 @@ public class OpenLineageParentRunFacetJob
     @Override
     public int hashCode()
     {
-        return Objects.hash(namespace, name);
+        return Objects.hash(namespace, name, facets);
     }
 }

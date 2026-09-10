@@ -6,33 +6,34 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the map of data quality quartiles in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the data quality metrics for a single column of a dataset.
+ * It is part of the OpenLineage spec.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditional
+public class OpenLineageDataQualityMetricsColumnMetrics
 {
-    private long                                                                           nullCount;
-    private long                                                                           distinctCount;
-    private double                                                                         sum;
-    private double                                                                         count;
-    private double                                                                         min;
-    private double                                                                         max;
-    private OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles quantiles;
+    private Long                nullCount = null;
+    private Long                distinctCount = null;
+    private Double              sum = null;
+    private Double              count = null;
+    private Double              min = null;
+    private Double              max = null;
+    private Map<String, Double> quantiles = null;
 
 
     /**
      * Default constructor
      */
-    public OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditional()
+    public OpenLineageDataQualityMetricsColumnMetrics()
     {
     }
 
@@ -42,7 +43,7 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
      *
      * @return long
      */
-    public long getNullCount()
+    public Long getNullCount()
     {
         return nullCount;
     }
@@ -53,7 +54,7 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
      *
      * @param nullCount long
      */
-    public void setNullCount(long nullCount)
+    public void setNullCount(Long nullCount)
     {
         this.nullCount = nullCount;
     }
@@ -64,7 +65,7 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
      *
      * @return long
      */
-    public long getDistinctCount()
+    public Long getDistinctCount()
     {
         return distinctCount;
     }
@@ -75,7 +76,7 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
      *
      * @param distinctCount long
      */
-    public void setDistinctCount(long distinctCount)
+    public void setDistinctCount(Long distinctCount)
     {
         this.distinctCount = distinctCount;
     }
@@ -86,7 +87,7 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
      *
      * @return double
      */
-    public double getSum()
+    public Double getSum()
     {
         return sum;
     }
@@ -97,7 +98,7 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
      *
      * @param sum double
      */
-    public void setSum(double sum)
+    public void setSum(Double sum)
     {
         this.sum = sum;
     }
@@ -108,7 +109,7 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
      *
      * @return double
      */
-    public double getCount()
+    public Double getCount()
     {
         return count;
     }
@@ -119,7 +120,7 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
      *
      * @param count double
      */
-    public void setCount(double count)
+    public void setCount(Double count)
     {
         this.count = count;
     }
@@ -130,7 +131,7 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
      *
      * @return double
      */
-    public double getMin()
+    public Double getMin()
     {
         return min;
     }
@@ -141,7 +142,7 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
      *
      * @param min double
      */
-    public void setMin(double min)
+    public void setMin(Double min)
     {
         this.min = min;
     }
@@ -152,7 +153,7 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
      *
      * @return double
      */
-    public double getMax()
+    public Double getMax()
     {
         return max;
     }
@@ -163,29 +164,29 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
      *
      * @param max double
      */
-    public void setMax(double max)
+    public void setMax(Double max)
     {
         this.max = max;
     }
 
 
     /**
-     * Return the quantile measurements.
+     * Return the quantiles of the values in this column.  The map key is the quantile, for example 0.1, 0.25, 0.5, 0.75, 1, and the value is the value at that quantile.
      *
-     * @return quantiles
+     * @return map
      */
-    public OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles getQuantiles()
+    public Map<String, Double> getQuantiles()
     {
         return quantiles;
     }
 
 
     /**
-     * Set up the quantile measurements.
+     * Set up the quantiles of the values in this column.  The map key is the quantile, for example 0.1, 0.25, 0.5, 0.75, 1, and the value is the value at that quantile.
      *
-     * @param quantiles quantiles
+     * @param quantiles map
      */
-    public void setQuantiles(OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles quantiles)
+    public void setQuantiles(Map<String, Double> quantiles)
     {
         this.quantiles = quantiles;
     }
@@ -199,7 +200,7 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
     @Override
     public String toString()
     {
-        return "OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditional{" +
+        return "OpenLineageDataQualityMetricsColumnMetrics{" +
                        "nullCount=" + nullCount +
                        ", distinctCount=" + distinctCount +
                        ", sum=" + sum +
@@ -228,14 +229,13 @@ public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAddition
         {
             return false;
         }
-        OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditional that =
-                (OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditional) objectToCompare;
-        return nullCount == that.nullCount &&
-                       distinctCount == that.distinctCount &&
-                       Double.compare(that.sum, sum) == 0 &&
-                       Double.compare(that.count, count) == 0 &&
-                       Double.compare(that.min, min) == 0 &&
-                       Double.compare(that.max, max) == 0 &&
+        OpenLineageDataQualityMetricsColumnMetrics that = (OpenLineageDataQualityMetricsColumnMetrics) objectToCompare;
+        return Objects.equals(nullCount, that.nullCount) &&
+                       Objects.equals(distinctCount, that.distinctCount) &&
+                       Objects.equals(sum, that.sum) &&
+                       Objects.equals(count, that.count) &&
+                       Objects.equals(min, that.min) &&
+                       Objects.equals(max, that.max) &&
                        Objects.equals(quantiles, that.quantiles);
     }
 

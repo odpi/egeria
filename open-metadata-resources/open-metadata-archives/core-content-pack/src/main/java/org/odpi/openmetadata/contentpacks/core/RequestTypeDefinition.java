@@ -15,6 +15,7 @@ import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplemen
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.ManageAssetRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.GovernanceActionTypeDefinition;
+import org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.OpenLineageAnalysisRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
@@ -135,6 +136,60 @@ public enum RequestTypeDefinition
                        "Monitors contributions to the open metadata ecosystem and awards karma points to the users responsible.",
                        ContentCollectionDefinition.ANALYTICAL_ACTIONS,
                        ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
+
+    /**
+     * profile-open-lineage-runs
+     */
+    PROFILE_OPEN_LINEAGE_RUNS(GovernanceActionTypeDefinition.PROFILE_OPEN_LINEAGE_RUNS.getGovernanceRequestType(),
+                       null,
+                       getOpenLineageAnalysisRequestParameters(),
+                       null,
+                       GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                       GovernanceServiceDefinition.OPEN_LINEAGE_RUN_PROFILER,
+                       GovernanceActionTypeDefinition.PROFILE_OPEN_LINEAGE_RUNS.getGovernanceActionTypeGUID(),
+                       GovernanceDomain.DATA.getOrdinal(),
+                       null,
+                       "b56a9a7a-0f9b-482c-bcb1-f09755469cc3",
+                       "Profile OpenLineage Runs",
+                       "Analyses the runs of each job recorded in an OpenLineage log store and records the run profile (frequency, regularity, duration, failure rate and data volume) in the RunMetrics classification of the job's process.",
+                       ContentCollectionDefinition.ANALYTICAL_ACTIONS,
+                       ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
+
+    /**
+     * refine-open-lineage-data-scope
+     */
+    REFINE_OPEN_LINEAGE_DATA_SCOPE(GovernanceActionTypeDefinition.REFINE_OPEN_LINEAGE_DATA_SCOPE.getGovernanceRequestType(),
+                       null,
+                       getOpenLineageAnalysisRequestParameters(),
+                       null,
+                       GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                       GovernanceServiceDefinition.OPEN_LINEAGE_DATA_SCOPE,
+                       GovernanceActionTypeDefinition.REFINE_OPEN_LINEAGE_DATA_SCOPE.getGovernanceActionTypeGUID(),
+                       GovernanceDomain.DATA.getOrdinal(),
+                       null,
+                       "8a098845-c3b0-4646-9ba7-ad3a6268f4b8",
+                       "Refine OpenLineage Data Scope",
+                       "Analyses the writes and reads of each dataset recorded in an OpenLineage log store and refines the DataScope classification of the dataset's asset with the write pattern and data collection window.",
+                       ContentCollectionDefinition.ANALYTICAL_ACTIONS,
+                       ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
+
+    /**
+     * summarise-open-lineage-data-quality
+     */
+    SUMMARISE_OPEN_LINEAGE_DATA_QUALITY(GovernanceActionTypeDefinition.SUMMARISE_OPEN_LINEAGE_DATA_QUALITY.getGovernanceRequestType(),
+                       null,
+                       getOpenLineageAnalysisRequestParameters(),
+                       null,
+                       GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                       GovernanceServiceDefinition.OPEN_LINEAGE_DATA_QUALITY_SUMMARY,
+                       GovernanceActionTypeDefinition.SUMMARISE_OPEN_LINEAGE_DATA_QUALITY.getGovernanceActionTypeGUID(),
+                       GovernanceDomain.DATA.getOrdinal(),
+                       null,
+                       "069fdd08-69d7-4b6d-b734-8b02970af74c",
+                       "Summarise OpenLineage Data Quality",
+                       "Summarises the data quality assertions and tests recorded in an OpenLineage log store into a survey report per dataset (and per job) with the pass rate of each quality dimension.",
+                       ContentCollectionDefinition.ANALYTICAL_ACTIONS,
+                       ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
     /**
      * build-zone-membership-profile
@@ -1956,6 +2011,21 @@ public enum RequestTypeDefinition
     private final boolean                              linkToMetadataServerSolutionComponent;
     private final ContentCollectionDefinition          folder;
     private final ContentPackDefinition                contentPackDefinition;
+
+
+    /**
+     * Set up the default request parameters for the OpenLineage analysis services.
+     *
+     * @return map
+     */
+    static Map<String, String> getOpenLineageAnalysisRequestParameters()
+    {
+        Map<String,String> requestParameters = new HashMap<>();
+
+        requestParameters.put(OpenLineageAnalysisRequestParameter.ANALYSIS_WINDOW_DAYS.getName(), "30");
+
+        return requestParameters;
+    }
 
     /**
      * Set up request parameters.

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.ReusableTechniqueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.GeneratedTargetProperties;
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.RunMetricsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetEncodingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.ListenerInterfaceProperties;
@@ -74,6 +75,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CyberLocationProperties.class, name = "CyberLocationProperties"),
                 @JsonSubTypes.Type(value = DataAssetEncodingProperties.class, name = "DataAssetEncodingProperties"),
                 @JsonSubTypes.Type(value = DataScopeProperties.class, name = "DataScopeProperties"),
+                @JsonSubTypes.Type(value = RunMetricsProperties.class, name = "RunMetricsProperties"),
                 @JsonSubTypes.Type(value = DataValueMeaningProperties.class, name = "DataValueMeaningProperties"),
                 @JsonSubTypes.Type(value = DigitalResourceOriginProperties.class, name = "DigitalResourceOriginProperties"),
                 @JsonSubTypes.Type(value = ElementSupplementProperties.class, name = "ElementSupplementProperties"),
