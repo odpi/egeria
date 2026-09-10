@@ -112,6 +112,26 @@ public enum BitolIntegrationConnectorAuditCode implements AuditLogMessageSet
                        "https://egeria-project.org/concepts/digital-product/"),
 
     /**
+     * BITOL-INTEGRATION-CONNECTOR-0011 - The {0} integration connector catalogued the {1} document file {2} as asset {3} with deployed implementation type {4}
+     */
+    FILE_CATALOGUED("BITOL-INTEGRATION-CONNECTOR-0011",
+                    AuditLogRecordSeverityLevel.INFO,
+                    "The {0} integration connector catalogued the {1} document file {2} as asset {3} with deployed implementation type {4}",
+                    "The file holding a Bitol document has been catalogued from the file template for its format, and linked as a resource of the agreement or digital product catalogued from the document when that element exists.",
+                    "No specific action is required.  This message records which document files have been catalogued.",
+                    "https://egeria-project.org/features/digital-product-management/overview/"),
+
+    /**
+     * BITOL-INTEGRATION-CONNECTOR-0012 - The {0} integration connector could not catalog the {1} document file {2}: {3}
+     */
+    FILE_NOT_CATALOGUED("BITOL-INTEGRATION-CONNECTOR-0012",
+                        AuditLogRecordSeverityLevel.INFO,
+                        "The {0} integration connector could not catalog the {1} document file {2}: {3}",
+                        "The document was published to the Bitol listeners as normal, but the file itself has not been catalogued as an asset.  The usual cause is that the file templates from the Files Content Pack are not loaded in the metadata access store.",
+                        "Load the Files Content Pack (or another content pack that supplies the YAML and JSON file templates) if the document files should appear in the catalog.  Otherwise no action is required.",
+                        "https://egeria-project.org/content-packs/files-content-pack/overview/"),
+
+    /**
      * BITOL-INTEGRATION-CONNECTOR-0010 - The {0} integration connector received an unexpected {1} exception in method {2} when working with Bitol documents; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION("BITOL-INTEGRATION-CONNECTOR-0010",

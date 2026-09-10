@@ -239,12 +239,31 @@ public class BitolDirectoryScanner
         {
             List<PublishedDocument> publishedDocuments = this.scan(integrationContext::publishBitolDocument);
 
+            BitolFileCataloguer fileCataloguer = new BitolFileCataloguer(integrationContext, auditLog, connectorName);
+
             for (PublishedDocument publishedDocument : publishedDocuments)
             {
                 auditLog.logMessage(methodName,
                                     BitolIntegrationConnectorAuditCode.DOCUMENT_PUBLISHED.getMessageDefinition(connectorName,
                                                                                                                publishedDocument.kind(),
                                                                                                                publishedDocument.file().getPath()));
+
+                /*
+                 * The document has been catalogued by the listeners (synchronously), so the file can now be
+                 * catalogued and linked to the resulting element.
+                 */
+                BitolDocument document = null;
+
+                try
+                {
+                    document = BitolDocumentFormatter.parseDocument(Files.readString(publishedDocument.file().toPath(), StandardCharsets.UTF_8));
+                }
+                catch (Exception notParseable)
+                {
+                    // The listeners have already reported the problem; the file is still catalogued.
+                }
+
+                fileCataloguer.catalogDocumentFile(publishedDocument.file(), publishedDocument.kind(), document);
             }
         }
         catch (IOException error)

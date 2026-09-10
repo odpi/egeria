@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.bitolfvt;
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -243,6 +244,29 @@ public class BitolRoundTripFVT
             BitolDocument reread = BitolDocumentFormatter.parseDocument(Files.readString(stored.toPath(), StandardCharsets.UTF_8));
 
             assertEquals(document.getId(), reread.getId(), stored.getPath() + " holds a different document.");
+
+            /*
+             * The store also catalogs each file it writes, from the YAML file template with the deployed
+             * implementation type for the document's kind, and links it to the catalogued element as a resource.
+             */
+            ConnectorContextBase context = ConnectorContextFactory.newContext();
+            OpenMetadataElement  element = context.getOpenMetadataStore().getMetadataElementByUniqueName(qualifiedName(document), "qualifiedName");
+
+            assertNotNull(element, documentName + " is not catalogued.");
+
+            DeployedImplementationType expectedType = BitolDocument.DATA_PRODUCT_KIND.equals(document.getKind()) ? DeployedImplementationType.OPEN_DATA_PRODUCT_FILE : DeployedImplementationType.OPEN_DATA_CONTRACT_FILE;
+
+            BitolFvtTestSupport.waitFor("The file store cataloguing " + stored.getPath() + " and linking it to " + qualifiedName(document), () ->
+            {
+                try
+                {
+                    return BitolFvtTestSupport.findDocumentFileAsset(context, element.getElementGUID(), expectedType) != null;
+                }
+                catch (Exception error)
+                {
+                    return false;
+                }
+            });
         }
     }
 

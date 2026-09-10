@@ -2,6 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.bitolfvt;
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -186,5 +192,43 @@ class BitolFvtTestSupport
         {
             throw new IllegalStateException("Could not delete " + directory.getPath());
         }
+    }
+
+    /**
+     * Return the data file asset linked to an element as a "Bitol Document" resource with the supplied deployed
+     * implementation type, or null if there is none.
+     *
+     * @param context connector context
+     * @param elementGUID agreement or digital product
+     * @param deployedImplementationType expected deployed implementation type of the file asset
+     * @return the asset element or null
+     * @throws Exception problem reading the repository
+     */
+    static OpenMetadataElement findDocumentFileAsset(ConnectorContextBase       context,
+                                                     String                     elementGUID,
+                                                     DeployedImplementationType deployedImplementationType) throws Exception
+    {
+        OpenMetadataRootElement element = context.getCollectionClient().getCollectionByGUID(elementGUID, context.getCollectionClient().getGetOptions());
+
+        if ((element != null) && (element.getResourceList() != null))
+        {
+            for (RelatedMetadataElementSummary resource : element.getResourceList())
+            {
+                if ((resource != null) && (resource.getRelatedElement() != null) &&
+                    (resource.getRelationshipProperties() instanceof ResourceListProperties resourceListProperties) &&
+                    (ResourceUse.BITOL_DOCUMENT.getResourceUse().equals(resourceListProperties.getResourceUse())))
+                {
+                    OpenMetadataElement asset = context.getOpenMetadataStore().getMetadataElementByGUID(resource.getRelatedElement().getElementHeader().getGUID());
+
+                    if ((asset != null) && (asset.getElementProperties() != null) &&
+                        (deployedImplementationType.getDeployedImplementationType().equals(asset.getElementProperties().getPropertyValueMap().get(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name) == null ? null : asset.getElementProperties().getPropertyValueMap().get(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name).valueAsString())))
+                    {
+                        return asset;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }

@@ -6,7 +6,7 @@
 
 Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor.
 
-This directory documents 83 messages in 14 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 85 messages in 14 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -15,7 +15,7 @@ This directory documents 83 messages in 14 message sets.  Return to the [message
 |---|---|---|---|---|
 | [BasicFilesIntegrationConnectorsAuditCode](BasicFilesIntegrationConnectorsAuditCode.md) | Audit log messages | `BASIC-FILES-INTEGRATION-CONNECTORS-` | 19 | <https://egeria-project.org/concepts/integration-connector/> |
 | [BasicFilesIntegrationConnectorsErrorCode](BasicFilesIntegrationConnectorsErrorCode.md) | Exception messages | `BASIC-FILES-INTEGRATION-CONNECTORS-` | 7 | <https://egeria-project.org/concepts/integration-connector/> |
-| [BitolIntegrationConnectorAuditCode](BitolIntegrationConnectorAuditCode.md) | Audit log messages | `BITOL-INTEGRATION-CONNECTOR-` | 10 | <https://egeria-project.org/concepts/digital-product/> |
+| [BitolIntegrationConnectorAuditCode](BitolIntegrationConnectorAuditCode.md) | Audit log messages | `BITOL-INTEGRATION-CONNECTOR-` | 12 |  |
 | [BitolIntegrationConnectorErrorCode](BitolIntegrationConnectorErrorCode.md) | Exception messages | `BITOL-INTEGRATION-CONNECTOR-500-` | 1 | <https://egeria-project.org/concepts/digital-product/> |
 | [CSVLineageImporterAuditCode](CSVLineageImporterAuditCode.md) | Audit log messages | `CSV-LINEAGE-IMPORTER-` | 1 | <https://egeria-project.org/features/lineage-management/overview/> |
 | [CSVLineageImporterErrorCode](CSVLineageImporterErrorCode.md) | Exception messages | `CSV-LINEAGE-IMPORTER-400-` | 1 | <https://egeria-project.org/features/lineage-management/overview/> |

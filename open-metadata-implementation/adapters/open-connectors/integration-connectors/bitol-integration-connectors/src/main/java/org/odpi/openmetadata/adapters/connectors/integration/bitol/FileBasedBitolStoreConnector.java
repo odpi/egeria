@@ -40,6 +40,7 @@ public class FileBasedBitolStoreConnector extends IntegrationConnectorBase imple
     private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss-SSS");
     private static final String            UNPARSED_FOLDER  = "unparsed";
 
+    private BitolFileCataloguer fileCataloguer = null;
     private final List<String> destinationDirectories = new ArrayList<>();
 
 
@@ -62,6 +63,11 @@ public class FileBasedBitolStoreConnector extends IntegrationConnectorBase imple
     public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
+
+        if (integrationContext != null)
+        {
+            fileCataloguer = new BitolFileCataloguer(integrationContext, auditLog, connectorName);
+        }
 
         Endpoint endpoint = connectionBean.getEndpoint();
 
@@ -320,6 +326,11 @@ public class FileBasedBitolStoreConnector extends IntegrationConnectorBase imple
                                     BitolIntegrationConnectorAuditCode.DOCUMENT_STORED.getMessageDefinition(connectorName,
                                                                                                             kind,
                                                                                                             file.getPath()));
+
+                if (fileCataloguer != null)
+                {
+                    fileCataloguer.catalogDocumentFile(file, kind, document);
+                }
             }
         }
         catch (Exception error)

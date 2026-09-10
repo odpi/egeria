@@ -805,6 +805,24 @@ public enum FileType
                            "A YAML file containing a Bitol Open Data Product Standard (ODPS) document that describes a data product and its ports."),
 
     /**
+     * A JSON file containing a Bitol Open Data Contract Standard (ODCS) document.
+     */
+    OPEN_DATA_CONTRACT_JSON_FILE("Open Data Contract JSON File",
+                                 "JSON",
+                                 OpenMetadataType.JSON_FILE.typeName,
+                                 DeployedImplementationType.OPEN_DATA_CONTRACT_JSON_FILE,
+                                 "A JSON file containing a Bitol Open Data Contract Standard (ODCS) document that describes a dataset and the agreement for sharing it."),
+
+    /**
+     * A JSON file containing a Bitol Open Data Product Standard (ODPS) document.
+     */
+    OPEN_DATA_PRODUCT_JSON_FILE("Open Data Product JSON File",
+                                "JSON",
+                                OpenMetadataType.JSON_FILE.typeName,
+                                DeployedImplementationType.OPEN_DATA_PRODUCT_JSON_FILE,
+                                "A JSON file containing a Bitol Open Data Product Standard (ODPS) document that describes a data product and its ports."),
+
+    /**
      * A YAML encoded file containing a secrets store read by the YAMLSecretsStoreConnector.
      */
     OM_SECRETS_FILE("Open Metadata Secrets Store File",

@@ -1122,6 +1122,29 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                                  null));
         }
 
+        /*
+         * A template that declares the deployedImplementationType placeholder lets the caller say what the asset
+         * represents (for example a data contract held in a YAML file), so the placeholder is written into the
+         * template asset and the template's own type is only used when the template does not offer the choice.
+         */
+        String              assetDeployedImplementationType = deployedImplementationType.getDeployedImplementationType();
+        Map<String, Object> extendedProperties              = suppliedExtendedProperties;
+
+        if (declaresPlaceholder(placeholderPropertyTypes, PlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE))
+        {
+            assetDeployedImplementationType = PlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder();
+
+            /*
+             * The file templates also carry the type in their extended properties, which would override the
+             * placeholder, so it is substituted there as well.
+             */
+            if ((extendedProperties != null) && (extendedProperties.containsKey(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name)))
+            {
+                extendedProperties = new HashMap<>(extendedProperties);
+                extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, assetDeployedImplementationType);
+            }
+        }
+
         archiveHelper.setGUID(qualifiedName, templateGUID);
         String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
                                                       qualifiedName,
@@ -1129,12 +1152,12 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                       null,
                                                       null,
                                                       null,
-                                                      deployedImplementationType.getDeployedImplementationType(),
+                                                      assetDeployedImplementationType,
                                                       versionIdentifier,
                                                       assetDescription,
                                                       ContentStatus.ACTIVE,
                                                       null,
-                                                      suppliedExtendedProperties,
+                                                      extendedProperties,
                                                       classifications);
         assert(templateGUID.equals(assetGUID));
 
@@ -2976,5 +2999,29 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
         {
             System.out.println("error is " + error);
         }
+    }
+
+    /**
+     * Return whether a template declares a particular placeholder property.
+     *
+     * @param placeholderPropertyTypes placeholders declared by the template (may be null)
+     * @param placeholderProperty placeholder to look for
+     * @return boolean
+     */
+    private boolean declaresPlaceholder(List<PlaceholderPropertyType> placeholderPropertyTypes,
+                                        PlaceholderProperty           placeholderProperty)
+    {
+        if (placeholderPropertyTypes != null)
+        {
+            for (PlaceholderPropertyType placeholderPropertyType : placeholderPropertyTypes)
+            {
+                if ((placeholderPropertyType != null) && (placeholderProperty.getName().equals(placeholderPropertyType.getName())))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

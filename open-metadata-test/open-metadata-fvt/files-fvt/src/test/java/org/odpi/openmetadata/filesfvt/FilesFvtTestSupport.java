@@ -237,6 +237,10 @@ final class FilesFvtTestSupport
         placeholders.put(PlaceholderProperty.DIRECTORY_ADDRESS.getName(), folder.getAbsolutePath());
         placeholders.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
         placeholders.put(PlaceholderProperty.DESCRIPTION.getName(), "Folder created by the files-fvt suite.");
+        /*
+         * The folder templates substitute this placeholder into the asset.  A data folder action overrides it.
+         */
+        placeholders.put(PlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getName(), DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getDeployedImplementationType());
 
         return placeholders;
     }
@@ -265,7 +269,10 @@ final class FilesFvtTestSupport
         placeholders.put(PlaceholderProperty.FILE_ADDRESS.getName(), file.getAbsolutePath());
         placeholders.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
         placeholders.put(PlaceholderProperty.DESCRIPTION.getName(), "File created by the files-fvt suite.");
-        placeholders.put(PlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getName(), "");
+        /*
+         * The file templates substitute this placeholder into the asset, so it carries the type the file really is.
+         */
+        placeholders.put(PlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getName(), deployedImplementationTypeFor(fileExtension));
 
         return placeholders;
     }
@@ -825,5 +832,22 @@ final class FilesFvtTestSupport
         }
 
         return found;
+    }
+
+    /**
+     * Return the deployed implementation type for a file extension, as the file cataloguers would classify it.
+     *
+     * @param fileExtension extension without the dot
+     * @return deployed implementation type name
+     */
+    static String deployedImplementationTypeFor(String fileExtension)
+    {
+        return switch (fileExtension.toLowerCase())
+        {
+            case "csv" -> DeployedImplementationType.CSV_FILE.getDeployedImplementationType();
+            case "json" -> DeployedImplementationType.JSON_FILE.getDeployedImplementationType();
+            case "yaml", "yml" -> DeployedImplementationType.YAML_FILE.getDeployedImplementationType();
+            default -> DeployedImplementationType.DATA_FILE.getDeployedImplementationType();
+        };
     }
 }
