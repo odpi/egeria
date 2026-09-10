@@ -129,9 +129,33 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code><a href="#DATASET_DROPPED" class="member-name-link">DATASET_DROPPED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0025 - The {0} integration connector has removed asset {1} ({2}) using delete method {3} following open lineage {4}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DATASET_RENAMED" class="member-name-link">DATASET_RENAMED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0024 - The {0} integration connector has renamed asset {1} from {2} to {3} following open lineage {4}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ELEMENT_CATALOGUED" class="member-name-link">ELEMENT_CATALOGUED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0020 - The {0} integration connector has catalogued {1} {2} ({3}) from open lineage {4} {5}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#EVENT_IGNORED" class="member-name-link">EVENT_IGNORED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0022 - The {0} integration connector is ignoring open lineage event {1} because {2}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#KAFKA_RECEIVER_CONFIGURATION" class="member-name-link">KAFKA_RECEIVER_CONFIGURATION</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0001 - The {0} integration connector has been initialized to monitor Apache Kafka topic {1} with connection: {2}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#LINEAGE_CATALOGUED" class="member-name-link">LINEAGE_CATALOGUED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0021 - The {0} integration connector has added a {1} lineage relationship from {2} to {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#OPTIONAL_METADATA_FAILED" class="member-name-link">OPTIONAL_METADATA_FAILED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0023 - The {0} integration connector was unable to record {1} for open lineage event {2}; the {3} exception message was: {4}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
@@ -209,6 +233,48 @@ the order they are declared.</div>
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
 <div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-001 - The {0} integration connector received an unexpected {1} exception in method {2} when working with open lineage events; the error message was: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ELEMENT_CATALOGUED">
+<h3>ELEMENT_CATALOGUED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">ELEMENT_CATALOGUED</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0020 - The {0} integration connector has catalogued {1} {2} ({3}) from open lineage {4} {5}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LINEAGE_CATALOGUED">
+<h3>LINEAGE_CATALOGUED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">LINEAGE_CATALOGUED</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0021 - The {0} integration connector has added a {1} lineage relationship from {2} to {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EVENT_IGNORED">
+<h3>EVENT_IGNORED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">EVENT_IGNORED</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0022 - The {0} integration connector is ignoring open lineage event {1} because {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATASET_RENAMED">
+<h3>DATASET_RENAMED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">DATASET_RENAMED</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0024 - The {0} integration connector has renamed asset {1} from {2} to {3} following open lineage {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATASET_DROPPED">
+<h3>DATASET_DROPPED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">DATASET_DROPPED</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0025 - The {0} integration connector has removed asset {1} ({2}) using delete method {3} following open lineage {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPTIONAL_METADATA_FAILED">
+<h3>OPTIONAL_METADATA_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">OPTIONAL_METADATA_FAILED</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0023 - The {0} integration connector was unable to record {1} for open lineage event {2}; the {3} exception message was: {4}</div>
 </section>
 </li>
 </ul>

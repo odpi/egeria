@@ -92,7 +92,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageSchemaDataSetFacetField</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">This class represents the description of a field in a data set.</div>
+<div class="block">This class represents a single field in the schema dataset facet.  Fields may be nested.
+ It is part of the OpenLineage spec.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -132,10 +133,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the description of the field.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="OpenLineageSchemaDataSetFacetField.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSchemaDataSetFacetField</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFields()" class="member-name-link">getFields</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the nested struct fields.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the field.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrdinalPosition()" class="member-name-link">getOrdinalPosition</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the ordinal position of the field in the schema (1-indexed).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getType()" class="member-name-link">getType</a>()</code></div>
@@ -153,9 +164,19 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the description of the field.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setName(java.lang.String)" class="member-name-link">setName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFields(java.util.List)" class="member-name-link">setFields</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="OpenLineageSchemaDataSetFacetField.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSchemaDataSetFacetField</a>&gt;&nbsp;fields)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the nested struct fields.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setName(java.lang.String)" class="member-name-link">setName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the name of the field.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOrdinalPosition(java.lang.Long)" class="member-name-link">setOrdinalPosition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;ordinalPosition)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the ordinal position of the field in the schema (1-indexed).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setType(java.lang.String)" class="member-name-link">setType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</code></div>
@@ -206,7 +227,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the name of the field.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>string name</dd>
+<dd>string</dd>
 </dl>
 </section>
 </li>
@@ -217,7 +238,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the name of the field.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>name</code> - string name</dd>
+<dd><code>name</code> - string</dd>
 </dl>
 </section>
 </li>
@@ -228,7 +249,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the type of the field.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>string type name</dd>
+<dd>string</dd>
 </dl>
 </section>
 </li>
@@ -239,7 +260,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the type of the field.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>type</code> - string type name</dd>
+<dd><code>type</code> - string</dd>
 </dl>
 </section>
 </li>
@@ -250,7 +271,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the description of the field.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>string description</dd>
+<dd>string</dd>
 </dl>
 </section>
 </li>
@@ -261,7 +282,51 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the description of the field.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>description</code> - string description</dd>
+<dd><code>description</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getOrdinalPosition()">
+<h3>getOrdinalPosition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></span>&nbsp;<span class="element-name">getOrdinalPosition</span>()</div>
+<div class="block">Return the ordinal position of the field in the schema (1-indexed).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setOrdinalPosition(java.lang.Long)">
+<h3>setOrdinalPosition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOrdinalPosition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;ordinalPosition)</span></div>
+<div class="block">Set up the ordinal position of the field in the schema (1-indexed).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>ordinalPosition</code> - long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getFields()">
+<h3>getFields</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="OpenLineageSchemaDataSetFacetField.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSchemaDataSetFacetField</a>&gt;</span>&nbsp;<span class="element-name">getFields</span>()</div>
+<div class="block">Return the nested struct fields.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setFields(java.util.List)">
+<h3>setFields</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFields</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="OpenLineageSchemaDataSetFacetField.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSchemaDataSetFacetField</a>&gt;&nbsp;fields)</span></div>
+<div class="block">Set up the nested struct fields.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>fields</code> - list</dd>
 </dl>
 </section>
 </li>

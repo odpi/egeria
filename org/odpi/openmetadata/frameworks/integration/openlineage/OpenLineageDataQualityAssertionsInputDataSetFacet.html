@@ -96,8 +96,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageDataQualityAssertionsInputDataSetFacet</span>
 <span class="extends-implements">extends <a href="OpenLineageInputDataSetInputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageInputDataSetInputFacet</a></span></div>
-<div class="block">This class represents the data quality assertions facet in the open lineage standard spec
- https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.</div>
+<div class="block">This class represents the dataQualityAssertions input dataset facet.  It captures the results of data quality assertions evaluated against the input dataset.
+ It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-1-0/DataQualityAssertionsDatasetFacet.json#/$defs/DataQualityAssertionsDatasetFacet.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -135,7 +135,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="OpenLineageDataQualityAssertionsInputDataSetFacetAssertions.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityAssertionsInputDataSetFacetAssertions</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssertions()" class="member-name-link">getAssertions</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of assertions that the data set has been tested against.</div>
+<div class="block">Return the assertions and their results.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -145,7 +145,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAssertions(java.util.List)" class="member-name-link">setAssertions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="OpenLineageDataQualityAssertionsInputDataSetFacetAssertions.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityAssertionsInputDataSetFacetAssertions</a>&gt;&nbsp;assertions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of assertions that the data set has been tested against.</div>
+<div class="block">Set up the assertions and their results.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -157,7 +157,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageFacet">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.openlineage.<a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></h3>
-<code><a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a></code></div>
+<code><a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="OpenLineageFacet.html#setAdditionalProperty(java.lang.String,java.lang.Object)">setAdditionalProperty</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -191,10 +191,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getAssertions()">
 <h3>getAssertions</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="OpenLineageDataQualityAssertionsInputDataSetFacetAssertions.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityAssertionsInputDataSetFacetAssertions</a>&gt;</span>&nbsp;<span class="element-name">getAssertions</span>()</div>
-<div class="block">Return the list of assertions that the data set has been tested against.</div>
+<div class="block">Return the assertions and their results.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>list of assertions</dd>
+<dd>list</dd>
 </dl>
 </section>
 </li>
@@ -202,10 +202,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setAssertions(java.util.List)">
 <h3>setAssertions</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAssertions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="OpenLineageDataQualityAssertionsInputDataSetFacetAssertions.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityAssertionsInputDataSetFacetAssertions</a>&gt;&nbsp;assertions)</span></div>
-<div class="block">Set up the list of assertions that the data set has been tested against.</div>
+<div class="block">Set up the assertions and their results.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>assertions</code> - list of assertions</dd>
+<dd><code>assertions</code> - list</dd>
 </dl>
 </section>
 </li>

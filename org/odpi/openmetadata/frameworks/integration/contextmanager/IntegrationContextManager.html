@@ -240,9 +240,19 @@ implements <a href="../openlineage/OpenLineageListenerManager.html" title="inter
 <div class="block">Publish an Open Data Product Standard (ODPS) data product.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageDataSetEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent)" class="member-name-link">publishOpenLineageDataSetEvent</a><wbr>(<a href="../openlineage/OpenLineageDataSetEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetEvent</a>&nbsp;event)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called each time an open lineage dataset event is published to the integration demon.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageJobEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent)" class="member-name-link">publishOpenLineageJobEvent</a><wbr>(<a href="../openlineage/OpenLineageJobEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobEvent</a>&nbsp;event)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called each time an open lineage job event is published to the integration demon.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(java.lang.String)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Called each time an open lineage run event is published to the integration daemon.</div>
+<div class="block">Called each time an open lineage event is published to the integration daemon as a JSON string.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="../openlineage/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunEvent</a>&nbsp;event)</code></div>
@@ -546,9 +556,11 @@ implements <a href="../openlineage/OpenLineageListenerManager.html" title="inter
 <section class="detail" id="publishOpenLineageRunEvent(java.lang.String)">
 <h3>publishOpenLineageRunEvent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishOpenLineageRunEvent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</span></div>
-<div class="block">Called each time an open lineage run event is published to the integration daemon.  The integration connector is able to
- work with the formatted event using the Egeria beans or reformat the open lineage run event using the supplied open lineage backend beans
- or another set of beans.</div>
+<div class="block">Called each time an open lineage event is published to the integration daemon as a JSON string.  The kind of
+ event (run, job or dataset) is determined from the properties present: a run event has a run, a dataset event
+ has a dataset and a job event has a job but no run.  The parsed bean is delivered to the registered listeners
+ along with the raw JSON so that a connector can work with the Egeria beans or reformat the event using another
+ set of beans.  If the event cannot be parsed, it is delivered to the run event listeners with a null bean.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../openlineage/OpenLineageListenerManager.html#publishOpenLineageRunEvent(java.lang.String)">publishOpenLineageRunEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></code></dd>
@@ -567,6 +579,32 @@ implements <a href="../openlineage/OpenLineageListenerManager.html" title="inter
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../openlineage/OpenLineageListenerManager.html#publishOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent)">publishOpenLineageRunEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>event</code> - bean for the event</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishOpenLineageJobEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent)">
+<h3>publishOpenLineageJobEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishOpenLineageJobEvent</span><wbr><span class="parameters">(<a href="../openlineage/OpenLineageJobEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobEvent</a>&nbsp;event)</span></div>
+<div class="block">Called each time an open lineage job event is published to the integration demon.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../openlineage/OpenLineageListenerManager.html#publishOpenLineageJobEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent)">publishOpenLineageJobEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>event</code> - bean for the event</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishOpenLineageDataSetEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent)">
+<h3>publishOpenLineageDataSetEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishOpenLineageDataSetEvent</span><wbr><span class="parameters">(<a href="../openlineage/OpenLineageDataSetEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetEvent</a>&nbsp;event)</span></div>
+<div class="block">Called each time an open lineage dataset event is published to the integration demon.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../openlineage/OpenLineageListenerManager.html#publishOpenLineageDataSetEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent)">publishOpenLineageDataSetEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>event</code> - bean for the event</dd>
 </dl>

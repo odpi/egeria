@@ -92,8 +92,10 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageDataSetFacets</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">This class represents the map of data set facets in the open lineage standard spec
- https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.</div>
+<div class="block">This class represents the map of dataset facets for a dataset.  The standard facets from the OpenLineage spec, and the custom facets
+ registered in the OpenLineage registry, are held in named properties.  Any other facets (custom facets, or standard facets not yet modelled) are held in the
+ additionalProperties map, keyed by their facet name, so that nothing is lost on a round trip through these beans.
+ The map key of each facet in the JSON is the facet's key from the OpenLineage spec.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -131,22 +133,82 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAdditionalProperties()" class="member-name-link">getAdditionalProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a map of additional data set facets.</div>
+<div class="block">Return any additional facets that are not modelled as named properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageCatalogDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageCatalogDataSetFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalog()" class="member-name-link">getCatalog</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the catalog facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageColumnLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageColumnLineageDataSetFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getColumnLineage()" class="member-name-link">getColumnLineage</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the columnLineage facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageDataQualityMetricsDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsDataSetFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataQualityMetrics()" class="member-name-link">getDataQualityMetrics</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the dataQualityMetrics facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageDataSetTypeDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetTypeDataSetFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatasetType()" class="member-name-link">getDatasetType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the datasetType facet.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageDataSourceDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSourceDataSetFacet</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataSource()" class="member-name-link">getDataSource</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the data source facet.</div>
+<div class="block">Return the dataSource facet.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageDocumentationDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDocumentationDataSetFacet</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDocumentation()" class="member-name-link">getDocumentation</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the document facet.</div>
+<div class="block">Return the documentation facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageHierarchyDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageHierarchyDataSetFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHierarchy()" class="member-name-link">getHierarchy</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the hierarchy facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageLifecycleStateChangeDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageLifecycleStateChangeDataSetFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLifecycleStateChange()" class="member-name-link">getLifecycleStateChange</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the lifecycleStateChange facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageLineageDataSetFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLineage()" class="member-name-link">getLineage</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the lineage facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageOwnershipDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOwnershipDataSetFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwnership()" class="member-name-link">getOwnership</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the ownership facet.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageSchemaDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSchemaDataSetFacet</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchema()" class="member-name-link">getSchema</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the schema facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageStorageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageStorageDataSetFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStorage()" class="member-name-link">getStorage</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the storage facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageSymlinksDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSymlinksDataSetFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSymlinks()" class="member-name-link">getSymlinks</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the symlinks facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageTagsDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTagsDataSetFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTags()" class="member-name-link">getTags</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the tags facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageDataSetVersionDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetVersionDataSetFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVersion()" class="member-name-link">getVersion</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the version facet.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -156,26 +218,92 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAdditionalProperties(java.util.Map)" class="member-name-link">setAdditionalProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a>&gt;&nbsp;additionalProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up a map of additional data set facets.</div>
+<div class="block">Set up any additional facets that are not modelled as named properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDataSource(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSourceDataSetFacet)" class="member-name-link">setDataSource</a><wbr>(<a href="OpenLineageDataSourceDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSourceDataSetFacet</a>&nbsp;dataSource)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAdditionalProperty(java.lang.String,org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetFacet)" class="member-name-link">setAdditionalProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;facetName,
+ <a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a>&nbsp;facet)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the data source facet.</div>
+<div class="block">Add a facet that is not modelled as a named property.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDocumentation(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDocumentationDataSetFacet)" class="member-name-link">setDocumentation</a><wbr>(<a href="OpenLineageDocumentationDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDocumentationDataSetFacet</a>&nbsp;documentation)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCatalog(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageCatalogDataSetFacet)" class="member-name-link">setCatalog</a><wbr>(<a href="OpenLineageCatalogDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageCatalogDataSetFacet</a>&nbsp;catalog)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the document facet.</div>
+<div class="block">Set up the catalog facet.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSchema(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageSchemaDataSetFacet)" class="member-name-link">setSchema</a><wbr>(<a href="OpenLineageSchemaDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSchemaDataSetFacet</a>&nbsp;schema)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setColumnLineage(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageColumnLineageDataSetFacet)" class="member-name-link">setColumnLineage</a><wbr>(<a href="OpenLineageColumnLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageColumnLineageDataSetFacet</a>&nbsp;columnLineage)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the columnLineage facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDataQualityMetrics(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataQualityMetricsDataSetFacet)" class="member-name-link">setDataQualityMetrics</a><wbr>(<a href="OpenLineageDataQualityMetricsDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsDataSetFacet</a>&nbsp;dataQualityMetrics)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the dataQualityMetrics facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDatasetType(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetTypeDataSetFacet)" class="member-name-link">setDatasetType</a><wbr>(<a href="OpenLineageDataSetTypeDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetTypeDataSetFacet</a>&nbsp;datasetType)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the datasetType facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDataSource(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSourceDataSetFacet)" class="member-name-link">setDataSource</a><wbr>(<a href="OpenLineageDataSourceDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSourceDataSetFacet</a>&nbsp;dataSource)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the dataSource facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDocumentation(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDocumentationDataSetFacet)" class="member-name-link">setDocumentation</a><wbr>(<a href="OpenLineageDocumentationDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDocumentationDataSetFacet</a>&nbsp;documentation)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the documentation facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHierarchy(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageHierarchyDataSetFacet)" class="member-name-link">setHierarchy</a><wbr>(<a href="OpenLineageHierarchyDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageHierarchyDataSetFacet</a>&nbsp;hierarchy)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the hierarchy facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLifecycleStateChange(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageLifecycleStateChangeDataSetFacet)" class="member-name-link">setLifecycleStateChange</a><wbr>(<a href="OpenLineageLifecycleStateChangeDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageLifecycleStateChangeDataSetFacet</a>&nbsp;lifecycleStateChange)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the lifecycleStateChange facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLineage(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageLineageDataSetFacet)" class="member-name-link">setLineage</a><wbr>(<a href="OpenLineageLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageLineageDataSetFacet</a>&nbsp;lineage)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the lineage facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOwnership(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageOwnershipDataSetFacet)" class="member-name-link">setOwnership</a><wbr>(<a href="OpenLineageOwnershipDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOwnershipDataSetFacet</a>&nbsp;ownership)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the ownership facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSchema(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageSchemaDataSetFacet)" class="member-name-link">setSchema</a><wbr>(<a href="OpenLineageSchemaDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSchemaDataSetFacet</a>&nbsp;schema)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the schema facet.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setStorage(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageStorageDataSetFacet)" class="member-name-link">setStorage</a><wbr>(<a href="OpenLineageStorageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageStorageDataSetFacet</a>&nbsp;storage)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the storage facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSymlinks(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageSymlinksDataSetFacet)" class="member-name-link">setSymlinks</a><wbr>(<a href="OpenLineageSymlinksDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSymlinksDataSetFacet</a>&nbsp;symlinks)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the symlinks facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTags(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageTagsDataSetFacet)" class="member-name-link">setTags</a><wbr>(<a href="OpenLineageTagsDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTagsDataSetFacet</a>&nbsp;tags)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the tags facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVersion(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetVersionDataSetFacet)" class="member-name-link">setVersion</a><wbr>(<a href="OpenLineageDataSetVersionDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetVersionDataSetFacet</a>&nbsp;version)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the version facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Standard toString method.</div>
 </div>
 </div>
@@ -214,10 +342,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getDocumentation()">
 <h3>getDocumentation</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageDocumentationDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDocumentationDataSetFacet</a></span>&nbsp;<span class="element-name">getDocumentation</span>()</div>
-<div class="block">Return the document facet.</div>
+<div class="block">Return the documentation facet.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>facet</dd>
+<dd>facet bean</dd>
 </dl>
 </section>
 </li>
@@ -225,10 +353,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setDocumentation(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDocumentationDataSetFacet)">
 <h3>setDocumentation</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDocumentation</span><wbr><span class="parameters">(<a href="OpenLineageDocumentationDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDocumentationDataSetFacet</a>&nbsp;documentation)</span></div>
-<div class="block">Set up the document facet.</div>
+<div class="block">Set up the documentation facet.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>documentation</code> - facet</dd>
+<dd><code>documentation</code> - facet bean</dd>
 </dl>
 </section>
 </li>
@@ -236,10 +364,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getDataSource()">
 <h3>getDataSource</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageDataSourceDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSourceDataSetFacet</a></span>&nbsp;<span class="element-name">getDataSource</span>()</div>
-<div class="block">Return the data source facet.</div>
+<div class="block">Return the dataSource facet.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>facet</dd>
+<dd>facet bean</dd>
 </dl>
 </section>
 </li>
@@ -247,10 +375,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setDataSource(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSourceDataSetFacet)">
 <h3>setDataSource</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDataSource</span><wbr><span class="parameters">(<a href="OpenLineageDataSourceDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSourceDataSetFacet</a>&nbsp;dataSource)</span></div>
-<div class="block">Set up the data source facet.</div>
+<div class="block">Set up the dataSource facet.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>dataSource</code> - facet</dd>
+<dd><code>dataSource</code> - facet bean</dd>
 </dl>
 </section>
 </li>
@@ -261,7 +389,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the schema facet.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>facet</dd>
+<dd>facet bean</dd>
 </dl>
 </section>
 </li>
@@ -272,7 +400,271 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the schema facet.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>schema</code> - facet</dd>
+<dd><code>schema</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getCatalog()">
+<h3>getCatalog</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageCatalogDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageCatalogDataSetFacet</a></span>&nbsp;<span class="element-name">getCatalog</span>()</div>
+<div class="block">Return the catalog facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setCatalog(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageCatalogDataSetFacet)">
+<h3>setCatalog</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCatalog</span><wbr><span class="parameters">(<a href="OpenLineageCatalogDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageCatalogDataSetFacet</a>&nbsp;catalog)</span></div>
+<div class="block">Set up the catalog facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>catalog</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getColumnLineage()">
+<h3>getColumnLineage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageColumnLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageColumnLineageDataSetFacet</a></span>&nbsp;<span class="element-name">getColumnLineage</span>()</div>
+<div class="block">Return the columnLineage facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setColumnLineage(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageColumnLineageDataSetFacet)">
+<h3>setColumnLineage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setColumnLineage</span><wbr><span class="parameters">(<a href="OpenLineageColumnLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageColumnLineageDataSetFacet</a>&nbsp;columnLineage)</span></div>
+<div class="block">Set up the columnLineage facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>columnLineage</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDatasetType()">
+<h3>getDatasetType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageDataSetTypeDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetTypeDataSetFacet</a></span>&nbsp;<span class="element-name">getDatasetType</span>()</div>
+<div class="block">Return the datasetType facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setDatasetType(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetTypeDataSetFacet)">
+<h3>setDatasetType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDatasetType</span><wbr><span class="parameters">(<a href="OpenLineageDataSetTypeDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetTypeDataSetFacet</a>&nbsp;datasetType)</span></div>
+<div class="block">Set up the datasetType facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>datasetType</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getVersion()">
+<h3>getVersion</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageDataSetVersionDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetVersionDataSetFacet</a></span>&nbsp;<span class="element-name">getVersion</span>()</div>
+<div class="block">Return the version facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setVersion(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetVersionDataSetFacet)">
+<h3>setVersion</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setVersion</span><wbr><span class="parameters">(<a href="OpenLineageDataSetVersionDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetVersionDataSetFacet</a>&nbsp;version)</span></div>
+<div class="block">Set up the version facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>version</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getLifecycleStateChange()">
+<h3>getLifecycleStateChange</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageLifecycleStateChangeDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageLifecycleStateChangeDataSetFacet</a></span>&nbsp;<span class="element-name">getLifecycleStateChange</span>()</div>
+<div class="block">Return the lifecycleStateChange facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setLifecycleStateChange(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageLifecycleStateChangeDataSetFacet)">
+<h3>setLifecycleStateChange</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLifecycleStateChange</span><wbr><span class="parameters">(<a href="OpenLineageLifecycleStateChangeDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageLifecycleStateChangeDataSetFacet</a>&nbsp;lifecycleStateChange)</span></div>
+<div class="block">Set up the lifecycleStateChange facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>lifecycleStateChange</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getOwnership()">
+<h3>getOwnership</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageOwnershipDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOwnershipDataSetFacet</a></span>&nbsp;<span class="element-name">getOwnership</span>()</div>
+<div class="block">Return the ownership facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setOwnership(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageOwnershipDataSetFacet)">
+<h3>setOwnership</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOwnership</span><wbr><span class="parameters">(<a href="OpenLineageOwnershipDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOwnershipDataSetFacet</a>&nbsp;ownership)</span></div>
+<div class="block">Set up the ownership facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>ownership</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStorage()">
+<h3>getStorage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageStorageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageStorageDataSetFacet</a></span>&nbsp;<span class="element-name">getStorage</span>()</div>
+<div class="block">Return the storage facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setStorage(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageStorageDataSetFacet)">
+<h3>setStorage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStorage</span><wbr><span class="parameters">(<a href="OpenLineageStorageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageStorageDataSetFacet</a>&nbsp;storage)</span></div>
+<div class="block">Set up the storage facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>storage</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSymlinks()">
+<h3>getSymlinks</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageSymlinksDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSymlinksDataSetFacet</a></span>&nbsp;<span class="element-name">getSymlinks</span>()</div>
+<div class="block">Return the symlinks facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSymlinks(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageSymlinksDataSetFacet)">
+<h3>setSymlinks</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSymlinks</span><wbr><span class="parameters">(<a href="OpenLineageSymlinksDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSymlinksDataSetFacet</a>&nbsp;symlinks)</span></div>
+<div class="block">Set up the symlinks facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>symlinks</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTags()">
+<h3>getTags</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageTagsDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTagsDataSetFacet</a></span>&nbsp;<span class="element-name">getTags</span>()</div>
+<div class="block">Return the tags facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setTags(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageTagsDataSetFacet)">
+<h3>setTags</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTags</span><wbr><span class="parameters">(<a href="OpenLineageTagsDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTagsDataSetFacet</a>&nbsp;tags)</span></div>
+<div class="block">Set up the tags facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>tags</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getHierarchy()">
+<h3>getHierarchy</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageHierarchyDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageHierarchyDataSetFacet</a></span>&nbsp;<span class="element-name">getHierarchy</span>()</div>
+<div class="block">Return the hierarchy facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setHierarchy(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageHierarchyDataSetFacet)">
+<h3>setHierarchy</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setHierarchy</span><wbr><span class="parameters">(<a href="OpenLineageHierarchyDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageHierarchyDataSetFacet</a>&nbsp;hierarchy)</span></div>
+<div class="block">Set up the hierarchy facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hierarchy</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getLineage()">
+<h3>getLineage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageLineageDataSetFacet</a></span>&nbsp;<span class="element-name">getLineage</span>()</div>
+<div class="block">Return the lineage facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setLineage(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageLineageDataSetFacet)">
+<h3>setLineage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLineage</span><wbr><span class="parameters">(<a href="OpenLineageLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageLineageDataSetFacet</a>&nbsp;lineage)</span></div>
+<div class="block">Set up the lineage facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>lineage</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDataQualityMetrics()">
+<h3>getDataQualityMetrics</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageDataQualityMetricsDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsDataSetFacet</a></span>&nbsp;<span class="element-name">getDataQualityMetrics</span>()</div>
+<div class="block">Return the dataQualityMetrics facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setDataQualityMetrics(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataQualityMetricsDataSetFacet)">
+<h3>setDataQualityMetrics</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDataQualityMetrics</span><wbr><span class="parameters">(<a href="OpenLineageDataQualityMetricsDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsDataSetFacet</a>&nbsp;dataQualityMetrics)</span></div>
+<div class="block">Set up the dataQualityMetrics facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataQualityMetrics</code> - facet bean</dd>
 </dl>
 </section>
 </li>
@@ -280,10 +672,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getAdditionalProperties()">
 <h3>getAdditionalProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a>&gt;</span>&nbsp;<span class="element-name">getAdditionalProperties</span>()</div>
-<div class="block">Return a map of additional data set facets.  The name is the identifier of the facet type and the object is the facet itself.</div>
+<div class="block">Return any additional facets that are not modelled as named properties.  They are serialized as
+ top-level facet entries alongside the named facets.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>data set facet map (map from string to object)</dd>
+<dd>map of facet name to facet</dd>
 </dl>
 </section>
 </li>
@@ -291,10 +684,24 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setAdditionalProperties(java.util.Map)">
 <h3>setAdditionalProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAdditionalProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a>&gt;&nbsp;additionalProperties)</span></div>
-<div class="block">Set up a map of additional data set facets.  The name is the identifier of the facet type and the object is the facet itself.</div>
+<div class="block">Set up any additional facets that are not modelled as named properties.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>additionalProperties</code> - data set facet map (map from string to object)</dd>
+<dd><code>additionalProperties</code> - map of facet name to facet</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setAdditionalProperty(java.lang.String,org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetFacet)">
+<h3>setAdditionalProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAdditionalProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;facetName,
+ <a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a>&nbsp;facet)</span></div>
+<div class="block">Add a facet that is not modelled as a named property.  Jackson calls this for each unrecognized facet
+ found in the JSON.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>facetName</code> - name (key) of the facet</dd>
+<dd><code>facet</code> - facet bean</dd>
 </dl>
 </section>
 </li>

@@ -92,8 +92,10 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageOutputDataSetOutputFacets</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">This class represents the map of output facets in the open lineage standard spec
- https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.</div>
+<div class="block">This class represents the map of output dataset facets for an output dataset.  The standard facets from the OpenLineage spec, and the custom facets
+ registered in the OpenLineage registry, are held in named properties.  Any other facets (custom facets, or standard facets not yet modelled) are held in the
+ additionalProperties map, keyed by their facet name, so that nothing is lost on a round trip through these beans.
+ The map key of each facet in the JSON is the facet's key from the OpenLineage spec.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -131,12 +133,22 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageOutputDataSetOutputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputDataSetOutputFacet</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAdditionalProperties()" class="member-name-link">getAdditionalProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a map of additional output facets.</div>
+<div class="block">Return any additional facets that are not modelled as named properties.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageOutputStatisticsOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputStatisticsOutputDataSetFacet</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOutputStatistics()" class="member-name-link">getOutputStatistics</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageIcebergCommitReportOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageIcebergCommitReportOutputDataSetFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIcebergCommitReport()" class="member-name-link">getIcebergCommitReport</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return statistics facet.</div>
+<div class="block">Return the icebergCommitReport facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageOutputStatisticsOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputStatisticsOutputDataSetFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOutputStatistics()" class="member-name-link">getOutputStatistics</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the outputStatistics facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageOutputSubsetOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputSubsetOutputDataSetFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubset()" class="member-name-link">getSubset</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the subset facet.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -146,16 +158,32 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAdditionalProperties(java.util.Map)" class="member-name-link">setAdditionalProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageOutputDataSetOutputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputDataSetOutputFacet</a>&gt;&nbsp;additionalProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up a map of additional custom facets.</div>
+<div class="block">Set up any additional facets that are not modelled as named properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAdditionalProperty(java.lang.String,org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageOutputDataSetOutputFacet)" class="member-name-link">setAdditionalProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;facetName,
+ <a href="OpenLineageOutputDataSetOutputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputDataSetOutputFacet</a>&nbsp;facet)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a facet that is not modelled as a named property.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIcebergCommitReport(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageIcebergCommitReportOutputDataSetFacet)" class="member-name-link">setIcebergCommitReport</a><wbr>(<a href="OpenLineageIcebergCommitReportOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageIcebergCommitReportOutputDataSetFacet</a>&nbsp;icebergCommitReport)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the icebergCommitReport facet.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOutputStatistics(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageOutputStatisticsOutputDataSetFacet)" class="member-name-link">setOutputStatistics</a><wbr>(<a href="OpenLineageOutputStatisticsOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputStatisticsOutputDataSetFacet</a>&nbsp;outputStatistics)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up statistics facet.</div>
+<div class="block">Set up the outputStatistics facet.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSubset(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageOutputSubsetOutputDataSetFacet)" class="member-name-link">setSubset</a><wbr>(<a href="OpenLineageOutputSubsetOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputSubsetOutputDataSetFacet</a>&nbsp;subset)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the subset facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Standard toString method.</div>
 </div>
 </div>
@@ -194,10 +222,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getOutputStatistics()">
 <h3>getOutputStatistics</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageOutputStatisticsOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputStatisticsOutputDataSetFacet</a></span>&nbsp;<span class="element-name">getOutputStatistics</span>()</div>
-<div class="block">Return statistics facet.</div>
+<div class="block">Return the outputStatistics facet.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>facet</dd>
+<dd>facet bean</dd>
 </dl>
 </section>
 </li>
@@ -205,10 +233,54 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setOutputStatistics(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageOutputStatisticsOutputDataSetFacet)">
 <h3>setOutputStatistics</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOutputStatistics</span><wbr><span class="parameters">(<a href="OpenLineageOutputStatisticsOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputStatisticsOutputDataSetFacet</a>&nbsp;outputStatistics)</span></div>
-<div class="block">Set up statistics facet.</div>
+<div class="block">Set up the outputStatistics facet.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>outputStatistics</code> - facet</dd>
+<dd><code>outputStatistics</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSubset()">
+<h3>getSubset</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageOutputSubsetOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputSubsetOutputDataSetFacet</a></span>&nbsp;<span class="element-name">getSubset</span>()</div>
+<div class="block">Return the subset facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSubset(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageOutputSubsetOutputDataSetFacet)">
+<h3>setSubset</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSubset</span><wbr><span class="parameters">(<a href="OpenLineageOutputSubsetOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputSubsetOutputDataSetFacet</a>&nbsp;subset)</span></div>
+<div class="block">Set up the subset facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>subset</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getIcebergCommitReport()">
+<h3>getIcebergCommitReport</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageIcebergCommitReportOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageIcebergCommitReportOutputDataSetFacet</a></span>&nbsp;<span class="element-name">getIcebergCommitReport</span>()</div>
+<div class="block">Return the icebergCommitReport facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setIcebergCommitReport(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageIcebergCommitReportOutputDataSetFacet)">
+<h3>setIcebergCommitReport</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setIcebergCommitReport</span><wbr><span class="parameters">(<a href="OpenLineageIcebergCommitReportOutputDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageIcebergCommitReportOutputDataSetFacet</a>&nbsp;icebergCommitReport)</span></div>
+<div class="block">Set up the icebergCommitReport facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>icebergCommitReport</code> - facet bean</dd>
 </dl>
 </section>
 </li>
@@ -216,10 +288,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getAdditionalProperties()">
 <h3>getAdditionalProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageOutputDataSetOutputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputDataSetOutputFacet</a>&gt;</span>&nbsp;<span class="element-name">getAdditionalProperties</span>()</div>
-<div class="block">Return a map of additional output facets.  The name is the identifier of the facet type and the object is the facet itself.</div>
+<div class="block">Return any additional facets that are not modelled as named properties.  They are serialized as
+ top-level facet entries alongside the named facets.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>output facet map (map from string to object)</dd>
+<dd>map of facet name to facet</dd>
 </dl>
 </section>
 </li>
@@ -227,10 +300,24 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setAdditionalProperties(java.util.Map)">
 <h3>setAdditionalProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAdditionalProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageOutputDataSetOutputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputDataSetOutputFacet</a>&gt;&nbsp;additionalProperties)</span></div>
-<div class="block">Set up a map of additional custom facets.  The name is the identifier of the facet type and the object is the facet itself.</div>
+<div class="block">Set up any additional facets that are not modelled as named properties.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>additionalProperties</code> - output facet map (map from string to object)</dd>
+<dd><code>additionalProperties</code> - map of facet name to facet</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setAdditionalProperty(java.lang.String,org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageOutputDataSetOutputFacet)">
+<h3>setAdditionalProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAdditionalProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;facetName,
+ <a href="OpenLineageOutputDataSetOutputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputDataSetOutputFacet</a>&nbsp;facet)</span></div>
+<div class="block">Add a facet that is not modelled as a named property.  Jackson calls this for each unrecognized facet
+ found in the JSON.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>facetName</code> - name (key) of the facet</dd>
+<dd><code>facet</code> - facet bean</dd>
 </dl>
 </section>
 </li>

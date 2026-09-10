@@ -96,9 +96,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageOutputStatisticsOutputDataSetFacet</span>
 <span class="extends-implements">extends <a href="OpenLineageOutputDataSetOutputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputDataSetOutputFacet</a></span></div>
-<div class="block">This class represents the content of an open lineage documentation data set facet as defined in JSON
- spec https://openlineage.io/spec/facets/1-0-0/OutputStatisticsOutputDatasetFacet.json#/$defs/OutputStatisticsOutputDatasetFacet.
- It is used internally in Egeria to pass this information to the integration daemon's integration connectors.</div>
+<div class="block">This class represents the outputStatistics output dataset facet.  It captures the volume of data written to the dataset by the run.
+ It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-0-2/OutputStatisticsOutputDatasetFacet.json#/$defs/OutputStatisticsOutputDatasetFacet.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -133,30 +132,40 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRowCount()" class="member-name-link">getRowCount</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileCount()" class="member-name-link">getFileCount</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the number of row written to the data set.</div>
+<div class="block">Return the number of files written to the dataset.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSize()" class="member-name-link">getSize</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRowCount()" class="member-name-link">getRowCount</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the number of bytes written to the data set.</div>
+<div class="block">Return the number of rows written to the dataset.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSize()" class="member-name-link">getSize</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the size in bytes written to the dataset.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code based on properties.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFileCount(java.lang.Long)" class="member-name-link">setFileCount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;fileCount)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the number of files written to the dataset.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRowCount(long)" class="member-name-link">setRowCount</a><wbr>(long&nbsp;rowCount)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRowCount(java.lang.Long)" class="member-name-link">setRowCount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;rowCount)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the number of row written to the data set.</div>
+<div class="block">Set up the number of rows written to the dataset.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSize(long)" class="member-name-link">setSize</a><wbr>(long&nbsp;size)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSize(java.lang.Long)" class="member-name-link">setSize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;size)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the number of bytes written to the data set.</div>
+<div class="block">Set up the size in bytes written to the dataset.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -168,7 +177,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageFacet">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.openlineage.<a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></h3>
-<code><a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a></code></div>
+<code><a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="OpenLineageFacet.html#setAdditionalProperty(java.lang.String,java.lang.Object)">setAdditionalProperty</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -201,44 +210,66 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getRowCount()">
 <h3>getRowCount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getRowCount</span>()</div>
-<div class="block">Return the number of row written to the data set.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></span>&nbsp;<span class="element-name">getRowCount</span>()</div>
+<div class="block">Return the number of rows written to the dataset.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>count</dd>
+<dd>long</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setRowCount(long)">
+<section class="detail" id="setRowCount(java.lang.Long)">
 <h3>setRowCount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRowCount</span><wbr><span class="parameters">(long&nbsp;rowCount)</span></div>
-<div class="block">Set up the number of row written to the data set.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRowCount</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;rowCount)</span></div>
+<div class="block">Set up the number of rows written to the dataset.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>rowCount</code> - count</dd>
+<dd><code>rowCount</code> - long</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getSize()">
 <h3>getSize</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getSize</span>()</div>
-<div class="block">Return the number of bytes written to the data set.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></span>&nbsp;<span class="element-name">getSize</span>()</div>
+<div class="block">Return the size in bytes written to the dataset.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>number of bytes</dd>
+<dd>long</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setSize(long)">
+<section class="detail" id="setSize(java.lang.Long)">
 <h3>setSize</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSize</span><wbr><span class="parameters">(long&nbsp;size)</span></div>
-<div class="block">Set up the number of bytes written to the data set.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;size)</span></div>
+<div class="block">Set up the size in bytes written to the dataset.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>size</code> - number of bytes</dd>
+<dd><code>size</code> - long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getFileCount()">
+<h3>getFileCount</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></span>&nbsp;<span class="element-name">getFileCount</span>()</div>
+<div class="block">Return the number of files written to the dataset.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setFileCount(java.lang.Long)">
+<h3>setFileCount</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFileCount</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;fileCount)</span></div>
+<div class="block">Set up the number of files written to the dataset.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>fileCount</code> - long</dd>
 </dl>
 </section>
 </li>

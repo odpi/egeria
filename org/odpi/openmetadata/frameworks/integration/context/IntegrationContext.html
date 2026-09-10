@@ -319,6 +319,16 @@ loadScripts(document, 'script');</script>
 <div class="block">Called when an integration connector wishes to publish an Open Data Product Standard (ODPS) data product.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageDataSetEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent)" class="member-name-link">publishOpenLineageDataSetEvent</a><wbr>(<a href="../openlineage/OpenLineageDataSetEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetEvent</a>&nbsp;event)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called each time an open lineage dataset event is published to the integration daemon as a bean.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageJobEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent)" class="member-name-link">publishOpenLineageJobEvent</a><wbr>(<a href="../openlineage/OpenLineageJobEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobEvent</a>&nbsp;event)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called each time an open lineage job event is published to the integration daemon as a bean.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(java.lang.String)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called each time an integration connector wishes to publish an open lineage run event.</div>
@@ -535,6 +545,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="publishOpenLineageJobEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent)">
+<h3>publishOpenLineageJobEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishOpenLineageJobEvent</span><wbr><span class="parameters">(<a href="../openlineage/OpenLineageJobEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobEvent</a>&nbsp;event)</span></div>
+<div class="block">Called each time an open lineage job event is published to the integration daemon as a bean.  The event is
+ delivered to each of the registered listeners.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>event</code> - bean for the event</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="registerBitolListener(org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener)">
 <h3>registerBitolListener</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerBitolListener</span><wbr><span class="parameters">(<a href="../bitol/BitolDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentListener</a>&nbsp;listener)</span></div>
@@ -543,6 +565,18 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>listener</code> - listener to call</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishOpenLineageDataSetEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent)">
+<h3>publishOpenLineageDataSetEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishOpenLineageDataSetEvent</span><wbr><span class="parameters">(<a href="../openlineage/OpenLineageDataSetEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetEvent</a>&nbsp;event)</span></div>
+<div class="block">Called each time an open lineage dataset event is published to the integration daemon as a bean.  The event is
+ delivered to each of the registered listeners.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>event</code> - bean for the event</dd>
 </dl>
 </section>
 </li>

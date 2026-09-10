@@ -103,8 +103,31 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageCataloguerIntegrationConnector</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a>
 implements <a href="../../../../frameworks/integration/openlineage/OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a></span></div>
-<div class="block">OpenLineageCataloguerIntegrationConnector is an integration connector to register an OpenLineage listener with the integration daemon
- and to catalog any processes that are not already known to the open metadata ecosystem.</div>
+<div class="block">OpenLineageCataloguerIntegrationConnector receives OpenLineage events published to the integration daemon and
+ catalogues what they describe in open metadata:
+ <ul>
+     <li>Each OpenLineage <b>job</b> is matched to an existing process by namespace and resource name, or becomes a
+     new process (DeployedSoftwareComponent).  Its documentation, sql,
+     sourceCode, sourceCodeLocation, jobType, ownership and tags facets populate the process's properties.</li>
+     <li>The <b>parent</b> and <b>root</b> jobs from the parent run facet become processes that own the job's process
+     (OWNED ProcessHierarchy relationships, with the parent as the anchor of a newly created child).  Job dependencies (jobDependencies run facet and the JOB entries of the
+     lineage job facet) become ControlFlow relationships between processes.</li>
+     <li>Each <b>input and output dataset</b> is matched to an existing data asset by namespace and resource name,
+     or becomes a new data asset whose open metadata type is chosen from the dataset's namespace and datasetType
+     facet (ambiguous or wrong-typed matches are linked to it as peer duplicates).  Its documentation, dataSource, storage, catalog, version, symlinks,
+     hierarchy, ownership and tags facets populate the asset.  The schema facet creates a tabular schema for the asset
+     (optional).</li>
+     <li>Inputs are linked to the process, and the process to the outputs, with <b>DataFlow</b> relationships.
+     The columnLineage and lineage dataset facets create <b>LineageMapping</b> relationships between columns.</li>
+     <li>Run counts, timings and data volumes are always maintained in the RunMetrics classification of the job's process.  Each <b>run</b> can
+     optionally also become a TransientEmbeddedProcess owned by the job's process, recording the run's status,
+     timing and run facets.</li>
+     <li>The inputStatistics, outputStatistics, dataQualityMetrics, dataQualityAssertions and test facets are optionally
+     captured as annotations in a SurveyReport created for the run, and the <b>DataScope</b> classification of the
+     output data assets is optionally maintained from the times and statistics of the writes.</li>
+ </ul>
+ The optional behaviours are controlled by the configuration properties defined in
+ <a href="controls/OpenLineageCataloguerConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls"><code>OpenLineageCataloguerConfigurationProperty</code></a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -167,6 +190,18 @@ implements <a href="../../../../frameworks/integration/openlineage/OpenLineageEv
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOpenLineageDataSetEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent,java.lang.String)" class="member-name-link">processOpenLineageDataSetEvent</a><wbr>(<a href="../../../../frameworks/integration/openlineage/OpenLineageDataSetEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetEvent</a>&nbsp;event,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called each time an open lineage dataset event is published to the integration daemon.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOpenLineageJobEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent,java.lang.String)" class="member-name-link">processOpenLineageJobEvent</a><wbr>(<a href="../../../../frameworks/integration/openlineage/OpenLineageJobEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobEvent</a>&nbsp;event,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called each time an open lineage job event is published to the integration daemon.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent,java.lang.String)" class="member-name-link">processOpenLineageRunEvent</a><wbr>(<a href="../../../../frameworks/integration/openlineage/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunEvent</a>&nbsp;event,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
@@ -253,14 +288,15 @@ implements <a href="../../../../frameworks/integration/openlineage/OpenLineageEv
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">start</span>()
            throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
 <a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Indicates that the connector is completely configured and can begin processing.</div>
+<div class="block">Indicates that the connector is completely configured and can begin processing.
+ This call can be used to register with non-blocking services.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html#start()">start</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>
 <dt>Overrides:</dt>
 <dd><code><a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a></code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector detected a problem.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
 </dl>
 </section>
@@ -268,16 +304,14 @@ implements <a href="../../../../frameworks/integration/openlineage/OpenLineageEv
 <li>
 <section class="detail" id="refresh()">
 <h3>refresh</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
-             throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()</div>
 <div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
  Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
- as well as any external REST API calls to explicitly refresh the connector.</div>
+ as well as any external REST API calls to explicitly refresh the connector.
+ This connector is event driven so there is nothing to do.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html#refresh()">refresh</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem with the connector.  It is not able to refresh the metadata.</dd>
 </dl>
 </section>
 </li>
@@ -286,15 +320,45 @@ implements <a href="../../../../frameworks/integration/openlineage/OpenLineageEv
 <h3>processOpenLineageRunEvent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processOpenLineageRunEvent</span><wbr><span class="parameters">(<a href="../../../../frameworks/integration/openlineage/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunEvent</a>&nbsp;event,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</span></div>
-<div class="block">Called each time an open lineage run event is published to the integration daemon.  The integration connector is able to
- work with the formatted event using the Egeria beans or reformat the open lineage run event using the supplied open lineage backend beans
- or another set of beans.</div>
+<div class="block">Called each time an open lineage run event is published to the integration daemon.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/integration/openlineage/OpenLineageEventListener.html#processOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent,java.lang.String)">processOpenLineageRunEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/integration/openlineage/OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>event</code> - run event formatted using Egeria supplied beans (null if egeria can not format the event)</dd>
-<dd><code>rawEvent</code> - json payload received for the event</dd>
+<dd><code>event</code> - bean representation of the run event</dd>
+<dd><code>rawEvent</code> - event in Json form from the originator - may have facets that are not known to Egeria</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="processOpenLineageJobEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent,java.lang.String)">
+<h3>processOpenLineageJobEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processOpenLineageJobEvent</span><wbr><span class="parameters">(<a href="../../../../frameworks/integration/openlineage/OpenLineageJobEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobEvent</a>&nbsp;event,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</span></div>
+<div class="block">Called each time an open lineage job event is published to the integration daemon.  Job events describe a job
+ and its inputs/outputs independently of a run - typically when the job is deployed.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/integration/openlineage/OpenLineageEventListener.html#processOpenLineageJobEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent,java.lang.String)">processOpenLineageJobEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/integration/openlineage/OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>event</code> - bean representation of the job event</dd>
+<dd><code>rawEvent</code> - event in Json form from the originator - may have facets that are not known to Egeria</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="processOpenLineageDataSetEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent,java.lang.String)">
+<h3>processOpenLineageDataSetEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processOpenLineageDataSetEvent</span><wbr><span class="parameters">(<a href="../../../../frameworks/integration/openlineage/OpenLineageDataSetEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetEvent</a>&nbsp;event,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</span></div>
+<div class="block">Called each time an open lineage dataset event is published to the integration daemon.  Dataset events describe
+ a dataset independently of a run - typically when it is created or its schema changes.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/integration/openlineage/OpenLineageEventListener.html#processOpenLineageDataSetEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent,java.lang.String)">processOpenLineageDataSetEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/integration/openlineage/OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>event</code> - bean representation of the dataset event</dd>
+<dd><code>rawEvent</code> - event in Json form from the originator - may have facets that are not known to Egeria</dd>
 </dl>
 </section>
 </li>

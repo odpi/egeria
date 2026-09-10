@@ -93,13 +93,15 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="OpenLineageDocumentationDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDocumentationDataSetFacet</a></code>, <code><a href="OpenLineageParentRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacet</a></code>, <code><a href="OpenLineageSchemaDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSchemaDataSetFacet</a></code></dd>
+<dd><code><a href="OpenLineageCatalogDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageCatalogDataSetFacet</a></code>, <code><a href="OpenLineageColumnLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageColumnLineageDataSetFacet</a></code>, <code><a href="OpenLineageDataQualityMetricsDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsDataSetFacet</a></code>, <code><a href="OpenLineageDataSetTypeDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetTypeDataSetFacet</a></code>, <code><a href="OpenLineageDataSetVersionDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetVersionDataSetFacet</a></code>, <code><a href="OpenLineageDataSourceDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSourceDataSetFacet</a></code>, <code><a href="OpenLineageDocumentationDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDocumentationDataSetFacet</a></code>, <code><a href="OpenLineageHierarchyDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageHierarchyDataSetFacet</a></code>, <code><a href="OpenLineageLifecycleStateChangeDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageLifecycleStateChangeDataSetFacet</a></code>, <code><a href="OpenLineageLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageLineageDataSetFacet</a></code>, <code><a href="OpenLineageOwnershipDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOwnershipDataSetFacet</a></code>, <code><a href="OpenLineageSchemaDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSchemaDataSetFacet</a></code>, <code><a href="OpenLineageStorageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageStorageDataSetFacet</a></code>, <code><a href="OpenLineageSymlinksDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSymlinksDataSetFacet</a></code>, <code><a href="OpenLineageTagsDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTagsDataSetFacet</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageDataSetFacet</span>
 <span class="extends-implements">extends <a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></span></div>
-<div class="block">This class represents the Common header for facets relating to a data set in the open lineage standard spec
- https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.</div>
+<div class="block">This class represents a dataset facet from the OpenLineage standard spec
+ https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/DatasetFacet.  It is the superclass of the standard
+ facets of this kind, and is also used directly to hold custom facets (or standard facets that are not yet modelled)
+ whose properties are then found in additionalProperties.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -117,7 +119,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.net.URI)" class="member-name-link">OpenLineageDataSetFacet</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;schemaURL)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Subclass constructor</div>
+<div class="block">Constructor for subclasses that sets up the schema URL for the facet.</div>
 </div>
 </div>
 </section>
@@ -133,6 +135,26 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#get_deleted()" class="member-name-link">get_deleted</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether this facet is being deleted (set to true to delete a facet).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return hash code based on properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#set_deleted(java.lang.Boolean)" class="member-name-link">set_deleted</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&nbsp;deleted)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up whether this facet is being deleted (set to true to delete a facet).</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -143,7 +165,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageFacet">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.openlineage.<a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></h3>
-<code><a href="OpenLineageFacet.html#equals(java.lang.Object)">equals</a>, <a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#hashCode()">hashCode</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a></code></div>
+<code><a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="OpenLineageFacet.html#setAdditionalProperty(java.lang.String,java.lang.Object)">setAdditionalProperty</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -169,10 +191,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(java.net.URI)">
 <h3>OpenLineageDataSetFacet</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenLineageDataSetFacet</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;schemaURL)</span></div>
-<div class="block">Subclass constructor</div>
+<div class="block">Constructor for subclasses that sets up the schema URL for the facet.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>schemaURL</code> - default value for schemaURL</dd>
+<dd><code>schemaURL</code> - URL of the JSON schema that describes this facet</dd>
 </dl>
 </section>
 </li>
@@ -185,6 +207,28 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="get_deleted()">
+<h3>get_deleted</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a></span>&nbsp;<span class="element-name">get_deleted</span>()</div>
+<div class="block">Return whether this facet is being deleted (set to true to delete a facet).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>boolean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="set_deleted(java.lang.Boolean)">
+<h3>set_deleted</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">set_deleted</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&nbsp;deleted)</span></div>
+<div class="block">Set up whether this facet is being deleted (set to true to delete a facet).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>deleted</code> - boolean</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
@@ -194,6 +238,34 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="OpenLineageFacet.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="equals(java.lang.Object)">
+<h3>equals</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="OpenLineageFacet.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>objectToCompare</code> - supplied object</dd>
+<dt>Returns:</dt>
+<dd>boolean result of comparison</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hashCode()">
+<h3>hashCode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
+<div class="block">Return hash code based on properties.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="OpenLineageFacet.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></code></dd>
+<dt>Returns:</dt>
+<dd>int</dd>
 </dl>
 </section>
 </li>

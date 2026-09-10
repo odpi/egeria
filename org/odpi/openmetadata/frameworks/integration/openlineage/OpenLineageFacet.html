@@ -91,13 +91,15 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a></code>, <code><a href="OpenLineageDataSourceDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSourceDataSetFacet</a></code>, <code><a href="OpenLineageInputDataSetInputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageInputDataSetInputFacet</a></code>, <code><a href="OpenLineageJobFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobFacet</a></code>, <code><a href="OpenLineageOutputDataSetOutputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputDataSetOutputFacet</a></code></dd>
+<dd><code><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a></code>, <code><a href="OpenLineageInputDataSetInputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageInputDataSetInputFacet</a></code>, <code><a href="OpenLineageJobFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobFacet</a></code>, <code><a href="OpenLineageOutputDataSetOutputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageOutputDataSetOutputFacet</a></code>, <code><a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">OpenLineageFacet</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">This class represents the Common header for facets in the open lineage standard spec
- https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.</div>
+<div class="block">This class represents the common header for facets in the OpenLineage standard spec
+ https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/BaseFacet.  Every facet carries the URI of the producer that
+ created it and the URL of the schema that describes it.  Any properties in the JSON that are not modelled by the
+ subclass are held in additionalProperties so they survive a round trip through these beans.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -111,7 +113,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.net.URI)" class="member-name-link">OpenLineageFacet</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;schemaURL)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Subclass constructor</div>
+<div class="block">Constructor that sets up the schema URL for the facet.</div>
 </div>
 </div>
 </section>
@@ -145,7 +147,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAdditionalProperties()" class="member-name-link">getAdditionalProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a map of additional custom facets.</div>
+<div class="block">Return any properties of the facet that are not modelled by the bean.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -165,11 +167,17 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAdditionalProperties(java.util.Map)" class="member-name-link">setAdditionalProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;additionalProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up a map of additional custom facets.</div>
+<div class="block">Set up any properties of the facet that are not modelled by the bean.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAdditionalProperty(java.lang.String,java.lang.Object)" class="member-name-link">setAdditionalProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;propertyValue)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a property that is not modelled by the bean.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Standard toString method.</div>
 </div>
 </div>
@@ -193,10 +201,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(java.net.URI)">
 <h3>OpenLineageFacet</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenLineageFacet</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;schemaURL)</span></div>
-<div class="block">Subclass constructor</div>
+<div class="block">Constructor that sets up the schema URL for the facet.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>schemaURL</code> - default value for schemaURL</dd>
+<dd><code>schemaURL</code> - URL of the JSON schema that describes this facet</dd>
 </dl>
 </section>
 </li>
@@ -226,7 +234,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the URI identifying the producer of this metadata. For example this could be a git url with a given tag or sha.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>producer</code> - uri</dd>
+<dd><code>producer</code> - URI</dd>
 </dl>
 </section>
 </li>
@@ -237,7 +245,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the JSON Pointer (https://tools.ietf.org/html/rfc6901) URL to the corresponding version of the schema definition for this facet.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>uri</dd>
+<dd>URI</dd>
 </dl>
 </section>
 </li>
@@ -248,7 +256,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the JSON Pointer (https://tools.ietf.org/html/rfc6901) URL to the corresponding version of the schema definition for this facet.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>schemaURL</code> - uri</dd>
+<dd><code>schemaURL</code> - URI</dd>
 </dl>
 </section>
 </li>
@@ -256,10 +264,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getAdditionalProperties()">
 <h3>getAdditionalProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">getAdditionalProperties</span>()</div>
-<div class="block">Return a map of additional custom facets.  The name is the identifier of the facet type and the object is the facet itself.</div>
+<div class="block">Return any properties of the facet that are not modelled by the bean.  They are serialized as top-level properties
+ of the facet alongside the modelled properties.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>custom facet map (map from string to object)</dd>
+<dd>map of property name to value</dd>
 </dl>
 </section>
 </li>
@@ -267,10 +276,23 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setAdditionalProperties(java.util.Map)">
 <h3>setAdditionalProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAdditionalProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;additionalProperties)</span></div>
-<div class="block">Set up a map of additional custom facets.  The name is the identifier of the facet type and the object is the facet itself.</div>
+<div class="block">Set up any properties of the facet that are not modelled by the bean.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>additionalProperties</code> - custom facet map (map from string to object)</dd>
+<dd><code>additionalProperties</code> - map of property name to value</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setAdditionalProperty(java.lang.String,java.lang.Object)">
+<h3>setAdditionalProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAdditionalProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;propertyValue)</span></div>
+<div class="block">Add a property that is not modelled by the bean.  Jackson calls this for each unrecognized property found in the JSON.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of the property</dd>
+<dd><code>propertyValue</code> - value of the property</dd>
 </dl>
 </section>
 </li>

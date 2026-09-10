@@ -87,15 +87,17 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageFacet</a>
+<div class="inheritance"><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetFacet</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSourceDataSetFacet</div>
+</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageDataSourceDataSetFacet</span>
-<span class="extends-implements">extends <a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></span></div>
-<div class="block">This class represents the Common header for facets in the open lineage standard spec
- https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.</div>
+<span class="extends-implements">extends <a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a></span></div>
+<div class="block">This class represents the dataSource dataset facet.  It identifies the data source that hosts the dataset.
+ It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-0-1/DatasourceDatasetFacet.json#/$defs/DatasourceDatasetFacet.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -164,8 +166,11 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetFacet">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.openlineage.<a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a></h3>
+<code><a href="OpenLineageDataSetFacet.html#get_deleted()">get_deleted</a>, <a href="OpenLineageDataSetFacet.html#set_deleted(java.lang.Boolean)">set_deleted</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageFacet">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.openlineage.<a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></h3>
-<code><a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a></code></div>
+<code><a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="OpenLineageFacet.html#setAdditionalProperty(java.lang.String,java.lang.Object)">setAdditionalProperty</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -202,7 +207,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the name of the data source.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>string name</dd>
+<dd>string</dd>
 </dl>
 </section>
 </li>
@@ -213,7 +218,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the name of the data source.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>name</code> - string name</dd>
+<dd><code>name</code> - string</dd>
 </dl>
 </section>
 </li>
@@ -235,7 +240,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the URI to connect to the data source.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>uri</code> - uri string</dd>
+<dd><code>uri</code> - uri</dd>
 </dl>
 </section>
 </li>
@@ -246,7 +251,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="OpenLineageFacet.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></code></dd>
+<dd><code><a href="OpenLineageDataSetFacet.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -259,7 +264,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="OpenLineageFacet.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></code></dd>
+<dd><code><a href="OpenLineageDataSetFacet.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -274,7 +279,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code based on properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="OpenLineageFacet.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></code></dd>
+<dd><code><a href="OpenLineageDataSetFacet.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a></code></dd>
 <dt>Returns:</dt>
 <dd>int</dd>
 </dl>

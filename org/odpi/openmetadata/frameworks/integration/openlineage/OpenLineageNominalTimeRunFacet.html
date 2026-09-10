@@ -86,17 +86,18 @@ loadScripts(document, 'script');</script>
 <h1 title="Class OpenLineageNominalTimeRunFacet" class="title">Class OpenLineageNominalTimeRunFacet</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageFacet</a>
 <div class="inheritance"><a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunFacet</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageNominalTimeRunFacet</div>
+</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageNominalTimeRunFacet</span>
 <span class="extends-implements">extends <a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a></span></div>
-<div class="block">This class represents the content of an open lineage schema for the nominal (expected) time of a job run facet as defined in JSON
- spec https://openlineage.io/spec/facets/1-0-0/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet.
- It is used internally in Egeria to pass this information to the integration daemon's integration connectors.</div>
+<div class="block">This class represents the nominalTime run facet.  It captures the nominal (scheduled) start and end time of the run.
+ It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-0-1/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -134,12 +135,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNominalEndTime()" class="member-name-link">getNominalEndTime</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp representing the nominal end time (excluded) of the run.</div>
+<div class="block">Return the ISO-8601 timestamp representing the nominal end time (excluded) of the run.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNominalStartTime()" class="member-name-link">getNominalStartTime</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp representing the nominal start time (included) of the run.</div>
+<div class="block">Return the ISO-8601 timestamp representing the nominal start time (included) of the run.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -149,12 +150,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNominalEndTime(java.lang.String)" class="member-name-link">setNominalEndTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nominalEndTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp representing the nominal end time (excluded) of the run.</div>
+<div class="block">Set up the ISO-8601 timestamp representing the nominal end time (excluded) of the run.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNominalStartTime(java.lang.String)" class="member-name-link">setNominalStartTime</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nominalStartTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp representing the nominal start time (included) of the run.</div>
+<div class="block">Set up the ISO-8601 timestamp representing the nominal start time (included) of the run.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -165,8 +166,8 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunFacet">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.openlineage.<a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a></h3>
-<code><a href="OpenLineageRunFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageRunFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageRunFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageRunFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageRunFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageRunFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageFacet">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.openlineage.<a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></h3>
+<code><a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="OpenLineageFacet.html#setAdditionalProperty(java.lang.String,java.lang.Object)">setAdditionalProperty</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -200,11 +201,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getNominalStartTime()">
 <h3>getNominalStartTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getNominalStartTime</span>()</div>
-<div class="block">Return an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp representing the nominal start time (included) of the run.
- AKA the schedule time.</div>
+<div class="block">Return the ISO-8601 timestamp representing the nominal start time (included) of the run. AKA the schedule time.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>zoned time stamp</dd>
+<dd>string</dd>
 </dl>
 </section>
 </li>
@@ -212,11 +212,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setNominalStartTime(java.lang.String)">
 <h3>setNominalStartTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setNominalStartTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nominalStartTime)</span></div>
-<div class="block">Set up an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp representing the nominal start time (included) of the run.
- AKA the schedule time.</div>
+<div class="block">Set up the ISO-8601 timestamp representing the nominal start time (included) of the run. AKA the schedule time.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>nominalStartTime</code> - zoned time stamp</dd>
+<dd><code>nominalStartTime</code> - string</dd>
 </dl>
 </section>
 </li>
@@ -224,11 +223,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getNominalEndTime()">
 <h3>getNominalEndTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getNominalEndTime</span>()</div>
-<div class="block">Return an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp representing the nominal end time (excluded) of the run.
- (Should be the nominal start time of next run.)</div>
+<div class="block">Return the ISO-8601 timestamp representing the nominal end time (excluded) of the run. AKA the schedule time.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>zoned time stamp</dd>
+<dd>string</dd>
 </dl>
 </section>
 </li>
@@ -236,11 +234,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setNominalEndTime(java.lang.String)">
 <h3>setNominalEndTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setNominalEndTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nominalEndTime)</span></div>
-<div class="block">Set up an [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp representing the nominal end time (excluded) of the run.
- (Should be the nominal start time of next run.)</div>
+<div class="block">Set up the ISO-8601 timestamp representing the nominal end time (excluded) of the run. AKA the schedule time.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>nominalEndTime</code> - zoned time stamp</dd>
+<dd><code>nominalEndTime</code> - string</dd>
 </dl>
 </section>
 </li>
@@ -264,7 +261,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="OpenLineageRunFacet.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a></code></dd>
+<dd><code><a href="OpenLineageFacet.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -279,7 +276,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code based on properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="OpenLineageRunFacet.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a></code></dd>
+<dd><code><a href="OpenLineageFacet.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></code></dd>
 <dt>Returns:</dt>
 <dd>int</dd>
 </dl>

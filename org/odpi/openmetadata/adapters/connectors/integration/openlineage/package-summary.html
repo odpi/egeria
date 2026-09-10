@@ -126,8 +126,11 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenLineageCataloguerIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageCataloguerIntegrationConnector</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">OpenLineageCataloguerIntegrationConnector is an integration connector to register an OpenLineage listener with the integration daemon
- and to catalog any processes that are not already known to the open metadata ecosystem.</div>
+<div class="block">OpenLineageCataloguerIntegrationConnector receives OpenLineage events published to the integration daemon and
+ catalogues what they describe in open metadata:
+ 
+     Each OpenLineage <b>job</b> is matched to an existing process by namespace and resource name, or becomes a
+     new process (DeployedSoftwareComponent).</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenLineageCataloguerIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageCataloguerIntegrationProvider</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">

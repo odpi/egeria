@@ -133,6 +133,38 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">LOVELACE-INSIGHTS-0018 - The {0} governance action service has processed the {1} governance zone ({2})</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE_ANALYSIS_COMPLETED" class="member-name-link">OPEN_LINEAGE_ANALYSIS_COMPLETED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">LOVELACE-INSIGHTS-0041 - The {0} governance action service has completed, updating {1} elements with {2} from OpenLineage log store {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#OPEN_LINEAGE_ANALYSIS_STARTED" class="member-name-link">OPEN_LINEAGE_ANALYSIS_STARTED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">LOVELACE-INSIGHTS-0039 - The {0} governance action service is analysing OpenLineage log store {1} for events between {2} and {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE_DATA_QUALITY_SUMMARISED" class="member-name-link">OPEN_LINEAGE_DATA_QUALITY_SUMMARISED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">LOVELACE-INSIGHTS-0045 - The {0} governance action service has summarised the data quality of {1} {2} (element {3}) across {4} dimensions with an overall pass rate of {5}%</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#OPEN_LINEAGE_DATA_SCOPE_UPDATED" class="member-name-link">OPEN_LINEAGE_DATA_SCOPE_UPDATED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">LOVELACE-INSIGHTS-0044 - The {0} governance action service has updated the data scope of dataset {1} (asset {2}); the write pattern is {3} and the data collection window is {4} to {5}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE_ELEMENT_NOT_FOUND" class="member-name-link">OPEN_LINEAGE_ELEMENT_NOT_FOUND</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">LOVELACE-INSIGHTS-0042 - The {0} governance action service found {3} elements of type {1} for OpenLineage element {2} so it is skipped</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#OPEN_LINEAGE_EVENTS_READ" class="member-name-link">OPEN_LINEAGE_EVENTS_READ</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">LOVELACE-INSIGHTS-0040 - The {0} governance action service read {1} OpenLineage events ({2} files could not be read) covering {3} jobs and {4} datasets</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE_NO_LOG_STORE" class="member-name-link">OPEN_LINEAGE_NO_LOG_STORE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">LOVELACE-INSIGHTS-0046 - The {0} governance action service cannot find an OpenLineage log store to analyse (directory: {1})</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#OPEN_LINEAGE_PROCESS_PROFILED" class="member-name-link">OPEN_LINEAGE_PROCESS_PROFILED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">LOVELACE-INSIGHTS-0043 - The {0} governance action service has profiled {3} runs of job {1} into process {2}; the inferred schedule is {4}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#SERVICE_COMPLETED_SUCCESSFULLY" class="member-name-link">SERVICE_COMPLETED_SUCCESSFULLY</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">LOVELACE-INSIGHTS-0038 - The {0} governance action service {0} completed successfully</div>
@@ -245,6 +277,62 @@ the order they are declared.</div>
 <h3>SERVICE_COMPLETED_SUCCESSFULLY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LovelaceInsightAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_COMPLETED_SUCCESSFULLY</span></div>
 <div class="block">LOVELACE-INSIGHTS-0038 - The {0} governance action service {0} completed successfully</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_LINEAGE_ANALYSIS_STARTED">
+<h3>OPEN_LINEAGE_ANALYSIS_STARTED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LovelaceInsightAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightAuditCode</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_ANALYSIS_STARTED</span></div>
+<div class="block">LOVELACE-INSIGHTS-0039 - The {0} governance action service is analysing OpenLineage log store {1} for events between {2} and {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_LINEAGE_EVENTS_READ">
+<h3>OPEN_LINEAGE_EVENTS_READ</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LovelaceInsightAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightAuditCode</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_EVENTS_READ</span></div>
+<div class="block">LOVELACE-INSIGHTS-0040 - The {0} governance action service read {1} OpenLineage events ({2} files could not be read) covering {3} jobs and {4} datasets</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_LINEAGE_ANALYSIS_COMPLETED">
+<h3>OPEN_LINEAGE_ANALYSIS_COMPLETED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LovelaceInsightAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightAuditCode</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_ANALYSIS_COMPLETED</span></div>
+<div class="block">LOVELACE-INSIGHTS-0041 - The {0} governance action service has completed, updating {1} elements with {2} from OpenLineage log store {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_LINEAGE_ELEMENT_NOT_FOUND">
+<h3>OPEN_LINEAGE_ELEMENT_NOT_FOUND</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LovelaceInsightAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightAuditCode</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_ELEMENT_NOT_FOUND</span></div>
+<div class="block">LOVELACE-INSIGHTS-0042 - The {0} governance action service found {3} elements of type {1} for OpenLineage element {2} so it is skipped</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_LINEAGE_PROCESS_PROFILED">
+<h3>OPEN_LINEAGE_PROCESS_PROFILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LovelaceInsightAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightAuditCode</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_PROCESS_PROFILED</span></div>
+<div class="block">LOVELACE-INSIGHTS-0043 - The {0} governance action service has profiled {3} runs of job {1} into process {2}; the inferred schedule is {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_LINEAGE_DATA_SCOPE_UPDATED">
+<h3>OPEN_LINEAGE_DATA_SCOPE_UPDATED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LovelaceInsightAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightAuditCode</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_DATA_SCOPE_UPDATED</span></div>
+<div class="block">LOVELACE-INSIGHTS-0044 - The {0} governance action service has updated the data scope of dataset {1} (asset {2}); the write pattern is {3} and the data collection window is {4} to {5}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_LINEAGE_DATA_QUALITY_SUMMARISED">
+<h3>OPEN_LINEAGE_DATA_QUALITY_SUMMARISED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LovelaceInsightAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightAuditCode</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_DATA_QUALITY_SUMMARISED</span></div>
+<div class="block">LOVELACE-INSIGHTS-0045 - The {0} governance action service has summarised the data quality of {1} {2} (element {3}) across {4} dimensions with an overall pass rate of {5}%</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_LINEAGE_NO_LOG_STORE">
+<h3>OPEN_LINEAGE_NO_LOG_STORE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LovelaceInsightAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightAuditCode</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_NO_LOG_STORE</span></div>
+<div class="block">LOVELACE-INSIGHTS-0046 - The {0} governance action service cannot find an OpenLineage log store to analyse (directory: {1})</div>
 </section>
 </li>
 </ul>

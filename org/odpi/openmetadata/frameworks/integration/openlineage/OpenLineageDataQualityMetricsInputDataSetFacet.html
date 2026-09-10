@@ -96,8 +96,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageDataQualityMetricsInputDataSetFacet</span>
 <span class="extends-implements">extends <a href="OpenLineageInputDataSetInputFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageInputDataSetInputFacet</a></span></div>
-<div class="block">This class represents the data quality metrics facet in the open lineage standard spec
- https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.</div>
+<div class="block">This class represents the dataQualityMetrics input dataset facet.  It captures data quality metrics for the data read from the dataset by the run.
+ It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-0-3/DataQualityMetricsInputDatasetFacet.json#/$defs/DataQualityMetricsInputDatasetFacet.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -132,20 +132,30 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBytes()" class="member-name-link">getBytes</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the number of bytes.</div>
+<div class="block">Return the size in bytes.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageDataQualityMetricsColumnMetrics.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsColumnMetrics</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getColumnMetrics()" class="member-name-link">getColumnMetrics</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of column metrics for the data set.</div>
+<div class="block">Return the metrics for each column.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileCount()" class="member-name-link">getFileCount</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the number of files evaluated.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastUpdated()" class="member-name-link">getLastUpdated</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the ISO-8601 timestamp of the last time the dataset was changed.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRowCount()" class="member-name-link">getRowCount</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the row count metric.</div>
+<div class="block">Return the number of rows evaluated.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -153,19 +163,29 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code based on properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setBytes(long)" class="member-name-link">setBytes</a><wbr>(long&nbsp;bytes)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setBytes(java.lang.Long)" class="member-name-link">setBytes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;bytes)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the number of bytes.</div>
+<div class="block">Set up the size in bytes.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setColumnMetrics(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics)" class="member-name-link">setColumnMetrics</a><wbr>(<a href="OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics</a>&nbsp;columnMetrics)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setColumnMetrics(java.util.Map)" class="member-name-link">setColumnMetrics</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageDataQualityMetricsColumnMetrics.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsColumnMetrics</a>&gt;&nbsp;columnMetrics)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of column metrics for the data set.</div>
+<div class="block">Set up the metrics for each column.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRowCount(long)" class="member-name-link">setRowCount</a><wbr>(long&nbsp;rowCount)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFileCount(java.lang.Long)" class="member-name-link">setFileCount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;fileCount)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the row count metric.</div>
+<div class="block">Set up the number of files evaluated.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLastUpdated(java.lang.String)" class="member-name-link">setLastUpdated</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;lastUpdated)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the ISO-8601 timestamp of the last time the dataset was changed.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRowCount(java.lang.Long)" class="member-name-link">setRowCount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;rowCount)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the number of rows evaluated.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -177,7 +197,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageFacet">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.openlineage.<a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></h3>
-<code><a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a></code></div>
+<code><a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="OpenLineageFacet.html#setAdditionalProperty(java.lang.String,java.lang.Object)">setAdditionalProperty</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -210,8 +230,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getRowCount()">
 <h3>getRowCount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getRowCount</span>()</div>
-<div class="block">Return the row count metric.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></span>&nbsp;<span class="element-name">getRowCount</span>()</div>
+<div class="block">Return the number of rows evaluated.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>long</dd>
@@ -219,10 +239,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setRowCount(long)">
+<section class="detail" id="setRowCount(java.lang.Long)">
 <h3>setRowCount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRowCount</span><wbr><span class="parameters">(long&nbsp;rowCount)</span></div>
-<div class="block">Set up the row count metric.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRowCount</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;rowCount)</span></div>
+<div class="block">Set up the number of rows evaluated.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>rowCount</code> - long</dd>
@@ -232,8 +252,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getBytes()">
 <h3>getBytes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getBytes</span>()</div>
-<div class="block">Return the number of bytes.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></span>&nbsp;<span class="element-name">getBytes</span>()</div>
+<div class="block">Return the size in bytes.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>long</dd>
@@ -241,10 +261,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setBytes(long)">
+<section class="detail" id="setBytes(java.lang.Long)">
 <h3>setBytes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setBytes</span><wbr><span class="parameters">(long&nbsp;bytes)</span></div>
-<div class="block">Set up the number of bytes.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setBytes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;bytes)</span></div>
+<div class="block">Set up the size in bytes.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>bytes</code> - long</dd>
@@ -252,24 +272,68 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getColumnMetrics()">
-<h3>getColumnMetrics</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics</a></span>&nbsp;<span class="element-name">getColumnMetrics</span>()</div>
-<div class="block">Return the list of column metrics for the data set.</div>
+<section class="detail" id="getFileCount()">
+<h3>getFileCount</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></span>&nbsp;<span class="element-name">getFileCount</span>()</div>
+<div class="block">Return the number of files evaluated.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>list of column metrics</dd>
+<dd>long</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setColumnMetrics(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics)">
-<h3>setColumnMetrics</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setColumnMetrics</span><wbr><span class="parameters">(<a href="OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics</a>&nbsp;columnMetrics)</span></div>
-<div class="block">Set up the list of column metrics for the data set.</div>
+<section class="detail" id="setFileCount(java.lang.Long)">
+<h3>setFileCount</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFileCount</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;fileCount)</span></div>
+<div class="block">Set up the number of files evaluated.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>columnMetrics</code> - list of column metrics</dd>
+<dd><code>fileCount</code> - long</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getLastUpdated()">
+<h3>getLastUpdated</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getLastUpdated</span>()</div>
+<div class="block">Return the ISO-8601 timestamp of the last time the dataset was changed.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setLastUpdated(java.lang.String)">
+<h3>setLastUpdated</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLastUpdated</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;lastUpdated)</span></div>
+<div class="block">Set up the ISO-8601 timestamp of the last time the dataset was changed.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>lastUpdated</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getColumnMetrics()">
+<h3>getColumnMetrics</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageDataQualityMetricsColumnMetrics.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsColumnMetrics</a>&gt;</span>&nbsp;<span class="element-name">getColumnMetrics</span>()</div>
+<div class="block">Return the metrics for each column.  The map key is the column name.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>map</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setColumnMetrics(java.util.Map)">
+<h3>setColumnMetrics</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setColumnMetrics</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageDataQualityMetricsColumnMetrics.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityMetricsColumnMetrics</a>&gt;&nbsp;columnMetrics)</span></div>
+<div class="block">Set up the metrics for each column.  The map key is the column name.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>columnMetrics</code> - map</dd>
 </dl>
 </section>
 </li>

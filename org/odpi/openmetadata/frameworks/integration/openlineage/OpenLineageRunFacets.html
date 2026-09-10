@@ -92,8 +92,10 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageRunFacets</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">This class represents the map of run facets in the open lineage standard spec
- https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.</div>
+<div class="block">This class represents the map of run facets for a run.  The standard facets from the OpenLineage spec, and the custom facets
+ registered in the OpenLineage registry, are held in named properties.  Any other facets (custom facets, or standard facets not yet modelled) are held in the
+ additionalProperties map, keyed by their facet name, so that nothing is lost on a round trip through these beans.
+ The map key of each facet in the JSON is the facet's key from the OpenLineage spec.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -128,44 +130,160 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAdditionalProperties()" class="member-name-link">getAdditionalProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a map of additional data set facets.</div>
+<div class="block">Return any additional facets that are not modelled as named properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageEnvironmentVariablesRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEnvironmentVariablesRunFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnvironmentVariables()" class="member-name-link">getEnvironmentVariables</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the environmentVariables facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageErrorMessageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageErrorMessageRunFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getErrorMessage()" class="member-name-link">getErrorMessage</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the errorMessage facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageExecutionParametersRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageExecutionParametersRunFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExecutionParameters()" class="member-name-link">getExecutionParameters</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the executionParameters facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageExternalQueryRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageExternalQueryRunFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalQuery()" class="member-name-link">getExternalQuery</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the externalQuery facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageExtractionErrorRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageExtractionErrorRunFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExtractionError()" class="member-name-link">getExtractionError</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the extractionError facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageGcpComposerRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageGcpComposerRunFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGcpComposerRun()" class="member-name-link">getGcpComposerRun</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the gcp_composer_run facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageGcpDataprocRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageGcpDataprocRunFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGcpDataproc()" class="member-name-link">getGcpDataproc</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the gcp_dataproc facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageJobDependenciesRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobDependenciesRunFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getJobDependencies()" class="member-name-link">getJobDependencies</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the jobDependencies facet.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageNominalTimeRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageNominalTimeRunFacet</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNominalTime()" class="member-name-link">getNominalTime</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the nominal time.</div>
+<div class="block">Return the nominalTime facet.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageParentRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacet</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParent()" class="member-name-link">getParent</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return details of the parent process.</div>
+<div class="block">Return the parent facet.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageProcessingEngineRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageProcessingEngineRunFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessingEngine()" class="member-name-link">getProcessingEngine</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the processing_engine facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageTagsRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTagsRunFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTags()" class="member-name-link">getTags</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the tags facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageTestRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTestRunFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTest()" class="member-name-link">getTest</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the test facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code based on properties.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAdditionalProperties(java.util.Map)" class="member-name-link">setAdditionalProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a>&gt;&nbsp;additionalProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up any additional facets that are not modelled as named properties.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAdditionalProperties(java.util.Map)" class="member-name-link">setAdditionalProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a>&gt;&nbsp;additionalProperties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAdditionalProperty(java.lang.String,org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunFacet)" class="member-name-link">setAdditionalProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;facetName,
+ <a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a>&nbsp;facet)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up a map of additional data set facets.</div>
+<div class="block">Add a facet that is not modelled as a named property.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnvironmentVariables(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEnvironmentVariablesRunFacet)" class="member-name-link">setEnvironmentVariables</a><wbr>(<a href="OpenLineageEnvironmentVariablesRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEnvironmentVariablesRunFacet</a>&nbsp;environmentVariables)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the environmentVariables facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setErrorMessage(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageErrorMessageRunFacet)" class="member-name-link">setErrorMessage</a><wbr>(<a href="OpenLineageErrorMessageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageErrorMessageRunFacet</a>&nbsp;errorMessage)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the errorMessage facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExecutionParameters(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageExecutionParametersRunFacet)" class="member-name-link">setExecutionParameters</a><wbr>(<a href="OpenLineageExecutionParametersRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageExecutionParametersRunFacet</a>&nbsp;executionParameters)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the executionParameters facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExternalQuery(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageExternalQueryRunFacet)" class="member-name-link">setExternalQuery</a><wbr>(<a href="OpenLineageExternalQueryRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageExternalQueryRunFacet</a>&nbsp;externalQuery)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the externalQuery facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setExtractionError(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageExtractionErrorRunFacet)" class="member-name-link">setExtractionError</a><wbr>(<a href="OpenLineageExtractionErrorRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageExtractionErrorRunFacet</a>&nbsp;extractionError)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the extractionError facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGcpComposerRun(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageGcpComposerRunFacet)" class="member-name-link">setGcpComposerRun</a><wbr>(<a href="OpenLineageGcpComposerRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageGcpComposerRunFacet</a>&nbsp;gcpComposerRun)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the gcp_composer_run facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGcpDataproc(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageGcpDataprocRunFacet)" class="member-name-link">setGcpDataproc</a><wbr>(<a href="OpenLineageGcpDataprocRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageGcpDataprocRunFacet</a>&nbsp;gcpDataproc)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the gcp_dataproc facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setJobDependencies(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobDependenciesRunFacet)" class="member-name-link">setJobDependencies</a><wbr>(<a href="OpenLineageJobDependenciesRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobDependenciesRunFacet</a>&nbsp;jobDependencies)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the jobDependencies facet.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNominalTime(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageNominalTimeRunFacet)" class="member-name-link">setNominalTime</a><wbr>(<a href="OpenLineageNominalTimeRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageNominalTimeRunFacet</a>&nbsp;nominalTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the nominal time.</div>
+<div class="block">Set up the nominalTime facet.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setParent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageParentRunFacet)" class="member-name-link">setParent</a><wbr>(<a href="OpenLineageParentRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacet</a>&nbsp;parent)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up details of the parent process.</div>
+<div class="block">Set up the parent facet.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProcessingEngine(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageProcessingEngineRunFacet)" class="member-name-link">setProcessingEngine</a><wbr>(<a href="OpenLineageProcessingEngineRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageProcessingEngineRunFacet</a>&nbsp;processingEngine)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the processing_engine facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTags(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageTagsRunFacet)" class="member-name-link">setTags</a><wbr>(<a href="OpenLineageTagsRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTagsRunFacet</a>&nbsp;tags)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the tags facet.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTest(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageTestRunFacet)" class="member-name-link">setTest</a><wbr>(<a href="OpenLineageTestRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTestRunFacet</a>&nbsp;test)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the test facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Standard toString method.</div>
 </div>
 </div>
@@ -204,10 +322,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getParent()">
 <h3>getParent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageParentRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacet</a></span>&nbsp;<span class="element-name">getParent</span>()</div>
-<div class="block">Return details of the parent process.</div>
+<div class="block">Return the parent facet.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>parent facet</dd>
+<dd>facet bean</dd>
 </dl>
 </section>
 </li>
@@ -215,10 +333,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setParent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageParentRunFacet)">
 <h3>setParent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setParent</span><wbr><span class="parameters">(<a href="OpenLineageParentRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacet</a>&nbsp;parent)</span></div>
-<div class="block">Set up details of the parent process.</div>
+<div class="block">Set up the parent facet.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>parent</code> - parent facet</dd>
+<dd><code>parent</code> - facet bean</dd>
 </dl>
 </section>
 </li>
@@ -226,10 +344,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getNominalTime()">
 <h3>getNominalTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageNominalTimeRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageNominalTimeRunFacet</a></span>&nbsp;<span class="element-name">getNominalTime</span>()</div>
-<div class="block">Return the nominal time.</div>
+<div class="block">Return the nominalTime facet.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>facet</dd>
+<dd>facet bean</dd>
 </dl>
 </section>
 </li>
@@ -237,32 +355,289 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setNominalTime(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageNominalTimeRunFacet)">
 <h3>setNominalTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setNominalTime</span><wbr><span class="parameters">(<a href="OpenLineageNominalTimeRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageNominalTimeRunFacet</a>&nbsp;nominalTime)</span></div>
-<div class="block">Set up the nominal time.</div>
+<div class="block">Set up the nominalTime facet.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>nominalTime</code> - facet</dd>
+<dd><code>nominalTime</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getEnvironmentVariables()">
+<h3>getEnvironmentVariables</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageEnvironmentVariablesRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEnvironmentVariablesRunFacet</a></span>&nbsp;<span class="element-name">getEnvironmentVariables</span>()</div>
+<div class="block">Return the environmentVariables facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setEnvironmentVariables(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEnvironmentVariablesRunFacet)">
+<h3>setEnvironmentVariables</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEnvironmentVariables</span><wbr><span class="parameters">(<a href="OpenLineageEnvironmentVariablesRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEnvironmentVariablesRunFacet</a>&nbsp;environmentVariables)</span></div>
+<div class="block">Set up the environmentVariables facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>environmentVariables</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getErrorMessage()">
+<h3>getErrorMessage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageErrorMessageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageErrorMessageRunFacet</a></span>&nbsp;<span class="element-name">getErrorMessage</span>()</div>
+<div class="block">Return the errorMessage facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setErrorMessage(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageErrorMessageRunFacet)">
+<h3>setErrorMessage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setErrorMessage</span><wbr><span class="parameters">(<a href="OpenLineageErrorMessageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageErrorMessageRunFacet</a>&nbsp;errorMessage)</span></div>
+<div class="block">Set up the errorMessage facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>errorMessage</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getExecutionParameters()">
+<h3>getExecutionParameters</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageExecutionParametersRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageExecutionParametersRunFacet</a></span>&nbsp;<span class="element-name">getExecutionParameters</span>()</div>
+<div class="block">Return the executionParameters facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setExecutionParameters(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageExecutionParametersRunFacet)">
+<h3>setExecutionParameters</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setExecutionParameters</span><wbr><span class="parameters">(<a href="OpenLineageExecutionParametersRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageExecutionParametersRunFacet</a>&nbsp;executionParameters)</span></div>
+<div class="block">Set up the executionParameters facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>executionParameters</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getExternalQuery()">
+<h3>getExternalQuery</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageExternalQueryRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageExternalQueryRunFacet</a></span>&nbsp;<span class="element-name">getExternalQuery</span>()</div>
+<div class="block">Return the externalQuery facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setExternalQuery(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageExternalQueryRunFacet)">
+<h3>setExternalQuery</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setExternalQuery</span><wbr><span class="parameters">(<a href="OpenLineageExternalQueryRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageExternalQueryRunFacet</a>&nbsp;externalQuery)</span></div>
+<div class="block">Set up the externalQuery facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>externalQuery</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getExtractionError()">
+<h3>getExtractionError</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageExtractionErrorRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageExtractionErrorRunFacet</a></span>&nbsp;<span class="element-name">getExtractionError</span>()</div>
+<div class="block">Return the extractionError facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setExtractionError(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageExtractionErrorRunFacet)">
+<h3>setExtractionError</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setExtractionError</span><wbr><span class="parameters">(<a href="OpenLineageExtractionErrorRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageExtractionErrorRunFacet</a>&nbsp;extractionError)</span></div>
+<div class="block">Set up the extractionError facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>extractionError</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getJobDependencies()">
+<h3>getJobDependencies</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageJobDependenciesRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobDependenciesRunFacet</a></span>&nbsp;<span class="element-name">getJobDependencies</span>()</div>
+<div class="block">Return the jobDependencies facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setJobDependencies(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobDependenciesRunFacet)">
+<h3>setJobDependencies</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setJobDependencies</span><wbr><span class="parameters">(<a href="OpenLineageJobDependenciesRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobDependenciesRunFacet</a>&nbsp;jobDependencies)</span></div>
+<div class="block">Set up the jobDependencies facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>jobDependencies</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getProcessingEngine()">
+<h3>getProcessingEngine</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageProcessingEngineRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageProcessingEngineRunFacet</a></span>&nbsp;<span class="element-name">getProcessingEngine</span>()</div>
+<div class="block">Return the processing_engine facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setProcessingEngine(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageProcessingEngineRunFacet)">
+<h3>setProcessingEngine</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProcessingEngine</span><wbr><span class="parameters">(<a href="OpenLineageProcessingEngineRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageProcessingEngineRunFacet</a>&nbsp;processingEngine)</span></div>
+<div class="block">Set up the processing_engine facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>processingEngine</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTags()">
+<h3>getTags</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageTagsRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTagsRunFacet</a></span>&nbsp;<span class="element-name">getTags</span>()</div>
+<div class="block">Return the tags facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setTags(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageTagsRunFacet)">
+<h3>setTags</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTags</span><wbr><span class="parameters">(<a href="OpenLineageTagsRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTagsRunFacet</a>&nbsp;tags)</span></div>
+<div class="block">Set up the tags facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>tags</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTest()">
+<h3>getTest</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageTestRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTestRunFacet</a></span>&nbsp;<span class="element-name">getTest</span>()</div>
+<div class="block">Return the test facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setTest(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageTestRunFacet)">
+<h3>setTest</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTest</span><wbr><span class="parameters">(<a href="OpenLineageTestRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageTestRunFacet</a>&nbsp;test)</span></div>
+<div class="block">Set up the test facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>test</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGcpComposerRun()">
+<h3>getGcpComposerRun</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageGcpComposerRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageGcpComposerRunFacet</a></span>&nbsp;<span class="element-name">getGcpComposerRun</span>()</div>
+<div class="block">Return the gcp_composer_run facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setGcpComposerRun(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageGcpComposerRunFacet)">
+<h3>setGcpComposerRun</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGcpComposerRun</span><wbr><span class="parameters">(<a href="OpenLineageGcpComposerRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageGcpComposerRunFacet</a>&nbsp;gcpComposerRun)</span></div>
+<div class="block">Set up the gcp_composer_run facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>gcpComposerRun</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getGcpDataproc()">
+<h3>getGcpDataproc</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageGcpDataprocRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageGcpDataprocRunFacet</a></span>&nbsp;<span class="element-name">getGcpDataproc</span>()</div>
+<div class="block">Return the gcp_dataproc facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setGcpDataproc(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageGcpDataprocRunFacet)">
+<h3>setGcpDataproc</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGcpDataproc</span><wbr><span class="parameters">(<a href="OpenLineageGcpDataprocRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageGcpDataprocRunFacet</a>&nbsp;gcpDataproc)</span></div>
+<div class="block">Set up the gcp_dataproc facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>gcpDataproc</code> - facet bean</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getAdditionalProperties()">
 <h3>getAdditionalProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a>&gt;</span>&nbsp;<span class="element-name">getAdditionalProperties</span>()</div>
-<div class="block">Return a map of additional data set facets.  The name is the identifier of the facet type and the object is the facet itself.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a>&gt;</span>&nbsp;<span class="element-name">getAdditionalProperties</span>()</div>
+<div class="block">Return any additional facets that are not modelled as named properties.  They are serialized as
+ top-level facet entries alongside the named facets.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>data set facet map (map from string to object)</dd>
+<dd>map of facet name to facet</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="setAdditionalProperties(java.util.Map)">
 <h3>setAdditionalProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAdditionalProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a>&gt;&nbsp;additionalProperties)</span></div>
-<div class="block">Set up a map of additional data set facets.  The name is the identifier of the facet type and the object is the facet itself.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAdditionalProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a>&gt;&nbsp;additionalProperties)</span></div>
+<div class="block">Set up any additional facets that are not modelled as named properties.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>additionalProperties</code> - data set facet map (map from string to object)</dd>
+<dd><code>additionalProperties</code> - map of facet name to facet</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setAdditionalProperty(java.lang.String,org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunFacet)">
+<h3>setAdditionalProperty</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAdditionalProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;facetName,
+ <a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a>&nbsp;facet)</span></div>
+<div class="block">Add a facet that is not modelled as a named property.  Jackson calls this for each unrecognized facet
+ found in the JSON.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>facetName</code> - name (key) of the facet</dd>
+<dd><code>facet</code> - facet bean</dd>
 </dl>
 </section>
 </li>

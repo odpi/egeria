@@ -87,7 +87,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageFacet</a>
-<div class="inheritance"><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetFacet</a>
+<div class="inheritance"><a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunFacet</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageParentRunFacet</div>
 </div>
 </div>
@@ -95,10 +95,9 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageParentRunFacet</span>
-<span class="extends-implements">extends <a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a></span></div>
-<div class="block">This class represents the content of an open lineage schema for a parent run facet as defined in JSON
- spec https://openlineage.io/spec/facets/1-0-0/ParentRunFacet.json#/$defs/ParentRunFacet.
- It is used internally in Egeria to pass this information to the integration daemon's integration connectors.</div>
+<span class="extends-implements">extends <a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a></span></div>
+<div class="block">This class represents the parent run facet.  It links a run to the parent run (and optionally the root run) that spawned it.
+ It follows the OpenLineage facet spec https://openlineage.io/spec/facets/1-2-0/ParentRunFacet.json#/$defs/ParentRunFacet.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -136,27 +135,37 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageParentRunFacetJob.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetJob</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getJob()" class="member-name-link">getJob</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return details of the parent process.</div>
+<div class="block">Return the parent job.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageParentRunFacetRun.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetRun</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRun()" class="member-name-link">getRun</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageParentRunFacetRoot.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetRoot</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRoot()" class="member-name-link">getRoot</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return details of the parent process's run.</div>
+<div class="block">Return the root run and job of the hierarchy.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageParentRunFacetRun.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetRun</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRun()" class="member-name-link">getRun</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return hash code basa``ed on properties.</div>
+<div class="block">Return the parent run.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return hash code based on properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setJob(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageParentRunFacetJob)" class="member-name-link">setJob</a><wbr>(<a href="OpenLineageParentRunFacetJob.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetJob</a>&nbsp;job)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the parent job.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setJob(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageParentRunFacetJob)" class="member-name-link">setJob</a><wbr>(<a href="OpenLineageParentRunFacetJob.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetJob</a>&nbsp;job)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRoot(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageParentRunFacetRoot)" class="member-name-link">setRoot</a><wbr>(<a href="OpenLineageParentRunFacetRoot.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetRoot</a>&nbsp;root)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up details of the parent process.</div>
+<div class="block">Set up the root run and job of the hierarchy.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRun(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageParentRunFacetRun)" class="member-name-link">setRun</a><wbr>(<a href="OpenLineageParentRunFacetRun.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetRun</a>&nbsp;run)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up details of the parent process's run.</div>
+<div class="block">Set up the parent run.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -168,7 +177,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageFacet">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.openlineage.<a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></h3>
-<code><a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a></code></div>
+<code><a href="OpenLineageFacet.html#get_producer()">get_producer</a>, <a href="OpenLineageFacet.html#get_schemaURL()">get_schemaURL</a>, <a href="OpenLineageFacet.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="OpenLineageFacet.html#set_producer(java.net.URI)">set_producer</a>, <a href="OpenLineageFacet.html#set_schemaURL(java.net.URI)">set_schemaURL</a>, <a href="OpenLineageFacet.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="OpenLineageFacet.html#setAdditionalProperty(java.lang.String,java.lang.Object)">setAdditionalProperty</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -202,10 +211,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getRun()">
 <h3>getRun</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageParentRunFacetRun.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetRun</a></span>&nbsp;<span class="element-name">getRun</span>()</div>
-<div class="block">Return details of the parent process's run.</div>
+<div class="block">Return the parent run.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>run information</dd>
+<dd>bean</dd>
 </dl>
 </section>
 </li>
@@ -213,10 +222,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setRun(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageParentRunFacetRun)">
 <h3>setRun</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRun</span><wbr><span class="parameters">(<a href="OpenLineageParentRunFacetRun.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetRun</a>&nbsp;run)</span></div>
-<div class="block">Set up details of the parent process's run.</div>
+<div class="block">Set up the parent run.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>run</code> - run information</dd>
+<dd><code>run</code> - bean</dd>
 </dl>
 </section>
 </li>
@@ -224,10 +233,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getJob()">
 <h3>getJob</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageParentRunFacetJob.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetJob</a></span>&nbsp;<span class="element-name">getJob</span>()</div>
-<div class="block">Return details of the parent process.</div>
+<div class="block">Return the parent job.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>job information</dd>
+<dd>bean</dd>
 </dl>
 </section>
 </li>
@@ -235,10 +244,32 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setJob(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageParentRunFacetJob)">
 <h3>setJob</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setJob</span><wbr><span class="parameters">(<a href="OpenLineageParentRunFacetJob.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetJob</a>&nbsp;job)</span></div>
-<div class="block">Set up details of the parent process.</div>
+<div class="block">Set up the parent job.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>job</code> - job information</dd>
+<dd><code>job</code> - bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRoot()">
+<h3>getRoot</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageParentRunFacetRoot.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetRoot</a></span>&nbsp;<span class="element-name">getRoot</span>()</div>
+<div class="block">Return the root run and job of the hierarchy.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setRoot(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageParentRunFacetRoot)">
+<h3>setRoot</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRoot</span><wbr><span class="parameters">(<a href="OpenLineageParentRunFacetRoot.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageParentRunFacetRoot</a>&nbsp;root)</span></div>
+<div class="block">Set up the root run and job of the hierarchy.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>root</code> - bean</dd>
 </dl>
 </section>
 </li>
@@ -249,7 +280,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="OpenLineageDataSetFacet.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageDataSetFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetFacet</a></code></dd>
+<dd><code><a href="OpenLineageRunFacet.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -274,7 +305,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="hashCode()">
 <h3>hashCode</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
-<div class="block">Return hash code basa``ed on properties.</div>
+<div class="block">Return hash code based on properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="OpenLineageFacet.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageFacet</a></code></dd>
