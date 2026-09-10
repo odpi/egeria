@@ -32,15 +32,15 @@ public enum ResourceUse
      * A digital product that could supply helpful data and/or function.
      */
     SUPPORTING_PRODUCT("Supporting Product",
-               "A digital product that could supply helpful data and/or function.",
-               null),
+                       "A digital product that could supply helpful data and/or function.",
+                       null),
 
     /**
      * Create a survey report that details whether the content of the real-world resource that is attached to an asset is withing the bounds required by its data specification.
      */
     DATA_SPECIFICATION("Data Specification",
-                      "Details of the data required.",
-                      null),
+                       "Details of the data required.",
+                       null),
 
     /**
      * Create a survey report that details the content of the real-world resource that is attached to an asset.
@@ -53,29 +53,29 @@ public enum ResourceUse
      * Create a survey report that details whether the content of the real-world resource that is attached to an asset is withing the bounds required by its data specification.
      */
     VALIDATE_RESOURCE("Validate Resource",
-                    "Creates a certification relationship between a certification type and a resource (asset, person, project, ...) that has passed the appropriate quality checks.",
-                    null),
+                      "Creates a certification relationship between a certification type and a resource (asset, person, project, ...) that has passed the appropriate quality checks.",
+                      null),
 
     /**
      * Create a survey report that details the content of the real-world resource that is attached to an asset.
      */
     CERTIFY_RESOURCE("Certify Resource",
-                    "Creates a certification relationship between a certification type and a resource (asset, person, project, ...) that has passed the appropriate quality checks.",
-                    null),
+                     "Creates a certification relationship between a certification type and a resource (asset, person, project, ...) that has passed the appropriate quality checks.",
+                     null),
 
     /**
      * Extract metadata from the real-world resource and add it to the open metadata repositories.  Ongoing monitoring means that any changes to the resource are reflected in the open metadata repositories.
      */
     CATALOG_RESOURCE("Catalog Resource",
-            "Extract metadata from the real-world resource and add it to the open metadata repositories.  Ongoing monitoring means that any changes to the resource are reflected in the open metadata repositories.",
+                     "Extract metadata from the real-world resource and add it to the open metadata repositories.  Ongoing monitoring means that any changes to the resource are reflected in the open metadata repositories.",
                      null),
 
     /**
      * Remove asset and associated metadata for the real-world resource from the open metadata repositories.
      */
     UNCATALOG_RESOURCE("Uncatalog Resource",
-                     "Remove asset and associated metadata for the real-world resource from the open metadata repositories.",
-                     null),
+                       "Remove asset and associated metadata for the real-world resource from the open metadata repositories.",
+                       null),
 
     /**
      * Make a change to the real-world resource such as add or copy data.
@@ -95,42 +95,42 @@ public enum ResourceUse
      * Supports the action to cancel the linked subscription.
      */
     CANCEL_SUBSCRIPTION("Cancel Subscription",
-                       "Supports the action to cancel the linked subscription.",
-                       null),
+                        "Supports the action to cancel the linked subscription.",
+                        null),
 
     /**
      * Improve the information about an element in the open metadata repositories.
      */
     IMPROVE_METADATA("Improve Metadata Element",
-            "Improve the information about an element in the open metadata repositories.",
+                     "Improve the information about an element in the open metadata repositories.",
                      null),
 
     /**
      * Send notification to a steward.
      */
     INFORM_STEWARD("Inform Steward",
-                     "Send notification to a steward.",
+                   "Send notification to a steward.",
                    null),
 
     /**
      * Generate insight.
      */
     GENERATE_INSIGHT("Generate Insight",
-                   "Analyse information and create new insight.",
-                   null),
+                     "Analyse information and create new insight.",
+                     null),
 
     /**
      * Choose the appropriate path to take.
      */
     CHOOSE_PATH("Choose Path",
-                   "Choose the appropriate path to take.",
+                "Choose the appropriate path to take.",
                 null),
 
     /**
      * Monitor for changes to a metadata element and its related elements and take action if required.
      */
     WATCH_DOG("Watch Metadata Element",
-                     "Monitor for changes to a metadata element and its related elements and take action if required.",
+              "Monitor for changes to a metadata element and its related elements and take action if required.",
               null),
 
     /**
@@ -217,6 +217,12 @@ public enum ResourceUse
                              "A template to create an element from the values in the linked element.  The placeholder properties match the attribute names of the linked element.",
                              new ResourceUseProperties[]{ResourceUseProperties.PARENT_RELATIONSHIP_TYPE_NAME}),
 
+    /**
+     * Vocabulary and/or rule set that defines the naming standards for associated elements.
+     */
+    NAMING_STANDARDS("Naming Standards",
+                                "Vocabulary and/or rule set that defines the naming standards for associated elements.",
+                                null),
 
 
     ;
@@ -239,16 +245,16 @@ public enum ResourceUse
     /**
      * Constructor for individual enum value.
      *
-     * @param resourceUse the property value to use in resourceUse
-     * @param description description of the resource use property value
+     * @param resourceUse           the property value to use in resourceUse
+     * @param description           description of the resource use property value
      * @param resourceUseProperties resource use properties used with this resource use value
      */
-    ResourceUse(String                  resourceUse,
-                String                  description,
+    ResourceUse(String resourceUse,
+                String description,
                 ResourceUseProperties[] resourceUseProperties)
     {
-        this.resourceUse = resourceUse;
-        this.description = description;
+        this.resourceUse           = resourceUse;
+        this.description           = description;
         this.resourceUseProperties = resourceUseProperties;
     }
 
@@ -273,7 +279,6 @@ public enum ResourceUse
     {
         return description;
     }
-
 
 
     /**

@@ -1,0 +1,186 @@
+# Copyright 2026 The Bitol Contributors
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: v1.1.0
+kind: DataProduct
+
+name: Customer Data Product
+version: v1.1.0
+id: fbe8d147-28db-4f1d-bedf-a3fe9f458427
+type: aggregate
+domain: seller
+status: draft
+tenant: RetailCorp
+
+synonyms:
+  - synonym: Customer 360
+  - synonym: Golden customer record
+    source: data-governance
+  - id: client-fr
+    synonym: Référentiel client
+    locale: fr-FR
+    description: French name used by EU subsidiaries.
+
+description:
+  purpose: Enterprise view of a customer.
+  limitations: No known limitations.
+  usage: Check the various artefacts for their own description.
+
+tags: ['customer']
+
+context:
+  instructions: >
+    This data product exposes an enterprise view of a customer for self-service
+    analytics and AI agents. Use the `consolidatedtransactions` output port for
+    aggregated, joined transaction history; use `rawtransactions` only when
+    audit-level granularity is required. Refresh latency is 4 hours.
+  verifiedStatements:
+    - question: "What was the total customer spend last quarter?"
+    - question: "How many returning customers placed an order this month?"
+    - id: lifetime-value
+      question: "What is the lifetime value of a customer?"
+      answer: "Use the `consolidatedtransactions` output port (v2.0.0) and sum `total_amount` grouped by `customer_id`."
+  constraints:
+    - id: no-pii-exposure
+      constraint: "Do not expose individual customer PII; always aggregate to at least country level."
+      tags: ['gdpr', 'pii']
+    - constraint: "Do not use for real-time decisions; data latency is 4 hours."
+
+inputPorts:
+- name: payments
+  version: 1.0.0
+  contractId: dbb7b1eb-7628-436e-8914-2a00638ba6db
+- name: payments
+  version: 2.0.0
+  contractId: dbb7b1eb-7628-436e-8914-2a00638ba6da
+- name: onlinetransactions
+  version: 1.0.0
+  contractId: ec2a112d-5cfe-49f3-8760-f9cfb4597544
+- name: onlinetransactions
+  version: 1.1.0
+  contractId: ec2a112d-5cfe-49f3-8760-f9cfb4597547
+  tags: ["transactions"]
+  customProperties:
+    - property: "transactions_version"
+      value: "1.1.0"
+  authoritativeDefinitions:
+    - type: "data_dictionary"
+      url: "https://mydata/dictionary"
+
+outputPorts:
+- name: rawtransactions
+  description: "Raw Transactions"
+  type: tables
+  version: 1.0.0
+  contractId: c2798941-1b7e-4b03-9e0d-955b1a872b32
+- name: rawtransactions
+  description: "Raw Transactions"
+  type: tables
+  version: 2.0.0
+  contractId: c2798941-1b7e-4b03-9e0d-955b1a872b33
+  tags: ["transactions"]
+  customProperties:
+    - property: "transactions_version"
+      value: "2.0.0"
+  authoritativeDefinitions:
+    - type: "data_dictionary"
+      url: "https://mydata/dictionary"
+  sbom:
+  - id: sbom-runtime
+    type: "external"
+    url: "https://mysbomserver/transactions/runtime.cdx.json"
+    tags: ["runtime", "cyclonedx"]
+    customProperties:
+      - property: sbomFormat
+        value: CycloneDX 1.6
+      - property: buildId
+        value: build-8842
+    authoritativeDefinitions:
+      - type: implementation
+        url: "https://ci.acme.com/builds/8842"
+  - id: sbom-model
+    type: "external"
+    url: "https://mysbomserver/transactions/model.spdx.json"
+    tags: ["model", "spdx"]
+    customProperties:
+      - property: sbomFormat
+        value: SPDX 2.3
+  inputContracts:
+  - id: dbb7b1eb-7628-436e-8914-2a00638ba6db
+    version: 2.0.0
+  - id: ec2a112d-5cfe-49f3-8760-f9cfb4597544
+    version: 1.0.0
+
+- name: consolidatedtransactions
+  description: "Consolidated transactions"
+  type: tables
+  version: 1.0.0
+  contractId: a44978be-1fe0-4226-b840-1b715bc25c63
+  synonyms:
+    - synonym: Consolidated transactions
+    - synonym: Joined transactions
+      locale: en-US
+    - synonym: Transactions consolidées
+      locale: fr-FR
+  context:
+    instructions: >
+      Pre-joined and pre-aggregated transactions across the payments and
+      onlinetransactions sources. Prefer this port over `rawtransactions`
+      for any reporting or AI-driven analytics. Filter by `transaction_ts`
+      when querying time ranges.
+    constraints:
+      - id: no-writes
+        constraint: "Do not write INSERT, UPDATE, or DELETE statements against this port."
+      - constraint: "Do not query more than 90 days of data in a single request without pagination."
+
+- name: fulltransactionswithreturns
+  description: "Full transactions with returns"
+  type: tables
+  version: 0.3.0
+  contractId: ef769969-0cbe-4188-876f-bb00abadaee4
+
+managementPorts:
+- content: dictionary
+  type: topic
+  name: tpc-dict-update
+  description: Kafka topic for dictionary updates
+  tags: ["kafka"]
+  customProperties:
+    - property: "kafka_topic"
+      value: "true"
+  authoritativeDefinitions:
+    - type: "kafka_topic"
+      url: "https://mykafka/topic"
+
+support:
+- channel: "Data Team Slack"
+  url: "https://retailcorp.slack.com/archives/C1234567890"
+  description: "Primary support channel for data product questions"
+  tool: "slack"
+  scope: "interactive"
+- channel: "Email Support"
+  url: "mailto:data-support@retailcorp.com"
+  description: "Email support for urgent issues"
+  tool: "email"
+  scope: "issues"
+
+team:
+  name: "Data Team"
+  description: "The Data Team is responsible for the data product."
+  tags: ["data", "team"]
+  customProperties:
+    - property: "data_team"
+      value: "true"
+  members:
+  - username: "john.doe@retailcorp.com"
+    name: "John Doe"
+    description: "Data Product Owner"
+    role: "owner"
+    dateIn: "2023-01-15"
+  - username: "jane.smith@retailcorp.com"
+    name: "Jane Smith"
+    description: "Data Steward"
+    role: "data steward"
+    dateIn: "2023-02-01"
+
+productCreatedTs: "2023-01-15T10:30:00Z"

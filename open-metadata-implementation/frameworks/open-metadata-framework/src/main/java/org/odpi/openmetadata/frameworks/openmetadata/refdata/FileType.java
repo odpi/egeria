@@ -787,6 +787,24 @@ public enum FileType
               "A file containing a set of properties in the YAML format."),
 
     /**
+     * A YAML file containing a Bitol Open Data Contract Standard (ODCS) document.
+     */
+    OPEN_DATA_CONTRACT_FILE("Open Data Contract File",
+                            "YAML",
+                            OpenMetadataType.YAML_FILE.typeName,
+                            DeployedImplementationType.OPEN_DATA_CONTRACT_FILE,
+                            "A YAML file containing a Bitol Open Data Contract Standard (ODCS) document that describes a dataset and the agreement for sharing it."),
+
+    /**
+     * A YAML file containing a Bitol Open Data Product Standard (ODPS) document.
+     */
+    OPEN_DATA_PRODUCT_FILE("Open Data Product File",
+                           "YAML",
+                           OpenMetadataType.YAML_FILE.typeName,
+                           DeployedImplementationType.OPEN_DATA_PRODUCT_FILE,
+                           "A YAML file containing a Bitol Open Data Product Standard (ODPS) document that describes a data product and its ports."),
+
+    /**
      * A YAML encoded file containing a secrets store read by the YAMLSecretsStoreConnector.
      */
     OM_SECRETS_FILE("Open Metadata Secrets Store File",

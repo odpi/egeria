@@ -700,6 +700,43 @@ Content-Type: application/json
 }
 
 ###
+# @name setProjectAsInvestigation
+# Classify a project to say that it is an investigation that is seeking to answer a question.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/investigation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "InvestigationProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearProjectAsInvestigation
+# Remove the investigation designation from a project.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/investigation/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
 # @name setProjectAsGlossaryProject
 # Classify a project to say that it is managing the development of a glossary.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/glossary-project

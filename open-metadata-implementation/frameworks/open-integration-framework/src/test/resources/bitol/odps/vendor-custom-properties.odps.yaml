@@ -1,0 +1,32 @@
+# Copyright 2026 The Bitol Contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Demonstrates RFC-0035: the optional `vendor` field on customProperties,
+# attributing a custom property to a specific vendor or external system.
+
+apiVersion: v1.1.0
+kind: DataProduct
+id: 064c4630-8aad-4dc0-ba95-0f69940e6b18
+status: active
+name: Customer 360
+version: v1.0.0
+
+description:
+  purpose: Unified customer view
+
+customProperties:
+  - property: catalogId
+    value: cat-12345
+    vendor: zeenea
+  - property: clusterName
+    value: prod-cluster
+    description: Cluster name for specific applications
+    vendor: confluent
+  - property: genericFlag
+    value: true
+
+outputPorts:
+- name: tables
+  type: tables
+  version: 1.0.0
+  contractId: 87654321-4321-4321-4321-cba987654321

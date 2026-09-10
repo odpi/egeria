@@ -32,6 +32,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.Persona
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StudyProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ExperimentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.GlossaryProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.InvestigationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.GovernanceProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectKindProperties;
 
@@ -1371,6 +1372,67 @@ public class ProjectHandler extends OpenMetadataHandlerBase
         openMetadataClient.declassifyMetadataElementInStore(userId,
                                                             projectGUID,
                                                             OpenMetadataType.EXPERIMENT_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a project to say that it is an investigation that is seeking to answer a question.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setProjectAsInvestigation(String                   userId,
+                                          String                   projectGUID,
+                                          InvestigationProperties  properties,
+                                          MetadataSourceOptions    metadataSourceOptions) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
+    {
+        final String methodName        = "setProjectAsInvestigation";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          projectGUID,
+                                                          OpenMetadataType.INVESTIGATION_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the investigation designation from a project.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param projectGUID unique identifier of the project
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearProjectAsInvestigation(String                userId,
+                                            String                projectGUID,
+                                            MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        final String methodName        = "clearProjectAsInvestigation";
+        final String guidParameterName = "projectGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            projectGUID,
+                                                            OpenMetadataType.INVESTIGATION_CLASSIFICATION.typeName,
                                                             metadataSourceOptions);
     }
 

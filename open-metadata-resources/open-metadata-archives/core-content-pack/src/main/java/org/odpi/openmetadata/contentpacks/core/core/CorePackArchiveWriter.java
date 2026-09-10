@@ -11,6 +11,22 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.W
 import org.odpi.openmetadata.contentpacks.core.*;
 import org.odpi.openmetadata.contentpacks.core.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolAuthoritativeDefinitionType;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSupportScope;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSupportTool;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractComparisonOperator;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractLogicalType;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualityDimension;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualityMetric;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualitySeverity;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualityType;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractSLADriver;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractSemanticType;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractServerType;
+import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProductManagementPortContent;
+import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProductManagementPortType;
+import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProductType;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.AccessOperation;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
@@ -371,6 +387,12 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                        null);
         }
 
+
+
+        /*
+         * Add the vocabularies of the Bitol data contract and data product standards.
+         */
+        addBitolValidValues();
 
 
         /*
@@ -1471,6 +1493,118 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         {
             System.err.println("Exception: " + error);
             System.exit(-1);
+        }
+    }
+
+    /**
+     * Register the vocabularies of the Bitol Open Data Contract Standard (ODCS) and Open Data Product Standard (ODPS)
+     * as valid metadata values.  The Bitol connectors store these values in the properties named here, so the valid
+     * values both document what a stored value means and let a user interface offer the standard choices.
+     * The standards allow other values as well, so none of the valid value sets is closed.
+     */
+    private void addBitolValidValues()
+    {
+        String bitolPrefix = "bitol.";
+
+        /*
+         * Data quality rules created from ODCS quality checks.
+         */
+        for (DataContractQualityType value : DataContractQualityType.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.CHECK_TYPE.name, DataType.STRING.getDisplayName(), OpenMetadataType.DATA_QUALITY_RULE.typeName, null, value.getValue(), value.ordinal());
+        }
+        for (DataContractQualityMetric value : DataContractQualityMetric.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.METRIC.name, DataType.STRING.getDisplayName(), OpenMetadataType.DATA_QUALITY_RULE.typeName, null, value.getValue(), value.ordinal());
+        }
+        for (DataContractQualityDimension value : DataContractQualityDimension.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.QUALITY_DIMENSION.name, DataType.STRING.getDisplayName(), OpenMetadataType.DATA_QUALITY_RULE.typeName, null, value.getValue(), value.ordinal());
+        }
+        for (DataContractQualitySeverity value : DataContractQualitySeverity.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.SEVERITY.name, DataType.STRING.getDisplayName(), OpenMetadataType.DATA_QUALITY_RULE.typeName, null, value.getValue(), value.ordinal());
+        }
+        for (DataContractSLADriver value : DataContractSLADriver.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.BUSINESS_IMPACT.name, DataType.STRING.getDisplayName(), OpenMetadataType.DATA_QUALITY_RULE.typeName, null, value.getValue(), value.ordinal());
+        }
+        for (DataContractComparisonOperator value : DataContractComparisonOperator.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.COMPARISON_OPERATOR.name, DataType.STRING.getDisplayName(), OpenMetadataType.DATA_QUALITY_RULE.typeName, null, value.getValue(), value.ordinal());
+        }
+
+        /*
+         * Data fields created from ODCS schema properties: the logical types and the semantic role.
+         */
+        for (DataContractLogicalType value : DataContractLogicalType.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.DATA_TYPE.name, DataType.STRING.getDisplayName(), OpenMetadataType.DATA_FIELD.typeName, null, value.getValue(), value.ordinal());
+        }
+
+        this.addValidMetadataValue(bitolPrefix + "semanticType", "The semantic role that the ODCS schema property plays: column, measure or dimension.", OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, OpenMetadataType.DATA_FIELD.typeName, null, bitolPrefix + "semanticType");
+
+        for (DataContractSemanticType value : DataContractSemanticType.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, DataType.STRING.getDisplayName(), OpenMetadataType.DATA_FIELD.typeName, bitolPrefix + "semanticType", value.getValue(), value.ordinal());
+        }
+
+        /*
+         * Digital products created from ODPS documents: the architectural type.
+         */
+        this.addValidMetadataValue(bitolPrefix + "type", "The architectural type of the ODPS data product.", OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, OpenMetadataType.DIGITAL_PRODUCT.typeName, null, bitolPrefix + "type");
+
+        for (DataProductType value : DataProductType.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, DataType.STRING.getDisplayName(), OpenMetadataType.DIGITAL_PRODUCT.typeName, bitolPrefix + "type", value.getValue(), value.ordinal());
+        }
+
+        /*
+         * The kind of Bitol document an element was catalogued from.
+         */
+        this.addValidMetadataValue(bitolPrefix + "kind", "The kind of Bitol document that the element was catalogued from.", OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, null, null, bitolPrefix + "kind");
+        this.addValidMetadataValue(BitolDocument.DATA_CONTRACT_KIND, "An Open Data Contract Standard (ODCS) data contract.", OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, DataType.STRING.getDisplayName(), null, bitolPrefix + "kind", BitolDocument.DATA_CONTRACT_KIND, 0);
+        this.addValidMetadataValue(BitolDocument.DATA_PRODUCT_KIND, "An Open Data Product Standard (ODPS) data product.", OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, DataType.STRING.getDisplayName(), null, bitolPrefix + "kind", BitolDocument.DATA_PRODUCT_KIND, 1);
+
+        /*
+         * Endpoints created from ODCS servers and ODPS management ports.
+         */
+        this.addValidMetadataValue(bitolPrefix + "type", "The type of server named in an ODCS data contract.", OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, OpenMetadataType.ENDPOINT.typeName, null, bitolPrefix + "type");
+
+        for (DataContractServerType value : DataContractServerType.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, DataType.STRING.getDisplayName(), OpenMetadataType.ENDPOINT.typeName, bitolPrefix + "type", value.getValue(), value.ordinal());
+        }
+
+        this.addValidMetadataValue(bitolPrefix + "content", "The content served by an ODPS management port.", OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, OpenMetadataType.ENDPOINT.typeName, null, bitolPrefix + "content");
+
+        for (DataProductManagementPortContent value : DataProductManagementPortContent.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, DataType.STRING.getDisplayName(), OpenMetadataType.ENDPOINT.typeName, bitolPrefix + "content", value.getValue(), value.ordinal());
+        }
+        for (DataProductManagementPortType value : DataProductManagementPortType.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.PROTOCOL.name, DataType.STRING.getDisplayName(), OpenMetadataType.ENDPOINT.typeName, null, value.getValue(), value.ordinal());
+        }
+
+        /*
+         * Contact details created from Bitol support channels.
+         */
+        for (BitolSupportTool value : BitolSupportTool.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.CONTACT_METHOD_SERVICE.name, DataType.STRING.getDisplayName(), OpenMetadataType.CONTACT_DETAILS.typeName, null, value.getValue(), value.ordinal());
+        }
+        for (BitolSupportScope value : BitolSupportScope.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.CONTACT_TYPE.name, DataType.STRING.getDisplayName(), OpenMetadataType.CONTACT_DETAILS.typeName, null, value.getValue(), value.ordinal());
+        }
+
+        /*
+         * External references created from Bitol authoritative definitions: the definition type is the label of the link.
+         */
+        for (BitolAuthoritativeDefinitionType value : BitolAuthoritativeDefinitionType.values())
+        {
+            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.LABEL.name, DataType.STRING.getDisplayName(), OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName, null, value.getValue(), value.ordinal());
         }
     }
 }

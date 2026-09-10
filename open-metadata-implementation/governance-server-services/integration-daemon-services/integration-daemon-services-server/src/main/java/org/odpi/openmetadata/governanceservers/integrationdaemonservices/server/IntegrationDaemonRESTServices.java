@@ -91,6 +91,114 @@ public class IntegrationDaemonRESTServices extends TokenController
 
 
     /**
+     * Pass an Open Data Contract Standard (ODCS) data contract to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for Bitol documents.
+     *
+     * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
+     * @param document data contract (YAML or JSON) to publish.
+     * @return void or exception
+     */
+    public VoidResponse publishDataContract(String serverName,
+                                            String delegatingUserId,
+                                            String document)
+    {
+        final String methodName = "publishDataContract";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
+
+            List<IntegrationContextManager> contextManagers = instanceHandler.getIntegrationGroupContextManagers(userId,
+                                                                                                                 serverName,
+                                                                                                                 methodName);
+
+            if (contextManagers != null)
+            {
+                for (IntegrationContextManager contextManager : contextManagers)
+                {
+                    if (contextManager != null)
+                    {
+                        contextManager.publishDataContract(document);
+                    }
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Pass an Open Data Product Standard (ODPS) data product to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for Bitol documents.
+     *
+     * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
+     * @param document data product (YAML or JSON) to publish.
+     * @return void or exception
+     */
+    public VoidResponse publishDataProduct(String serverName,
+                                           String delegatingUserId,
+                                           String document)
+    {
+        final String methodName = "publishDataProduct";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, delegatingUserId, serverName, methodName);
+
+            List<IntegrationContextManager> contextManagers = instanceHandler.getIntegrationGroupContextManagers(userId,
+                                                                                                                 serverName,
+                                                                                                                 methodName);
+
+            if (contextManagers != null)
+            {
+                for (IntegrationContextManager contextManager : contextManagers)
+                {
+                    if (contextManager != null)
+                    {
+                        contextManager.publishDataProduct(document);
+                    }
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
      * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
      * listener for open lineage events.
      *

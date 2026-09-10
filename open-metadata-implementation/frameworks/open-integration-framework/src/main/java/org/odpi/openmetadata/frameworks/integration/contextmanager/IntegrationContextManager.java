@@ -9,6 +9,12 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter;
+import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener;
+import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentManager;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
+import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
@@ -35,7 +41,8 @@ import java.util.List;
 /**
  * IntegrationContextManager is the base class for the context manager that is implemented by each integration service.
  */
-public abstract class IntegrationContextManager implements OpenLineageListenerManager
+public abstract class IntegrationContextManager implements OpenLineageListenerManager,
+                                                           BitolDocumentManager
 {
     protected String                  partnerOMASPlatformRootURL = null;
     protected String                  partnerOMASServerName      = null;
@@ -57,6 +64,7 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     private static final ObjectWriter                   OBJECT_WRITER            = OBJECT_MAPPER.writer();
     private static final ObjectReader                   OBJECT_READER            = OBJECT_MAPPER.reader();
     private final        List<OpenLineageEventListener> registeredEventListeners = new ArrayList<>();
+    private final        List<BitolDocumentListener>    registeredBitolListeners = new ArrayList<>();
 
     /**
      * Default constructor
@@ -220,6 +228,7 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
                                                         openMetadataClient,
                                                         this.createEventClient(connectorId),
                                                         connectedAssetClient,
+                                                        this,
                                                         this,
                                                         governanceConfiguration,
                                                         openGovernanceClient,
@@ -436,6 +445,86 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     }
 
 
+    /* ======================================================================================
+     * Bitol documents (ODCS data contracts and ODPS data products)
+     */
+
+    /**
+     * The listener is implemented by the integration connector.  Once it is registered with the context, its processDataContract()
+     * and processDataProduct() methods are called each time a Bitol document is published to the integration daemon.
+     *
+     * @param listener listener to call
+     */
+    @Override
+    public synchronized void registerListener(BitolDocumentListener listener)
+    {
+        registeredBitolListeners.add(listener);
+    }
+
+
+    /**
+     * Publish a Bitol document of either kind.  The document is parsed and routed to the listeners according to its "kind" property.
+     * If the document can not be parsed into Egeria's beans but its kind can be determined, the raw document is still passed to the
+     * listeners (with a null bean) so that it can be stored or forwarded.
+     *
+     * @param rawDocument document in YAML or JSON format
+     */
+    @Override
+    public synchronized void publishBitolDocument(String rawDocument)
+    {
+        final String methodName = "publishBitolDocument";
+
+        publishRawBitolDocument(rawDocument, null, methodName);
+    }
+
+
+    /**
+     * Publish an Open Data Contract Standard (ODCS) data contract.
+     *
+     * @param rawDocument document in YAML or JSON format
+     */
+    @Override
+    public synchronized void publishDataContract(String rawDocument)
+    {
+        final String methodName = "publishDataContract";
+
+        publishRawBitolDocument(rawDocument, BitolDocument.DATA_CONTRACT_KIND, methodName);
+    }
+
+
+    /**
+     * Publish an Open Data Contract Standard (ODCS) data contract.
+     *
+     * @param dataContract bean for the document
+     */
+    @Override
+    public synchronized void publishDataContract(DataContract dataContract)
+    {
+        final String methodName = "publishDataContract(bean)";
+
+        if (dataContract != null)
+        {
+            String rawDocument = null;
+
+            try
+            {
+                rawDocument = BitolDocumentFormatter.toYAML(dataContract);
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      OIFAuditCode.BITOL_FORMAT_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                           error.getMessage(),
+                                                                                           dataContract.toString()),
+                                      dataContract.toString(),
+                                      error);
+            }
+
+            publishToBitolListeners(dataContract, null, rawDocument, methodName);
+        }
+    }
+
+
     /**
      * Loop through the listeners and sending a dataset event to each.  If a connector throws an exception, it is logged and the publishing process
      * continues with the other listeners.
@@ -466,6 +555,53 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
 
 
     /**
+     * Publish an Open Data Product Standard (ODPS) data product.
+     *
+     * @param rawDocument document in YAML or JSON format
+     */
+    @Override
+    public synchronized void publishDataProduct(String rawDocument)
+    {
+        final String methodName = "publishDataProduct";
+
+        publishRawBitolDocument(rawDocument, BitolDocument.DATA_PRODUCT_KIND, methodName);
+    }
+
+
+    /**
+     * Publish an Open Data Product Standard (ODPS) data product.
+     *
+     * @param dataProduct bean for the document
+     */
+    @Override
+    public synchronized void publishDataProduct(DataProduct dataProduct)
+    {
+        final String methodName = "publishDataProduct(bean)";
+
+        if (dataProduct != null)
+        {
+            String rawDocument = null;
+
+            try
+            {
+                rawDocument = BitolDocumentFormatter.toYAML(dataProduct);
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      OIFAuditCode.BITOL_FORMAT_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                           error.getMessage(),
+                                                                                           dataProduct.toString()),
+                                      dataProduct.toString(),
+                                      error);
+            }
+
+            publishToBitolListeners(null, dataProduct, rawDocument, methodName);
+        }
+    }
+
+
+    /**
      * Log an exception thrown by a listener.
      *
      * @param error exception
@@ -481,5 +617,150 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
                                                                                            error.getMessage()),
                               rawEvent,
                               error);
+    }
+
+
+    /**
+     * Parse a raw Bitol document, validate its kind and version, and pass it to the listeners.
+     *
+     * @param rawDocument document in YAML or JSON format
+     * @param expectedKind the kind of document expected by the calling method, or null if either kind is acceptable
+     * @param methodName calling method
+     */
+    private void publishRawBitolDocument(String rawDocument,
+                                         String expectedKind,
+                                         String methodName)
+    {
+        if (rawDocument == null)
+        {
+            return;
+        }
+
+        String        kind     = null;
+        BitolDocument document = null;
+
+        try
+        {
+            kind = BitolDocumentFormatter.getKind(rawDocument);
+
+            if ((kind != null) && ((expectedKind == null) || (expectedKind.equals(kind))))
+            {
+                document = BitolDocumentFormatter.parseDocument(rawDocument);
+            }
+        }
+        catch (Exception error)
+        {
+            auditLog.logException(methodName,
+                                  OIFAuditCode.BITOL_FORMAT_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                       error.getMessage(),
+                                                                                       rawDocument),
+                                  rawDocument,
+                                  error);
+        }
+
+        if ((expectedKind != null) && (! expectedKind.equals(kind)))
+        {
+            auditLog.logMessage(methodName,
+                                OIFAuditCode.BITOL_UNEXPECTED_KIND.getMessageDefinition(kind,
+                                                                                        methodName,
+                                                                                        expectedKind,
+                                                                                        getDocumentStart(rawDocument)));
+            return;
+        }
+
+        if ((document != null) && (! document.hasSupportedApiVersion()))
+        {
+            auditLog.logMessage(methodName,
+                                OIFAuditCode.BITOL_UNSUPPORTED_VERSION.getMessageDefinition(kind,
+                                                                                            document.getId(),
+                                                                                            document.getApiVersion()));
+            document = null;
+        }
+
+        if (BitolDocument.DATA_CONTRACT_KIND.equals(kind))
+        {
+            publishToBitolListeners((DataContract) document, null, rawDocument, methodName);
+        }
+        else if (BitolDocument.DATA_PRODUCT_KIND.equals(kind))
+        {
+            publishToBitolListeners(null, (DataProduct) document, rawDocument, methodName);
+        }
+        else
+        {
+            auditLog.logMessage(methodName,
+                                OIFAuditCode.BITOL_UNEXPECTED_KIND.getMessageDefinition(kind,
+                                                                                        methodName,
+                                                                                        BitolDocument.DATA_CONTRACT_KIND + " or " + BitolDocument.DATA_PRODUCT_KIND,
+                                                                                        getDocumentStart(rawDocument)));
+        }
+    }
+
+
+    /**
+     * Return the start of a document for use in an audit log message.
+     *
+     * @param rawDocument document
+     * @return first few hundred characters
+     */
+    private String getDocumentStart(String rawDocument)
+    {
+        final int maxLength = 300;
+
+        if (rawDocument.length() > maxLength)
+        {
+            return rawDocument.substring(0, maxLength) + " ...";
+        }
+
+        return rawDocument;
+    }
+
+
+    /**
+     * Loop through the Bitol listeners sending the document to each.  If a connector throws an exception, it is logged and the
+     * publishing process continues with the other listeners.
+     *
+     * @param dataContract bean for a data contract (null if the document is a data product or could not be parsed)
+     * @param dataProduct bean for a data product (null if the document is a data contract or could not be parsed)
+     * @param rawDocument the document as received or serialized
+     * @param methodName calling method
+     */
+    private void publishToBitolListeners(DataContract dataContract,
+                                         DataProduct  dataProduct,
+                                         String       rawDocument,
+                                         String       methodName)
+    {
+        for (BitolDocumentListener listener : registeredBitolListeners)
+        {
+            if (listener != null)
+            {
+                try
+                {
+                    if (dataProduct != null)
+                    {
+                        listener.processDataProduct(dataProduct, rawDocument);
+                    }
+                    else if (dataContract != null)
+                    {
+                        listener.processDataContract(dataContract, rawDocument);
+                    }
+                    else if (BitolDocument.DATA_PRODUCT_KIND.equals(BitolDocumentFormatter.getKind(rawDocument)))
+                    {
+                        listener.processDataProduct(null, rawDocument);
+                    }
+                    else
+                    {
+                        listener.processDataContract(null, rawDocument);
+                    }
+                }
+                catch (Exception error)
+                {
+                    auditLog.logException(methodName,
+                                          OIFAuditCode.BITOL_PUBLISH_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                error.getMessage()),
+                                          rawDocument,
+                                          error);
+                }
+            }
+        }
     }
 }

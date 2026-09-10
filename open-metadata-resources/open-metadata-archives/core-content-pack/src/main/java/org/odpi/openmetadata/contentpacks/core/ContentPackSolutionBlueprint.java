@@ -89,6 +89,23 @@ public enum ContentPackSolutionBlueprint
                               ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
     /**
+     * Receive, catalog, generate and store Bitol data contract (ODCS) and data product (ODPS) documents.
+     */
+    BITOL_CONTENT_PACK("3e0f7f64-4563-471d-92d3-63e1cd9bc591",
+                       "Egeria::SolutionBlueprint::BitolContentPack",
+                       "Bitol Content Pack",
+                       "BITOL-CONTENT-PACK",
+                       "Solution blueprint containing integration connectors for working with Bitol data contract (ODCS) and data product (ODPS) documents.",
+                       new String[]{
+                               EgeriaDeployedImplementationType.METADATA_ACCESS_STORE.getSolutionComponentGUID()
+                       },
+                       new DeployedImplementationTypeDefinition[]{
+                               DeployedImplementationType.FILE_SYSTEM_DIRECTORY,
+                               DeployedImplementationType.APACHE_KAFKA_TOPIC
+                       },
+                       ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
      * Reference data, templates, connectors, and governance services for working with Unity Catalog.
      */
     UNITY_CATALOG_CONTENT_PACK("548661f1-e792-4acd-8dc2-0aa41187d6d2",

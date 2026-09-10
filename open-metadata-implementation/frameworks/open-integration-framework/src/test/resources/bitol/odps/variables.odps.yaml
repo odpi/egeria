@@ -1,0 +1,27 @@
+# Copyright 2026 The Bitol Contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Demonstrates RFC-0050: any string value MAY contain ${VAR_NAME} references,
+# resolved at runtime by tooling. The POSIX ${VAR_NAME:-default} form supplies
+# an inline default used when the variable is unset or empty.
+
+apiVersion: v1.1.0
+kind: DataProduct
+id: 2f6b9a84-7c3d-4e5f-9a1b-8c0d2e4f6a90
+status: active
+name: Orders Data Product
+version: v1.0.0
+tenant: ${TENANT:-RetailCorp}
+
+description:
+  purpose: Orders data for ${TARGET_ENVIRONMENT:-prod} consumers.
+
+customProperties:
+  - property: dataLakePath
+    value: s3://${DATA_BUCKET}/orders/
+
+outputPorts:
+- name: orders
+  type: tables
+  version: 1.0.0
+  contractId: 87654321-4321-4321-4321-cba987654321

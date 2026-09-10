@@ -40,6 +40,60 @@ public enum ContentPackSolutionLinkingWire
                   ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
 
     /**
+     * Passes the data product documents found in the files to the data product cataloguer.
+     */
+    BITOL_FILES_RECEIVER_TO_DATA_PRODUCT_CATALOGUER(IntegrationConnectorDefinition.BITOL_FILES_RECEIVER.getSolutionComponentGUID(),
+                                                    IntegrationConnectorDefinition.BITOL_DATA_PRODUCT_CATALOGUER.getSolutionComponentGUID(),
+                                                    "distribute documents",
+                                                    "Passes the data product documents found in the files to the data product cataloguer.",
+                                                    ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
+     * Passes the data contract documents found in the files to the data contract cataloguer.
+     */
+    BITOL_FILES_RECEIVER_TO_DATA_CONTRACT_CATALOGUER(IntegrationConnectorDefinition.BITOL_FILES_RECEIVER.getSolutionComponentGUID(),
+                                                     IntegrationConnectorDefinition.BITOL_DATA_CONTRACT_CATALOGUER.getSolutionComponentGUID(),
+                                                     "distribute documents",
+                                                     "Passes the data contract documents found in the files to the data contract cataloguer.",
+                                                     ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
+     * Passes the data product documents received from Apache Kafka to the data product cataloguer.
+     */
+    BITOL_EVENT_RECEIVER_TO_DATA_PRODUCT_CATALOGUER(IntegrationConnectorDefinition.BITOL_EVENT_RECEIVER.getSolutionComponentGUID(),
+                                                    IntegrationConnectorDefinition.BITOL_DATA_PRODUCT_CATALOGUER.getSolutionComponentGUID(),
+                                                    "distribute documents",
+                                                    "Passes the data product documents received from Apache Kafka to the data product cataloguer.",
+                                                    ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
+     * Passes the data contract documents received from Apache Kafka to the data contract cataloguer.
+     */
+    BITOL_EVENT_RECEIVER_TO_DATA_CONTRACT_CATALOGUER(IntegrationConnectorDefinition.BITOL_EVENT_RECEIVER.getSolutionComponentGUID(),
+                                                     IntegrationConnectorDefinition.BITOL_DATA_CONTRACT_CATALOGUER.getSolutionComponentGUID(),
+                                                     "distribute documents",
+                                                     "Passes the data contract documents received from Apache Kafka to the data contract cataloguer.",
+                                                     ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
+     * Passes the documents received from Apache Kafka to the file store.
+     */
+    BITOL_EVENT_RECEIVER_TO_FILE_STORE(IntegrationConnectorDefinition.BITOL_EVENT_RECEIVER.getSolutionComponentGUID(),
+                                       IntegrationConnectorDefinition.BITOL_FILE_STORE.getSolutionComponentGUID(),
+                                       "distribute documents",
+                                       "Passes the documents received from Apache Kafka to the file store.",
+                                       ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
+     * Passes the documents generated from open metadata to the file store.
+     */
+    BITOL_DOCUMENT_PUBLISHER_TO_FILE_STORE(IntegrationConnectorDefinition.BITOL_DOCUMENT_PUBLISHER.getSolutionComponentGUID(),
+                                           IntegrationConnectorDefinition.BITOL_FILE_STORE.getSolutionComponentGUID(),
+                                           "distribute documents",
+                                           "Passes the documents generated from open metadata to the file store.",
+                                           ContentPackDefinition.BITOL_CONTENT_PACK),
+
+    /**
      * Receive and push open lineage events to the other open lineage components.
      */
     RECEIVE_OL_EVENTS(EgeriaSolutionComponent.OL_KAFKA_TOPIC.getGUID(),

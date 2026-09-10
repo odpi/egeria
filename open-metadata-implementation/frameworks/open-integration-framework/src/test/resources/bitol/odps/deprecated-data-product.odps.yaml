@@ -1,0 +1,42 @@
+# Copyright 2026 The Bitol Contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Demonstrates RFC-0051: the optional `deprecated` boolean on the data product
+# and on input, output, and management ports. Defaults to false.
+
+apiVersion: v1.1.0
+kind: DataProduct
+id: 064c4630-8aad-4dc0-ba95-0f69940e6b18
+status: active
+name: Customer 360
+version: v2.0.0
+
+description:
+  purpose: Unified customer view
+  usage: Analytics and reporting
+
+inputPorts:
+- name: legacy-source
+  version: 1.0.0
+  contractId: 12345678-1234-1234-1234-123456789abc
+  deprecated: true
+
+outputPorts:
+- name: legacy-export
+  description: "DEPRECATED: use the 'tables' output port instead."
+  type: file
+  version: 1.0.0
+  contractId: 87654321-4321-4321-4321-cba987654321
+  deprecated: true
+- name: tables
+  description: "Current tabular output"
+  type: tables
+  version: 2.0.0
+  contractId: 11112222-3333-4444-5555-666677778888
+
+managementPorts:
+- name: deprecated-admin-api
+  content: control
+  type: rest
+  deprecated: true
+  description: "DEPRECATED: replaced by the v2 management API."

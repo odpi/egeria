@@ -3701,6 +3701,382 @@ public class SolutionArchitectRESTServices extends TokenController
      * Solution port relationships
      */
 
+
+    /* =====================================================================================================================
+     * Solution ports
+     */
+
+    /**
+     * Create a solution port.
+     *
+     * @param serverName  name of called server.
+     * @param requestBody properties for the solution port.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createSolutionPort(String                serverName,
+                                           NewElementRequestBody requestBody)
+    {
+        final String methodName = "createSolutionPort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SolutionPortHandler handler = instanceHandler.getSolutionPortHandler(userId, serverName, methodName);
+
+                if (requestBody.getProperties() instanceof SolutionPortProperties properties)
+                {
+                    response.setGUID(handler.createSolutionPort(userId,
+                                                                requestBody,
+                                                                requestBody.getInitialClassifications(),
+                                                                properties,
+                                                                requestBody.getParentRelationshipProperties()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionPortProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a solution port using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName  calling user
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createSolutionPortFromTemplate(String              serverName,
+                                                       TemplateRequestBody requestBody)
+    {
+        final String methodName = "createSolutionPortFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SolutionPortHandler handler = instanceHandler.getSolutionPortHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.createSolutionPortFromTemplate(userId,
+                                                                        requestBody,
+                                                                        requestBody.getTemplateGUID(),
+                                                                        requestBody.getReplacementProperties(),
+                                                                        requestBody.getReplacementClassifications(),
+                                                                        requestBody.getPlaceholderPropertyValues(),
+                                                                        requestBody.getParentRelationshipProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update the properties of a solution port.
+     *
+     * @param serverName       name of called server.
+     * @param solutionPortGUID unique identifier of the solution port (returned from create)
+     * @param requestBody      properties for the element.
+     *
+     * @return boolean or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public BooleanResponse updateSolutionPort(String                   serverName,
+                                              String                   solutionPortGUID,
+                                              UpdateElementRequestBody requestBody)
+    {
+        final String methodName = "updateSolutionPort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SolutionPortHandler handler = instanceHandler.getSolutionPortHandler(userId, serverName, methodName);
+
+                if (requestBody.getProperties() instanceof SolutionPortProperties properties)
+                {
+                    response.setFlag(handler.updateSolutionPort(userId,
+                                                                solutionPortGUID,
+                                                                requestBody,
+                                                                properties));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionPortProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Delete a solution port.
+     *
+     * @param serverName       name of called server
+     * @param solutionPortGUID unique identifier of the element to delete
+     * @param requestBody      description of the delete request.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse deleteSolutionPort(String                   serverName,
+                                           String                   solutionPortGUID,
+                                           DeleteElementRequestBody requestBody)
+    {
+        final String methodName = "deleteSolutionPort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionPortHandler handler = instanceHandler.getSolutionPortHandler(userId, serverName, methodName);
+
+            handler.deleteSolutionPort(userId, solutionPortGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Returns the list of solution ports with a particular name.
+     *
+     * @param serverName  name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getSolutionPortsByName(String            serverName,
+                                                                   FilterRequestBody requestBody)
+    {
+        final String methodName = "getSolutionPortsByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionPortHandler handler = instanceHandler.getSolutionPortHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getSolutionPortsByName(userId,
+                                                                    requestBody.getFilter(),
+                                                                    requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Return the properties of a specific solution port.
+     *
+     * @param serverName       name of the service to route the request to
+     * @param solutionPortGUID unique identifier of the required element
+     * @param requestBody      options for the request
+     *
+     * @return matching metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementResponse getSolutionPortByGUID(String         serverName,
+                                                                 String         solutionPortGUID,
+                                                                 GetRequestBody requestBody)
+    {
+        final String methodName = "getSolutionPortByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionPortHandler handler = instanceHandler.getSolutionPortHandler(userId, serverName, methodName);
+
+            response.setElement(handler.getSolutionPortByGUID(userId, solutionPortGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of solution port metadata elements that contain the search string.
+     *
+     * @param serverName  name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findSolutionPorts(String                  serverName,
+                                                              SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findSolutionPorts";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SolutionPortHandler handler = instanceHandler.getSolutionPortHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findSolutionPorts(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findSolutionPorts(userId, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
     /**
      * Attach a solution port to the solution component that exposes it.
      *
@@ -3734,7 +4110,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionComponentHandler handler = instanceHandler.getSolutionComponentHandler(userId, serverName, methodName);
+            SolutionPortHandler handler = instanceHandler.getSolutionPortHandler(userId, serverName, methodName);
 
             if (requestBody == null)
             {
@@ -3796,7 +4172,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionComponentHandler handler = instanceHandler.getSolutionComponentHandler(userId, serverName, methodName);
+            SolutionPortHandler handler = instanceHandler.getSolutionPortHandler(userId, serverName, methodName);
 
             handler.detachSolutionComponentPort(userId, solutionComponentGUID, solutionPortGUID, requestBody);
         }
@@ -3843,7 +4219,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionComponentHandler handler = instanceHandler.getSolutionComponentHandler(userId, serverName, methodName);
+            SolutionPortHandler handler = instanceHandler.getSolutionPortHandler(userId, serverName, methodName);
 
             if (requestBody == null)
             {
@@ -3905,7 +4281,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SolutionComponentHandler handler = instanceHandler.getSolutionComponentHandler(userId, serverName, methodName);
+            SolutionPortHandler handler = instanceHandler.getSolutionPortHandler(userId, serverName, methodName);
 
             handler.detachSolutionPortDelegation(userId, alignsToPortGUID, delegationPortGUID, requestBody);
         }

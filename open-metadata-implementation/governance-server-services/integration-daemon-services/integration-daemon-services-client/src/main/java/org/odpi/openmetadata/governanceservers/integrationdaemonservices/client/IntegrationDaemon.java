@@ -11,6 +11,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
+import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -493,6 +495,118 @@ public class IntegrationDaemon
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         event,
+                                        serverName,
+                                        delegatingUserId);
+    }
+
+
+    /**
+     * Pass an Open Data Contract Standard (ODCS) data contract to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for Bitol documents.
+     *
+     * @param document data contract in YAML or JSON format.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException a problem processing the request
+     */
+    public void publishDataContract(String document) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        final String methodName        = "publishDataContract";
+        final String documentParameter = "document";
+        final String urlTemplate       = "/servers/{0}/open-metadata/integration-daemon/publish-data-contract?delegatingUserId={1}";
+
+        invalidParameterHandler.validateObject(document, documentParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        document,
+                                        serverName,
+                                        delegatingUserId);
+    }
+
+
+    /**
+     * Pass an Open Data Contract Standard (ODCS) data contract to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for Bitol documents.  The bean is sent as JSON.
+     *
+     * @param dataContract data contract bean.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException a problem processing the request
+     */
+    public void publishDataContract(DataContract dataContract) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        final String methodName        = "publishDataContract";
+        final String documentParameter = "dataContract";
+        final String urlTemplate       = "/servers/{0}/open-metadata/integration-daemon/publish-data-contract?delegatingUserId={1}";
+
+        invalidParameterHandler.validateObject(dataContract, documentParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        dataContract,
+                                        serverName,
+                                        delegatingUserId);
+    }
+
+
+    /**
+     * Pass an Open Data Product Standard (ODPS) data product to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for Bitol documents.
+     *
+     * @param document data product in YAML or JSON format.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException a problem processing the request
+     */
+    public void publishDataProduct(String document) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        final String methodName        = "publishDataProduct";
+        final String documentParameter = "document";
+        final String urlTemplate       = "/servers/{0}/open-metadata/integration-daemon/publish-data-product?delegatingUserId={1}";
+
+        invalidParameterHandler.validateObject(document, documentParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        document,
+                                        serverName,
+                                        delegatingUserId);
+    }
+
+
+    /**
+     * Pass an Open Data Product Standard (ODPS) data product to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for Bitol documents.  The bean is sent as JSON.
+     *
+     * @param dataProduct data product bean.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException a problem processing the request
+     */
+    public void publishDataProduct(DataProduct dataProduct) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        final String methodName        = "publishDataProduct";
+        final String documentParameter = "dataProduct";
+        final String urlTemplate       = "/servers/{0}/open-metadata/integration-daemon/publish-data-product?delegatingUserId={1}";
+
+        invalidParameterHandler.validateObject(dataProduct, documentParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        dataProduct,
                                         serverName,
                                         delegatingUserId);
     }

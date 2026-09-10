@@ -3,6 +3,64 @@
 
 # The Open Lineage Connectors
 
+The [Open Lineage](https://openlineage.io) standard describes the runs of jobs, and the data sets they read and write,
+as *run events*.  The connectors in this module acquire, create, process and distribute those events.  They are divided
+into two groups:
+
+- the integration connectors that are acquiring or creating the Open Lineage events (the *event receiver* and the
+  *governance action publisher*);
+- the integration connectors that are processing or distributing them (the *cataloguer* and the two *log stores*).
+
+They are connected to each other by the integration daemon rather than by direct calls, which is what allows a new
+source or a new destination of events to be added without changing the others.  The same layering is used for the
+[Bitol connectors](../bitol-integration-connectors), which exchange data contract and data product documents.
+
+## How the Open Lineage support is wired
+
+The support is spread over the Open Integration Framework (OIF), the integration daemon, its clients and the view
+services.  File references are relative to the repository root.
+
+1. **Beans** - `open-metadata-implementation/frameworks/open-integration-framework/src/main/java/org/odpi/openmetadata/frameworks/integration/openlineage/`.
+   `OpenLineageRunEvent` is the root; `OpenLineageFacet` is the abstract base for the facets and carries `_producer`,
+   `_schemaURL` and an `additionalProperties` map for extensions.  The beans use Jackson's `PUBLIC_ONLY` visibility,
+   `NON_NULL` inclusion and `ignoreUnknown`, so unknown facets are tolerated and round trip through the
+   `additionalProperties`.
+2. **Interfaces** - `OpenLineageEventListener` has one method that receives both the parsed bean and the raw event
+   string; `OpenLineageListenerManager` registers listeners and publishes an event as a raw string or as a bean.
+3. **Context manager** - `contextmanager/IntegrationContextManager` implements the listener manager for the whole
+   integration daemon.  It parses the raw event with a Jackson `ObjectReader`, logs `OIF-CONNECTOR-0005` on a parse
+   failure but still passes the raw string to the listeners with a null bean, and then fans the event out to every
+   registered listener, catching and logging `OIF-CONNECTOR-0006` for each one so that one failing connector cannot
+   stop the others receiving the event.
+4. **Context** - `context/IntegrationContext` exposes `registerOpenLineageListener()` and two
+   `publishOpenLineageRunEvent()` overloads to the connectors.  A connector never talks to the context manager
+   directly.
+5. **REST** - `IntegrationDaemonResource.publishOpenLineageEvent()` (in `integration-daemon-services-spring`) accepts a
+   raw event body and publishes it into the daemon.  Above it is a chain that lets a view service reach any daemon by
+   the GUID of its software server asset: the `IntegrationDaemon` client (`integration-daemon-services-client`) has
+   `publishOpenLineageEvent(String)` and `publishOpenLineageEvent(OpenLineage.RunEvent)`, both posting to the same
+   endpoint; `IntegrationDaemonConnector` in `egeria-system-connectors` wraps that client behind an OCF connector; and
+   the **Runtime Manager** view service exposes `POST .../integration-daemons/{serverGUID}/open-lineage-events/publish-event-string`
+   (raw body) and `.../publish-event` (typed body).  `RuntimeManagerRESTServices.publishOpenLineageEvent()` obtains the
+   connector with `ConnectedAssetClient.getConnectorForAsset()`, checks that it is an `IntegrationDaemonConnector`,
+   sets the delegating user, starts it, publishes and disconnects.  The typed path uses the official
+   `io.openlineage:openlineage-java` client (`OpenLineage.RunEvent`) rather than the OIF beans; the OIF beans are only
+   used inside the daemon.
+6. **Connectors** - this module:
+   * `OpenLineageEventReceiverIntegrationConnector` is a dynamic connector: each Kafka `Topic` catalog target becomes
+     an `OpenLineageEventReceiverCatalogTargetProcessor` whose topic listener calls `publishOpenLineageRunEvent(rawEvent)`.
+   * `OpenLineageCataloguerIntegrationConnector` registers as a listener and creates `Process` assets for jobs that are
+     not yet catalogued.
+   * `GovernanceActionOpenLineageIntegrationConnector` is the outbound direction: it listens to the Open Metadata
+     OutTopic for `EngineAction` changes and publishes the run events it generates from them.
+   * `FileBasedOpenLineageLogStoreConnector` and `APIBasedOpenLineageLogStoreConnector` are listeners that persist or
+     forward every event they receive.
+7. **Content pack** - `ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK`, `IntegrationGroupDefinition.OPEN_LINEAGE`, the
+   five `IntegrationConnectorDefinition` entries, `OpenLineageArchiveWriter` (all in `core-content-pack`), and the
+   `logs/openlineage` directory of the platform distribution, described in
+   `open-metadata-distribution/omag-server-platform/docs/logs/openlineage/README.md`.
+
+The sections that follow describe each connector and how to configure it.
 
 ## Open Lineage Event Receiver Integration Connector
 

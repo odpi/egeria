@@ -35,6 +35,9 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
     private int               precision         = 0;
     private boolean           orderedValues     = false;
     private DataItemSortOrder sortOrder         = null;
+    private boolean           isPartitionKey        = false;
+    private int               partitionKeyPosition  = 0;
+    private boolean           allowsDuplicateValues = true;
 
 
     /**
@@ -70,6 +73,9 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
             precision         = template.getPrecision();
             orderedValues     = template.getOrderedValues();
             sortOrder         = template.getSortOrder();
+            isPartitionKey        = template.getIsPartitionKey();
+            partitionKeyPosition  = template.getPartitionKeyPosition();
+            allowsDuplicateValues = template.getAllowsDuplicateValues();
         }
     }
 
@@ -338,6 +344,73 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
 
 
 
+
+    /**
+     * Return whether the data field is part of the key used to partition the data.
+     *
+     * @return boolean
+     */
+    public boolean getIsPartitionKey()
+    {
+        return isPartitionKey;
+    }
+
+
+    /**
+     * Set up whether the data field is part of the key used to partition the data.
+     *
+     * @param isPartitionKey boolean
+     */
+    public void setIsPartitionKey(boolean isPartitionKey)
+    {
+        this.isPartitionKey = isPartitionKey;
+    }
+
+
+    /**
+     * Return the position of the data field in the partition key, starting from 1 (0 means not set).
+     *
+     * @return int
+     */
+    public int getPartitionKeyPosition()
+    {
+        return partitionKeyPosition;
+    }
+
+
+    /**
+     * Set up the position of the data field in the partition key, starting from 1.
+     *
+     * @param partitionKeyPosition int
+     */
+    public void setPartitionKeyPosition(int partitionKeyPosition)
+    {
+        this.partitionKeyPosition = partitionKeyPosition;
+    }
+
+
+    /**
+     * Return whether the values of this data field may be duplicated across the records of the data (true by default);
+     * false means the values are unique.
+     *
+     * @return boolean
+     */
+    public boolean getAllowsDuplicateValues()
+    {
+        return allowsDuplicateValues;
+    }
+
+
+    /**
+     * Set up whether the values of this data field may be duplicated across the records of the data.
+     *
+     * @param allowsDuplicateValues boolean
+     */
+    public void setAllowsDuplicateValues(boolean allowsDuplicateValues)
+    {
+        this.allowsDuplicateValues = allowsDuplicateValues;
+    }
+
     /**
      * JSON-style toString
      *
@@ -359,6 +432,9 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
                 ", precision=" + precision +
                 ", orderedValues=" + orderedValues +
                 ", sortOrder=" + sortOrder +
+                ", isPartitionKey=" + isPartitionKey +
+                ", partitionKeyPosition=" + partitionKeyPosition +
+                ", allowsDuplicateValues=" + allowsDuplicateValues +
                 "} " + super.toString();
     }
 
@@ -384,7 +460,10 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
                 Objects.equals(defaultValue, that.defaultValue) &&
                 Objects.equals(dataType, that.dataType) &&
                 Objects.equals(units, that.units) &&
-                sortOrder == that.sortOrder;
+                sortOrder == that.sortOrder &&
+                isPartitionKey == that.isPartitionKey &&
+                partitionKeyPosition == that.partitionKeyPosition &&
+                allowsDuplicateValues == that.allowsDuplicateValues;
     }
 
     /**
@@ -397,6 +476,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
     {
         return Objects.hash(super.hashCode(), namespacePath, aliases, namePatterns,
                             defaultValue, isNullable, dataType, units,
-                            minimumLength, length, precision, orderedValues, sortOrder);
+                            minimumLength, length, precision, orderedValues, sortOrder, isPartitionKey,
+                            partitionKeyPosition, allowsDuplicateValues);
     }
 }

@@ -96,6 +96,23 @@ The `bitol.mapping` package holds the mapping between the documents and open met
 `DataContractGenerator` and `DataProductGenerator` reverse the mapping to produce a document from an element.  All four
 work through a `ConnectorContextBase`, so they can be used from an integration connector or from a view service.
 
+## Bitol document support
+
+The `bitol` package provides the bean classes for the [Bitol](https://github.com/bitol-io) standards:
+the Open Data Contract Standard (ODCS, `bitol.odcs.DataContract`) and the Open Data Product Standard
+(ODPS, `bitol.odps.DataProduct`), with the shared elements in `bitol.common`.  Both documents extend
+`BitolDocument`, which selects the right subclass from the document's `kind` property.  The documents are
+typically YAML; a Jackson `ObjectMapper` built on a `YAMLFactory` reads both YAML and JSON forms.
+
+`bitol.BitolDocumentFormatter` parses and formats the documents; `bitol.BitolDocumentListener` is the interface an
+integration connector implements to receive documents published to the integration daemon (via
+`IntegrationContext.registerBitolListener`), and `IntegrationContext.publishDataContract`/`publishDataProduct` publish them.
+
+The `bitol.mapping` package holds the mapping between the documents and open metadata.  `DataContractMapper` and
+`DataProductMapper` catalog a document as an `Agreement` (classified as a `DataSharingAgreement`) or a `DigitalProduct`;
+`DataContractGenerator` and `DataProductGenerator` reverse the mapping to produce a document from an element.  All four
+work through a `ConnectorContextBase`, so they can be used from an integration connector or from a view service.
+
 ----
 Return to [frameworks](..).
 

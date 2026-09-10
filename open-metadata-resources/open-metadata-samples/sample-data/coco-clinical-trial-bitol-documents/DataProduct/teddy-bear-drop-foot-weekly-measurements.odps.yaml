@@ -1,0 +1,89 @@
+# SPDX-License-Identifier: CC-BY-4.0
+# Copyright Contributors to the ODPi Egeria project.
+apiVersion: v1.0.0
+kind: DataProduct
+id: 4f0b9a5e-2c31-4b6a-9d7e-1a2b3c4d5e6f
+name: Teddy Bear Drop Foot Weekly Measurements
+version: 1.0.0
+status: active
+domain: clinical-trials
+tenant: CocoPharmaceuticals
+description:
+  purpose: Gather the weekly drop foot angle measurements from the hospitals taking part in the Teddy Bear Drop Foot clinical trial (PROJ-CT-TBDF), validate them, and provide them to the research team.
+  limitations: Only the hospitals certified for the clinical trial may supply measurements.  The data is pseudonymized - patients are identified only by their trial patient identifier.
+  usage: Used by the clinical trial research team to assess the effectiveness of the treatment.  Not for use outside the clinical trial without approval from the clinical trial sponsor.
+inputPorts:
+  - name: hampton-hospital-weekly-measurements
+    version: 1.0.0
+    contractId: 6d0f4b2a-9c1e-4a7f-8b3d-2e5f6a7b8c9d
+    tags:
+      - hospital
+      - landing-area
+    description: Weekly measurements sent by Hampton Hospital under its data sharing agreement.
+  - name: oak-dene-hospital-weekly-measurements
+    version: 1.0.0
+    contractId: 7e1a5c3b-0d2f-4b8a-9c4e-3f6a7b8c9d0e
+    tags:
+      - hospital
+      - landing-area
+    description: Weekly measurements sent by Oak Dene Hospital under its data sharing agreement.
+  - name: old-market-hospital-weekly-measurements
+    version: 1.0.0
+    contractId: 8f2b6d4c-1e3a-4c9b-8d5f-4a7b8c9d0e1f
+    tags:
+      - hospital
+      - landing-area
+    description: Weekly measurements sent by Old Market Hospital under its data sharing agreement.
+outputPorts:
+  - name: validated-weekly-measurements
+    version: 1.0.0
+    contractId: 9a3c7e5d-2f4b-4d0c-9e6a-5b8c9d0e1f2a
+    type: files
+    tags:
+      - data-lake
+      - validated
+    description: The certified weekly measurements from all participating hospitals, held in the clinical trial's data lake.
+    sbom:
+      - type: external
+        implementation: https://github.com/odpi/egeria/tree/main/open-metadata-resources/open-metadata-samples/governance-action-samples
+managementPorts:
+  - name: clinical-trial-data-lake-folder-survey
+    content: observability
+    type: rest
+    url: https://localhost:9443/servers/qs-view-server/api/open-metadata/automated-curation
+    description: Surveys of the data lake folder holding the validated measurements.
+support:
+  - channel: clinical-trial-data-team
+    tool: email
+    scope: issues
+    url: mailto:tbdf-data@coco-pharmaceuticals.com
+    description: Questions about the measurement data and its validation.
+team:
+  - username: tessatube
+    name: Tessa Tube
+    role: Clinical Trial Lead
+    dateIn: "2024-05-01"
+    description: Leads the Teddy Bear Drop Foot clinical trial.
+  - username: tanyatidie
+    name: Tanya Tidie
+    role: Clinical Trial Data Steward
+    dateIn: "2024-05-01"
+  - username: calliequartile
+    name: Callie Quartile
+    role: Data Scientist
+    dateIn: "2024-05-01"
+  - username: peterprofile
+    name: Peter Profile
+    role: Information Architect
+    dateIn: "2024-05-01"
+tags:
+  - clinical-trial
+  - PROJ-CT-TBDF
+customProperties:
+  - property: clinicalTrialId
+    value: PROJ-CT-TBDF
+  - property: clinicalTrialName
+    value: Teddy Bear Drop Foot
+authoritativeDefinitions:
+  - type: businessDefinition
+    url: https://egeria-project.org/practices/coco-pharmaceuticals/scenarios/onboarding-hospital-data/

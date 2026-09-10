@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.D
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.PermittedProcessingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.CanonicalVocabularyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.NamingStandardsVocabularyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.TaxonomyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionDesignProperties;
@@ -1104,6 +1105,46 @@ public class CollectionClient extends ConnectorContextClientBase
                                                                                              UserNotAuthorizedException
     {
         collectionHandler.clearGlossaryAsCanonical(connectorUserId, glossaryGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify a glossary to declare that it describes the terms used in naming standards.  The terms in this
+     * type of glossary are the name parts that are combined to form names that follow the organization's
+     * naming standards.
+     *
+     * @param glossaryGUID    unique identifier of the glossary.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setGlossaryAsNamingStandardsVocabulary(String                               glossaryGUID,
+                                                       NamingStandardsVocabularyProperties  properties,
+                                                       MetadataSourceOptions                metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                          PropertyServerException,
+                                                                                                                          UserNotAuthorizedException
+    {
+        collectionHandler.setGlossaryAsNamingStandardsVocabulary(connectorUserId, glossaryGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Remove the naming standards vocabulary designation from the glossary.
+     *
+     * @param glossaryGUID    unique identifier of the glossary.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearGlossaryAsNamingStandardsVocabulary(String                glossaryGUID,
+                                                         MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException
+    {
+        collectionHandler.clearGlossaryAsNamingStandardsVocabulary(connectorUserId, glossaryGUID, metadataSourceOptions);
     }
 
 

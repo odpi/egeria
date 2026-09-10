@@ -1,0 +1,155 @@
+// This module is a Functional Verification Test (FVT) suite for the **Bitol connectors** - the integration
+// connectors that receive, catalog, generate and store Bitol Open Data Contract Standard (ODCS) and Open Data
+// Product Standard (ODPS) documents - together with the **Bitol content pack** that defines them.
+//
+// Like files-fvt, it does not call the connectors directly.  It stands up the deployment they are designed to
+// run in and drives them the way an operator would:
+//
+//   * a **metadata access store** with a PostgreSQL local repository and its access services publishing to a
+//     real Apache Kafka broker, into which the open metadata types, the Core content pack and the Bitol
+//     content pack are loaded at start-up - the out topics are how the publisher connector hears about the
+//     products and agreements the cataloguers create;
+//   * an **integration daemon** configured with the BitolIntegrationGroup from the content pack, which is
+//     where all six Bitol connectors run.
+//
+// The suite publishes the Coco Pharmaceuticals clinical trial sample documents (from
+// open-metadata-samples/sample-data) to the integration daemon's publish-data-contract and publish-data-product
+// REST endpoints, then checks what the cataloguers created in the repository, that the file store wrote the
+// documents out, and that the generators (and the publisher connector) can turn the metadata back into
+// documents.  That makes it a test of the whole chain: content pack -> daemon REST API -> Bitol listeners ->
+// cataloguers -> repository -> generators -> publisher -> store.
+//
+// Like the other FVTs this is NOT part of the default build.  It only runs when explicitly requested:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:bitol-fvt:test -PrunBitolFvt
+//
+// A reachable PostgreSQL server and Apache Kafka broker are needed (both named in
+// src/test/resources/application.properties; the defaults are the egeria-shared-postgres and egeria-shared-kafka
+// containers).  Use -PrunBitolFvtInMemory instead to carry the out topics over the in-memory topic connector, so
+// that only PostgreSQL is needed.
+
+dependencies {
+    // The OMAG Server Platform itself, run in-process via SpringApplication.run(...).
+    // user-authn is excluded: it wires in a login/token Spring Security chain that needs a real user
+    // directory and credentials, which this hermetic, no-auth platform does not set up.
+    testImplementation(project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')) {
+        exclude group: 'org.odpi.egeria', module: 'user-authn'
+    }
+
+    // Connectors needed to configure and run the two servers.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
+    // The suite drops its repository schema before each run, through JDBC, reading the credentials out of the
+    // same YAML secrets store the server is configured with.
+    testRuntimeOnly 'org.postgresql:postgresql'
+    testImplementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+
+    // The connectors under test.  They are on the *compile* classpath as well as the runtime one because the
+    // suite names their catalog targets and connector names from the connectors' own definitions rather than
+    // repeating them as string literals.  They also have to be on the runtime classpath because the
+    // integration daemon instantiates them by class name from the connection stored in the repository - a
+    // missing one is not a compile failure, it is a connector that will not start.
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:bitol-integration-connectors')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors')
+    // The Kafka receiver test creates the topic and produces a document onto it directly, as a third party would.
+    testImplementation 'org.apache.kafka:kafka-clients'
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors')
+
+    // Clients used to configure, start and drive the two servers.
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+    testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-api')
+    testImplementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
+
+    // Clients used to read the repository back through the same connector context the connectors use.
+    testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+
+    // Frameworks: the Bitol beans, formatter and generators (OIF), the element/property beans and connector
+    // context (OMF), and the checked exceptions all of the above throw.
+    testImplementation project(':open-metadata-implementation:frameworks:open-integration-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+
+    // The content pack definitions themselves.  The suite iterates them to work out what the Bitol content
+    // pack is supposed to contain and checks the daemon against that, so adding a connector to the pack
+    // extends this suite's coverage without editing it.
+    testImplementation project(':open-metadata-resources:open-metadata-archives:core-content-pack')
+
+    // In-process Spring Boot startup/shutdown.
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+    testImplementation 'org.springframework:spring-core'
+
+    // A permit-all security filter chain is needed so that every request still gets an Authentication in the
+    // SecurityContext - the admin and platform REST controllers require one to be present even though this
+    // suite's platform has no real user directory configured.
+    testImplementation 'org.springframework.security:spring-security-config'
+    testImplementation 'org.springframework.security:spring-security-web'
+    testImplementation 'org.springframework.security:spring-security-core'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Bitol Connectors Functional Verification Tests (bitol-fvt)'
+
+// The property is read here, at configuration time, rather than inside the onlyIf closure.  onlyIf is
+// evaluated during execution, and reaching for `project` then is unsupported with the configuration cache.
+def runThisSuite = project.hasProperty('runBitolFvt') || project.hasProperty('runBitolFvtInMemory')
+
+test {
+    useJUnitPlatform()
+
+    // Optional, opt-in suite: it needs a reachable PostgreSQL server, stands up two servers and takes a couple
+    // of minutes, so it is skipped unless explicitly requested.  Two ways to ask for it:
+    //
+    //   -PrunBitolFvt          the normal deployment - the access services publish to Apache Kafka, so a
+    //                          reachable broker is needed too;
+    //   -PrunBitolFvtInMemory  the out topics run over the in-memory topic connector and no broker is needed.
+    onlyIf { runThisSuite }
+
+    // Single JVM fork - the tests share one running platform and its two servers, and are ordered: the content
+    // pack has to be shown to have loaded before there is any point publishing documents to the daemon.
+    maxParallelForks = 1
+    testLogging.showStandardStreams = true
+    maxHeapSize = '2g'
+
+    // Any bitol.fvt.* setting can be overridden for a single run from the command line, e.g.
+    //   ./gradlew :open-metadata-test:open-metadata-fvt:bitol-fvt:test -PrunBitolFvt -Dbitol.fvt.refresh.timeout.seconds=600
+    systemProperties System.properties.findAll { it.key.toString().startsWith('bitol.fvt.') }
+
+    if (project.hasProperty('runBitolFvt') && project.hasProperty('runBitolFvtInMemory'))
+    {
+        throw new GradleException('Specify either -PrunBitolFvt or -PrunBitolFvtInMemory, not both - one run ' +
+                                          'uses Apache Kafka, the other the in-memory event bus.')
+    }
+
+    if (project.hasProperty('runBitolFvtInMemory'))
+    {
+        systemProperty 'bitol.fvt.event.bus', 'inmemory'
+    }
+}
+
+// Resolves logging conflicts between the various connectors pulled in by the platform chassis
+jvmDependencyConflicts {
+    logging {
+        enforceLogback()
+    }
+}
