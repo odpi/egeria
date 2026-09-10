@@ -137,49 +137,55 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">BitolEventReceiverIntegrationProvider is the connector provider for the BitolEventReceiverIntegrationConnector.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BitolFilesCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">BitolFilesCatalogTargetProcessor</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BitolFileCataloguer.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">BitolFileCataloguer</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">BitolFileCataloguer catalogs a file that holds a Bitol document as a data asset, using the YAML or JSON file
+ template for the file's format and the deployed implementation type for the document's kind, and links the asset
+ as a resource of the agreement or digital product catalogued from the document.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BitolFilesCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">BitolFilesCatalogTargetProcessor</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">BitolFilesCatalogTargetProcessor scans the directory described by a FileFolder catalog target for Bitol documents.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BitolFilesReceiverIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">BitolFilesReceiverIntegrationConnector</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BitolFilesReceiverIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">BitolFilesReceiverIntegrationConnector</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">BitolFilesReceiverIntegrationConnector monitors file directories for Bitol documents: Open Data Contract Standard
  (ODCS) data contracts and Open Data Product Standard (ODPS) data products.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BitolFilesReceiverIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">BitolFilesReceiverIntegrationProvider</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BitolFilesReceiverIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">BitolFilesReceiverIntegrationProvider</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">BitolFilesReceiverIntegrationProvider is the connector provider for the BitolFilesReceiverIntegrationConnector.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataContractCataloguerIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">DataContractCataloguerIntegrationConnector</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataContractCataloguerIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">DataContractCataloguerIntegrationConnector</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">DataContractCataloguerIntegrationConnector registers a Bitol listener with the integration daemon and catalogues each
  Open Data Contract Standard (ODCS) document it receives as an Agreement (classified as a DataSharingAgreement) in open
  metadata, along with the contract's schema (as data structures and data fields), data quality checks (as data quality
  rules), service level agreement (as a service level objective), servers (as endpoints), access roles, team, support
  channels and authoritative definitions.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataContractCataloguerIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">DataContractCataloguerIntegrationProvider</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataContractCataloguerIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">DataContractCataloguerIntegrationProvider</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">DataContractCataloguerIntegrationProvider is the connector provider for the DataContractCataloguerIntegrationConnector.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataProductCataloguerIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">DataProductCataloguerIntegrationConnector</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataProductCataloguerIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">DataProductCataloguerIntegrationConnector</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">DataProductCataloguerIntegrationConnector registers a Bitol listener with the integration daemon and catalogues each
  Open Data Product Standard (ODPS) document it receives as a DigitalProduct in open metadata, along with the product's
  ports (as a solution component with solution ports), team (as scoped person roles), support channels (as contact
  details), authoritative definitions (as external references) and management ports (as endpoints).</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataProductCataloguerIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">DataProductCataloguerIntegrationProvider</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataProductCataloguerIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">DataProductCataloguerIntegrationProvider</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">DataProductCataloguerIntegrationProvider is the connector provider for the DataProductCataloguerIntegrationConnector.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="FileBasedBitolStoreConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">FileBasedBitolStoreConnector</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="FileBasedBitolStoreConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">FileBasedBitolStoreConnector</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">FileBasedBitolStoreConnector stores the Bitol documents (Open Data Contract Standard data contracts and Open Data
  Product Standard data products) published in the integration daemon to the file system.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="FileBasedBitolStoreProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">FileBasedBitolStoreProvider</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="FileBasedBitolStoreProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">FileBasedBitolStoreProvider</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">FileBasedBitolStoreProvider is the connector provider for the FileBasedBitolStoreConnector.</div>
 </div>
 </div>
