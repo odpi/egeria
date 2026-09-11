@@ -17,6 +17,7 @@ Tracks odpi/egeria#9245. This is a **v1 scaffold**, not a finished connector.
 | Connector registration | `EgeriaOpenConnectorDefinition.WSO2MI_RESOURCE_CONNECTOR` (575), `WSO2MI_INTEGRATION_CONNECTOR` (576) | done |
 | Controls | `controls/WSO2MIPlaceholderProperty`, `controls/WSO2MIConfigurationProperty` | minimal — host/port/serverName/userId/password placeholders; include/exclude API-list config properties |
 | Integration connector | `catalog/WSO2MIIntegrationConnector`, `catalog/WSO2MIIntegrationProvider` | **stub** — wiring + `refresh()` loop present; the `APIInfo` → open-metadata-asset mapping is a `TODO` |
+| Survey action service | `survey/SurveyWSO2MIServerConnector`, `survey/SurveyWSO2MIServerProvider`, `survey/controls/WSO2MIAnnotationType`, `survey/ffdc/WSO2MISurveyErrorCode` | **done, v1** — per Mandy's odpi/egeria#9245 guidance to survey before cataloguing. `CHECK_ASSET` → `performCheckAssetAnalysisStep(WSO2MIResourceConnector.class, ...)`, `PROFILING_ASSOCIATED_RESOURCES` → `listAPIs()` into a `ResourceProfileAnnotationProperties` (API names), `PRODUCE_INVENTORY` → `writeNameListInventory`. Mirrors `SurveyApacheKafkaServerConnector` exactly. Registered as `EgeriaOpenConnectorDefinition.WSO2MI_API_SURVEY_SERVICE` (577). Verified: `compileJava`/`compileTestJava` clean, `checkstyleMain`/`checkstyleTest` clean, `ErrorCodeTest` 1/1 pass. Also fixed the same missing `test { useTestNG() }` gap in this module's `build.gradle` that PR #9244 fixed in `postgres-server-connectors` — without it Gradle's `test` task silently found zero tests. |
 
 ## What is left
 
@@ -37,7 +38,7 @@ Tracks odpi/egeria#9245. This is a **v1 scaffold**, not a finished connector.
 
    d. **Open metadata type for a deployed REST API** — `OpenMetadataType.DEPLOYED_API` exists; confirm it's the right one vs a generic `Asset`/`DeployedConnector`, and whether the MI instance itself should be a `SoftwareServer` + `SoftwareCapability` (as the DB connectors do for the DB server + DB manager).
 4. **Template types.** `WSO2MITemplateType` + template GUIDs, wired into the provider (`supportedTemplateTypes`), following `OracleTemplateType`.
-5. **Tests.** `ffdc` `AuditCodeTest` / `ErrorCodeTest` (mirror the Oracle/UC ones); a mocked-REST test for `WSO2MIResourceConnector.login()` + `listAPIs()`.
+5. **Tests.** ~~Survey `ffdc` `ErrorCodeTest`~~ — **done.** Still open: `ffdc` `AuditCodeTest`/`ErrorCodeTest` for the resource connector's own `WSO2MIAuditCode`/`WSO2MIErrorCode` (mirror the Oracle/UC ones); a mocked-REST test for `WSO2MIResourceConnector.login()` + `listAPIs()`; and — once a real Micro Integrator instance is available — actually running the survey connector end to end, which is the whole point of building it first.
 6. **Docs.** A page under `site/docs` and a `connector-configuration-factory` entry, if the maintainers want the connector shipped in the default configuration.
 
 ## v1 scope (unchanged from #9245)

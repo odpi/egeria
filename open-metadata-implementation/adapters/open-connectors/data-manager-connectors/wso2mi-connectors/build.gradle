@@ -20,6 +20,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-integration-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-survey-framework')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
@@ -35,6 +36,11 @@ dependencies {
 
 application {
     mainClass = ''
+}
+
+test {
+    useTestNG()
+    scanForTestClasses = false
 }
 
 shadowJar {
