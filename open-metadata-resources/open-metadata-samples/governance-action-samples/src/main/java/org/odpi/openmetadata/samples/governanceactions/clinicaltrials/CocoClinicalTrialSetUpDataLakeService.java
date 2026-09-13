@@ -9,7 +9,6 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestParameter;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
@@ -18,10 +17,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -129,7 +126,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                                             actionTargetElement.getTargetElement().getElementProperties(),
                                                                                             methodName);
                             dataLakeCatalogName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
-                                                                                   OpenMetadataProperty.RESOURCE_NAME.name,
+                                                                                   OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                    actionTargetElement.getTargetElement().getElementProperties(),
                                                                                    methodName);
 
