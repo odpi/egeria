@@ -84,7 +84,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                     for (RelatedMetadataElementSummary collectionMember : informationSupplyChainElement.getCollectionMembers())
                     {
                         if ((collectionMember != null) &&
-                                (propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+                                (! propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
                         {
                             if (collectionMember instanceof RelatedMetadataHierarchySummary hierarchySummary)
                             {
