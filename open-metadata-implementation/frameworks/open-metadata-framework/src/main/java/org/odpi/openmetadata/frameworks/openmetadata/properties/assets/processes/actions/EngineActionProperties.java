@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processe
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -275,6 +276,7 @@ public class EngineActionProperties extends ActionProperties
      *
      * @return string name
      */
+    @JsonProperty("iscQualifiedName")
     public String getISCQualifiedName()
     {
         return iscQualifiedName;
@@ -286,6 +288,7 @@ public class EngineActionProperties extends ActionProperties
      *
      * @param iscQualifiedName string name
      */
+    @JsonProperty("iscQualifiedName")
     public void setISCQualifiedName(String iscQualifiedName)
     {
         this.iscQualifiedName = iscQualifiedName;
