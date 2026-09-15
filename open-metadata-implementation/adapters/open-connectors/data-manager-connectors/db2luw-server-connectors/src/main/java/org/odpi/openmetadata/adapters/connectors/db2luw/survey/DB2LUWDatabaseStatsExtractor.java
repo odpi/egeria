@@ -39,6 +39,29 @@ public class DB2LUWDatabaseStatsExtractor
 
 
     /**
+     * Convert Db2's raw SYSSTAT.COLUMNS.COLCARD catalog value into an actual number-of-distinct-values
+     * estimate.  Per Db2's own documentation, COLCARD is a non-negative distinct-value count once RUNSTATS
+     * has been run on the table, but is exactly -1 if statistics have not been gathered for the column -
+     * a documented "unknown" sentinel, not a real (negative) count.  Reading that raw catalog value
+     * directly into a "number of distinct values" measurement, as this method's caller previously did,
+     * reports a nonsensical -1 for any un-RUNSTATS column - the same class of bug already fixed for
+     * PostgreSQL's equivalent pg_stats.n_distinct sentinel (see PostgresDatabaseStatsExtractor).
+     *
+     * @param rawColumnCardinality the raw value of SYSSTAT.COLUMNS.COLCARD for the column
+     * @return the distinct-value count, or 0 if statistics have not been gathered for the column
+     */
+    static long calculateNumberOfDistinctValues(long rawColumnCardinality)
+    {
+        if (rawColumnCardinality < 0)
+        {
+            return 0L;
+        }
+
+        return rawColumnCardinality;
+    }
+
+
+    /**
      * Constructor sets up the list of databases to process and the connection to the database.
      *
      * @param validDatabases               list of database names
@@ -222,7 +245,7 @@ public class DB2LUWDatabaseStatsExtractor
                         String  tableName              = resultSet.getString("tablename");
                         String  columnName             = resultSet.getString("columnname");
                         int     averageColumnWidth     = resultSet.getInt("avgwidth");
-                        long    numberOfDistinctValues = resultSet.getLong("ndistinct");
+                        long    numberOfDistinctValues = calculateNumberOfDistinctValues(resultSet.getLong("ndistinct"));
                         String  mostCommonValue        = resultSet.getString("mostcommonvalue");
                         String  mostCommonFrequency     = resultSet.getString("mostcommonfreq");
                         String  columnTypeName         = resultSet.getString("typename");
