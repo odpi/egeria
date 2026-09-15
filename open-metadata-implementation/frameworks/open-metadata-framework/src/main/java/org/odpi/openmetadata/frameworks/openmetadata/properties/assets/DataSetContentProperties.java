@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -121,6 +122,7 @@ public class DataSetContentProperties extends RelationshipBeanProperties
      *
      * @return string
      */
+    @JsonProperty("iscQualifiedName")
     public String getISCQualifiedName()
     {
         return iscQualifiedName;
@@ -132,6 +134,7 @@ public class DataSetContentProperties extends RelationshipBeanProperties
      *
      * @param iscQualifiedName string
      */
+    @JsonProperty("iscQualifiedName")
     public void setISCQualifiedName(String iscQualifiedName)
     {
         this.iscQualifiedName = iscQualifiedName;
