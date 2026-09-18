@@ -1448,7 +1448,7 @@ public class OpenMetadataStoreResource
                                                          @PathVariable String            userId,
                                                          @PathVariable String            metadataElementGUID,
                                                          @PathVariable String            classificationName,
-                                                         @RequestBody  MetadataSourceRequestBody requestBody)
+                                                         @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
     {
         return restAPI.declassifyMetadataElementInStore(serverName, userId, metadataElementGUID, classificationName, requestBody);
     }

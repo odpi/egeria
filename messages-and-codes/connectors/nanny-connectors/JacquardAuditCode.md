@@ -23,7 +23,7 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 | [JACQUARD-HARVESTER-0001](#jacquard-harvester-0001) | EXCEPTION | The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3} |
 | [JACQUARD-HARVESTER-0002](#jacquard-harvester-0002) | ERROR | Integration connector {0} cannot determine if tabular data source {1} has changed since it has no last update time column |
 | [JACQUARD-HARVESTER-0003](#jacquard-harvester-0003) | ERROR | Integration connector {0} cannot determine if tabular data source {1} has changed since it has no createTime column |
-| [JACQUARD-HARVESTER-0006](#jacquard-harvester-0006) | ERROR | The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types will not be handed to a subscription manager and their subscribers will not be notified |
+| [JACQUARD-HARVESTER-0006](#jacquard-harvester-0006) | INFO | The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types are handed to the default subscription manager, the Baudot Subscription Manager defined by the Open Metadata Digital Products content pack with unique identifier {2} |
 | [JACQUARD-HARVESTER-0009](#jacquard-harvester-0009) | INFO | The {0} integration connector has stopped its monitoring of open metadata from server {1} on platform {2} and is shutting down |
 | [JACQUARD-HARVESTER-0010](#jacquard-harvester-0010) | TRACE | The {0} integration connector has created a new {1} supporting definition called {2} with GUID {3} |
 | [JACQUARD-HARVESTER-0011](#jacquard-harvester-0011) | INFO | The {0} integration connector is starting its harvesting of open metadata from server {1} on platform {2} into digital products |
@@ -114,22 +114,22 @@ Update the data source to ensure it has a column called 'createTime'.
 
 ### JACQUARD-HARVESTER-0006
 
-> The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types will not be handed to a subscription manager and their subscribers will not be notified
+> The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types are handed to the default subscription manager, the Baudot Subscription Manager defined by the Open Metadata Digital Products content pack with unique identifier {2}
 
 |  |  |
 |---|---|
 | **Java constant** | `JacquardAuditCode.NO_SUBSCRIPTION_MANAGER` |
-| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
-| **Message inserts** | `{0}`, `{1}` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
 | **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 
 **System action**
 
-The connector builds the products and their notification types, but no connector is looking after the notification types.  Subscriptions can be taken out, and nothing will deliver them.
+The connector builds the products and their notification types, and hands each notification type to the default subscription manager.  If that connector is not defined in open metadata, the notification types are not handed on and their subscribers are not notified.
 
 **User action**
 
-Set the configuration property to the unique identifier of the Baudot Subscription Manager integration connector.  The Open Metadata Digital Products content pack sets it when it defines this connector; a connector defined by hand needs it added.
+No action is required if the default is intended.  Otherwise set the configuration property to the unique identifier of the subscription manager integration connector to use.  The Open Metadata Digital Products content pack sets it when it defines this connector; a connector defined by hand needs it added.
 
 
 ----

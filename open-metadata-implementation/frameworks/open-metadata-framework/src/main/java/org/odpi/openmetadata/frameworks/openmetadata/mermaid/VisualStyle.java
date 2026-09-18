@@ -130,6 +130,7 @@ public enum VisualStyle
 
     DIGITAL_PRODUCT_FAMILY(Colour.BLACK.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), "rect"),
     DIGITAL_PRODUCT(Colour.BLACK.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), "rect"),
+    DIGITAL_PRODUCT_GRAPH(Colour.BLACK.getColourNumber(), Colour.CADET_BLUE.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), "rect"),
 
 
     GLOSSARY_TERM(Colour.BLACK.getColourNumber(), Colour.MEDIUM_AQUAMARINE.getColourNumber(), Colour.TEAL.getColourNumber(), "rect"),

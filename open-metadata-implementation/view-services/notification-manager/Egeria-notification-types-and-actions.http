@@ -1,6 +1,5 @@
 # Egeria-notification-types-and-actions
 ## Egeria's Notification Manager API
-## Egeria's Notification Manager API
 ## Sets up the definitions of the resources to monitor and the subscribers to receive notifications from.
 
 @baseURL=https://localhost:7443
@@ -49,8 +48,49 @@ Content-Type: application/json
 }
 
 ###
+# =====================================================================================================================
+# Notification types of digital products.  Each subscription type of a digital product has a notification type
+# behind it, created by the Product Manager's client along with the subscribing action process (Jacquard builds
+# its catalogue this way; the Product Manager OMVS exposes it as the subscription-type requests in
+# Egeria-api-product-manager.http).  The notification type is anchored to the product and named
+#     NotificationType::<product GUID>::<product name>::<subscription type identifier>
+# and is handed to the Baudot Subscription Manager as one of its catalog targets.  Its notification pattern says
+# what kind of subscription it drives:
+#   - one-time (Jacquard's EVALUATION-SUBSCRIPTION): multipleNotificationsPermitted is false - one delivery
+#   - periodic: multipleNotificationsPermitted is true and minimumNotificationInterval is the period in minutes
+#   - ongoing update: as periodic, and the product's asset is a monitored resource, so a change to the data
+#     triggers a delivery no more often than the minimum interval
+# Its subscribers are the product manager's role, the product community's note log and, once taken out, the
+# provisioning pipeline of every subscription of that type.
+# =====================================================================================================================
+
+###
+# @name find the notification types of a digital product
+# The product name is part of the notification type's qualified name and display name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/notification-manager/governance-definitions/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "NotificationType",
+  "searchString": "Valid Metadata Value Set List",
+  "includeOnlyRelationships": ["MonitoredResource", "NotificationSubscriber", "CatalogTarget"],
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0
+}
+
+> {% client.global.set("notificationTypeGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
 # @name linkMonitoredResource
-# Attach a monitored resource to a notification type.
+# Attach a monitored resource to a notification type.  This is how an ongoing update subscription type comes to
+# watch an asset: the Product Manager's client links the assets named as monitored resources when the type is
+# created, and Jacquard links each member product's asset to its family's notification types as the member is
+# catalogued.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/notification-manager/notification-types/{{notificationTypeGUID}}/monitored-resources/{{monitoredResourceGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json

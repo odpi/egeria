@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinition;
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinitionEnum;
+import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductPerspectiveDefinition;
+import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductQuestionDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
@@ -217,6 +219,105 @@ public class ProductCatalogFVT
         assertTrue(expectedButMissing.isEmpty(),
                    "Product family " + family.getProductName() + " does not hold the products whose definitions name it as"
                            + " their family: " + expectedButMissing + ".  A subscription to the family would not cover them.");
+    }
+
+
+    /**
+     * Every product is linked to the questions its definition says it answers.  The questions are how a
+     * consumer who does not know a product's name finds it, so a product missing one is a product that cannot
+     * be found that way.
+     * <br>
+     * The links are made when a product is created and re-checked on every refresh, so this holds whether the
+     * catalogue was built after the questions were defined or before.
+     *
+     * @throws Exception problem reading the repository
+     */
+    @Test
+    @DisplayName("Every product is linked to the questions it answers")
+    void everyProductIsLinkedToItsQuestions() throws Exception
+    {
+        List<String> missingLinks = new ArrayList<>();
+
+        for (ProductDefinitionEnum productDefinition : ProductDefinitionEnum.values())
+        {
+            if (productDefinition.getQuestions() == null)
+            {
+                continue;
+            }
+
+            OpenMetadataElement product = openMetadataStore.getMetadataElementByUniqueName(productDefinition.getQualifiedName(),
+                                                                                           OpenMetadataProperty.QUALIFIED_NAME.name);
+
+            assertNotNull(product, "Product " + productDefinition.getQualifiedName() + " is not in the catalogue");
+
+            List<String> linkedQuestions = new ArrayList<>();
+
+            for (RelatedMetadataElement question : SubscriptionFvtTestSupport.getRelatedElements(openMetadataStore,
+                                                                                                  product.getElementGUID(),
+                                                                                                  OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP.typeName,
+                                                                                                  1))
+            {
+                linkedQuestions.add(SubscriptionFvtTestSupport.getStringProperty(question.getElement(), OpenMetadataProperty.QUALIFIED_NAME.name));
+            }
+
+            for (ProductQuestionDefinition question : productDefinition.getQuestions())
+            {
+                if (! linkedQuestions.contains(question.getQualifiedName()))
+                {
+                    missingLinks.add(productDefinition.getProductName() + " -> " + question.getDisplayName());
+                }
+            }
+        }
+
+        assertTrue(missingLinks.isEmpty(),
+                   missingLinks.size() + " product-to-question link(s) that the definitions call for are not in the catalogue: " + missingLinks);
+    }
+
+
+    /**
+     * Every question is scoped by the perspectives its definition names.  The perspectives are how the
+     * questions are grouped for the different kinds of catalogue user, so a question missing one is invisible
+     * to that user.  The perspectives themselves come from the Core Content Pack.
+     * <br>
+     * Like the product links, these are re-checked on every refresh, so a perspective added to a question's
+     * definition reaches an existing catalogue.
+     *
+     * @throws Exception problem reading the repository
+     */
+    @Test
+    @DisplayName("Every question is scoped by the perspectives it is defined for")
+    void everyQuestionIsScopedByItsPerspectives() throws Exception
+    {
+        List<String> missingScopes = new ArrayList<>();
+
+        for (ProductQuestionDefinition questionDefinition : ProductQuestionDefinition.values())
+        {
+            OpenMetadataElement question = openMetadataStore.getMetadataElementByUniqueName(questionDefinition.getQualifiedName(),
+                                                                                            OpenMetadataProperty.QUALIFIED_NAME.name);
+
+            assertNotNull(question, "Question " + questionDefinition.getQualifiedName() + " is not in the catalogue");
+
+            List<String> scopes = new ArrayList<>();
+
+            for (RelatedMetadataElement scope : SubscriptionFvtTestSupport.getRelatedElements(openMetadataStore,
+                                                                                               question.getElementGUID(),
+                                                                                               OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
+                                                                                               1))
+            {
+                scopes.add(SubscriptionFvtTestSupport.getStringProperty(scope.getElement(), OpenMetadataProperty.QUALIFIED_NAME.name));
+            }
+
+            for (ProductPerspectiveDefinition perspective : questionDefinition.getPerspectives())
+            {
+                if (! scopes.contains(perspective.getQualifiedName()))
+                {
+                    missingScopes.add(questionDefinition.getDisplayName() + " -> " + perspective.getDisplayName());
+                }
+            }
+        }
+
+        assertTrue(missingScopes.isEmpty(),
+                   missingScopes.size() + " question-to-perspective scope(s) that the definitions call for are not in the catalogue: " + missingScopes);
     }
 
 

@@ -10,11 +10,18 @@ follows one journey, the consumer's:
 2. **find the subscriptions it offers**;
 3. **subscribe to one of them** - and get the data delivered somewhere real.
 
-Nothing in the suite creates a product.  The catalogue is built by the **Jacquard Digital Product Loom**
-running in an integration daemon, from the definitions in `ProductDefinitionEnum`, and the tests assert
-against those definitions rather than against a written-out list of names.  Adding a product, or a
-subscription type, therefore extends this suite's coverage without anybody editing it - and adding one that
-Jacquard cannot build fails here.
+The catalogue is built by the **Jacquard Digital Product Loom** running in an integration daemon, from the
+definitions in `ProductDefinitionEnum`, and the tests assert against those definitions rather than against a
+written-out list of names.  Adding a product, or a subscription type, therefore extends this suite's coverage
+without anybody editing it - and adding one that Jacquard cannot build fails here.
+
+The one exception is `ProductManagerFVT`, which builds a single product of its own through the
+`ProductManagerClient` - the Open Metadata Framework client behind the Product Manager OMVS's
+`createDigitalProduct` and subscription-type endpoints, and the client Jacquard itself now builds its products
+with.  That product borrows its community, license, service level objective and question from Jacquard's
+catalogue and delivers from a PostgreSQL table the suite fills, so the test shows a product built by a product
+manager is indistinguishable, to a consumer, from a harvested one - and that the PostgreSQL tabular data set
+connector reads as well as writes.
 
 ## Running it
 
@@ -85,6 +92,7 @@ it delivers to; sharing one would leave four subscriptions whose names differ on
 | [SubscriptionOfferingsFVT](src/test/java/org/odpi/openmetadata/subscriptionfvt/SubscriptionOfferingsFVT.java) | a product offers an option for each subscription type it declares, each one a subscribing action process; the same for a product family; and a product with no data to deliver offers none |
 | [ProductSubscriptionFVT](src/test/java/org/odpi/openmetadata/subscriptionfvt/ProductSubscriptionFVT.java) | subscribing to a product, run **once for each of the four subscription types**: the subscription is created, identifies its type, and records both its subscriber and its product |
 | [ProductFamilySubscriptionFVT](src/test/java/org/odpi/openmetadata/subscriptionfvt/ProductFamilySubscriptionFVT.java) | subscribing to a family covers every product in it, through a nested subscription per member |
+| [ProductManagerFVT](src/test/java/org/odpi/openmetadata/subscriptionfvt/ProductManagerFVT.java) | the product manager's side: a product built through the `ProductManagerClient` (the client the Product Manager OMVS and Jacquard both use) is linked to its product manager, community, folder, question, asset, license and data specification; its one-time, periodic and ongoing update subscription types are offered as subscribing action processes, carry the right notification pattern, and are handed to Baudot; asking for a type twice reuses it; and a consumer can subscribe to the product and have its data delivered |
 
 ### Products with nothing to deliver
 
@@ -115,7 +123,7 @@ So the suite **reuses an existing catalogue by default**, and rebuilds only when
 |---|---|
 | Products are missing from the catalogue | Built by the refresh - a partial catalogue is never tested against |
 | The catalogue is complete | Reused; Jacquard is still refreshed, which is what hands the notification types to the subscription manager |
-| `-Dsubscription.fvt.rebuild.catalogue=true` | Purged and rebuilt from scratch |
+| `-Dsubscription.fvt.rebuild.catalogue=true` | Purged and rebuilt from scratch - everything in Jacquard's namespace is swept by qualified name, not just the products, because a rebuild on top of surviving connections left every product flagged as a duplicate and skipped |
 
 Jacquard is refreshed on every run even when nothing needs building, because refreshing is also what hands each
 product's notification types to the **Baudot Subscription Manager** as catalog targets.  A run that skips it may

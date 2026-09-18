@@ -10,6 +10,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsuppl
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 
 /**
  * Creates a mermaid graph rendering of the Open Metadata Framework's information supply chain graph.
@@ -36,7 +41,8 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
 
             String iscAreaName            = "Context";
             String designAreaName         = "Design";
-            String implementationAreaName = "Implementation";
+            String productAreaName        = "Data Mesh";
+            String implementationAreaName = "Data Fabric";
 
             super.startSubgraph(iscAreaName, VisualStyle.WHITE_SUBGRAPH);
 
@@ -57,15 +63,20 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
 
             super.endSubgraph(); // ISC
 
+            /*
+             * Fill out the design area if there is one.
+             */
             if (informationSupplyChainElement.getCollectionMembers() != null)
             {
-                int solutionComponentCount = 0;
+                int         solutionComponentCount = 0;
+                Set<String> designTypeNames        = new HashSet<>();
                 for (RelatedMetadataElementSummary collectionMember : informationSupplyChainElement.getCollectionMembers())
                 {
                     if ((collectionMember != null) &&
-                            (propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+                            (! propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
                     {
                         solutionComponentCount++;
+                        designTypeNames.add(collectionMember.getRelatedElement().getElementHeader().getType().getTypeName());
                     }
                 }
 
@@ -76,7 +87,10 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                     /*
                      * Add the solution components that are explicit members of the information supply chains
                      */
-                    super.addUnlinkedRelatedElementSummaries(informationSupplyChainElement.getCollectionMembers(), OpenMetadataType.SOLUTION_COMPONENT.typeName, VisualStyle.DEFAULT_SOLUTION_COMPONENT, informationSupplyChainElement.getElementHeader().getGUID());
+                    for (String designTypeName : designTypeNames)
+                    {
+                        super.addUnlinkedRelatedElementSummaries(informationSupplyChainElement.getCollectionMembers(), designTypeName, VisualStyle.DEFAULT_SOLUTION_COMPONENT, informationSupplyChainElement.getElementHeader().getGUID());
+                    }
 
                     /*
                      * Only add the links between the solution components that are part of this informaito nsupply chain.
@@ -149,10 +163,17 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                 designAreaName = null;
             }
 
+            /*
+             * Two graphs are made from the implementation relationships.  One for the product dependencies and one for the implementation (typically assets).
+             */
             if ((informationSupplyChainElement.getImplementation() != null) && (! informationSupplyChainElement.getImplementation().isEmpty()))
             {
-                super.startSubgraph(implementationAreaName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
+                Map<String, ElementStub> productMap = new HashMap<>();
+                Map<String, ElementStub> implementationMap = new HashMap<>();
 
+                /*
+                 * Work out how many nodes in each subgraph
+                 */
                 for (MetadataRelationshipSummary lineageRelationship : informationSupplyChainElement.getImplementation())
                 {
                     if (lineageRelationship != null)
@@ -160,86 +181,165 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                         extractAnchorInfo(lineageRelationship.getEnd1());
                         extractAnchorInfo(lineageRelationship.getEnd2());
 
-                        if (lineageRelationship.getEnd1().getUniqueName() != null)
+                        if (propertyHelper.isTypeOf(lineageRelationship.getEnd1(), OpenMetadataType.DIGITAL_PRODUCT.typeName))
                         {
-                            appendNewMermaidNode(lineageRelationship.getEnd1().getGUID(),
-                                                 lineageRelationship.getEnd1().getUniqueName(),
-                                                 lineageRelationship.getEnd1().getType().getTypeName(),
-                                                 getVisualStyleForEntity(lineageRelationship.getEnd1(), VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
+                            productMap.put(lineageRelationship.getEnd1().getGUID(), lineageRelationship.getEnd1());
                         }
                         else
                         {
-                            appendNewMermaidNode(lineageRelationship.getEnd1().getGUID(),
-                                                 lineageRelationship.getEnd1().getGUID(),
-                                                 lineageRelationship.getEnd1().getType().getTypeName(),
-                                                 getVisualStyleForEntity(lineageRelationship.getEnd1(), VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
+                            implementationMap.put(lineageRelationship.getEnd1().getGUID(), lineageRelationship.getEnd1());
                         }
 
-                        if (lineageRelationship.getEnd2().getUniqueName() != null)
+                        if (propertyHelper.isTypeOf(lineageRelationship.getEnd2(), OpenMetadataType.DIGITAL_PRODUCT.typeName))
                         {
-                            appendNewMermaidNode(lineageRelationship.getEnd2().getGUID(),
-                                                 lineageRelationship.getEnd2().getUniqueName(),
-                                                 lineageRelationship.getEnd2().getType().getTypeName(),
-                                                 getVisualStyleForEntity(lineageRelationship.getEnd2(), VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
+                            productMap.put(lineageRelationship.getEnd2().getGUID(), lineageRelationship.getEnd2());
                         }
                         else
                         {
-                            appendNewMermaidNode(lineageRelationship.getEnd2().getGUID(),
-                                                 lineageRelationship.getEnd2().getGUID(),
-                                                 lineageRelationship.getEnd2().getType().getTypeName(),
-                                                 getVisualStyleForEntity(lineageRelationship.getEnd2(), VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
-                        }
-
-                        String label = null;
-
-                        if (lineageRelationship.getRelationshipProperties() instanceof LabeledRelationshipProperties labeledRelationshipProperties)
-                        {
-                            label = labeledRelationshipProperties.getLabel();
-                        }
-                        else if (lineageRelationship.getRelationshipProperties() instanceof RoledRelationshipProperties roledRelationshipProperties)
-                        {
-                            label = roledRelationshipProperties.getRole();
-                        }
-
-                        if (label != null)
-                        {
-                            label = label + " [" + super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName()) + "]";
-                        }
-                        else
-                        {
-                            label = super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName());
-                        }
-
-                        if (propertyHelper.isTypeOf(lineageRelationship.getRelationshipHeader(), OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
-                        {
-                            appendMermaidThinLine(lineageRelationship.getRelationshipHeader().getGUID(),
-                                                  lineageRelationship.getEnd1().getGUID(),
-                                                  label,
-                                                  lineageRelationship.getEnd2().getGUID());
-                        }
-                        else
-                        {
-                            appendMermaidLine(lineageRelationship.getRelationshipHeader().getGUID(),
-                                              lineageRelationship.getEnd1().getGUID(),
-                                              label,
-                                              lineageRelationship.getEnd2().getGUID());
+                            implementationMap.put(lineageRelationship.getEnd2().getGUID(), lineageRelationship.getEnd2());
                         }
                     }
                 }
 
-                super.endSubgraph(); // implementation
+                /*
+                * If there are no products, then the product area is not needed.
+                * Otherwise populate the subgraph with the extracted nodes.
+                 */
+                if (productMap.isEmpty())
+                {
+                    productAreaName = null;
+                }
+                else
+                {
+                    super.startSubgraph(productAreaName, VisualStyle.DIGITAL_PRODUCT_GRAPH);
+
+                    for (ElementStub elementStub : productMap.values())
+                    {
+                        if (elementStub != null)
+                        {
+                            if (elementStub.getUniqueName() != null)
+                            {
+                                appendNewMermaidNode(elementStub.getGUID(),
+                                                     elementStub.getUniqueName(),
+                                                     elementStub.getType().getTypeName(),
+                                                     getVisualStyleForEntity(elementStub, VisualStyle.DIGITAL_PRODUCT));
+                            }
+                            else
+                            {
+                                appendNewMermaidNode(elementStub.getGUID(),
+                                                     elementStub.getGUID(),
+                                                     elementStub.getType().getTypeName(),
+                                                     getVisualStyleForEntity(elementStub, VisualStyle.DIGITAL_PRODUCT));
+                            }
+                        }
+                    }
+
+                    super.endSubgraph(); // data mesh
+                }
+
+
+                /*
+                 * If there are no implementations, then the implementation area is not needed.
+                 * Otherwise, populate it with the extracted nodes.
+                 */
+                if (implementationMap.isEmpty())
+                {
+                    implementationAreaName = null;
+                }
+                else
+                {
+                    super.startSubgraph(implementationAreaName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
+
+                    for (ElementStub elementStub : implementationMap.values())
+                    {
+                        if (elementStub != null)
+                        {
+                            if (elementStub.getUniqueName() != null)
+                            {
+                                appendNewMermaidNode(elementStub.getGUID(),
+                                                     elementStub.getUniqueName(),
+                                                     elementStub.getType().getTypeName(),
+                                                     getVisualStyleForEntity(elementStub, VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
+                            }
+                            else
+                            {
+                                appendNewMermaidNode(elementStub.getGUID(),
+                                                     elementStub.getGUID(),
+                                                     elementStub.getType().getTypeName(),
+                                                     getVisualStyleForEntity(elementStub, VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
+                            }
+
+                        }
+                    }
+
+                    super.endSubgraph(); // implementation
+                }
             }
-            else
+            else // Neither graph is needed
             {
+                productAreaName = null;
                 implementationAreaName = null;
             }
 
+            /*
+             * Add the relationships
+             */
+            for (MetadataRelationshipSummary lineageRelationship : informationSupplyChainElement.getImplementation())
+            {
+                if (lineageRelationship != null)
+                {
+                    String label = null;
+
+                    if (lineageRelationship.getRelationshipProperties() instanceof LabeledRelationshipProperties labeledRelationshipProperties)
+                    {
+                        label = labeledRelationshipProperties.getLabel();
+                    }
+                    else if (lineageRelationship.getRelationshipProperties() instanceof RoledRelationshipProperties roledRelationshipProperties)
+                    {
+                        label = roledRelationshipProperties.getRole();
+                    }
+
+                    if (label != null)
+                    {
+                        label = label + " [" + super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName()) + "]";
+                    }
+                    else
+                    {
+                        label = super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName());
+                    }
+
+                    if (propertyHelper.isTypeOf(lineageRelationship.getRelationshipHeader(), OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
+                    {
+                        appendMermaidThinLine(lineageRelationship.getRelationshipHeader().getGUID(),
+                                              lineageRelationship.getEnd1().getGUID(),
+                                              label,
+                                              lineageRelationship.getEnd2().getGUID());
+                    }
+                    else
+                    {
+                        appendMermaidLine(lineageRelationship.getRelationshipHeader().getGUID(),
+                                          lineageRelationship.getEnd1().getGUID(),
+                                          label,
+                                          lineageRelationship.getEnd2().getGUID());
+                    }
+                }
+            }
+
+            /*
+             * Link the subgraphs together.
+             */
             String currentAreaName = iscAreaName;
 
             if (designAreaName != null)
             {
                 super.appendInvisibleMermaidLine(currentAreaName, designAreaName);
                 currentAreaName = designAreaName;
+            }
+
+            if (productAreaName != null)
+            {
+                super.appendInvisibleMermaidLine(currentAreaName, productAreaName);
+                currentAreaName = productAreaName;
             }
 
             if (implementationAreaName != null)

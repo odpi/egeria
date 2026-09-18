@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ProductManagerHandler;
 
 
 /**
@@ -53,6 +54,34 @@ public class ProductManagerInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getCollectionHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns the handler that builds digital products and their subscription types.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return handler
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public ProductManagerHandler getProductManagerHandler(String userId,
+                                                          String serverName,
+                                                          String serviceOperationName) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        ProductManagerInstance instance = (ProductManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getProductManagerHandler();
         }
 
         return null;

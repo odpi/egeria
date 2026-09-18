@@ -1,5 +1,14 @@
-# Egeria-baudot-subscription-requests
+# Egeria-baudot-subscription-processes
 ## Locate the types of subscriptions available for a digital product
+##
+## Each subscription type a product offers is a subscribing action process, built by the Product Manager's client
+## (Jacquard uses it to build its catalogue; the Product Manager OMVS exposes it as the subscription-type requests in
+## Egeria-api-product-manager.http).  Its qualified name is
+##     ProvisioningActionProcess::<product name>::Create Subscription::<subscription type identifier>
+## and its display name is "Create <subscription type> for <product name>", which is what the searches below match.
+## The process carries the product, its asset, license, service level objective, product manager and notification
+## type as action targets, so its remaining specification properties - the requester and the destination - are all
+## a consumer has to supply.
 
 @baseURL=https://localhost:7443
 @viewServer=view-server
@@ -26,6 +35,25 @@ Content-Type: application/json
 
 
 ###
+# @name find all subscription types in the catalog
+# Every subscription option is a SubscribingActionProcess whose qualified name names the product and the type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "SubscribingActionProcess",
+  "searchString": "::Create Subscription::",
+  "graphQueryDepth": 0,
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0
+}
+
+###
 # @name find Evaluation subscription governance action process
 # Retrieve the list of governance definition metadata elements that contain the search string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string
@@ -46,6 +74,22 @@ Content-Type: application/json
 }
 
 > {% client.global.set("deployedImplementationTypeEvaluationSubscriptionGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+# @name get the elements pre-loaded on the Evaluation subscription
+# The action targets the process already carries: the product (digitalSubscriptionItem), its asset (sourceDataSet),
+# its license (licenseType), its service level objective (serviceLevelObjective), its product manager
+# (digitalProductOwner), its notification type (subscriptionManagerNotificationType) and the governance action types
+# that provision and cancel a subscription.  The notification type is the one the Baudot Subscription Manager
+# watches: for an evaluation subscription it permits a single notification, so the data is delivered once.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{deployedImplementationTypeEvaluationSubscriptionGUID}}/by-relationship/TargetForGovernanceAction?startAtEnd=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "includeOnlyRelationships" : ["TargetForGovernanceAction"]
+}
 
 ###
 # @name find Evaluation subscription specification

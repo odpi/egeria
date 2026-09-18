@@ -124,6 +124,123 @@ Content-Type: application/json
 
 
 ###
+# =====================================================================================================================
+# Digital products and their subscription types.  These requests build a product in one call, and add the
+# subscription types that subscribers use to receive its data.  They follow the pattern of the Jacquard Digital
+# Product Loom, so products built this way work with the Baudot subscription manager and the create/provision/cancel
+# subscription governance services from the digital products content pack.
+# =====================================================================================================================
+
+@productManagerRoleGUID=add guid here
+@productCommunityGUID=add guid here
+@productFolderGUID=add guid here
+@productFamilyGUID=add guid here
+@questionGlossaryTermGUID=add guid here
+@productAssetGUID=add guid here
+@licenseTypeGUID=add guid here
+@dataSpecGUID=add guid here
+
+###
+# @name createDigitalProduct
+# Create a new digital product and link it to the elements that surround it.  The properties, classifications and
+# parent are as for createCollection.  The extra fields name existing elements to link the new product to; each is
+# optional:
+#   productManagerGUID        - actor role that manages the product (AssignmentScope, owner)
+#   productCommunityGUID      - community that discusses the product (ScopedBy); its note log receives the
+#                               product's subscription notifications
+#   collectionGUIDs           - collections the product is a member of, typically product catalog folders and
+#                               digital product families (CollectionMembership)
+#   questionGUIDs             - glossary terms for the questions the product answers (SupplementaryProperties)
+#   productAssetGUID          - asset holding the product's data (CollectionMembership); the source for subscriptions
+#   governanceDefinitionGUIDs - governance definitions the product is governed by, such as the license granted to
+#                               subscribers (GovernedBy)
+#   dataSpecGUID              - data specification describing the product's data (DataDescription)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/digital-products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewDigitalProductRequestBody",
+  "isOwnAnchor" : true,
+  "properties": {
+    "class" : "DigitalProductProperties",
+    "qualifiedName": "DigitalProduct::Add product name here",
+    "displayName" : "Product contents",
+    "description" : "Add description of product and its expected usage here",
+    "identifier" : "Add product identifier here",
+    "productName" : "Add product name here",
+    "category" : "Periodic Delta",
+    "introductionDate" : "{{$isoTimestamp}}",
+    "currentVersion": "V0.1",
+    "contentStatus": "ACTIVE",
+    "deploymentStatus": "ACTIVE"
+  },
+  "productManagerGUID" : "{{productManagerRoleGUID}}",
+  "productCommunityGUID" : "{{productCommunityGUID}}",
+  "collectionGUIDs" : [ "{{productFolderGUID}}", "{{productFamilyGUID}}" ],
+  "questionGUIDs" : [ "{{questionGlossaryTermGUID}}" ],
+  "productAssetGUID" : "{{productAssetGUID}}",
+  "governanceDefinitionGUIDs" : [ "{{licenseTypeGUID}}" ],
+  "dataSpecGUID" : "{{dataSpecGUID}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createOneTimeSubscription
+# Add a one-time subscription type to the product: subscribers receive a single notification, and so a single
+# delivery of the product's data - typically to evaluate the product.  The request body is optional.  Every field
+# in it is optional: subscriptionManagerGUID defaults to the Baudot subscription manager from the content pack;
+# identifier defaults to ONE-TIME-SUBSCRIPTION; licenseTypeGUID and serviceLevelObjectiveGUID default to the
+# license type and service level objective that the product is governed by.  The unique identifier of the
+# governance action process that creates a subscription of this type is returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/digital-products/{{digitalProductGUID}}/subscription-types/one-time
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewSubscriptionTypeRequestBody",
+  "identifier" : "EVALUATION-SUBSCRIPTION",
+  "displayName" : "Evaluation subscription",
+  "description" : "This subscription delivers the data to the target destination just once to allow an evaluation of the product data."
+}
+
+###
+# @name createPeriodicSubscription
+# Add a periodic subscription type to the product: subscribers receive a notification, and so a delivery of the
+# product's data, every notificationInterval minutes.  A product offering more than one periodic subscription type
+# (daily and weekly, say) needs a distinct identifier for each.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/digital-products/{{digitalProductGUID}}/subscription-types/periodic
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewSubscriptionTypeRequestBody",
+  "identifier" : "DAILY-REFRESH-SUBSCRIPTION",
+  "displayName" : "Daily refresh subscription",
+  "description" : "This subscription delivers the data to the target destination once a day.",
+  "notificationInterval" : 1440
+}
+
+###
+# @name createOngoingUpdateSubscription
+# Add an ongoing update subscription type to the product: subscribers receive a notification, and so a delivery of
+# the product's data, whenever one of the monitoredResourceGUIDs changes - but no more often than
+# notificationInterval minutes.  The monitored resource is typically the product's asset.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/digital-products/{{digitalProductGUID}}/subscription-types/ongoing-update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewSubscriptionTypeRequestBody",
+  "identifier" : "ONGOING-UPDATE-SUBSCRIPTION",
+  "displayName" : "Ongoing update subscription",
+  "description" : "This subscription delivers data updates to the target destination within an hour of receiving the new data.",
+  "monitoredResourceGUIDs" : [ "{{productAssetGUID}}" ],
+  "notificationInterval" : 10
+}
+
+###
 
 @consumerDigitalProductGUID=add guid here
 @consumedDigitalProductGUID=add guid here

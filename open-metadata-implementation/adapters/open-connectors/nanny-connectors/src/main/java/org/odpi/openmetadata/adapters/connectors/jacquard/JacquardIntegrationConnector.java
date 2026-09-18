@@ -3,9 +3,6 @@
 package org.odpi.openmetadata.adapters.connectors.jacquard;
 
 
-import org.odpi.openmetadata.adapters.connectors.baudot.controls.BaudotCatalogTarget;
-import org.odpi.openmetadata.adapters.connectors.subscriptions.ManageDigitalSubscriptionActionTarget;
-import org.odpi.openmetadata.adapters.connectors.subscriptions.ManageDigitalSubscriptionRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.jacquard.controls.JacquardConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardAuditCode;
 import org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardErrorCode;
@@ -31,6 +28,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ProductManagerHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
@@ -53,14 +51,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLog
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
@@ -100,24 +95,17 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     private Map<String, String> glossaryTerms         = null;
     private Map<String, String> questions             = null;
     private Map<String, String> communities           = null;
-    private Map<String, String> communityNoteLogs     = null;
     private Map<String, String> dataFields            = null;
     private Map<String, String> products              = null;
-
     /*
      * This is the Baudot Subscription Manager: the integration connector that notifies the subscribers of the
      * products' notification types.  Each notification type this connector creates is handed to it as a catalog
-     * target.  Its unique identifier comes from this connector's configuration properties, seeded by the content
-     * pack; null means no subscription manager is configured, and the notification types are not handed on.
+     * target by the product manager client.  Its unique identifier comes from this connector's configuration
+     * properties, seeded by the content pack; null means the client uses the content pack's Baudot Subscription
+     * Manager.
      */
     private String subscriptionManagerGUID = null;
 
-    /*
-     * The notification types already handed to the subscription manager, so that they are not added twice.
-     * Loaded from the manager's existing catalog targets at start-up, and added to as notification types are
-     * handed on.
-     */
-    private final Set<String> subscriptionManagerCatalogTargets = new HashSet<>();
 
     /*
      * The product assets that are already this connector's own catalog targets, so that a product is not added
@@ -181,12 +169,14 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
             /*
              * The subscription manager is located before the products are built, because each product's
-             * notification types are handed to it as they are created.  It is another integration connector -
-             * the Baudot Subscription Manager - and this connector is told which one by a configuration
-             * property that the content pack seeds with the manager's unique identifier.  If it is not
-             * configured, the products are still built but their subscribers are never notified, and that is
-             * said loudly here because from outside it looks exactly like a subscription that was never asked
-             * for.
+            /*
+             * The subscription manager is the integration connector that notifies the subscribers of the
+             * products' notification types - the Baudot Subscription Manager.  Each product's notification
+             * types are handed to it by the product manager client as they are created.  This connector is told
+             * which connector it is by a configuration property that the content pack seeds with the manager's
+             * unique identifier; if the property is not set, the client hands the notification types to the
+             * content pack's Baudot Subscription Manager, and this is said here in case that is not what was
+             * intended.
              */
             this.loadOwnCatalogTargets();
 
@@ -196,17 +186,22 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             {
                 logRecord(methodName,
                           JacquardAuditCode.NO_SUBSCRIPTION_MANAGER.getMessageDefinition(connectorName,
-                                                                                         JacquardConfigurationProperty.SUBSCRIPTION_MANAGER_GUID.getName()));
+                                                                                         JacquardConfigurationProperty.SUBSCRIPTION_MANAGER_GUID.getName(),
+                                                                                         ProductManagerHandler.DEFAULT_SUBSCRIPTION_MANAGER_GUID));
             }
-            else
-            {
-                this.loadSubscriptionManagerCatalogTargets();
-            }
+
 
             glossaryTerms         = this.getGlossaryTerms();
             questions             = this.getQuestions();
             communities           = this.getCommunities();
-            communityNoteLogs     = this.getCommunityNoteLogs();
+
+            /*
+             * Each community has a note log that receives the notifications from its products' subscription
+             * types.  The product manager client finds the note log from the community when it builds a
+             * subscription type, so all that is needed here is to make sure the note logs exist.
+             */
+            this.getCommunityNoteLogs();
+
             dataFields            = this.getDataFields();
             products              = this.getProducts(subscriptionManagerGUID);
         }
@@ -622,11 +617,16 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
-     * Return the unique identifier of a product, either by retrieving it form the open metadata
-     * repository or by creating the product.
+     * Return the unique identifier of a product, either by retrieving it from the open metadata
+     * repository or by creating the product.  A new product is created through the product manager client,
+     * which links it to its community, product families, questions and license as it is created.  The product
+     * manager role, data specification and asset are anchored to the product, so they are created here once
+     * the product exists; the subscription types are then built by the client from the product and the
+     * elements around it.
      *
      * @param productDefinition description of the product
-     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector
+     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector - null
+     *                                means the Baudot Subscription Manager from the content pack
      * @return unique identifier
      * @throws InvalidParameterException an invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException the repository is probably down
@@ -640,6 +640,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     {
         CollectionClient             collectionClient             = integrationContext.getCollectionClient(OpenMetadataType.DIGITAL_PRODUCT.typeName);
         ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+        ProductManagerClient         productManagerClient         = integrationContext.getProductManagerClient();
 
         final String methodName = "getProduct";
 
@@ -649,6 +650,23 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         OpenMetadataRootElement productElement = classificationExplorerClient.getRootElementByUniqueName(productDefinition.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, this.headerAndProperties(collectionClient));
 
         DigitalProductProperties digitalProductProperties = this.getDigitalProductProperties(productDefinition);
+
+        /*
+         * The community provides the forum to discuss the product, and its note log receives the product's
+         * subscription notifications.  The license type is granted to the subscriber's asset.
+         */
+        String communityGUID   = null;
+        String licenseTypeGUID = null;
+
+        if (productDefinition.getCommunity() != null)
+        {
+            communityGUID = communities.get(productDefinition.getCommunity().getQualifiedName());
+        }
+
+        if (productDefinition.getLicense() != null)
+        {
+            licenseTypeGUID = governanceDefinitions.get(productDefinition.getLicense().getQualifiedName());
+        }
 
         if (productElement == null)
         {
@@ -671,10 +689,21 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
             }
 
-            String productGUID = collectionClient.createCollection(newElementOptions,
-                                                                   this.getInitialClassificationProperties(productDefinition.zoneMembership()),
-                                                                   digitalProductProperties,
-                                                                   null);
+            /*
+             * The product manager role, asset and data specification are anchored to the product, so they are
+             * created below once the product exists rather than passed here.
+             */
+            String productGUID = productManagerClient.createDigitalProduct(newElementOptions,
+                                                                           this.getInitialClassificationProperties(productDefinition.zoneMembership()),
+                                                                           digitalProductProperties,
+                                                                           null,
+                                                                           null,
+                                                                           communityGUID,
+                                                                           this.getProductFamilyGUIDs(productDefinition),
+                                                                           this.getQuestionGUIDs(productDefinition),
+                                                                           null,
+                                                                           (licenseTypeGUID == null) ? null : Collections.singletonList(licenseTypeGUID),
+                                                                           null);
 
             logRecord(methodName,
                       JacquardAuditCode.NEW_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
@@ -698,6 +727,35 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                           JacquardAuditCode.UPDATED_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
                                                                                               productElement.getElementHeader().getGUID(),
                                                                                               productDefinition.getProductName()));
+            }
+
+            /*
+             * An existing product's questions are re-checked so that a question added to the definition after
+             * the product was catalogued is linked on the next refresh.  The questions themselves, and the
+             * perspectives they are scoped by, are refreshed when the questions are loaded at start-up.
+             */
+            this.addMissingQuestions(productElement.getElementHeader().getGUID(), productDefinition);
+
+            /*
+             * An existing product's membership of its families is re-checked because a family that could not be
+             * catalogued when the product was created is linked once it is back.  Adding a member that is already
+             * there is a no-op.
+             */
+            List<String> productFamilyGUIDs = this.getProductFamilyGUIDs(productDefinition);
+
+            if (productFamilyGUIDs != null)
+            {
+                CollectionMembershipProperties collectionMembershipProperties = new CollectionMembershipProperties();
+
+                collectionMembershipProperties.setMembershipType("includes product");
+
+                for (String productFamilyGUID : productFamilyGUIDs)
+                {
+                    collectionClient.addToCollection(productFamilyGUID,
+                                                     productElement.getElementHeader().getGUID(),
+                                                     new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
+                                                     collectionMembershipProperties);
+                }
             }
         }
 
@@ -739,14 +797,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                         personRoleProperties,
                                                                         assignmentScopeProperties);
 
-            productManagerElement = classificationExplorerClient.getRootElementByGUID(productManagerGUID, this.headerAndProperties(collectionClient));
-
-            if (productDefinition.getCommunity() != null)
+            if (communityGUID != null)
             {
                 assignmentScopeProperties.setAssignmentType(AssignmentType.DISCUSSION_LEADER.getDisplayName());
                 assignmentScopeProperties.setDescription(AssignmentType.DISCUSSION_LEADER.getDescription());
 
-                classificationExplorerClient.assignActorToElement(communities.get(productDefinition.getCommunity().getQualifiedName()),
+                classificationExplorerClient.assignActorToElement(communityGUID,
                                                                   productManagerGUID,
                                                                   new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
                                                                   assignmentScopeProperties);
@@ -754,52 +810,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         }
 
         /*
-         * Link in the license type to the product to show what type of license is granted to the subscriber.
-         */
-        String licenseTypeGUID = null;
-
-        if (productDefinition.getLicense() != null)
-        {
-            licenseTypeGUID = governanceDefinitions.get(productDefinition.getLicense().getQualifiedName());
-
-            GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
-
-            GovernedByProperties governedByProperties = new GovernedByProperties();
-            governedByProperties.setLabel("subscriber's license");
-            governedByProperties.setDescription("This is the license that a subscriber's asset will be given to access the product data.");
-            governanceDefinitionClient.addGovernanceDefinitionToElement(productElement.getElementHeader().getGUID(), licenseTypeGUID, new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()), governedByProperties);
-        }
-
-        /*
-         * Link the community to the product family if defined
-         */
-        if ((propertyHelper.isTypeOf(productElement.getElementHeader(), OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName)) && (productDefinition.getCommunity() != null))
-        {
-            classificationExplorerClient.addScopeToElement(communities.get(productDefinition.getCommunity().getQualifiedName()),
-                                                           productElement.getElementHeader().getGUID(),
-                                                           new MakeAnchorOptions(classificationExplorerClient.getMetadataSourceOptions()),
-                                                           null);
-        }
-
-        /*
-         * Extract the note log if there is a community for this product
-         */
-        String communityNoteLogGUID = null;
-
-        if (productDefinition.getCommunity() != null)
-        {
-            communityNoteLogGUID = communityNoteLogs.get(productDefinition.getCommunity().getQualifiedName());
-        }
-
-        /*
          * The data specification lists all the data fields for this product.
          */
         this.addDataSpec(productDefinition, productElement);
-
-        /*
-         * The questions are used to guide people to the appropriate product.
-         */
-        this.addQuestions(productDefinition, productElement);
 
         /*
          * This asset has a connection to a connector that is able to mine open metadata to create a particular
@@ -813,11 +826,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          * The subscription options show up as governance action processes that are configured with the appropriate
          * information.
          */
-        this.addSubscriptionTypes(productDefinition, productElement.getElementHeader(), productAssetGUID, licenseTypeGUID, communityNoteLogGUID, productManagerElement.getElementHeader().getGUID(), subscriptionManagerGUID);
+        this.addSubscriptionTypes(productDefinition, productElement.getElementHeader(), productAssetGUID, licenseTypeGUID, subscriptionManagerGUID);
 
-        /*
-         * Register each product as a catalog target, so it is refreshed.
-         */
         /*
          * The product's asset is one of this connector's own catalog targets, so that its data is watched for
          * changes.  It is added once: a catalog target relationship persists with the asset, and adding one on
@@ -847,27 +857,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         if (productDefinition.getProductFamilies() != null)
         {
-            for (ProductDefinition productGroup : productDefinition.getProductFamilies())
-            {
-                String productFamilyGUID = products.get(productGroup.getQualifiedName());
-
-                /*
-                 * A family that could not be catalogued this refresh - it exists twice, say - has already been
-                 * logged; its members are still catalogued and are linked to it once it is back.
-                 */
-                if (productFamilyGUID != null)
-                {
-                    CollectionMembershipProperties collectionMembershipProperties = new CollectionMembershipProperties();
-
-                    collectionMembershipProperties.setMembershipType("includes product");
-
-                    collectionClient.addToCollection(productFamilyGUID,
-                                                     productElement.getElementHeader().getGUID(),
-                                                     new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
-                                                     collectionMembershipProperties);
-                }
-            }
-
             this.monitorMemberAssetForFamilies(productDefinition, productAssetGUID);
         }
 
@@ -1005,42 +994,108 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
 
     /**
-     * Set up a product's questions.
+     * Link an existing product to any of its definition's questions that it is not yet linked to.  The links are
+     * the same as the product manager client makes when it creates a product - SupplementaryProperties, labelled
+     * as a guiding question - so a product catalogued before a question was defined ends up indistinguishable
+     * from one created after.  The product's existing links are read first, because a question already linked
+     * must not be linked twice.
      *
-     * @param productDefinition description of product
-     * @param productElement details of what is currently stored
+     * @param productGUID unique identifier of the product
+     * @param productDefinition description of the product
      *
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private void addQuestions(ProductDefinition       productDefinition,
-                              OpenMetadataRootElement productElement) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    private void addMissingQuestions(String            productGUID,
+                                     ProductDefinition productDefinition) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
-        List<ProductQuestionDefinition> productQuestionDefinitions = productDefinition.getQuestions();
+        List<String> questionGUIDs = this.getQuestionGUIDs(productDefinition);
 
-        if (productQuestionDefinitions != null)
+        if ((questionGUIDs == null) || (questionGUIDs.isEmpty()))
         {
-            ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+            return;
+        }
 
-            for (ProductQuestionDefinition productQuestionDefinition : productQuestionDefinitions)
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+
+        OpenMetadataRootElement product = classificationExplorerClient.getRootElementByGUID(productGUID,
+                                                                                            this.withRelationships(classificationExplorerClient,
+                                                                                                                   OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP.typeName));
+
+        SupplementaryPropertiesProperties supplementaryPropertiesProperties = new SupplementaryPropertiesProperties();
+
+        supplementaryPropertiesProperties.setLabel("Guiding question");
+        supplementaryPropertiesProperties.setDescription("This is the type of question that " + productDefinition.getProductName() + " is designed to answer.");
+
+        for (String questionGUID : questionGUIDs)
+        {
+            if ((questionGUID != null) && ((product == null) || (! this.containsElement(product.getSupplementaryProperties(), questionGUID))))
             {
-                String questionGUID = questions.get(productQuestionDefinition.getQualifiedName());
-
-                SupplementaryPropertiesProperties supplementaryPropertiesProperties = new SupplementaryPropertiesProperties();
-
-                supplementaryPropertiesProperties.setLabel("Guiding question");
-                supplementaryPropertiesProperties.setDescription("This is the type of question that " + productDefinition.getProductName() + " is designed to answer.");
-
-                classificationExplorerClient.addSupplementaryPropertiesToElement(productElement.getElementHeader().getGUID(),
+                classificationExplorerClient.addSupplementaryPropertiesToElement(productGUID,
                                                                                  questionGUID,
                                                                                  classificationExplorerClient.getMakeAnchorOptions(false),
                                                                                  supplementaryPropertiesProperties);
             }
         }
+    }
+
+
+    /**
+     * Return the unique identifiers of the glossary terms for the questions that a product answers.
+     *
+     * @param productDefinition description of product
+     * @return list of guids - null if the product has no questions
+     */
+    private List<String> getQuestionGUIDs(ProductDefinition productDefinition)
+    {
+        if (productDefinition.getQuestions() == null)
+        {
+            return null;
+        }
+
+        List<String> questionGUIDs = new ArrayList<>();
+
+        for (ProductQuestionDefinition productQuestionDefinition : productDefinition.getQuestions())
+        {
+            questionGUIDs.add(questions.get(productQuestionDefinition.getQualifiedName()));
+        }
+
+        return questionGUIDs;
+    }
+
+
+    /**
+     * Return the unique identifiers of the product families that a product belongs to.  A family that could not
+     * be catalogued this refresh - it exists twice, say - has already been logged and is left out; the product is
+     * linked to it once it is back.
+     *
+     * @param productDefinition description of product
+     * @return list of guids - null if the product belongs to no family
+     */
+    private List<String> getProductFamilyGUIDs(ProductDefinition productDefinition)
+    {
+        if (productDefinition.getProductFamilies() == null)
+        {
+            return null;
+        }
+
+        List<String> productFamilyGUIDs = new ArrayList<>();
+
+        for (ProductDefinition productFamily : productDefinition.getProductFamilies())
+        {
+            String productFamilyGUID = products.get(productFamily.getQualifiedName());
+
+            if (productFamilyGUID != null)
+            {
+                productFamilyGUIDs.add(productFamilyGUID);
+            }
+        }
+
+        return productFamilyGUIDs;
     }
 
 
@@ -1056,6 +1111,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         digitalProductProperties.setTypeName(productDefinition.getTypeName()); // maybe family or product
         digitalProductProperties.setQualifiedName(productDefinition.getQualifiedName());
+        digitalProductProperties.setIdentifier(productDefinition.getIdentifier());
         digitalProductProperties.setDisplayName(productDefinition.getDisplayName());
         digitalProductProperties.setDescription(productDefinition.getDescription());
         digitalProductProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
@@ -1082,65 +1138,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         return digitalProductProperties;
     }
 
-
-    /**
-     * Hand a notification type to the Baudot Subscription Manager, so that it monitors it and notifies its
-     * subscribers.
-     * <br>
-     * Where the manager is not running yet the notification type is held until it is - the manager is started
-     * by this connector, and the products are built either side of that.
-     *
-     * @param notificationTypeGUID the notification type to be monitored
-     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector
-     *
-     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
-     * @throws PropertyServerException repository is probably down
-     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
-     * been disconnected.
-     */
-    private void registerWithSubscriptionManager(String notificationTypeGUID,
-                                                 String subscriptionManagerGUID) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException
-    {
-        if ((subscriptionManagerGUID != null) && (notificationTypeGUID != null) && (! subscriptionManagerCatalogTargets.contains(notificationTypeGUID)))
-        {
-            this.attachNotificationType(subscriptionManagerGUID, notificationTypeGUID);
-        }
-    }
-
-
-    /**
-     * Hand one notification type to the subscription manager as a catalog target, so that the manager
-     * notifies its subscribers.  The manager notices new catalog targets on its next refresh.
-     *
-     * @param subscriptionManagerGUID the subscription manager integration connector
-     * @param notificationTypeGUID the notification type to be looked after
-     *
-     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
-     * @throws PropertyServerException repository is probably down
-     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
-     * been disconnected.
-     */
-    private void attachNotificationType(String subscriptionManagerGUID,
-                                        String notificationTypeGUID) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
-    {
-        AssetClient assetClient = integrationContext.getAssetClient();
-
-        CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
-
-        catalogTargetProperties.setCatalogTargetName(BaudotCatalogTarget.NOTIFICATION_TYPE.getName());
-        catalogTargetProperties.setPermittedSynchronization(PermittedSynchronization.BOTH_DIRECTIONS);
-
-        assetClient.addCatalogTarget(subscriptionManagerGUID,
-                                     notificationTypeGUID,
-                                     assetClient.getMakeAnchorOptions(false),
-                                     catalogTargetProperties);
-
-        subscriptionManagerCatalogTargets.add(notificationTypeGUID);
-    }
 
 
     /**
@@ -1286,54 +1283,14 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
     }
 
 
-    /**
-     * Load the notification types that the subscription manager already looks after, so that this connector
-     * does not hand it the same one twice.  On a catalogue that is already built - the normal case after the
-     * first run - this is every notification type there is.
-     *
-     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
-     * @throws PropertyServerException repository is probably down
-     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
-     * been disconnected.
-     */
-    private void loadSubscriptionManagerCatalogTargets() throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
-    {
-        AssetClient assetClient = integrationContext.getAssetClient();
-
-        subscriptionManagerCatalogTargets.clear();
-
-        /*
-         * Each element returned is the catalog target itself - here, a notification type.
-         */
-        int                           startFrom      = 0;
-        List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(subscriptionManagerGUID,
-                                                                                     assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
-
-        while ((catalogTargets != null) && (! catalogTargets.isEmpty()))
-        {
-            for (OpenMetadataRootElement catalogTarget : catalogTargets)
-            {
-                if ((catalogTarget != null) && (catalogTarget.getElementHeader() != null))
-                {
-                    subscriptionManagerCatalogTargets.add(catalogTarget.getElementHeader().getGUID());
-                }
-            }
-
-            startFrom      = startFrom + assetClient.getMaxPagingSize();
-            catalogTargets = assetClient.getCatalogTargets(subscriptionManagerGUID,
-                                                           assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
-        }
-    }
-
-
 
     /**
-     * Set up a product's subscription types.  These are governance types configured with an appropriate
-     * subscription behaviour.  A customized governance action process for creating a subscription is also set up.
-     * When this governance action process runs, it creates the subscription for the requesting
-     * actor by linking them to the notification type.
+     * Set up a product's subscription types through the product manager client.  Each is a notification type,
+     * handed to the subscription manager, and a governance action process for creating a subscription of that
+     * type.  When the governance action process runs, it creates the subscription for the requesting actor by
+     * linking them to the notification type.  The client finds the product's asset, license, product manager and
+     * community note log from the product itself, and reuses a notification type or process that is already
+     * catalogued - so this can be called on every refresh.
      * <br>
      * Product families offer their subscription types in exactly the same way as a single product, because
      * subscribing to a family is how a consumer takes out one subscription covering every product in it.  A
@@ -1351,9 +1308,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * @param productAssetGUID unique identifier for the asset that represents the product - for a family, the
      *                         collection over its members' data sets - or null if the product has no asset
      * @param licenseTypeGUID unique identifier for the license type granted to the product subscribers
-     * @param communityNoteLogGUID unique identifier of the community's note log
-     * @param productManagerGUID unique identifier for the product manager
-     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector
+     * @param subscriptionManagerGUID unique identifier of the subscription manager integration connector - null
+     *                                means the Baudot Subscription Manager from the content pack
      *
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException repository is probably down
@@ -1364,446 +1320,135 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                       ElementHeader     productHeader,
                                       String            productAssetGUID,
                                       String            licenseTypeGUID,
-                                      String            communityNoteLogGUID,
-                                      String            productManagerGUID,
                                       String            subscriptionManagerGUID) throws InvalidParameterException,
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException
     {
-        /*
-         * A product with no asset has nothing to deliver, so offering a subscription to it would promise a
-         * delivery that cannot happen.  That is the state of every product whose connector has not been written
-         * yet - the definition describes the data and names no connector provider to produce it.  A family
-         * always has an asset - the collection over its members - so it always offers its subscriptions.
-         */
-        if (productAssetGUID == null)
+        if ((productAssetGUID == null) || (productDefinition.getSubscriptionTypes() == null))
         {
             return;
         }
 
-        if (productDefinition.getSubscriptionTypes() != null)
-        {
-            for (ProductSubscriptionDefinition productSubscriptionDefinition : productDefinition.getSubscriptionTypes())
-            {
-                String notificationTypeGUID = addNotificationType(productSubscriptionDefinition,
-                                                                  productHeader,
-                                                                  productDefinition.getProductName(),
-                                                                  productAssetGUID,
-                                                                  communityNoteLogGUID,
-                                                                  productManagerGUID,
-                                                                  subscriptionManagerGUID);
-
-                addSubscriptionGovernanceActionProcess(productDefinition.getProductName(),
-                                                       productDefinition.getIdentifier(),
-                                                       productHeader.getGUID(),
-                                                       productAssetGUID,
-                                                       licenseTypeGUID,
-                                                       notificationTypeGUID,
-                                                       productSubscriptionDefinition,
-                                                       productManagerGUID);
-            }
-        }
-    }
-
-
-    /**
-     * Set up a digital product's notification type.  Each are governance action processes configured with an appropriate
-     * subscription template.  When the governance action process runs, it creates the subscription for the requesting
-     * actor.
-     *
-     * @param productSubscriptionDefinition description of the subscription type that is supported by the product
-     * @param productHeader                 unique identifier and type for the product
-     * @param productName                   name of the product
-     * @param productAssetGUID              unique identifier for the asset that represents the product
-     * @param communityNoteLogGUID          unique identifier of the community's note log
-     * @param productManagerGUID            unique identifier for the product manager
-     * @param subscriptionManagerGUID        unique identifier of the subscription manager integration connector
-     * @return guid
-     * @throws InvalidParameterException  an invalid parameter passed - probably a bug in this code
-     * @throws PropertyServerException    the repository is probably down
-     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
-     *                                    been disconnected.
-     */
-    private String addNotificationType(ProductSubscriptionDefinition productSubscriptionDefinition,
-                                       ElementHeader                 productHeader,
-                                       String                        productName,
-                                       String                        productAssetGUID,
-                                       String                        communityNoteLogGUID,
-                                       String                        productManagerGUID,
-                                       String                        subscriptionManagerGUID) throws InvalidParameterException,
-                                                                                                    PropertyServerException,
-                                                                                                    UserNotAuthorizedException
-    {
-        /*
-         * The notification of changes to a subscription is managed via a notification type.
-         */
-        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
-        GovernanceDefinitionClient   notificationTypeClient       = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.NOTIFICATION_TYPE.typeName);
-        MakeAnchorOptions           makeAnchorOptions            = new MakeAnchorOptions(notificationTypeClient.getMetadataSourceOptions());
-
-        NotificationTypeProperties notificationTypeProperties = getNotificationTypeProperties(productSubscriptionDefinition, productHeader, productName);
-
-        OpenMetadataRootElement notificationTypeElement = classificationExplorerClient.getRootElementByUniqueName(notificationTypeProperties.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, this.headerAndProperties(classificationExplorerClient));
-
-        if (notificationTypeElement == null)
-        {
-            NewElementOptions newElementOptions = new NewElementOptions(notificationTypeClient.getMetadataSourceOptions());
-
-            newElementOptions.setAnchorGUID(productHeader.getGUID());
-            newElementOptions.setAnchorScopeGUIDs(Collections.singletonList(productHeader.getGUID()));
-            newElementOptions.setIsOwnAnchor(false);
-
-            String notificationTypeGUID = notificationTypeClient.createGovernanceDefinition(newElementOptions,
-                                                                                            null,
-                                                                                            notificationTypeProperties,
-                                                                                            null);
-
-            if ((productAssetGUID != null)
-                        && (productSubscriptionDefinition.getMultipleNotificationsPermitted())
-                        && (productSubscriptionDefinition.isAddMonitoredResource())
-                        && (! propertyHelper.isTypeOf(productHeader, OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName)))
-            {
-                /*
-                 * Only need to register the resource with notification types that use changes to the resource to determine
-                 * when to issue a notification to the subscribers.
-                 *
-                 * A product family's asset is a view over its members' assets and never changes itself, so it is
-                 * not what the notification type watches.  Its members' assets are linked to this notification
-                 * type as each member is catalogued - see monitorMemberAssetForFamilies().
-                 */
-                MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
-
-                monitoredResourceProperties.setLabel("product asset");
-                monitoredResourceProperties.setDescription("This is the product asset that represents the data for the " + productName + " product.");
-
-                notificationTypeClient.linkMonitoredResource(notificationTypeGUID, productAssetGUID, makeAnchorOptions, monitoredResourceProperties);
-            }
-
-            NotificationSubscriberProperties notificationSubscriberProperties = new NotificationSubscriberProperties();
-            notificationSubscriberProperties.setActivityStatus(ActivityStatus.IN_PROGRESS);
-
-            /*
-             * Only link note log to leaf products.
-             */
-            if ((communityNoteLogGUID != null) && (propertyHelper.isTypeOf(productHeader, OpenMetadataType.DIGITAL_PRODUCT.typeName)))
-            {
-                notificationSubscriberProperties.setLabel("community notifications");
-                notificationSubscriberProperties.setDescription("A note log collects the notifications from the Baudot Subscription Manager based on activity around notification type: " + notificationTypeGUID);
-
-                notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, communityNoteLogGUID, makeAnchorOptions, notificationSubscriberProperties);
-            }
-
-            /*
-             * Every product has a product manager.  They receive notifications to enable monitoring of product activity.
-             */
-            if (productManagerGUID != null)
-            {
-                notificationSubscriberProperties.setLabel("product manager notifications");
-                notificationSubscriberProperties.setDescription("Notifications from the Baudot Subscription Manager related to notification type: " + notificationTypeGUID + " are sent to the product manager.");
-
-                notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, productManagerGUID, makeAnchorOptions, notificationSubscriberProperties);
-            }
-
-            this.registerWithSubscriptionManager(notificationTypeGUID, subscriptionManagerGUID);
-
-            return notificationTypeGUID;
-        }
-        else
-        {
-            /*
-             * The notification type is already catalogued, and it is still offered to the subscription
-             * manager.  Its catalog targets persist with it, so on a catalogue that is already built this is
-             * normally a no-op - the manager already has it - but a notification type that was created while
-             * no manager was configured, or whose catalog target was removed, is picked up here rather than
-             * quietly leaving every subscription to that product undelivered.
-             */
-            String notificationTypeGUID = notificationTypeElement.getElementHeader().getGUID();
-
-            /*
-             * An existing notification type is checked against its definition and brought up to date with a
-             * merge, so that nothing else about it is touched.  Two things drift:
-             *
-             *   - A notification type catalogued before content status was part of a notification type has
-             *     none, and the notification manager sends nothing for a notification type that is not ACTIVE.
-             *     A product whose notification types are silent has subscriptions that are taken out and never
-             *     delivered.
-             *   - The notification pattern - whether more than one notification is permitted, and how far apart
-             *     they must be - comes from the subscription definition, and the definition is the source of
-             *     truth.  A notification type catalogued under an earlier definition keeps the old pattern
-             *     otherwise: an evaluation subscription that is meant to deliver once, but was catalogued as
-             *     periodic with no minimum interval, has its data delivered again on every refresh of the
-             *     subscription manager, and each delivery after the first fails on the rows already there.
-             */
-            if ((notificationTypeElement.getProperties() instanceof NotificationTypeProperties existingProperties) &&
-                    ((existingProperties.getContentStatus() != ContentStatus.ACTIVE) ||
-                     (existingProperties.getMultipleNotificationsPermitted() != notificationTypeProperties.getMultipleNotificationsPermitted()) ||
-                     (existingProperties.getMinimumNotificationInterval() != notificationTypeProperties.getMinimumNotificationInterval())))
-            {
-                NotificationTypeProperties updatedProperties = new NotificationTypeProperties();
-
-                updatedProperties.setContentStatus(ContentStatus.ACTIVE);
-                updatedProperties.setMultipleNotificationsPermitted(notificationTypeProperties.getMultipleNotificationsPermitted());
-                updatedProperties.setMinimumNotificationInterval(notificationTypeProperties.getMinimumNotificationInterval());
-
-                notificationTypeClient.updateGovernanceDefinition(notificationTypeGUID,
-                                                                  notificationTypeClient.getUpdateOptions(true),
-                                                                  updatedProperties);
-
-                logRecord("addNotificationType",
-                          JacquardAuditCode.UPDATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
-                                                                                               OpenMetadataType.NOTIFICATION_TYPE.typeName,
-                                                                                               existingProperties.getDisplayName(),
-                                                                                               notificationTypeGUID));
-            }
-
-            this.registerWithSubscriptionManager(notificationTypeGUID, subscriptionManagerGUID);
-
-            return notificationTypeGUID;
-        }
-    }
-
-
-    /**
-     * Extract the properties for a notification type from a subscription definition.
-     *
-     * @param productSubscriptionDefinition description of the subscription type that is supported by the product
-     * @param productHeader                 unique identifier and type for the product
-     * @param productName                   name of the product
-     * @return properties
-     */
-    private static NotificationTypeProperties getNotificationTypeProperties(ProductSubscriptionDefinition productSubscriptionDefinition,
-                                                                            ElementHeader                 productHeader,
-                                                                            String                        productName)
-    {
-        NotificationTypeProperties notificationTypeProperties = new NotificationTypeProperties();
-
-        notificationTypeProperties.setQualifiedName(OpenMetadataType.NOTIFICATION_TYPE.typeName + "::" + productHeader.getGUID() + "::" + productName + "::" + productSubscriptionDefinition.getIdentifier());
-        notificationTypeProperties.setIdentifier(productSubscriptionDefinition.getIdentifier());
-        notificationTypeProperties.setDisplayName("Notification type for " + productSubscriptionDefinition.getDisplayName() + " for product " + productName);
-        notificationTypeProperties.setDescription(productSubscriptionDefinition.getDescription());
-        notificationTypeProperties.setDomainIdentifier(GovernanceDomain.DATA_SHARING.getOrdinal());
-        notificationTypeProperties.setPlannedStartDate(new Date());
-        notificationTypeProperties.setMultipleNotificationsPermitted(productSubscriptionDefinition.getMultipleNotificationsPermitted());
-        notificationTypeProperties.setMinimumNotificationInterval(productSubscriptionDefinition.getMinimumNotificationInterval());
+        ProductManagerClient  productManagerClient  = integrationContext.getProductManagerClient();
+        MetadataSourceOptions metadataSourceOptions = productManagerClient.getMetadataSourceOptions();
 
         /*
-         * A notification type only notifies while it is ACTIVE: the notification manager refuses to send anything
-         * for a notification type in any other content status, and it treats no status as not active.  These
-         * notification types are live from the moment they are created, so they say so.
+         * A subscription that watches for changes watches the product's asset.  A product family's asset is a
+         * view over its members' assets and never changes itself, so it is not what the notification type
+         * watches; the members' assets are linked to the family's notification types as each member is
+         * catalogued - see monitorMemberAssetForFamilies().
          */
-        notificationTypeProperties.setContentStatus(ContentStatus.ACTIVE);
+        List<String> monitoredResourceGUIDs = new ArrayList<>();
 
-        return notificationTypeProperties;
+        if (! propertyHelper.isTypeOf(productHeader, OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName))
+        {
+            monitoredResourceGUIDs.add(productAssetGUID);
+        }
+
+        for (ProductSubscriptionDefinition productSubscriptionDefinition : productDefinition.getSubscriptionTypes())
+        {
+            String serviceLevelObjectiveGUID = null;
+
+            if (productSubscriptionDefinition.getServiceLevelObjective() != null)
+            {
+                serviceLevelObjectiveGUID = governanceDefinitions.get(productSubscriptionDefinition.getServiceLevelObjective().getQualifiedName());
+            }
+
+            /*
+             * The subscription definition's notification pattern picks the kind of subscription type: a single
+             * notification is a one-time subscription; repeated notifications triggered by changes to the
+             * product's data are an ongoing update subscription, with the definition's interval as the minimum
+             * time between notifications; repeated notifications on a fixed interval are a periodic subscription.
+             */
+            String governanceActionProcessGUID;
+
+            if (! productSubscriptionDefinition.getMultipleNotificationsPermitted())
+            {
+                governanceActionProcessGUID = productManagerClient.createOneTimeSubscription(productHeader.getGUID(),
+                                                                                             metadataSourceOptions,
+                                                                                             subscriptionManagerGUID,
+                                                                                             productSubscriptionDefinition.getIdentifier(),
+                                                                                             productSubscriptionDefinition.getDisplayName(),
+                                                                                             productSubscriptionDefinition.getDescription(),
+                                                                                             licenseTypeGUID,
+                                                                                             serviceLevelObjectiveGUID);
+            }
+            else if (productSubscriptionDefinition.isAddMonitoredResource())
+            {
+                governanceActionProcessGUID = productManagerClient.createOngoingUpdateSubscription(productHeader.getGUID(),
+                                                                                                   metadataSourceOptions,
+                                                                                                   subscriptionManagerGUID,
+                                                                                                   productSubscriptionDefinition.getIdentifier(),
+                                                                                                   productSubscriptionDefinition.getDisplayName(),
+                                                                                                   productSubscriptionDefinition.getDescription(),
+                                                                                                   licenseTypeGUID,
+                                                                                                   serviceLevelObjectiveGUID,
+                                                                                                   monitoredResourceGUIDs,
+                                                                                                   productSubscriptionDefinition.getMinimumNotificationInterval());
+            }
+            else
+            {
+                governanceActionProcessGUID = productManagerClient.createPeriodicSubscription(productHeader.getGUID(),
+                                                                                              metadataSourceOptions,
+                                                                                              subscriptionManagerGUID,
+                                                                                              productSubscriptionDefinition.getIdentifier(),
+                                                                                              productSubscriptionDefinition.getDisplayName(),
+                                                                                              productSubscriptionDefinition.getDescription(),
+                                                                                              licenseTypeGUID,
+                                                                                              serviceLevelObjectiveGUID,
+                                                                                              productSubscriptionDefinition.getMinimumNotificationInterval());
+            }
+
+            this.linkSubscriptionGlossaryTerm(governanceActionProcessGUID, productSubscriptionDefinition);
+        }
     }
 
 
     /**
-     * Set up a product's subscription types.  These are governance action processes configured with an appropriate
-     * subscription template.  When the governance action process runs, it creates the subscription for the requesting
-     * actor.
+     * Link the governance action process that creates a subscription to the glossary term that explains the
+     * subscription type.  The client returns the same process whether it was just created or already existed, so
+     * the process's existing meanings are checked before the term is linked, to avoid linking it twice.
      *
-     * @param productName name of product
-     * @param productIdentifier identifier of the product
-     * @param productGUID unique identifier of the product
-     * @param productAssetGUID unique identifier of the product's asset
-     * @param licenseTypeGUID unique identifier of the license type supported to this product
-     * @param notificationTypeGUID unique identifier of the notification type driving the subscription (optional)
+     * @param governanceActionProcessGUID unique identifier of the process
      * @param productSubscriptionDefinition details of the subscription type
-     * @param productManagerGUID unique identifier for the product manager
      *
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
      * @throws PropertyServerException repository is probably down
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private void addSubscriptionGovernanceActionProcess(String                        productName,
-                                                        String                        productIdentifier,
-                                                        String                        productGUID,
-                                                        String                        productAssetGUID,
-                                                        String                        licenseTypeGUID,
-                                                        String                        notificationTypeGUID,
-                                                        ProductSubscriptionDefinition productSubscriptionDefinition,
-                                                        String                        productManagerGUID) throws InvalidParameterException,
+    private void linkSubscriptionGlossaryTerm(String                        governanceActionProcessGUID,
+                                              ProductSubscriptionDefinition productSubscriptionDefinition) throws InvalidParameterException,
                                                                                                                  PropertyServerException,
                                                                                                                  UserNotAuthorizedException
     {
+        if (productSubscriptionDefinition.getGlossaryTerm() == null)
+        {
+            return;
+        }
+
+        String glossaryTermGUID = glossaryTerms.get(productSubscriptionDefinition.getGlossaryTerm().getQualifiedName());
+
+        if (glossaryTermGUID == null)
+        {
+            return;
+        }
+
         ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
-        String processQualifiedName = OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName + "::" + productName + "::" + ResourceUse.CREATE_SUBSCRIPTION.getResourceUse() + "::" + productSubscriptionDefinition.getIdentifier();
+        OpenMetadataRootElement governanceActionProcess = classificationExplorerClient.getRootElementByGUID(governanceActionProcessGUID,
+                                                                                                            this.withRelationships(classificationExplorerClient,
+                                                                                                                                   OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName));
 
-        OpenMetadataRootElement subscriptionGovernanceActionProcessElement = classificationExplorerClient.getRootElementByUniqueName(processQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, this.headerAndProperties(classificationExplorerClient));
-
-        if (subscriptionGovernanceActionProcessElement == null)
+        if ((governanceActionProcess != null) && (this.containsElement(governanceActionProcess.getMeanings(), glossaryTermGUID)))
         {
-            /*
-             * The subscription notification watchdog manager is running.  Now build the governance action process
-             * used to add a new subscription of this type.
-             */
-            String subscriptionName = productSubscriptionDefinition.getDisplayName() + " for " + productName;
-            Map<String, String> additionalRequestParameters = new HashMap<>();
-
-            additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_NAME.getName(), subscriptionName);
-            additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_IDENTIFIER.getName(), productSubscriptionDefinition.getIdentifier() + "-" + productIdentifier);
-            additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_DESCRIPTION.getName(), productSubscriptionDefinition.getDescription());
-
-            String governanceActionProcessGUID = integrationContext.createProcessFromGovernanceActionType(OpenMetadataType.SUBSCRIBING_ACTION_PROCESS.typeName,
-                                                                                                          processQualifiedName,
-                                                                                                          "Create " + subscriptionName,
-                                                                                                          productSubscriptionDefinition.getDescription() + "  Supply the requester (actor entity) as an action target called digitalSubscriptionRequester and the asset where the data is to be sent to as action target named destinationDataSet.",
-                                                                                                          GovernanceDomain.DATA_SHARING.getOrdinal(),
-                                                                                                          GovernanceActionTypeDefinition.CREATE_SUBSCRIPTION.getGovernanceActionTypeGUID(),
-                                                                                                          additionalRequestParameters,
-                                                                                                          productGUID,
-                                                                                                          Collections.singletonList(productGUID));
-
-            OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
-            List<String>      actionTargetNames = new ArrayList<>();
-
-            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                           governanceActionProcessGUID,
-                                                           productGUID,
-                                                           null,
-                                                           null,
-                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName()));
-            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName());
-
-            /*
-             * The source is the product's asset.  For a product family that is the tabular data set collection
-             * over its members' data sets, so a subscription to the family is provisioned from one source like
-             * any other.  A product that has no asset yet has no source to name.
-             */
-            if (productAssetGUID != null)
-            {
-                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                               governanceActionProcessGUID,
-                                                               productAssetGUID,
-                                                               null,
-                                                               null,
-                                                               propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_SOURCE.getName()));
-                actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_SOURCE.getName());
-            }
-
-            if (licenseTypeGUID != null)
-            {
-                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                               governanceActionProcessGUID,
-                                                               licenseTypeGUID,
-                                                               null,
-                                                               null,
-                                                               propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName()));
-            }
-            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName()); // always remove
-
-
-            if (notificationTypeGUID != null)
-            {
-                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                               governanceActionProcessGUID,
-                                                               notificationTypeGUID,
-                                                               null,
-                                                               null,
-                                                               propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.NOTIFICATION_TYPE.getName()));
-            }
-            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.NOTIFICATION_TYPE.getName()); // always remove
-
-            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                           governanceActionProcessGUID,
-                                                           productManagerGUID,
-                                                           null,
-                                                           null,
-                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_PRODUCT_OWNER.getName()));
-            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_PRODUCT_OWNER.getName());
-
-            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                           governanceActionProcessGUID,
-                                                           governanceDefinitions.get(productSubscriptionDefinition.getServiceLevelObjective().getQualifiedName()),
-                                                           null,
-                                                           null,
-                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.SERVICE_LEVEL_OBJECTIVE.getName()));
-            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.SERVICE_LEVEL_OBJECTIVE.getName());
-
-            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                           governanceActionProcessGUID,
-                                                           GovernanceActionTypeDefinition.PROVISION_SUBSCRIPTION.getGovernanceActionTypeGUID(),
-                                                           null,
-                                                           null,
-                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName()));
-            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName());
-
-            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                           governanceActionProcessGUID,
-                                                           GovernanceActionTypeDefinition.CANCEL_SUBSCRIPTION.getGovernanceActionTypeGUID(),
-                                                           null,
-                                                           null,
-                                                           propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName()));
-            actionTargetNames.add(ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName());
-
-            /*
-             * Remove the specification properties for the action targets that have already been supplied.  This means
-             * that the remaining specification properties cover the ones that the caller needs to supply.
-             */
-            GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName);
-
-            OpenMetadataRootElement governanceActionProcess = governanceDefinitionClient.getGovernanceDefinitionByGUID(governanceActionProcessGUID, this.withRelationships(governanceDefinitionClient, OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName));
-
-            if (governanceActionProcess.getSpecificationProperties() != null)
-            {
-                for (RelatedMetadataElementSummary specificationProperties : governanceActionProcess.getSpecificationProperties())
-                {
-                    if ((specificationProperties != null) && (specificationProperties.getRelationshipProperties() instanceof SpecificationPropertyAssignmentProperties specificationPropertyAssignmentProperties))
-                    {
-                        if (SpecificationPropertyType.SUPPORTED_ACTION_TARGET.getPropertyType().equals(specificationPropertyAssignmentProperties.getPropertyName()))
-                        {
-                            if (specificationProperties.getRelatedElement().getProperties() instanceof SpecificationPropertyValueProperties specificationPropertyValueProperties)
-                            {
-                                if (actionTargetNames.contains(specificationPropertyValueProperties.getPreferredValue()))
-                                {
-                                    openMetadataStore.deleteRelationshipInStore(specificationProperties.getRelationshipHeader().getGUID());
-                                }
-                            }
-                        }
-                        else if (SpecificationPropertyType.SUPPORTED_REQUEST_PARAMETER.getPropertyType().equals(specificationPropertyAssignmentProperties.getPropertyName()))
-                        {
-                            if (specificationProperties.getRelatedElement().getProperties() instanceof SpecificationPropertyValueProperties specificationPropertyValueProperties)
-                            {
-                                if (additionalRequestParameters.containsKey(specificationPropertyValueProperties.getPreferredValue()))
-                                {
-                                    openMetadataStore.deleteRelationshipInStore(specificationProperties.getRelationshipHeader().getGUID());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            /*
-             * Link the new governance action process to the product.
-             */
-            ResourceListProperties resourceListProperties = new ResourceListProperties();
-
-            resourceListProperties.setResourceUse(ResourceUse.CREATE_SUBSCRIPTION.getResourceUse());
-            resourceListProperties.setDescription(ResourceUse.CREATE_SUBSCRIPTION.getDescription());
-
-            classificationExplorerClient.addResourceListToElement(productGUID,
-                                                                  governanceActionProcessGUID,
-                                                                  classificationExplorerClient.getMakeAnchorOptions(false),
-                                                                  resourceListProperties);
-
-            /*
-             * Link the new governance action process to the glossary term for more explanation.
-             */
-            if (productSubscriptionDefinition.getGlossaryTerm() != null)
-            {
-                String glossaryTermGUID = glossaryTerms.get(productSubscriptionDefinition.getGlossaryTerm().getQualifiedName());
-                if (glossaryTermGUID != null)
-                {
-                    classificationExplorerClient.setupSemanticAssignment(governanceActionProcessGUID,
-                                                                         glossaryTermGUID,
-                                                                         null,
-                                                                         classificationExplorerClient.getMakeAnchorOptions(false));
-                }
-            }
+            return;
         }
+
+        classificationExplorerClient.setupSemanticAssignment(governanceActionProcessGUID,
+                                                             glossaryTermGUID,
+                                                             null,
+                                                             classificationExplorerClient.getMakeAnchorOptions(false));
     }
 
 
@@ -2227,12 +1872,74 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             }
             else
             {
+                this.verifyAssetConnectionLink(assetGUID, connectionElement.getElementHeader().getGUID());
+
                 this.verifyProductAssetConnection(productDefinition,
                                                   productGUID,
                                                   connectionElement.getElementHeader().getGUID(),
                                                   connectorTypeGUID);
             }
         }
+    }
+
+
+    /**
+     * Make sure the product's connection is attached to the product's asset.
+     * <br>
+     * The connection is found by its qualified name, and the asset by its own, so the two can come apart: an
+     * asset that was deleted and catalogued again gets a new element, while its connection - anchored to the
+     * product, not the asset - lives on under the same name and is found rather than recreated.  The new asset
+     * then has a connection in the catalogue and no link to it, and a subscription that tries to read the
+     * product's data finds no connector.  That happened when a test suite deleted a product the asset had been
+     * made a member of, and the delete cascaded to the asset.
+     *
+     * @param assetGUID unique identifier of the product's asset
+     * @param connectionGUID unique identifier of the product's connection
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected
+     */
+    private void verifyAssetConnectionLink(String assetGUID,
+                                           String connectionGUID) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        final String methodName = "verifyAssetConnectionLink";
+
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+
+        List<OpenMetadataRootElement> connections = classificationExplorerClient.getRelatedRootElements(assetGUID,
+                                                                                                        1,
+                                                                                                        OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName,
+                                                                                                        this.headerAndPropertiesQuery(classificationExplorerClient));
+
+        if (connections != null)
+        {
+            for (OpenMetadataRootElement connection : connections)
+            {
+                if ((connection != null) && (connectionGUID.equals(connection.getElementHeader().getGUID())))
+                {
+                    return;
+                }
+            }
+        }
+
+        ConnectionClient connectionClient = integrationContext.getConnectionClient();
+
+        connectionClient.linkResourceToConnection(assetGUID,
+                                                  connectionGUID,
+                                                  new MakeAnchorOptions(connectionClient.getMetadataSourceOptions()),
+                                                  null);
+
+        logRecord(methodName,
+                  JacquardAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                          OpenMetadataType.ASSET.typeName,
+                                                                          assetGUID,
+                                                                          OpenMetadataType.CONNECTION.typeName,
+                                                                          connectionGUID,
+                                                                          OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName));
     }
 
 
@@ -2970,7 +2677,19 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                       perspectiveDefinition.getDisplayName(),
                                                                                                       perspective.getElementHeader().getGUID()));
 
-                    perspectiveClient.updatePerspective(perspective.getElementHeader().getGUID(), perspectiveClient.getUpdateOptions(true), perspectiveProperties);
+                    /*
+                     * The perspectives are normally defined by the Core Content Pack, and an element that a content
+                     * pack owns cannot be updated from here - the repository refuses the request, and the connector
+                     * would fail to start.  Only a perspective this connector created itself, on a repository
+                     * without the content pack, is brought into line with the definition.
+                     */
+                    if ((perspective.getElementHeader().getOrigin() == null) ||
+                            (perspective.getElementHeader().getOrigin().getOriginCategory() == null) ||
+                            (perspective.getElementHeader().getOrigin().getOriginCategory() == ElementOriginCategory.LOCAL_COHORT))
+                    {
+                        perspectiveClient.updatePerspective(perspective.getElementHeader().getGUID(), perspectiveClient.getUpdateOptions(true), perspectiveProperties);
+                    }
+
                     return perspective.getElementHeader().getGUID();
                 }
             }
@@ -3045,7 +2764,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
     /**
      * Return the unique identifier of the glossary term either by retrieving an existing glossary term or,
-     * when that fails, creating a new one.
+     * when that fails, creating a new one.  Either way the question is scoped by each of the perspectives its
+     * definition names, so a perspective added to the definition later is linked on the next refresh.
+     * <br>
+     * A question is its own anchor rather than anchored to a perspective: it can matter to several
+     * perspectives, and an element has one anchor.
      *
      * @param productQuestionDefinition description of the question glossary term
      * @param perspectiveMap map of perspectives to their unique identifiers
@@ -3093,6 +2816,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                                       question.getElementHeader().getGUID()));
 
                     glossaryTermClient.updateGlossaryTerm(question.getElementHeader().getGUID(), glossaryTermClient.getUpdateOptions(true), glossaryTermProperties);
+
+                    this.scopeQuestionByPerspectives(question.getElementHeader().getGUID(), productQuestionDefinition, perspectiveMap);
+
                     return question.getElementHeader().getGUID();
                 }
             }
@@ -3102,27 +2828,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          * This is the first time...
          */
         NewElementOptions newElementOptions = new NewElementOptions(glossaryTermClient.getMetadataSourceOptions());
+
+        newElementOptions.setIsOwnAnchor(true);
         newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
 
-        Map<String, ClassificationProperties> initialClassifications;
-
-        if (productQuestionDefinition.getPerspective() != null)
-        {
-            String perspectiveGUID = perspectiveMap.get(productQuestionDefinition.getPerspective().getQualifiedName());
-
-            newElementOptions.setIsOwnAnchor(false);
-            newElementOptions.setAnchorGUID(perspectiveGUID);
-            newElementOptions.setParentGUID(perspectiveGUID);
-            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName);
-            newElementOptions.setParentAtEnd1(false);
-
-            initialClassifications = new HashMap<>();
-        }
-        else
-        {
-            newElementOptions.setIsOwnAnchor(true);
-            initialClassifications = getInitialClassificationProperties(null);
-        }
+        Map<String, ClassificationProperties> initialClassifications = getInitialClassificationProperties(null);
 
         initialClassifications.put(OpenMetadataType.QUESTION_CLASSIFICATION.typeName, null);
 
@@ -3146,7 +2856,55 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             collectionClient.addToCollection(folderGUID, questionGUID, collectionClient.getMakeAnchorOptions(false), null);
         }
 
+        this.scopeQuestionByPerspectives(questionGUID, productQuestionDefinition, perspectiveMap);
+
         return questionGUID;
+    }
+
+
+    /**
+     * Scope a question by each of the perspectives its definition names, skipping any it is already scoped by.
+     * The existing scopes are read first so that this is safe to call on every refresh: ScopedBy is not a
+     * multi-link relationship, and a question catalogued under an earlier definition may already carry some
+     * of them.
+     *
+     * @param questionGUID unique identifier of the question glossary term
+     * @param productQuestionDefinition description of the question
+     * @param perspectiveMap map of perspectives to their unique identifiers
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void scopeQuestionByPerspectives(String                    questionGUID,
+                                             ProductQuestionDefinition productQuestionDefinition,
+                                             Map<String, String>       perspectiveMap) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        if (productQuestionDefinition.getPerspectives().isEmpty())
+        {
+            return;
+        }
+
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+
+        OpenMetadataRootElement question = classificationExplorerClient.getRootElementByGUID(questionGUID,
+                                                                                             this.withRelationships(classificationExplorerClient,
+                                                                                                                    OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName));
+
+        for (ProductPerspectiveDefinition perspectiveDefinition : productQuestionDefinition.getPerspectives())
+        {
+            String perspectiveGUID = perspectiveMap.get(perspectiveDefinition.getQualifiedName());
+
+            if ((perspectiveGUID != null) && ((question == null) || (! this.containsElement(question.getRelevantToScopes(), perspectiveGUID))))
+            {
+                classificationExplorerClient.addScopeToElement(questionGUID,
+                                                               perspectiveGUID,
+                                                               classificationExplorerClient.getMakeAnchorOptions(false),
+                                                               null);
+            }
+        }
     }
 
 
