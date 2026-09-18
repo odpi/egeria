@@ -125,6 +125,34 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDigitalProduct(java.lang.String,org.odpi.openmetadata.viewservices.productmanager.rest.NewDigitalProductRequestBody)" class="member-name-link">createDigitalProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../rest/NewDigitalProductRequestBody.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">NewDigitalProductRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new digital product and link it to the elements that surround it: its product manager, community,
+ owning collections, guiding questions, product asset, governance definitions and data specification.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createOneTimeSubscription(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.productmanager.rest.NewSubscriptionTypeRequestBody)" class="member-name-link">createOneTimeSubscription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductGUID,
+ <a href="../rest/NewSubscriptionTypeRequestBody.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">NewSubscriptionTypeRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a one-time subscription type to a product.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createOngoingUpdateSubscription(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.productmanager.rest.NewSubscriptionTypeRequestBody)" class="member-name-link">createOngoingUpdateSubscription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductGUID,
+ <a href="../rest/NewSubscriptionTypeRequestBody.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">NewSubscriptionTypeRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add an ongoing update subscription type to a product.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createPeriodicSubscription(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.productmanager.rest.NewSubscriptionTypeRequestBody)" class="member-name-link">createPeriodicSubscription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductGUID,
+ <a href="../rest/NewSubscriptionTypeRequestBody.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">NewSubscriptionTypeRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a periodic subscription type to a product.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachDigitalProductDependency(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">detachDigitalProductDependency</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;consumerDigitalProductGUID,
@@ -402,6 +430,91 @@ loadScripts(document, 'script');</script>
  This is a multi-link relationship, so this request removes every digital product dependency relationship
  between the two elements.  Use the request that takes the relationship's own unique identifier to
  remove just one of them.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createDigitalProduct(java.lang.String,org.odpi.openmetadata.viewservices.productmanager.rest.NewDigitalProductRequestBody)">
+<h3>createDigitalProduct</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createDigitalProduct</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../rest/NewDigitalProductRequestBody.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">NewDigitalProductRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Create a new digital product and link it to the elements that surround it: its product manager, community,
+ owning collections, guiding questions, product asset, governance definitions and data specification.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>requestBody</code> - description of the product and the elements to link it to</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new product or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createOneTimeSubscription(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.productmanager.rest.NewSubscriptionTypeRequestBody)">
+<h3>createOneTimeSubscription</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createOneTimeSubscription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductGUID,
+ <a href="../rest/NewSubscriptionTypeRequestBody.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">NewSubscriptionTypeRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Add a one-time subscription type to a product.  A subscriber to this type receives a single notification, and
+ so a single delivery of the product's data.  It is typically used to evaluate a product.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>digitalProductGUID</code> - unique identifier of the product</dd>
+<dd><code>requestBody</code> - optional description of the subscription type</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the governance action process that creates a subscription of this type or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createPeriodicSubscription(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.productmanager.rest.NewSubscriptionTypeRequestBody)">
+<h3>createPeriodicSubscription</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createPeriodicSubscription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductGUID,
+ <a href="../rest/NewSubscriptionTypeRequestBody.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">NewSubscriptionTypeRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Add a periodic subscription type to a product.  A subscriber to this type receives a notification, and so a
+ delivery of the product's data, at regular intervals.  The time between notifications is the request body's
+ notificationInterval, in minutes.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>digitalProductGUID</code> - unique identifier of the product</dd>
+<dd><code>requestBody</code> - description of the subscription type, including the notification interval</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the governance action process that creates a subscription of this type or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createOngoingUpdateSubscription(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.productmanager.rest.NewSubscriptionTypeRequestBody)">
+<h3>createOngoingUpdateSubscription</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createOngoingUpdateSubscription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalProductGUID,
+ <a href="../rest/NewSubscriptionTypeRequestBody.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">NewSubscriptionTypeRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Add an ongoing update subscription type to a product.  A subscriber to this type receives a notification, and
+ so a delivery of the product's data, whenever one of the request body's monitoredResourceGUIDs changes - but no
+ more often than the request body's notificationInterval, in minutes.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>digitalProductGUID</code> - unique identifier of the product</dd>
+<dd><code>requestBody</code> - description of the subscription type, including the monitored resources and the minimum
+                    notification interval</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the governance action process that creates a subscription of this type or
+  InvalidParameterException  one of the parameters is null or invalid.
+  PropertyServerException    a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
 </dl>
 </section>
 </li>

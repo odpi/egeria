@@ -95,7 +95,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../../frameworks/connectors/SecureConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">SecureConnectorExtension</a></code>, <code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code>, <code><a href="../../../../frameworks/connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code></dd>
+<dd><code><a href="../../../../frameworks/connectors/SecureConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">SecureConnectorExtension</a></code>, <code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code>, <code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code>, <code><a href="../../../../frameworks/connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
@@ -104,8 +104,12 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">PostgresTabularDataSetConnector</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a>
-implements <a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></span></div>
-<div class="block">PostgresTabularDataSourceConnector works with structured files to retrieve simple tables of data.</div>
+implements <a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a>, <a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></span></div>
+<div class="block">PostgresTabularDataSetConnector presents one PostgreSQL table as a simple table of data that can be both read and
+ written.  As a source, it describes the table's columns from the database's own catalog and reads its records in
+ a stable order; as a destination, it creates the table from the column descriptions it is given and writes
+ records into it.  Column names cross the boundary in canonical form - capitalised words with spaces between them -
+ and are held in the database in snake case, which is the naming convention PostgreSQL uses.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -181,25 +185,53 @@ implements <a href="../../../../frameworks/connectors/tabulardatasets/WritableTa
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Close the file</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getColumnDescriptions()" class="member-name-link">getColumnDescriptions</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of columns in this table, named in canonical form so that a destination can translate
+ them into its own naming convention.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getColumnNumber(java.lang.String)" class="member-name-link">getColumnNumber</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Locate the named column.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRecordCount()" class="member-name-link">getRecordCount</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the number of records in the file.</div>
+<div class="block">Return the number of records in the table.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setColumnDescriptions(java.util.List)" class="member-name-link">setColumnDescriptions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;&nbsp;columnDescriptions)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTableDescription()" class="member-name-link">getTableDescription</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the columns associated with this tabular data source.</div>
+<div class="block">Return the description for this data source.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTableName()" class="member-name-link">getTableName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the name of the table in canonical form - capitalised words with spaces between them - so that a
+ destination can translate it into its own naming convention.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readRecord(long)" class="member-name-link">readRecord</a><wbr>(long&nbsp;rowNumber)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the requested data record.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setColumnDescriptions(java.util.List)" class="member-name-link">setColumnDescriptions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;&nbsp;columnDescriptions)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Indicates that the connector is completely configured and can begin processing.</div>
+<div class="block">Set up the columns associated with this tabular data source, creating the schema and table to hold them
+ if they do not already exist.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeRecord(long,java.util.List)" class="member-name-link">writeRecord</a><wbr>(long&nbsp;requestedRowNumber,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;dataValues)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Indicates that the connector is completely configured and can begin processing.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeRecord(long,java.util.List)" class="member-name-link">writeRecord</a><wbr>(long&nbsp;requestedRowNumber,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;dataValues)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Write the requested data record.</div>
 </div>
 </div>
@@ -286,9 +318,10 @@ implements <a href="../../../../frameworks/connectors/tabulardatasets/WritableTa
 <h3>getRecordCount</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getRecordCount</span>()
                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Return the number of records in the file.  This is achieved by scanning the file and counting the records -
- not recommended for very large files.</div>
+<div class="block">Return the number of records in the table.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getRecordCount()">getRecordCount</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#getRecordCount()">getRecordCount</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>
 <dt>Returns:</dt>
@@ -299,12 +332,106 @@ implements <a href="../../../../frameworks/connectors/tabulardatasets/WritableTa
 </section>
 </li>
 <li>
+<section class="detail" id="getTableName()">
+<h3>getTableName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTableName</span>()
+                    throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Return the name of the table in canonical form - capitalised words with spaces between them - so that a
+ destination can translate it into its own naming convention.  The table is held in the database in snake case.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getTableName()">getTableName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
+<dt>Returns:</dt>
+<dd>table name</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - data access problem</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTableDescription()">
+<h3>getTableDescription</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTableDescription</span>()
+                           throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Return the description for this data source.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getTableDescription()">getTableDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - data access problem</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getColumnDescriptions()">
+<h3>getColumnDescriptions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;</span>&nbsp;<span class="element-name">getColumnDescriptions</span>()
+                                                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Return the list of columns in this table, named in canonical form so that a destination can translate
+ them into its own naming convention.  The column order is the table's own, which is also the order that
+ the values of a record are returned in by <a href="#readRecord(long)"><code>readRecord(long)</code></a>.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getColumnDescriptions()">getColumnDescriptions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
+<dt>Returns:</dt>
+<dd>a list of column descriptions or null if not available.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - data access problem</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getColumnNumber(java.lang.String)">
+<h3>getColumnNumber</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getColumnNumber</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName)</span>
+                    throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Locate the named column.  The name may be given in canonical form or as the database names it.
+ A negative number means the column is not present.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getColumnNumber(java.lang.String)">getColumnNumber</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>columnName</code> - name of the column</dd>
+<dt>Returns:</dt>
+<dd>column number, starting at 0</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem extracting the column descriptions</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="readRecord(long)">
+<h3>readRecord</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">readRecord</span><wbr><span class="parameters">(long&nbsp;rowNumber)</span>
+                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Return the requested data record.  The first record is record 0.
+ <br>
+ A table has no row numbers of its own, so the record at a position is the one at that offset when the
+ rows are put in the same repeatable order that <a href="#deleteRecord(long)"><code>deleteRecord(long)</code></a> uses - by the columns that identify a
+ record where the table has them, and by physical position where it does not.  The values are returned in
+ the table's column order, as text: PostgreSQL renders each value in its own type's text form, which is
+ what a destination casts back on the way in.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#readRecord(long)">readRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>rowNumber</code> - long</dd>
+<dt>Returns:</dt>
+<dd>List of strings, each string is the value from the column; a null value stays null.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem occurred accessing the data, or there is no such record.</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="setColumnDescriptions(java.util.List)">
 <h3>setColumnDescriptions</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setColumnDescriptions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;&nbsp;columnDescriptions)</span>
                            throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Set up the columns associated with this tabular data source.  These are stored in the first record of the file.
- The rest of the file is cleared.</div>
+<div class="block">Set up the columns associated with this tabular data source, creating the schema and table to hold them
+ if they do not already exist.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#setColumnDescriptions(java.util.List)">setColumnDescriptions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>

@@ -98,7 +98,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">ProductQuestionDefinition</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a>&gt;</span></div>
-<div class="block">The ProductQuestionDefinition is used to populate the questions associated with the glossary.</div>
+<div class="block">The ProductQuestionDefinition is used to populate the questions associated with the glossary.  Each question
+ names the perspectives it matters to; a question may matter to more than one.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -119,10 +120,194 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#USER_ACCOUNT_PROFILE" class="member-name-link">USER_ACCOUNT_PROFILE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#USER_ACCOUNT_STATUS" class="member-name-link">USER_ACCOUNT_STATUS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ACTIONS_REQUESTED_BY_SURVEYS" class="member-name-link">ACTIONS_REQUESTED_BY_SURVEYS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which issues found by surveys need someone to act on them?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ATTRIBUTES_OF_A_TYPE" class="member-name-link">ATTRIBUTES_OF_A_TYPE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which attributes, including inherited ones, does an open metadata type have?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CERTIFICATIONS_HELD" class="member-name-link">CERTIFICATIONS_HELD</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which resources are certified, against which standards, and when do the certifications expire?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#COLUMN_PROFILE" class="member-name-link">COLUMN_PROFILE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">What values and value patterns are found in each database column?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DATA_PROFILE" class="member-name-link">DATA_PROFILE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">What does the profile of the data in a resource look like?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DATABASE_SERVER_SIZE" class="member-name-link">DATABASE_SERVER_SIZE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">How large and how busy are the relational database servers?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DIGITAL_PRODUCT_CATALOG_CONTENTS" class="member-name-link">DIGITAL_PRODUCT_CATALOG_CONTENTS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which digital products are available, and what is the status of each?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DIRECTORY_CONTENTS" class="member-name-link">DIRECTORY_CONTENTS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">What is in each directory, and how much space does it take?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ELEMENTS_NEEDING_ACTION" class="member-name-link">ELEMENTS_NEEDING_ACTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which elements are the subject of a request for action, and what is asked of them?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#FILE_DETAILS" class="member-name-link">FILE_DETAILS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which files were surveyed, and what type, size and age is each?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTIVITY" class="member-name-link">GOVERNANCE_ACTIVITY</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">How is governance being applied across the organization's resources?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#GOVERNANCE_CONTROLS_IN_PLACE" class="member-name-link">GOVERNANCE_CONTROLS_IN_PLACE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which governance controls are defined, and what does each one require?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#GOVERNANCE_EXCEPTIONS" class="member-name-link">GOVERNANCE_EXCEPTIONS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which exceptions to governance requirements have been granted, to whom and why?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#IT_OPERATIONS_HEALTH" class="member-name-link">IT_OPERATIONS_HEALTH</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">How healthy is the IT infrastructure supporting the open metadata ecosystem?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#LICENSES_GRANTED" class="member-name-link">LICENSES_GRANTED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which licenses apply to the organization's resources, and what do they permit?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#LOCATIONS" class="member-name-link">LOCATIONS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which sites and facilities are known to the open metadata ecosystem, and what is at each?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#MASTER_DATA" class="member-name-link">MASTER_DATA</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which people, organizations, locations and products does the open metadata ecosystem know about?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#OPEN_METADATA_MODEL" class="member-name-link">OPEN_METADATA_MODEL</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">How is the open metadata model structured?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#OPEN_METADATA_PROPERTIES" class="member-name-link">OPEN_METADATA_PROPERTIES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which properties are defined in the open metadata types, and what does each one mean?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#OPEN_METADATA_TYPE_CATALOG" class="member-name-link">OPEN_METADATA_TYPE_CATALOG</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which types of element, relationship and classification can open metadata describe?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ORGANIZATION_ACTIVITY" class="member-name-link">ORGANIZATION_ACTIVITY</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">How active is the organization in the open metadata ecosystem?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ORGANIZATIONS" class="member-name-link">ORGANIZATIONS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which organizations interact with the open metadata ecosystem?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#PEOPLE" class="member-name-link">PEOPLE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Who are the people interacting with the open metadata ecosystem, and what are their roles?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#PROPERTIES_WITH_VALID_VALUES" class="member-name-link">PROPERTIES_WITH_VALID_VALUES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which open metadata properties have a defined set of valid values?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#PROPERTY_DATA_TYPES" class="member-name-link">PROPERTY_DATA_TYPES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which data types are used for open metadata properties, and how do they map to programming languages?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#REFERENCE_DATA_AVAILABLE" class="member-name-link">REFERENCE_DATA_AVAILABLE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which reference data sets are available to standardise the values in my data?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#REFERENCE_DATA_SET_CATALOG" class="member-name-link">REFERENCE_DATA_SET_CATALOG</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which reference data sets does open metadata manage, and what does each one describe?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#RESOURCE_PHYSICAL_DETAILS" class="member-name-link">RESOURCE_PHYSICAL_DETAILS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">What are the physical characteristics of each surveyed resource?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SCHEMA_SIZE" class="member-name-link">SCHEMA_SIZE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">How large are the database schemas, and how are they growing?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SECRETS_COLLECTIONS" class="member-name-link">SECRETS_COLLECTIONS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which secrets collections exist in each store, and who uses them?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SECRETS_MANAGEMENT" class="member-name-link">SECRETS_MANAGEMENT</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Where are secrets held, and which systems depend on them?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SECRETS_STORES" class="member-name-link">SECRETS_STORES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which secrets stores are in use, and which servers and connectors rely on each?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SECURITY_POSTURE" class="member-name-link">SECURITY_POSTURE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">What is the security posture of the open metadata ecosystem?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SERVICES_EXPOSED" class="member-name-link">SERVICES_EXPOSED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which servers, services and operations are exposed, and how are they secured?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SOFTWARE_SERVERS" class="member-name-link">SOFTWARE_SERVERS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which software servers are catalogued, where do they run, and what do they host?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#STANDARD_VALUES" class="member-name-link">STANDARD_VALUES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which standard values are used to describe open metadata, and what does each of them mean?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SURVEY_FINDINGS" class="member-name-link">SURVEY_FINDINGS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">What did the surveys find about each resource?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SURVEY_INSIGHTS" class="member-name-link">SURVEY_INSIGHTS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">What have the surveys of the organization's resources discovered?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SURVEYS_RUN" class="member-name-link">SURVEYS_RUN</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which resources have been surveyed, when, and by which survey?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#TABLE_SIZE_AND_ACTIVITY" class="member-name-link">TABLE_SIZE_AND_ACTIVITY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">How large and how actively used are the database tables?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNCLASSIFIED_FILES" class="member-name-link">UNCLASSIFIED_FILES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Which files could not be classified, so that the file reference data can be extended?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#USER_ACCOUNT_PROFILE" class="member-name-link">USER_ACCOUNT_PROFILE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#USER_ACCOUNT_STATUS" class="member-name-link">USER_ACCOUNT_STATUS</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#USER_IDENTITIES" class="member-name-link">USER_IDENTITIES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Which user identities exist, and which person, team or system does each belong to?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#USER_POPULATION" class="member-name-link">USER_POPULATION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Who can access the open metadata ecosystem, and how?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#VISIBILITY_OF_METADATA" class="member-name-link">VISIBILITY_OF_METADATA</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">How is the visibility of metadata controlled through governance zones?</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ZONE_CONTENTS_BY_TYPE" class="member-name-link">ZONE_CONTENTS_BY_TYPE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">What types of element does each governance zone contain?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ZONE_SIZES" class="member-name-link">ZONE_SIZES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">How many elements are in each governance zone?</div>
+</div>
 </div>
 </section>
 </li>
@@ -152,10 +337,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the folder for this term.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProductPerspectiveDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductPerspectiveDefinition</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPerspective()" class="member-name-link">getPerspective</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="ProductPerspectiveDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductPerspectiveDefinition</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPerspectives()" class="member-name-link">getPerspectives</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the perspective that this question is associated with.</div>
+<div class="block">Return the perspectives that this question is associated with.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
@@ -218,6 +403,328 @@ the order they are declared.</div>
 <section class="detail" id="USER_ACCOUNT_PROFILE">
 <h3>USER_ACCOUNT_PROFILE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">USER_ACCOUNT_PROFILE</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="STANDARD_VALUES">
+<h3>STANDARD_VALUES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">STANDARD_VALUES</span></div>
+<div class="block">Which standard values are used to describe open metadata, and what does each of them mean?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PROPERTIES_WITH_VALID_VALUES">
+<h3>PROPERTIES_WITH_VALID_VALUES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">PROPERTIES_WITH_VALID_VALUES</span></div>
+<div class="block">Which open metadata properties have a defined set of valid values?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="REFERENCE_DATA_AVAILABLE">
+<h3>REFERENCE_DATA_AVAILABLE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">REFERENCE_DATA_AVAILABLE</span></div>
+<div class="block">Which reference data sets are available to standardise the values in my data?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="REFERENCE_DATA_SET_CATALOG">
+<h3>REFERENCE_DATA_SET_CATALOG</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">REFERENCE_DATA_SET_CATALOG</span></div>
+<div class="block">Which reference data sets does open metadata manage, and what does each one describe?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_METADATA_MODEL">
+<h3>OPEN_METADATA_MODEL</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">OPEN_METADATA_MODEL</span></div>
+<div class="block">How is the open metadata model structured?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PROPERTY_DATA_TYPES">
+<h3>PROPERTY_DATA_TYPES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">PROPERTY_DATA_TYPES</span></div>
+<div class="block">Which data types are used for open metadata properties, and how do they map to programming languages?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_METADATA_PROPERTIES">
+<h3>OPEN_METADATA_PROPERTIES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">OPEN_METADATA_PROPERTIES</span></div>
+<div class="block">Which properties are defined in the open metadata types, and what does each one mean?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_METADATA_TYPE_CATALOG">
+<h3>OPEN_METADATA_TYPE_CATALOG</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">OPEN_METADATA_TYPE_CATALOG</span></div>
+<div class="block">Which types of element, relationship and classification can open metadata describe?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ATTRIBUTES_OF_A_TYPE">
+<h3>ATTRIBUTES_OF_A_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">ATTRIBUTES_OF_A_TYPE</span></div>
+<div class="block">Which attributes, including inherited ones, does an open metadata type have?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MASTER_DATA">
+<h3>MASTER_DATA</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">MASTER_DATA</span></div>
+<div class="block">Which people, organizations, locations and products does the open metadata ecosystem know about?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ORGANIZATIONS">
+<h3>ORGANIZATIONS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">ORGANIZATIONS</span></div>
+<div class="block">Which organizations interact with the open metadata ecosystem?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PEOPLE">
+<h3>PEOPLE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">PEOPLE</span></div>
+<div class="block">Who are the people interacting with the open metadata ecosystem, and what are their roles?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DIGITAL_PRODUCT_CATALOG_CONTENTS">
+<h3>DIGITAL_PRODUCT_CATALOG_CONTENTS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">DIGITAL_PRODUCT_CATALOG_CONTENTS</span></div>
+<div class="block">Which digital products are available, and what is the status of each?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LOCATIONS">
+<h3>LOCATIONS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">LOCATIONS</span></div>
+<div class="block">Which sites and facilities are known to the open metadata ecosystem, and what is at each?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SURVEY_INSIGHTS">
+<h3>SURVEY_INSIGHTS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">SURVEY_INSIGHTS</span></div>
+<div class="block">What have the surveys of the organization's resources discovered?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SURVEYS_RUN">
+<h3>SURVEYS_RUN</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">SURVEYS_RUN</span></div>
+<div class="block">Which resources have been surveyed, when, and by which survey?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SURVEY_FINDINGS">
+<h3>SURVEY_FINDINGS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">SURVEY_FINDINGS</span></div>
+<div class="block">What did the surveys find about each resource?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ACTIONS_REQUESTED_BY_SURVEYS">
+<h3>ACTIONS_REQUESTED_BY_SURVEYS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">ACTIONS_REQUESTED_BY_SURVEYS</span></div>
+<div class="block">Which issues found by surveys need someone to act on them?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ELEMENTS_NEEDING_ACTION">
+<h3>ELEMENTS_NEEDING_ACTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">ELEMENTS_NEEDING_ACTION</span></div>
+<div class="block">Which elements are the subject of a request for action, and what is asked of them?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATABASE_SERVER_SIZE">
+<h3>DATABASE_SERVER_SIZE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">DATABASE_SERVER_SIZE</span></div>
+<div class="block">How large and how busy are the relational database servers?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SCHEMA_SIZE">
+<h3>SCHEMA_SIZE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">SCHEMA_SIZE</span></div>
+<div class="block">How large are the database schemas, and how are they growing?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TABLE_SIZE_AND_ACTIVITY">
+<h3>TABLE_SIZE_AND_ACTIVITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">TABLE_SIZE_AND_ACTIVITY</span></div>
+<div class="block">How large and how actively used are the database tables?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="COLUMN_PROFILE">
+<h3>COLUMN_PROFILE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">COLUMN_PROFILE</span></div>
+<div class="block">What values and value patterns are found in each database column?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FILE_DETAILS">
+<h3>FILE_DETAILS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">FILE_DETAILS</span></div>
+<div class="block">Which files were surveyed, and what type, size and age is each?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DIRECTORY_CONTENTS">
+<h3>DIRECTORY_CONTENTS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">DIRECTORY_CONTENTS</span></div>
+<div class="block">What is in each directory, and how much space does it take?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="RESOURCE_PHYSICAL_DETAILS">
+<h3>RESOURCE_PHYSICAL_DETAILS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">RESOURCE_PHYSICAL_DETAILS</span></div>
+<div class="block">What are the physical characteristics of each surveyed resource?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATA_PROFILE">
+<h3>DATA_PROFILE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">DATA_PROFILE</span></div>
+<div class="block">What does the profile of the data in a resource look like?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNCLASSIFIED_FILES">
+<h3>UNCLASSIFIED_FILES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">UNCLASSIFIED_FILES</span></div>
+<div class="block">Which files could not be classified, so that the file reference data can be extended?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ORGANIZATION_ACTIVITY">
+<h3>ORGANIZATION_ACTIVITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">ORGANIZATION_ACTIVITY</span></div>
+<div class="block">How active is the organization in the open metadata ecosystem?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="GOVERNANCE_ACTIVITY">
+<h3>GOVERNANCE_ACTIVITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">GOVERNANCE_ACTIVITY</span></div>
+<div class="block">How is governance being applied across the organization's resources?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="GOVERNANCE_CONTROLS_IN_PLACE">
+<h3>GOVERNANCE_CONTROLS_IN_PLACE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">GOVERNANCE_CONTROLS_IN_PLACE</span></div>
+<div class="block">Which governance controls are defined, and what does each one require?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="GOVERNANCE_EXCEPTIONS">
+<h3>GOVERNANCE_EXCEPTIONS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">GOVERNANCE_EXCEPTIONS</span></div>
+<div class="block">Which exceptions to governance requirements have been granted, to whom and why?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CERTIFICATIONS_HELD">
+<h3>CERTIFICATIONS_HELD</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">CERTIFICATIONS_HELD</span></div>
+<div class="block">Which resources are certified, against which standards, and when do the certifications expire?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LICENSES_GRANTED">
+<h3>LICENSES_GRANTED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">LICENSES_GRANTED</span></div>
+<div class="block">Which licenses apply to the organization's resources, and what do they permit?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="IT_OPERATIONS_HEALTH">
+<h3>IT_OPERATIONS_HEALTH</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">IT_OPERATIONS_HEALTH</span></div>
+<div class="block">How healthy is the IT infrastructure supporting the open metadata ecosystem?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SOFTWARE_SERVERS">
+<h3>SOFTWARE_SERVERS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">SOFTWARE_SERVERS</span></div>
+<div class="block">Which software servers are catalogued, where do they run, and what do they host?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SECURITY_POSTURE">
+<h3>SECURITY_POSTURE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">SECURITY_POSTURE</span></div>
+<div class="block">What is the security posture of the open metadata ecosystem?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SECRETS_MANAGEMENT">
+<h3>SECRETS_MANAGEMENT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">SECRETS_MANAGEMENT</span></div>
+<div class="block">Where are secrets held, and which systems depend on them?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SECRETS_STORES">
+<h3>SECRETS_STORES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">SECRETS_STORES</span></div>
+<div class="block">Which secrets stores are in use, and which servers and connectors rely on each?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SECRETS_COLLECTIONS">
+<h3>SECRETS_COLLECTIONS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">SECRETS_COLLECTIONS</span></div>
+<div class="block">Which secrets collections exist in each store, and who uses them?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="USER_POPULATION">
+<h3>USER_POPULATION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">USER_POPULATION</span></div>
+<div class="block">Who can access the open metadata ecosystem, and how?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="USER_IDENTITIES">
+<h3>USER_IDENTITIES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">USER_IDENTITIES</span></div>
+<div class="block">Which user identities exist, and which person, team or system does each belong to?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="VISIBILITY_OF_METADATA">
+<h3>VISIBILITY_OF_METADATA</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">VISIBILITY_OF_METADATA</span></div>
+<div class="block">How is the visibility of metadata controlled through governance zones?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ZONE_SIZES">
+<h3>ZONE_SIZES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">ZONE_SIZES</span></div>
+<div class="block">How many elements are in each governance zone?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ZONE_CONTENTS_BY_TYPE">
+<h3>ZONE_CONTENTS_BY_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">ZONE_CONTENTS_BY_TYPE</span></div>
+<div class="block">What types of element does each governance zone contain?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SERVICES_EXPOSED">
+<h3>SERVICES_EXPOSED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductQuestionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductQuestionDefinition</a></span>&nbsp;<span class="element-name">SERVICES_EXPOSED</span></div>
+<div class="block">Which servers, services and operations are exposed, and how are they secured?</div>
 </section>
 </li>
 </ul>
@@ -326,13 +833,13 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getPerspective()">
-<h3>getPerspective</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ProductPerspectiveDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductPerspectiveDefinition</a></span>&nbsp;<span class="element-name">getPerspective</span>()</div>
-<div class="block">Return the perspective that this question is associated with.</div>
+<section class="detail" id="getPerspectives()">
+<h3>getPerspectives</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductPerspectiveDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductPerspectiveDefinition</a>&gt;</span>&nbsp;<span class="element-name">getPerspectives</span>()</div>
+<div class="block">Return the perspectives that this question is associated with.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>ProductPerspectiveDefinition</dd>
+<dd>list of perspectives - empty if the question is not specific to any perspective</dd>
 </dl>
 </section>
 </li>
