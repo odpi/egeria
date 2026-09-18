@@ -108,6 +108,7 @@ public class ConnectorContextBase
     private final   MultiLanguageClient            multiLanguageClient;
     private final   NoteLogClient                  noteLogClient;
     private final   PerspectiveClient              perspectiveClient;
+    private final   ProductManagerClient           productManagerClient;
     private final   ProjectClient                  projectClient;
     private final   PropertyFacetClient            propertyFacetClient;
     private final   RatingClient                   ratingClient;
@@ -684,6 +685,17 @@ public class ConnectorContextBase
                                                          openMetadataClient,
                                                          auditLog,
                                                          maxPageSize);
+
+        this.productManagerClient = new ProductManagerClient(this,
+                                                             localServerName,
+                                                             localServiceName,
+                                                             connectorUserId,
+                                                             connectorGUID,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
+                                                             openMetadataClient,
+                                                             auditLog,
+                                                             maxPageSize);
 
         this.specificationPropertyClient = new SpecificationPropertyClient(this,
                                                                            localServerName,
@@ -1459,6 +1471,19 @@ public class ConnectorContextBase
     public SolutionPortClient getSolutionPortClient()
     {
         return solutionPortClient;
+    }
+
+
+    /**
+     * Return the client for building digital products and their subscription types.  This client is from the
+     * Open Metadata Framework (OMF) and creates a digital product together with the elements around it, and adds
+     * the notification type and governance action process that make up a subscription type.
+     *
+     * @return client
+     */
+    public ProductManagerClient getProductManagerClient()
+    {
+        return productManagerClient;
     }
 
 

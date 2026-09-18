@@ -106,6 +106,21 @@ Content-Type: application/json
 }
 
 ###
+# ---------------------------------------------------------------------------------------------------------------------
+# Digital products: https://egeria-project.org/concepts/digital-product
+#
+# A digital product is a collection, so every request in this file works on it - createCollection with
+# DigitalProductProperties makes a bare product, and the membership requests add its asset ("product data set").
+# A product that is ready to offer subscriptions has more around it: its product manager (AssignmentScope), the
+# community that discusses it (ScopedBy), the folders and product families it belongs to (CollectionMembership),
+# the questions it answers (SupplementaryProperties), the license granted to its subscribers (GovernedBy, labelled
+# "subscriber's license"), its data specification (DataDescription) and the subscription types it offers.  The
+# Product Manager OMVS builds all of that in one createDigitalProduct call and adds the subscription types with its
+# subscription-type requests - see Egeria-api-product-manager.http.  The Jacquard Digital Product Loom builds its
+# catalogue the same way, and Egeria-jacquard-digital-products.http reads each of those links back.
+# ---------------------------------------------------------------------------------------------------------------------
+
+###
 # @name findDigitalProducts
 # https://egeria-project.org/concepts/digital-product
 # Returns the list of digital products matching the search string and optional deployment status.
@@ -1092,7 +1107,19 @@ Content-Type: application/json
 }
 
 ###
-# Digital Subscriptions
+# ---------------------------------------------------------------------------------------------------------------------
+# Digital Subscriptions: https://egeria-project.org/concepts/digital-subscription
+#
+# A subscription to a digital product is normally taken out by running one of the product's subscription types -
+# a subscribing action process named ProvisioningActionProcess::<product name>::Create Subscription::<identifier>,
+# initiated through the Automated Curation OMVS with the requester and the destination as action targets (see
+# Egeria-api-automated-curation.http).  The create-subscription governance service then creates the
+# DigitalSubscription with identifier <subscription type identifier>-<product identifier>, links it to the product
+# (AgreementItem) and the requester (AgreementActor), builds the provisioning pipeline that delivers the data
+# (ImplementedBy) and subscribes that pipeline to the product's notification type, so that the Baudot Subscription
+# Manager delivers on its next refresh.  The requests below create and maintain a subscription by hand, which is
+# useful for a subscription that is not delivered by a pipeline.
+# ---------------------------------------------------------------------------------------------------------------------
 
 @digitalSubscriberGUID=add guid here
 @digitalSubscriptionGUID=add guid here

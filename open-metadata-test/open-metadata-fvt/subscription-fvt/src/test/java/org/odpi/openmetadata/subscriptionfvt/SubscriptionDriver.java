@@ -90,6 +90,28 @@ class SubscriptionDriver
 
 
     /**
+     * Catalogue one table on the PostgreSQL server under test as a tabular data set.  Used for the source and
+     * the destination of the product built through the product manager client, which are the same shape: a
+     * single product delivers from one table into another.
+     *
+     * @param purpose label of the schema holding the table - see SubscriptionFvtTestSupport.destinationSchemaName
+     * @param tableName name of the table
+     * @return unique identifier of the tabular data set asset
+     * @throws Exception the table could not be catalogued
+     */
+    static String catalogueTabularDataSet(String purpose,
+                                          String tableName) throws Exception
+    {
+        String schemaName = SubscriptionFvtTestSupport.destinationSchemaName(purpose);
+
+        return catalogueDestination(PostgreSQLTemplateType.POSTGRES_TABULAR_DATA_SET_TEMPLATE.getTemplateGUID(),
+                                    PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getAssociatedTypeName(),
+                                    SubscriptionFvtTestSupport.dataSetTemplatePlaceholders(schemaName, tableName),
+                                    SubscriptionFvtTestSupport.tabularDataSetQualifiedName(schemaName, tableName));
+    }
+
+
+    /**
      * Catalogue one destination from a template, or return the one an earlier test in this run already
      * catalogued.
      * <br>
@@ -226,15 +248,48 @@ class SubscriptionDriver
                                                    ProductSubscriptionDefinition subscriptionType,
                                                    String                        destinationGUID) throws Exception
     {
-        String subscriptionKey = productDefinition.getQualifiedName() + "::" + subscriptionType.getIdentifier();
+        OpenMetadataStore openMetadataStore = ConnectorContextFactory.newContext().getOpenMetadataStore();
+
+        OpenMetadataElement product = openMetadataStore.getMetadataElementByUniqueName(productDefinition.getQualifiedName(),
+                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name);
+
+        assertNotNull(product, "Product " + productDefinition.getQualifiedName() + " is not in the catalogue");
+
+        return takeOutSubscription(product.getElementGUID(),
+                                   productDefinition.getProductName(),
+                                   SubscriptionFvtTestSupport.subscriptionProcessQualifiedName(productDefinition, subscriptionType),
+                                   subscriptionIdentifier(productDefinition, subscriptionType),
+                                   destinationGUID);
+    }
+
+
+    /**
+     * Take out one subscription to a product that is identified directly rather than by its Jacquard
+     * definition - the way a consumer's tooling would, having found the product and its subscription option
+     * in the catalogue.  This is the form used for a product built through the product manager client, which
+     * has no definition in Jacquard.  See {@link #takeOutSubscription(ProductDefinition, ProductSubscriptionDefinition, String)}
+     * for what happens and why the result is looked up rather than read off the engine action.
+     *
+     * @param productGUID unique identifier of the product or family being subscribed to
+     * @param productName name of the product, for messages
+     * @param processQualifiedName qualified name of the subscription option - the subscribing action process
+     * @param subscriptionIdentifier identifier the create-subscription service gives the resulting subscription
+     * @param destinationGUID where the data is to be delivered
+     * @return unique identifier of the new digital subscription
+     * @throws Exception the subscription could not be taken out
+     */
+    static synchronized String takeOutSubscription(String productGUID,
+                                                   String productName,
+                                                   String processQualifiedName,
+                                                   String subscriptionIdentifier,
+                                                   String destinationGUID) throws Exception
+    {
+        String subscriptionKey = productGUID + "::" + subscriptionIdentifier;
 
         if (subscriptionsTakenOut.containsKey(subscriptionKey))
         {
             return subscriptionsTakenOut.get(subscriptionKey);
         }
-
-        String processQualifiedName = SubscriptionFvtTestSupport.subscriptionProcessQualifiedName(productDefinition,
-                                                                                                   subscriptionType);
 
         List<NewActionTarget> actionTargets = new ArrayList<>();
 
@@ -263,12 +318,11 @@ class SubscriptionDriver
                                                                                            null);
 
         assertNotNull(processInstanceGUID,
-                      "Asking to subscribe to " + productDefinition.getProductName() + " with a "
-                              + subscriptionType.getIdentifier() + " started nothing (" + processQualifiedName + ")");
+                      "Asking to subscribe to " + productName + " with a " + subscriptionIdentifier
+                              + " started nothing (" + processQualifiedName + ")");
 
         new EngineActionWaiter().waitForProcess(processInstanceGUID,
-                                                subscriptionType.getIdentifier() + " subscription to "
-                                                        + productDefinition.getProductName());
+                                                subscriptionIdentifier + " subscription to " + productName);
 
         /*
          * The subscription now exists and is a subscriber of the product's notification type, but nothing has
@@ -281,13 +335,12 @@ class SubscriptionDriver
         OMAGPlatformExtension.getIntegrationDaemonClient()
                              .refreshConnector(IntegrationConnectorDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getConnectorName());
 
-        String subscriptionGUID = findSubscription(productDefinition, subscriptionType);
+        String subscriptionGUID = findSubscription(productGUID, subscriptionIdentifier);
 
         assertNotNull(subscriptionGUID,
-                      "The " + subscriptionType.getIdentifier() + " subscription process for "
-                              + productDefinition.getProductName() + " finished, but no digital subscription to that product"
-                              + " carrying identifier '" + subscriptionIdentifier(productDefinition, subscriptionType)
-                              + "' is in the repository.");
+                      "The " + subscriptionIdentifier + " subscription process for " + productName
+                              + " finished, but no digital subscription to that product carrying identifier '"
+                              + subscriptionIdentifier + "' is in the repository.");
 
         subscriptionsTakenOut.put(subscriptionKey, subscriptionGUID);
 
@@ -314,10 +367,26 @@ class SubscriptionDriver
 
         assertNotNull(product, "Product " + productDefinition.getQualifiedName() + " is not in the catalogue");
 
-        String wantedIdentifier = subscriptionIdentifier(productDefinition, subscriptionType);
+        return findSubscription(product.getElementGUID(), subscriptionIdentifier(productDefinition, subscriptionType));
+    }
+
+
+    /**
+     * Find the subscription to one product carrying one identifier, the way a consumer would: by looking at
+     * what agreements the product is an item of.
+     *
+     * @param productGUID unique identifier of the product or family subscribed to
+     * @param wantedIdentifier identifier of the subscription wanted
+     * @return unique identifier of the subscription, or null if there is not one
+     * @throws Exception problem reading the repository
+     */
+    static String findSubscription(String productGUID,
+                                   String wantedIdentifier) throws Exception
+    {
+        OpenMetadataStore openMetadataStore = ConnectorContextFactory.newContext().getOpenMetadataStore();
 
         for (RelatedMetadataElement agreement : SubscriptionFvtTestSupport.getRelatedElements(openMetadataStore,
-                                                                                               product.getElementGUID(),
+                                                                                               productGUID,
                                                                                                OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName,
                                                                                                2))
         {

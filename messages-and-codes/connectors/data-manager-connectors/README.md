@@ -6,7 +6,7 @@
 
 These connectors catalog and survey the contents of database servers and other data managers.
 
-This directory documents 72 messages in 12 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 73 messages in 12 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -22,7 +22,7 @@ This directory documents 72 messages in 12 message sets.  Return to the [message
 | [OracleAuditCode](OracleAuditCode.md) | Audit log messages | `ORACLE-CONNECTOR-` | 6 | <https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/> |
 | [OracleErrorCode](OracleErrorCode.md) | Exception messages | `ORACLE-CONNECTOR-` | 2 | <https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/> |
 | [PostgresAuditCode](PostgresAuditCode.md) | Audit log messages | `POSTGRES-CONNECTOR-` | 6 | <https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/> |
-| [PostgresErrorCode](PostgresErrorCode.md) | Exception messages | `POSTGRES-CONNECTOR-` | 2 | <https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/> |
+| [PostgresErrorCode](PostgresErrorCode.md) | Exception messages | `POSTGRES-CONNECTOR-` | 3 | <https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/> |
 | [UCAuditCode](UCAuditCode.md) | Audit log messages | `UNITY-CATALOG-CONNECTOR-` | 18 | <https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/> |
 | [UCErrorCode](UCErrorCode.md) | Exception messages | `UNITY-CATALOG-CONNECTOR-` | 7 | <https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/> |
 

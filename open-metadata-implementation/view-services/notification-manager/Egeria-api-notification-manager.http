@@ -24,6 +24,11 @@ Content-Type: application/json
 # =====================================================================================================================
 # Work with Notification Types
 # https://egeria-project.org/concepts/notification-type
+#
+# The notification types behind a digital product's subscription types are created by the Product Manager API's
+# subscription-type requests (see Egeria-api-product-manager.http) rather than here; these requests adjust what
+# an existing notification type watches and who it notifies.  Egeria-notification-types-and-actions.http shows how
+# to find a product's notification types.
 
 @notificationTypeGUID=add guid here
 @monitoredResourceGUID=add guid here

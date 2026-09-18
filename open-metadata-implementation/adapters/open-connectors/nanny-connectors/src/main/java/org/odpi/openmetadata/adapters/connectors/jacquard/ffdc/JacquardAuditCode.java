@@ -55,10 +55,10 @@ public enum JacquardAuditCode implements AuditLogMessageSet
      * JACQUARD-HARVESTER-0006 - The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types will not be handed to a subscription manager and their subscribers will not be notified
      */
     NO_SUBSCRIPTION_MANAGER("JACQUARD-HARVESTER-0006",
-                            AuditLogRecordSeverityLevel.ERROR,
-                            "The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types will not be handed to a subscription manager and their subscribers will not be notified",
-                            "The connector builds the products and their notification types, but no connector is looking after the notification types.  Subscriptions can be taken out, and nothing will deliver them.",
-                            "Set the configuration property to the unique identifier of the Baudot Subscription Manager integration connector.  The Open Metadata Digital Products content pack sets it when it defines this connector; a connector defined by hand needs it added.",
+                            AuditLogRecordSeverityLevel.INFO,
+                            "The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types are handed to the default subscription manager, the Baudot Subscription Manager defined by the Open Metadata Digital Products content pack with unique identifier {2}",
+                            "The connector builds the products and their notification types, and hands each notification type to the default subscription manager.  If that connector is not defined in open metadata, the notification types are not handed on and their subscribers are not notified.",
+                            "No action is required if the default is intended.  Otherwise set the configuration property to the unique identifier of the subscription manager integration connector to use.  The Open Metadata Digital Products content pack sets it when it defines this connector; a connector defined by hand needs it added.",
                             "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
     /**

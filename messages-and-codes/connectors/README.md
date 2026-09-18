@@ -10,7 +10,7 @@ Return to the [messages and codes index](../README.md).
 
 | Area | Message sets | Messages | Description |
 |---|---|---|---|
-| [Data Manager Connectors](data-manager-connectors) | 12 | 72 | These connectors catalog and survey the contents of database servers and other data managers. |
+| [Data Manager Connectors](data-manager-connectors) | 12 | 73 | These connectors catalog and survey the contents of database servers and other data managers. |
 | [Data Store Connectors](data-store-connectors) | 5 | 27 | These connectors provide access to the contents of files, folders and databases. |
 | [Integration Connectors](integration-connectors) | 14 | 85 | Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor. |
 | [System Connectors](system-connectors) | 13 | 73 | These connectors call the APIs of third party systems such as Apache Atlas, Apache Kafka and the Egeria runtime itself. |

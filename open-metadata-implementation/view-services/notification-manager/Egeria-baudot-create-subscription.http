@@ -1,5 +1,11 @@
-# Egeria-baudot-subscription-requests
-## Locate the types of subscriptions available for a digital product
+# Egeria-baudot-create-subscription
+## Take out a subscription to a digital product
+##
+## A digital product offers each of its subscription types as a subscribing action process, built by the
+## Product Manager's client - whether the product was harvested by the Jacquard Digital Product Loom or created
+## through the Product Manager OMVS (see Egeria-api-product-manager.http).  The process already carries the product,
+## its asset, license, service level objective, product manager and notification type; the consumer supplies who is
+## subscribing and where the data should go, and the Baudot Subscription Manager delivers on its next refresh.
 
 @baseURL=https://localhost:7443
 @viewServer=view-server
@@ -53,10 +59,21 @@ Content-Type: application/json
 # =====================================================================================================================
 # Initiate the create evaluation subscription
 # https://egeria-project.org/concepts/governance-action-process
+#
+# The process is named for the product and the subscription type it takes out:
+#     ProvisioningActionProcess::<product name>::Create Subscription::<subscription type identifier>
+# Jacquard's subscription type identifiers come from ProductSubscriptionDefinition (EVALUATION-SUBSCRIPTION,
+# DAILY-REFRESH-SUBSCRIPTION, WEEKLY-REFRESH-SUBSCRIPTION, ONGOING-UPDATE-SUBSCRIPTION); the Product Manager API's
+# defaults are ONE-TIME-SUBSCRIPTION, PERIODIC-SUBSCRIPTION and ONGOING-UPDATE-SUBSCRIPTION unless the caller names
+# its own.  Egeria-baudot-subscription-processes.http shows how to find the processes a product offers.
+#
+# The destination is an asset with a connection the provisioning can write to - for example a table catalogued
+# from the PostgreSQL content pack's tabular data set template, or a CSV file.
 
+@destinationDataSetGUID=add guid here
 
 ###
-# @name initiateGovernanceActionProcess (Create Evaluation Subscription for Valid Metadata Value Sets List)
+# @name initiateGovernanceActionProcess (Create Evaluation Subscription for Valid Metadata Value Set List)
 # Using the named governance action process as a template, initiate a chain of engine actions.
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
@@ -64,7 +81,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "processQualifiedName": "GovernanceActionProcess::Valid Metadata Value Set List::Create Subscription::EVALUATION-SUBSCRIPTION",
+  "processQualifiedName": "ProvisioningActionProcess::Valid Metadata Value Set List::Create Subscription::EVALUATION-SUBSCRIPTION",
   "actionTargets": [
      {
        "class" : "NewActionTarget",
@@ -74,9 +91,43 @@ Content-Type: application/json
      {
        "class" : "NewActionTarget",
        "actionTargetName" : "destinationDataSet",
-       "actionTargetGUID" : "{{csvFileTabularDataSetGUID}}"
+       "actionTargetGUID" : "{{destinationDataSetGUID}}"
      }]
  }
+
+###
+# =====================================================================================================================
+# Find the subscription once the process has finished.  The subscription is a DigitalSubscription agreement whose
+# item is the product; its identifier is <subscription type identifier>-<product identifier>, here
+# EVALUATION-SUBSCRIPTION-OPEN-METADATA-ValidMetadataValue-with-members.  The Baudot Subscription Manager notices
+# the new subscriber on its next refresh and starts the provisioning pipeline the subscription built.
+
+###
+# @name get the Valid Metadata Value Set List digital product
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "DigitalProduct",
+  "filter" : "Valid Metadata Value Set List"
+}
+
+> {% client.global.set("validValueSetListProductGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+# @name get the subscriptions to the Valid Metadata Value Set List digital product
+# The product is the item of each subscription agreement, so the subscriptions are at end 1 of AgreementItem.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{validValueSetListProductGUID}}/by-relationship/AgreementItem?startAtEnd=2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName": "DigitalSubscription",
+    "includeOnlyRelationships" : ["AgreementItem", "AgreementActor", "ImplementedBy"]
+}
 
 ###
 # ================================================

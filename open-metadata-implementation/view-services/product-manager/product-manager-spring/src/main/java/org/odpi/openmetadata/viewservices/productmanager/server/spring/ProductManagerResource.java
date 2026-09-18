@@ -6,14 +6,13 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
 import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
 import org.odpi.openmetadata.viewservices.productmanager.rest.DataContractResponse;
 import org.odpi.openmetadata.viewservices.productmanager.rest.DataProductResponse;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductDependencyProperties;
+import org.odpi.openmetadata.viewservices.productmanager.rest.NewDigitalProductRequestBody;
+import org.odpi.openmetadata.viewservices.productmanager.rest.NewSubscriptionTypeRequestBody;
 import org.odpi.openmetadata.viewservices.productmanager.server.ProductManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -237,6 +236,137 @@ public class ProductManagerResource
                                                        DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachDigitalProductDependency(serverName, consumerDigitalProductGUID, consumedDigitalProductGUID, requestBody);
+    }
+
+
+    /* =====================================================================================================================
+     * Digital products and their subscription types.
+     */
+
+    /**
+     * Create a new digital product and link it to the elements that surround it: its product manager, community,
+     * owning collections, guiding questions, product asset, governance definitions and data specification.
+     *
+     * @param serverName name of called server
+     * @param requestBody description of the product and the elements to link it to
+     * @return unique identifier of the new product or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/digital-products")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createDigitalProduct",
+            description="Create a new digital product and link it to the elements that surround it: its product manager, community," +
+                    " owning collections (typically product catalog folders and digital product families), guiding questions, product asset," +
+                    " governance definitions (such as the license granted to subscribers) and data specification.  Each of the linked elements is optional.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/digital-product"))
+
+    public GUIDResponse createDigitalProduct(@PathVariable String                       serverName,
+                                             @RequestBody  NewDigitalProductRequestBody requestBody)
+    {
+        return restAPI.createDigitalProduct(serverName, requestBody);
+    }
+
+
+    /**
+     * Add a one-time subscription type to a product.  A subscriber to this type receives a single notification, and
+     * so a single delivery of the product's data.  It is typically used to evaluate a product.
+     *
+     * @param serverName name of called server
+     * @param digitalProductGUID unique identifier of the product
+     * @param requestBody optional description of the subscription type
+     * @return unique identifier of the governance action process that creates a subscription of this type or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/digital-products/{digitalProductGUID}/subscription-types/one-time")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createOneTimeSubscription",
+            description="Add a one-time subscription type to a product.  A subscriber to this type receives a single notification, and so a single" +
+                    " delivery of the product's data.  It is typically used to evaluate a product.  The subscription type is a notification type," +
+                    " registered with the subscription manager (Baudot by default), and the governance action process that a subscriber runs to" +
+                    " take out a subscription of this type.  The unique identifier of the governance action process is returned.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/digital-subscription"))
+
+    public GUIDResponse createOneTimeSubscription(@PathVariable String                         serverName,
+                                                  @PathVariable String                         digitalProductGUID,
+                                                  @RequestBody (required = false)
+                                                                NewSubscriptionTypeRequestBody requestBody)
+    {
+        return restAPI.createOneTimeSubscription(serverName, digitalProductGUID, requestBody);
+    }
+
+
+    /**
+     * Add a periodic subscription type to a product.  A subscriber to this type receives a notification, and so a
+     * delivery of the product's data, at regular intervals.  The time between notifications is the request body's
+     * notificationInterval, in minutes.
+     *
+     * @param serverName name of called server
+     * @param digitalProductGUID unique identifier of the product
+     * @param requestBody description of the subscription type, including the notification interval
+     * @return unique identifier of the governance action process that creates a subscription of this type or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/digital-products/{digitalProductGUID}/subscription-types/periodic")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createPeriodicSubscription",
+            description="Add a periodic subscription type to a product.  A subscriber to this type receives a notification, and so a delivery of" +
+                    " the product's data, at regular intervals.  The time between notifications is the request body's notificationInterval, in minutes." +
+                    "  The subscription type is a notification type, registered with the subscription manager (Baudot by default), and the" +
+                    " governance action process that a subscriber runs to take out a subscription of this type.  The unique identifier of the" +
+                    " governance action process is returned.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/digital-subscription"))
+
+    public GUIDResponse createPeriodicSubscription(@PathVariable String                         serverName,
+                                                   @PathVariable String                         digitalProductGUID,
+                                                   @RequestBody  NewSubscriptionTypeRequestBody requestBody)
+    {
+        return restAPI.createPeriodicSubscription(serverName, digitalProductGUID, requestBody);
+    }
+
+
+    /**
+     * Add an ongoing update subscription type to a product.  A subscriber to this type receives a notification, and
+     * so a delivery of the product's data, whenever one of the request body's monitoredResourceGUIDs changes - but no
+     * more often than the request body's notificationInterval, in minutes.
+     *
+     * @param serverName name of called server
+     * @param digitalProductGUID unique identifier of the product
+     * @param requestBody description of the subscription type, including the monitored resources and the minimum
+     *                    notification interval
+     * @return unique identifier of the governance action process that creates a subscription of this type or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/digital-products/{digitalProductGUID}/subscription-types/ongoing-update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createOngoingUpdateSubscription",
+            description="Add an ongoing update subscription type to a product.  A subscriber to this type receives a notification, and so a" +
+                    " delivery of the product's data, whenever one of the request body's monitoredResourceGUIDs changes - but no more often than" +
+                    " the request body's notificationInterval, in minutes.  The subscription type is a notification type, registered with the" +
+                    " subscription manager (Baudot by default), and the governance action process that a subscriber runs to take out a subscription" +
+                    " of this type.  The unique identifier of the governance action process is returned.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/digital-subscription"))
+
+    public GUIDResponse createOngoingUpdateSubscription(@PathVariable String                         serverName,
+                                                        @PathVariable String                         digitalProductGUID,
+                                                        @RequestBody  NewSubscriptionTypeRequestBody requestBody)
+    {
+        return restAPI.createOngoingUpdateSubscription(serverName, digitalProductGUID, requestBody);
     }
 
 

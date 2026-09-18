@@ -865,15 +865,42 @@ Content-Type: application/json
 }
 
 ###
+# A digital product offers each of its subscription types as a subscribing action process, named
+#     ProvisioningActionProcess::<product name>::Create Subscription::<subscription type identifier>
+# and built by the Product Manager's client - whether the product was harvested by the Jacquard Digital Product
+# Loom or created through the Product Manager OMVS (see Egeria-api-product-manager.http).  The process already
+# carries the product, its asset, license, service level objective, product manager and notification type; the
+# two action targets below are the only things left for the consumer to supply.  The notification-manager samples
+# (Egeria-baudot-subscription-processes.http and Egeria-baudot-create-subscription.http) show how to find the
+# processes a product offers and the subscription that results.
+
+@subscriptionRequesterGUID=add guid of the subscribing actor here
+@destinationDataSetGUID=add guid of the asset the data is delivered to here
+
+###
 # @name initiateGovernanceActionProcess (Create Subscription)
-# Using the named governance action process as a template, initiate a chain of engine actions.
+# Using the named governance action process as a template, initiate a chain of engine actions.  This one takes out
+# an evaluation subscription to the Valid Metadata Value Set List product: a single delivery of its data to the
+# destination, sent by the Baudot Subscription Manager on its next refresh.
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "processQualifiedName": "GovernanceActionProcess::Valid Value Sets List::Create Subscription::EVALUATION-SUBSCRIPTION"
+  "class" : "InitiateGovernanceActionProcessRequestBody",
+  "processQualifiedName": "ProvisioningActionProcess::Valid Metadata Value Set List::Create Subscription::EVALUATION-SUBSCRIPTION",
+  "actionTargets": [
+     {
+       "class" : "NewActionTarget",
+       "actionTargetName" : "digitalSubscriptionRequester",
+       "actionTargetGUID" : "{{subscriptionRequesterGUID}}"
+     },
+     {
+       "class" : "NewActionTarget",
+       "actionTargetName" : "destinationDataSet",
+       "actionTargetGUID" : "{{destinationDataSetGUID}}"
+     }]
 }
 
 ###

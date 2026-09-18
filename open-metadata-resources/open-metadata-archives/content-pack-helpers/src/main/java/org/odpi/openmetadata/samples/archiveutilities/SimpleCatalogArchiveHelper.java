@@ -1657,7 +1657,50 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Add a new person role.
+     * Add a new perspective.
+     *
+     * @param qualifiedName        qualified name of role
+     * @param identifier           unique code
+     * @param name                 display name
+     * @param description          description (eg job description)
+     * @param url                  url of role's responsibilities
+     * @return unique identifier of the new perspective
+     */
+    public String addPerspective(String qualifiedName,
+                                 String identifier,
+                                 String name,
+                                 String description,
+                                 String url)
+    {
+        final String methodName = "addPerspective";
+
+        String typeName = OpenMetadataType.PERSPECTIVE.typeName;
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.URL.name, url, methodName);
+
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.ACTOR.typeName, null, methodName));
+
+        EntityDetail role = archiveHelper.getEntityDetail(typeName,
+                                                          idToGUIDMap.getGUID(qualifiedName),
+                                                          properties,
+                                                          InstanceStatus.ACTIVE,
+                                                          classifications);
+
+        archiveBuilder.addEntity(role);
+
+        return role.getGUID();
+    }
+
+
+
+    /**
+     * Add a new actor role.
      *
      * @param suppliedTypeName type name to use for the person role
      * @param actorRoleGroups list of groups that this role belongs to

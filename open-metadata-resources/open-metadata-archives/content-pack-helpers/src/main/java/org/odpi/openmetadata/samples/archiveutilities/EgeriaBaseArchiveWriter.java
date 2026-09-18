@@ -401,6 +401,32 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
 
 
 
+
+    /**
+     * Creates a perspective.
+     *
+     * @param guid  unique identifier for the enum
+     * @param displayName  name for the enum
+     * @param identifier      identifier for the enum
+     * @param description  description of the use of this value
+     * @param url          optional url for the term
+     */
+    protected void addPerspective(String guid,
+                                  String qualifiedName,
+                                  String displayName,
+                                  String identifier,
+                                  String description,
+                                  String url)
+    {
+        archiveHelper.setGUID(qualifiedName, guid);
+
+        archiveHelper.addPerspective(qualifiedName,
+                                     displayName,
+                                     identifier,
+                                     description,
+                                     url);
+    }
+
     /**
      * Creates Project Hierarchy and dependencies.
      *

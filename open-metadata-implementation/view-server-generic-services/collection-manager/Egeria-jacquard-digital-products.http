@@ -27,7 +27,7 @@ Content-Type: application/json
 
 ###
 # @name get details of the open metadata digital product catalog
-# See the operall structure of the catalog
+# See the overall structure of the catalog
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -174,10 +174,195 @@ Content-Type: application/json
 > {% client.global.set("contentStatusDigitalProductGUID", response.body.elements[0].elementHeader.guid); %}
 
 ###
+# =====================================================================================================================
+# What surrounds a product.  Jacquard builds each product through the Product Manager's client, which links the
+# product to the elements around it as it is created:
+#   - its product manager role, as the owner of the product (AssignmentScope)
+#   - its community, scoped by the product (ScopedBy); the community's note log receives the product's notifications
+#   - the folders and product families it belongs to (CollectionMembership, product at end 2)
+#   - the questions it answers (SupplementaryProperties)
+#   - the license granted to its subscribers (GovernedBy, labelled "subscriber's license")
+#   - its data specification (DataDescription)
+# and afterwards adds the product's asset as a member (CollectionMembership, product at end 1).  These requests
+# read each of those links back from the contentStatus valid values product.
+# =====================================================================================================================
+
+###
+# @name get the product manager for the contentStatus valid values digital product
+# The product manager is a person role assigned to the product as its owner.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{contentStatusDigitalProductGUID}}/by-relationship/AssignmentScope?startAtEnd=2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "includeOnlyRelationships" : ["AssignmentScope"]
+}
+
+###
+# @name get the community for the contentStatus valid values digital product
+# The community that discusses the product is scoped by it.  Every product has this link, not just the families.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{contentStatusDigitalProductGUID}}/by-relationship/ScopedBy?startAtEnd=2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName": "Community",
+    "includeOnlyRelationships" : ["ScopedBy"]
+}
+
+###
+# @name get the license and other governance definitions for the contentStatus valid values digital product
+# The license type is linked with the label "subscriber's license"; it is what a subscriber's asset is granted.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{contentStatusDigitalProductGUID}}/by-relationship/GovernedBy?startAtEnd=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "includeOnlyRelationships" : ["GovernedBy"]
+}
+
+###
+# @name get the questions answered by the contentStatus valid values digital product
+# The questions are glossary terms linked as supplementary properties.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{contentStatusDigitalProductGUID}}/by-relationship/SupplementaryProperties?startAtEnd=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName": "GlossaryTerm",
+    "includeOnlyRelationships" : ["SupplementaryProperties"]
+}
+
+###
+# @name get the asset and data specification of the contentStatus valid values digital product
+# The product's asset is a member of the product collection; the data specification that describes it is linked
+# by DataDescription.  Both are anchored to the product.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{contentStatusDigitalProductGUID}}/members
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "graphQueryDepth" : 0
+}
+
+###
+# =====================================================================================================================
+# Finding a product by the question it answers.  Every product in the catalogue is linked to one or more questions -
+# glossary terms classified as Question, kept in the catalogue's "Glossary Questions" folder - and every question is scoped
+# by the perspectives it matters to: Security, Governance, Financial, Steward, Owner, Consumer, App/AI Builder,
+# Privacy, Community, Data Expert, Architecture and Administration.  The perspectives come from the Core Content
+# Pack; Jacquard defines the questions (ProductQuestionDefinition), links each product to its questions, and scopes
+# each question by its perspectives - and re-checks both on every refresh, so a question or perspective added to the
+# definitions reaches an existing catalogue.
+#
+# A consumer who does not know a product's name can therefore start from who they are, see the questions people
+# like them ask, and follow a question to the products that answer it.
+# =====================================================================================================================
+
+###
+# @name get the perspectives
+# One element per perspective, from the Core Content Pack.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-type
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName" : "Perspective",
+    "graphQueryDepth" : 0
+}
+
+###
+# @name get the Security perspective
+# A perspective's qualified name is Perspective::<display name>.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNameProperties",
+    "metadataElementTypeName" : "Perspective",
+    "propertyValue" : "Perspective::Security",
+    "propertyName" : "qualifiedName"
+}
+
+> {% client.global.set("securityPerspectiveGUID", response.body.element.elementHeader.guid); %}
+
+###
+# @name get the questions a security officer asks
+# The questions scoped by the Security perspective.  Each is a glossary term whose summary is the question and whose
+# description says what the products that answer it hold and why this perspective cares.  Questions are at end 1 of
+# ScopedBy; the perspective is the scope at end 2.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{securityPerspectiveGUID}}/by-relationship/ScopedBy?startAtEnd=2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName": "GlossaryTerm",
+    "includeOnlyRelationships" : ["ScopedBy"]
+}
+
+> {% client.global.set("questionGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+# @name get all the questions in the catalogue
+# Every question, whichever perspective it belongs to: the glossary terms classified as Question.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/Question
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName" : "GlossaryTerm",
+    "includeOnlyRelationships" : ["ScopedBy"]
+}
+
+###
+# @name get the perspectives a question belongs to
+# A question can matter to more than one perspective - User Account Status, for example, is scoped by both Security
+# and Administration.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{questionGUID}}/by-relationship/ScopedBy?startAtEnd=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName": "Perspective",
+    "includeOnlyRelationships" : ["ScopedBy"]
+}
+
+###
+# @name get the products that answer a question
+# The products linked to the question as supplementary properties.  The product is at end 1 of the relationship and
+# the question at end 2, so the query starts from the question at end 2.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{questionGUID}}/by-relationship/SupplementaryProperties?startAtEnd=2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "metadataElementTypeName": "DigitalProduct",
+    "includeOnlyRelationships" : ["SupplementaryProperties"]
+}
+
+###
+# =====================================================================================================================
+# Subscription types.  Each subscription type a product offers is a governance action process, attached to the
+# product as a resource for creating subscriptions, plus the notification type that drives the subscribers'
+# notifications.  Jacquard adds them through the Product Manager's client, so they are exactly what the Product
+# Manager API's subscription-type requests create - see Egeria-api-product-manager.http.
+# =====================================================================================================================
+
+###
 # @name get subscription types for the contentStatus valid values digital product
-# Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
-# specifying a type name for the elements that should be returned. If no type name is specified then any type of
-# element may be returned.
+# The subscribing action processes offered from the product.  A consumer runs one of these to take out a
+# subscription, supplying the requester (digitalSubscriptionRequester) and the destination (destinationDataSet).
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{contentStatusDigitalProductGUID}}/by-relationship/ResourceList?startAtEnd=1
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -186,5 +371,60 @@ Content-Type: application/json
     "class" : "ResultsRequestBody",
     "metadataElementTypeName": "GovernanceActionProcess",
     "includeOnlyRelationships" : ["ResourceList"]
+}
+
+> {% client.global.set("subscriptionProcessGUID", response.body.elements[0].elementHeader.guid); %}
+
+###
+# @name get the elements pre-loaded on a subscription type
+# The action targets the process already carries: the product (digitalSubscriptionItem), its asset (sourceDataSet),
+# its license (licenseType), its service level objective (serviceLevelObjective), its product manager
+# (digitalProductOwner), its notification type (subscriptionManagerNotificationType) and the governance action types
+# that provision and cancel a subscription.  What is left for the consumer to supply is in the process's remaining
+# specification properties.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{subscriptionProcessGUID}}/by-relationship/TargetForGovernanceAction?startAtEnd=1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "ResultsRequestBody",
+    "includeOnlyRelationships" : ["TargetForGovernanceAction"]
+}
+
+###
+# @name get the notification types of the contentStatus valid values digital product
+# The notification types are anchored to the product and registered with the Baudot subscription manager as its
+# catalog targets.  One-time types permit a single notification; periodic types repeat on their minimum interval;
+# ongoing update types also monitor the product's asset for changes (MonitoredResource).
+# They are found through their Anchors classification, which names the product as their anchor.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/Anchors/with-exact-property-value
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "metadataElementTypeName" : "NotificationType",
+    "propertyValue" : "{{contentStatusDigitalProductGUID}}",
+    "propertyNames" : ["anchorGUID"],
+    "includeOnlyRelationships" : ["MonitoredResource", "NotificationSubscriber", "CatalogTarget"]
+}
+
+###
+# @name add a subscription type to the contentStatus valid values digital product
+# Jacquard's own subscription types come from ProductSubscriptionDefinition; another can be added to one of its
+# products through the Product Manager API in exactly the same way (here a monthly refresh).  The product's asset,
+# license, product manager and community note log are found from the product; the service level objective is the
+# only element to name.  Asking for a subscription type the product already has reuses it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/digital-products/{{contentStatusDigitalProductGUID}}/subscription-types/periodic
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewSubscriptionTypeRequestBody",
+  "identifier" : "MONTHLY-REFRESH-SUBSCRIPTION",
+  "displayName" : "Monthly refresh subscription",
+  "description" : "This subscription delivers the data to the target destination once a month.",
+  "serviceLevelObjectiveGUID" : "add guid of a ServiceLevelObjective here",
+  "notificationInterval" : 43200
 }
 
