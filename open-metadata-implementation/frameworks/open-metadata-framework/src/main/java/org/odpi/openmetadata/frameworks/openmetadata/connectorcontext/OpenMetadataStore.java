@@ -1513,6 +1513,101 @@ public class OpenMetadataStore extends ConnectorContextClientBase
 
 
     /**
+     * Change the unique identifier of a metadata element.  This is used if two different elements are discovered to
+     * have the same unique identifier.  The request is routed to the repository that is the home of the element.
+     *
+     * @param metadataElementGUID     current unique identifier of the metadata element
+     * @param metadataSourceOptions   options to control access to open metadata
+     * @param newMetadataElementGUID  new unique identifier for the metadata element
+     *
+     * @throws InvalidParameterException  either of the unique identifiers is invalid in some way
+     * @throws UserNotAuthorizedException the connector is not authorized to update this element
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    public void reIdentifyMetadataElementInStore(String                metadataElementGUID,
+                                                 MetadataSourceOptions metadataSourceOptions,
+                                                 String                newMetadataElementGUID) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        openMetadataClient.reIdentifyMetadataElementInStore(connectorUserId,
+                                                            metadataElementGUID,
+                                                            metadataSourceOptions,
+                                                            newMetadataElementGUID);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(newMetadataElementGUID);
+        }
+    }
+
+
+    /**
+     * Change the type of a metadata element.  Typically, this action is taken to move an element's type to either a
+     * supertype (so the subtype can be deleted) or a new subtype (so additional properties can be added).  The request
+     * is routed to the repository that is the home of the element.
+     *
+     * @param metadataElementGUID    unique identifier of the metadata element to update
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param newTypeName            name of the new type for the metadata element
+     *
+     * @throws InvalidParameterException  the unique identifier or the new type name is invalid in some way
+     * @throws UserNotAuthorizedException the connector is not authorized to update this element
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    public void reTypeMetadataElementInStore(String                metadataElementGUID,
+                                             MetadataSourceOptions metadataSourceOptions,
+                                             String                newTypeName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        openMetadataClient.reTypeMetadataElementInStore(connectorUserId,
+                                                        metadataElementGUID,
+                                                        metadataSourceOptions,
+                                                        newTypeName);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(metadataElementGUID);
+        }
+    }
+
+
+    /**
+     * Change the home repository of a metadata element.  This action is taken, for example, if the original home
+     * repository becomes permanently unavailable, or if the user community updating this element moves to working
+     * from a different repository in the open metadata repository cohort.
+     *
+     * @param metadataElementGUID           unique identifier of the metadata element to update
+     * @param metadataSourceOptions         options to control access to open metadata
+     * @param newHomeMetadataCollectionId   unique identifier for the new home metadata collection/repository
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository
+     *
+     * @throws InvalidParameterException  the unique identifier or the new home identifier is invalid in some way
+     * @throws UserNotAuthorizedException the connector is not authorized to update this element
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    public void reHomeMetadataElementInStore(String                metadataElementGUID,
+                                             MetadataSourceOptions metadataSourceOptions,
+                                             String                newHomeMetadataCollectionId,
+                                             String                newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        openMetadataClient.reHomeMetadataElementInStore(connectorUserId,
+                                                        metadataElementGUID,
+                                                        metadataSourceOptions,
+                                                        newHomeMetadataCollectionId,
+                                                        newHomeMetadataCollectionName);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(metadataElementGUID);
+        }
+    }
+
+
+    /**
      * Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.
      *
      * @param metadataElementGUID    unique identifier of the metadata element to update
@@ -2020,6 +2115,101 @@ public class OpenMetadataStore extends ConnectorContextClientBase
         if (parentContext.getActivityReportWriter() != null)
         {
             parentContext.getActivityReportWriter().reportElementDelete(relationshipGUID);
+        }
+    }
+
+
+    /**
+     * Change the unique identifier of a relationship.  This is used if two different relationships are discovered to
+     * have the same unique identifier.  The request is routed to the repository that is the home of the relationship.
+     *
+     * @param relationshipGUID       current unique identifier of the relationship
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param newRelationshipGUID    new unique identifier for the relationship
+     *
+     * @throws InvalidParameterException  either of the unique identifiers is invalid in some way
+     * @throws UserNotAuthorizedException the connector is not authorized to update this relationship
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    public void reIdentifyRelationshipInStore(String                relationshipGUID,
+                                              MetadataSourceOptions metadataSourceOptions,
+                                              String                newRelationshipGUID) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        openMetadataClient.reIdentifyRelationshipInStore(connectorUserId,
+                                                         relationshipGUID,
+                                                         metadataSourceOptions,
+                                                         newRelationshipGUID);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(newRelationshipGUID);
+        }
+    }
+
+
+    /**
+     * Change the type of a relationship.  Typically, this action is taken to move a relationship's type to either a
+     * supertype (so the subtype can be deleted) or a new subtype (so additional properties can be added).  The request
+     * is routed to the repository that is the home of the relationship.
+     *
+     * @param relationshipGUID       unique identifier of the relationship to update
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param newTypeName            name of the new type for the relationship
+     *
+     * @throws InvalidParameterException  the unique identifier or the new type name is invalid in some way
+     * @throws UserNotAuthorizedException the connector is not authorized to update this relationship
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    public void reTypeRelationshipInStore(String                relationshipGUID,
+                                          MetadataSourceOptions metadataSourceOptions,
+                                          String                newTypeName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        openMetadataClient.reTypeRelationshipInStore(connectorUserId,
+                                                     relationshipGUID,
+                                                     metadataSourceOptions,
+                                                     newTypeName);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(relationshipGUID);
+        }
+    }
+
+
+    /**
+     * Change the home repository of a relationship.  This action is taken, for example, if the original home
+     * repository becomes permanently unavailable, or if the user community updating this relationship moves to
+     * working from a different repository in the open metadata repository cohort.
+     *
+     * @param relationshipGUID              unique identifier of the relationship to update
+     * @param metadataSourceOptions         options to control access to open metadata
+     * @param newHomeMetadataCollectionId   unique identifier for the new home metadata collection/repository
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository
+     *
+     * @throws InvalidParameterException  the unique identifier or the new home identifier is invalid in some way
+     * @throws UserNotAuthorizedException the connector is not authorized to update this relationship
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    public void reHomeRelationshipInStore(String                relationshipGUID,
+                                          MetadataSourceOptions metadataSourceOptions,
+                                          String                newHomeMetadataCollectionId,
+                                          String                newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        openMetadataClient.reHomeRelationshipInStore(connectorUserId,
+                                                     relationshipGUID,
+                                                     metadataSourceOptions,
+                                                     newHomeMetadataCollectionId,
+                                                     newHomeMetadataCollectionName);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(relationshipGUID);
         }
     }
 }

@@ -68,6 +68,7 @@ final class ClientCatalog
         put("SkillClient", "Skill");
         put("SoftwareCapabilityClient", "SoftwareCapability");
         put("SolutionComponentClient", "SolutionComponent");
+        put("SolutionPortClient", "SolutionPort");
         put("StorageVolumeClient", "StorageVolume");
         put("UserIdentityClient", "UserIdentity");
         put("ValidValueDefinitionClient", "ValidValueDefinition");
@@ -91,13 +92,14 @@ final class ClientCatalog
         put("ContributionRecordClient",      "AttachmentClientFVT");
         put("MultiLanguageClient",           "AttachmentClientFVT");
         put("TemplateClient",                "AttachmentClientFVT");
-        put("OpenMetadataStore",             "ReadAndReferenceClientFVT");
+        put("OpenMetadataStore",             "ReadAndReferenceClientFVT + InstanceControlClientFVT");
         put("OpenMetadataTypesClient",       "ReadAndReferenceClientFVT");
         put("ClassificationExplorerClient",  "ReadAndReferenceClientFVT");
         put("LineageClient",                 "ReadAndReferenceClientFVT");
         put("InformationSupplyChainClient",  "ReadAndReferenceClientFVT");
         put("SpecificationPropertyClient",   "ReadAndReferenceClientFVT");
         put("ValidMetadataValuesClient",     "ReadAndReferenceClientFVT");
+        put("ProductManagerClient",          "ProductManagerClientFVT");
     }};
 
     /**

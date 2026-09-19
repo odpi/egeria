@@ -3188,10 +3188,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         /*
          * Check that it is legal to rehome the entity.
-         * The caller can rehome the entity provided:
+         * The caller can rehome the entity provided it does not already master it:
          * The entity originates from the local cohort and is NOT locally mastered
          * OR
-         * The entity has instanceProvenanceType set to external and replicatedBy is NOT the local metadataCollectionId.
+         * The entity is mastered outside the cohort (an external source, or a content pack) - no cohort
+         * repository masters such an entity, so any of them may take it over.
          * Any other combination suggests that this is NOT a reference copy (of either an instance from the local cohort or
          * an external entity) and consequently cannot be rehomed.
          *
@@ -3216,11 +3217,18 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
             case EXTERNAL_SOURCE:
             case CONTENT_PACK:
-                String replicatedBy = instance.getReplicatedBy();
-                if (replicatedBy != null && !replicatedBy.equals(metadataCollectionId))
-                {
-                    updateAllowed = true;
-                }
+                /*
+                 * The instance is mastered outside the cohort, so no cohort repository owns it and any of
+                 * them may become its new home.
+                 *
+                 * replicatedBy is deliberately not consulted here.  It names the cohort repository that
+                 * broadcasts this instance to the rest of the cohort - the archive manager sets it to the
+                 * loading repository so that content pack contents are distributed, and it is also used when
+                 * counting instances - so being the replicator is a completely separate role from being the
+                 * home.  Reading it as ownership used to make a content pack impossible to rehome into the
+                 * repository that loaded it, which is the one repository most likely to want to.
+                 */
+                updateAllowed = true;
                 break;
 
             default:
@@ -3420,10 +3428,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         /*
          * Check that it is legal to rehome the relationship.
-         * The caller can rehome the relationship provided:
+         * The caller can rehome the relationship provided it does not already master it:
          * The relationship originates from the local cohort and is NOT locally mastered
          * OR
-         * The relationship has instanceProvenanceType set to external and replicatedBy is NOT the local metadataCollectionId.
+         * The relationship is mastered outside the cohort (an external source, or a content pack) - no cohort
+         * repository masters such a relationship, so any of them may take it over.
          * Any other combination suggests that this is NOT a reference copy (of either an instance from the local cohort or
          * an external relationship) and consequently cannot be rehomed.
          *
@@ -3448,11 +3457,18 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
             case EXTERNAL_SOURCE:
             case CONTENT_PACK:
-                String replicatedBy = instance.getReplicatedBy();
-                if (replicatedBy != null && !replicatedBy.equals(metadataCollectionId))
-                {
-                    updateAllowed = true;
-                }
+                /*
+                 * The instance is mastered outside the cohort, so no cohort repository owns it and any of
+                 * them may become its new home.
+                 *
+                 * replicatedBy is deliberately not consulted here.  It names the cohort repository that
+                 * broadcasts this instance to the rest of the cohort - the archive manager sets it to the
+                 * loading repository so that content pack contents are distributed, and it is also used when
+                 * counting instances - so being the replicator is a completely separate role from being the
+                 * home.  Reading it as ownership used to make a content pack impossible to rehome into the
+                 * repository that loaded it, which is the one repository most likely to want to.
+                 */
+                updateAllowed = true;
                 break;
 
             default:
