@@ -219,6 +219,21 @@ public enum OpenMetadataProperty
     ADDITIONAL_PROPERTIES("additionalProperties", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "Additional properties for the element.", null, "534b5665-73d4-4bdc-b83b-1a8fed19dba3"),
 
     /**
+     * Map of element GUIDs to classification names that are affected by this exception.
+     */
+    AFFECTED_CLASSIFICATIONS("affectedClassifications", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "Map of element GUIDs to classification names that are affected by this exception.", null, "9380c7eb-be13-4df3-b863-4eceb7c09c84"),
+
+    /**
+     * List of additional element GUIDs that are affected by this exception.  This allows the exception to be attached to the anchor element and also list the anchored elements that are affected.
+     */
+    AFFECTED_ELEMENTS("affectedElements", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "List of additional element GUIDs that are affected by this exception.  This allows the exception to be attached to the anchor element and also list the anchored elements that are affected.", null, "f5f67f9b-10a0-4a23-8270-481f06fa7930"),
+
+    /**
+     * List of relationship GUIDs that are affected by this exception.
+     */
+    AFFECTED_RELATIONSHIPS("affectedRelationships", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "List of relationship GUIDs that are affected by this exception.", null, "8971261f-0547-4439-82db-badeae6f39a3"),
+
+    /**
      * Full name that the element is known as in the owning deployed technology.
      */
     RESOURCE_NAME("resourceName", DataType.STRING, DataType.STRING.getDisplayName(), "Full name that the element is known as in the owning deployed technology.  This name is typically unique within the scope of the owing technology", "MyAssetName", "c075e0e7-8ecc-4f81-9ac4-ca3662c3ebe4"),

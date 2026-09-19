@@ -5200,6 +5200,72 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract and delete the affectedClassifications property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return map of element GUID to classification name or null
+     */
+    protected Map<String, String> removeAffectedClassifications(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeAffectedClassifications";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(localServiceName,
+                                                              OpenMetadataProperty.AFFECTED_CLASSIFICATIONS.name,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the affectedElements property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return list of element GUIDs or null
+     */
+    protected List<String> removeAffectedElements(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeAffectedElements";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.AFFECTED_ELEMENTS.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the affectedRelationships property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return list of relationship GUIDs or null
+     */
+    protected List<String> removeAffectedRelationships(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeAffectedRelationships";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.AFFECTED_RELATIONSHIPS.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -15098,6 +15164,9 @@ public class OpenMetadataPropertyConverterBase
 
                 ((ExceptionProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((ExceptionProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((ExceptionProperties)relationshipBeanProperties).setAffectedClassifications(this.removeAffectedClassifications(elementProperties));
+                ((ExceptionProperties)relationshipBeanProperties).setAffectedElements(this.removeAffectedElements(elementProperties));
+                ((ExceptionProperties)relationshipBeanProperties).setAffectedRelationships(this.removeAffectedRelationships(elementProperties));
                 ((ExceptionProperties)relationshipBeanProperties).setLastReviewTime(this.removeLastReviewTime(elementProperties));
                 ((ExceptionProperties)relationshipBeanProperties).setReviewDate(this.removeReviewDate(elementProperties));
                 ((ExceptionProperties)relationshipBeanProperties).setConditions(this.removeConditions(elementProperties));

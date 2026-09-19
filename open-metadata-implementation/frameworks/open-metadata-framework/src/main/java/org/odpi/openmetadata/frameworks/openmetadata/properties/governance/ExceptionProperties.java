@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelations
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,19 +18,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * ExceptionProperties links an exception type to an element that is in non-compliance with a particular policy as described by the exception type.
+ * The non-compliance may not be with the element itself but with something attached to it, so the affected classifications,
+ * elements and relationships identify exactly what the exception applies to.  This allows the exception to be attached to the
+ * anchor element and still be precise about which of its anchored elements, classifications or relationships are affected.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ExceptionProperties extends LabeledRelationshipProperties
 {
-    private Date   lastReviewTime      = null;
-    private Date   reviewDate          = null;
-    private String conditions          = null;
-    private String steward             = null;
-    private String stewardTypeName     = null;
-    private String stewardPropertyName = null;
-    private String notes               = null;
+    private Map<String, String> affectedClassifications = null;
+    private List<String>        affectedElements        = null;
+    private List<String>        affectedRelationships   = null;
+    private Date                lastReviewTime          = null;
+    private Date                reviewDate              = null;
+    private String              conditions              = null;
+    private String              steward                 = null;
+    private String              stewardTypeName         = null;
+    private String              stewardPropertyName     = null;
+    private String              notes                   = null;
 
 
     /**
@@ -52,14 +60,85 @@ public class ExceptionProperties extends LabeledRelationshipProperties
 
         if (template != null)
         {
-            this.lastReviewTime      = template.getLastReviewTime();
-            this.reviewDate          = template.getReviewDate();
-            this.conditions          = template.getConditions();
-            this.steward             = template.getSteward();
-            this.stewardTypeName     = template.getStewardTypeName();
-            this.stewardPropertyName = template.getStewardPropertyName();
-            this.notes               = template.getNotes();
+            this.affectedClassifications = template.getAffectedClassifications();
+            this.affectedElements        = template.getAffectedElements();
+            this.affectedRelationships   = template.getAffectedRelationships();
+            this.lastReviewTime          = template.getLastReviewTime();
+            this.reviewDate              = template.getReviewDate();
+            this.conditions              = template.getConditions();
+            this.steward                 = template.getSteward();
+            this.stewardTypeName         = template.getStewardTypeName();
+            this.stewardPropertyName     = template.getStewardPropertyName();
+            this.notes                   = template.getNotes();
         }
+    }
+
+
+    /**
+     * Return the map of element GUIDs to the names of the classifications on them that are affected by this exception.
+     *
+     * @return map of element GUID to classification name
+     */
+    public Map<String, String> getAffectedClassifications()
+    {
+        return affectedClassifications;
+    }
+
+
+    /**
+     * Set up the map of element GUIDs to the names of the classifications on them that are affected by this exception.
+     *
+     * @param affectedClassifications map of element GUID to classification name
+     */
+    public void setAffectedClassifications(Map<String, String> affectedClassifications)
+    {
+        this.affectedClassifications = affectedClassifications;
+    }
+
+
+    /**
+     * Return the list of additional element GUIDs that are affected by this exception.  This allows the exception to be
+     * attached to the anchor element and also list the anchored elements that are affected.
+     *
+     * @return list of element GUIDs
+     */
+    public List<String> getAffectedElements()
+    {
+        return affectedElements;
+    }
+
+
+    /**
+     * Set up the list of additional element GUIDs that are affected by this exception.  This allows the exception to be
+     * attached to the anchor element and also list the anchored elements that are affected.
+     *
+     * @param affectedElements list of element GUIDs
+     */
+    public void setAffectedElements(List<String> affectedElements)
+    {
+        this.affectedElements = affectedElements;
+    }
+
+
+    /**
+     * Return the list of relationship GUIDs that are affected by this exception.
+     *
+     * @return list of relationship GUIDs
+     */
+    public List<String> getAffectedRelationships()
+    {
+        return affectedRelationships;
+    }
+
+
+    /**
+     * Set up the list of relationship GUIDs that are affected by this exception.
+     *
+     * @param affectedRelationships list of relationship GUIDs
+     */
+    public void setAffectedRelationships(List<String> affectedRelationships)
+    {
+        this.affectedRelationships = affectedRelationships;
     }
 
 
@@ -196,7 +275,7 @@ public class ExceptionProperties extends LabeledRelationshipProperties
 
 
     /**
-     * Return any notes associated with the certificate.
+     * Return any notes associated with the exception.
      *
      * @return string text
      */
@@ -207,7 +286,7 @@ public class ExceptionProperties extends LabeledRelationshipProperties
 
 
     /**
-     * Set up any notes associated with the certificate.
+     * Set up any notes associated with the exception.
      *
      * @param notes string text
      */
@@ -226,7 +305,10 @@ public class ExceptionProperties extends LabeledRelationshipProperties
     public String toString()
     {
         return "ExceptionProperties{" +
-                "lastReviewTime=" + lastReviewTime +
+                "affectedClassifications=" + affectedClassifications +
+                ", affectedElements=" + affectedElements +
+                ", affectedRelationships=" + affectedRelationships +
+                ", lastReviewTime=" + lastReviewTime +
                 ", reviewDate=" + reviewDate +
                 ", conditions='" + conditions + '\'' +
                 ", steward='" + steward + '\'' +
@@ -249,7 +331,10 @@ public class ExceptionProperties extends LabeledRelationshipProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ExceptionProperties that = (ExceptionProperties) objectToCompare;
-        return Objects.equals(lastReviewTime, that.lastReviewTime) &&
+        return Objects.equals(affectedClassifications, that.affectedClassifications) &&
+                Objects.equals(affectedElements, that.affectedElements) &&
+                Objects.equals(affectedRelationships, that.affectedRelationships) &&
+                Objects.equals(lastReviewTime, that.lastReviewTime) &&
                 Objects.equals(reviewDate, that.reviewDate) &&
                 Objects.equals(conditions, that.conditions) &&
                 Objects.equals(steward, that.steward) &&
@@ -266,7 +351,7 @@ public class ExceptionProperties extends LabeledRelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), lastReviewTime, reviewDate, conditions,
-                            steward, stewardTypeName, stewardPropertyName, notes);
+        return Objects.hash(super.hashCode(), affectedClassifications, affectedElements, affectedRelationships,
+                            lastReviewTime, reviewDate, conditions, steward, stewardTypeName, stewardPropertyName, notes);
     }
 }

@@ -13,6 +13,8 @@ import org.odpi.openmetadata.adapters.connectors.integration.bitol.*;
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductSolutionComponent;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.liskov.DataSharingHubManagerProvider;
+import org.odpi.openmetadata.adapters.connectors.darwin.DarwinProductDependencyManagerProvider;
+import org.odpi.openmetadata.adapters.connectors.darwin.controls.DarwinConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.mendel.MendelAutomatedDuplicateManagerProvider;
 import org.odpi.openmetadata.adapters.connectors.mendel.controls.MendelConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
@@ -847,6 +849,29 @@ public enum IntegrationConnectorDefinition
                                        IntegrationGroupDefinition.MENDEL,
                                        ContentPackDefinition.CORE_CONTENT_PACK),
 
+    DARWIN_PRODUCT_DEPENDENCY_MANAGER("b2cfee5f-9799-4fe5-82ab-364f32d7e3e4",
+                                      "DarwinProductDependencyManagerIntegrationConnector",
+                                      "Maintains the coarse-grained lineage implied by the finer-grained lineage beneath it, up to the DigitalProductDependency relationships between digital products.",
+                                      DarwinProductDependencyManagerProvider.class.getName(),
+                                      "DarwinProductDependencyManager",
+                                      "darwinnpa",
+                                      null,
+                                      null,
+                                      null,
+                                      getDarwinConfigProperties(),
+                                      60, // 1 hour
+                                      null,
+                                      "ebfc11e8-b300-4507-bf55-07cbf91278bd",
+                                      "Product Dependency Manager",
+                                      "Works upwards from the finest-grained lineage: it derives data flows between data assets from the data mappings between their schema elements, data flows between software servers from the lineage between the data assets their capabilities own, and dependencies between digital products from the data lineage between their assets, following each information supply chain in turn.  At each level it creates the relationships that are missing, removes the ones it created that the finer-grained lineage no longer supports, and fills in the information supply chain on relationships asserted by external users.  It records an exception against each product whose externally asserted dependencies are not proven by lineage.",
+                                      true,
+                                      null,
+                                      null,
+                                      null,
+                                      null,
+                                      IntegrationGroupDefinition.DARWIN,
+                                      ContentPackDefinition.CORE_CONTENT_PACK),
+
     LISKOV_DATA_SHARING_HUB_MANAGER("a38e7f2b-a672-419e-95b4-d650d9bb5c92",
                                     "LiskovDataSharingHubManagerIntegrationConnector",
                                     "Manages the content of the data dictionary for a data sharing hub.",
@@ -930,6 +955,22 @@ public enum IntegrationConnectorDefinition
 
         configurationProperties.put(MendelConfigurationProperty.DUPLICATE_CLUSTER_SIZE.getName(),
                                     MendelConfigurationProperty.DEFAULT_DUPLICATE_CLUSTER_SIZE);
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Return the configuration properties for the Darwin Product Dependency Manager.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getDarwinConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(DarwinConfigurationProperty.MAX_LINEAGE_DEPTH.getName(),
+                                    DarwinConfigurationProperty.DEFAULT_MAX_LINEAGE_DEPTH);
 
         return configurationProperties;
     }

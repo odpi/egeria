@@ -916,6 +916,17 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                        DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                        DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
+    DARWIN_PRODUCT_DEPENDENCY_MANAGER(586,
+                                      "748eea2e-0101-4887-b416-e33d2098c793",
+                                      "Egeria::IntegrationConnector::Darwin::ProductDependencyManager",
+                                      "Darwin Product Dependency Manager Integration Connector",
+                                      "Connector maintains the coarse-grained lineage implied by the finer-grained lineage beneath it: data flows between data assets from the data mappings between their schema elements, data flows between software servers from the lineage between the data assets their capabilities own, and DigitalProductDependency relationships between digital products from the data lineage between the products' assets.  At each level it creates the relationships that are missing, removes the ones it created that the finer-grained lineage no longer supports, and fills in the information supply chain on relationships asserted by external users.  It records an exception against each product whose externally asserted dependencies are not proven by lineage.",
+                                      "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/nanny-connectors",
+                                      "org.odpi.openmetadata.adapters.connectors.darwin.DarwinProductDependencyManagerProvider",
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                      DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
+
     ZONE_MEMBERSHIP_PROFILER_LOVELACE_SERVICE(392,
                                            "d77f6c4c-abb7-4f1c-b839-fb41819ec9e1",
                                            "Egeria::GovernanceService::Verification::Lovelace::ZoneMembershipProfilerService",

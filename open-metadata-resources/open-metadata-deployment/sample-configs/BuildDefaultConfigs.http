@@ -336,12 +336,30 @@ content-packs/UnityCatalogContentPack.omarchive
 
 ###
 # @name Load open metadata archive file
+# Load a file that contains the connectors for interacting with Apache Kafka.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/ApacheKafkaContentPack.omarchive
+
+###
+# @name Load open metadata archive file
 # Load a file that contains the Coco Pharmaceuticals metadata.
 POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
 Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/CocoComboArchive.omarchive
+
+###
+# @name Load open metadata archive file
+# Load a file that contains the Coco Pharmaceuticals metadata types.
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/CocoTypesArchive.omarchive
 
 ###
 # @name Load open metadata archive file
@@ -1232,6 +1250,15 @@ Content-Type: application/json
     "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
     "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
     "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Liskov"
+  },
+  {
+    "class": "IntegrationGroupConfig",
+    "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+    "omagserverName" : "active-metadata-store",
+    "secretsStoreProvider" : "~{secretsStoreProvider}~",
+    "secretsStoreLocation"  : "~{egeriaServersSecretsStore}~",
+    "secretsStoreCollection" : "~{egeriaServersSecretsCollection}~",
+    "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Darwin"
   },
   {
     "class": "IntegrationGroupConfig",
