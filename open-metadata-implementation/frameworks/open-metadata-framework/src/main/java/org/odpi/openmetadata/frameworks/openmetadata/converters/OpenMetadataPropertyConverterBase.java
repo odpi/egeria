@@ -14188,6 +14188,18 @@ public class OpenMetadataPropertyConverterBase
                 ((MementoProperties)beanProperties).setArchiveMethod(this.removeArchiveMethod(elementProperties));
                 ((MementoProperties)beanProperties).setArchiveProperties(this.removeArchiveProperties(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.PROMISE_CLASSIFICATION.typeName))
+            {
+                beanProperties = new PromiseProperties();
+
+                ((PromiseProperties)beanProperties).setDeploymentStatus(this.removeDeploymentStatus(elementProperties));
+                ((PromiseProperties)beanProperties).setUserDefinedDeploymentStatus(this.removeUserDefinedDeploymentStatus(elementProperties));
+                ((PromiseProperties)beanProperties).setStartTime(this.removeStartTime(elementProperties));
+                ((PromiseProperties)beanProperties).setDueTime(this.removeDueTime(elementProperties));
+                ((PromiseProperties)beanProperties).setLastReviewTime(this.removeLastReviewTime(elementProperties));
+                ((PromiseProperties)beanProperties).setCompletionTime(this.removeCompletionTime(elementProperties));
+                ((PromiseProperties)beanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.METAMODEL_INSTANCE_CLASSIFICATION.typeName))
             {
                 beanProperties = new MetamodelInstanceProperties();

@@ -194,6 +194,40 @@ public class OpenMetadataTypesArchive
     private void update0010BaseModel()
     {
         this.archiveBuilder.addTypeDefPatch(updateLineageRelationship());
+        this.archiveBuilder.addClassificationDef(addPromiseClassification());
+    }
+
+
+    /**
+     * The Promise classification marks an element whose real-world counterpart has not yet been delivered.  Like the
+     * Memento classification at the other end of an element's life, it is only returned to lineage requests
+     * (forLineage=true) so that the lineage graph is complete without the promised element appearing in ordinary queries.
+     *
+     * @return classification def
+     */
+    private ClassificationDef addPromiseClassification()
+    {
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.PROMISE_CLASSIFICATION,
+                                                                                 null,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DEPLOYMENT_STATUS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_DEPLOYMENT_STATUS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DUE_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_REVIEW_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPLETION_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
     }
 
 

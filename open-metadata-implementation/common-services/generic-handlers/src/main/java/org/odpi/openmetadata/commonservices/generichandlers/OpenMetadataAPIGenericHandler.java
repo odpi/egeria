@@ -1537,7 +1537,9 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         }
 
         /*
-         * An entity with the Memento classification set is ignored
+         * This is a lineage read so that an entity with the Promise classification (a placeholder for a real-world
+         * counterpart that has not been delivered yet) still reserves its unique name.  An entity with the Memento
+         * classification (whose real-world counterpart has gone) is excluded by name and so does not.
          */
         List<EntityDetail> existingEntities = this.getEntitiesByValue(localServerUserId,
                                                                       uniqueParameterValue,
@@ -1553,7 +1555,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                       null,
                                                                       SequencingOrder.CREATION_DATE_RECENT,
                                                                       null,
-                                                                      false,
+                                                                      true,
                                                                       false,
                                                                       0,
                                                                       invalidParameterHandler.getMaxPagingSize(),

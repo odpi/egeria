@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.builders;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.RunMetricsProperties;
@@ -677,6 +678,34 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                         OpenMetadataProperty.ARCHIVE_PROPERTIES.name,
                                                                         mementoProperties.getArchiveProperties());
+            }
+            else if (properties instanceof PromiseProperties promiseProperties)
+            {
+                if (promiseProperties.getDeploymentStatus() != null)
+                {
+                    elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                       OpenMetadataProperty.DEPLOYMENT_STATUS.name,
+                                                                       DeploymentStatus.getOpenTypeName(),
+                                                                       promiseProperties.getDeploymentStatus().name());
+                }
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.USER_DEFINED_DEPLOYMENT_STATUS.name,
+                                                                     promiseProperties.getUserDefinedDeploymentStatus());
+                elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                   OpenMetadataProperty.START_TIME.name,
+                                                                   promiseProperties.getStartTime());
+                elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                   OpenMetadataProperty.DUE_TIME.name,
+                                                                   promiseProperties.getDueTime());
+                elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                   OpenMetadataProperty.LAST_REVIEW_TIME.name,
+                                                                   promiseProperties.getLastReviewTime());
+                elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                   OpenMetadataProperty.COMPLETION_TIME.name,
+                                                                   promiseProperties.getCompletionTime());
+                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                        OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                        promiseProperties.getAdditionalProperties());
             }
             else if (properties instanceof MetamodelInstanceProperties metamodelInstanceProperties)
             {

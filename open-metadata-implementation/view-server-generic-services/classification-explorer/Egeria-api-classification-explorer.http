@@ -3003,6 +3003,55 @@ Content-Type: application/json
 }
 
 ###
+# @name setElementAsPromise
+# Classify an element to say that it is a promise to deliver a real-world digital resource/artifact.
+# Once classified, the element is only returned to lineage requests (forLineage=true).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/promise
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class": "PromiseProperties",
+    "deploymentStatus": "UNDER_DEVELOPMENT",
+    "userDefinedDeploymentStatus": "add status here",
+    "startTime": "{{$isoTimestamp}}",
+    "dueTime": "{{$isoTimestamp}}",
+    "lastReviewTime": "{{$isoTimestamp}}",
+    "completionTime": "{{$isoTimestamp}}",
+    "additionalProperties": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearElementAsPromise
+# Remove the promise designation from an element - typically because the real-world digital resource/artifact
+# has now been delivered.  forLineage must be true, since the classified element is otherwise invisible.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/promise/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteClassificationRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : true,
+  "forDuplicateProcessing" : false
+}
+
+###
 # @name setElementAsObjectIdentifier
 # Classify an element to say that it identifies an object.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/object-identifier
