@@ -171,6 +171,7 @@ public class OpenMetadataTypesArchive
         update0438NamingStandards();
         update0445GovernanceRoles();
         update0451Notifications();
+        update0455ExceptionManagement();
         update0505SchemaAttributes();
         add0280SoftwareDevelopmentAssets();
         add0281SoftwareModules();
@@ -713,6 +714,50 @@ public class OpenMetadataTypesArchive
         TypeDefAttribute deprecatedAttribute = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTIFICATION_INTERVAL);
         deprecatedAttribute.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         properties.add(deprecatedAttribute);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0455ExceptionManagement()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateExceptionRelationship());
+    }
+
+
+    /**
+     * The Exception relationship links an element to an exception type.  Often the non-compliance is not with the
+     * element itself but with something attached to it: a relationship it has, a classification on it or on one of
+     * its anchored elements, or one of those anchored elements.  These attributes let the exception name exactly
+     * what is affected, so that it can be attached to the anchor element and still be precise.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateExceptionRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXCEPTION_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AFFECTED_CLASSIFICATIONS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AFFECTED_ELEMENTS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AFFECTED_RELATIONSHIPS));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

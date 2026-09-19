@@ -18,7 +18,7 @@ Return to the [messages and codes index](../README.md).
 | [Event Bus Connectors](event-bus-connectors) | 2 | 22 | These connectors send and receive events over the event bus - typically Apache Kafka. |
 | [Governance Action Connectors](governance-action-connectors) | 2 | 47 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
 | [File Survey Connectors](file-survey-connectors) | 1 | 5 | These survey action services analyse the content of files and folders and record what they find in a survey report. |
-| [Nanny Connectors](nanny-connectors) | 16 | 97 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
+| [Nanny Connectors](nanny-connectors) | 18 | 113 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
 | [Lovelace Insights](lovelace-insights) | 2 | 15 | These are the analytical governance services orchestrated by the Babbage Analytical Engine.  Each analyses the open metadata ecosystem, or a store of observations about it such as an OpenLineage log store, and records what it finds as classifications or survey reports on the appropriate open metadata elements. |
 | [Report Generating Connectors](report-generating-connectors) | 1 | 2 | These connectors turn the contents of the open metadata ecosystem into human-readable documents. |
 | [Secrets Store Connectors](secrets-store-connectors) | 2 | 5 | These connectors supply the credentials that other connectors need when they call a third party technology. |

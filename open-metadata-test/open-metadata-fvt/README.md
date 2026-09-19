@@ -100,6 +100,19 @@ against each suite below.
   ./gradlew :open-metadata-test:open-metadata-fvt:duplicate-fvt:test -PrunDuplicateFvt
   ```
 
+* **[darwin-fvt](darwin-fvt)** - tests the **Darwin Product Dependency Manager**, the nanny connector that
+  maintains the coarse-grained lineage implied by the finer-grained lineage beneath it: data flows between
+  data assets from the data mappings between their schema elements, data flows between software servers from
+  the lineage between the data assets their capabilities own, and `DigitalProductDependency` relationships
+  between digital products from the lineage between their assets. The fixture is an archive the suite builds
+  itself, so every relationship in it is owned by an external source - which is what exercises Darwin's
+  handling of relationships asserted by external users, including the exceptions it records for the ones
+  that lineage does not prove.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:darwin-fvt:test -PrunDarwinFvt
+  ```
+
 * **[subscription-fvt](subscription-fvt)** - tests the **Open Metadata Digital Product Catalog** by following
   a consumer's journey through it: locate a digital product, find the subscriptions it offers, and subscribe
   to one of them. Nothing in the suite creates a product - the **Jacquard Digital Product Loom** builds the

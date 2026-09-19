@@ -63,6 +63,25 @@ Withdrawing a validation is reported too.  If either element of a withdrawn link
 
 Once the first refresh has worked through the duplicate links that were waiting for it, the connector also listens for open metadata events, so a new or updated duplicate link is reviewed as it occurs rather than waiting for the next refresh.  The withdrawal, retirement and consolidation passes stay on the refresh cycle because they depend on all of the duplicate links attached to an element, not just the one that changed.
 
+## Darwin Product Dependency Manager
+
+In tribute to [Charles Darwin](https://en.wikipedia.org/wiki/Charles_Darwin), who traced the origin of species - Darwin traces the origin of each digital product's data.
+
+The Darwin Product Dependency Manager is an integration connector that maintains the coarse-grained lineage that is implied by the finer-grained lineage beneath it.  It runs in its own integration group (`Egeria:IntegrationGroup:Darwin`) under the `darwinnpa` userId.  Lineage bubbles up from the very detailed to the coarse-grained, so each refresh works upwards through three levels, and the `iscQualifiedName` of the finer-grained relationship is carried up onto the coarser one at every step.
+
+* **Schema elements to data assets.**  A `DataMapping` relationship between two schema elements shows data being copied from one to the other.  Where the two schema elements are anchored to different data assets, Darwin maintains a `DataFlow` relationship from the source's asset to the target's.
+* **Data assets to software servers.**  A software server hosts software capabilities (`SupportedSoftwareCapability`), and a capability owns data assets (`CapabilityAssetUse` with a `useType` of `OWNS`).  Darwin follows the data lineage downstream from each owned data asset in the same way as it does for products (see below) - through intermediate elements, keeping to one information supply chain, and including the asset-level data flows derived a moment earlier - and where a path reaches a data asset owned by a different server's capability it maintains a `DataFlow` relationship between the two servers.
+* **Data assets to digital products.**  This is the level that maintains the `DigitalProductDependency` relationships between [digital products](https://egeria-project.org/concepts/digital-product/), described below.  The asset-level data flows are written to the repository first, so the products see them.
+
+Every level is reconciled with the repository the same way.  All of these relationship types are multi-link, so there is one relationship per information supply chain between the same two elements.  Darwin recognizes its own relationships by the `createdBy` in their header: it removes the ones the finer-grained lineage no longer supports and creates the ones that are missing.  Relationships asserted by external users take precedence and are never removed; one that does not name an information supply chain is given the supply chain of the first finer-grained lineage that proves it (on behalf of the owning metadata collection if the relationship is not local).
+
+The product level works through four steps.
+
+* **It indexes the assets of each product** - the members of the product's `CollectionMembership` relationships that are assets.
+* **It follows the data lineage downstream from each of those assets.**  A path may pass through any number of intermediate elements (processes, or assets that belong to no product), but every relationship on it must belong to the same [information supply chain](https://egeria-project.org/concepts/information-supply-chain/) - the `iscQualifiedName` on the lineage relationship.  When the path reaches an asset that is a member of another product, that product depends on the product the path started from, through that information supply chain, and the path stops: the dependency on anything further downstream belongs to the product just reached.  A path that has not reached a product within `maxLineageDepth` steps (20 by default) is abandoned.
+* **It reconciles the derived dependencies with the stored `DigitalProductDependency` relationships** in the way described above.  A relationship asserted by an external user that no lineage path proves is *unproven*.
+* **It records the unproven dependencies as exceptions.**  Darwin has its own `ExceptionType` (`ExceptionType::UnprovenDigitalProductDependency`), created on first use.  Each dependent product with unproven dependencies is linked to it with an `Exception` relationship whose `affectedRelationships` property lists the unproven `DigitalProductDependency` relationships.  The exception is updated as the list changes and removed once nothing is left on it.
+
 ## Jacquard Digital Product Loom
 
 In tribute to [Joseph Marie Jacquard](https://en.wikipedia.org/wiki/Joseph_Marie_Jacquard)

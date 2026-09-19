@@ -27,8 +27,8 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
-| Exception messages | 67 | 623 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 105 | 985 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Exception messages | 68 | 624 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
+| Audit log messages | 106 | 1000 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -100,7 +100,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [Event Bus Connectors](connectors/event-bus-connectors) | 2 | 22 | These connectors send and receive events over the event bus - typically Apache Kafka. |
 | [Governance Action Connectors](connectors/governance-action-connectors) | 2 | 47 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
 | [File Survey Connectors](connectors/file-survey-connectors) | 1 | 5 | These survey action services analyse the content of files and folders and record what they find in a survey report. |
-| [Nanny Connectors](connectors/nanny-connectors) | 16 | 97 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
+| [Nanny Connectors](connectors/nanny-connectors) | 18 | 113 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
 | [Lovelace Insights](connectors/lovelace-insights) | 2 | 15 | These are the analytical governance services orchestrated by the Babbage Analytical Engine.  Each analyses the open metadata ecosystem, or a store of observations about it such as an OpenLineage log store, and records what it finds as classifications or survey reports on the appropriate open metadata elements. |
 | [Report Generating Connectors](connectors/report-generating-connectors) | 1 | 2 | These connectors turn the contents of the open metadata ecosystem into human-readable documents. |
 | [Secrets Store Connectors](connectors/secrets-store-connectors) | 2 | 5 | These connectors supply the credentials that other connectors need when they call a third party technology. |
@@ -148,6 +148,8 @@ Every message identifier begins with a prefix that names the component that rais
 | `CSV-FILE-CONNECTOR-` | Exception messages | 5 | [CSVFileConnectorErrorCode](connectors/data-store-connectors/CSVFileConnectorErrorCode.md) |
 | `CSV-LINEAGE-IMPORTER-` | Audit log messages | 1 | [CSVLineageImporterAuditCode](connectors/integration-connectors/CSVLineageImporterAuditCode.md) |
 | `CSV-LINEAGE-IMPORTER-400-` | Exception messages | 1 | [CSVLineageImporterErrorCode](connectors/integration-connectors/CSVLineageImporterErrorCode.md) |
+| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-` | Audit log messages | 15 | [DarwinAuditCode](connectors/nanny-connectors/DarwinAuditCode.md) |
+| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-500-` | Exception messages | 1 | [DarwinErrorCode](connectors/nanny-connectors/DarwinErrorCode.md) |
 | `DB2LUW-CONNECTOR-` | Audit log messages | 6 | [DB2LUWAuditCode](connectors/data-manager-connectors/DB2LUWAuditCode.md) |
 | `DB2LUW-CONNECTOR-` | Exception messages | 2 | [DB2LUWErrorCode](connectors/data-manager-connectors/DB2LUWErrorCode.md) |
 | `DISTRIBUTE-KAFKA-AUDIT-LOG-` | Audit log messages | 1 | [DistributeKafkaAuditCode](connectors/integration-connectors/DistributeKafkaAuditCode.md) |
