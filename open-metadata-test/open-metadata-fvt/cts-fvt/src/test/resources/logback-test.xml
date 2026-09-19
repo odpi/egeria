@@ -50,6 +50,24 @@
     -->
     <logger name="org.odpi.openmetadata.adapters.eventbus.topic.kafka" level="INFO" />
 
+    <!--
+        The Apache Kafka client's own logging, off by default because a consumer dumps its whole
+        configuration at INFO and this harness starts twelve of them.
+
+        Turn it up for one run when a server is not receiving cohort events:
+
+            ./gradlew :open-metadata-test:open-metadata-fvt:cts-fvt:test -PrunCtsFvtInMemory \
+                      -Dcts.fvt.kafka.client.log.level=info
+
+        That is what distinguishes the two ways a consumer can be deaf, which look identical from Egeria's
+        own logging.  ConsumerConfig prints the group.id it was built with, so two members sharing a group
+        on a single-partition topic - where only one of them can hold the partition and the other silently
+        gets nothing - becomes visible; and ConsumerCoordinator prints the group join and the partitions
+        assigned, so a consumer that subscribed but was never given its partition can be told from one that
+        was never asked to subscribe at all.
+    -->
+    <logger name="org.apache.kafka" level="${cts.fvt.kafka.client.log.level:-warn}" />
+
     <root level="warn">
         <appender-ref ref="STDOUT" />
     </root>

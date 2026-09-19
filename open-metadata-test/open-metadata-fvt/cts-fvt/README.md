@@ -113,10 +113,30 @@ the configuration document as it stands then.
 If a run does fail this way, the harness says so precisely - no test cases recorded, rather than a timeout -
 and the check worth making is whether the server that saw nothing logged any `OMRS-AUDIT-8006` at all. None
 means it never received a cohort event, and the next question is whether its consumers were ever assigned a
-partition: a healthy run logs one rewind decision per server per topic, six in all, and a starved one logs
-three. `logback-test.xml` turns the Kafka consumer's logging up to `INFO` so that trail exists at all - the
-two outcomes that matter, a rewind having been needed and the correction having failed, are reported at
-`warn` by the connector itself, but the branch that was taken is only visible at `INFO`.
+partition: **a healthy run logs one `Querying for offset by timestamp` line per server per cohort topic, six
+in all**, and the topic named on the line that is missing is the one that is deaf. `logback-test.xml` turns
+the Kafka consumer's logging up to `INFO` so that trail exists at all - the two outcomes that matter, a
+rewind having been needed and the correction having failed, are reported at `warn` by the connector itself,
+but the branch that was taken is only visible at `INFO`.
+
+`theCohortExchangedEvents` counts events **per server and per direction** rather than in total, and prints
+the flow next to the result on every run:
+
+```
+cts-fvt: cohort event flow
+  server                                     received       sent
+  ctsFvtInMemoryConformanceServer                   0        151
+  ctsFvtTutInMemoryStore                           74       4811
+  incoming event types:
+    NewEntityEvent                                   30
+    ...
+```
+
+A total cannot tell a cohort that is exchanging nothing from one that is exchanging in one direction only,
+and the one-way case is the one that actually happens - so a total of several thousand can look healthy
+while half the cohort is deaf. The incoming event types are printed for the same reason: a cohort carrying
+nothing but `NewEntityEvent` is a cohort whose refresh round trip is not working, and that does not show up
+in a count.
 
 ## What it asserts
 
@@ -147,6 +167,65 @@ have room for the headline; a run that takes an hour deserves somewhere to put t
 Standing this up was the test. Three defects had to be fixed before the workbench could run at all, and the
 first of them broke cohort federation generally - not just the conformance suite. Running it repeatedly then
 found four more, described after those, which is the point of a harness that can be run again and again.
+
+### A broker whose group coordinator cannot commit, and what it looks like from here
+
+Not an Egeria defect, and worth describing because it cost a day: everything about the cohort read as
+healthy while one server heard nothing at all.
+
+The symptom was that the conformance test server consumed no instance events. The technology under test
+published some 4800 of them to the cohort's instances topic and the conformance test server processed none,
+so `repository-entity-reference-copy-lifecycle-12` - *"reference entity refreshed"* - failed for every
+entity type it ran against. Refresh is a round trip: the workbench asks the technology under test to
+refresh a reference copy, it publishes a `RefreshEntityRequest`, and the home repository is supposed to
+answer. The request was published and never consumed, so the workbench polled until `POLLING_OVERFLOW` and
+the assertion failed on a timeout rather than a wrong answer.
+
+`assertCondition` aborts the case it fails, and assertions `-18` *"reference entity re-homed"*, `-19` and
+`-20` come after `-12` - so **`UPDATE_INSTANCE_HOME` was not being exercised at all** while the profile
+still reported as conformant. That is the expensive part: not fourteen visible failures, but three
+assertions that quietly stopped running.
+
+The cause was in Apache Kafka, not in Egeria. Partition 31 of `__consumer_offsets` could not complete
+coordinator writes, so every `SyncGroup` for a group whose id hashed to that partition failed with
+`COORDINATOR_NOT_AVAILABLE`, rebalanced, and tried again for ever. Exactly one of the cohort's six consumer
+groups landed on partition 31, which is why precisely one consumer on one topic on one server was deaf,
+deterministically, run after run. The broker said so plainly once anyone looked:
+
+```
+[GroupCoordinator id=1 topic=__consumer_offsets partition=31] The write event
+Timeout(tp=__consumer_offsets-31, key=group-size-counter) ... timed out after 5000ms. Rescheduling it.
+```
+
+Restarting the broker cleared it.
+
+**What made it hard to see, and what to check first next time.** Everything upstream was correct and looked
+it: three topics with the right names, the cohort event listener registered on all three by
+`OMRSCohortManager`, and six distinct `<server>.<cohort>.<category>` consumer group ids. The cohort formed,
+the workbench found the technology under test, and 7590 test cases passed. The partition on
+`__consumer_offsets` had a leader and was in ISR, so `kafka-topics.sh --describe` and
+`--unavailable-partitions` both reported it healthy.
+
+In order of cost, the checks that settle it:
+
+1. **The event flow printed by `theCohortExchangedEvents`** - a server with `received` at zero and `sent` in
+   the hundreds is the whole diagnosis in one line.
+2. **`kafka-consumer-groups.sh --describe --state`** for each cohort group. A working group is `Stable` with
+   one member; the broken one did not exist at all (`GroupIdNotFoundException`), because it had never
+   finished forming.
+3. **The broker's own log**, for `group-size-counter ... timed out` and `COORDINATOR_NOT_AVAILABLE`. Other
+   long-running consumers on the same partition are the giveaway that it is the broker rather than this
+   suite - two integration daemons were on partition 31 at generation ~35,000, rebalancing every five
+   seconds, and had been for days.
+4. **The Kafka client's own logging**, `-Dcts.fvt.kafka.client.log.level=info`. `ConsumerConfig` prints the
+   `group.id` each consumer was built with and `ConsumerCoordinator` prints the join and the assignment,
+   which is what separates a consumer that never subscribed from one stuck in a rejoin loop. Egeria's own
+   logging cannot tell those apart - both are a consumer that logs `Main loop started` and then goes quiet.
+
+Two things that are *not* worth trying, both of which were: clearing the cohort registry stores, which
+changes nothing because the servers do register successfully; and reverting `Improve Kafka rejoin logic`,
+which is the only recent commit to touch this code and is not implicated - its changes are inside
+`onPartitionsAssigned`, which never runs for a consumer that is never assigned anything.
 
 **No server with a secrets store could call any remote cohort member.** When a server has a secrets store
 configured, `OMRSEnterpriseConnectorManager` builds a secrets-store connection and attaches it to the remote
