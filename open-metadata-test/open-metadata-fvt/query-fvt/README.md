@@ -123,6 +123,13 @@ natural fit - for example creating elements to query, or checking `graphQueryDep
   and a purged relationship is genuinely gone, not just historically deleted, as shown by an `asOfTime`
   query for "now" still finding it after a soft-delete but not after a purge; and `findRelationshipsBetweenMetadataElements`
   honours `end1EntityGUIDs`/`end2EntityGUIDs` whether or not property conditions are also supplied.
+* [LineageVisibilityFVT](src/test/java/org/odpi/openmetadata/queryfvt/LineageVisibilityFVT.java) - an element
+  carrying either of the lineage-only classifications, `Memento` (its real-world counterpart has gone) or
+  `Promise` (its real-world counterpart has not been delivered yet), is hidden from every route - a property
+  search, a unique name lookup, a GUID lookup and a traversal from a related element - unless the request has
+  `forLineage=true`, in which case every route finds it and returns the classification; a hidden `Promise`
+  still reserves its qualified name, so creating another element with the same name is rejected; and clearing
+  the `Promise` classification through the Classification Explorer client makes the element ordinary again.
 * [SpecialCharacterFVT](src/test/java/org/odpi/openmetadata/queryfvt/SpecialCharacterFVT.java) - string
   property values containing characters that are significant to SQL round-trip unchanged and can still be
   found. A single quote (as in "Coco Pharmaceutical's Database") does not accumulate extra quotes as the

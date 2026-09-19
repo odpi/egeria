@@ -398,6 +398,23 @@ public class DuplicateEntityIterator
                                     return false;
                                 }
                             }
+                            else if (OpenMetadataType.PROMISE_CLASSIFICATION.typeName.equals(classification.getName()))
+                            {
+                                /*
+                                 * The Promise classification means that the element's real-world counterpart has not been delivered
+                                 * yet.  The element is present in the repository so that the lineage graph is complete, and is only
+                                 * visible to lineage requests - the opposite end of an element's life to the Memento classification.
+                                 */
+                                if (forLineage)
+                                {
+                                    log.debug("Lineage request - Ignoring Promise classification");
+                                }
+                                else
+                                {
+                                    log.debug("Promise classification detected");
+                                    return false;
+                                }
+                            }
                         }
                     }
                 }

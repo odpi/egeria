@@ -50,6 +50,7 @@ public class ElementHeader extends ElementControlHeader
     private ElementClassification       digitalResourceOrigin    = null;
     private ElementClassification       ownership                = null;
     private ElementClassification       memento                  = null;
+    private ElementClassification       promise                  = null;
     private ElementClassification       template                 = null;
     private ElementClassification       templateSubstitute       = null;
     private ElementClassification       schemaType               = null; // TypeEmbeddedAttribute
@@ -107,6 +108,7 @@ public class ElementHeader extends ElementControlHeader
             this.digitalResourceOrigin    = template.getDigitalResourceOrigin();
             this.ownership                = template.getOwnership();
             this.memento                  = template.getMemento();
+            this.promise                  = template.getPromise();
             this.template                 = template.getTemplate();
             this.templateSubstitute       = template.getTemplateSubstitute();
             this.schemaType               = template.getSchemaType();
@@ -472,6 +474,28 @@ public class ElementHeader extends ElementControlHeader
     public void setMemento(ElementClassification memento)
     {
         this.memento = memento;
+    }
+
+
+    /**
+     * Return the promise classification that shows that the element's real-world counterpart has not yet been delivered.
+     *
+     * @return classification
+     */
+    public ElementClassification getPromise()
+    {
+        return promise;
+    }
+
+
+    /**
+     * Set up the promise classification that shows that the element's real-world counterpart has not yet been delivered.
+     *
+     * @param promise classification
+     */
+    public void setPromise(ElementClassification promise)
+    {
+        this.promise = promise;
     }
 
 
@@ -964,6 +988,7 @@ public class ElementHeader extends ElementControlHeader
                 ", digitalResourceOrigin=" + digitalResourceOrigin +
                 ", ownership=" + ownership +
                 ", memento=" + memento +
+                ", promise=" + promise +
                 ", template=" + template +
                 ", templateSubstitute=" + templateSubstitute +
                 ", schemaType=" + schemaType +
@@ -1020,6 +1045,7 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(dataAssetEncoding, that.dataAssetEncoding) &&
                 Objects.equals(ownership, that.ownership) &&
                 Objects.equals(memento, that.memento) &&
+                Objects.equals(promise, that.promise) &&
                 Objects.equals(template, that.template) &&
                 Objects.equals(templateSubstitute, that.templateSubstitute) &&
                 Objects.equals(schemaType, that.schemaType) &&
@@ -1050,7 +1076,7 @@ public class ElementHeader extends ElementControlHeader
     {
         return Objects.hash(super.hashCode(), guid, anchor, zoneMembership, zoneMembershipProfile, impact, criticality,
                             confidentiality, confidence, retention, governanceExpectations, governanceMeasurements,
-                            executionPoints, duplicateClassifications, ownership, digitalResourceOrigin, memento,
+                            executionPoints, duplicateClassifications, ownership, digitalResourceOrigin, memento, promise,
                             dataScope, runMetrics, dataAssetEncoding,
                             template, templateSubstitute, schemaType, calculatedValue, primaryKey,
                             knownDuplicate, consolidateDuplicate,

@@ -18,6 +18,7 @@ public enum VisualStyle
     FEEDBACK(Colour.BLACK.getColourNumber(), Colour.MEDIUM_PURPLE.getColourNumber(), Colour.SLATE.getColourNumber(),"flag"),
     TAG(Colour.YELLOW_GREEN.getColourNumber(), Colour.DARK_MAGENTA.getColourNumber(), Colour.SLATE.getColourNumber(),"delay"),
     MEMENTO(Colour.SLATE.getColourNumber(), Colour.GHOST_WHITE.getColourNumber(), Colour.SLATE.getColourNumber(),"notch-pent"),
+    PROMISE(Colour.SLATE.getColourNumber(), Colour.LIGHT_CYAN.getColourNumber(), Colour.SLATE.getColourNumber(),"notch-pent"),
     TEMPLATE(Colour.SLATE.getColourNumber(), Colour.POWDER_BLUE.getColourNumber(), Colour.SLATE.getColourNumber(),"card"),
     VALID_VALUE_SET(Colour.PALE_ROSE.getColourNumber(), Colour.BLACK_ROSE.getColourNumber(), Colour.PALE_ROSE.getColourNumber(),"hex"),
     REFERENCE_DATA_VALUE(Colour.DARK_ROSE.getColourNumber(), Colour.PALE_ROSE.getColourNumber(), Colour.DARK_ROSE.getColourNumber(),"hex"),

@@ -30,6 +30,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import java.util.List;
 import java.util.Map;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.IncompleteProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.PromiseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.ObjectIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceDataProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.MobileResourceProperties;
@@ -2154,6 +2155,57 @@ public class ClassificationExplorerClient extends ConnectorContextClientBase
                                                                                           UserNotAuthorizedException
     {
         stewardshipManagementHandler.clearElementAsIncomplete(connectorUserId, elementGUID, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Classify an element to say that it is a promise to deliver a real-world digital resource/artifact.
+     * Once classified, the element is only returned to lineage requests (forLineage=true).
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setElementAsPromise(String                 elementGUID,
+                                    PromiseProperties      properties,
+                                    MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.setElementAsPromise(connectorUserId, elementGUID, properties, metadataSourceOptions);
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            parentContext.getActivityReportWriter().reportElementUpdate(elementGUID);
+        }
+    }
+
+
+    /**
+     * Remove the promise designation from an element - typically because the real-world digital resource/artifact
+     * has now been delivered.  Since the classified element is only visible to lineage requests, the supplied
+     * options must have forLineage set.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearElementAsPromise(String                elementGUID,
+                                      MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        stewardshipManagementHandler.clearElementAsPromise(connectorUserId, elementGUID, metadataSourceOptions);
 
         if (parentContext.getActivityReportWriter() != null)
         {

@@ -205,6 +205,10 @@ public class MermaidGraphBuilderBase
             {
                 return VisualStyle.MEMENTO;
             }
+            else if (OpenMetadataType.PROMISE_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return VisualStyle.PROMISE;
+            }
             else if (OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.TEMPLATE;
@@ -238,6 +242,10 @@ public class MermaidGraphBuilderBase
         if (classificationName != null)
         {
             if (OpenMetadataType.MEMENTO_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return true;
+            }
+            else if (OpenMetadataType.PROMISE_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
             }
@@ -275,6 +283,11 @@ public class MermaidGraphBuilderBase
             if (elementHeader.getMemento() != null)
             {
                 return VisualStyle.MEMENTO;
+            }
+
+            if (elementHeader.getPromise() != null)
+            {
+                return VisualStyle.PROMISE;
             }
 
             if (elementHeader.getTemplate() != null)
