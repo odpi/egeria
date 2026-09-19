@@ -3,6 +3,9 @@
 package org.odpi.openmetadata.userauthn;
 
 import org.odpi.openmetadata.userauthn.auth.PlatformUserDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
@@ -16,15 +19,48 @@ import java.time.temporal.ChronoUnit;
 @Service
 public class TokenService
 {
+    /**
+     * Number of hours that a bearer token is valid for if the bearerTokenTimeout property is not set.
+     */
+    public static final long DEFAULT_BEARER_TOKEN_TIMEOUT = 1L;
+
+    private static final Logger log = LoggerFactory.getLogger(TokenService.class);
+
     private final JwtEncoder encoder;
+    private final long       bearerTokenTimeout;
 
     /**
      * Constructor
      *
      * @param encoder JWT encoder
+     * @param bearerTokenTimeout number of hours that an issued bearer token remains valid.  A null value means the
+     *                           property is not set and the default is used.  A value that is not a positive number
+     *                           of hours is reported and the default is used as if the property was not set.
      */
-    public TokenService(JwtEncoder encoder) {
-            this.encoder = encoder;
+    public TokenService(JwtEncoder encoder,
+                        @Value("${bearerTokenTimeout:" + DEFAULT_BEARER_TOKEN_TIMEOUT + "}") Long bearerTokenTimeout)
+    {
+        this.encoder = encoder;
+
+        if (bearerTokenTimeout == null)
+        {
+            /*
+             * The property is present but has no value, which is the same as not setting it at all.
+             */
+            this.bearerTokenTimeout = DEFAULT_BEARER_TOKEN_TIMEOUT;
+        }
+        else if (bearerTokenTimeout > 0)
+        {
+            this.bearerTokenTimeout = bearerTokenTimeout;
+        }
+        else
+        {
+            log.warn("Option bearerTokenTimeout is set to {} which is not a valid number of hours! Using the default of {} hour(s) instead.",
+                     bearerTokenTimeout,
+                     DEFAULT_BEARER_TOKEN_TIMEOUT);
+
+            this.bearerTokenTimeout = DEFAULT_BEARER_TOKEN_TIMEOUT;
+        }
     }
 
     /**
@@ -45,7 +81,7 @@ public class TokenService
                 claims = JwtClaimsSet.builder()
                         .issuer("self")
                         .issuedAt(now)
-                        .expiresAt(now.plus(1, ChronoUnit.HOURS))
+                        .expiresAt(now.plus(bearerTokenTimeout, ChronoUnit.HOURS))
                         .subject(authentication.getName())
                         .claim("displayName", platformUserDetails.getDisplayName())
                         .build();
@@ -55,7 +91,7 @@ public class TokenService
                 claims = JwtClaimsSet.builder()
                         .issuer("self")
                         .issuedAt(now)
-                        .expiresAt(now.plus(1, ChronoUnit.HOURS))
+                        .expiresAt(now.plus(bearerTokenTimeout, ChronoUnit.HOURS))
                         .subject(authentication.getName())
                         .claim("displayName", platformUserDetails.getDisplayName())
                         .claim("dn", platformUserDetails.getDistinguishedName())
@@ -68,4 +104,3 @@ public class TokenService
         return null;
     }
 }
-
