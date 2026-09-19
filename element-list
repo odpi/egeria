@@ -23,6 +23,9 @@ org.odpi.openmetadata.adapters.connectors.baudot
 org.odpi.openmetadata.adapters.connectors.baudot.controls
 org.odpi.openmetadata.adapters.connectors.baudot.ffdc
 org.odpi.openmetadata.adapters.connectors.controls
+org.odpi.openmetadata.adapters.connectors.darwin
+org.odpi.openmetadata.adapters.connectors.darwin.controls
+org.odpi.openmetadata.adapters.connectors.darwin.ffdc
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception
