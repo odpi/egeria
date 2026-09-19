@@ -122,6 +122,166 @@ public class MetadataExpertResource
     }
 
     /**
+     * Change the unique identifier of a metadata element.  This is used if two different elements are discovered to
+     * have the same unique identifier.  The request is routed to the repository that is the home of the element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param metadataElementGUID current unique identifier of the metadata element
+     * @param requestBody new unique identifier for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException either of the unique identifiers is invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this element
+     *  PropertyServerException a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/re-identify")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse reIdentifyMetadataElementInStore(@PathVariable String                serverName,
+                                                         @PathVariable String                urlMarker,
+                                                         @PathVariable String                metadataElementGUID,
+                                                         @RequestBody  ReIdentifyRequestBody requestBody)
+    {
+        return restAPI.reIdentifyMetadataElementInStore(serverName, urlMarker, metadataElementGUID, requestBody);
+    }
+
+
+    /**
+     * Change the type of a metadata element.  Typically, this action is taken to move an element's type to either a
+     * supertype (so the subtype can be deleted) or a new subtype (so additional properties can be added).  The request
+     * is routed to the repository that is the home of the element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody name of the new type for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier or the new type name is invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this element
+     *  PropertyServerException a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/re-type")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse reTypeMetadataElementInStore(@PathVariable String            serverName,
+                                                     @PathVariable String            urlMarker,
+                                                     @PathVariable String            metadataElementGUID,
+                                                     @RequestBody  ReTypeRequestBody requestBody)
+    {
+        return restAPI.reTypeMetadataElementInStore(serverName, urlMarker, metadataElementGUID, requestBody);
+    }
+
+
+    /**
+     * Change the home repository of a metadata element.  This action is taken, for example, if the original home
+     * repository becomes permanently unavailable, or if the user community updating this element moves to working
+     * from a different repository in the open metadata repository cohort.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody details of the new home metadata collection
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier or the new home identifier is invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this element
+     *  PropertyServerException a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/re-home")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse reHomeMetadataElementInStore(@PathVariable String            serverName,
+                                                     @PathVariable String            urlMarker,
+                                                     @PathVariable String            metadataElementGUID,
+                                                     @RequestBody  ReHomeRequestBody requestBody)
+    {
+        return restAPI.reHomeMetadataElementInStore(serverName, urlMarker, metadataElementGUID, requestBody);
+    }
+
+
+    /**
+     * Change the unique identifier of a relationship.  This is used if two different relationships are discovered to
+     * have the same unique identifier.  The request is routed to the repository that is the home of the relationship.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID current unique identifier of the relationship
+     * @param requestBody new unique identifier for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException either of the unique identifiers is invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this relationship
+     *  PropertyServerException a problem with the metadata store
+     */
+    @PostMapping(path = "/related-elements/{relationshipGUID}/re-identify")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse reIdentifyRelationshipInStore(@PathVariable String                serverName,
+                                                      @PathVariable String                urlMarker,
+                                                      @PathVariable String                relationshipGUID,
+                                                      @RequestBody  ReIdentifyRequestBody requestBody)
+    {
+        return restAPI.reIdentifyRelationshipInStore(serverName, urlMarker, relationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Change the type of a relationship.  Typically, this action is taken to move a relationship's type to either a
+     * supertype (so the subtype can be deleted) or a new subtype (so additional properties can be added).  The request
+     * is routed to the repository that is the home of the relationship.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier of the relationship to update
+     * @param requestBody name of the new type for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier or the new type name is invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this relationship
+     *  PropertyServerException a problem with the metadata store
+     */
+    @PostMapping(path = "/related-elements/{relationshipGUID}/re-type")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse reTypeRelationshipInStore(@PathVariable String            serverName,
+                                                  @PathVariable String            urlMarker,
+                                                  @PathVariable String            relationshipGUID,
+                                                  @RequestBody  ReTypeRequestBody requestBody)
+    {
+        return restAPI.reTypeRelationshipInStore(serverName, urlMarker, relationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Change the home repository of a relationship.  This action is taken, for example, if the original home
+     * repository becomes permanently unavailable, or if the user community updating this relationship moves to
+     * working from a different repository in the open metadata repository cohort.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier of the relationship to update
+     * @param requestBody details of the new home metadata collection
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier or the new home identifier is invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this relationship
+     *  PropertyServerException a problem with the metadata store
+     */
+    @PostMapping(path = "/related-elements/{relationshipGUID}/re-home")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse reHomeRelationshipInStore(@PathVariable String            serverName,
+                                                  @PathVariable String            urlMarker,
+                                                  @PathVariable String            relationshipGUID,
+                                                  @RequestBody  ReHomeRequestBody requestBody)
+    {
+        return restAPI.reHomeRelationshipInStore(serverName, urlMarker, relationshipGUID, requestBody);
+    }
+
+
+    /**
      * Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.
      *
      * @param serverName     name of server instance to route request to

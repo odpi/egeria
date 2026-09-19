@@ -16,6 +16,7 @@ The service supports a wide range of operations across the metadata lifecycle:
 - **Metadata Element Management**: Full lifecycle support for open metadata elements, including creation (directly or from templates), updates, effectivity date management, archiving, and deletion. It also supports publishing and withdrawing elements.
 - **Classification Management**: Capability to classify metadata elements, update classification properties and effectivity dates, and declassify elements.
 - **Relationship Management**: Tools for creating and maintaining relationships between metadata elements, including updating relationship properties and detaching elements.
+- **Instance Control Information**: Changing the unique identifier (re-identify), the type (re-type) or the home repository (re-home) of a metadata element or relationship.  These requests are routed to the repository that is the home of the instance.
 - **Advanced Search and Discovery**:
     - **Search**: Finding elements using search strings, regular expressions, or complex property-based queries.
     - **History**: Retrieving the historical versions and changes for elements, classifications, and relationships.

@@ -4126,7 +4126,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /**
      * Change the guid of an existing entity to a new value.  This is used if two different
      * entities are discovered to have the same guid.  This is extremely unlikely but not impossible so
-     * the open metadata protocol has provision for this.
+     * the open metadata protocol has provision for this.  The request is routed to the repository that
+     * is the home of this entity.
      *
      * @param userId unique identifier for requesting user.
      * @param typeDefGUID the guid of the TypeDef for the entity used to verify the entity identity.
@@ -4134,18 +4135,54 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param entityGUID the existing identifier for the entity.
      * @param newEntityGUID new unique identifier for the entity.
      * @return entity new values for this entity, including the new guid.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws FunctionNotSupportedException the repository does not support the re-identification of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public EntityDetail reIdentifyEntity(String userId,
                                          String typeDefGUID,
                                          String typeDefName,
                                          String entityGUID,
-                                         String newEntityGUID) throws FunctionNotSupportedException
+                                         String newEntityGUID) throws InvalidParameterException,
+                                                                      RepositoryErrorException,
+                                                                      EntityNotKnownException,
+                                                                      FunctionNotSupportedException,
+                                                                      UserNotAuthorizedException
     {
         final String  methodName = "reIdentifyEntity";
+        final String  instanceParameterName = "entityGUID";
+        final String  newInstanceParameterName = "newEntityGUID";
 
-        throwNotEnterpriseFunction(methodName);
+        /*
+         * Validate parameters
+         */
+        super.reIdentifyInstanceParameterValidation(userId,
+                                                    typeDefGUID,
+                                                    typeDefName,
+                                                    entityGUID,
+                                                    instanceParameterName,
+                                                    newEntityGUID,
+                                                    newInstanceParameterName,
+                                                    methodName);
+
+        /*
+         * Locate entity
+         */
+        EntitySummary entity = this.getEntitySummary(userId, entityGUID);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(entity,
+                                                                                                       methodName);
+        if (metadataCollection != null)
+        {
+            return metadataCollection.reIdentifyEntity(userId, typeDefGUID, typeDefName, entityGUID, newEntityGUID);
+        }
 
         return null;
     }
@@ -4154,24 +4191,66 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /**
      * Change an existing entity's type.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
-     * added.)  However, the type can be changed to any compatible type and the properties adjusted.
+     * added.)  However, the type can be changed to any compatible type and the properties adjusted.  The request is
+     * routed to the repository that is the home of this entity.
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity to change.
      * @param currentTypeDefSummary the current details of the TypeDef for the entity used to verify the entity identity
      * @param newTypeDefSummary details of this entity's new TypeDef.
      * @return entity new values for this entity, including the new type information.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException The properties in the instance are incompatible with the requested type.
+     * @throws ClassificationErrorException the entity's classifications are not valid for the new type.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws FunctionNotSupportedException the repository does not support the re-typing of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public EntityDetail reTypeEntity(String         userId,
                                      String         entityGUID,
                                      TypeDefSummary currentTypeDefSummary,
-                                     TypeDefSummary newTypeDefSummary) throws FunctionNotSupportedException
+                                     TypeDefSummary newTypeDefSummary) throws InvalidParameterException,
+                                                                              RepositoryErrorException,
+                                                                              TypeErrorException,
+                                                                              PropertyErrorException,
+                                                                              ClassificationErrorException,
+                                                                              EntityNotKnownException,
+                                                                              FunctionNotSupportedException,
+                                                                              UserNotAuthorizedException
     {
         final String  methodName = "reTypeEntity";
+        final String  entityParameterName = "entityGUID";
 
-        throwNotEnterpriseFunction(methodName);
+        /*
+         * Validate parameters
+         */
+        super.reTypeInstanceParameterValidation(userId,
+                                                entityGUID,
+                                                entityParameterName,
+                                                TypeDefCategory.ENTITY_DEF,
+                                                currentTypeDefSummary,
+                                                newTypeDefSummary,
+                                                methodName);
+
+        /*
+         * Locate entity
+         */
+        EntitySummary entity = this.getEntitySummary(userId, entityGUID);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(entity,
+                                                                                                       methodName);
+        if (metadataCollection != null)
+        {
+            return metadataCollection.reTypeEntity(userId, entityGUID, currentTypeDefSummary, newTypeDefSummary);
+        }
 
         return null;
     }
@@ -4181,6 +4260,12 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * Change the home of an existing entity.  This action is taken for example, if the original home repository
      * becomes permanently unavailable, or if the user community updating this entity move to working
      * from a different repository in the open metadata repository cohort.
+     * <br><br>
+     * The request is routed to the repository that is taking the instance on, not to the repository that is
+     * its home today - the home rejects the request, since an instance it masters is not a reference copy for
+     * it to claim.  When newHomeMetadataCollectionId names a repository in this cohort that is the repository
+     * used; when it names an external source, which has no connector of its own, the request goes to the
+     * cohort repository that replicates the instance.
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity to change.
@@ -4190,7 +4275,12 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
      * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return entity new values for this entity, including the new home information.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws FunctionNotSupportedException the repository does not support the re-homing of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public EntityDetail reHomeEntity(String userId,
@@ -4199,11 +4289,48 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                      String typeDefName,
                                      String homeMetadataCollectionId,
                                      String newHomeMetadataCollectionId,
-                                     String newHomeMetadataCollectionName) throws FunctionNotSupportedException
+                                     String newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  EntityNotKnownException,
+                                                                                  FunctionNotSupportedException,
+                                                                                  UserNotAuthorizedException
     {
         final String  methodName = "reHomeEntity";
+        final String  entityParameterName = "entityGUID";
 
-        throwNotEnterpriseFunction(methodName);
+        /*
+         * Validate parameters
+         */
+        super.reHomeInstanceParameterValidation(userId,
+                                                entityGUID,
+                                                entityParameterName,
+                                                typeDefGUID,
+                                                typeDefName,
+                                                homeMetadataCollectionId,
+                                                newHomeMetadataCollectionId,
+                                                methodName);
+
+        /*
+         * Locate entity
+         */
+        EntitySummary entity = this.getEntitySummary(userId, entityGUID);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getNewHomeMetadataCollection(entity,
+                                                                                                       newHomeMetadataCollectionId,
+                                                                                                       methodName);
+        if (metadataCollection != null)
+        {
+            return metadataCollection.reHomeEntity(userId,
+                                                   entityGUID,
+                                                   typeDefGUID,
+                                                   typeDefName,
+                                                   homeMetadataCollectionId,
+                                                   newHomeMetadataCollectionId,
+                                                   newHomeMetadataCollectionName);
+        }
 
         return null;
     }
@@ -4212,7 +4339,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /**
      * Change the guid of an existing relationship.  This is used if two different
      * relationships are discovered to have the same guid.  This is extremely unlikely but not impossible so
-     * the open metadata protocol has provision for this.
+     * the open metadata protocol has provision for this.  The request is routed to the repository that is the
+     * home of this relationship.
      *
      * @param userId unique identifier for requesting user.
      * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
@@ -4220,18 +4348,59 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param relationshipGUID the existing identifier for the relationship.
      * @param newRelationshipGUID  the new unique identifier for the relationship.
      * @return relationship new values for this relationship, including the new guid.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
+     *                                       metadata collection.
      * @throws FunctionNotSupportedException the repository does not support the re-identification of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public Relationship reIdentifyRelationship(String userId,
                                                String typeDefGUID,
                                                String typeDefName,
                                                String relationshipGUID,
-                                               String newRelationshipGUID) throws FunctionNotSupportedException
+                                               String newRelationshipGUID) throws InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  RelationshipNotKnownException,
+                                                                                  FunctionNotSupportedException,
+                                                                                  UserNotAuthorizedException
     {
         final String  methodName = "reIdentifyRelationship";
+        final String  instanceParameterName = "relationshipGUID";
+        final String  newInstanceParameterName = "newRelationshipGUID";
 
-        throwNotEnterpriseFunction(methodName);
+        /*
+         * Validate parameters
+         */
+        super.reIdentifyInstanceParameterValidation(userId,
+                                                    typeDefGUID,
+                                                    typeDefName,
+                                                    relationshipGUID,
+                                                    instanceParameterName,
+                                                    newRelationshipGUID,
+                                                    newInstanceParameterName,
+                                                    methodName);
+
+        /*
+         * Locate relationship
+         */
+        Relationship relationship = this.getRelationship(userId, relationshipGUID);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(relationship,
+                                                                                                       methodName);
+        if (metadataCollection != null)
+        {
+            return metadataCollection.reIdentifyRelationship(userId,
+                                                             typeDefGUID,
+                                                             typeDefName,
+                                                             relationshipGUID,
+                                                             newRelationshipGUID);
+        }
 
         return null;
     }
@@ -4240,24 +4409,68 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /**
      * Change an existing relationship's type.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
-     * added.)  However, the type can be changed to any compatible type.
+     * added.)  However, the type can be changed to any compatible type.  The request is routed to the repository
+     * that is the home of this relationship.
      *
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
      * @param currentTypeDefSummary the details of the TypeDef for the relationship used to verify the relationship identity.
      * @param newTypeDefSummary details of this relationship's new TypeDef.
      * @return relationship new values for this relationship, including the new type information.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException The properties in the instance are incompatible with the requested type.
+     * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
+     *                                       metadata collection.
      * @throws FunctionNotSupportedException the repository does not support the re-typing of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public Relationship reTypeRelationship(String         userId,
                                            String         relationshipGUID,
                                            TypeDefSummary currentTypeDefSummary,
-                                           TypeDefSummary newTypeDefSummary) throws FunctionNotSupportedException
+                                           TypeDefSummary newTypeDefSummary) throws InvalidParameterException,
+                                                                                    RepositoryErrorException,
+                                                                                    TypeErrorException,
+                                                                                    PropertyErrorException,
+                                                                                    RelationshipNotKnownException,
+                                                                                    FunctionNotSupportedException,
+                                                                                    UserNotAuthorizedException
     {
         final String methodName = "reTypeRelationship";
+        final String relationshipParameterName = "relationshipGUID";
 
-        throwNotEnterpriseFunction(methodName);
+        /*
+         * Validate parameters
+         */
+        super.reTypeInstanceParameterValidation(userId,
+                                                relationshipGUID,
+                                                relationshipParameterName,
+                                                TypeDefCategory.RELATIONSHIP_DEF,
+                                                currentTypeDefSummary,
+                                                newTypeDefSummary,
+                                                methodName);
+
+        /*
+         * Locate relationship
+         */
+        Relationship relationship = this.getRelationship(userId, relationshipGUID);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(relationship,
+                                                                                                       methodName);
+        if (metadataCollection != null)
+        {
+            return metadataCollection.reTypeRelationship(userId,
+                                                         relationshipGUID,
+                                                         currentTypeDefSummary,
+                                                         newTypeDefSummary);
+        }
 
         return null;
     }
@@ -4267,6 +4480,12 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * Change the home of an existing relationship.  This action is taken for example, if the original home repository
      * becomes permanently unavailable, or if the user community updating this relationship move to working
      * from a different repository in the open metadata repository cohort.
+     * <br><br>
+     * The request is routed to the repository that is taking the instance on, not to the repository that is
+     * its home today - the home rejects the request, since an instance it masters is not a reference copy for
+     * it to claim.  When newHomeMetadataCollectionId names a repository in this cohort that is the repository
+     * used; when it names an external source, which has no connector of its own, the request goes to the
+     * cohort repository that replicates the instance.
      *
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
@@ -4276,7 +4495,13 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
      * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return relationship new values for this relationship, including the new home information.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
+     *                                       metadata collection.
      * @throws FunctionNotSupportedException the repository does not support the re-homing of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public Relationship reHomeRelationship(String userId,
@@ -4285,14 +4510,52 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                            String typeDefName,
                                            String homeMetadataCollectionId,
                                            String newHomeMetadataCollectionId,
-                                           String newHomeMetadataCollectionName) throws FunctionNotSupportedException
+                                           String newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                        RepositoryErrorException,
+                                                                                        RelationshipNotKnownException,
+                                                                                        FunctionNotSupportedException,
+                                                                                        UserNotAuthorizedException
     {
         final String    methodName = "reHomeRelationship";
+        final String    relationshipParameterName = "relationshipGUID";
 
-        throwNotEnterpriseFunction(methodName);
+        /*
+         * Validate parameters
+         */
+        super.reHomeInstanceParameterValidation(userId,
+                                                relationshipGUID,
+                                                relationshipParameterName,
+                                                typeDefGUID,
+                                                typeDefName,
+                                                homeMetadataCollectionId,
+                                                newHomeMetadataCollectionId,
+                                                methodName);
+
+        /*
+         * Locate relationship
+         */
+        Relationship relationship = this.getRelationship(userId, relationshipGUID);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getNewHomeMetadataCollection(relationship,
+                                                                                                       newHomeMetadataCollectionId,
+                                                                                                       methodName);
+        if (metadataCollection != null)
+        {
+            return metadataCollection.reHomeRelationship(userId,
+                                                         relationshipGUID,
+                                                         typeDefGUID,
+                                                         typeDefName,
+                                                         homeMetadataCollectionId,
+                                                         newHomeMetadataCollectionId,
+                                                         newHomeMetadataCollectionName);
+        }
 
         return null;
     }
+
 
 
 

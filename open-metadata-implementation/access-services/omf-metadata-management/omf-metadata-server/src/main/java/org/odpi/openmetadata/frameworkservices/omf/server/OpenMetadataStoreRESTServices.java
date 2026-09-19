@@ -3032,6 +3032,355 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
+     * Change the unique identifier of a metadata element.  This is used if two different elements are discovered to
+     * have the same unique identifier.  The request is routed to the repository that is the home of the element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID current unique identifier of the metadata element
+     * @param requestBody new unique identifier for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException either of the unique identifiers is invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this element
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse reIdentifyMetadataElementInStore(String                serverName,
+                                                         String                userId,
+                                                         String                metadataElementGUID,
+                                                         ReIdentifyRequestBody requestBody)
+    {
+        final String methodName = "reIdentifyMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog     auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.reIdentifyMetadataElementInStore(userId,
+                                                         metadataElementGUID,
+                                                         requestBody.getForLineage(),
+                                                         requestBody.getForDuplicateProcessing(),
+                                                         requestBody.getNewGUID(),
+                                                         requestBody.getEffectiveTime(),
+                                                         methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Change the type of a metadata element.  Typically, this action is taken to move an element's type to either a
+     * supertype (so the subtype can be deleted) or a new subtype (so additional properties can be added).  The request
+     * is routed to the repository that is the home of the element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody name of the new type for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier or the new type name is invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this element
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse reTypeMetadataElementInStore(String            serverName,
+                                                     String            userId,
+                                                     String            metadataElementGUID,
+                                                     ReTypeRequestBody requestBody)
+    {
+        final String methodName = "reTypeMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog     auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.reTypeMetadataElementInStore(userId,
+                                                     metadataElementGUID,
+                                                     requestBody.getForLineage(),
+                                                     requestBody.getForDuplicateProcessing(),
+                                                     requestBody.getNewTypeName(),
+                                                     requestBody.getEffectiveTime(),
+                                                     methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Change the home repository of a metadata element.  This action is taken, for example, if the original home
+     * repository becomes permanently unavailable, or if the user community updating this element moves to working
+     * from a different repository in the open metadata repository cohort.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody details of the new home metadata collection
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier or the new home identifier is invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this element
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse reHomeMetadataElementInStore(String            serverName,
+                                                     String            userId,
+                                                     String            metadataElementGUID,
+                                                     ReHomeRequestBody requestBody)
+    {
+        final String methodName = "reHomeMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog     auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.reHomeMetadataElementInStore(userId,
+                                                     metadataElementGUID,
+                                                     requestBody.getForLineage(),
+                                                     requestBody.getForDuplicateProcessing(),
+                                                     requestBody.getNewHomeMetadataCollectionId(),
+                                                     requestBody.getNewHomeMetadataCollectionName(),
+                                                     requestBody.getEffectiveTime(),
+                                                     methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Change the unique identifier of a relationship.  This is used if two different relationships are discovered to
+     * have the same unique identifier.  The request is routed to the repository that is the home of the relationship.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param relationshipGUID current unique identifier of the relationship
+     * @param requestBody new unique identifier for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException either of the unique identifiers is invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this relationship
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse reIdentifyRelationshipInStore(String                serverName,
+                                                      String                userId,
+                                                      String                relationshipGUID,
+                                                      ReIdentifyRequestBody requestBody)
+    {
+        final String methodName = "reIdentifyRelationshipInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog     auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.reIdentifyRelationshipInStore(userId,
+                                                      relationshipGUID,
+                                                      requestBody.getForLineage(),
+                                                      requestBody.getForDuplicateProcessing(),
+                                                      requestBody.getNewGUID(),
+                                                      requestBody.getEffectiveTime(),
+                                                      methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Change the type of a relationship.  Typically, this action is taken to move a relationship's type to either a
+     * supertype (so the subtype can be deleted) or a new subtype (so additional properties can be added).  The request
+     * is routed to the repository that is the home of the relationship.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier of the relationship to update
+     * @param requestBody name of the new type for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier or the new type name is invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this relationship
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse reTypeRelationshipInStore(String            serverName,
+                                                  String            userId,
+                                                  String            relationshipGUID,
+                                                  ReTypeRequestBody requestBody)
+    {
+        final String methodName = "reTypeRelationshipInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog     auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.reTypeRelationshipInStore(userId,
+                                                  relationshipGUID,
+                                                  requestBody.getForLineage(),
+                                                  requestBody.getForDuplicateProcessing(),
+                                                  requestBody.getNewTypeName(),
+                                                  requestBody.getEffectiveTime(),
+                                                  methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Change the home repository of a relationship.  This action is taken, for example, if the original home
+     * repository becomes permanently unavailable, or if the user community updating this relationship moves to
+     * working from a different repository in the open metadata repository cohort.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier of the relationship to update
+     * @param requestBody details of the new home metadata collection
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier or the new home identifier is invalid in some way
+     *  UserNotAuthorizedException the user is not authorized to update this relationship
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse reHomeRelationshipInStore(String            serverName,
+                                                  String            userId,
+                                                  String            relationshipGUID,
+                                                  ReHomeRequestBody requestBody)
+    {
+        final String methodName = "reHomeRelationshipInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog     auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.reHomeRelationshipInStore(userId,
+                                                  relationshipGUID,
+                                                  requestBody.getForLineage(),
+                                                  requestBody.getForDuplicateProcessing(),
+                                                  requestBody.getNewHomeMetadataCollectionId(),
+                                                  requestBody.getNewHomeMetadataCollectionName(),
+                                                  requestBody.getEffectiveTime(),
+                                                  methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+
+    /**
      * Update the zone membership to increase its visibility.  The publishZones  are defined in the user directory.
      *
      * @param serverName     name of server instance to route request to

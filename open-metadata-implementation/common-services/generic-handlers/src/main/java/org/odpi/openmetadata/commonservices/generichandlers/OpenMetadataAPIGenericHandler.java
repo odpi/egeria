@@ -2203,6 +2203,439 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
+     * Change the unique identifier of an entity.  This is used if two different entities are discovered to have the
+     * same unique identifier.  The request is passed to the repository that is the home of the entity.
+     *
+     * @param userId calling user
+     * @param entityGUID current unique identifier of the entity
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeName expected type of the entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param newEntityGUID new unique identifier for the entity
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException a problem communicating with the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void reIdentifyBeanInRepository(String  userId,
+                                           String  entityGUID,
+                                           String  entityGUIDParameterName,
+                                           String  entityTypeName,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           String  newEntityGUID,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        final String newEntityGUIDParameterName = "newEntityGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(newEntityGUID, newEntityGUIDParameterName, methodName);
+
+        EntityDetail originalEntity = this.getEntityFromRepository(userId,
+                                                                   entityGUID,
+                                                                   entityGUIDParameterName,
+                                                                   entityTypeName,
+                                                                   null,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        if ((originalEntity != null) && (originalEntity.getType() != null))
+        {
+            securityVerifier.validateUserForElementDetailUpdate(userId,
+                                                                originalEntity,
+                                                                originalEntity.getProperties(),
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                methodName);
+
+            repositoryHandler.reIdentifyEntity(userId,
+                                               originalEntity.getGUID(),
+                                               entityGUIDParameterName,
+                                               originalEntity.getType().getTypeDefGUID(),
+                                               originalEntity.getType().getTypeDefName(),
+                                               newEntityGUID,
+                                               methodName);
+        }
+    }
+
+
+    /**
+     * Change the type of an entity.  Typically, this action is taken to move an entity's type to either a supertype
+     * (so the subtype can be deleted) or a new subtype (so additional properties can be added).  The request is passed
+     * to the repository that is the home of the entity.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of the entity to change
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeName expected type of the entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param newTypeName name of the new type for the entity
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException a problem communicating with the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void reTypeBeanInRepository(String  userId,
+                                       String  entityGUID,
+                                       String  entityGUIDParameterName,
+                                       String  entityTypeName,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       String  newTypeName,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        final String newTypeNameParameterName = "newTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(newTypeName, newTypeNameParameterName, methodName);
+
+        TypeDef newTypeDef = invalidParameterHandler.validateTypeDefName(newTypeName,
+                                                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                         serviceName,
+                                                                         methodName,
+                                                                         repositoryHelper);
+
+        EntityDetail originalEntity = this.getEntityFromRepository(userId,
+                                                                   entityGUID,
+                                                                   entityGUIDParameterName,
+                                                                   entityTypeName,
+                                                                   null,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        if ((originalEntity != null) && (originalEntity.getType() != null))
+        {
+            securityVerifier.validateUserForElementDetailUpdate(userId,
+                                                                originalEntity,
+                                                                originalEntity.getProperties(),
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                methodName);
+
+            repositoryHandler.reTypeEntity(userId,
+                                           originalEntity.getGUID(),
+                                           entityGUIDParameterName,
+                                           this.getTypeDefSummary(originalEntity.getType()),
+                                           newTypeDef,
+                                           methodName);
+        }
+    }
+
+
+    /**
+     * Change the home repository of an entity.  This action is taken, for example, if the original home repository
+     * becomes permanently unavailable, or if the user community updating this entity moves to working from a
+     * different repository in the open metadata repository cohort.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of the entity to change
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeName expected type of the entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException a problem communicating with the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void reHomeBeanInRepository(String  userId,
+                                       String  entityGUID,
+                                       String  entityGUIDParameterName,
+                                       String  entityTypeName,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       String  newHomeMetadataCollectionId,
+                                       String  newHomeMetadataCollectionName,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        final String newHomeParameterName = "newHomeMetadataCollectionId";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(newHomeMetadataCollectionId, newHomeParameterName, methodName);
+
+        EntityDetail originalEntity = this.getEntityFromRepository(userId,
+                                                                   entityGUID,
+                                                                   entityGUIDParameterName,
+                                                                   entityTypeName,
+                                                                   null,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        if ((originalEntity != null) && (originalEntity.getType() != null))
+        {
+            securityVerifier.validateUserForElementDetailUpdate(userId,
+                                                                originalEntity,
+                                                                originalEntity.getProperties(),
+                                                                repositoryHelper,
+                                                                serviceName,
+                                                                methodName);
+
+            repositoryHandler.reHomeEntity(userId,
+                                           originalEntity.getGUID(),
+                                           entityGUIDParameterName,
+                                           originalEntity.getType().getTypeDefGUID(),
+                                           originalEntity.getType().getTypeDefName(),
+                                           originalEntity.getMetadataCollectionId(),
+                                           newHomeMetadataCollectionId,
+                                           newHomeMetadataCollectionName,
+                                           methodName);
+        }
+    }
+
+
+    /**
+     * Change the unique identifier of a relationship.  This is used if two different relationships are discovered to
+     * have the same unique identifier.  The request is passed to the repository that is the home of the relationship.
+     *
+     * @param userId calling user
+     * @param relationshipGUID current unique identifier of the relationship
+     * @param relationshipGUIDParameterName name of parameter supplying the GUID
+     * @param relationshipTypeName expected type of the relationship
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param newRelationshipGUID new unique identifier for the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException a problem communicating with the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void reIdentifyRelationshipInRepository(String  userId,
+                                                   String  relationshipGUID,
+                                                   String  relationshipGUIDParameterName,
+                                                   String  relationshipTypeName,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   String  newRelationshipGUID,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        final String newRelationshipGUIDParameterName = "newRelationshipGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(newRelationshipGUID, newRelationshipGUIDParameterName, methodName);
+
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            relationshipGUIDParameterName,
+                                                                            relationshipTypeName,
+                                                                            effectiveTime,
+                                                                            methodName);
+
+        if ((relationship != null) && (relationship.getType() != null))
+        {
+            this.validateRelationshipChange(userId,
+                                            relationship,
+                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
+                                            methodName);
+
+            repositoryHandler.reIdentifyRelationship(userId,
+                                                     relationship.getGUID(),
+                                                     relationshipGUIDParameterName,
+                                                     relationship.getType().getTypeDefGUID(),
+                                                     relationship.getType().getTypeDefName(),
+                                                     newRelationshipGUID,
+                                                     methodName);
+        }
+    }
+
+
+    /**
+     * Change the type of a relationship.  Typically, this action is taken to move a relationship's type to either a
+     * supertype (so the subtype can be deleted) or a new subtype (so additional properties can be added).  The request
+     * is passed to the repository that is the home of the relationship.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier of the relationship to change
+     * @param relationshipGUIDParameterName name of parameter supplying the GUID
+     * @param relationshipTypeName expected type of the relationship
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param newTypeName name of the new type for the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException a problem communicating with the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void reTypeRelationshipInRepository(String  userId,
+                                               String  relationshipGUID,
+                                               String  relationshipGUIDParameterName,
+                                               String  relationshipTypeName,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               String  newTypeName,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String newTypeNameParameterName = "newTypeName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(newTypeName, newTypeNameParameterName, methodName);
+
+        TypeDef newTypeDef = invalidParameterHandler.validateTypeDefName(newTypeName,
+                                                                         null,
+                                                                         serviceName,
+                                                                         methodName,
+                                                                         repositoryHelper);
+
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            relationshipGUIDParameterName,
+                                                                            relationshipTypeName,
+                                                                            effectiveTime,
+                                                                            methodName);
+
+        if ((relationship != null) && (relationship.getType() != null))
+        {
+            this.validateRelationshipChange(userId,
+                                            relationship,
+                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
+                                            methodName);
+
+            repositoryHandler.reTypeRelationship(userId,
+                                                 relationship.getGUID(),
+                                                 relationshipGUIDParameterName,
+                                                 this.getTypeDefSummary(relationship.getType()),
+                                                 newTypeDef,
+                                                 methodName);
+        }
+    }
+
+
+    /**
+     * Change the home repository of a relationship.  This action is taken, for example, if the original home
+     * repository becomes permanently unavailable, or if the user community updating this relationship moves to
+     * working from a different repository in the open metadata repository cohort.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier of the relationship to change
+     * @param relationshipGUIDParameterName name of parameter supplying the GUID
+     * @param relationshipTypeName expected type of the relationship
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException a problem communicating with the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void reHomeRelationshipInRepository(String  userId,
+                                               String  relationshipGUID,
+                                               String  relationshipGUIDParameterName,
+                                               String  relationshipTypeName,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               String  newHomeMetadataCollectionId,
+                                               String  newHomeMetadataCollectionName,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String newHomeParameterName = "newHomeMetadataCollectionId";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(newHomeMetadataCollectionId, newHomeParameterName, methodName);
+
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            relationshipGUIDParameterName,
+                                                                            relationshipTypeName,
+                                                                            effectiveTime,
+                                                                            methodName);
+
+        if ((relationship != null) && (relationship.getType() != null))
+        {
+            this.validateRelationshipChange(userId,
+                                            relationship,
+                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
+                                            methodName);
+
+            repositoryHandler.reHomeRelationship(userId,
+                                                 relationship.getGUID(),
+                                                 relationshipGUIDParameterName,
+                                                 relationship.getType().getTypeDefGUID(),
+                                                 relationship.getType().getTypeDefName(),
+                                                 relationship.getMetadataCollectionId(),
+                                                 newHomeMetadataCollectionId,
+                                                 newHomeMetadataCollectionName,
+                                                 methodName);
+        }
+    }
+
+
+    /**
+     * Return the type definition that describes the type of an instance.  This is needed to verify the identity of an
+     * instance when its type or unique identifier is being changed.
+     *
+     * @param instanceType type information from the retrieved instance
+     * @return matching type definition
+     * @throws InvalidParameterException the instance's type is not recognized
+     */
+    private TypeDefSummary getTypeDefSummary(InstanceType instanceType) throws InvalidParameterException
+    {
+        final String methodName = "getTypeDefSummary";
+
+        return invalidParameterHandler.validateTypeDefName(instanceType.getTypeDefName(),
+                                                            null,
+                                                            serviceName,
+                                                            methodName,
+                                                            repositoryHelper);
+    }
+
+
+
+    /**
      * Update the zones for a specific anchor element to the list set up in the user's publish zones.
      *
      * @param userId calling user
