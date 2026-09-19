@@ -39,7 +39,7 @@ loadScripts(document, 'script');</script>
 <p>Summary:</p>
 <ul>
 <li>Nested</li>
-<li>Field</li>
+<li><a href="#field-summary">Field</a></li>
 <li><a href="#constructor-summary">Constr</a></li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -47,7 +47,7 @@ loadScripts(document, 'script');</script>
 <li>
 <p>Detail:</p>
 <ul>
-<li>Field</li>
+<li><a href="#field-detail">Field</a></li>
 <li><a href="#constructor-detail">Constr</a></li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -59,13 +59,13 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -97,6 +97,23 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static final long</code></div>
+<div class="col-second even-row-color"><code><a href="#DEFAULT_BEARER_TOKEN_TIMEOUT" class="member-name-link">DEFAULT_BEARER_TOKEN_TIMEOUT</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Number of hours that a bearer token is valid for if the bearerTokenTimeout property is not set.</div>
+</div>
+</div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -105,7 +122,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.springframework.security.oauth2.jwt.JwtEncoder)" class="member-name-link">TokenService</a><wbr>(org.springframework.security.oauth2.jwt.JwtEncoder&nbsp;encoder)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.springframework.security.oauth2.jwt.JwtEncoder,java.lang.Long)" class="member-name-link">TokenService</a><wbr>(org.springframework.security.oauth2.jwt.JwtEncoder&nbsp;encoder,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;bearerTokenTimeout)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructor</div>
 </div>
@@ -140,19 +158,47 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="DEFAULT_BEARER_TOKEN_TIMEOUT">
+<h3>DEFAULT_BEARER_TOKEN_TIMEOUT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">DEFAULT_BEARER_TOKEN_TIMEOUT</span></div>
+<div class="block">Number of hours that a bearer token is valid for if the bearerTokenTimeout property is not set.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#org.odpi.openmetadata.userauthn.TokenService.DEFAULT_BEARER_TOKEN_TIMEOUT">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.springframework.security.oauth2.jwt.JwtEncoder)">
+<section class="detail" id="&lt;init&gt;(org.springframework.security.oauth2.jwt.JwtEncoder,java.lang.Long)">
 <h3>TokenService</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TokenService</span><wbr><span class="parameters">(org.springframework.security.oauth2.jwt.JwtEncoder&nbsp;encoder)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TokenService</span><wbr><span class="parameters">(org.springframework.security.oauth2.jwt.JwtEncoder&nbsp;encoder,
+ @Value("${bearerTokenTimeout:1}")
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;bearerTokenTimeout)</span></div>
 <div class="block">Constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>encoder</code> - JWT encoder</dd>
+<dd><code>bearerTokenTimeout</code> - number of hours that an issued bearer token remains valid.  A null value means the
+                           property is not set and the default is used.  A value that is not a positive number
+                           of hours is reported and the default is used as if the property was not set.</dd>
 </dl>
 </section>
 </li>
