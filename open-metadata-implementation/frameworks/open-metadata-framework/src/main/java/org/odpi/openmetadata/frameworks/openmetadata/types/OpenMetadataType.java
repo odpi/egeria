@@ -152,6 +152,16 @@ public enum OpenMetadataType
                            MementoProperties.class),
 
     /**
+     * A promise to deliver a real-world digital resource/artifact.  It is only visible in lineage requests (forLineage=true).
+     */
+    PROMISE_CLASSIFICATION("bb8da6cc-7868-4f13-808e-faf78e77ec40",
+                           "Promise",
+                           OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
+                           "a54fea36-344d-4afb-81ad-df8eda75f409",
+                           "A promise to deliver a real-world digital resource/artifact.  It is only visible in lineage requests (forLineage=true).",
+                           PromiseProperties.class),
+
+    /**
      * Identifies the anchor entity for an element that is part of a large composite object such as an asset.
      */
     ANCHORS_CLASSIFICATION("aa44f302-2e43-4669-a1e7-edaae414fc6e",

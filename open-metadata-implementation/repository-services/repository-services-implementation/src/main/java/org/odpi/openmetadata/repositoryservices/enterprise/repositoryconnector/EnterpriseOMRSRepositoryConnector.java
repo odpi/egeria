@@ -214,6 +214,87 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
 
     /**
+     * Returns the metadata collection that should process a re-homing request.
+     * <br><br>
+     * Re-homing does not go to the repository that is the instance's home today, the way an ordinary update
+     * does.  Re-homing is a repository claiming a reference copy it holds, so the repository that is taking
+     * the instance on is the one that has to do the work.  Two cases are supported:
+     * <ul>
+     *     <li>the new home is a repository in this cohort - the request goes to that repository;</li>
+     *     <li>the new home is an external source, which is not a cohort member and so cannot process
+     *     anything itself - the request goes to the cohort repository that replicates the instance into the
+     *     cohort, named by its {@code replicatedBy}.</li>
+     * </ul>
+     * A new home that is neither is rejected: there is no repository that could carry the request out.
+     *
+     * @param instance instance being re-homed
+     * @param newHomeMetadataCollectionId unique identifier of the metadata collection that is to become the home
+     * @param methodName name of method making the request (used for logging)
+     * @return metadata collection that should process the request
+     * @throws RepositoryErrorException the new home is not a metadata collection this cohort can re-home to
+     */
+    synchronized OMRSMetadataCollection getNewHomeMetadataCollection(InstanceHeader instance,
+                                                                     String         newHomeMetadataCollectionId,
+                                                                     String         methodName) throws RepositoryErrorException
+    {
+        this.validateRepositoryIsActive(methodName);
+
+        OMRSMetadataCollection metadataCollection = this.getCohortMetadataCollection(newHomeMetadataCollectionId);
+
+        if (metadataCollection != null)
+        {
+            return metadataCollection;
+        }
+
+        /*
+         * The new home is not one of this cohort's repositories, so it is an external source.  An external
+         * source has no connector of its own; the cohort repository that replicates the instance is the one
+         * that maintains it on the external source's behalf, so the request goes there.
+         */
+        metadataCollection = this.getCohortMetadataCollection(instance.getReplicatedBy());
+
+        if (metadataCollection != null)
+        {
+            return metadataCollection;
+        }
+
+        throw new RepositoryErrorException(OMRSErrorCode.NO_HOME_FOR_INSTANCE.getMessageDefinition(methodName,
+                                                                                                   instance.getGUID(),
+                                                                                                   newHomeMetadataCollectionId),
+                                           this.getClass().getName(),
+                                           methodName);
+    }
+
+
+    /**
+     * Returns the metadata collection of the cohort repository with this metadata collection identifier.
+     *
+     * @param metadataCollectionId identifier to look for - may be null
+     * @return metadata collection, or null if no repository in this cohort has that identifier
+     * @throws RepositoryErrorException the matching repository has no metadata collection
+     */
+    private OMRSMetadataCollection getCohortMetadataCollection(String metadataCollectionId) throws RepositoryErrorException
+    {
+        if (metadataCollectionId != null)
+        {
+            if (metadataCollectionId.equals(localMetadataCollectionId))
+            {
+                return localConnector.getMetadataCollection();
+            }
+
+            FederatedConnector federatedConnector = this.getFederatedConnector(metadataCollectionId);
+
+            if (federatedConnector != null)
+            {
+                return federatedConnector.getConnector().getMetadataCollection();
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Returns the connector to the repository where the supplied classification can be updated, ie its home repository.
      *
      * @param classification classification to test

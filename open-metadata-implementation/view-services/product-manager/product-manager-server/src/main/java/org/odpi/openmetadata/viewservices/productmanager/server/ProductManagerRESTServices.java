@@ -22,12 +22,16 @@ import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
 import org.odpi.openmetadata.viewservices.productmanager.rest.DataContractResponse;
 import org.odpi.openmetadata.viewservices.productmanager.rest.DataProductResponse;
+import org.odpi.openmetadata.viewservices.productmanager.rest.NewDigitalProductRequestBody;
+import org.odpi.openmetadata.viewservices.productmanager.rest.NewSubscriptionTypeRequestBody;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ProductManagerHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductDependencyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -402,6 +406,272 @@ public class ProductManagerRESTServices extends TokenController
                                                    consumerDigitalProductGUID,
                                                    consumedDigitalProductGUID,
                                                    requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /* =====================================================================================================================
+     * Digital products and their subscription types.
+     */
+
+    /**
+     * Create a new digital product and link it to the elements that surround it: its product manager, community,
+     * owning collections, guiding questions, product asset, governance definitions and data specification.
+     *
+     * @param serverName name of called server
+     * @param requestBody description of the product and the elements to link it to
+     * @return unique identifier of the new product or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createDigitalProduct(String                       serverName,
+                                             NewDigitalProductRequestBody requestBody)
+    {
+        final String methodName = "createDigitalProduct";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProductManagerHandler handler = instanceHandler.getProductManagerHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DigitalProductProperties properties)
+                {
+                    response.setGUID(handler.createDigitalProduct(userId,
+                                                                  requestBody,
+                                                                  requestBody.getInitialClassifications(),
+                                                                  properties,
+                                                                  requestBody.getParentRelationshipProperties(),
+                                                                  requestBody.getProductManagerGUID(),
+                                                                  requestBody.getProductCommunityGUID(),
+                                                                  requestBody.getCollectionGUIDs(),
+                                                                  requestBody.getQuestionGUIDs(),
+                                                                  requestBody.getProductAssetGUID(),
+                                                                  requestBody.getGovernanceDefinitionGUIDs(),
+                                                                  requestBody.getDataSpecGUID()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DigitalProductProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Add a one-time subscription type to a product.  A subscriber to this type receives a single notification, and
+     * so a single delivery of the product's data.  It is typically used to evaluate a product.
+     *
+     * @param serverName name of called server
+     * @param digitalProductGUID unique identifier of the product
+     * @param requestBody optional description of the subscription type
+     * @return unique identifier of the governance action process that creates a subscription of this type or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createOneTimeSubscription(String                         serverName,
+                                                  String                         digitalProductGUID,
+                                                  NewSubscriptionTypeRequestBody requestBody)
+    {
+        final String methodName = "createOneTimeSubscription";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProductManagerHandler handler = instanceHandler.getProductManagerHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setGUID(handler.createOneTimeSubscription(userId,
+                                                                   digitalProductGUID,
+                                                                   requestBody,
+                                                                   requestBody.getSubscriptionManagerGUID(),
+                                                                   requestBody.getIdentifier(),
+                                                                   requestBody.getDisplayName(),
+                                                                   requestBody.getDescription(),
+                                                                   requestBody.getLicenseTypeGUID(),
+                                                                   requestBody.getServiceLevelObjectiveGUID()));
+            }
+            else
+            {
+                response.setGUID(handler.createOneTimeSubscription(userId,
+                                                                   digitalProductGUID,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Add a periodic subscription type to a product.  A subscriber to this type receives a notification, and so a
+     * delivery of the product's data, at regular intervals.  The time between notifications is the request body's
+     * notificationInterval, in minutes.
+     *
+     * @param serverName name of called server
+     * @param digitalProductGUID unique identifier of the product
+     * @param requestBody description of the subscription type, including the notification interval
+     * @return unique identifier of the governance action process that creates a subscription of this type or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createPeriodicSubscription(String                         serverName,
+                                                   String                         digitalProductGUID,
+                                                   NewSubscriptionTypeRequestBody requestBody)
+    {
+        final String methodName = "createPeriodicSubscription";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProductManagerHandler handler = instanceHandler.getProductManagerHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setGUID(handler.createPeriodicSubscription(userId,
+                                                                    digitalProductGUID,
+                                                                    requestBody,
+                                                                    requestBody.getSubscriptionManagerGUID(),
+                                                                    requestBody.getIdentifier(),
+                                                                    requestBody.getDisplayName(),
+                                                                    requestBody.getDescription(),
+                                                                    requestBody.getLicenseTypeGUID(),
+                                                                    requestBody.getServiceLevelObjectiveGUID(),
+                                                                    requestBody.getNotificationInterval()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Add an ongoing update subscription type to a product.  A subscriber to this type receives a notification, and
+     * so a delivery of the product's data, whenever one of the request body's monitoredResourceGUIDs changes - but no
+     * more often than the request body's notificationInterval, in minutes.
+     *
+     * @param serverName name of called server
+     * @param digitalProductGUID unique identifier of the product
+     * @param requestBody description of the subscription type, including the monitored resources and the minimum
+     *                    notification interval
+     * @return unique identifier of the governance action process that creates a subscription of this type or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createOngoingUpdateSubscription(String                         serverName,
+                                                        String                         digitalProductGUID,
+                                                        NewSubscriptionTypeRequestBody requestBody)
+    {
+        final String methodName = "createOngoingUpdateSubscription";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProductManagerHandler handler = instanceHandler.getProductManagerHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setGUID(handler.createOngoingUpdateSubscription(userId,
+                                                                         digitalProductGUID,
+                                                                         requestBody,
+                                                                         requestBody.getSubscriptionManagerGUID(),
+                                                                         requestBody.getIdentifier(),
+                                                                         requestBody.getDisplayName(),
+                                                                         requestBody.getDescription(),
+                                                                         requestBody.getLicenseTypeGUID(),
+                                                                         requestBody.getServiceLevelObjectiveGUID(),
+                                                                         requestBody.getMonitoredResourceGUIDs(),
+                                                                         requestBody.getNotificationInterval()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Throwable error)
         {

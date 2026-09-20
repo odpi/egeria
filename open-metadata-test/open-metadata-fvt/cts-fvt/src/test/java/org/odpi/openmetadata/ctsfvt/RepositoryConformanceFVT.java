@@ -60,6 +60,13 @@ public class RepositoryConformanceFVT
                                                                   + OMAGPlatformExtension.REPOSITORY_KIND.getReportDirectoryName());
     private static final File AUDIT_LOG        = new File("build/cts-fvt-data/logs/audit.log");
 
+    /**
+     * The audit codes the event flow check reads: a cohort event arriving at a server, and one being
+     * published by it.
+     */
+    private static final String INCOMING_EVENT_CODE = "OMRS-AUDIT-8006";
+    private static final String OUTGOING_EVENT_CODE = "OMRS-AUDIT-8009";
+
     private static OpenMetadataConformanceTestLabSummary summary        = null;
     private static List<OpenMetadataTestCaseResult>      failedTestCases = null;
 
@@ -256,23 +263,24 @@ public class RepositoryConformanceFVT
 
 
     /**
-     * The cohort must actually have exchanged events.
+     * The cohort must actually have exchanged events, <b>in both directions</b>.
      * <br>
      * This one is not a conformance requirement - it is a check on the run itself, and it exists because a
      * run can do a fraction of its work and still look like a pass.  Much of the workbench is driven by
-     * events arriving from the technology under test: the type definitions it shares on registration, and
-     * the instance events behind the reference copy tests.  When those events do not arrive, the test cases
-     * that depend on them are never created rather than failing, so the report comes back smaller and
-     * quieter, with a conformance status that reads as success.
+     * events: the type definitions a member shares on registration, and the instance events behind the
+     * reference copy tests.  When those events do not arrive, the test cases that depend on them either are
+     * never created or time out waiting, so the report comes back smaller and quieter, with a conformance
+     * status that reads as success.
      * <br>
-     * A measured run in that state recorded 44 incoming events and 1579 test cases; a healthy run of the
-     * same scope recorded 4152 events and 3726 test cases.  The cause was a cohort registry left over from
-     * a previous run - a server that believes it is already registered has no reason to share its types
-     * again - which is why the harness now clears the registries before it starts.  The check stays because
-     * the failure is silent by nature, and because a repository that appears to pass while half of the
-     * suite never ran is the most expensive kind of wrong answer.
+     * <b>Direction is checked separately for each server, and that is the point of this check rather than a
+     * refinement of it.</b>  A total on its own cannot tell a cohort that is not exchanging anything from one
+     * that is exchanging in one direction only, and the one-way case is the one that actually happens: the
+     * technology under test publishes thousands of instance events that the conformance test server never
+     * consumes, so every test that waits for the home repository to answer - the whole reference copy
+     * refresh sequence, and the re-home assertions that come after it - times out. A total of several
+     * thousand looks healthy while half the cohort is deaf.
      * <br>
-     * The floor is deliberately far below a healthy count rather than close to it.  What is being detected
+     * The floors are deliberately far below a healthy count rather than close to it.  What is being detected
      * is the difference between events flowing and events not flowing, not a shortfall against an expected
      * number - the healthy count moves with the scope of the run, and a threshold tracking it would need
      * updating every time the scope changed and would fail for reasons that had nothing to do with health.
@@ -280,37 +288,175 @@ public class RepositoryConformanceFVT
     @Test
     void theCohortExchangedEvents()
     {
-        long minimumEvents = OMAGPlatformExtension.getLongProperty("cts.fvt.cohort.minimum.events", 100);
-        long eventCount    = countAuditLogOccurrences("OMRS-AUDIT-8006");
+        long minimumEvents          = OMAGPlatformExtension.getLongProperty("cts.fvt.cohort.minimum.events", 100);
+        long minimumEventsPerServer = OMAGPlatformExtension.getLongProperty("cts.fvt.cohort.minimum.events.per.server", 10);
 
-        System.out.println("cts-fvt: the cohort processed " + eventCount + " incoming events");
+        Map<String, Long> received = countEventsByServer(INCOMING_EVENT_CODE);
+        Map<String, Long> sent     = countEventsByServer(OUTGOING_EVENT_CODE);
 
-        assertTrue(eventCount >= minimumEvents,
-                   "The cohort processed only " + eventCount + " incoming events, below the " + minimumEvents
+        printEventFlow(received, sent);
+
+        long totalReceived = received.values().stream().mapToLong(Long::longValue).sum();
+
+        /*
+         * Report the one-way case first.  When it is what has happened, the total is not the useful number
+         * and leading with it sends the reader looking in the wrong place.
+         */
+        for (String serverName : new String[]{ OMAGPlatformExtension.CTS_SERVER_NAME, OMAGPlatformExtension.TUT_SERVER_NAME })
+        {
+            long serverReceived = received.getOrDefault(serverName, 0L);
+            long serverSent     = sent.getOrDefault(serverName, 0L);
+
+            assertTrue(serverReceived >= minimumEventsPerServer,
+                       serverName + " received only " + serverReceived + " cohort events, below the "
+                               + minimumEventsPerServer + " this check expects, while sending " + serverSent
+                               + ".  Events are reaching the cohort but this server is not consuming them, so"
+                               + " every test that waits for it to answer - the reference copy refresh"
+                               + " sequence, and the re-home assertions after it - times out rather than"
+                               + " failing, and the results above cover less than they appear to.  This is a"
+                               + " consumer that never took up its partition, not a registration problem:"
+                               + " check " + AUDIT_LOG.getPath() + " for " + OUTGOING_EVENT_CODE
+                               + " from the other server on the cohort's instances topic, and the run log for"
+                               + " one 'Querying for offset by timestamp' line per server per cohort topic -"
+                               + " six in all.  Fewer means a consumer never got its partition, and the topic"
+                               + " named on the line that is missing is the one that is deaf."
+                               + "  Set cts.fvt.cohort.minimum.events.per.server to change the floor.");
+        }
+
+        assertTrue(totalReceived >= minimumEvents,
+                   "The cohort processed only " + totalReceived + " incoming events, below the " + minimumEvents
                            + " this check expects, so the event-driven part of the workbench did not run and the"
-                           + " results above cover less than they appear to.  The usual cause is the servers"
-                           + " rejoining a cohort they were already registered with, which skips the type"
-                           + " definition exchange - check " + AUDIT_LOG.getPath() + " for whether registration"
-                           + " happened, and that the cohort registry stores under data/servers were cleared."
+                           + " results above cover less than they appear to.  Check " + AUDIT_LOG.getPath()
+                           + " for whether both members registered and whether either published anything."
                            + "  Set cts.fvt.cohort.minimum.events to change the floor.");
     }
 
 
     /**
-     * Count the lines of the audit log carrying a particular message id.  Read line by line: these logs run
-     * to tens of megabytes on a full run.
+     * Print what each server sent and received, and the incoming event types seen.
+     * <br>
+     * A conformance run reports a status whatever happened to the events behind it, so the event flow is
+     * worth stating plainly next to the result rather than leaving in a ten megabyte audit log.  The event
+     * types matter as much as the counts: a cohort exchanging nothing but NewEntityEvent is a cohort whose
+     * refresh round trip is not working, and that is not visible from a total.
+     *
+     * @param received incoming event counts by server
+     * @param sent outgoing event counts by server
+     */
+    private static void printEventFlow(Map<String, Long> received,
+                                       Map<String, Long> sent)
+    {
+        System.out.println();
+        System.out.println("cts-fvt: cohort event flow");
+        System.out.printf("  %-40s %10s %10s%n", "server", "received", "sent");
+
+        for (String serverName : new String[]{ OMAGPlatformExtension.CTS_SERVER_NAME, OMAGPlatformExtension.TUT_SERVER_NAME })
+        {
+            System.out.printf("  %-40s %10d %10d%n",
+                              serverName,
+                              received.getOrDefault(serverName, 0L),
+                              sent.getOrDefault(serverName, 0L));
+        }
+
+        Map<String, Long> incomingTypes = countIncomingEventTypes();
+
+        if (incomingTypes.isEmpty())
+        {
+            System.out.println("  no incoming events of any type");
+        }
+        else
+        {
+            System.out.println("  incoming event types:");
+
+            incomingTypes.entrySet()
+                         .stream()
+                         .sorted((one, other) -> Long.compare(other.getValue(), one.getValue()))
+                         .forEach(entry -> System.out.printf("    %-40s %10d%n", entry.getKey(), entry.getValue()));
+        }
+
+        System.out.println();
+    }
+
+
+    /**
+     * Count audit log records carrying a message id, by the server that logged them.
+     * <br>
+     * The server that logged a record is the first token after the timestamp, with its originator id run on
+     * to the end of it - so the name is matched as a prefix rather than by splitting.  Matching anywhere in
+     * the line would be wrong: an incoming event record names the server it came <i>from</i> as well as the
+     * one that logged it, and both servers would be credited with every event.
      *
      * @param messageId the audit code to count
-     * @return number of occurrences, or zero if the log cannot be read
+     * @return occurrences by logging server, empty if the log cannot be read
      */
-    private static long countAuditLogOccurrences(String messageId)
+    private static Map<String, Long> countEventsByServer(String messageId)
+    {
+        Map<String, Long> counts = new HashMap<>();
+
+        readAuditLog(line ->
+                     {
+                         String[] tokens = line.split("\\s+");
+
+                         if ((tokens.length > 2) && (messageId.equals(tokens[2])))
+                         {
+                             for (String serverName : new String[]{ OMAGPlatformExtension.CTS_SERVER_NAME,
+                                                                    OMAGPlatformExtension.TUT_SERVER_NAME })
+                             {
+                                 if (tokens[1].startsWith(serverName))
+                                 {
+                                     counts.merge(serverName, 1L, Long::sum);
+                                 }
+                             }
+                         }
+                     });
+
+        return counts;
+    }
+
+
+    /**
+     * Count the incoming cohort events by the type of event.
+     *
+     * @return occurrences by event type name, empty if the log cannot be read
+     */
+    private static Map<String, Long> countIncomingEventTypes()
+    {
+        final String prefix = "Processing incoming event of type ";
+        final String suffix = " for instance ";
+
+        Map<String, Long> counts = new HashMap<>();
+
+        readAuditLog(line ->
+                     {
+                         int typeStart = line.indexOf(prefix);
+
+                         if (typeStart >= 0)
+                         {
+                             int typeEnd = line.indexOf(suffix, typeStart);
+
+                             if (typeEnd > typeStart)
+                             {
+                                 counts.merge(line.substring(typeStart + prefix.length(), typeEnd), 1L, Long::sum);
+                             }
+                         }
+                     });
+
+        return counts;
+    }
+
+
+    /**
+     * Read the audit log a line at a time, handing each line to the supplied consumer.  Line by line
+     * deliberately: these logs run to tens of megabytes on a full run.
+     *
+     * @param lineConsumer called once per line
+     */
+    private static void readAuditLog(java.util.function.Consumer<String> lineConsumer)
     {
         if (! AUDIT_LOG.isFile())
         {
-            return 0L;
+            return;
         }
-
-        long count = 0L;
 
         try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(AUDIT_LOG)))
         {
@@ -318,10 +464,7 @@ public class RepositoryConformanceFVT
 
             while (line != null)
             {
-                if (line.contains(messageId))
-                {
-                    count++;
-                }
+                lineConsumer.accept(line);
 
                 line = reader.readLine();
             }
@@ -330,10 +473,7 @@ public class RepositoryConformanceFVT
         {
             System.out.println("cts-fvt: could not read " + AUDIT_LOG.getPath() + " to check the event flow ("
                                        + error.getMessage() + ")");
-            return 0L;
         }
-
-        return count;
     }
 
 

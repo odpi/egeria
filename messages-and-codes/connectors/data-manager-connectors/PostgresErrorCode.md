@@ -9,7 +9,7 @@ The PostgresErrorCode is used to define first failure data capture (FFDC) for er
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 2 |
+| **Number of messages** | 3 |
 | **Message identifiers begin** | `POSTGRES-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresErrorCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/data-manager-connectors/postgres-server-connectors](../../../open-metadata-implementation/adapters/open-connectors/data-manager-connectors/postgres-server-connectors) |
@@ -22,6 +22,7 @@ The PostgresErrorCode is used to define first failure data capture (FFDC) for er
 | Message Id | HTTP Code | Message |
 |---|---|---|
 | [POSTGRES-CONNECTOR-400-002](#postgres-connector-400-002) | 400 | Connection {0} has been configured without the embedded JDBC database connection |
+| [POSTGRES-CONNECTOR-400-003](#postgres-connector-400-003) | 400 | There is no record {0} in table {1} accessed through connection {2} |
 | [POSTGRES-CONNECTOR-500-001](#postgres-connector-500-001) | 500 | The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3} |
 
 ----
@@ -43,6 +44,27 @@ The connector cannot start because it does not have a connector to the database.
 **User action**
 
 Update the connection to include the embedded connection needed to connect to the desired database.
+
+
+----
+
+### POSTGRES-CONNECTOR-400-003
+
+> There is no record {0} in table {1} accessed through connection {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `PostgresErrorCode.NO_SUCH_RECORD` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The connector cannot return the requested record because the table has fewer records than that.  The first record is record 0.
+
+**User action**
+
+Check the record count before reading, and read records between 0 and one less than the count.
 
 
 ----

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
@@ -111,6 +112,7 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
      *
      * @return string name
      */
+    @JsonProperty("iscQualifiedName")
     public String getISCQualifiedName()
     {
         return iscQualifiedName;
@@ -122,6 +124,7 @@ public class NotificationSubscriberProperties extends LabeledRelationshipPropert
      *
      * @param iscQualifiedName string name
      */
+    @JsonProperty("iscQualifiedName")
     public void setISCQualifiedName(String iscQualifiedName)
     {
         this.iscQualifiedName = iscQualifiedName;

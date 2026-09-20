@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria;
@@ -1167,6 +1168,433 @@ public class RepositoryHandler
             {
                 errorHandler.handleRepositoryError(error, methodName, localMethodName);
             }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the name of the supplied type, or a placeholder if the type is not supplied.
+     *
+     * @param typeDefSummary type to describe - may be null
+     * @return type name
+     */
+    private String getTypeName(TypeDefSummary typeDefSummary)
+    {
+        if (typeDefSummary != null)
+        {
+            return typeDefSummary.getName();
+        }
+
+        return "<Unknown>";
+    }
+
+
+    /**
+     * Change the unique identifier of an existing entity.  This is used if two different entities are
+     * discovered to have the same unique identifier.
+     *
+     * @param userId                  calling user
+     * @param entityGUID              current unique identifier of the entity
+     * @param entityGUIDParameterName parameter supplying entityGUID
+     * @param entityTypeGUID          unique identifier of the entity's type - used to verify the entity's identity
+     * @param entityTypeName          unique name of the entity's type - used to verify the entity's identity
+     * @param newEntityGUID           new unique identifier for the entity
+     * @param methodName              name of calling method
+     *
+     * @return entity with its new unique identifier
+     *
+     * @throws InvalidParameterException  problem with the GUID
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityDetail reIdentifyEntity(String userId,
+                                         String entityGUID,
+                                         String entityGUIDParameterName,
+                                         String entityTypeGUID,
+                                         String entityTypeName,
+                                         String newEntityGUID,
+                                         String methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        final String localMethodName = "reIdentifyEntity";
+
+        try
+        {
+            return metadataCollection.reIdentifyEntity(userId, entityTypeGUID, entityTypeName, entityGUID, newEntityGUID);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
+        {
+            errorHandler.handleUnknownEntity(error, entityGUID, entityTypeName, methodName, entityGUIDParameterName);
+        }
+        catch (InvalidParameterException error)
+        {
+            /*
+             * The repository refused the request because of something about the instance or the values
+             * supplied - for example, re-homing an instance this repository masters rather than a reference
+             * copy.  That is the caller's answer, so it passes straight through rather than being reported
+             * as an unexpected server error.
+             */
+            throw error;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Change the type of an existing entity.  Typically, this action is taken to move an entity's type to either
+     * a supertype (so the subtype can be deleted) or a new subtype (so additional properties can be added).
+     *
+     * @param userId                  calling user
+     * @param entityGUID              unique identifier of the entity to change
+     * @param entityGUIDParameterName parameter supplying entityGUID
+     * @param currentTypeDefSummary   the current type of the entity - used to verify the entity's identity
+     * @param newTypeDefSummary       the new type for the entity
+     * @param methodName              name of calling method
+     *
+     * @return entity with its new type
+     *
+     * @throws InvalidParameterException  problem with the GUID or the types
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityDetail reTypeEntity(String         userId,
+                                     String         entityGUID,
+                                     String         entityGUIDParameterName,
+                                     TypeDefSummary currentTypeDefSummary,
+                                     TypeDefSummary newTypeDefSummary,
+                                     String         methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String localMethodName        = "reTypeEntity";
+        final String newTypeParameterName   = "newTypeDefSummary";
+
+        try
+        {
+            return metadataCollection.reTypeEntity(userId, entityGUID, currentTypeDefSummary, newTypeDefSummary);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
+        {
+            errorHandler.handleUnknownEntity(error, entityGUID, this.getTypeName(currentTypeDefSummary), methodName, entityGUIDParameterName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException error)
+        {
+            errorHandler.handleUnsupportedType(error, methodName, newTypeParameterName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException error)
+        {
+            errorHandler.handleUnsupportedProperty(error, methodName, newTypeParameterName);
+        }
+        catch (ClassificationErrorException error)
+        {
+            errorHandler.handleUnsupportedType(error, methodName, newTypeParameterName);
+        }
+        catch (InvalidParameterException error)
+        {
+            /*
+             * The repository refused the request because of something about the instance or the values
+             * supplied - for example, re-homing an instance this repository masters rather than a reference
+             * copy.  That is the caller's answer, so it passes straight through rather than being reported
+             * as an unexpected server error.
+             */
+            throw error;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Change the home repository of an existing entity.  This action is taken, for example, if the original home
+     * repository becomes permanently unavailable, or if the user community updating this entity moves to working
+     * from a different repository in the open metadata repository cohort.
+     *
+     * @param userId                        calling user
+     * @param entityGUID                    unique identifier of the entity to change
+     * @param entityGUIDParameterName       parameter supplying entityGUID
+     * @param entityTypeGUID                unique identifier of the entity's type - used to verify the entity's identity
+     * @param entityTypeName                unique name of the entity's type - used to verify the entity's identity
+     * @param homeMetadataCollectionId      the existing identifier for this entity's home
+     * @param newHomeMetadataCollectionId   unique identifier for the new home metadata collection/repository
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository
+     * @param methodName                    name of calling method
+     *
+     * @return entity with its new home information
+     *
+     * @throws InvalidParameterException  problem with the GUID
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityDetail reHomeEntity(String userId,
+                                     String entityGUID,
+                                     String entityGUIDParameterName,
+                                     String entityTypeGUID,
+                                     String entityTypeName,
+                                     String homeMetadataCollectionId,
+                                     String newHomeMetadataCollectionId,
+                                     String newHomeMetadataCollectionName,
+                                     String methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        final String localMethodName = "reHomeEntity";
+
+        try
+        {
+            return metadataCollection.reHomeEntity(userId,
+                                                   entityGUID,
+                                                   entityTypeGUID,
+                                                   entityTypeName,
+                                                   homeMetadataCollectionId,
+                                                   newHomeMetadataCollectionId,
+                                                   newHomeMetadataCollectionName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
+        {
+            errorHandler.handleUnknownEntity(error, entityGUID, entityTypeName, methodName, entityGUIDParameterName);
+        }
+        catch (InvalidParameterException error)
+        {
+            /*
+             * The repository refused the request because of something about the instance or the values
+             * supplied - for example, re-homing an instance this repository masters rather than a reference
+             * copy.  That is the caller's answer, so it passes straight through rather than being reported
+             * as an unexpected server error.
+             */
+            throw error;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Change the unique identifier of an existing relationship.  This is used if two different relationships are
+     * discovered to have the same unique identifier.
+     *
+     * @param userId                        calling user
+     * @param relationshipGUID              current unique identifier of the relationship
+     * @param relationshipGUIDParameterName parameter supplying relationshipGUID
+     * @param relationshipTypeGUID          unique identifier of the relationship's type - used to verify its identity
+     * @param relationshipTypeName          unique name of the relationship's type - used to verify its identity
+     * @param newRelationshipGUID           new unique identifier for the relationship
+     * @param methodName                    name of calling method
+     *
+     * @return relationship with its new unique identifier
+     *
+     * @throws InvalidParameterException  problem with the GUID
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public Relationship reIdentifyRelationship(String userId,
+                                               String relationshipGUID,
+                                               String relationshipGUIDParameterName,
+                                               String relationshipTypeGUID,
+                                               String relationshipTypeName,
+                                               String newRelationshipGUID,
+                                               String methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String localMethodName = "reIdentifyRelationship";
+
+        try
+        {
+            return metadataCollection.reIdentifyRelationship(userId,
+                                                             relationshipTypeGUID,
+                                                             relationshipTypeName,
+                                                             relationshipGUID,
+                                                             newRelationshipGUID);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException error)
+        {
+            errorHandler.handleUnknownRelationship(error, relationshipGUID, relationshipTypeName, methodName, relationshipGUIDParameterName);
+        }
+        catch (InvalidParameterException error)
+        {
+            /*
+             * The repository refused the request because of something about the instance or the values
+             * supplied - for example, re-homing an instance this repository masters rather than a reference
+             * copy.  That is the caller's answer, so it passes straight through rather than being reported
+             * as an unexpected server error.
+             */
+            throw error;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Change the type of an existing relationship.  Typically, this action is taken to move a relationship's type to
+     * either a supertype (so the subtype can be deleted) or a new subtype (so additional properties can be added).
+     *
+     * @param userId                        calling user
+     * @param relationshipGUID              unique identifier of the relationship to change
+     * @param relationshipGUIDParameterName parameter supplying relationshipGUID
+     * @param currentTypeDefSummary         the current type of the relationship - used to verify its identity
+     * @param newTypeDefSummary             the new type for the relationship
+     * @param methodName                    name of calling method
+     *
+     * @return relationship with its new type
+     *
+     * @throws InvalidParameterException  problem with the GUID or the types
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public Relationship reTypeRelationship(String         userId,
+                                           String         relationshipGUID,
+                                           String         relationshipGUIDParameterName,
+                                           TypeDefSummary currentTypeDefSummary,
+                                           TypeDefSummary newTypeDefSummary,
+                                           String         methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String localMethodName      = "reTypeRelationship";
+        final String newTypeParameterName = "newTypeDefSummary";
+
+        try
+        {
+            return metadataCollection.reTypeRelationship(userId, relationshipGUID, currentTypeDefSummary, newTypeDefSummary);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException error)
+        {
+            errorHandler.handleUnknownRelationship(error, relationshipGUID, this.getTypeName(currentTypeDefSummary), methodName, relationshipGUIDParameterName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException error)
+        {
+            errorHandler.handleUnsupportedType(error, methodName, newTypeParameterName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException error)
+        {
+            errorHandler.handleUnsupportedProperty(error, methodName, newTypeParameterName);
+        }
+        catch (InvalidParameterException error)
+        {
+            /*
+             * The repository refused the request because of something about the instance or the values
+             * supplied - for example, re-homing an instance this repository masters rather than a reference
+             * copy.  That is the caller's answer, so it passes straight through rather than being reported
+             * as an unexpected server error.
+             */
+            throw error;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Change the home repository of an existing relationship.  This action is taken, for example, if the original
+     * home repository becomes permanently unavailable, or if the user community updating this relationship moves to
+     * working from a different repository in the open metadata repository cohort.
+     *
+     * @param userId                        calling user
+     * @param relationshipGUID              unique identifier of the relationship to change
+     * @param relationshipGUIDParameterName parameter supplying relationshipGUID
+     * @param relationshipTypeGUID          unique identifier of the relationship's type - used to verify its identity
+     * @param relationshipTypeName          unique name of the relationship's type - used to verify its identity
+     * @param homeMetadataCollectionId      the existing identifier for this relationship's home
+     * @param newHomeMetadataCollectionId   unique identifier for the new home metadata collection/repository
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository
+     * @param methodName                    name of calling method
+     *
+     * @return relationship with its new home information
+     *
+     * @throws InvalidParameterException  problem with the GUID
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public Relationship reHomeRelationship(String userId,
+                                           String relationshipGUID,
+                                           String relationshipGUIDParameterName,
+                                           String relationshipTypeGUID,
+                                           String relationshipTypeName,
+                                           String homeMetadataCollectionId,
+                                           String newHomeMetadataCollectionId,
+                                           String newHomeMetadataCollectionName,
+                                           String methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        final String localMethodName = "reHomeRelationship";
+
+        try
+        {
+            return metadataCollection.reHomeRelationship(userId,
+                                                         relationshipGUID,
+                                                         relationshipTypeGUID,
+                                                         relationshipTypeName,
+                                                         homeMetadataCollectionId,
+                                                         newHomeMetadataCollectionId,
+                                                         newHomeMetadataCollectionName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException error)
+        {
+            errorHandler.handleUnknownRelationship(error, relationshipGUID, relationshipTypeName, methodName, relationshipGUIDParameterName);
+        }
+        catch (InvalidParameterException error)
+        {
+            /*
+             * The repository refused the request because of something about the instance or the values
+             * supplied - for example, re-homing an instance this repository masters rather than a reference
+             * copy.  That is the caller's answer, so it passes straight through rather than being reported
+             * as an unexpected server error.
+             */
+            throw error;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;

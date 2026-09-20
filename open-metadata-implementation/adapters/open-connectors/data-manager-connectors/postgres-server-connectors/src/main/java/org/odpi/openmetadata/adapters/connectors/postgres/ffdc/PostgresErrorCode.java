@@ -35,6 +35,15 @@ public enum PostgresErrorCode implements ExceptionMessageSet
              "https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/"),
 
     /**
+     * POSTGRES-CONNECTOR-400-003 - There is no record {0} in table {1} accessed through connection {2}
+     */
+    NO_SUCH_RECORD(400, "POSTGRES-CONNECTOR-400-003",
+                   "There is no record {0} in table {1} accessed through connection {2}",
+                   "The connector cannot return the requested record because the table has fewer records than that.  The first record is record 0.",
+                   "Check the record count before reading, and read records between 0 and one less than the count.",
+                   "https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/"),
+
+    /**
      * POSTGRES-CONNECTOR-500-001 - The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "POSTGRES-CONNECTOR-500-001",

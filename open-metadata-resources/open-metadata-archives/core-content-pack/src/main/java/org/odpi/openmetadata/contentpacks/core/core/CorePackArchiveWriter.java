@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.ExceptionTypeDefinition;
 import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.DaysOfWeekGuard;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.WriteAuditLogRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductPerspectiveDefinition;
 import org.odpi.openmetadata.contentpacks.core.*;
 import org.odpi.openmetadata.contentpacks.core.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
@@ -87,6 +88,19 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          * Write exception types used by Egeria's connectors.
          */
         writeExceptionTypes();
+
+        /*
+         * Add the perspectives for the digital product catalogs.
+         */
+        for (ProductPerspectiveDefinition perspectiveDefinition : ProductPerspectiveDefinition.values())
+        {
+            this.addPerspective(perspectiveDefinition.getGUID(),
+                                perspectiveDefinition.getQualifiedName(),
+                                perspectiveDefinition.getDisplayName(),
+                                perspectiveDefinition.getIdentifier(),
+                                perspectiveDefinition.getDescription(),
+                                perspectiveDefinition.getURL());
+        }
 
         /*
          * Add valid metadata values for the Survey Action Framework standard controls.

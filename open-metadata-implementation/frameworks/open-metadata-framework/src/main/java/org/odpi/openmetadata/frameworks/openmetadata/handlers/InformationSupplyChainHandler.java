@@ -265,10 +265,10 @@ public class InformationSupplyChainHandler extends CollectionHandler
      * @throws PropertyServerException problem with the conversion process
      */
     private List<OpenMetadataRootElement> convertInformationSupplyChains(String                    userId,
-                                                                               List<OpenMetadataElement> openMetadataElements,
-                                                                               boolean                   addImplementation,
-                                                                               QueryOptions              queryOptions,
-                                                                               String                    methodName) throws PropertyServerException
+                                                                         List<OpenMetadataElement> openMetadataElements,
+                                                                         boolean                   addImplementation,
+                                                                         QueryOptions              queryOptions,
+                                                                         String                    methodName) throws PropertyServerException
     {
         if (openMetadataElements != null)
         {

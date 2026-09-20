@@ -562,6 +562,10 @@ public class PropertyHelper
                     {
                         elementHeader.setMemento(this.getElementClassification(attachedClassification));
                     }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.PROMISE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setPromise(this.getElementClassification(attachedClassification));
+                    }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.SECURITY_LIST_MEMBERSHIP_CLASSIFICATION.typeName))
                     {
                         elementHeader.setSecurityListMembership(this.getElementClassification(attachedClassification));
@@ -4465,6 +4469,10 @@ public class PropertyHelper
             if (OpenMetadataType.MEMENTO_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return elementHeader.getMemento();
+            }
+            if (OpenMetadataType.PROMISE_CLASSIFICATION.typeName.equals(classificationName))
+            {
+                return elementHeader.getPromise();
             }
             if (OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(classificationName))
             {

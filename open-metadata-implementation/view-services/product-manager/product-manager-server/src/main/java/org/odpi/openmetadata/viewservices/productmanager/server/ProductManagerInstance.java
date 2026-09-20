@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorC
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ProductManagerHandler;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.EgeriaConnectedAssetClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 
@@ -26,6 +27,7 @@ public class ProductManagerInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.PRODUCT_MANAGER;
 
     private final CollectionHandler    collectionHandler;
+    private final ProductManagerHandler productManagerHandler;
     private final ConnectedAssetClient connectedAssetClient;
     private final OpenMetadataClient   openMetadataClient;
     private final AuditLog             auditLog;
@@ -78,6 +80,11 @@ public class ProductManagerInstance extends OMVSServiceInstance
                                                   myDescription.getViewServiceFullName(),
                                                   openMetadataClient);
 
+        productManagerHandler = new ProductManagerHandler(serverName,
+                                                          auditLog,
+                                                          myDescription.getViewServiceFullName(),
+                                                          openMetadataClient);
+
         connectedAssetClient = new EgeriaConnectedAssetClient(remoteServerName,
                                                               remoteServerURL,
                                                               localServerSecretsStoreProvider,
@@ -122,6 +129,18 @@ public class ProductManagerInstance extends OMVSServiceInstance
     public CollectionHandler getCollectionHandler()
     {
         return collectionHandler;
+    }
+
+
+    /**
+     * Return the product manager handler.  This handler is from the Open Metadata Framework (OMF) and builds
+     * digital products and their subscription types.
+     *
+     * @return handler
+     */
+    public ProductManagerHandler getProductManagerHandler()
+    {
+        return productManagerHandler;
     }
 
 

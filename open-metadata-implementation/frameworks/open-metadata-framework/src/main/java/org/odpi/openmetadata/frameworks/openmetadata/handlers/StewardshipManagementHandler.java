@@ -31,6 +31,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.IncompleteProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.PromiseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.InstanceMetadataProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MetamodelInstanceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.ObjectIdentifierProperties;
@@ -3649,6 +3650,70 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         openMetadataClient.declassifyMetadataElementInStore(userId,
                                                             elementGUID,
                                                             OpenMetadataType.INCOMPLETE_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to say that it is a promise to deliver a real-world digital resource/artifact.
+     * Once classified, the element is only returned to lineage requests (forLineage=true).
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param properties             properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setElementAsPromise(String                 userId,
+                                    String                 elementGUID,
+                                    PromiseProperties      properties,
+                                    MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String methodName        = "setElementAsPromise";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.PROMISE_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the promise designation from an element - typically because the real-world digital resource/artifact
+     * has now been delivered.  The element is then visible to ordinary (non-lineage) requests again.  Since the
+     * classified element is only visible to lineage requests, the supplied options must have forLineage set.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearElementAsPromise(String                userId,
+                                      String                elementGUID,
+                                      MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName        = "clearElementAsPromise";
+        final String guidParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.PROMISE_CLASSIFICATION.typeName,
                                                             metadataSourceOptions);
     }
 

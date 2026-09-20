@@ -12,8 +12,11 @@ relating to the definition and maintenance of digital products and digital produ
 
 The Product Manager API supports the following key features:
 
+* **Digital Product Creation**: Create a digital product and link it, in one call, to its product manager, community, owning collections (folders and product families), guiding questions, product asset, governance definitions (such as the subscriber's license) and data specification.
+* **Subscription Types**: Add one-time, periodic and ongoing update subscription types to a digital product.  Each is a notification type, registered with the subscription manager (Baudot by default), plus the governance action process that a subscriber runs to take out a subscription of that type.
 * **Digital Product Dependency Management**: Link and unlink dependent digital products to represent product hierarchies and usage.
 * **Product Manager Assignment**: Assign and detach product managers to digital products to define responsibility and ownership.
+* **Bitol Documents**: Publish, import and generate Open Data Contract Standard (ODCS) and Open Data Product Standard (ODPS) documents.
 
 ## Further information
 

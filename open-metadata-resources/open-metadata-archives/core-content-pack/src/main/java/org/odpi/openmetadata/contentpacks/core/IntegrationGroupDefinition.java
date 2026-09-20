@@ -109,6 +109,15 @@ public enum IntegrationGroupDefinition
              ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * Dynamic integration group supporting integration connectors that maintain the dependencies between digital products.
+     */
+    DARWIN("4e9b2d4f-ae21-47cd-bbac-01f9d03772be",
+             "Egeria:IntegrationGroup:Darwin",
+             "DarwinIntegrationGroup",
+             "Dynamic integration group supporting integration connectors that maintain the dependencies between digital products.",
+             ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * Dynamic integration group supporting integration connectors managing Data Hubs.
      */
     LISKOV("c7f37f8d-af7a-433d-86f8-153dae9577fd",

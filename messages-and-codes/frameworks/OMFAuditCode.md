@@ -9,7 +9,7 @@ The OMFAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 14 |
+| **Number of messages** | 15 |
 | **Message identifiers begin** | `OPEN-METADATA-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFAuditCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-metadata-framework](../../open-metadata-implementation/frameworks/open-metadata-framework) |
@@ -33,6 +33,7 @@ The OMFAuditCode is used to define the message content for the Audit Log.
 | [OPEN-METADATA-0017](#open-metadata-0017) | INFO | File change notification for connector {0} of kind {1} for path {2} |
 | [OPEN-METADATA-0018](#open-metadata-0018) | INFO | The {0} service is not yet monitoring notification type {1} because it is planned to start at {2} |
 | [OPEN-METADATA-0019](#open-metadata-0019) | INFO | The {0} service has stopped monitoring notification type {1} because it has passed its completion date of {2} |
+| [OPEN-METADATA-0020](#open-metadata-0020) | ERROR | The {0} service has not registered notification type {1} with the default subscription manager because no integration connector with unique identifier {2} is defined in open metadata |
 | [OPEN-METADATA-0025](#open-metadata-0025) | EXCEPTION | The Open Metadata Store has received an unexpected {0} exception while formatting a response during method {1} for service {2}.  The message was: {3} |
 
 ----
@@ -319,6 +320,28 @@ The notification type is no longer monitored and its subscribers receive no furt
 **User action**
 
 No action is required if the completion date is intended.  Extend it if the notification type should still be delivering to its subscribers.
+
+
+----
+
+### OPEN-METADATA-0020
+
+> The {0} service has not registered notification type {1} with the default subscription manager because no integration connector with unique identifier {2} is defined in open metadata
+
+|  |  |
+|---|---|
+| **Java constant** | `OMFAuditCode.DEFAULT_SUBSCRIPTION_MANAGER_NOT_FOUND` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/notification-type/> |
+
+**System action**
+
+The notification type is created, but no subscription manager is looking after it, so the subscribers to the subscription type it belongs to are not notified.
+
+**User action**
+
+Load the Open Metadata Digital Products content pack, which defines the Baudot Subscription Manager, or name a subscription manager when creating the subscription type.
 
 
 ----

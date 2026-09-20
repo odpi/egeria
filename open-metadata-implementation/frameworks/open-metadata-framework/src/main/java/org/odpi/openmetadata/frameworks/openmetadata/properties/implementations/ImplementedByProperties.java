@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.implementations
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RoledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -97,10 +98,15 @@ public class ImplementedByProperties extends RoledRelationshipProperties
     }
 
 
+    @JsonProperty("iscQualifiedName")
+
+
     public String getISCQualifiedName()
     {
         return iscQualifiedName;
     }
+
+    @JsonProperty("iscQualifiedName")
 
     public void setISCQualifiedName(String iscQualifiedName)
     {

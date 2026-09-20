@@ -3275,6 +3275,70 @@ public class ClassificationExplorerResource
 
 
     /**
+     * Classify an element to say that it is a promise to deliver a real-world digital resource/artifact.
+     * Once classified, the element is only returned to lineage requests (forLineage=true).
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/promise")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setElementAsPromise",
+            description="Classify an element to say that it is a promise to deliver a real-world digital resource/artifact.  Once classified, the element is only returned to lineage requests (forLineage=true).",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0010-Base-Model/#promise-classification"))
+
+    public VoidResponse setElementAsPromise(@PathVariable String serverName,
+                                            @PathVariable String urlMarker,
+                                            @PathVariable String elementGUID,
+                                            @RequestBody (required = false)
+                                            NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setElementAsPromise(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the promise designation from an element - typically because the real-world digital resource/artifact
+     * has now been delivered.  The request body must have forLineage set, since the element is otherwise invisible.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/promise/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearElementAsPromise",
+            description="Remove the promise designation from an element - typically because the real-world digital resource/artifact has now been delivered.  The request body must have forLineage set, since the element is otherwise invisible.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0010-Base-Model/#promise-classification"))
+
+    public VoidResponse clearElementAsPromise(@PathVariable String serverName,
+                                              @PathVariable String urlMarker,
+                                              @PathVariable String elementGUID,
+                                              @RequestBody (required = false)
+                                              DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearElementAsPromise(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
      * Classify an element to say that it identifies an object.
      *
      * @param serverName name of the server to route the request to

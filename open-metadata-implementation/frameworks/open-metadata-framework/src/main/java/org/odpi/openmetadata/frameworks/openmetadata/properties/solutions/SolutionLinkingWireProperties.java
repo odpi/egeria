@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.solutions;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -73,6 +74,7 @@ public class SolutionLinkingWireProperties extends LabeledRelationshipProperties
      *
      * @return list
      */
+    @JsonProperty("iscQualifiedNames")
     public List<String> getISCQualifiedNames()
     {
         return iscQualifiedNames;
@@ -84,6 +86,7 @@ public class SolutionLinkingWireProperties extends LabeledRelationshipProperties
      *
      * @param iscQualifiedNames list
      */
+    @JsonProperty("iscQualifiedNames")
     public void setISCQualifiedNames(List<String> iscQualifiedNames)
     {
         this.iscQualifiedNames = iscQualifiedNames;

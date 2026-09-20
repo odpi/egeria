@@ -66,6 +66,7 @@ public class LineageRelationshipProperties extends LabeledRelationshipProperties
      *
      * @param iscQualifiedName String name
      */
+    @JsonProperty("iscQualifiedName")
     public void setISCQualifiedName(String iscQualifiedName)
     {
         this.iscQualifiedName = iscQualifiedName;
@@ -77,6 +78,7 @@ public class LineageRelationshipProperties extends LabeledRelationshipProperties
      *
      * @return qualifiedName
      */
+    @JsonProperty("iscQualifiedName")
     public String getISCQualifiedName()
     {
         return iscQualifiedName;

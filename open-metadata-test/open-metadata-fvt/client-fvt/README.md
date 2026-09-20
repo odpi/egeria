@@ -38,6 +38,22 @@ The repository uses its own schema, `repository_clientFvtMetadataStore`, and the
 
 ## What it covers
 
+[`InstanceControlClientFVT`](src/test/java/org/odpi/openmetadata/clientfvt/InstanceControlClientFVT.java) covers
+the six operations that change an instance's **control information** rather than its properties - re-identify,
+re-type and re-home, for both elements and relationships. These have always been on the repository interface;
+what is under test is the path that now carries them up to `OpenMetadataStore`, which is the path the Metadata
+Expert OMVS takes. Every call goes through the enterprise repository connector, so its routing decisions are
+exercised even though this server's cohort holds only its own repository.
+
+Re-home is the awkward one. It is not routed to the home repository the way its two siblings are: re-homing is a
+repository *claiming a reference copy it holds*, so the repository that becomes the new home has to execute it,
+and the current home refuses it. Cohort re-homing - a reference copy propagated from a second repository, then
+claimed - belongs to the conformance test suite and is not duplicated here. A content pack is the only source of
+a non-locally-mastered instance reachable without a second server, and claiming one is what these tests use.
+Writing them turned up two defects, both since fixed: the enterprise connector routed re-home to the wrong
+repository, and `validateEntityCanBeRehomed` read an instance's `replicatedBy` as ownership, which made a content
+pack impossible to claim in the repository that had loaded it.
+
 Alongside the client surfaces, the suite guards one cross-cutting behaviour:
 [`MessageURLFVT`](src/test/java/org/odpi/openmetadata/clientfvt/MessageURLFVT.java) checks that the link to
 further reading carried by a message definition survives the trip back from the server. A client rebuilds an

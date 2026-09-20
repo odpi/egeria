@@ -263,6 +263,18 @@ public class OpenMetadataRelationshipBuilder
                 }
                 else if (properties instanceof ExceptionProperties exceptionProperties)
                 {
+                    elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                            OpenMetadataProperty.AFFECTED_CLASSIFICATIONS.name,
+                                                                            exceptionProperties.getAffectedClassifications());
+
+                    elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                              OpenMetadataProperty.AFFECTED_ELEMENTS.name,
+                                                                              exceptionProperties.getAffectedElements());
+
+                    elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                              OpenMetadataProperty.AFFECTED_RELATIONSHIPS.name,
+                                                                              exceptionProperties.getAffectedRelationships());
+
                     elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                        OpenMetadataProperty.LAST_REVIEW_TIME.name,
                                                                        exceptionProperties.getLastReviewTime());
@@ -417,7 +429,7 @@ public class OpenMetadataRelationshipBuilder
 
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                   OpenMetadataProperty.MIN_CARDINALITY.name,
-                                                                  partOfRelationshipProperties.getMaxCardinality());
+                                                                  partOfRelationshipProperties.getMinCardinality());
 
                 if (partOfRelationshipProperties.getCoverageCategory() != null)
                 {
@@ -735,7 +747,7 @@ public class OpenMetadataRelationshipBuilder
 
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                   OpenMetadataProperty.MIN_CARDINALITY.name,
-                                                                  conceptBeadRelationshipEndProperties.getMaxCardinality());
+                                                                  conceptBeadRelationshipEndProperties.getMinCardinality());
 
                 elementProperties = propertyHelper.addBooleanProperty(elementProperties,
                                                                       OpenMetadataProperty.UNIQUE_VALUES.name,

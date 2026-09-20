@@ -158,6 +158,16 @@ public enum OMFAuditCode implements AuditLogMessageSet
                                 "https://egeria-project.org/concepts/notification-type/"),
 
     /**
+     * OPEN-METADATA-0020 - The {0} service has not registered notification type {1} with the default subscription manager because no integration connector with unique identifier {2} is defined in open metadata
+     */
+    DEFAULT_SUBSCRIPTION_MANAGER_NOT_FOUND("OPEN-METADATA-0020",
+                                           AuditLogRecordSeverityLevel.ERROR,
+                                           "The {0} service has not registered notification type {1} with the default subscription manager because no integration connector with unique identifier {2} is defined in open metadata",
+                                           "The notification type is created, but no subscription manager is looking after it, so the subscribers to the subscription type it belongs to are not notified.",
+                                           "Load the Open Metadata Digital Products content pack, which defines the Baudot Subscription Manager, or name a subscription manager when creating the subscription type.",
+                                           "https://egeria-project.org/concepts/notification-type/"),
+
+    /**
      * OPEN-METADATA-0025 - The Open Metadata Store has received an unexpected {0} exception while formatting a response during method {1}.  The message was: {2}
      */
     UNEXPECTED_CONVERTER_EXCEPTION("OPEN-METADATA-0025",

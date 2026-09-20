@@ -85,6 +85,19 @@ final class SubscriptionFvtTestSupport
     static final String FAMILY_DESTINATION_PURPOSE = "family";
 
     /**
+     * The destination label for the product built through the product manager client - see ProductManagerFVT.
+     */
+    static final String PRODUCT_MANAGER_DESTINATION_PURPOSE = "product-manager";
+
+    /**
+     * The label for the schema that holds the source table of the product built through the product manager
+     * client.  Unlike the destinations, this schema is given a table with rows in it before the product is
+     * created, because the product's data has to come from somewhere real for a subscription to it to deliver
+     * anything.
+     */
+    static final String PRODUCT_MANAGER_SOURCE_PURPOSE = "product-manager-source";
+
+    /**
      * Whether the catalogue has been built during this run - see {@link #ensureCatalogueBuilt()}.
      */
     private static boolean catalogueBuilt = false;
@@ -408,7 +421,8 @@ final class SubscriptionFvtTestSupport
 
     /**
      * Return every schema this suite creates on the server under test: one per subscription type for the
-     * product subscriptions, plus one for the product family subscription.
+     * product subscriptions, one for the product family subscription, and two for the product built through
+     * the product manager client - its source and its destination.
      *
      * @return schema names
      */
@@ -422,6 +436,8 @@ final class SubscriptionFvtTestSupport
         }
 
         schemaNames.add(destinationSchemaName(FAMILY_DESTINATION_PURPOSE));
+        schemaNames.add(destinationSchemaName(PRODUCT_MANAGER_DESTINATION_PURPOSE));
+        schemaNames.add(destinationSchemaName(PRODUCT_MANAGER_SOURCE_PURPOSE));
 
         return schemaNames;
     }
@@ -505,9 +521,8 @@ final class SubscriptionFvtTestSupport
      * a deliberate trade of one risk for another: a run that reuses the catalogue is testing subscriptions,
      * not catalogue construction.
      * <br>
-     * Products are purged with their anchored content, which takes the notification types, subscription
-     * options and product assets with them.  The folders, communities, glossary terms and governance
-     * definitions Jacquard organises them into are anchored elsewhere and are left to be reused.
+     * Everything Jacquard builds is purged: the products with their anchored content, and then a sweep by
+     * qualified name for anything in Jacquard's namespace that a cascade left behind - see the body for why.
      *
      * @throws Exception problem communicating with the server
      */
@@ -544,11 +559,79 @@ final class SubscriptionFvtTestSupport
             }
         }
 
+        /*
+         * Purging a product is meant to take its anchored content with it, and mostly does - but not always.
+         * A run that rebuilt on top of a catalogue whose product connections had survived found every product
+         * skipped: Jacquard looks each connection up by qualified name, found two, linked them as peer
+         * duplicates for the duplicate manager, and moved on, leaving products whose new asset had no
+         * connection and subscriptions that could never deliver.  So everything Jacquard names for itself is
+         * swept up by name as well: the products, families and the assets, connections, endpoints and data
+         * specifications named after them, along with the subscription options and notification types that
+         * are anchored to the products.  The folders, communities, glossary terms and governance definitions
+         * share the namespace and go too; Jacquard recreates them, which is the point of a rebuild.
+         */
+        purgedCount = purgedCount + purgeElementsNamedWith(openMetadataStore, "::Jacquard::");
+        purgedCount = purgedCount + purgeElementsNamedWith(openMetadataStore, "::" + ResourceUse.CREATE_SUBSCRIPTION.getResourceUse() + "::");
+        purgedCount = purgedCount + purgeElementsNamedWith(openMetadataStore, OpenMetadataType.NOTIFICATION_TYPE.typeName + "::");
+
         if (purgedCount > 0)
         {
-            System.out.println("subscription-fvt: purged " + purgedCount + " product(s) from a previous run's catalogue"
+            System.out.println("subscription-fvt: purged " + purgedCount + " element(s) from a previous run's catalogue"
                                        + " so that this run builds its own");
         }
+    }
+
+
+    /**
+     * Find and permanently purge every element whose qualified name contains the supplied text, in any status.
+     * Purging shrinks the result set, and a cascaded delete removes elements the current page has not reached
+     * yet, so the query is repeated from the start until nothing more comes back.
+     *
+     * @param openMetadataStore store to delete through - one whose default delete method is PURGE
+     * @param nameFragment text to look for in qualified names
+     * @return number of elements purged
+     * @throws Exception problem communicating with the server
+     */
+    private static int purgeElementsNamedWith(OpenMetadataStore openMetadataStore,
+                                              String            nameFragment) throws Exception
+    {
+        PropertyHelper propertyHelper = new PropertyHelper();
+
+        SearchProperties searchProperties = new SearchProperties();
+
+        searchProperties.setConditions(propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                        nameFragment,
+                                                                        PropertyComparisonOperator.LIKE));
+
+        QueryOptions queryOptions = new QueryOptions();
+
+        queryOptions.setLimitResultsByStatus(List.of(ElementStatus.ACTIVE, ElementStatus.DELETED));
+        queryOptions.setPageSize(MAX_PAGE_SIZE);
+        queryOptions.setForLineage(true);
+
+        int purgedCount    = 0;
+        int emptyPassLimit = 50;
+
+        while (emptyPassLimit > 0)
+        {
+            List<OpenMetadataElement> found = openMetadataStore.findMetadataElements(searchProperties, null, queryOptions);
+
+            if ((found == null) || found.isEmpty())
+            {
+                break;
+            }
+
+            for (OpenMetadataElement element : found)
+            {
+                purgeElement(openMetadataStore, element.getElementGUID());
+                purgedCount++;
+            }
+
+            emptyPassLimit--;
+        }
+
+        return purgedCount;
     }
 
 
@@ -864,48 +947,9 @@ final class SubscriptionFvtTestSupport
             return;
         }
 
-        ConnectorContextBase connectorContext  = ConnectorContextFactory.newContext(DeleteMethod.PURGE);
-        OpenMetadataStore    openMetadataStore = connectorContext.getOpenMetadataStore();
-        PropertyHelper       propertyHelper    = new PropertyHelper();
+        OpenMetadataStore openMetadataStore = ConnectorContextFactory.newContext(DeleteMethod.PURGE).getOpenMetadataStore();
 
-        SearchProperties searchProperties = new SearchProperties();
-
-        searchProperties.setConditions(propertyHelper.addStringProperty(null,
-                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        TEST_MARKER,
-                                                                        PropertyComparisonOperator.LIKE));
-
-        QueryOptions queryOptions = new QueryOptions();
-
-        queryOptions.setLimitResultsByStatus(List.of(ElementStatus.ACTIVE, ElementStatus.DELETED));
-        queryOptions.setPageSize(MAX_PAGE_SIZE);
-        queryOptions.setForLineage(true);
-
-        /*
-         * Purging shrinks the result set, and a cascaded delete removes elements the current page has not
-         * reached yet, so it is simplest - and safest against paging through a set that is disappearing
-         * underneath the query - to keep re-querying from the start until nothing more comes back.
-         */
-        int purgedCount    = 0;
-        int emptyPassLimit = 50;
-
-        while (emptyPassLimit > 0)
-        {
-            List<OpenMetadataElement> found = openMetadataStore.findMetadataElements(searchProperties, null, queryOptions);
-
-            if ((found == null) || found.isEmpty())
-            {
-                break;
-            }
-
-            for (OpenMetadataElement element : found)
-            {
-                purgeElement(openMetadataStore, element.getElementGUID());
-                purgedCount++;
-            }
-
-            emptyPassLimit--;
-        }
+        int purgedCount = purgeElementsNamedWith(openMetadataStore, TEST_MARKER);
 
         purgedCount = purgedCount + purgeRetiredElements(openMetadataStore);
         purgedCount = purgedCount + purgeLeftoverGovernanceWork(openMetadataStore);
