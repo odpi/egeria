@@ -135,7 +135,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Minimal constructor initializes the superclass as an Entity</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef)" class="member-name-link">OpenMetadataEntityDef</a><wbr>(<a href="OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a>&nbsp;template)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataEntityDef)" class="member-name-link">OpenMetadataEntityDef</a><wbr>(<a href="OpenMetadataEntityDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataEntityDef</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Copy/clone constructor copies the values from the supplied template.</div>
 </div>
@@ -244,10 +244,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataEntityDef)">
 <h3>OpenMetadataEntityDef</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenMetadataEntityDef</span><wbr><span class="parameters">(<a href="OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a>&nbsp;template)</span></div>
-<div class="block">Copy/clone constructor copies the values from the supplied template.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenMetadataEntityDef</span><wbr><span class="parameters">(<a href="OpenMetadataEntityDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataEntityDef</a>&nbsp;template)</span></div>
+<div class="block">Copy/clone constructor copies the values from the supplied template.
+ <br><br>
+ This used to take <a href="OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties"><code>OpenMetadataTypeDef</code></a>, the supertype, which is why it lost the relationship
+ attributes: a constructor that cannot see them cannot copy them, and since <a href="#cloneFromSubclass()"><code>cloneFromSubclass()</code></a>
+ is this constructor, every clone lost them too.  Its siblings - the classification, relationship,
+ collection and enum defs - all take their own class, and so does this one now.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>template</code> - OpenMetadataEntityDef</dd>
