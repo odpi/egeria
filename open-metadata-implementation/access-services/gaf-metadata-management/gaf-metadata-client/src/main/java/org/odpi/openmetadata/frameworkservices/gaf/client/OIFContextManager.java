@@ -44,6 +44,7 @@ public class OIFContextManager extends IntegrationContextManager
      * @param auditLog logging destination
      */
     public void initializeContextManager(String              localServerName,
+                                         String              localServerURL,
                                          String              localServiceName,
                                          String              partnerOMASServerName,
                                          String              partnerOMASPlatformRootURL,
@@ -54,7 +55,7 @@ public class OIFContextManager extends IntegrationContextManager
                                          int                 maxPageSize,
                                          AuditLog            auditLog)
     {
-        super.initializeContextManager(localServerName, localServiceName, partnerOMASServerName, partnerOMASPlatformRootURL, userId, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, maxPageSize, auditLog);
+        super.initializeContextManager(localServerName, localServerURL, localServiceName, partnerOMASServerName, partnerOMASPlatformRootURL, userId, secretsStoreProvider, secretsStoreLocation, secretsStoreCollection, maxPageSize, auditLog);
 
         final String methodName = "initializeContextManager";
 

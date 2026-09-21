@@ -279,6 +279,7 @@ include(':open-metadata-test:open-metadata-fvt:openlineage-fvt')
 include(':open-metadata-test:open-metadata-fvt:auth-fvt')
 include(':open-metadata-test:open-metadata-fvt:server-fvt')
 include(':open-metadata-test:open-metadata-fvt:security-fvt')
+include(':open-metadata-test:open-metadata-fvt:platform-catalog-fvt')
 
 
 // These are not required if the project name == the directory name but are included for clarity - for example

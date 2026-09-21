@@ -131,8 +131,30 @@ public class EgeriaExtractor
         platformReport.setDefaultPlatformName(defaultPlatformName);
         platformReport.setPlatformURLRoot(platformURLRoot);
         platformReport.setPlatformOrigin(platformServicesClient.getPlatformOrigin());
-        platformReport.setPlatformBuildProperties(platformServicesClient.getPlatformBuildProperties());
-        platformReport.setPlatformPublicProperties(platformServicesClient.getPublicProperties());
+        /*
+         * These two endpoints are served by the platform's user-authn module, and the first of them has
+         * nothing to return unless the platform is running from a packaged build.  Neither is essential to
+         * describing the platform, so neither is allowed to stop the report being produced: a caller that
+         * cannot get the platform's name or version is still much better off than one that gets nothing at
+         * all, which is what an exception here used to mean - no platform, no servers, no users.
+         */
+        try
+        {
+            platformReport.setPlatformBuildProperties(platformServicesClient.getPlatformBuildProperties());
+        }
+        catch (Exception noBuildProperties)
+        {
+            platformReport.setPlatformBuildProperties(null);
+        }
+
+        try
+        {
+            platformReport.setPlatformPublicProperties(platformServicesClient.getPublicProperties());
+        }
+        catch (Exception noPublicProperties)
+        {
+            platformReport.setPlatformPublicProperties(null);
+        }
         platformReport.setPlatformStartTime(platformServicesClient.getPlatformStartTime());
         platformReport.setPlatformSecurityConnection(this.getConnectorProperties("Platform Security Connector",
                                                                                  platformServicesClient.getPlatformSecurityConnection()));

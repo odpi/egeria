@@ -6,7 +6,7 @@
 
 These connectors call the APIs of third party systems such as Apache Atlas, Apache Kafka and the Egeria runtime itself.
 
-This directory documents 73 messages in 13 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 77 messages in 13 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -24,7 +24,7 @@ This directory documents 73 messages in 13 message sets.  Return to the [message
 | [KafkaIntegrationConnectorAuditCode](KafkaIntegrationConnectorAuditCode.md) | Audit log messages | `APACHE-KAFKA-INTEGRATION-CONNECTOR-` | 5 | <https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/> |
 | [KafkaIntegrationConnectorErrorCode](KafkaIntegrationConnectorErrorCode.md) | Exception messages | `APACHE-KAFKA-INTEGRATION-CONNECTOR-400-` | 1 | <https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/> |
 | [KafkaSurveyErrorCode](KafkaSurveyErrorCode.md) | Exception messages | `APACHE-KAFKA-SURVEY-ACTION-CONNECTOR-500-` | 1 | <https://egeria-project.org/concepts/survey-action-service/> |
-| [OMAGConnectorAuditCode](OMAGConnectorAuditCode.md) | Audit log messages | `OMAG-CONNECTORS-` | 6 | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
+| [OMAGConnectorAuditCode](OMAGConnectorAuditCode.md) | Audit log messages | `OMAG-CONNECTORS-` | 10 | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 | [OMAGConnectorErrorCode](OMAGConnectorErrorCode.md) | Exception messages | `OMAG-CONNECTORS-` | 3 | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 
 

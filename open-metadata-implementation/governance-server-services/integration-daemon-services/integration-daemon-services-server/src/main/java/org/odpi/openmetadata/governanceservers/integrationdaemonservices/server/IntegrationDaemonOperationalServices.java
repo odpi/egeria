@@ -30,6 +30,7 @@ import java.util.Map;
 public class IntegrationDaemonOperationalServices
 {
     private final String localServerName;                  /* Initialized in constructor */
+    private final String localServerURL;                   /* Initialized in constructor */
     private final String localServerId;                    /* Initialized in constructor */
     private final String localServerUserId;                /* Initialized in constructor */
     private final int    maxPageSize;                      /* Initialized in constructor */
@@ -44,16 +45,19 @@ public class IntegrationDaemonOperationalServices
      * Constructor used at server startup.
      *
      * @param localServerName name of the local server
+     * @param localServerURL network address of the OMAG Server Platform this server is running on
      * @param localServerId unique identifier for this server
      * @param localServerUserId user id for this server to use on REST calls if processing inbound messages.
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      */
     public IntegrationDaemonOperationalServices(String localServerName,
+                                                String localServerURL,
                                                 String localServerId,
                                                 String localServerUserId,
                                                 int    maxPageSize)
     {
         this.localServerName                  = localServerName;
+        this.localServerURL                   = localServerURL;
         this.localServerId                    = localServerId;
         this.localServerUserId                = localServerUserId;
         this.maxPageSize                      = maxPageSize;
@@ -123,6 +127,7 @@ public class IntegrationDaemonOperationalServices
                     IntegrationContextManager integrationContextManager = new OIFContextManager();
 
                     integrationContextManager.initializeContextManager(localServerName,
+                                                                       localServerURL,
                                                                        GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(),
                                                                        partnerOMASServerName,
                                                                        partnerOMASRootURL,

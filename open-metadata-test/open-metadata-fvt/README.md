@@ -113,6 +113,18 @@ against each suite below.
   ./gradlew :open-metadata-test:open-metadata-fvt:darwin-fvt:test -PrunDarwinFvt
   ```
 
+* **[platform-catalog-fvt](platform-catalog-fvt)** - tests the **OMAG Server Platform Cataloguer**, the Egeria
+  system connector that keeps the open metadata description of an OMAG Server Platform in step with the
+  platform's live state. The resource under test is the suite's own platform: it starts one in-process and
+  lets the connector catalog it, which is how the connector is deployed in practice since it self-registers
+  the local platform as a catalog target. Beyond the basics it covers the two things that go wrong in a real
+  estate - an organization name set after the ecosystem has already been catalogued, and a second platform
+  whose servers have the same names as the first's. Its README records what it found.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:platform-catalog-fvt:test -PrunPlatformCatalogFvt
+  ```
+
 * **[subscription-fvt](subscription-fvt)** - tests the **Open Metadata Digital Product Catalog** by following
   a consumer's journey through it: locate a digital product, find the subscriptions it offers, and subscribe
   to one of them. Nothing in the suite creates a product - the **Jacquard Digital Product Loom** builds the

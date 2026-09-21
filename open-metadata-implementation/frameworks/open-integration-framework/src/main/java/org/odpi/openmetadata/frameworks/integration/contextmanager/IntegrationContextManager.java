@@ -52,6 +52,7 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     protected AssetHandler            assetHandler               = null;
     protected OpenGovernanceClient    openGovernanceClient       = null;
     protected String                  localServerName            = null;
+    protected String                  localServerURL             = null;
     protected String                  localServiceName           = null;
     protected String                  localServerUserId          = null;
     protected String                  secretsStoreProvider       = null;
@@ -78,6 +79,9 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
      * Initialize server properties for the context manager.
      *
      * @param localServerName name of this integration daemon
+     * @param localServerURL network address of the OMAG Server Platform this integration daemon is running on.
+     *                       This is not necessarily the platform the partner OMAS is running on, and a connector
+     *                       that works with "the local platform" needs this one rather than that one.
      * @param localServiceName name of calling service
      * @param partnerOMASServerName name of the server to connect to
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST services
@@ -89,6 +93,7 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
      * @param auditLog logging destination
      */
     public void initializeContextManager(String   localServerName,
+                                         String   localServerURL,
                                          String   localServiceName,
                                          String   partnerOMASServerName,
                                          String   partnerOMASPlatformRootURL,
@@ -100,6 +105,7 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
                                          AuditLog auditLog)
     {
         this.localServerName            = localServerName;
+        this.localServerURL             = localServerURL;
         this.localServiceName           = localServiceName;
         this.partnerOMASPlatformRootURL = partnerOMASPlatformRootURL;
         this.partnerOMASServerName      = partnerOMASServerName;
@@ -235,6 +241,16 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
                                                         auditLog,
                                                         maxPageSize,
                                                         deleteMethod);
+        }
+
+        if (integrationContext != null)
+        {
+            /*
+             * The local server's own address is not a constructor argument because a connector context is
+             * built in a good many places that have no local server - the test suites among them - and
+             * making every one of them supply a null would say less than this does.
+             */
+            integrationContext.setLocalServerURL(localServerURL);
         }
 
         integrationConnector.setContext(integrationContext);

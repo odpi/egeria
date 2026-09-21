@@ -40,6 +40,40 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      */
     private final CatalogTargetMap currentCatalogTargetMap = new CatalogTargetMap();
 
+    /**
+     * The catalog targets left to other integration daemons at the last refresh, so that the audit log
+     * records a change in the ecosystem rather than the same line on every refresh.
+     */
+    private List<String> catalogTargetsLeftToOthers = new ArrayList<>();
+
+    /**
+     * The metadata collection that this integration daemon's own metadata access store homes instances in.
+     * <br>
+     * It is null until a connector supplies it, and while it is null no catalog target is filtered out -
+     * every daemon refreshes everything, as it did before this was added.  That is the right default: a
+     * guess about which targets are somebody else's, made wrong, silences a connector completely, and a
+     * connector that has quietly stopped refreshing looks exactly like one with nothing to refresh.
+     */
+    private String localMetadataCollectionId = null;
+
+
+    /**
+     * Tell this manager which metadata collection is the local one, so that catalog targets registered
+     * through another metadata access store in the same cohort can be left to the daemons that registered
+     * them.
+     * <br>
+     * The value has to be one the caller <b>knows</b> rather than one it has worked out: the identifier of
+     * the metadata collection that homes an instance this connector itself created.  Nothing about a
+     * metadata collection's name can be relied on for this - a name is optional and can be set to anything -
+     * and no API hands a connector the identifier of the store it writes through.
+     *
+     * @param localMetadataCollectionId identifier of the local metadata collection
+     */
+    public void setLocalMetadataCollectionId(String localMetadataCollectionId)
+    {
+        this.localMetadataCollectionId = localMetadataCollectionId;
+    }
+
     private final List<CatalogTargetChangeListener>  registeredChangeListeners = new ArrayList<>();
 
     private final PropertyHelper propertyHelper = new PropertyHelper();
@@ -131,11 +165,31 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
             List<OpenMetadataRootElement> catalogTargetList  = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
                                                                                              queryOptions);
 
+            /*
+             * Every page is gathered before any of it is acted on, because whether a catalog target belongs
+             * to this integration daemon is decided by looking at all of them together - see
+             * selectLocallyRegisteredTargets.
+             */
+            List<OpenMetadataRootElement> allCatalogTargets = new ArrayList<>();
+
             while (catalogTargetList != null)
             {
                 for (OpenMetadataRootElement catalogTargetRootElement : catalogTargetList)
                 {
-                    if ((catalogTargetRootElement != null) && (catalogTargetRootElement.getRelatedBy() != null) && (catalogTargetRootElement.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties))
+                    if ((catalogTargetRootElement != null) && (catalogTargetRootElement.getRelatedBy() != null) && (catalogTargetRootElement.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties))
+                    {
+                        allCatalogTargets.add(catalogTargetRootElement);
+                    }
+                }
+
+                startFrom         = startFrom + integrationContext.getMaxPageSize();
+                catalogTargetList = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                  assetClient.getQueryOptions(startFrom, integrationContext.getMaxPageSize()));
+            }
+
+            for (OpenMetadataRootElement catalogTargetRootElement : this.selectLocallyRegisteredTargets(integrationContext, allCatalogTargets))
+            {
+                    if (catalogTargetRootElement.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties)
                     {
                         RequestedCatalogTarget knownCatalogTarget = currentCatalogTargetMap.get(catalogTargetRootElement.getRelatedBy().getRelationshipHeader().getGUID());
 
@@ -167,11 +221,6 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
                             knownCatalogTarget.setCatalogTargetElement(catalogTargetRootElement);
                         }
                     }
-                }
-
-                startFrom         = startFrom + integrationContext.getMaxPageSize();
-                catalogTargetList = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                  assetClient.getQueryOptions(startFrom, integrationContext.getMaxPageSize()));
             }
 
             return new ArrayList<>(currentCatalogTargetMap.values());
@@ -190,6 +239,141 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
         }
 
         return null;
+    }
+
+
+    /**
+     * Return the catalog targets that belong to this integration daemon, leaving the rest to the daemons
+     * that registered them.
+     * <br>
+     * A catalog target is a relationship hanging off an integration connector's definition, and that
+     * definition is shipped in a content pack - so every integration daemon running the same connector uses
+     * the same identifier when it asks what its catalog targets are.  Where the daemons' metadata access
+     * stores are members of one open metadata repository cohort, that question is answered from every
+     * repository in the cohort at once, and each daemon gets back its own catalog targets and everybody
+     * else's.  Without this method, every daemon would then refresh every target: in an estate of N daemons
+     * each target would be refreshed N times a cycle instead of once, and every daemon would need to reach,
+     * and hold credentials for, every resource in the estate.
+     * <br>
+     * A target is recognised as this daemon's own by the identifier of the metadata collection that homes
+     * the relationship, compared with the identifier supplied through
+     * {@link #setLocalMetadataCollectionId}.  Identifiers rather than names: a metadata collection's name is
+     * optional and can be set to anything, so it cannot be used to decide whether a connector should be
+     * doing any work.  Until a connector supplies the identifier, nothing is filtered.
+     *
+     * @param integrationContext the integration context for the parent connector
+     * @param catalogTargets every catalog target the connector's definition has, from anywhere in the cohort
+     * @return the ones this daemon should refresh
+     */
+    private List<OpenMetadataRootElement> selectLocallyRegisteredTargets(IntegrationContext            integrationContext,
+                                                                         List<OpenMetadataRootElement> catalogTargets)
+    {
+        final String methodName = "selectLocallyRegisteredTargets";
+
+        if ((localMetadataCollectionId == null) || (catalogTargets.isEmpty()))
+        {
+            return catalogTargets;
+        }
+
+        List<OpenMetadataRootElement> locallyRegistered = new ArrayList<>();
+        List<String>                  leftToOthers      = new ArrayList<>();
+
+        for (OpenMetadataRootElement catalogTarget : catalogTargets)
+        {
+            String homeMetadataCollectionId = this.getHomeMetadataCollectionId(catalogTarget);
+
+            if ((homeMetadataCollectionId == null) || (homeMetadataCollectionId.equals(localMetadataCollectionId)))
+            {
+                locallyRegistered.add(catalogTarget);
+            }
+            else
+            {
+                leftToOthers.add(this.getCatalogTargetName(catalogTarget) + " (homed in " + homeMetadataCollectionId + ")");
+            }
+        }
+
+        if (locallyRegistered.isEmpty())
+        {
+            /*
+             * Every one of them was registered somewhere else.  That is a real state rather than a sign of a
+             * bad comparison - the identifier this is matching against was read off an instance this
+             * connector created, not inferred - so the targets are left alone.  It is still worth saying out
+             * loud, because a connector with nothing to refresh and a connector that has stopped refreshing
+             * look identical from outside.
+             */
+            if (! leftToOthers.equals(catalogTargetsLeftToOthers))
+            {
+                catalogTargetsLeftToOthers = leftToOthers;
+
+                auditLog.logMessage(methodName,
+                                    OIFAuditCode.ALL_CATALOG_TARGETS_FOREIGN.getMessageDefinition(connectorName,
+                                                                                                   Integer.toString(catalogTargets.size())));
+            }
+
+            return locallyRegistered;
+        }
+
+        if (! leftToOthers.isEmpty())
+        {
+            /*
+             * Logged when the set changes rather than on every refresh, so that it records a change in the
+             * ecosystem instead of filling the audit log with the same line.
+             */
+            if (! leftToOthers.equals(catalogTargetsLeftToOthers))
+            {
+                catalogTargetsLeftToOthers = leftToOthers;
+
+                auditLog.logMessage(methodName,
+                                    OIFAuditCode.FOREIGN_CATALOG_TARGETS_SKIPPED.getMessageDefinition(connectorName,
+                                                                                                       Integer.toString(leftToOthers.size()),
+                                                                                                       leftToOthers.toString()));
+            }
+        }
+        else
+        {
+            catalogTargetsLeftToOthers = leftToOthers;
+        }
+
+        return locallyRegistered;
+    }
+
+
+    /**
+     * Return the identifier of the metadata collection that homes a catalog target's relationship.
+     *
+     * @param catalogTarget catalog target to look at
+     * @return identifier, or null if it is not recorded
+     */
+    private String getHomeMetadataCollectionId(OpenMetadataRootElement catalogTarget)
+    {
+        if ((catalogTarget.getRelatedBy() != null) &&
+                (catalogTarget.getRelatedBy().getRelationshipHeader() != null) &&
+                (catalogTarget.getRelatedBy().getRelationshipHeader().getOrigin() != null))
+        {
+            return catalogTarget.getRelatedBy().getRelationshipHeader().getOrigin().getHomeMetadataCollectionId();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the name a catalog target was registered under, for the audit log.
+     *
+     * @param catalogTarget catalog target to look at
+     * @return name, or the element's unique identifier if it has none
+     */
+    private String getCatalogTargetName(OpenMetadataRootElement catalogTarget)
+    {
+        if (catalogTarget.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties)
+        {
+            if (catalogTargetProperties.getCatalogTargetName() != null)
+            {
+                return catalogTargetProperties.getCatalogTargetName();
+            }
+        }
+
+        return catalogTarget.getElementHeader().getGUID();
     }
 
 
