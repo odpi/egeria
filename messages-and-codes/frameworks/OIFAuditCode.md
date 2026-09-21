@@ -9,7 +9,7 @@ The OIFAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 20 |
+| **Number of messages** | 22 |
 | **Message identifiers begin** | `OIF-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-integration-framework](../../open-metadata-implementation/frameworks/open-integration-framework) |
@@ -41,6 +41,8 @@ The OIFAuditCode is used to define the message content for the Audit Log.
 | [OIF-CONNECTOR-0021](#oif-connector-0021) | EXCEPTION | A {0} exception with message {1} occurred when a listening integration connector tried to process a Bitol document |
 | [OIF-CONNECTOR-0022](#oif-connector-0022) | ERROR | The integration daemon received a {0} document with identifier {1} and apiVersion {2} which is not supported by Egeria's beans |
 | [OIF-CONNECTOR-0023](#oif-connector-0023) | ERROR | The integration daemon received a Bitol document of kind {0} through the {1} method which expects {2}; the document begins: {3} |
+| [OIF-CONNECTOR-0024](#oif-connector-0024) | INFO | The {0} integration connector is leaving {1} catalog target(s) to the integration daemons that registered them: {2} |
+| [OIF-CONNECTOR-0025](#oif-connector-0025) | ERROR | The {0} integration connector found that every one of its {1} catalog target(s) is homed in another metadata collection, so it has nothing to refresh |
 
 ----
 
@@ -460,6 +462,48 @@ The document is discarded because it can not be routed to the listening connecto
 **User action**
 
 Check the kind property of the document.  A DataContract should be published through publishDataContract and a DataProduct through publishDataProduct; publishBitolDocument accepts either.
+
+
+----
+
+### OIF-CONNECTOR-0024
+
+> The {0} integration connector is leaving {1} catalog target(s) to the integration daemons that registered them: {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFAuditCode.FOREIGN_CATALOG_TARGETS_SKIPPED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+These catalog targets are homed in a different metadata collection from this daemon's own, which this daemon can see because the two metadata access stores are members of the same open metadata repository cohort.  The daemon that registered each one is refreshing it, so this connector does not.
+
+**User action**
+
+No specific action is required.  Without this, every integration daemon in a cohort would refresh every other daemon's catalog targets as well as its own.  If a catalog target named here is one this daemon should be refreshing, register it through this daemon's own metadata access store.
+
+
+----
+
+### OIF-CONNECTOR-0025
+
+> The {0} integration connector found that every one of its {1} catalog target(s) is homed in another metadata collection, so it has nothing to refresh
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFAuditCode.ALL_CATALOG_TARGETS_FOREIGN` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+The connector refreshes none of them.  They belong to other integration daemons in the same open metadata repository cohort, and those daemons are refreshing them.
+
+**User action**
+
+No action is required if this daemon is genuinely not responsible for anything - but a connector with nothing to refresh and a connector that has stopped refreshing look identical from outside, which is why this is said out loud.  If this daemon should be refreshing one of these catalog targets, register it through this daemon's own metadata access store rather than another.
 
 
 ----

@@ -55,6 +55,7 @@ public class ConnectorContextBase
     protected final ContextEventHandler     contextEventHandler;
 
     protected final String                        localServerName;
+    protected       String                        localServerURL = null;
     protected final String                        localServiceName;
     protected final String                        externalSourceGUID;
     protected final String                        externalSourceName;
@@ -855,6 +856,41 @@ public class ConnectorContextBase
      * @return string url root
      */
     public String getMetadataAccessServerPlatformURLRoot() { return openMetadataClient.getServerPlatformURLRoot(); }
+
+
+    /**
+     * Return the network address of the OMAG Server Platform that the server running this connector is
+     * itself deployed on.
+     * <br>
+     * This is not the same thing as {@link #getMetadataAccessServerPlatformURLRoot()}, which is the address
+     * of the platform hosting the metadata access server this connector writes to.  The two are the same in
+     * the ordinary deployment, where a connector and the metadata store it uses are on one platform, and
+     * different whenever they are split - and a connector that catalogs, surveys or monitors "the local
+     * platform" needs this one rather than that one.
+     * <br>
+     * It comes from the local server's configured localServerURL, so it is null when the server has been
+     * configured without one.
+     *
+     * @return URL root, or null if the local server does not know its own address
+     */
+    public String getLocalServerURL()
+    {
+        return localServerURL;
+    }
+
+
+    /**
+     * Set up the network address of the OMAG Server Platform that the server running this connector is
+     * deployed on.  This is called by the governance server's context manager as it builds the context; it
+     * is not part of the constructor because a context is built in a good many places that have no local
+     * server to speak of, notably the test suites.
+     *
+     * @param localServerURL URL root of the local server's platform
+     */
+    public void setLocalServerURL(String localServerURL)
+    {
+        this.localServerURL = localServerURL;
+    }
 
 
 

@@ -227,6 +227,26 @@ public enum OIFAuditCode implements AuditLogMessageSet
                           "Check the kind property of the document.  A DataContract should be published through publishDataContract and a DataProduct through publishDataProduct; publishBitolDocument accepts either.",
                           "https://egeria-project.org/frameworks/oif/overview/"),
 
+    /**
+     * The {0} integration connector is leaving {1} catalog target(s) to the integration daemons that registered them: {2}
+     */
+    FOREIGN_CATALOG_TARGETS_SKIPPED("OIF-CONNECTOR-0024",
+                                    AuditLogRecordSeverityLevel.INFO,
+                                    "The {0} integration connector is leaving {1} catalog target(s) to the integration daemons that registered them: {2}",
+                                    "These catalog targets are homed in a different metadata collection from this daemon's own, which this daemon can see because the two metadata access stores are members of the same open metadata repository cohort.  The daemon that registered each one is refreshing it, so this connector does not.",
+                                    "No specific action is required.  Without this, every integration daemon in a cohort would refresh every other daemon's catalog targets as well as its own.  If a catalog target named here is one this daemon should be refreshing, register it through this daemon's own metadata access store.",
+                                    "https://egeria-project.org/frameworks/oif/overview/"),
+
+    /**
+     * The {0} integration connector found that every one of its {1} catalog target(s) was registered through another metadata access store, so it is refreshing them all
+     */
+    ALL_CATALOG_TARGETS_FOREIGN("OIF-CONNECTOR-0025",
+                                AuditLogRecordSeverityLevel.ERROR,
+                                "The {0} integration connector found that every one of its {1} catalog target(s) is homed in another metadata collection, so it has nothing to refresh",
+                                "The connector refreshes none of them.  They belong to other integration daemons in the same open metadata repository cohort, and those daemons are refreshing them.",
+                                "No action is required if this daemon is genuinely not responsible for anything - but a connector with nothing to refresh and a connector that has stopped refreshing look identical from outside, which is why this is said out loud.  If this daemon should be refreshing one of these catalog targets, register it through this daemon's own metadata access store rather than another.",
+                                "https://egeria-project.org/frameworks/oif/overview/"),
+
     ;
 
     private final String                      logMessageId;

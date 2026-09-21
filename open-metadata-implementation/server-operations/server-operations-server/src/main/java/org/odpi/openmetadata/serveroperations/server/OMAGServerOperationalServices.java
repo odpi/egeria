@@ -1380,6 +1380,7 @@ public class OMAGServerOperationalServices extends TokenController
 
             IntegrationDaemonOperationalServices integrationDaemonOperationalServices
                     = new IntegrationDaemonOperationalServices(configuration.getLocalServerName(),
+                                                               configuration.getLocalServerURL(),
                                                                configuration.getLocalServerId(),
                                                                configuration.getLocalServerUserId(),
                                                                configuration.getMaxPageSize());

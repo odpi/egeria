@@ -240,12 +240,24 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
 
     /**
      * Return the unique name to use in the template.
+     * <br><br>
+     * The platform's network address is part of the name because everything this template creates beneath
+     * the server - its API manager capability, its connection, its endpoint and its secrets store
+     * connection and endpoint - takes its own qualified name from this one.  Server names are role names
+     * ("active-metadata-store", "integration-daemon"), so the same names appear on every platform in an
+     * estate; without the address in here, cataloguing the second platform's servers fails on the first
+     * platform's capability names.
+     * <br><br>
+     * Note what is deliberately absent: the organization name.  It appears in the server's resource name
+     * and display name, where it helps somebody find the server, but not here.  An organization name is a
+     * label that administrators fill in, correct and change, and a name that moves when it changes is a
+     * name that cannot be used to recognise the server again afterwards.
      *
      * @return string
      */
     public String getQualifiedName()
     {
-        return deployedImplementationType.getDeployedImplementationType() + "::" + serverName;
+        return deployedImplementationType.getDeployedImplementationType() + "::" + networkAddress + "::" + serverName;
     }
 
 

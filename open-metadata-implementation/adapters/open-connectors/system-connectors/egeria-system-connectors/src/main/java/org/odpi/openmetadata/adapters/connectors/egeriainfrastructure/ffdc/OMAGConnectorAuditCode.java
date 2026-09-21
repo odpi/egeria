@@ -62,11 +62,11 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
     /**
-     * The monitoring of OMAG Server Platform '{0}' has started
+     * Connector {0} has started monitoring OMAG Server Platform: {1}
      */
     EGERIA_TARGET_START("OMAG-CONNECTORS-0010",
                            AuditLogRecordSeverityLevel.INFO,
-                           "The monitoring of OMAG Server Platform {0} has started",
+                           "Connector {0} has started monitoring OMAG Server Platform: {1}",
                            "The connector will synchronize the configuration of the platform and its servers with its open metadata description.",
                            "No specific action is required.  This message is to confirm the start of the target processor.",
                            "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
@@ -80,6 +80,46 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                         "The connector is synchronizing the configuration of the platform and its servers with its open metadata description.",
                         "No specific action is required.  This message is to confirm the refreshing of the target processor.",
                         "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
+
+    /**
+     * The {0} integration connector was not able to catalog server {1} on platform {2}; the {3} exception returned message {4}
+     */
+    SERVER_CATALOG_FAILED("OMAG-CONNECTORS-0012",
+                          AuditLogRecordSeverityLevel.EXCEPTION,
+                          "The {0} integration connector was not able to catalog server {1} on platform {2}; the {3} exception returned message {4}",
+                          "The connector moves on to the platform's other servers.  This server's open metadata description is left as it was, which means it no longer reflects the running server.",
+                          "Use the message to work out why this one server could not be catalogued.  A duplicate qualified name usually means the server, or something belonging to it, has already been catalogued under a name that this connector no longer computes - most often because the server has been renamed, moved to another platform, or catalogued by an earlier release.",
+                          "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
+
+    /**
+     * The {0} integration connector has renamed platform element {1} from {2} to {3} so that it can be recognised again
+     */
+    PLATFORM_NAME_MIGRATED("OMAG-CONNECTORS-0013",
+                           AuditLogRecordSeverityLevel.INFO,
+                           "The {0} integration connector has renamed platform element {1} from {2} to {3} so that it can be recognised again",
+                           "The connector carries on using the element it renamed, so the platform's history, its servers and anything else attached to it are kept.",
+                           "No action is required.  Earlier releases named a platform element after the platform's own name and organization, which is not unique to one running platform and is not the name this connector looks the element up by.  This message records the one-off correction; it should not appear again for the same platform.",
+                           "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
+
+    /**
+     * The {0} integration connector is now monitoring the OMAG Server Platform at {1}, catalogued as {2}
+     */
+    PLATFORM_CATALOG_TARGET_ADDED("OMAG-CONNECTORS-0014",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The {0} integration connector is now monitoring the OMAG Server Platform at {1}, catalogued as {2}",
+                                  "The platform has been registered as one of this connector's catalog targets, so its configuration and servers are synchronized with open metadata on every refresh.",
+                                  "No specific action is required.  This message records a platform being taken under management, which happens the first time the connector runs against it.",
+                                  "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
+
+    /**
+     * The {0} integration connector could not register the OMAG Server Platform at {1} yet; the {2} exception returned message {3}
+     */
+    PLATFORM_REGISTRATION_DEFERRED("OMAG-CONNECTORS-0015",
+                                   AuditLogRecordSeverityLevel.EXCEPTION,
+                                   "The {0} integration connector could not register the OMAG Server Platform at {1} yet; the {2} exception returned message {3}",
+                                   "The connector carries on with the catalog targets it already has, and tries this platform again on its next refresh.  The platform is not monitored in the meantime.",
+                                   "This is usually temporary - most often the metadata access store was restarting, or had not finished loading its content packs, when the connector started.  If the message keeps appearing, use the exception to work out why the connector cannot write to the metadata access store.",
+                                   "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
     ;
 
