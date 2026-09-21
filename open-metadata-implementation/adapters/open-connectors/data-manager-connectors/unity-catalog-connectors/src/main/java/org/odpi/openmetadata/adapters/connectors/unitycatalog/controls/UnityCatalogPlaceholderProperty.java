@@ -442,6 +442,6 @@ public enum UnityCatalogPlaceholderProperty
     @Override
     public String toString()
     {
-        return "PlaceholderProperty{ name=" + name + "}";
+        return "UnityCatalogPlaceholderProperty{ name=" + name + "}";
     }
 }

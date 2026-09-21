@@ -212,7 +212,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
         @Override
         public String toString()
         {
-            return "TemplateProgress{" +
+            return "OpenMetadataAPITemplateHandler{" +
                     "newBeanGUID='" + newBeanGUID + '\'' +
                     ", newBeanCreated=" + newBeanCreated +
                     ", sourceVersionNumber=" + sourceVersionNumber +

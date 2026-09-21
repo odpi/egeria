@@ -82,7 +82,7 @@ public class GovernanceActionProcess extends ProcessProperties
     @Override
     public String toString()
     {
-        return "GovernanceActionProcessProperties{" +
+        return "GovernanceActionProcess{" +
                 "domainIdentifier=" + domainIdentifier +
                 "} " + super.toString();
     }

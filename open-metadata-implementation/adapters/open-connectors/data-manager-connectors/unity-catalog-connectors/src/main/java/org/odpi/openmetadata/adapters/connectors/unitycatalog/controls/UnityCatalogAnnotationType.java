@@ -357,6 +357,6 @@ public enum UnityCatalogAnnotationType implements AnnotationType
     @Override
     public String toString()
     {
-        return "AnnotationType{ name='" + name + "}";
+        return "UnityCatalogAnnotationType{ name='" + name + "}";
     }
 }

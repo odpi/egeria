@@ -100,7 +100,7 @@ public class PredefinedActionTarget
     @Override
     public String toString()
     {
-        return "NewActionTarget{" +
+        return "PredefinedActionTarget{" +
                        "actionTargetName='" + actionTargetName + '\'' +
                        ", actionTargetElementStub='" + actionTargetElementStub + '\'' +
                        '}';

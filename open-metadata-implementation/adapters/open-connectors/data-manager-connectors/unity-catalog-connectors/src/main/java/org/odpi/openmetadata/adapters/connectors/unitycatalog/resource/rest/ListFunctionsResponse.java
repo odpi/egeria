@@ -89,7 +89,7 @@ public class ListFunctionsResponse
     {
         return "ListFunctionsResponse{" +
                 "functions=" + functions +
-                ", nextPageToken='" + next_page_token + '\'' +
+                ", next_page_token='" + next_page_token + '\'' +
                 '}';
     }
 

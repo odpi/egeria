@@ -271,6 +271,6 @@ public enum MSSQLPlaceholderProperty
     @Override
     public String toString()
     {
-        return "PlaceholderProperty{ name=" + name + "}";
+        return "MSSQLPlaceholderProperty{ name=" + name + "}";
     }
 }

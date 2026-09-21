@@ -112,6 +112,6 @@ public class SecretsCollectionRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getSecretsCollection());
+        return Objects.hash(getSecretsCollection());
     }
 }

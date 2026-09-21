@@ -189,7 +189,7 @@ public enum EgeriaSolutionBlueprint implements SolutionBlueprintDefinition
     @Override
     public String toString()
     {
-        return "SolutionBlueprint{" + displayName + '}';
+        return "EgeriaSolutionBlueprint{" + displayName + '}';
     }
 
 

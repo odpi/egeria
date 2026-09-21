@@ -78,7 +78,7 @@ public class IntegrationGroupSummaryResponse extends FFDCResponseBase
     public String toString()
     {
         return "IntegrationGroupSummaryResponse{" +
-                "governanceEngineSummary=" + integrationGroupSummary +
+                "integrationGroupSummary=" + integrationGroupSummary +
                 '}';
     }
 

@@ -139,7 +139,7 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessage
     @Override
     public String toString()
     {
-        return "ErrorCode{" +
+        return "KafkaOpenMetadataTopicConnectorErrorCode{" +
                        "httpErrorCode=" + httpErrorCode +
                        ", errorMessageId='" + errorMessageId + '\'' +
                        ", errorMessage='" + errorMessage + '\'' +

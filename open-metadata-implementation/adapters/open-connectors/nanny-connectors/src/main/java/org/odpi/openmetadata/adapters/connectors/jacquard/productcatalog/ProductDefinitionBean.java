@@ -400,7 +400,7 @@ public class ProductDefinitionBean implements ProductDefinition
     @Override
     public String toString()
     {
-        return "ProductDefinition{" +
+        return "ProductDefinitionBean{" +
                 "productName='" + productName + '\'' +
                 ", identifier='" + identifier + '\'' +
                 "} " + super.toString();

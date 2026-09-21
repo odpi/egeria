@@ -183,8 +183,17 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                              DeployedImplementationType.AUDIT_LOG_DESTINATION_CONNECTOR.getAssociatedTypeName(),
                                              DeployedImplementationType.AUDIT_LOG_DESTINATION_CONNECTOR.getDeployedImplementationType()),
 
+    /*
+     * This connector's GUID was changed because the value it had - e8303911-ba1c-4640-974e-c4d57ee1b310 -
+     * is the type GUID of the DigitalProductDependency relationship in OpenMetadataType.  The content pack
+     * writer loads the open metadata types as a dependent archive, so that GUID was already taken when it
+     * came to add this connector type, and the archive builder refused the entity.  The refusal was
+     * swallowed, so the connector type was quietly left out of CoreContentPack while the relationship
+     * putting it in the Open Connectors collection was still written - leaving a member that did not exist.
+     * The entity has never appeared in a shipped pack, so there is no deployed identity to preserve here.
+     */
     SLF4J_AUDIT_LOG_DESTINATION_CONNECTOR(45,
-                                          "e8303911-ba1c-4640-974e-c4d57ee1b310",
+                                          "7b916534-87ea-4b02-ba48-e83d03a719dc",
                                           "Egeria::AuditLogDestinationConnector::SLF4J",
                                           "SLF4J Audit Log Destination Connector",
                                           "Connector supports logging of audit log messages to the slf4j logger ecosystem.",

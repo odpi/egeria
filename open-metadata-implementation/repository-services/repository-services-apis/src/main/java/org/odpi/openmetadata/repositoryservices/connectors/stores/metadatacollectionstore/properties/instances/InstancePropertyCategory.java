@@ -108,9 +108,9 @@ public enum InstancePropertyCategory
     public String toString()
     {
         return "InstancePropertyCategory{" +
-                "ordinal=" + typeCode +
-                ", name='" + typeName + '\'' +
-                ", description='" + typeDescription + '\'' +
+                "typeCode=" + typeCode +
+                ", typeName='" + typeName + '\'' +
+                ", typeDescription='" + typeDescription + '\'' +
                 '}';
     }
 }

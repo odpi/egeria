@@ -420,7 +420,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
     public String toString()
     {
         return "DataFieldProperties{" +
-                "namespace='" + namespacePath + '\'' +
+                "namespacePath='" + namespacePath + '\'' +
                 ", aliases=" + aliases +
                 ", namePatterns=" + namePatterns +
                 ", defaultValue='" + defaultValue + '\'' +

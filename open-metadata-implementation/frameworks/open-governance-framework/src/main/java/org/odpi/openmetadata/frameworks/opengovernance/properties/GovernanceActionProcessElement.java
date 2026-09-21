@@ -201,11 +201,11 @@ public class GovernanceActionProcessElement
     {
         return "GovernanceActionProcessElement{" +
                 "elementHeader=" + elementHeader +
-                ", processProperties=" + properties +
+                ", properties=" + properties +
                 ", specification=" + specification +
                 ", predefinedActionTargets=" + predefinedActionTargets +
                 ", predefinedRequestParameters=" + predefinedRequestParameters +
-                ", mermaidSpecification='" + specificationMermaidGraph + '\'' +
+                ", specificationMermaidGraph='" + specificationMermaidGraph + '\'' +
                 '}';
     }
 
@@ -227,10 +227,6 @@ public class GovernanceActionProcessElement
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         GovernanceActionProcessElement that = (GovernanceActionProcessElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(properties, that.properties) &&
@@ -249,7 +245,7 @@ public class GovernanceActionProcessElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, predefinedActionTargets,
+        return Objects.hash(elementHeader, properties, predefinedActionTargets,
                             predefinedRequestParameters, specification, specificationMermaidGraph);
     }
 }

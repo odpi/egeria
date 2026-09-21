@@ -134,6 +134,6 @@ public enum DynamicArchiveRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "DynamicArchiveRequestParameter{ name=" + name + "}";
     }
 }

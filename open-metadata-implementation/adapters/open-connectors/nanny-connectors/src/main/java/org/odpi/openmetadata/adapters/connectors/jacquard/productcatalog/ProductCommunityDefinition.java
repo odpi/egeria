@@ -148,6 +148,6 @@ public enum ProductCommunityDefinition
     @Override
     public String toString()
     {
-        return "CommunityDefinition{" + displayName + '}';
+        return "ProductCommunityDefinition{" + displayName + '}';
     }
 }

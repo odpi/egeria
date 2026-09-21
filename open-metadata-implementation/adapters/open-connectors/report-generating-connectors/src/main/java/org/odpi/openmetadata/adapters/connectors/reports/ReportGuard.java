@@ -125,6 +125,6 @@ public enum ReportGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "ReportGuard{ name='" + name + "}";
     }
 }

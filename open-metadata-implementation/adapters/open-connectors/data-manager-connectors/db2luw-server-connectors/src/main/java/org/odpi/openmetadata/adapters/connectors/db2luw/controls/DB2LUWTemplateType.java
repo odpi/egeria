@@ -301,6 +301,6 @@ public enum DB2LUWTemplateType implements TemplateDefinition
     @Override
     public String toString()
     {
-        return "TemplateType{templateName='" + templateName + "'}";
+        return "DB2LUWTemplateType{templateName='" + templateName + "'}";
     }
 }

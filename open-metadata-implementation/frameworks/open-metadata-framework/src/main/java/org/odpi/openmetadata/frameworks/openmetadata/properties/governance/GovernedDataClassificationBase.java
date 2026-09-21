@@ -232,8 +232,8 @@ public class GovernedDataClassificationBase extends ClassificationBeanProperties
     @Override
     public String toString()
     {
-        return "GovernanceClassificationBase{" +
-                "status=" + statusIdentifier +
+        return "GovernedDataClassificationBase{" +
+                "statusIdentifier=" + statusIdentifier +
                 ", confidence=" + confidence +
                 ", steward='" + steward + '\'' +
                 ", stewardTypeName='" + stewardTypeName + '\'' +

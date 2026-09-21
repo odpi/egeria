@@ -189,7 +189,7 @@ public enum PostgresAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "AuditCode{" +
+        return "PostgresAuditCode{" +
                        "logMessageId='" + logMessageId + '\'' +
                        ", severity=" + severity +
                        ", logMessage='" + logMessage + '\'' +

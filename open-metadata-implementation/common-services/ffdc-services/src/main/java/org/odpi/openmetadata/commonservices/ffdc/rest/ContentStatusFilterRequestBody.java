@@ -99,7 +99,7 @@ public class ContentStatusFilterRequestBody extends FilterRequestBody
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ContentStatusFilterRequestBody that = (ContentStatusFilterRequestBody) objectToCompare;
-        return contentStatusList == that.contentStatusList;
+        return Objects.equals(contentStatusList, that.contentStatusList);
     }
 
 

@@ -148,6 +148,6 @@ public enum GenericFolderRequestParameter
     @Override
     public String toString()
     {
-        return "MoveCopyFileRequestParameter{ name=" + name + "}";
+        return "GenericFolderRequestParameter{ name=" + name + "}";
     }
 }

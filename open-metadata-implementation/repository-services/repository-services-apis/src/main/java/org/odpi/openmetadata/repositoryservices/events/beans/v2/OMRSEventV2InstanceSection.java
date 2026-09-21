@@ -371,7 +371,7 @@ public class OMRSEventV2InstanceSection
     @Override
     public String toString()
     {
-        return "OMRSEventV1InstanceSection{" +
+        return "OMRSEventV2InstanceSection{" +
                        "eventType=" + eventType +
                        ", typeDefGUID='" + typeDefGUID + '\'' +
                        ", typeDefName='" + typeDefName + '\'' +

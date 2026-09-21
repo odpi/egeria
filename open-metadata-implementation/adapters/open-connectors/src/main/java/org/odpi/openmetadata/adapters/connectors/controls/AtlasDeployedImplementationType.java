@@ -248,6 +248,6 @@ public enum AtlasDeployedImplementationType implements DeployedImplementationTyp
     @Override
     public String toString()
     {
-        return "DeployedImplementationType{" + deployedImplementationType + '}';
+        return "AtlasDeployedImplementationType{" + deployedImplementationType + '}';
     }
 }

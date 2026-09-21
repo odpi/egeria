@@ -139,7 +139,7 @@ public class UniqueNameRequestBody extends GetOptions
     @Override
     public String toString()
     {
-        return "NameRequestBody{" +
+        return "UniqueNameRequestBody{" +
                 "name='" + name + '\'' +
                 ", nameParameterName='" + nameParameterName + '\'' +
                 ", namePropertyName='" + namePropertyName + '\'' +

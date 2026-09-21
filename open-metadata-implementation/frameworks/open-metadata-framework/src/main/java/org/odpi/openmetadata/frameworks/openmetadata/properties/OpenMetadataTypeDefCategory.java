@@ -102,9 +102,9 @@ public enum OpenMetadataTypeDefCategory
     public String toString()
     {
         return "OpenMetadataTypeDefCategory{" +
-                "ordinal=" + typeCode +
-                ", name='" + typeName + '\'' +
-                ", description='" + typeDescription + '\'' +
+                "typeCode=" + typeCode +
+                ", typeName='" + typeName + '\'' +
+                ", typeDescription='" + typeDescription + '\'' +
                 '}';
     }
 }

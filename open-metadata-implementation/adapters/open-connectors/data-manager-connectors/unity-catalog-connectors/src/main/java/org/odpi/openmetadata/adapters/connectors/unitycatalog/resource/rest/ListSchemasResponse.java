@@ -89,7 +89,7 @@ public class ListSchemasResponse
     {
         return "ListSchemasResponse{" +
                 "schemas=" + schemas +
-                ", nextPageToken='" + next_page_token + '\'' +
+                ", next_page_token='" + next_page_token + '\'' +
                 '}';
     }
 

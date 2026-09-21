@@ -77,7 +77,7 @@ public class EffectiveTimeQueryRequestBody
     @Override
     public String toString()
     {
-        return "ExternalIdEffectiveTimeQueryRequestBody{" +
+        return "EffectiveTimeQueryRequestBody{" +
                        "effectiveTime=" + effectiveTime +
                        '}';
     }
@@ -100,10 +100,6 @@ public class EffectiveTimeQueryRequestBody
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
         EffectiveTimeQueryRequestBody that = (EffectiveTimeQueryRequestBody) objectToCompare;
         return Objects.equals(effectiveTime, that.effectiveTime);
     }
@@ -117,6 +113,6 @@ public class EffectiveTimeQueryRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), effectiveTime);
+        return Objects.hash(effectiveTime);
     }
 }

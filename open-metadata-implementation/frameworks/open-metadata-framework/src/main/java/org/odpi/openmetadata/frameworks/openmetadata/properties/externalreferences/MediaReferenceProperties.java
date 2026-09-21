@@ -154,7 +154,7 @@ public class MediaReferenceProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "MediaReferenceProperties{" +
-                "referenceId='" + mediaId + '\'' +
+                "mediaId='" + mediaId + '\'' +
                 ", description='" + description + '\'' +
                 ", mediaUsage=" + mediaUsage +
                 ", mediaUsageOtherId='" + mediaUsageOtherId + '\'' +

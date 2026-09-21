@@ -81,8 +81,8 @@ public class ExperimentProperties extends ClassificationBeanProperties
     @Override
     public String toString()
     {
-        return "ScopingCollectionProperties{" +
-                "description='" + hypothesis + '\'' +
+        return "ExperimentProperties{" +
+                "hypothesis='" + hypothesis + '\'' +
                 "} " + super.toString();
     }
 

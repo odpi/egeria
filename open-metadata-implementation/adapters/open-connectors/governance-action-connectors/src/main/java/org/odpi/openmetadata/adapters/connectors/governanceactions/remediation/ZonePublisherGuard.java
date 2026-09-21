@@ -124,6 +124,6 @@ public enum ZonePublisherGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "ZonePublisherGuard{ name='" + name + "}";
     }
 }

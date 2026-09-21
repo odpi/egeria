@@ -158,6 +158,6 @@ public class RelatedBy
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipHeader, relationshipProperties, associatedElements);
+        return Objects.hash(relationshipHeader, relationshipProperties, associatedElements);
     }
 }

@@ -497,9 +497,9 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
                 ", updateTime=" + updateTime +
                 ", options=" + options +
                 ", externalStandardTypeMappings=" + externalStandardTypeMappings +
-                ", validInstanceStatusList=" + validElementStatusList +
+                ", validElementStatusList=" + validElementStatusList +
                 ", initialStatus=" + initialStatus +
-                ", propertiesDefinition=" + attributeDefinitions +
+                ", attributeDefinitions=" + attributeDefinitions +
                 ", version=" + version +
                 ", versionName='" + versionName + '\'' +
                 ", category=" + category +

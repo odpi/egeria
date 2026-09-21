@@ -134,6 +134,6 @@ public enum FolderRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "FolderRequestParameter{ name=" + name + "}";
     }
 }

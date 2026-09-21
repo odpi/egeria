@@ -505,6 +505,6 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
     @Override
     public String toString()
     {
-        return "TemplateDefinition{templateName='" + getTemplateName() + "'}";
+        return "EgeriaSoftwareServerTemplateDefinition{templateName='" + getTemplateName() + "'}";
     }
 }

@@ -231,8 +231,8 @@ public class FileMeasurement
                 ", canRead=" + canRead +
                 ", canWrite=" + canWrite +
                 ", canExecute=" + canExecute +
-                ", isSymLink=" + symLink +
-                ", isHidden=" + hidden +
+                ", symLink=" + symLink +
+                ", hidden=" + hidden +
                 ", creationTime=" + creationTime +
                 ", lastModifiedTime=" + lastModifiedTime +
                 ", lastAccessedTime=" + lastAccessedTime +

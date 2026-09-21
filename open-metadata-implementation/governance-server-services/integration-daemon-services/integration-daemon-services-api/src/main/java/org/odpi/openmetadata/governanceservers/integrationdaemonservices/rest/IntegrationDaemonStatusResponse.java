@@ -79,7 +79,7 @@ public class IntegrationDaemonStatusResponse extends FFDCResponseBase
     public String toString()
     {
         return "IntegrationDaemonStatusResponse{" +
-                "integrationServiceSummaries=" + integrationDaemonStatus +
+                "integrationDaemonStatus=" + integrationDaemonStatus +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +

@@ -43,6 +43,8 @@ public class EntityElementProperties extends EntityProperties
      */
     public EntityElementProperties(EntityElementProperties template)
     {
+        super(template);
+
         /*
          * An empty properties object is created in the private variable declaration so nothing to do.
          */

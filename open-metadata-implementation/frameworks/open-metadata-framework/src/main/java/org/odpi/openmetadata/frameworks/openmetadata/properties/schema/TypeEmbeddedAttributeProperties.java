@@ -372,7 +372,7 @@ public class TypeEmbeddedAttributeProperties extends ClassificationBeanPropertie
                 ", additionalProperties=" + additionalProperties +
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
-                ", namespace='" + namespacePath + '\'' +
+                ", namespacePath='" + namespacePath + '\'' +
                 ", dataType='" + dataType + '\'' +
                 ", defaultValue='" + defaultValue + '\'' +
                 ", fixedValue='" + fixedValue + '\'' +

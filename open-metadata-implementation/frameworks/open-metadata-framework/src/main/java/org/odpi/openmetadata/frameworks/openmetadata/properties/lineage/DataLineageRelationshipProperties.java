@@ -188,7 +188,7 @@ public class DataLineageRelationshipProperties extends LineageRelationshipProper
     @Override
     public String toString()
     {
-        return "LineageRelationshipProperties{" +
+        return "DataLineageRelationshipProperties{" +
                 "oneWay=" + oneWay +
                 ", integrationStyle='" + integrationStyle + '\'' +
                 ", protocol='" + protocol + '\'' +

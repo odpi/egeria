@@ -240,6 +240,6 @@ public enum OMAGServerPlatformPlaceholderProperty
     @Override
     public String toString()
     {
-        return "PlaceholderProperty{ name=" + name + "}";
+        return "OMAGServerPlatformPlaceholderProperty{ name=" + name + "}";
     }
 }

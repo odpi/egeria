@@ -5559,9 +5559,24 @@ public class SimpleCatalogArchiveHelper
                                          recognizedAdditionalProperties,
                                          additionalProperties);
         }
-        catch (Exception alreadyDefined)
+        catch (Exception error)
         {
-            return connectorTypeGUID;
+            /*
+             * This used to return connectorTypeGUID here, on the assumption that the only thing that could
+             * go wrong was the connector type already being defined.  It cannot be: the overload called
+             * above looks the entity up and returns the existing GUID when it finds one, so a duplicate
+             * never reaches this point.  What did reach it was a real failure - the SLF4J audit log
+             * destination connector carried a GUID that was already taken by an open metadata type, and the
+             * archive builder refused the entity - and returning the GUID anyway told the caller the entity
+             * existed.  The caller went on to put that GUID in a collection membership relationship, and
+             * the pack shipped with a member that was not there.
+             *
+             * Reporting the failure is the whole point: an archive writer that cannot add an element must
+             * not claim it did.
+             */
+            throw new RuntimeException("Unable to add connector type " + qualifiedName + " (" +
+                                               connectorTypeGUID + ") to the archive: " + error.getMessage(),
+                                       error);
         }
     }
 

@@ -143,6 +143,6 @@ public enum SurveyRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "SurveyRequestParameter{ name=" + name + "}";
     }
 }

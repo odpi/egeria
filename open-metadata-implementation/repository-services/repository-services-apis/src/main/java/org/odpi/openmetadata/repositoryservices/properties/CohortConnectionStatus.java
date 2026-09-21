@@ -135,9 +135,9 @@ public enum CohortConnectionStatus
     public String toString()
     {
         return "CohortConnectionStatus{" +
-                "ordinal=" + statusCode +
-                ", name='" + statusName + '\'' +
-                ", description='" + statusDescription + '\'' +
+                "statusCode=" + statusCode +
+                ", statusName='" + statusName + '\'' +
+                ", statusDescription='" + statusDescription + '\'' +
                 '}';
     }
 }

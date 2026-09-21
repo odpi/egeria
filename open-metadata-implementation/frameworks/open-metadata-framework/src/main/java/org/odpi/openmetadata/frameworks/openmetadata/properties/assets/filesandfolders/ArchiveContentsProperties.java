@@ -47,6 +47,6 @@ public class ArchiveContentsProperties extends RelationshipBeanProperties
     @Override
     public String toString()
     {
-        return "FolderHierarchyProperties{} " + super.toString();
+        return "ArchiveContentsProperties{} " + super.toString();
     }
 }

@@ -126,7 +126,7 @@ public enum CSVFileConnectorAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "CSVFileAuditCode{" +
+        return "CSVFileConnectorAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +
                 ", logMessage='" + logMessage + '\'' +

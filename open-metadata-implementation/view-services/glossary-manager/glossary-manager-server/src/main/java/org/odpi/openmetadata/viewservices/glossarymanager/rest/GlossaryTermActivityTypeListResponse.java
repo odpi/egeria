@@ -94,7 +94,7 @@ public class GlossaryTermActivityTypeListResponse extends FFDCResponseBase
     public String toString()
     {
         return "GlossaryTermActivityTypeListResponse{" +
-                       "statuses=" + types +
+                       "types=" + types +
                        ", exceptionClassName='" + getExceptionClassName() + '\'' +
                        ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                        ", actionDescription='" + getActionDescription() + '\'' +

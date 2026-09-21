@@ -267,6 +267,6 @@ public enum DuckDBDeployedImplementationType implements DeployedImplementationTy
     @Override
     public String toString()
     {
-        return "DeployedImplementationType{" + deployedImplementationType + '}';
+        return "DuckDBDeployedImplementationType{" + deployedImplementationType + '}';
     }
 }

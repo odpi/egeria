@@ -215,7 +215,7 @@ public class ServerStatusResponse extends FFDCResponseBase
                        ", serverStartTime=" + serverStartTime +
                        ", serverEndTime=" + serverEndTime +
                        ", serverHistory=" + serverHistory +
-                       ", active=" + isActive() +
+                       ", isActive=" + isActive() +
                        ", exceptionClassName='" + getExceptionClassName() + '\'' +
                        ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                        ", actionDescription='" + getActionDescription() + '\'' +

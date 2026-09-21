@@ -80,7 +80,7 @@ public class AssociatedSecurityListProperties extends RelationshipBeanProperties
     @Override
     public String toString()
     {
-        return "AssociatedSecurityGroupProperties{" +
+        return "AssociatedSecurityListProperties{" +
                 "operationName='" + operationName + '\'' +
                 "} " + super.toString();
     }

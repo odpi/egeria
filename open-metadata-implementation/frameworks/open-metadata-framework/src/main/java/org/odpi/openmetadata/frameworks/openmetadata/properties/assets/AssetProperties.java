@@ -162,7 +162,7 @@ public class AssetProperties extends ReferenceableProperties
     {
         return "AssetProperties{" +
                 "resourceName='" + resourceName + '\'' +
-                ", namespace='" + namespacePath + '\'' +
+                ", namespacePath='" + namespacePath + '\'' +
                 ", deployedImplementationType='" + deployedImplementationType + '\'' +
                 ", source='" + source + '\'' +
                 "} " + super.toString();

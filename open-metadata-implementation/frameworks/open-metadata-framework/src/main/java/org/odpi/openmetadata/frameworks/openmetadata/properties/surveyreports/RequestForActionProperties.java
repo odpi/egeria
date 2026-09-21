@@ -134,8 +134,8 @@ public class RequestForActionProperties extends DataFieldAnnotationProperties
     @Override
     public String toString()
     {
-        return "RequestForActionAnnotationProperties{" +
-                "surveyActivity='" + actionSourceName + '\'' +
+        return "RequestForActionProperties{" +
+                "actionSourceName='" + actionSourceName + '\'' +
                 ", actionRequested='" + actionRequested + '\'' +
                 ", actionProperties=" + actionProperties +
                 "} " + super.toString();

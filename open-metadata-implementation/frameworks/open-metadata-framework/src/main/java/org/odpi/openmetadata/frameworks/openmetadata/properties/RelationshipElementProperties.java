@@ -43,6 +43,8 @@ public class RelationshipElementProperties extends RelationshipProperties
      */
     public RelationshipElementProperties(RelationshipElementProperties template)
     {
+        super(template);
+
         /*
          * An empty properties object is created in the private variable declaration so nothing to do.
          */

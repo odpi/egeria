@@ -262,6 +262,6 @@ public enum UnityCatalogTarget
     @Override
     public String toString()
     {
-        return "TargetEnum{catalogTargetName='" + name + "'}";
+        return "UnityCatalogTarget{catalogTargetName='" + name + "'}";
     }
 }

@@ -347,7 +347,7 @@ public class PersonProperties extends ActorProfileProperties
     public String toString()
     {
         return "PersonProperties{" +
-                "title='" + courtesyTitle + '\'' +
+                "courtesyTitle='" + courtesyTitle + '\'' +
                 ", initials='" + initials + '\'' +
                 ", givenNames='" + givenNames + '\'' +
                 ", surname='" + surname + '\'' +

@@ -239,7 +239,7 @@ public class RepositoryConformanceWorkbenchConfig extends AdminServicesConfigHea
     @Override
     public String toString()
     {
-        return "ConformanceSuiteConfig{" +
+        return "RepositoryConformanceWorkbenchConfig{" +
                 "tutRepositoryServerName='" + tutRepositoryServerName + '\'' +
                 "maxSearchResults='" + maxSearchResults + '\'' +
                 ", testEntityTypes=" + testEntityTypes +

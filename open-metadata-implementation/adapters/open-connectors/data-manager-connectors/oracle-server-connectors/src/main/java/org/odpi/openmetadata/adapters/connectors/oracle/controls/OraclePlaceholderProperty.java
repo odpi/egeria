@@ -277,6 +277,6 @@ public enum OraclePlaceholderProperty
     @Override
     public String toString()
     {
-        return "PlaceholderProperty{ name=" + name + "}";
+        return "OraclePlaceholderProperty{ name=" + name + "}";
     }
 }

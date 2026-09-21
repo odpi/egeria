@@ -121,8 +121,8 @@ public class RoledRelationshipProperties extends RelationshipBeanProperties
     @Override
     public String toString()
     {
-        return "LabeledRelationshipProperties{" +
-                "label='" + role + '\'' +
+        return "RoledRelationshipProperties{" +
+                "role='" + role + '\'' +
                 ", description='" + description + '\'' +
                 "} " + super.toString();
     }

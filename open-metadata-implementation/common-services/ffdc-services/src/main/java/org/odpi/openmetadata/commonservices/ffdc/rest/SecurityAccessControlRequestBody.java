@@ -113,6 +113,6 @@ public class SecurityAccessControlRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getSecurityAccessControl());
+        return Objects.hash(getSecurityAccessControl());
     }
 }

@@ -265,7 +265,7 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
                 ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
                 ", connectionName='" + connectionName + '\'' +
                 ", configurationProperties=" + configurationProperties +
-                ", templateProperties=" + templates +
+                ", templates=" + templates +
                 ", permittedSynchronization=" + permittedSynchronization +
                 ", deleteMethod=" + deleteMethod +
                 "} " + super.toString();

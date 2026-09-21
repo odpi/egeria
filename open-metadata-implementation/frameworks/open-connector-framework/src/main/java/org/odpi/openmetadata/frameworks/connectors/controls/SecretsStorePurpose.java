@@ -76,6 +76,6 @@ public enum SecretsStorePurpose
     @Override
     public String toString()
     {
-        return "SecretsStoreCollectionProperty{ name=" + name + "}";
+        return "SecretsStorePurpose{ name=" + name + "}";
     }
 }

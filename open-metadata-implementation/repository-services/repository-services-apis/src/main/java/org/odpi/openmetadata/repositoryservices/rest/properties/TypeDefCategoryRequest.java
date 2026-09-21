@@ -82,7 +82,7 @@ public class TypeDefCategoryRequest extends OMRSAPIRequest
     public String toString()
     {
         return "TypeDefCategoryRequest{" +
-                "typeDefCategory=" + category +
+                "category=" + category +
                 "} " + super.toString();
     }
 

@@ -134,6 +134,6 @@ public enum ManageAssetRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "ManageAssetRequestParameter{ name=" + name + "}";
     }
 }

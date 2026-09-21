@@ -319,6 +319,6 @@ public enum ManageDigitalSubscriptionActionTarget
     @Override
     public String toString()
     {
-        return "ActionTargetEnum{actionTargetName='" + name + "'}";
+        return "ManageDigitalSubscriptionActionTarget{actionTargetName='" + name + "'}";
     }
 }

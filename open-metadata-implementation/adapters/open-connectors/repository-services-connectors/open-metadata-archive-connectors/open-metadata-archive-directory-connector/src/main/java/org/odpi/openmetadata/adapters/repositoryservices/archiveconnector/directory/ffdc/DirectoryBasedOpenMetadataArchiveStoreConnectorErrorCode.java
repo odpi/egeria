@@ -136,7 +136,7 @@ public enum DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode implements 
     @Override
     public String toString()
     {
-        return "ErrorCode{" +
+        return "DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode{" +
                        "httpErrorCode=" + httpErrorCode +
                        ", errorMessageId='" + errorMessageId + '\'' +
                        ", errorMessage='" + errorMessage + '\'' +

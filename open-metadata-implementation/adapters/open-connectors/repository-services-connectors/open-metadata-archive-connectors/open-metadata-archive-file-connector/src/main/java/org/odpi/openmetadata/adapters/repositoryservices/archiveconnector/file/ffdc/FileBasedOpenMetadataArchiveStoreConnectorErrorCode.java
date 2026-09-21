@@ -134,7 +134,7 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorErrorCode implements Excep
     @Override
     public String toString()
     {
-        return "ErrorCode{" +
+        return "FileBasedOpenMetadataArchiveStoreConnectorErrorCode{" +
                        "httpErrorCode=" + httpErrorCode +
                        ", errorMessageId='" + errorMessageId + '\'' +
                        ", errorMessage='" + errorMessage + '\'' +

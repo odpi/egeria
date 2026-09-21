@@ -123,6 +123,6 @@ public enum WriteAuditLogGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "WriteAuditLogGuard{ name='" + name + "}";
     }
 }

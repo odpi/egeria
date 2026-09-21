@@ -119,6 +119,6 @@ public enum OMAGServerPlatformMetric implements SurveyMetric
     @Override
     public String toString()
     {
-        return "RelationalDatabaseMetric{" + displayName + "}";
+        return "OMAGServerPlatformMetric{" + displayName + "}";
     }
 }

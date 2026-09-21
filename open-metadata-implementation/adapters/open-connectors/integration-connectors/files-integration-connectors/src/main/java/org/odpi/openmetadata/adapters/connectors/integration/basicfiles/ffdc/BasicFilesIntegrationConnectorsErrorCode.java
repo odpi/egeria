@@ -199,7 +199,7 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
     @Override
     public String toString()
     {
-        return "ErrorCode{" +
+        return "BasicFilesIntegrationConnectorsErrorCode{" +
                        "httpErrorCode=" + httpErrorCode +
                        ", errorMessageId='" + errorMessageId + '\'' +
                        ", errorMessage='" + errorMessage + '\'' +

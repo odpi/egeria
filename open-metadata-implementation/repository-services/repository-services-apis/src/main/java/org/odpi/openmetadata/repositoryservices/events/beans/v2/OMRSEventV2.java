@@ -206,7 +206,7 @@ public class OMRSEventV2 extends OMRSEventBean
     @Override
     public String toString()
     {
-        return "OMRSEventV1{" +
+        return "OMRSEventV2{" +
                        "timestamp=" + timestamp +
                        ", originator=" + originator +
                        ", eventCategory=" + eventCategory +

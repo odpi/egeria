@@ -109,10 +109,10 @@ public enum CollectionDefCategory
     public String toString()
     {
         return "CollectionDefCategory{" +
-                "ordinal=" + code +
+                "code=" + code +
                 ", name='" + name + '\'' +
                 ", argumentCount=" + argumentCount +
-                ", description='" + javaClassName + '\'' +
+                ", javaClassName='" + javaClassName + '\'' +
                 '}';
     }
 }

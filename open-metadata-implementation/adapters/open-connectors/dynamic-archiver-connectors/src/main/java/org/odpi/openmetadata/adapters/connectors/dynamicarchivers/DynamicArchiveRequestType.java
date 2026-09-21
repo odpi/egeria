@@ -108,6 +108,6 @@ public enum DynamicArchiveRequestType
     @Override
     public String toString()
     {
-        return "RequestType{" + requestType + "}";
+        return "DynamicArchiveRequestType{" + requestType + "}";
     }
 }

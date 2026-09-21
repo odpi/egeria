@@ -82,7 +82,7 @@ public class TypeDefListResponse extends OMAGOMFAPIResponse
     public String toString()
     {
         return "TypeDefListResponse{" +
-                "typeDefs=" + typeDefList +
+                "typeDefList=" + typeDefList +
                 "} " + super.toString();
     }
 

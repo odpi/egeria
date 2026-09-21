@@ -322,6 +322,6 @@ public enum MSSQLDeployedImplementationType implements DeployedImplementationTyp
     @Override
     public String toString()
     {
-        return "DeployedImplementationType{" + deployedImplementationType + '}';
+        return "MSSQLDeployedImplementationType{" + deployedImplementationType + '}';
     }
 }

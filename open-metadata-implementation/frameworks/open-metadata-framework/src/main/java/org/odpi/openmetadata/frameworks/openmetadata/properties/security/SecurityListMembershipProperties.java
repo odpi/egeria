@@ -107,7 +107,7 @@ public class SecurityListMembershipProperties extends ClassificationBeanProperti
     @Override
     public String toString()
     {
-        return "SecurityGroupMembershipProperties{" +
+        return "SecurityListMembershipProperties{" +
                 "securityGroups=" + securityGroups +
                 ", securityRoles=" + securityRoles +
                 "} " + super.toString();

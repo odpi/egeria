@@ -55,6 +55,6 @@ public class DataManagerProperties extends SoftwareCapabilityProperties
     @Override
     public String toString()
     {
-        return "EngineProperties{} " + super.toString();
+        return "DataManagerProperties{} " + super.toString();
     }
 }

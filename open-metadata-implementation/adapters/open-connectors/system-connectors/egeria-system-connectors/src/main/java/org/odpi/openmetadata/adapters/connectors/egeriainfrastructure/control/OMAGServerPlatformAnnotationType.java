@@ -188,6 +188,6 @@ public enum OMAGServerPlatformAnnotationType
     @Override
     public String toString()
     {
-        return "AnnotationType{ name='" + name + "}";
+        return "OMAGServerPlatformAnnotationType{ name='" + name + "}";
     }
 }

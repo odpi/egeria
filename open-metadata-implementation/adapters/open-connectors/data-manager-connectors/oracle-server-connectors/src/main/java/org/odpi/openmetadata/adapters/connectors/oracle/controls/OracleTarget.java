@@ -231,6 +231,6 @@ public enum OracleTarget
     @Override
     public String toString()
     {
-        return "CatalogTargetEnum{catalogTargetName='" + name + "'}";
+        return "OracleTarget{catalogTargetName='" + name + "'}";
     }
 }

@@ -190,6 +190,6 @@ public enum WedgwoodProvisionSubscriptionActionTarget
     @Override
     public String toString()
     {
-        return "ActionTargetEnum{actionTargetName='" + name + "'}";
+        return "WedgwoodProvisionSubscriptionActionTarget{actionTargetName='" + name + "'}";
     }
 }

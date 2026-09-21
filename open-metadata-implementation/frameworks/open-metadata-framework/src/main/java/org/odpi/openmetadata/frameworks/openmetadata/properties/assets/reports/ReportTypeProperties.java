@@ -131,7 +131,7 @@ public class ReportTypeProperties extends DataSpecProperties
     public String toString()
     {
         return "ReportTypeProperties{" +
-                "createTime=" + createdTime +
+                "createdTime=" + createdTime +
                 ", lastModifiedTime=" + lastModifiedTime +
                 ", lastModifier='" + lastModifier + '\'' +
                 "} " + super.toString();

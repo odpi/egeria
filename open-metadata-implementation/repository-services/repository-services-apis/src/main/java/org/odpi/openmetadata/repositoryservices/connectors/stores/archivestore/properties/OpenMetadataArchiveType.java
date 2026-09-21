@@ -94,9 +94,9 @@ public enum OpenMetadataArchiveType
     public String toString()
     {
         return "OpenMetadataArchiveType{" +
-                "ordinal=" + archiveTypeCode +
-                ", name='" + archiveTypeName + '\'' +
-                ", description='" + archiveTypeDescription + '\'' +
+                "archiveTypeCode=" + archiveTypeCode +
+                ", archiveTypeName='" + archiveTypeName + '\'' +
+                ", archiveTypeDescription='" + archiveTypeDescription + '\'' +
                 '}';
     }
 }

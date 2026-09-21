@@ -52,6 +52,6 @@ public class ConsolidatedDuplicateLinkProperties extends RelationshipBeanPropert
     @Override
     public String toString()
     {
-        return "ReferenceDataProperties{} " + super.toString();
+        return "ConsolidatedDuplicateLinkProperties{} " + super.toString();
     }
 }

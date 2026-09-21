@@ -468,8 +468,8 @@ public class LicenseProperties extends RelationshipBeanProperties
     {
         return "LicenseProperties{" +
                 "licenseId='" + licenseId + '\'' +
-                ", startDate=" + coverageStart +
-                ", endDate=" + coverageEnd +
+                ", coverageStart=" + coverageStart +
+                ", coverageEnd=" + coverageEnd +
                 ", conditions='" + conditions + '\'' +
                 ", licensedBy='" + licensedBy + '\'' +
                 ", licensedByTypeName='" + licensedByTypeName + '\'' +

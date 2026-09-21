@@ -214,7 +214,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
         return "SchemaTypeProperties{" +
                 "usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
-                ", namespace='" + namespacePath + '\'' +
+                ", namespacePath='" + namespacePath + '\'' +
                 ", formula='" + formula + '\'' +
                 ", formulaType='" + formulaType + '\'' +
                 ", queries=" + queries +

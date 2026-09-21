@@ -82,7 +82,7 @@ public class OpenMetadataGraphResponse extends FFDCResponseBase
     public String toString()
     {
         return "OpenMetadataGraphResponse{" +
-                "elementGraph=" + element +
+                "element=" + element +
                 "} " + super.toString();
     }
 

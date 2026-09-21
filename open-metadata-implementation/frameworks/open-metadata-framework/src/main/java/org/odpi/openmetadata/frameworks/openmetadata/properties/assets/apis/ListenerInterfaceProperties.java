@@ -47,6 +47,6 @@ public class ListenerInterfaceProperties extends ClassificationBeanProperties
     @Override
     public String toString()
     {
-        return "RequestResponseInterfaceProperties{} " + super.toString();
+        return "ListenerInterfaceProperties{} " + super.toString();
     }
 }

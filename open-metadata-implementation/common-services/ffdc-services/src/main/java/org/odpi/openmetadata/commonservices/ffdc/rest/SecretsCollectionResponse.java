@@ -79,7 +79,7 @@ public class SecretsCollectionResponse extends FFDCResponseBase
     @Override
     public String toString()
     {
-        return "UserAccountResponse{" +
+        return "SecretsCollectionResponse{" +
                 "userAccount=" + userAccount +
                 "} " + super.toString();
     }

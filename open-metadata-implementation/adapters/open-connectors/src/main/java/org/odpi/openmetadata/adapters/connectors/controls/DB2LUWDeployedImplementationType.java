@@ -323,6 +323,6 @@ public enum DB2LUWDeployedImplementationType implements DeployedImplementationTy
     @Override
     public String toString()
     {
-        return "DeployedImplementationType{" + deployedImplementationType + '}';
+        return "DB2LUWDeployedImplementationType{" + deployedImplementationType + '}';
     }
 }

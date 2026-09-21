@@ -411,7 +411,7 @@ public class OMAGServerConfig extends BasicServerProperties
                 ", viewServicesConfig=" + viewServicesConfig +
                 ", repositoryServicesConfig=" + repositoryServicesConfig +
                 ", conformanceSuiteConfig=" + conformanceSuiteConfig +
-                ", engineHostServicesConfig=" + governanceEnginesConfig +
+                ", governanceEnginesConfig=" + governanceEnginesConfig +
                 ", auditTrail=" + auditTrail +
                 "} " + super.toString();
     }

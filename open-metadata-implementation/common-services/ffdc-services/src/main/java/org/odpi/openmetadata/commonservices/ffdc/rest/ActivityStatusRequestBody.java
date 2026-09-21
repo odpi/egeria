@@ -100,7 +100,7 @@ public class ActivityStatusRequestBody extends QueryOptions
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ActivityStatusRequestBody that = (ActivityStatusRequestBody) objectToCompare;
-        return activityStatusList == that.activityStatusList;
+        return Objects.equals(activityStatusList, that.activityStatusList);
     }
 
 

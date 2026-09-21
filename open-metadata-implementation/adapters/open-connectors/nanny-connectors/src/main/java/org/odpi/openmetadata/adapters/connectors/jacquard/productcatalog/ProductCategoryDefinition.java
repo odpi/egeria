@@ -111,6 +111,6 @@ public enum ProductCategoryDefinition
     @Override
     public String toString()
     {
-        return "Category{" + displayName + '}';
+        return "ProductCategoryDefinition{" + displayName + '}';
     }
 }

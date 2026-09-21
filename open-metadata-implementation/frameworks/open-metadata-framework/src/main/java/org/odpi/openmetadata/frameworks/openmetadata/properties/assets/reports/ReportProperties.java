@@ -240,7 +240,7 @@ public class ReportProperties extends DataSetProperties
                 ", startTime=" + startTime +
                 ", completionTime=" + completionTime +
                 ", completionMessage='" + completionMessage + '\'' +
-                ", createTime=" + createdTime +
+                ", createdTime=" + createdTime +
                 ", lastModifiedTime=" + lastModifiedTime +
                 ", lastModifier='" + lastModifier + '\'' +
                 "} " + super.toString();

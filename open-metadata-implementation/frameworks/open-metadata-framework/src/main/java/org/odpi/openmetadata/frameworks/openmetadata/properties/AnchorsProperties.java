@@ -181,7 +181,7 @@ public class AnchorsProperties extends ClassificationBeanProperties
                 "anchorGUID='" + anchorGUID + '\'' +
                 ", anchorTypeName='" + anchorTypeName + '\'' +
                 ", anchorDomainName='" + anchorDomainName + '\'' +
-                ", anchorScopeGUID='" + anchorScopeGUIDs + '\'' +
+                ", anchorScopeGUIDs='" + anchorScopeGUIDs + '\'' +
                 "} " + super.toString();
     }
 

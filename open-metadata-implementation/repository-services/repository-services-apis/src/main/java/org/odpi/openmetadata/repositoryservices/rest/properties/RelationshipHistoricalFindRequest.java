@@ -80,7 +80,7 @@ public class RelationshipHistoricalFindRequest extends RelationshipFindRequest
     @Override
     public String toString()
     {
-        return "RelationshipPropertyHistoricalFindRequest{" +
+        return "RelationshipHistoricalFindRequest{" +
                 "asOfTime=" + asOfTime +
                 "} " + super.toString();
     }

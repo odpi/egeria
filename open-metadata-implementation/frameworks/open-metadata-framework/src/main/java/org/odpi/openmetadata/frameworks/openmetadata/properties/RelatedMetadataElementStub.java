@@ -156,7 +156,7 @@ public class RelatedMetadataElementStub
     @Override
     public String toString()
     {
-        return "RelatedBy{" +
+        return "RelatedMetadataElementStub{" +
                        "relationshipHeader=" + relationshipHeader +
                        ", relationshipProperties=" + relationshipProperties +
                        ", relatedElement=" + relatedElement +
@@ -196,6 +196,6 @@ public class RelatedMetadataElementStub
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipHeader, relationshipProperties, relatedElement);
+        return Objects.hash(relationshipHeader, relationshipProperties, relatedElement);
     }
 }

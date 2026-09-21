@@ -211,7 +211,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                 }
                 else
                 {
-                    super.startSubgraph(productAreaName, VisualStyle.DIGITAL_PRODUCT_GRAPH);
+                    super.startSubgraph(productAreaName, VisualStyle.DIGITAL_PRODUCT_GRAPH, "BT"); // BT = Bottom to Top; may want RL = Right to Left
 
                     for (ElementStub elementStub : productMap.values())
                     {

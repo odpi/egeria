@@ -135,9 +135,9 @@ public enum CompletionStatus
     public String toString()
     {
         return "CompletionStatus{" +
-            "ordinal=" + statusCode +
-            ", name='" + statusName + '\'' +
-            ", description='" + statusDescription + '\'' +
+            "statusCode=" + statusCode +
+            ", statusName='" + statusName + '\'' +
+            ", statusDescription='" + statusDescription + '\'' +
             ", openTypeOrdinal='" + openTypeOrdinal + '\'' +
             '}';
     }

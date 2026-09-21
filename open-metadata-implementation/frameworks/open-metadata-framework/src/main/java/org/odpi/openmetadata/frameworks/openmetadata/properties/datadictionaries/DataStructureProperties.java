@@ -109,7 +109,7 @@ public class DataStructureProperties extends AuthoredReferenceableProperties
     public String toString()
     {
         return "DataStructureProperties{" +
-                "namespace='" + namespacePath + '\'' +
+                "namespacePath='" + namespacePath + '\'' +
                 ", namePatterns=" + namePatterns +
                 "} " + super.toString();
     }

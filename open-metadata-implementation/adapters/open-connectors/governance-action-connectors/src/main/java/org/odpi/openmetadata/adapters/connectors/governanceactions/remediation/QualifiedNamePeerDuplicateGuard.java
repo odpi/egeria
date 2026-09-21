@@ -128,6 +128,6 @@ public enum QualifiedNamePeerDuplicateGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "QualifiedNamePeerDuplicateGuard{ name='" + name + "}";
     }
 }

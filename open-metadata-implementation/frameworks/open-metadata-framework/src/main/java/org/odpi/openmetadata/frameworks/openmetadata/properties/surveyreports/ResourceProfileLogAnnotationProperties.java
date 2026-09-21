@@ -81,7 +81,7 @@ public class ResourceProfileLogAnnotationProperties extends DataFieldAnnotationP
     public String toString()
     {
         return "ResourceProfileLogAnnotationProperties{" +
-                "resourceProfileLogFiles=" + resourceProfileLogGUIDs +
+                "resourceProfileLogGUIDs=" + resourceProfileLogGUIDs +
                 "} " + super.toString();
     }
 

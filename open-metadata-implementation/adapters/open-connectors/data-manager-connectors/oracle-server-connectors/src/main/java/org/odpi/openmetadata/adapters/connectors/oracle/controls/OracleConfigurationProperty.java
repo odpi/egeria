@@ -364,6 +364,6 @@ public enum OracleConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "OracleConfigurationProperty{ name=" + name + "}";
     }
 }

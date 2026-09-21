@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ClassificationOrigin;
 
 import java.util.Objects;
@@ -24,6 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = ElementClassification.class, name = "ElementClassification"),
+                @JsonSubTypes.Type(value = AttachedClassification.class, name = "AttachedClassification"),
         })
 public class ElementClassificationHeader extends ElementControlHeader
 {

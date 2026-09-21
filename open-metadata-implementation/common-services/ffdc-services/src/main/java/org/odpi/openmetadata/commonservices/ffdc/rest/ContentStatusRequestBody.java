@@ -100,7 +100,7 @@ public class ContentStatusRequestBody extends QueryOptions
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ContentStatusRequestBody that = (ContentStatusRequestBody) objectToCompare;
-        return contentStatusList == that.contentStatusList;
+        return Objects.equals(contentStatusList, that.contentStatusList);
     }
 
 

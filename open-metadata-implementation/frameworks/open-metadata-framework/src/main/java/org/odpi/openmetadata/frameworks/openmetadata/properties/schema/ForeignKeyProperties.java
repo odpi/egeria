@@ -181,7 +181,7 @@ public class ForeignKeyProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "ForeignKeyProperties{" +
-                "name='" + displayName + '\'' +
+                "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", confidence=" + confidence +
                 ", steward='" + steward + '\'' +

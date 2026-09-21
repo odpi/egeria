@@ -512,6 +512,6 @@ public enum FilesTemplateType implements TemplateDefinition
     @Override
     public String toString()
     {
-        return "TemplateType{templateName='" + templateName + "'}";
+        return "FilesTemplateType{templateName='" + templateName + "'}";
     }
 }

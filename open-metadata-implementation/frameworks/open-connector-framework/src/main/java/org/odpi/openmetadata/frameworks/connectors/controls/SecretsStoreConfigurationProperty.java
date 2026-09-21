@@ -205,6 +205,6 @@ public enum SecretsStoreConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "SecretsStoreConfigurationProperty{ name=" + name + "}";
     }
 }

@@ -125,6 +125,6 @@ public enum Category
     @Override
     public String toString()
     {
-        return "CollectionType{" + name + '}';
+        return "Category{" + name + '}';
     }
 }

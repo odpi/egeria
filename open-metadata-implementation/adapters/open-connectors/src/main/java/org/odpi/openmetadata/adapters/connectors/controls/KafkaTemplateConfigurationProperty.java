@@ -170,6 +170,6 @@ public enum KafkaTemplateConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "KafkaTemplateConfigurationProperty{ name=" + name + "}";
     }
 }

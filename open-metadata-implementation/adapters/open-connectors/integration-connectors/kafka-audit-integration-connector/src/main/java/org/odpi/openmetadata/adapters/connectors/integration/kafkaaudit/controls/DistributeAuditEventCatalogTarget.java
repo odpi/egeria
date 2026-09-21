@@ -156,6 +156,6 @@ public enum DistributeAuditEventCatalogTarget
     @Override
     public String toString()
     {
-        return "CatalogTargetEnum{catalogTargetName='" + name + "'}";
+        return "DistributeAuditEventCatalogTarget{catalogTargetName='" + name + "'}";
     }
 }

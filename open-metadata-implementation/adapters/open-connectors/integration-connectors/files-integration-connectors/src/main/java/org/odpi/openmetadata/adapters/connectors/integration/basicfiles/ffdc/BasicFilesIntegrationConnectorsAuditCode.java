@@ -343,7 +343,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
     @Override
     public String toString()
     {
-        return "OIFAuditCode{" +
+        return "BasicFilesIntegrationConnectorsAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +
                 ", logMessage='" + logMessage + '\'' +

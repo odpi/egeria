@@ -382,7 +382,7 @@ public class AnnotationProperties extends AuthoredReferenceableProperties
                 ", sampleSize=" + sampleSize +
                 ", samplePercent=" + samplePercent +
                 ", samplingMethod='" + samplingMethod + '\'' +
-                ", confidenceLevel=" + confidence +
+                ", confidence=" + confidence +
                 ", units='" + units + '\'' +
                 ", absoluteUncertainty=" + absoluteUncertainty +
                 ", relativeUncertainty=" + relativeUncertainty +

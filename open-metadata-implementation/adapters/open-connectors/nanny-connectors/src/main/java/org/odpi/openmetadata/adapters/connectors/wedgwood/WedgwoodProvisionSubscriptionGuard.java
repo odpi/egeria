@@ -123,6 +123,6 @@ public enum WedgwoodProvisionSubscriptionGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "WedgwoodProvisionSubscriptionGuard{ name='" + name + "}";
     }
 }

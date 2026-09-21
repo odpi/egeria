@@ -539,7 +539,7 @@ public class ReferenceDataRESTServices extends TokenController
                                                      String                     validValueDefinitionGUID,
                                                      NewRelationshipRequestBody requestBody)
     {
-        final String methodName = "linkValidValuesAssignment";
+        final String methodName = "linkReferenceValueAssignment";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
@@ -557,34 +557,34 @@ public class ReferenceDataRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ValidValuesAssignmentProperties validValuesAssignmentProperties)
+                if (requestBody.getProperties() instanceof ReferenceValueAssignmentProperties referenceValueAssignmentProperties)
                 {
-                    handler.linkValidValuesAssignment(userId,
+                    handler.linkReferenceValueAssignment(userId,
                                                       elementGUID,
                                                       validValueDefinitionGUID,
                                                       requestBody,
-                                                      validValuesAssignmentProperties);
+                                                      referenceValueAssignmentProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.linkValidValuesAssignment(userId,
-                                                      elementGUID,
-                                                      validValueDefinitionGUID,
-                                                      requestBody,
-                                                      null);
+                    handler.linkReferenceValueAssignment(userId,
+                                                         elementGUID,
+                                                         validValueDefinitionGUID,
+                                                         requestBody,
+                                                         null);
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ValidValuesAssignmentProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ReferenceValueAssignmentProperties.class.getName(), methodName);
                 }
             }
             else
             {
-                handler.linkValidValuesAssignment(userId,
-                                                  elementGUID,
-                                                  validValueDefinitionGUID,
-                                                  null,
-                                                  null);
+                handler.linkReferenceValueAssignment(userId,
+                                                     elementGUID,
+                                                     validValueDefinitionGUID,
+                                                     null,
+                                                     null);
             }
         }
         catch (Throwable error)

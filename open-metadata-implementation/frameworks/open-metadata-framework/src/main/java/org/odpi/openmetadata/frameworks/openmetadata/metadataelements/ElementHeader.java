@@ -1004,10 +1004,10 @@ public class ElementHeader extends ElementControlHeader
                 ", securityListMembership=" + securityListMembership +
                 ", userAccountProfile=" + userAccountProfile +
                 ", projectClassification=" + projectClassification +
-                ", collectionRoles=" + collectionKinds +
-                ", glossaryTermRoles=" + glossaryTermKinds +
-                ", locationRoles=" + locationKinds +
-                ", projectRoles=" + projectKinds +
+                ", collectionKinds=" + collectionKinds +
+                ", glossaryTermKinds=" + glossaryTermKinds +
+                ", locationKinds=" + locationKinds +
+                ", projectKinds=" + projectKinds +
                 ", otherClassifications=" + otherClassifications +
                 "} " + super.toString();
     }

@@ -266,6 +266,6 @@ public enum DuckDBConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "DuckDBConfigurationProperty{ name=" + name + "}";
     }
 }

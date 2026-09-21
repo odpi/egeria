@@ -226,7 +226,7 @@ public class ElementProperties
         return "ElementProperties{" +
                 "propertyNames=" + getPropertyNames() +
                 ", propertyCount=" + getPropertyCount() +
-                ", propertyValues=" + propertyValueMap +
+                ", propertyValueMap=" + propertyValueMap +
                 '}';
     }
 

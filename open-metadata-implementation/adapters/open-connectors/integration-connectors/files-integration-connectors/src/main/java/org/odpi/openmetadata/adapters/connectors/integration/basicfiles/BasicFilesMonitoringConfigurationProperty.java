@@ -137,6 +137,6 @@ public enum BasicFilesMonitoringConfigurationProperty
     @Override
     public String toString()
     {
-        return "MoveCopyFileRequestParameter{ name=" + name + "}";
+        return "BasicFilesMonitoringConfigurationProperty{ name=" + name + "}";
     }
 }

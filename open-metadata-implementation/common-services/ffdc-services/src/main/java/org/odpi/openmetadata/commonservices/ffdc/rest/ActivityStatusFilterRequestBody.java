@@ -99,7 +99,7 @@ public class ActivityStatusFilterRequestBody extends FilterRequestBody
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ActivityStatusFilterRequestBody that = (ActivityStatusFilterRequestBody) objectToCompare;
-        return activityStatusList == that.activityStatusList;
+        return Objects.equals(activityStatusList, that.activityStatusList);
     }
 
 

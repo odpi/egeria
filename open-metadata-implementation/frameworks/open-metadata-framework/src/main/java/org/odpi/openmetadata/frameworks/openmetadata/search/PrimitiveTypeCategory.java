@@ -146,9 +146,9 @@ public enum PrimitiveTypeCategory implements OpenMetadataRefData
     public String toString()
     {
         return "PrimitiveTypeCategory{" +
-            "ordinal=" + code +
+            "code=" + code +
             ", name='" + name + '\'' +
-            ", description='" + javaClassName + '\'' +
+            ", javaClassName='" + javaClassName + '\'' +
             '}';
 
     }

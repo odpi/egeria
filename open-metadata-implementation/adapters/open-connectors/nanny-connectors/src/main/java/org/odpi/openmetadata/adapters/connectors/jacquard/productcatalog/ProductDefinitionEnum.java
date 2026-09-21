@@ -2319,7 +2319,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
     @Override
     public String toString()
     {
-        return "ProductDefinition{" +
+        return "ProductDefinitionEnum{" +
                 "productName='" + productName + '\'' +
                 ", identifier='" + identifier + '\'' +
                 "} " + super.toString();

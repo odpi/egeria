@@ -424,7 +424,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
     {
         return "ConnectorProviderBase{" +
                 "connectorClassName='" + connectorClassName + '\'' +
-                ", connectorType=" + connectorTypeBean +
+                ", connectorTypeBean=" + connectorTypeBean +
                 ", hashCode=" + hashCode +
                 '}';
     }

@@ -136,7 +136,7 @@ public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements 
     @Override
     public String toString()
     {
-        return "AuditCode{" +
+        return "DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode{" +
                        "logMessageId='" + logMessageId + '\'' +
                        ", severity=" + severity +
                        ", logMessage='" + logMessage + '\'' +

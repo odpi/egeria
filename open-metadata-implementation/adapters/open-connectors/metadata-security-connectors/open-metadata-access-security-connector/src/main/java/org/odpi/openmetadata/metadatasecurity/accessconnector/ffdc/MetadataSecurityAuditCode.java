@@ -136,7 +136,7 @@ public enum MetadataSecurityAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "GovernanceActionConnectorsAuditCode{" +
+        return "MetadataSecurityAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +
                 ", logMessage='" + logMessage + '\'' +

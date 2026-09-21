@@ -127,7 +127,7 @@ public class FindProjectClassificationProperties extends QueryOptions
     @Override
     public String toString()
     {
-        return "ProjectClassificationProperties{" +
+        return "FindProjectClassificationProperties{" +
                 "approach='" + approach + '\'' +
                 ", managementStyle='" + managementStyle + '\'' +
                 ", resultsUsage='" + resultsUsage + '\'' +

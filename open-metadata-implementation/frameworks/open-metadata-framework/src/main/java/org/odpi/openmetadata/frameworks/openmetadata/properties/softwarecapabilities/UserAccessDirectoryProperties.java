@@ -47,6 +47,6 @@ public class UserAccessDirectoryProperties extends ResourceManagerProperties
     @Override
     public String toString()
     {
-        return "UserProfileManagerProperties{} " + super.toString();
+        return "UserAccessDirectoryProperties{} " + super.toString();
     }
 }

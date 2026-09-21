@@ -172,6 +172,6 @@ public enum OpenLineagePublishConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "OpenLineagePublishConfigurationProperty{ name=" + name + "}";
     }
 }

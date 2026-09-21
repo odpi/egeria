@@ -46,4 +46,38 @@ public class OpenMetadataTypeDefElementHeader
          * Nothing to do
          */
     }
+
+
+    /**
+     * Two headers are equal when they are of the same class.  This class holds no instance fields, so there
+     * is nothing else to compare - but without these two methods every subclass's {@code super.equals} and
+     * {@code super.hashCode} reached {@link Object}, which compares by identity.  That made the whole type
+     * def bean family compare unequal to its own copies, and gave equal beans different hash codes.
+     *
+     * @param objectToCompare object
+     * @return boolean
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+
+        return (objectToCompare != null) && (getClass() == objectToCompare.getClass());
+    }
+
+
+    /**
+     * Return a hash code consistent with {@link #equals(Object)}.  There are no instance fields to hash, so
+     * every instance of a given class hashes alike.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return getClass().hashCode();
+    }
 }

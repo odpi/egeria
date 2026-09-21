@@ -77,7 +77,7 @@ public class SourcedFromProperties extends RelationshipBeanProperties
     @Override
     public String toString()
     {
-        return "SampleDataProperties{" +
+        return "SourcedFromProperties{" +
                 "sourceVersionNumber='" + sourceVersionNumber + '\'' +
                 "} " + super.toString();
     }

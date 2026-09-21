@@ -218,7 +218,7 @@ public enum DataValueAssignmentStatus implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "DataDefinitionAssignmentStatus{" +
+        return "DataValueAssignmentStatus{" +
             "ordinal=" + ordinal +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +

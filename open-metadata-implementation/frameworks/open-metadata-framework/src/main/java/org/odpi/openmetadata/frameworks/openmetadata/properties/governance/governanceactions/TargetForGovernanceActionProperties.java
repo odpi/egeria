@@ -41,6 +41,8 @@ public class TargetForGovernanceActionProperties extends RelationshipBeanPropert
      */
     public TargetForGovernanceActionProperties(TargetForGovernanceActionProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             actionTargetName  = template.getActionTargetName();

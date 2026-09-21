@@ -158,7 +158,7 @@ public class SemanticAnnotationProperties extends DataFieldAnnotationProperties
                 "informalTerm='" + informalTerm + '\'' +
                 ", subjectAreaName='" + subjectAreaName + '\'' +
                 ", candidateGlossaryTermGUIDs=" + candidateGlossaryTermGUIDs +
-                ", candidateGlossaryFolderGUIDs=" + candidateSubjectAreaGUIDs +
+                ", candidateSubjectAreaGUIDs=" + candidateSubjectAreaGUIDs +
                 "} " + super.toString();
     }
 

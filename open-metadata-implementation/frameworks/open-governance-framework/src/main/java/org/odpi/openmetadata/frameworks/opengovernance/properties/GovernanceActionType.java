@@ -305,7 +305,7 @@ public class GovernanceActionType extends ReferenceableProperties
     @Override
     public String toString()
     {
-        return "GovernanceActionTypeProperties{" +
+        return "GovernanceActionType{" +
                 "domainIdentifier=" + domainIdentifier +
                 ", supportedRequestParameters=" + supportedRequestParameters +
                 ", supportedActionTargetTypes=" + supportedActionTargetTypes +

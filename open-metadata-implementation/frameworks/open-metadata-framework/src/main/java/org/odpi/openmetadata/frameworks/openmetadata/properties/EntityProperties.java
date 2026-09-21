@@ -106,7 +106,7 @@ public class EntityProperties
     @Override
     public String toString()
     {
-        return "RelationshipProperties{" +
+        return "EntityProperties{" +
                 "effectiveFrom=" + effectiveFrom +
                 ", effectiveTo=" + effectiveTo +
                 '}';

@@ -47,6 +47,6 @@ public class PreferredTermProperties extends GlossaryTermRelationshipProperties
     @Override
     public String toString()
     {
-        return "RelatedTermProperties{} " + super.toString();
+        return "PreferredTermProperties{} " + super.toString();
     }
 }

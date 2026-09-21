@@ -73,7 +73,7 @@ public class UpdateElementRequestBody
     public String toString()
     {
         return "UpdateElementRequestBody{" +
-                "name='" + new_name + '\'' +
+                "new_name='" + new_name + '\'' +
                 ", comment='" + comment + '\'' +
                 '}';
     }

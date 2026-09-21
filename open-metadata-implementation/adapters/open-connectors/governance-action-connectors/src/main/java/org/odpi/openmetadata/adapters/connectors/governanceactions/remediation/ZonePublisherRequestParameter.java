@@ -133,6 +133,6 @@ public enum ZonePublisherRequestParameter
     @Override
     public String toString()
     {
-        return "MoveCopyFileRequestParameter{ name=" + name + "}";
+        return "ZonePublisherRequestParameter{ name=" + name + "}";
     }
 }

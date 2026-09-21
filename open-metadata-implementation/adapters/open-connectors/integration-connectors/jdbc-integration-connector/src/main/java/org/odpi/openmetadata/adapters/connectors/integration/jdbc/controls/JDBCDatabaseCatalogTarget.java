@@ -151,6 +151,6 @@ public enum JDBCDatabaseCatalogTarget
     @Override
     public String toString()
     {
-        return "CatalogTargetEnum{catalogTargetName='" + name + "'}";
+        return "JDBCDatabaseCatalogTarget{catalogTargetName='" + name + "'}";
     }
 }

@@ -49,7 +49,7 @@ public class ApprovedPurposeProperties extends LabeledRelationshipProperties
     @Override
     public String toString()
     {
-        return "PermittedProcessingProperties{" +
+        return "ApprovedPurposeProperties{" +
                 "} " + super.toString();
     }
 }

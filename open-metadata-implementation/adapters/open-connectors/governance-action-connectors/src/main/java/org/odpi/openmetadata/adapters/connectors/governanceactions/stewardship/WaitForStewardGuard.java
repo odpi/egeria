@@ -128,6 +128,6 @@ public enum WaitForStewardGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "WaitForStewardGuard{ name='" + name + "}";
     }
 }

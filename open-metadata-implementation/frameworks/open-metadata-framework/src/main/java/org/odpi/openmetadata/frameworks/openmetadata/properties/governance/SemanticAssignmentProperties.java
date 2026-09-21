@@ -305,7 +305,7 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
         return "SemanticAssignmentProperties{" +
                 "expression='" + expression + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + termAssignmentStatus +
+                ", termAssignmentStatus=" + termAssignmentStatus +
                 ", confidence=" + confidence +
                 ", createdBy='" + createdBy + '\'' +
                 ", steward='" + steward + '\'' +

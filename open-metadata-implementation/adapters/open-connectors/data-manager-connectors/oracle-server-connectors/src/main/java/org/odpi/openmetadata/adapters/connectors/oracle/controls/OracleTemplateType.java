@@ -301,6 +301,6 @@ public enum OracleTemplateType implements TemplateDefinition
     @Override
     public String toString()
     {
-        return "TemplateType{templateName='" + templateName + "'}";
+        return "OracleTemplateType{templateName='" + templateName + "'}";
     }
 }

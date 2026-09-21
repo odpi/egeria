@@ -51,6 +51,8 @@ public class GovernanceActionExecutorProperties extends RelationshipBeanProperti
      */
     public GovernanceActionExecutorProperties(GovernanceActionExecutorProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             requestType            = template.getRequestType();

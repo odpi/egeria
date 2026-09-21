@@ -178,7 +178,7 @@ public class GovernanceActionProcessGraph
                 ", firstProcessStep=" + firstProcessStep +
                 ", nextProcessSteps=" + nextProcessSteps +
                 ", processStepLinks=" + processStepLinks +
-                ", mermaidGraph='" + governanceActionProcessMermaidGraph + '\'' +
+                ", governanceActionProcessMermaidGraph='" + governanceActionProcessMermaidGraph + '\'' +
                 '}';
     }
 

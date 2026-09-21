@@ -126,6 +126,6 @@ public enum ProvisionUnityCatalogGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "ProvisionUnityCatalogGuard{ name='" + name + "}";
     }
 }

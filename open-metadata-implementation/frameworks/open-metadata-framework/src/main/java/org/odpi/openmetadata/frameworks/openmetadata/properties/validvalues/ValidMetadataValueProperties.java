@@ -65,6 +65,6 @@ public class ValidMetadataValueProperties extends ValidValueDefinitionProperties
     @Override
     public String toString()
     {
-        return "ValidMetadataValue{" + '}';
+        return "ValidMetadataValueProperties{" + '}';
     }
 }

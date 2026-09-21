@@ -117,7 +117,7 @@ public class RegisteredGovernanceServiceElement
     @Override
     public String toString()
     {
-        return "RegisteredGovernanceService{" +
+        return "RegisteredGovernanceServiceElement{" +
                        "elementHeader=" + elementHeader +
                        ", properties=" + properties +
                        '}';
@@ -155,6 +155,6 @@ public class RegisteredGovernanceServiceElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(elementHeader, properties);
     }
 }

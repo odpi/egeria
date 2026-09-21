@@ -89,7 +89,7 @@ public class ListTablesResponse
     {
         return "ListTablesResponse{" +
                 "tables=" + tables +
-                ", nextPageToken='" + next_page_token + '\'' +
+                ", next_page_token='" + next_page_token + '\'' +
                 '}';
     }
 

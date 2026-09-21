@@ -534,8 +534,8 @@ public class AuditLogRecord
         return "AuditLogRecord{" +
                 "guid='" + guid + '\'' +
                 ", timeStamp=" + timeStamp +
-                ", originator=" + originatorProperties +
-                ", reportingComponent=" + originatorComponent +
+                ", originatorProperties=" + originatorProperties +
+                ", originatorComponent=" + originatorComponent +
                 ", actionDescription='" + actionDescription + '\'' +
                 ", threadId=" + threadId +
                 ", threadName='" + threadName + '\'' +

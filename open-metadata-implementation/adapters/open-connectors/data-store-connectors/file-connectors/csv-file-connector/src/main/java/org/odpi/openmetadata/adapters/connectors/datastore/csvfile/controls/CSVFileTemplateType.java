@@ -321,6 +321,6 @@ public enum CSVFileTemplateType implements TemplateDefinition
     @Override
     public String toString()
     {
-        return "TemplateType{templateName='" + templateName + "'}";
+        return "CSVFileTemplateType{templateName='" + templateName + "'}";
     }
 }

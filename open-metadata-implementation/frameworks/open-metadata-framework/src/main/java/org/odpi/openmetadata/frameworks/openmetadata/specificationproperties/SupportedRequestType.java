@@ -49,7 +49,7 @@ public class SupportedRequestType extends RequestTypeType
     @Override
     public String toString()
     {
-        return "SupportedRequestTypeType{" +
+        return "SupportedRequestType{" +
                 "} " + super.toString();
     }
 }

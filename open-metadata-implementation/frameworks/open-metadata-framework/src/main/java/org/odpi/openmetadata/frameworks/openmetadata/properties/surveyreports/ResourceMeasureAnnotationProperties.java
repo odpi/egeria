@@ -85,7 +85,7 @@ public class ResourceMeasureAnnotationProperties extends AnnotationProperties
     @Override
     public String toString()
     {
-        return "ResourceMeasurementAnnotation{" +
+        return "ResourceMeasureAnnotationProperties{" +
                 "resourceProperties=" + resourceProperties +
                 "} " + super.toString();
     }

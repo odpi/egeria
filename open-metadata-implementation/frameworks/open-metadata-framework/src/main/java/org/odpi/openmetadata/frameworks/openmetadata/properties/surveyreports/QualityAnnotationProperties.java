@@ -52,6 +52,7 @@ public class QualityAnnotationProperties extends DataFieldAnnotationProperties
         if (template != null)
         {
             qualityDimension = template.getQualityDimension();
+            qualityDescription = template.getQualityDescription();
             qualityScore = template.getQualityScore();
         }
     }

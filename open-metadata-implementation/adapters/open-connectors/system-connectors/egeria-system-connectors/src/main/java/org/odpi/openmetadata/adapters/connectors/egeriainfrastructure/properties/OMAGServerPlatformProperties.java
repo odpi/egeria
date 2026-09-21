@@ -153,7 +153,7 @@ public class OMAGServerPlatformProperties
     public String toString()
     {
         return "OMAGServerPlatformProperties{" +
-                "platformName='" + defaultPlatformName + '\'' +
+                "defaultPlatformName='" + defaultPlatformName + '\'' +
                 ", platformURLRoot='" + platformURLRoot + '\'' +
                 ", platformOrigin='" + platformOrigin + '\'' +
                 ", platformBuildProperties=" + platformBuildProperties +

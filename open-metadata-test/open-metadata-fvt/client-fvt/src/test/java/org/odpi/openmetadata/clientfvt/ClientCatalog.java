@@ -13,8 +13,9 @@ import java.util.Set;
  * ClientCatalog is the single place that records what this suite covers.
  * <br>
  * <b>This is the file to edit when a client is added or changes.</b>  Every client the connector context
- * hands out must appear here, either in {@link #CLIENTS_UNDER_TEST} - naming the test class that exercises
- * it - or in {@link #EXCLUDED_CLIENTS} with a reason.  {@link ClientCoverageFVT} fails the run if a client
+ * hands out must appear here, either in {@link #LIFECYCLE_CLIENTS} or {@link #BESPOKE_CLIENTS} - naming
+ * the element type or the test class that exercises it - or in {@link #NOT_YET_COVERED} with a reason.
+ * {@link ClientCoverageFVT} fails the run if a client
  * exists that this file does not mention, and equally if this file names a client that no longer exists, so
  * neither side can drift quietly.
  * <br>
@@ -26,52 +27,64 @@ import java.util.Set;
 final class ClientCatalog
 {
     /**
+     * One lifecycle test case: the client to drive, and the element stem used in its method names.
+     *
+     * @param clientName simple class name of the client
+     * @param elementStem the stem in {@code create<Stem>}, {@code get<Stem>ByGUID} and the rest
+     */
+    private record LifecycleClient(String clientName, String elementStem) { }
+
+
+    /**
      * Clients with the standard lifecycle surface - {@code create<Stem>}, {@code get<Stem>ByGUID},
-     * {@code get<Stem>sByName}, {@code find<Stem>s}, {@code update<Stem>}, {@code delete<Stem>} - mapped to
-     * the element stem used in those method names.  {@link ClientLifecycleFVT} drives each one through the
-     * whole sequence.
+     * {@code get<Stem>sByName}, {@code find<Stem>s}, {@code update<Stem>}, {@code delete<Stem>} - paired
+     * with the element stem used in those method names.  {@link ClientLifecycleFVT} drives each pair
+     * through the whole sequence.
      * <br>
      * A client appears once per element type it creates, which is why {@code NetworkClient} is here twice.
+     * That is also why this is a list rather than a map keyed on the client name: a map silently kept only
+     * the last element type for a client that maintains more than one, so {@code Network} was named here
+     * and never driven.
      */
-    private static final Map<String, String> LIFECYCLE_CLIENTS = new LinkedHashMap<>()
+    private static final List<LifecycleClient> LIFECYCLE_CLIENTS = new ArrayList<>()
     {{
-        put("ActorProfileClient", "ActorProfile");
-        put("ActorRoleClient", "ActorRole");
-        put("AnnotationClient", "Annotation");
-        put("AssetClient", "Asset");
-        put("CollectionClient", "Collection");
-        put("CommunityClient", "Community");
-        put("ConceptModelElementClient", "ConceptModelElement");
-        put("ConnectionClient", "Connection");
-        put("ConnectorTypeClient", "ConnectorType");
-        put("ContactDetailsClient", "ContactDetails");
-        put("ContextEventClient", "ContextEvent");
-        put("DataFieldClient", "DataField");
-        put("DataStructureClient", "DataStructure");
-        put("DataValueSpecificationClient", "DataValueSpecification");
-        put("DesignPatternClient", "DesignPattern");
-        put("EndpointClient", "Endpoint");
-        put("ExternalIdClient", "ExternalId");
-        put("ExternalReferenceClient", "ExternalReference");
-        put("GlossaryTermClient", "GlossaryTerm");
-        put("GovernanceDefinitionClient", "GovernanceDefinition");
-        put("InformalTagClient", "InformalTag");
-        put("LocationClient", "Location");
-        put("MetadataRepositoryCohortClient", "MetadataRepositoryCohort");
-        put("NetworkClient", "Network");
-        put("NetworkClient", "NetworkGateway");
-        put("OperatingPlatformClient", "OperatingPlatform");
-        put("PerspectiveClient", "Perspective");
-        put("ProjectClient", "Project");
-        put("SchemaAttributeClient", "SchemaAttribute");
-        put("SchemaTypeClient", "SchemaType");
-        put("SkillClient", "Skill");
-        put("SoftwareCapabilityClient", "SoftwareCapability");
-        put("SolutionComponentClient", "SolutionComponent");
-        put("SolutionPortClient", "SolutionPort");
-        put("StorageVolumeClient", "StorageVolume");
-        put("UserIdentityClient", "UserIdentity");
-        put("ValidValueDefinitionClient", "ValidValueDefinition");
+        add(new LifecycleClient("ActorProfileClient", "ActorProfile"));
+        add(new LifecycleClient("ActorRoleClient", "ActorRole"));
+        add(new LifecycleClient("AnnotationClient", "Annotation"));
+        add(new LifecycleClient("AssetClient", "Asset"));
+        add(new LifecycleClient("CollectionClient", "Collection"));
+        add(new LifecycleClient("CommunityClient", "Community"));
+        add(new LifecycleClient("ConceptModelElementClient", "ConceptModelElement"));
+        add(new LifecycleClient("ConnectionClient", "Connection"));
+        add(new LifecycleClient("ConnectorTypeClient", "ConnectorType"));
+        add(new LifecycleClient("ContactDetailsClient", "ContactDetails"));
+        add(new LifecycleClient("ContextEventClient", "ContextEvent"));
+        add(new LifecycleClient("DataFieldClient", "DataField"));
+        add(new LifecycleClient("DataStructureClient", "DataStructure"));
+        add(new LifecycleClient("DataValueSpecificationClient", "DataValueSpecification"));
+        add(new LifecycleClient("DesignPatternClient", "DesignPattern"));
+        add(new LifecycleClient("EndpointClient", "Endpoint"));
+        add(new LifecycleClient("ExternalIdClient", "ExternalId"));
+        add(new LifecycleClient("ExternalReferenceClient", "ExternalReference"));
+        add(new LifecycleClient("GlossaryTermClient", "GlossaryTerm"));
+        add(new LifecycleClient("GovernanceDefinitionClient", "GovernanceDefinition"));
+        add(new LifecycleClient("InformalTagClient", "InformalTag"));
+        add(new LifecycleClient("LocationClient", "Location"));
+        add(new LifecycleClient("MetadataRepositoryCohortClient", "MetadataRepositoryCohort"));
+        add(new LifecycleClient("NetworkClient", "Network"));
+        add(new LifecycleClient("NetworkClient", "NetworkGateway"));
+        add(new LifecycleClient("OperatingPlatformClient", "OperatingPlatform"));
+        add(new LifecycleClient("PerspectiveClient", "Perspective"));
+        add(new LifecycleClient("ProjectClient", "Project"));
+        add(new LifecycleClient("SchemaAttributeClient", "SchemaAttribute"));
+        add(new LifecycleClient("SchemaTypeClient", "SchemaType"));
+        add(new LifecycleClient("SkillClient", "Skill"));
+        add(new LifecycleClient("SoftwareCapabilityClient", "SoftwareCapability"));
+        add(new LifecycleClient("SolutionComponentClient", "SolutionComponent"));
+        add(new LifecycleClient("SolutionPortClient", "SolutionPort"));
+        add(new LifecycleClient("StorageVolumeClient", "StorageVolume"));
+        add(new LifecycleClient("UserIdentityClient", "UserIdentity"));
+        add(new LifecycleClient("ValidValueDefinitionClient", "ValidValueDefinition"));
     }};
 
     /**
@@ -123,7 +136,7 @@ final class ClientCatalog
      */
     static boolean accountsFor(String clientName)
     {
-        return LIFECYCLE_CLIENTS.containsKey(clientName)
+        return isLifecycleClient(clientName)
                        || BESPOKE_CLIENTS.containsKey(clientName)
                        || NOT_YET_COVERED.containsKey(clientName);
     }
@@ -137,7 +150,7 @@ final class ClientCatalog
      */
     static boolean isUnderTest(String clientName)
     {
-        return LIFECYCLE_CLIENTS.containsKey(clientName) || BESPOKE_CLIENTS.containsKey(clientName);
+        return isLifecycleClient(clientName) || BESPOKE_CLIENTS.containsKey(clientName);
     }
 
 
@@ -150,12 +163,33 @@ final class ClientCatalog
     {
         List<String> cases = new ArrayList<>();
 
-        for (Map.Entry<String, String> entry : LIFECYCLE_CLIENTS.entrySet())
+        for (LifecycleClient lifecycleClient : LIFECYCLE_CLIENTS)
         {
-            cases.add(entry.getKey() + ":" + entry.getValue());
+            cases.add(lifecycleClient.clientName() + ":" + lifecycleClient.elementStem());
         }
 
         return cases;
+    }
+
+
+    /**
+     * Is this client one of the lifecycle clients?  It may appear more than once, one entry per element type
+     * it maintains.
+     *
+     * @param clientName simple class name of the client
+     * @return true if the catalog drives it through the lifecycle sequence
+     */
+    private static boolean isLifecycleClient(String clientName)
+    {
+        for (LifecycleClient lifecycleClient : LIFECYCLE_CLIENTS)
+        {
+            if (lifecycleClient.clientName().equals(clientName))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -167,7 +201,12 @@ final class ClientCatalog
      */
     static Set<String> allNamedClients()
     {
-        Set<String> names = new LinkedHashSet<>(LIFECYCLE_CLIENTS.keySet());
+        Set<String> names = new LinkedHashSet<>();
+
+        for (LifecycleClient lifecycleClient : LIFECYCLE_CLIENTS)
+        {
+            names.add(lifecycleClient.clientName());
+        }
 
         names.addAll(BESPOKE_CLIENTS.keySet());
         names.addAll(NOT_YET_COVERED.keySet());

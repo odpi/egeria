@@ -149,7 +149,7 @@ public enum ElementStatus implements OpenMetadataRefData
     @Override
     public String toString()
     {
-        return "InstanceStatus{" +
+        return "ElementStatus{" +
                 "ordinal=" + ordinal +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

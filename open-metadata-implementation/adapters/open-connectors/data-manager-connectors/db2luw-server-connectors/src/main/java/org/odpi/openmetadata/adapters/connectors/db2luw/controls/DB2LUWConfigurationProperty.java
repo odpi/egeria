@@ -349,6 +349,6 @@ public enum DB2LUWConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "DB2LUWConfigurationProperty{ name=" + name + "}";
     }
 }

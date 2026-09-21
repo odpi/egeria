@@ -100,7 +100,7 @@ public class HistoryExternalIdentifiersRequestBody extends ExternalIdEffectiveTi
     @Override
     public String toString()
     {
-        return "HistoryRequestBody{" +
+        return "HistoryExternalIdentifiersRequestBody{" +
                 "fromTime=" + fromTime +
                 ", toTime=" + toTime +
                 "} " + super.toString();

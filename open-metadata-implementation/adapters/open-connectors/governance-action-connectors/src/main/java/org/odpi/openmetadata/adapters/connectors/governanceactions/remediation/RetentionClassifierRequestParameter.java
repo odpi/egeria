@@ -151,6 +151,6 @@ public enum RetentionClassifierRequestParameter
     @Override
     public String toString()
     {
-        return "MoveCopyFileRequestParameter{ name=" + name + "}";
+        return "RetentionClassifierRequestParameter{ name=" + name + "}";
     }
 }

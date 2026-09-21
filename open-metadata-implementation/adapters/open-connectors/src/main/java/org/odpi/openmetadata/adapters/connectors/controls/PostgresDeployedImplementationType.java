@@ -322,6 +322,6 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
     @Override
     public String toString()
     {
-        return "DeployedImplementationType{" + deployedImplementationType + '}';
+        return "PostgresDeployedImplementationType{" + deployedImplementationType + '}';
     }
 }

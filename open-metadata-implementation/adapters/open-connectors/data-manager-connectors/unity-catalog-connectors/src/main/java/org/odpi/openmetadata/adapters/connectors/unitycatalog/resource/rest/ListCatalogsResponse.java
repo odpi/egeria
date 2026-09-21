@@ -88,7 +88,7 @@ public class ListCatalogsResponse
     {
         return "ListCatalogsResponse{" +
                 "catalogs=" + catalogs +
-                ", nextPageToken='" + next_page_token + '\'' +
+                ", next_page_token='" + next_page_token + '\'' +
                 '}';
     }
 

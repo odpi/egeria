@@ -156,6 +156,6 @@ public enum ScopeDefinition
     @Override
     public String toString()
     {
-        return "Scope{" + description + '}';
+        return "ScopeDefinition{" + description + '}';
     }
 }

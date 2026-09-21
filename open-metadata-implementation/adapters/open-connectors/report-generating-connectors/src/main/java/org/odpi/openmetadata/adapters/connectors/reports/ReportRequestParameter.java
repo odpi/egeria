@@ -135,6 +135,6 @@ public enum ReportRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "ReportRequestParameter{ name=" + name + "}";
     }
 }

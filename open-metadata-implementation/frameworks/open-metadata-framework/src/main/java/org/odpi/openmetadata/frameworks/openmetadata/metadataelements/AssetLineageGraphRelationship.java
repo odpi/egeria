@@ -155,7 +155,7 @@ public class AssetLineageGraphRelationship
     {
         return "AssetLineageGraphRelationship{" +
                 "relationshipTypes=" + relationshipTypes +
-                ", relationshipProperties='" + informationSupplyChains + '\'' +
+                ", informationSupplyChains='" + informationSupplyChains + '\'' +
                 ", end1AssetGUID='" + end1AssetGUID + '\'' +
                 ", end2AssetGUID='" + end2AssetGUID + '\'' +
                 '}';

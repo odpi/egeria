@@ -43,6 +43,8 @@ public class GovernanceActionProcessFlowProperties extends RelationshipBeanPrope
      */
     public GovernanceActionProcessFlowProperties(GovernanceActionProcessFlowProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             guard              = template.getGuard();

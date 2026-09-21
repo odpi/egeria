@@ -156,6 +156,6 @@ public class IntegrationDaemonStatus
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), integrationConnectorReports, integrationGroupSummaries);
+        return Objects.hash(integrationConnectorReports, integrationGroupSummaries);
     }
 }

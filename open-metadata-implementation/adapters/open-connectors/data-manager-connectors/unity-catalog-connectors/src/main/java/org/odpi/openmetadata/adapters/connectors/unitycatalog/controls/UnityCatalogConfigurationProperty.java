@@ -430,6 +430,6 @@ public enum UnityCatalogConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "UnityCatalogConfigurationProperty{ name=" + name + "}";
     }
 }

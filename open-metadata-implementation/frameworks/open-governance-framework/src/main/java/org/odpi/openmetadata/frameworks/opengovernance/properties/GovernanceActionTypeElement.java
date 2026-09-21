@@ -203,10 +203,6 @@ public class GovernanceActionTypeElement
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         GovernanceActionTypeElement that = (GovernanceActionTypeElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(actionTypeProperties, that.actionTypeProperties) &&
@@ -224,7 +220,7 @@ public class GovernanceActionTypeElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, actionTypeProperties, predefinedActionTargets,
+        return Objects.hash(elementHeader, actionTypeProperties, predefinedActionTargets,
                             specification, mermaidSpecification);
     }
 }

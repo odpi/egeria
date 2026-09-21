@@ -54,6 +54,8 @@ public class NotificationTypeProperties extends GovernanceControlProperties
      */
     public NotificationTypeProperties(NotificationTypeProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             plannedStartDate               = template.getPlannedStartDate();

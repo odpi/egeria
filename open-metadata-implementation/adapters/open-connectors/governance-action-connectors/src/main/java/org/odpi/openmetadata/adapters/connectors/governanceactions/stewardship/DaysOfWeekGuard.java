@@ -129,6 +129,6 @@ public enum DaysOfWeekGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "DaysOfWeekGuard{ name='" + name + "}";
     }
 }

@@ -237,7 +237,7 @@ public enum FileBasedRegistryStoreConnectorAuditCode implements AuditLogMessageS
     @Override
     public String toString()
     {
-        return "AuditCode{" +
+        return "FileBasedRegistryStoreConnectorAuditCode{" +
                        "logMessageId='" + logMessageId + '\'' +
                        ", severity=" + severity +
                        ", logMessage='" + logMessage + '\'' +

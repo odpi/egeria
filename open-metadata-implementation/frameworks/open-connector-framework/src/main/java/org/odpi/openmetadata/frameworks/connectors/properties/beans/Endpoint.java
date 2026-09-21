@@ -201,7 +201,7 @@ public class Endpoint extends Referenceable
     public String toString()
     {
         return "Endpoint{" +
-                "address='" + networkAddress + '\'' +
+                "networkAddress='" + networkAddress + '\'' +
                 ", protocol='" + protocol + '\'' +
                 ", encryptionMethod='" + encryptionMethod + '\'' +
                 "} " + super.toString();

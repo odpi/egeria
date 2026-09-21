@@ -48,7 +48,7 @@ public class SolutionPortDelegationProperties extends RoledRelationshipPropertie
     @Override
     public String toString()
     {
-        return "SolutionComponentPortProperties{" +
+        return "SolutionPortDelegationProperties{" +
                 "} " + super.toString();
     }
 }

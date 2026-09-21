@@ -289,6 +289,6 @@ public enum AtlasAnnotationType implements AnnotationType
     @Override
     public String toString()
     {
-        return "AnnotationType{ name='" + name + "}";
+        return "AtlasAnnotationType{ name='" + name + "}";
     }
 }
