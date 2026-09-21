@@ -252,7 +252,7 @@ public class RelatedMetadataElementSummary
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipHeader, effectiveFromTime, effectiveToTime,
+        return Objects.hash(relationshipHeader, effectiveFromTime, effectiveToTime,
                             relationshipProperties, relatedElement, relatedElementAtEnd1);
     }
 }

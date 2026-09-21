@@ -261,6 +261,6 @@ public enum KafkaDeployedImplementationType implements DeployedImplementationTyp
     @Override
     public String toString()
     {
-        return "DeployedImplementationType{" + deployedImplementationType + '}';
+        return "KafkaDeployedImplementationType{" + deployedImplementationType + '}';
     }
 }

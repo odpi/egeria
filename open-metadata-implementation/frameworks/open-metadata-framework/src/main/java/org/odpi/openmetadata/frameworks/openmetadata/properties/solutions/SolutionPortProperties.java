@@ -83,7 +83,7 @@ public class SolutionPortProperties extends DesignModelElementProperties
     public String toString()
     {
         return "SolutionPortProperties{" +
-                "solutionPortDirection=" + direction +
+                "direction=" + direction +
                 "} " + super.toString();
     }
 

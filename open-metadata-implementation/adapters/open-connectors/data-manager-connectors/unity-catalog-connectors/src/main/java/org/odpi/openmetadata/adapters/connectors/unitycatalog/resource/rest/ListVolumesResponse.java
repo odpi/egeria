@@ -89,7 +89,7 @@ public class ListVolumesResponse
     {
         return "ListVolumesResponse{" +
                 "volumes=" + volumes +
-                ", nextPageToken='" + next_page_token + '\'' +
+                ", next_page_token='" + next_page_token + '\'' +
                 '}';
     }
 

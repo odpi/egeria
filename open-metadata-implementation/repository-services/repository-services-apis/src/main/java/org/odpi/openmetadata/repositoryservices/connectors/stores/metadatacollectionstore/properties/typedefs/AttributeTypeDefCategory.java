@@ -97,9 +97,9 @@ public enum AttributeTypeDefCategory
     public String toString()
     {
         return "AttributeTypeDefCategory{" +
-                "ordinal=" + typeCode +
-                ", name='" + typeName + '\'' +
-                ", description='" + typeDescription + '\'' +
+                "typeCode=" + typeCode +
+                ", typeName='" + typeName + '\'' +
+                ", typeDescription='" + typeDescription + '\'' +
                 '}';
     }
 }

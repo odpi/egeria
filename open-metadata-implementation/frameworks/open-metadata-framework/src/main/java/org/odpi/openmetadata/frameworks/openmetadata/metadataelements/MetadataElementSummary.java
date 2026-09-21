@@ -126,10 +126,6 @@ public class MetadataElementSummary implements MetadataElement
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         MetadataElementSummary that = (MetadataElementSummary) objectToCompare;
         return Objects.equals(properties, that.properties);
     }
@@ -143,6 +139,6 @@ public class MetadataElementSummary implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties);
+        return Objects.hash(properties);
     }
 }

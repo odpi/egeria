@@ -127,7 +127,7 @@ public class AtlasLineageInfoOnDemand
                        ", isOutputRelationsReachedLimit=" + isOutputRelationsReachedLimit +
                        ", onDemandConstraints=" + onDemandConstraints +
                        ", inputRelationsReachedLimit=" + getInputRelationsReachedLimit() +
-                       ", outputRelationsReachedLimit=" + isOutputRelationsReachedLimit() +
+                       ", isOutputRelationsReachedLimit=" + isOutputRelationsReachedLimit() +
                        '}';
     }
 }

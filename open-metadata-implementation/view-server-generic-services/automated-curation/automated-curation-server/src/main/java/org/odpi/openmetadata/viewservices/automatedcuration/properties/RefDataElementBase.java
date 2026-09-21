@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.Spe
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -203,5 +204,50 @@ public class RefDataElementBase
                 ", specificationMermaidGraph='" + specificationMermaidGraph + '\'' +
                 ", relatedElement=" + relatedElement +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     * <br><br>
+     * Without these two methods the subclasses' own {@code super.equals} and {@code super.hashCode} reached
+     * {@link Object}, which compares by identity - so a catalog template or a resource description never
+     * equalled another with the same content, and none of the fields declared here took part in equality at
+     * all.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        RefDataElementBase that = (RefDataElementBase) objectToCompare;
+        return Objects.equals(displayName, that.displayName) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(additionalProperties, that.additionalProperties) &&
+                Objects.equals(specification, that.specification) &&
+                Objects.equals(specificationMermaidGraph, that.specificationMermaidGraph) &&
+                Objects.equals(relatedElement, that.relatedElement);
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(displayName, description, additionalProperties, specification,
+                            specificationMermaidGraph, relatedElement);
     }
 }

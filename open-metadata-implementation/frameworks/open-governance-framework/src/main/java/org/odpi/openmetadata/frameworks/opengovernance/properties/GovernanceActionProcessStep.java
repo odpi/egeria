@@ -78,7 +78,7 @@ public class GovernanceActionProcessStep extends GovernanceActionType
     @Override
     public String toString()
     {
-        return "GovernanceActionProcessStepProperties{" +
+        return "GovernanceActionProcessStep{" +
                 "ignoreMultipleTriggers=" + ignoreMultipleTriggers +
                 "} " + super.toString();
     }

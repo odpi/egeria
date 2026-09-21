@@ -241,6 +241,6 @@ public enum JDBCConfigurationProperty
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "JDBCConfigurationProperty{ name=" + name + "}";
     }
 }

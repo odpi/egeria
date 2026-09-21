@@ -81,7 +81,7 @@ public class ValidMetadataValueListResponse extends FFDCResponseBase
     public String toString()
     {
         return "ValidMetadataValueListResponse{" +
-                "elementList=" + elements +
+                "elements=" + elements +
                 "} " + super.toString();
     }
 

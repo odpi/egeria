@@ -141,7 +141,7 @@ public enum OCFServicesErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "ErrorCode{" +
+        return "OCFServicesErrorCode{" +
                        "httpErrorCode=" + httpErrorCode +
                        ", errorMessageId='" + errorMessageId + '\'' +
                        ", errorMessage='" + errorMessage + '\'' +

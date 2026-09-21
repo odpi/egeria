@@ -238,7 +238,7 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "ErrorCode{" +
+        return "OMAGServerInstanceErrorCode{" +
                        "httpErrorCode=" + httpErrorCode +
                        ", errorMessageId='" + errorMessageId + '\'' +
                        ", errorMessage='" + errorMessage + '\'' +

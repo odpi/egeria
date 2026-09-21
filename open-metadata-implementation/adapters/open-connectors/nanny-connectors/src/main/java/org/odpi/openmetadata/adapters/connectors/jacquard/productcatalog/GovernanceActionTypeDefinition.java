@@ -109,6 +109,6 @@ public enum GovernanceActionTypeDefinition
     @Override
     public String toString()
     {
-        return "GovernanceActionTypeDefinition{" + "name='" + governanceRequestType + '\'' + "}";
+        return "GovernanceActionTypeDefinition{" + "governanceRequestType='" + governanceRequestType + '\'' + "}";
     }
 }

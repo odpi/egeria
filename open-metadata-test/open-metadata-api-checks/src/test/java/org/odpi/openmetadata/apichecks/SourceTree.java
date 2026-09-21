@@ -4,12 +4,14 @@ package org.odpi.openmetadata.apichecks;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * SourceTree locates the project's own java source files so that the checks in this module can read
@@ -21,6 +23,12 @@ class SourceTree
     private static final String VIEW_SERVICES         = "open-metadata-implementation/view-services";
     private static final String VIEW_GENERIC_SERVICES = "open-metadata-implementation/view-server-generic-services";
     private static final String FRAMEWORK             = "open-metadata-implementation/frameworks/open-metadata-framework/src/main/java/org/odpi/openmetadata/frameworks/openmetadata";
+    private static final String IMPLEMENTATION        = "open-metadata-implementation";
+
+    /**
+     * The directory Gradle writes into, which holds no source and is being rewritten while the build runs.
+     */
+    private static final String BUILD_DIRECTORY        = "build";
 
 
     /**
@@ -50,6 +58,15 @@ class SourceTree
 
     /**
      * Return every java source file under the supplied directories whose name ends with the supplied suffix.
+     * <br><br>
+     * A module's {@code build} directory is <b>pruned</b> rather than filtered out of the results.  Filtering
+     * afterwards still walks into it, and during a full build those directories are being written and
+     * deleted by other tasks at the same time - a javadoc task recreating {@code build/docs/javadoc} while
+     * the walk is inside it ends the walk with a {@code NoSuchFileException}.  That made these checks pass
+     * when run on their own and fail in a parallel build, which is the worst way for a test to behave.
+     * <br><br>
+     * A file that disappears mid-walk is skipped for the same reason: it cannot be a source file this check
+     * cares about, because those do not come and go while the build runs.
      *
      * @param suffix file name suffix, for example "Resource.java"
      * @param relativeDirectories directories to search, relative to the repository root
@@ -69,12 +86,37 @@ class SourceTree
                 continue;
             }
 
-            try (Stream<Path> walk = Files.walk(directory))
+            try
             {
-                walk.filter(Files::isRegularFile)
-                    .filter(path -> path.getFileName().toString().endsWith(suffix))
-                    .filter(path -> ! path.toString().contains("/build/"))
-                    .forEach(results::add);
+                Files.walkFileTree(directory, new SimpleFileVisitor<>()
+                {
+                    @Override
+                    public FileVisitResult preVisitDirectory(Path candidate, BasicFileAttributes attributes)
+                    {
+                        return BUILD_DIRECTORY.equals(candidate.getFileName().toString())
+                                       ? FileVisitResult.SKIP_SUBTREE
+                                       : FileVisitResult.CONTINUE;
+                    }
+
+
+                    @Override
+                    public FileVisitResult visitFile(Path candidate, BasicFileAttributes attributes)
+                    {
+                        if (attributes.isRegularFile() && candidate.getFileName().toString().endsWith(suffix))
+                        {
+                            results.add(candidate);
+                        }
+
+                        return FileVisitResult.CONTINUE;
+                    }
+
+
+                    @Override
+                    public FileVisitResult visitFileFailed(Path candidate, IOException error)
+                    {
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
             }
             catch (IOException error)
             {
@@ -127,6 +169,45 @@ class SourceTree
     static List<Path> connectorContextClients()
     {
         return sourceFiles("Client.java", FRAMEWORK + "/connectorcontext");
+    }
+
+
+    /**
+     * Return every class in the implementation - the main source of every module under
+     * open-metadata-implementation.  Test sources are left out: a check here is about the shipped code,
+     * and a test is allowed to do things a bean is not.
+     *
+     * @return java files
+     */
+    static List<Path> implementationClasses()
+    {
+        List<Path> results = new ArrayList<>();
+
+        for (Path path : sourceFiles(".java", IMPLEMENTATION))
+        {
+            if (! path.toString().contains("/src/test/java/"))
+            {
+                results.add(path);
+            }
+        }
+
+        return results;
+    }
+
+
+    /**
+     * Return the open metadata framework's bean packages - the properties beans, the metadata element
+     * beans that carry them, and the search beans.  These are the beans that travel between the platform
+     * and its callers, and the ones that travel as their base type rather than their own.
+     *
+     * @return java files
+     */
+    static List<Path> frameworkBeans()
+    {
+        return sourceFiles(".java",
+                           FRAMEWORK + "/properties",
+                           FRAMEWORK + "/metadataelements",
+                           FRAMEWORK + "/search");
     }
 
 

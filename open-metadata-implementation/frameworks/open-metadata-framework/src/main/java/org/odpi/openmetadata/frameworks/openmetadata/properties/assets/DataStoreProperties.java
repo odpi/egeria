@@ -166,8 +166,8 @@ public class DataStoreProperties extends DataAssetProperties
     {
         return "DataStoreProperties{" +
                 "pathName='" + pathName + '\'' +
-                ", createTime=" + storeCreateTime +
-                ", modifiedTime=" + storeUpdateTime +
+                ", storeCreateTime=" + storeCreateTime +
+                ", storeUpdateTime=" + storeUpdateTime +
                 "} " + super.toString();
     }
 

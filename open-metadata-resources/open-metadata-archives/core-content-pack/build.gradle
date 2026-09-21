@@ -71,6 +71,12 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
+    // ContentPackIntegrityTest reads the shipped archives back into the platform's own archive bean, and
+    // reads the committed GUID maps, so it needs a JSON parser of its own.
+    testImplementation 'org.testng:testng'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+    // TypeReference, used to read the GUID maps, is in jackson-core rather than jackson-databind.
+    testImplementation 'com.fasterxml.jackson.core:jackson-core'
 }
 
 description = 'Open Connector Archives'
@@ -83,6 +89,18 @@ test {
     useTestNG()
     // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
     scanForTestClasses = false
+
+    /*
+     * ContentPackIntegrityTest reads the committed archives and GUID maps at run time, and Gradle cannot see
+     * that.  Without this the task is up to date whenever the test itself has not changed, so a regenerated
+     * pack would go unchecked and the build would report success.
+     */
+    inputs.files(fileTree(rootProject.file('content-packs')) { include '**/*.omarchive' })
+          .withPropertyName('shippedContentPacks')
+          .withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files(fileTree(rootProject.projectDir) { include '*GUIDMap.json' })
+          .withPropertyName('committedGUIDMaps')
+          .withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
 application {

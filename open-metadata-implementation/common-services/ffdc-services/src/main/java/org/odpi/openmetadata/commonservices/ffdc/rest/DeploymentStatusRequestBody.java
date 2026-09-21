@@ -100,7 +100,7 @@ public class DeploymentStatusRequestBody extends QueryOptions
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DeploymentStatusRequestBody that = (DeploymentStatusRequestBody) objectToCompare;
-        return deploymentStatusList == that.deploymentStatusList;
+        return Objects.equals(deploymentStatusList, that.deploymentStatusList);
     }
 
 

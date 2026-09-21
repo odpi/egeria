@@ -128,6 +128,6 @@ public enum RetentionClassifierGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "RetentionClassifierGuard{ name='" + name + "}";
     }
 }

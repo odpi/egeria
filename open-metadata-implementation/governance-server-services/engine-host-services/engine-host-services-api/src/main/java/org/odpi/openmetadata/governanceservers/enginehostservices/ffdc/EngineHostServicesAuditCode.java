@@ -469,7 +469,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "AuditCode{" +
+        return "EngineHostServicesAuditCode{" +
                        "logMessageId='" + logMessageId + '\'' +
                        ", severity=" + severity +
                        ", logMessage='" + logMessage + '\'' +

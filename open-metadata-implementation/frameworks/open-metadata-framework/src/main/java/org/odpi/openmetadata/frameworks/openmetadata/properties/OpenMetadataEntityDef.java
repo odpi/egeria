@@ -54,12 +54,22 @@ public class OpenMetadataEntityDef extends OpenMetadataTypeDef
 
     /**
      * Copy/clone constructor copies the values from the supplied template.
+     * <br><br>
+     * This used to take {@link OpenMetadataTypeDef}, the supertype, which is why it lost the relationship
+     * attributes: a constructor that cannot see them cannot copy them, and since {@link #cloneFromSubclass()}
+     * is this constructor, every clone lost them too.  Its siblings - the classification, relationship,
+     * collection and enum defs - all take their own class, and so does this one now.
      *
      * @param template OpenMetadataEntityDef
      */
-    public OpenMetadataEntityDef(OpenMetadataTypeDef template)
+    public OpenMetadataEntityDef(OpenMetadataEntityDef template)
     {
         super(template);
+
+        if (template != null)
+        {
+            this.relationshipAttributes = template.getRelationshipAttributes();
+        }
     }
 
 
@@ -105,6 +115,7 @@ public class OpenMetadataEntityDef extends OpenMetadataTypeDef
     public String toString()
     {
         return "OpenMetadataEntityDef{" +
+                "relationshipAttributes=" + relationshipAttributes +
                 "} " + super.toString();
     }
 

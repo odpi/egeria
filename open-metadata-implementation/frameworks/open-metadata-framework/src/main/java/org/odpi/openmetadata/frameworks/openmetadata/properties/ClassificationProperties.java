@@ -108,7 +108,7 @@ public class ClassificationProperties
     @Override
     public String toString()
     {
-        return "ClassificationBeanProperties{" +
+        return "ClassificationProperties{" +
                 "effectiveFrom=" + effectiveFrom +
                 ", effectiveTo=" + effectiveTo +
                 '}';

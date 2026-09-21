@@ -183,7 +183,7 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
                 "requestType='" + requestType + '\'' +
                 ", serviceRequestType='" + serviceRequestType + '\'' +
                 ", requestParameters=" + requestParameters +
-                ", generateIntegrationReports=" + generateConnectorActivityReports +
+                ", generateConnectorActivityReports=" + generateConnectorActivityReports +
                 ", deleteMethod=" + deleteMethod +
                 '}';
     }

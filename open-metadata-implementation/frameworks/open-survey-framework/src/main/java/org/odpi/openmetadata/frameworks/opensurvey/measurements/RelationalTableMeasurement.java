@@ -218,7 +218,7 @@ public class RelationalTableMeasurement
                 ", hasRules=" + hasRules +
                 ", hasTriggers=" + hasTriggers +
                 ", hasRowSecurity=" + hasRowSecurity +
-                ", viewDefinition='" + queryDefinition + '\'' +
+                ", queryDefinition='" + queryDefinition + '\'' +
                 '}';
     }
 

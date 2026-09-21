@@ -145,7 +145,7 @@ public class ActionTargetType extends SpecificationProperty
     public String toString()
     {
         return "ActionTargetType{" +
-                "typeName='" + openMetadataTypeName + '\'' +
+                "openMetadataTypeName='" + openMetadataTypeName + '\'' +
                 ", deployedImplementationType='" + deployedImplementationType + '\'' +
                 ", required=" + required +
                 "} " + super.toString();

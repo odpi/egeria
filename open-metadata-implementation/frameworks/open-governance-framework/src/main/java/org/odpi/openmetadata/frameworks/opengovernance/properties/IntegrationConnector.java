@@ -106,7 +106,7 @@ public class IntegrationConnector extends DeployedConnectorProperties
     @Override
     public String toString()
     {
-        return "IntegrationConnectorProperties{" +
+        return "IntegrationConnector{" +
                 "usesBlockingCalls=" + usesBlockingCalls +
                 ", connection=" + connection +
                 "} " + super.toString();

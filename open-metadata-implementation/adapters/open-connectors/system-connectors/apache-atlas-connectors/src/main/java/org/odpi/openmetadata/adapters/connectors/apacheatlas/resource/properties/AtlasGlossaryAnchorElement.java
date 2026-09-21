@@ -77,8 +77,8 @@ public class AtlasGlossaryAnchorElement
     @Override
     public String toString()
     {
-        return "AtlasRelatedTermHeader{" +
-                       "termGuid='" + glossaryGuid + '\'' +
+        return "AtlasGlossaryAnchorElement{" +
+                       "glossaryGuid='" + glossaryGuid + '\'' +
                        ", relationGuid='" + relationGuid + '\'' +
                        ", displayText='" + displayText + '\'' +
                        '}';

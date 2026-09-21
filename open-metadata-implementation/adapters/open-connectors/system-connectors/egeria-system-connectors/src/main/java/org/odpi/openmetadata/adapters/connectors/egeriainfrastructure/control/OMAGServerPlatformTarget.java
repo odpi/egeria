@@ -213,6 +213,6 @@ public enum OMAGServerPlatformTarget
     @Override
     public String toString()
     {
-        return "TargetEnum{catalogTargetName='" + name + "'}";
+        return "OMAGServerPlatformTarget{catalogTargetName='" + name + "'}";
     }
 }

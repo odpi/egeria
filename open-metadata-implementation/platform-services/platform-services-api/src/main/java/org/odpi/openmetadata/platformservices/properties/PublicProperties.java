@@ -52,7 +52,7 @@ public class PublicProperties
     @Override
     public String toString()
     {
-        return "AboutProperties{" +
+        return "PublicProperties{" +
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", organizationName='" + organizationName + '\'' +

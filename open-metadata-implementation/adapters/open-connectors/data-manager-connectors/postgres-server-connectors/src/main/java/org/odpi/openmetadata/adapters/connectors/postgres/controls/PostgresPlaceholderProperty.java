@@ -292,6 +292,6 @@ public enum PostgresPlaceholderProperty
     @Override
     public String toString()
     {
-        return "PlaceholderProperty{ name=" + name + "}";
+        return "PostgresPlaceholderProperty{ name=" + name + "}";
     }
 }

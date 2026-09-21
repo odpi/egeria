@@ -87,9 +87,9 @@ public class ListRegisteredModelsResponse
     @Override
     public String toString()
     {
-        return "ListRegisteredResponse{" +
+        return "ListRegisteredModelsResponse{" +
                 "registered models=" + registered_models +
-                ", nextPageToken='" + next_page_token + '\'' +
+                ", next_page_token='" + next_page_token + '\'' +
                 '}';
     }
 

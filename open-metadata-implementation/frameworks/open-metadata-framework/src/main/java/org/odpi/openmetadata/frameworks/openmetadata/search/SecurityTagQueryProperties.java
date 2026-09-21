@@ -105,7 +105,7 @@ public class SecurityTagQueryProperties extends QueryOptions
     @Override
     public String toString()
     {
-        return "SecurityTagsProperties{" +
+        return "SecurityTagQueryProperties{" +
                 "securityLabels=" + securityLabels +
                 ", securityProperties=" + securityProperties +
                 "} " + super.toString();

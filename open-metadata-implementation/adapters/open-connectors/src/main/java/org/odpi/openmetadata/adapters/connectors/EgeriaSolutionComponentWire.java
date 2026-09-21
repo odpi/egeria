@@ -393,7 +393,7 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
     @Override
     public String toString()
     {
-        return "SolutionComponentWire{" +
+        return "EgeriaSolutionComponentWire{" +
                 "component1=" + component1 +
                 ", component2=" + component2 +
                 ", label='" + label + '\'' +

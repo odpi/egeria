@@ -15130,8 +15130,6 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new DigitalProductDependencyProperties();
 
-                ((DigitalProductDependencyProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
-                ((DigitalProductDependencyProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));

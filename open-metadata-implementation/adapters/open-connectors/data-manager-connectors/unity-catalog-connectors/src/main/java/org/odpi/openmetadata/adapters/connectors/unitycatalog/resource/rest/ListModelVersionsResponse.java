@@ -89,7 +89,7 @@ public class ListModelVersionsResponse
     {
         return "ListModelVersionsResponse{" +
                 "model_versions=" + model_versions +
-                ", nextPageToken='" + next_page_token + '\'' +
+                ", next_page_token='" + next_page_token + '\'' +
                 '}';
     }
 

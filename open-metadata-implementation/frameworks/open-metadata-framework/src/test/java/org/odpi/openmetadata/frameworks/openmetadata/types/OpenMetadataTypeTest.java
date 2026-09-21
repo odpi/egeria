@@ -429,8 +429,8 @@ public class OpenMetadataTypeTest
             else if (primitiveDef.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT)
             {
                 propertyHelper.addIntProperty(elementProperties,
-                                                  propertyName,
-                                                  propertyName.length());
+                                              propertyName,
+                                              propertyName.length());
             }
             else if (primitiveDef.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG)
             {

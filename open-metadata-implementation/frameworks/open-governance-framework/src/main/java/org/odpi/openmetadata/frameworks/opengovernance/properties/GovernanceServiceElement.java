@@ -140,6 +140,6 @@ public class GovernanceServiceElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(elementHeader, properties);
     }
 }

@@ -127,8 +127,8 @@ public class FirstGovernanceActionProcessStepElement
     public String toString()
     {
         return "FirstGovernanceActionProcessStepElement{" +
-                       "nextProcessStep=" + element +
-                       ", nextProcessStepLinkGUID='" + linkGUID + '\'' +
+                       "element=" + element +
+                       ", linkGUID='" + linkGUID + '\'' +
                        ", guard='" + guard + '\'' +
                        '}';
     }

@@ -423,6 +423,6 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
     @Override
     public String toString()
     {
-        return "InformationSupplyChain{" + displayName + '}';
+        return "EgeriaInformationSupplyChainDefinition{" + displayName + '}';
     }
 }

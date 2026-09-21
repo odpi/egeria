@@ -125,6 +125,6 @@ public enum CatalogTargetAssetGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "CatalogTargetAssetGuard{ name='" + name + "}";
     }
 }

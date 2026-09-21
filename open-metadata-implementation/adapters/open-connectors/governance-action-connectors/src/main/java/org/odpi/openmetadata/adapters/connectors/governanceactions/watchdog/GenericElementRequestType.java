@@ -109,6 +109,6 @@ public enum GenericElementRequestType
     @Override
     public String toString()
     {
-        return "MoveCopyFileRequestType{" + requestType + "}";
+        return "GenericElementRequestType{" + requestType + "}";
     }
 }

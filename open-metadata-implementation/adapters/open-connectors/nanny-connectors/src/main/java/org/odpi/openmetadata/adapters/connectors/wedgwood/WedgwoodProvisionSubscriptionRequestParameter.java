@@ -142,6 +142,6 @@ public enum WedgwoodProvisionSubscriptionRequestParameter
     @Override
     public String toString()
     {
-        return "MoveCopyFileRequestParameter{ name=" + name + "}";
+        return "WedgwoodProvisionSubscriptionRequestParameter{ name=" + name + "}";
     }
 }

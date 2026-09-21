@@ -113,6 +113,6 @@ public class UserAccountRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getUserAccount());
+        return Objects.hash(getUserAccount());
     }
 }

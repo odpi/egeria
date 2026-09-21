@@ -77,7 +77,7 @@ public class UpdateWithTemplateRequestBody extends UpdateWithTemplateOptions
     @Override
     public String toString()
     {
-        return "UpdateElementRequestBody{" +
+        return "UpdateWithTemplateRequestBody{" +
                 "properties=" + properties +
                 "} " + super.toString();
     }

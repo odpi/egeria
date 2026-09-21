@@ -136,6 +136,6 @@ public enum ProvisionUnityCatalogRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "ProvisionUnityCatalogRequestParameter{ name=" + name + "}";
     }
 }

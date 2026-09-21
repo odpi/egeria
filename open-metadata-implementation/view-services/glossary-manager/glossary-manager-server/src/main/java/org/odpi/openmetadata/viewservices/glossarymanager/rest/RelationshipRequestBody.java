@@ -80,7 +80,7 @@ public class RelationshipRequestBody extends EffectiveTimeQueryRequestBody
     @Override
     public String toString()
     {
-        return "NewRelationshipRequestBody{" +
+        return "RelationshipRequestBody{" +
                        "effectiveTime=" + getEffectiveTime() +
                        ", properties=" + properties +
                        '}';

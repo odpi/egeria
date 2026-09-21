@@ -148,6 +148,6 @@ public enum ManageDigitalSubscriptionRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "ManageDigitalSubscriptionRequestParameter{ name=" + name + "}";
     }
 }

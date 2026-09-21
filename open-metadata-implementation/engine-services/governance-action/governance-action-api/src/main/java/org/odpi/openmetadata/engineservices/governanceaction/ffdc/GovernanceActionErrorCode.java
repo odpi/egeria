@@ -176,7 +176,7 @@ public enum GovernanceActionErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "ErrorCode{" +
+        return "GovernanceActionErrorCode{" +
                        "httpErrorCode=" + httpErrorCode +
                        ", errorMessageId='" + errorMessageId + '\'' +
                        ", errorMessage='" + errorMessage + '\'' +

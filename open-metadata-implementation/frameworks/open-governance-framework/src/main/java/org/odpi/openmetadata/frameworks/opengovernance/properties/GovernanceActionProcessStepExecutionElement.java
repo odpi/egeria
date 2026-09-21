@@ -211,10 +211,6 @@ public class GovernanceActionProcessStepExecutionElement
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         GovernanceActionProcessStepExecutionElement that = (GovernanceActionProcessStepExecutionElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(processStepProperties, that.processStepProperties) &&
@@ -231,6 +227,6 @@ public class GovernanceActionProcessStepExecutionElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, processStepProperties, specification, mermaidSpecification);
+        return Objects.hash(elementHeader, processStepProperties, specification, mermaidSpecification);
     }
 }

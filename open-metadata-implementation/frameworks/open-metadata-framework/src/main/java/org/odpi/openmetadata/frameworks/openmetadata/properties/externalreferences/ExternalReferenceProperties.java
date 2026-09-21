@@ -36,7 +36,6 @@ public class ExternalReferenceProperties extends AuthoredReferenceableProperties
 {
     private String              referenceTitle    = null;
     private String              referenceAbstract = null;
-    private List<String>        authors           = null;
     private String              organization      = null;
     private Map<String, String> sources           = null;
     private String              license           = null;
@@ -70,7 +69,6 @@ public class ExternalReferenceProperties extends AuthoredReferenceableProperties
             license           = template.getLicense();
             copyright         = template.getCopyright();
             organization      = template.getOrganization();
-            authors           = template.getAuthors();
             sources           = template.getSources();
             attribution       = template.getAttribution();
         }
@@ -176,28 +174,6 @@ public class ExternalReferenceProperties extends AuthoredReferenceableProperties
 
 
     /**
-     * Return the list of authors.
-     *
-     * @return list
-     */
-    public List<String> getAuthors()
-    {
-        return authors;
-    }
-
-
-    /**
-     * Set up the list of authors.
-     *
-     * @param authors list
-     */
-    public void setAuthors(List<String> authors)
-    {
-        this.authors = authors;
-    }
-
-
-    /**
      * Return the names and addresses of all of the sources of this information.
      *
      * @return map
@@ -252,7 +228,6 @@ public class ExternalReferenceProperties extends AuthoredReferenceableProperties
         return "ExternalReferenceProperties{" +
                 "referenceTitle='" + referenceTitle + '\'' +
                 ", referenceAbstract='" + referenceAbstract + '\'' +
-                ", authors=" + authors +
                 ", organization='" + organization + '\'' +
                 ", sources=" + sources +
                 ", license='" + license + '\'' +
@@ -277,7 +252,6 @@ public class ExternalReferenceProperties extends AuthoredReferenceableProperties
         ExternalReferenceProperties that = (ExternalReferenceProperties) objectToCompare;
         return Objects.equals(referenceTitle, that.referenceTitle) &&
                 Objects.equals(referenceAbstract, that.referenceAbstract) &&
-                Objects.equals(authors, that.authors) &&
                 Objects.equals(organization, that.organization) &&
                 Objects.equals(sources, that.sources) &&
                 Objects.equals(license, that.license) &&
@@ -293,6 +267,6 @@ public class ExternalReferenceProperties extends AuthoredReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), referenceTitle, referenceAbstract, authors, organization, sources, license, copyright, attribution);
+        return Objects.hash(super.hashCode(), referenceTitle, referenceAbstract, organization, sources, license, copyright, attribution);
     }
 }

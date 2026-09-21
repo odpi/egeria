@@ -114,7 +114,7 @@ public class OpenMetadataRelationshipList
     public String toString()
     {
         return "OpenMetadataRelationshipList{" +
-                "elementList=" + relationships +
+                "relationships=" + relationships +
                 ", mermaidGraph='" + mermaidGraph + '\'' +
                 '}';
     }

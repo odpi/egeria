@@ -253,7 +253,7 @@ public class DataValueAssignmentProperties extends LabeledRelationshipProperties
     {
         return "DataValueAssignmentProperties{" +
                 "method='" + method + '\'' +
-                ", status=" + assignmentStatus +
+                ", assignmentStatus=" + assignmentStatus +
                 ", confidence=" + confidence +
                 ", threshold=" + threshold +
                 ", steward='" + steward + '\'' +

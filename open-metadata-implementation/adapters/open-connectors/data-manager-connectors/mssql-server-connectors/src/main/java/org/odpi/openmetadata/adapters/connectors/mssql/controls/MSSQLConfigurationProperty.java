@@ -348,6 +348,6 @@ public enum MSSQLConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "MSSQLConfigurationProperty{ name=" + name + "}";
     }
 }

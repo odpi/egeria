@@ -363,6 +363,6 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
     @Override
     public String toString()
     {
-        return "DeployedImplementationType{" + deployedImplementationType + '}';
+        return "UnityCatalogDeployedImplementationType{" + deployedImplementationType + '}';
     }
 }

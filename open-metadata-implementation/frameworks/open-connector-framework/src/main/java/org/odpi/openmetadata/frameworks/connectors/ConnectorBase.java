@@ -1157,7 +1157,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     {
         return "ConnectorBase{" +
                 "connectorInstanceId='" + connectorInstanceId + '\'' +
-                ", connectionDetails=" + connectionBean +
+                ", connectionBean=" + connectionBean +
                 ", isActive=" + isActive() +
                 ", hashCode=" + hashCode +
                 '}';

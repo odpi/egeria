@@ -104,7 +104,7 @@ public class ClassificationRequestBody
     @Override
     public String toString()
     {
-        return "NewClassificationRequestBody{" +
+        return "ClassificationRequestBody{" +
                        ", properties=" + properties +
                        ", effectiveTime=" + effectiveTime +
                        '}';

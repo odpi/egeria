@@ -142,7 +142,7 @@ public enum ConnectorConfigurationFactoryErrorCode implements ExceptionMessageSe
     @Override
     public String toString()
     {
-        return "ErrorCode{" +
+        return "ConnectorConfigurationFactoryErrorCode{" +
                        "httpErrorCode=" + httpErrorCode +
                        ", errorMessageId='" + errorMessageId + '\'' +
                        ", errorMessage='" + errorMessage + '\'' +

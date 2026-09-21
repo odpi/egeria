@@ -147,6 +147,6 @@ public enum GenericElementRequestParameter
     @Override
     public String toString()
     {
-        return "MoveCopyFileRequestParameter{ name=" + name + "}";
+        return "GenericElementRequestParameter{ name=" + name + "}";
     }
 }

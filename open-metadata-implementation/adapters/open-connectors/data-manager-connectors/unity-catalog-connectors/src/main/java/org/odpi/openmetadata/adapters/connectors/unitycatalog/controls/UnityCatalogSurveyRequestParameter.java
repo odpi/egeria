@@ -187,6 +187,6 @@ public enum UnityCatalogSurveyRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "UnityCatalogSurveyRequestParameter{ name=" + name + "}";
     }
 }

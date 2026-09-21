@@ -132,6 +132,6 @@ public enum AtlasRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "AtlasRequestParameter{ name=" + name + "}";
     }
 }

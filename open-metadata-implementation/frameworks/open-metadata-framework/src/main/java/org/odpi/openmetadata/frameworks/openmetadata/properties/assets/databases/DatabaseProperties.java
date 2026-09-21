@@ -111,7 +111,7 @@ public class DatabaseProperties extends DataStoreProperties
     {
         return "DatabaseProperties{" +
                 "databaseInstance='" + databaseInstance + '\'' +
-                ", databaseImportedFrom='" + importedFrom + '\'' +
+                ", importedFrom='" + importedFrom + '\'' +
                 "} " + super.toString();
     }
 

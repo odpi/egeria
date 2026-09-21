@@ -59,7 +59,7 @@ public class ExceptionTypeProperties extends GovernanceControlProperties
     @Override
     public String toString()
     {
-        return "CertificationTypeProperties{" +
+        return "ExceptionTypeProperties{" +
                 "} " + super.toString();
     }
 }

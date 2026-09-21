@@ -178,10 +178,6 @@ public class MetadataRelationshipSummary
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         MetadataRelationshipSummary that = (MetadataRelationshipSummary) objectToCompare;
         return Objects.equals(relationshipHeader, that.relationshipHeader) &&
                 Objects.equals(relationshipProperties, that.relationshipProperties) &&

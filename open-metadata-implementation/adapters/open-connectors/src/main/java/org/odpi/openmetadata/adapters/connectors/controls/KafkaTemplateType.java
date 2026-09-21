@@ -284,6 +284,6 @@ public enum KafkaTemplateType implements TemplateDefinition
     @Override
     public String toString()
     {
-        return "TemplateType{templateName='" + templateName + "'}";
+        return "KafkaTemplateType{templateName='" + templateName + "'}";
     }
 }

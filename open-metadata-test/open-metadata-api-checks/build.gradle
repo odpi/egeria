@@ -14,6 +14,17 @@
 //                                   which throws NullPointerException instead of a useful error.
 //  - OpenMetadataTypeAPICoverageTest which relationship and classification types have no handler,
 //                                   connector context client or REST API support.
+//  - BeanEqualityContractTest       a bean with no superclass calling super.equals()/super.hashCode(),
+//                                   which reaches Object and quietly breaks value equality.
+//  - JacksonSubtypeRegistrationTest a framework bean missing from its base type's @JsonSubTypes, which
+//                                   serializes and then cannot be deserialized.
+//  - BeanEqualityChainTest          a bean deferring equality to a parent that does not implement it, so
+//                                   the deferral silently becomes an identity comparison.
+//  - BeanReferenceComparisonTest    equals() comparing a reference field with == rather than by value.
+//  - ToStringNamesItsOwnClassTest   a toString naming another class, or labelling a field with another
+//                                   field's name, so a log line describes something it is not.
+//  - DefinitionGUIDCollisionTest    a content pack definition claiming an open metadata type's GUID, so
+//                                   the archive builder refuses the element and the pack ships without it.
 //
 // It is run automatically as part of the normal build.
 
@@ -31,4 +42,21 @@ description = 'Open Metadata API Checks'
 test {
     useJUnitPlatform()
     testLogging.showStandardStreams = true
+
+    /*
+     * These checks read the project's own source files at run time, which Gradle cannot see: the only
+     * inputs it knows about are this module's sources and its classpath.  Without the declaration below the
+     * task is up to date whenever the checks themselves have not changed - so a change that introduces
+     * exactly the fault a check exists to catch is not checked, and the build reports success.  That was
+     * not hypothetical: re-introducing a GUID collision left the task up to date and the check unrun.
+     *
+     * Declaring the scanned tree as an input costs a hash of the java files and makes the task re-run when
+     * any of them changes, which is the whole point of it.
+     */
+    inputs.files(fileTree(rootProject.file('open-metadata-implementation')) {
+                     include '**/*.java'
+                     exclude '**/build/**'
+                 })
+          .withPropertyName('scannedImplementationSources')
+          .withPathSensitivity(PathSensitivity.RELATIVE)
 }

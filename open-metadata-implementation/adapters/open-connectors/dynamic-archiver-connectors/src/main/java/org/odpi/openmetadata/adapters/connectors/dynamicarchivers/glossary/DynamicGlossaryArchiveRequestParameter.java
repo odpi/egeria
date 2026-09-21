@@ -137,6 +137,6 @@ public enum DynamicGlossaryArchiveRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "DynamicGlossaryArchiveRequestParameter{ name=" + name + "}";
     }
 }

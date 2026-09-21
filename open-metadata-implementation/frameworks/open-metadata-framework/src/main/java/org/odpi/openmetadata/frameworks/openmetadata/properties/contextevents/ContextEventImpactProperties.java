@@ -83,7 +83,7 @@ public class ContextEventImpactProperties extends LabeledRelationshipProperties
     public String toString()
     {
         return "ContextEventImpactProperties{" +
-                "severityLevelIdentifier=" + severityLevel +
+                "severityLevel=" + severityLevel +
                 "} " + super.toString();
     }
 

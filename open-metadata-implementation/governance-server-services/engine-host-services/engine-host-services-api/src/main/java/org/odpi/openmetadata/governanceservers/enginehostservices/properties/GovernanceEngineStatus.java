@@ -106,8 +106,8 @@ public enum GovernanceEngineStatus
     {
         return "GovernanceEngineStatus{" +
             "ordinal=" + ordinal +
-            ", name='" + statusName + '\'' +
-            ", description='" + statusDescription + '\'' +
+            ", statusName='" + statusName + '\'' +
+            ", statusDescription='" + statusDescription + '\'' +
             '}';
     }
 

@@ -399,7 +399,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "OpenMetadataObservabilityAuditCode{" +
+        return "OpenMetadataSecurityAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +
                 ", logMessage='" + logMessage + '\'' +

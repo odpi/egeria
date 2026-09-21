@@ -171,6 +171,6 @@ public enum FileSystemConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "FileSystemConfigurationProperty{ name=" + name + "}";
     }
 }

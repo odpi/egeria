@@ -313,7 +313,7 @@ public class OMRSEventV2ErrorSection
     @Override
     public String toString()
     {
-        return "OMRSEventV1ErrorSection{" +
+        return "OMRSEventV2ErrorSection{" +
                        "errorCode=" + errorCode +
                        ", errorMessage='" + errorMessage + '\'' +
                        ", targetMetadataCollectionId='" + targetMetadataCollectionId + '\'' +

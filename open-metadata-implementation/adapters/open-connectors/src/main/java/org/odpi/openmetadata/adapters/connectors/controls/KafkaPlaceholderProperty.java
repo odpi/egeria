@@ -183,6 +183,6 @@ public enum KafkaPlaceholderProperty
     @Override
     public String toString()
     {
-        return "PlaceholderProperty{ name=" + name + "}";
+        return "KafkaPlaceholderProperty{ name=" + name + "}";
     }
 }

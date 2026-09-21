@@ -41,7 +41,7 @@ public abstract class OpenGovernanceClient  implements ActionControlInterface,
     @Override
     public String toString()
     {
-        return "OpenMetadataClient{" +
+        return "OpenGovernanceClient{" +
                 "serverName='" + serverName + '\'' +
                 ", serverPlatformURLRoot='" + serverPlatformURLRoot + '\'' +
                 '}';

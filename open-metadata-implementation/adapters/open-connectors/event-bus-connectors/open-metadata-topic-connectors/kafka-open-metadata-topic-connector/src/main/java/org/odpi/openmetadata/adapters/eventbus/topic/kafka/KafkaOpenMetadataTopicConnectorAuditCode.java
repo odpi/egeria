@@ -261,7 +261,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
     @Override
     public String toString()
     {
-        return "AuditCode{" +
+        return "KafkaOpenMetadataTopicConnectorAuditCode{" +
                        "logMessageId='" + logMessageId + '\'' +
                        ", severity=" + severity +
                        ", logMessage='" + logMessage + '\'' +

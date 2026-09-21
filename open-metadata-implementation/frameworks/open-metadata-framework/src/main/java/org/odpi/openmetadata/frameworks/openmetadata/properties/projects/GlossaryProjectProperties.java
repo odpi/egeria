@@ -49,6 +49,6 @@ public class GlossaryProjectProperties extends ClassificationBeanProperties
     @Override
     public String toString()
     {
-        return "ClassificationBeanProperties{} " + super.toString();
+        return "GlossaryProjectProperties{} " + super.toString();
     }
 }

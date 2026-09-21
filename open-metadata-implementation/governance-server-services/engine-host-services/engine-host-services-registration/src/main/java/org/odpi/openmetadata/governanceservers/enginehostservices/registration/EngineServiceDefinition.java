@@ -328,7 +328,7 @@ public class EngineServiceDefinition
     @Override
     public String toString()
     {
-        return "EngineServiceConfig{" +
+        return "EngineServiceDefinition{" +
                        "engineServiceId=" + engineServiceId +
                        ", engineServiceDevelopmentStatus=" + engineServiceDevelopmentStatus +
                        ", engineServiceName='" + engineServiceName + '\'' +

@@ -47,7 +47,7 @@ public class ResearchQuestionProperties extends GovernanceControlProperties
     @Override
     public String toString()
     {
-        return "GovernanceApproachProperties{" +
+        return "ResearchQuestionProperties{" +
                 "} " + super.toString();
     }
 }

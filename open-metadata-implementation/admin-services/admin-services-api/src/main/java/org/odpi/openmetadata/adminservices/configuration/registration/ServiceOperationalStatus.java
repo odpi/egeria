@@ -87,9 +87,9 @@ public enum ServiceOperationalStatus
     public String toString()
     {
         return "ServiceOperationalStatus{" +
-                "ordinal=" + typeCode +
-                ", name='" + typeName + '\'' +
-                ", description='" + typeDescription + '\'' +
+                "typeCode=" + typeCode +
+                ", typeName='" + typeName + '\'' +
+                ", typeDescription='" + typeDescription + '\'' +
                 '}';
     }
 }

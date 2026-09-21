@@ -88,8 +88,8 @@ public enum IntegrationGroupStatus
     {
         return "IntegrationGroupStatus{" +
             "ordinal=" + ordinal +
-            ", name='" + statusName + '\'' +
-            ", description='" + statusDescription + '\'' +
+            ", statusName='" + statusName + '\'' +
+            ", statusDescription='" + statusDescription + '\'' +
             '}';
     }
 

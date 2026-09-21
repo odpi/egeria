@@ -50,7 +50,7 @@ public class GovernanceActionProcessInstanceProperties extends TransientEmbedded
     @Override
     public String toString()
     {
-        return "GovernanceActionProperties{" +
+        return "GovernanceActionProcessInstanceProperties{" +
                 "} " + super.toString();
     }
 }

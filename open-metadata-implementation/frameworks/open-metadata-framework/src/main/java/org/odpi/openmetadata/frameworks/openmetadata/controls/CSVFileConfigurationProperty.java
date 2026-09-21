@@ -299,6 +299,6 @@ public enum CSVFileConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "CSVFileConfigurationProperty{ name=" + name + "}";
     }
 }

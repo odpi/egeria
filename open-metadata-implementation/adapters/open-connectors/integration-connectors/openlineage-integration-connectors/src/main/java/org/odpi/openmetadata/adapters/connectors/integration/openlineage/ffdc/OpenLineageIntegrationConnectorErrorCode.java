@@ -137,7 +137,7 @@ public enum OpenLineageIntegrationConnectorErrorCode implements ExceptionMessage
     @Override
     public String toString()
     {
-        return "ErrorCode{" +
+        return "OpenLineageIntegrationConnectorErrorCode{" +
                        "httpErrorCode=" + httpErrorCode +
                        ", errorMessageId='" + errorMessageId + '\'' +
                        ", errorMessage='" + errorMessage + '\'' +

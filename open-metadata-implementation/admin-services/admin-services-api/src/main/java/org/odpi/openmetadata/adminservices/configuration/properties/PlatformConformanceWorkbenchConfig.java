@@ -79,7 +79,7 @@ public class PlatformConformanceWorkbenchConfig extends AdminServicesConfigHeade
     @Override
     public String toString()
     {
-        return "ConformanceSuiteConfig{" +
+        return "PlatformConformanceWorkbenchConfig{" +
                 ", tutPlatformURLRoot='" + tutPlatformURLRoot + '\'' +
                 '}';
     }

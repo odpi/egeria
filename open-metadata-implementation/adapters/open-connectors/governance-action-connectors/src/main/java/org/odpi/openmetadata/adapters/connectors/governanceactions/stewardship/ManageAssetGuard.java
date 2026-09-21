@@ -125,6 +125,6 @@ public enum ManageAssetGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "ManageAssetGuard{ name='" + name + "}";
     }
 }

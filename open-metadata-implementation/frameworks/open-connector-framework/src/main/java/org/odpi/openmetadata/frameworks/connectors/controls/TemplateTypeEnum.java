@@ -188,6 +188,6 @@ public enum TemplateTypeEnum
     @Override
     public String toString()
     {
-        return "TemplateType{templateName='" + templateName + "'}";
+        return "TemplateTypeEnum{templateName='" + templateName + "'}";
     }
 }

@@ -203,6 +203,6 @@ public enum KafkaAnnotationType implements AnnotationType
     @Override
     public String toString()
     {
-        return "AnnotationType{ name='" + name + "}";
+        return "KafkaAnnotationType{ name='" + name + "}";
     }
 }

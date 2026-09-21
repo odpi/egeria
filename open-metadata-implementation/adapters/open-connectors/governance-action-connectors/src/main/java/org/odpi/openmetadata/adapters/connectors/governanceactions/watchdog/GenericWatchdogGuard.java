@@ -128,6 +128,6 @@ public enum GenericWatchdogGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "GenericWatchdogGuard{ name='" + name + "}";
     }
 }

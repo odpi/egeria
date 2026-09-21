@@ -215,7 +215,7 @@ public class ActionTargetElement extends NewActionTarget
     {
         return "ActionTargetElement{" +
                        "status=" + status +
-                       ", relationshipGUID=" + actionTargetRelationshipGUID +
+                       ", actionTargetRelationshipGUID=" + actionTargetRelationshipGUID +
                        ", startDate=" + startDate +
                        ", completionDate=" + completionDate +
                        ", completionMessage='" + completionMessage + '\'' +

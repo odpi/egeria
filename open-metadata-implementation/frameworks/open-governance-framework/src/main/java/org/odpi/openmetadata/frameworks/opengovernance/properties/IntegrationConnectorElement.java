@@ -166,6 +166,6 @@ public class IntegrationConnectorElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, catalogTargets);
+        return Objects.hash(elementHeader, properties, catalogTargets);
     }
 }

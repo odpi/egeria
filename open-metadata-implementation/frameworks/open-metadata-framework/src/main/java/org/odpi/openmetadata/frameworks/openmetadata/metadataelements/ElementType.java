@@ -197,12 +197,12 @@ public class ElementType
     public String toString()
     {
         return "ElementType{" +
-                "elementTypeId='" + typeId + '\'' +
-                ", elementTypeName='" + typeName + '\'' +
-                ", elementSuperTypeNames=" + superTypeNames +
-                ", elementTypeVersion=" + typeVersion +
-                ", elementTypeDescription='" + typeDescription +
-                ", elementTypeCategory='" + typeCategory +
+                "typeId='" + typeId + '\'' +
+                ", typeName='" + typeName + '\'' +
+                ", superTypeNames=" + superTypeNames +
+                ", typeVersion=" + typeVersion +
+                ", typeDescription='" + typeDescription +
+                ", typeCategory='" + typeCategory +
                 '}';
     }
 

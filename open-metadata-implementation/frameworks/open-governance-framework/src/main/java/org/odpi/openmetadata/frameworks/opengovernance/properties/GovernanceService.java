@@ -257,7 +257,7 @@ public class GovernanceService extends DeployedConnectorProperties
     @Override
     public String toString()
     {
-        return "GovernanceServiceProperties{" +
+        return "GovernanceService{" +
                 "owner='" + owner + '\'' +
                 ", ownerTypeName='" + ownerTypeName + '\'' +
                 ", ownerPropertyName='" + ownerPropertyName + '\'' +

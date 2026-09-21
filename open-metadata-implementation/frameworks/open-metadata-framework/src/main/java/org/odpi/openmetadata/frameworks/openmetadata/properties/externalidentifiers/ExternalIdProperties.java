@@ -252,7 +252,7 @@ public class ExternalIdProperties extends ReferenceableProperties
     public String toString()
     {
         return "ExternalIdProperties{" +
-                "identifier='" + key + '\'' +
+                "key='" + key + '\'' +
                 ", keyPattern=" + keyPattern +
                 ", externalInstanceTypeName='" + externalInstanceTypeName + '\'' +
                 ", externalInstanceCreatedBy='" + externalInstanceCreatedBy + '\'' +

@@ -254,6 +254,6 @@ public class ServerStatus
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getServerName(), getServerType(), getIsActive(), getServerStartTime(), getServerEndTime(), getServerHistory());
+        return Objects.hash(getServerName(), getServerType(), getIsActive(), getServerStartTime(), getServerEndTime(), getServerHistory());
     }
 }

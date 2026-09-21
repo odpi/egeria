@@ -209,7 +209,7 @@ public class OMRSEventV2TypeDefSection
     @Override
     public String toString()
     {
-        return "OMRSEventV1TypeDefSection{" +
+        return "OMRSEventV2TypeDefSection{" +
                        "typeDefEventType=" + typeDefEventType +
                        ", typeDefGUID='" + typeDefGUID + '\'' +
                        ", typeDefName='" + typeDefName + '\'' +

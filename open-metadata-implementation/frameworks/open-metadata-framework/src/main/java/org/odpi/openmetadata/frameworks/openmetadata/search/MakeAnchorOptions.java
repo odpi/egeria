@@ -119,7 +119,7 @@ public class MakeAnchorOptions extends MetadataSourceOptions
     {
         return "MakeAnchorOptions{" +
                 ", makeAnchor=" + makeAnchor +
-                ", anchorScopeGUID='" + anchorScopeGUIDs + '\'' +
+                ", anchorScopeGUIDs='" + anchorScopeGUIDs + '\'' +
                 "} " + super.toString();
     }
 

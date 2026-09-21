@@ -123,6 +123,6 @@ public enum MoveCopyFileGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "MoveCopyFileGuard{ name='" + name + "}";
     }
 }

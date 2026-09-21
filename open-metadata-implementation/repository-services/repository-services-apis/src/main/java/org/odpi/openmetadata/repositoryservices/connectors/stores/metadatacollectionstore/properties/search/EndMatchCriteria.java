@@ -89,7 +89,7 @@ public enum EndMatchCriteria
     @Override
     public String toString()
     {
-        return "MatchCriteria{" +
+        return "EndMatchCriteria{" +
                 "ordinal=" + ordinal +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

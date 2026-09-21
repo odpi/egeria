@@ -205,7 +205,7 @@ public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHea
     @Override
     public String toString()
     {
-        return "ConformanceSuiteConfig{" +
+        return "RepositoryPerformanceWorkbenchConfig{" +
                 "tutRepositoryServerName='" + tutRepositoryServerName + '\'' +
                 "instancesPerType='" + instancesPerType + '\'' +
                 "maxSearchResults='" + maxSearchResults + '\'' +

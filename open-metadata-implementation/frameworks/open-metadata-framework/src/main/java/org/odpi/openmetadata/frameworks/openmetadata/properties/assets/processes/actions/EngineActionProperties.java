@@ -478,12 +478,12 @@ public class EngineActionProperties extends ActionProperties
     @Override
     public String toString()
     {
-        return "EngineActionElement{" +
+        return "EngineActionProperties{" +
                 "domainIdentifier=" + domainIdentifier +
                 ", mandatoryGuards=" + mandatoryGuards +
                 ", receivedGuards=" + receivedGuards +
-                ", governanceEngineGUID='" + executorEngineGUID + '\'' +
-                ", governanceEngineName='" + executorEngineName + '\'' +
+                ", executorEngineGUID='" + executorEngineGUID + '\'' +
+                ", executorEngineName='" + executorEngineName + '\'' +
                 ", governanceActionTypeGUID='" + governanceActionTypeGUID + '\'' +
                 ", governanceActionTypeName='" + governanceActionTypeName + '\'' +
                 ", processName='" + processName + '\'' +

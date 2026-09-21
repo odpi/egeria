@@ -282,6 +282,6 @@ public enum DB2LUWPlaceholderProperty
     @Override
     public String toString()
     {
-        return "PlaceholderProperty{ name=" + name + "}";
+        return "DB2LUWPlaceholderProperty{ name=" + name + "}";
     }
 }

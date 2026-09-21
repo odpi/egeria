@@ -210,7 +210,7 @@ public enum ActivityType implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "GlossaryTermActivityType{" +
+        return "ActivityType{" +
             "ordinal=" + ordinal +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +

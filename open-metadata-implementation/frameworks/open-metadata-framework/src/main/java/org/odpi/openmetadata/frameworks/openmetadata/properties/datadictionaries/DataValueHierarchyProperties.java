@@ -49,6 +49,6 @@ public class DataValueHierarchyProperties extends LabeledRelationshipProperties
     @Override
     public String toString()
     {
-        return "DataClassHierarchyProperties{} " + super.toString();
+        return "DataValueHierarchyProperties{} " + super.toString();
     }
 }

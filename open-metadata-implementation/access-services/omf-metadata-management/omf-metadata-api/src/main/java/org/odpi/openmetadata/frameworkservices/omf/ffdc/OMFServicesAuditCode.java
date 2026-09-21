@@ -257,7 +257,7 @@ public enum OMFServicesAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "AuditCode{" +
+        return "OMFServicesAuditCode{" +
                        "logMessageId='" + logMessageId + '\'' +
                        ", severity=" + severity +
                        ", logMessage='" + logMessage + '\'' +

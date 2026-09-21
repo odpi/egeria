@@ -298,7 +298,7 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
                 ", refreshTimeInterval=" + refreshTimeInterval +
                 ", connectorShutdownDate=" + connectorShutdownDate +
                 ", permittedSynchronization=" + permittedSynchronization +
-                ", generateIntegrationReports=" + generateConnectorActivityReports +
+                ", generateConnectorActivityReports=" + generateConnectorActivityReports +
                 "} " + super.toString();
     }
 

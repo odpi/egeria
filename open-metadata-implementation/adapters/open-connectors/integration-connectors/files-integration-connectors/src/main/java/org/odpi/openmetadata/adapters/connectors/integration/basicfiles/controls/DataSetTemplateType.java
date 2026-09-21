@@ -274,6 +274,6 @@ public enum DataSetTemplateType implements TemplateDefinition
     @Override
     public String toString()
     {
-        return "TemplateType{templateName='" + templateName + "'}";
+        return "DataSetTemplateType{templateName='" + templateName + "'}";
     }
 }

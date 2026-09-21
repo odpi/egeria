@@ -244,7 +244,7 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "AuditCode{" +
+        return "RepositoryGovernanceAuditCode{" +
                        "logMessageId='" + logMessageId + '\'' +
                        ", severity=" + severity +
                        ", logMessage='" + logMessage + '\'' +

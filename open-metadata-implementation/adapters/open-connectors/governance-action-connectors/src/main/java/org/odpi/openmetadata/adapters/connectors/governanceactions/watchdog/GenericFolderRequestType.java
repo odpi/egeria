@@ -110,6 +110,6 @@ public enum GenericFolderRequestType
     @Override
     public String toString()
     {
-        return "MoveCopyFileRequestType{" + requestType + "}";
+        return "GenericFolderRequestType{" + requestType + "}";
     }
 }

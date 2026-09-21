@@ -231,6 +231,6 @@ public enum DB2LUWTarget
     @Override
     public String toString()
     {
-        return "CatalogTargetEnum{catalogTargetName='" + name + "'}";
+        return "DB2LUWTarget{catalogTargetName='" + name + "'}";
     }
 }

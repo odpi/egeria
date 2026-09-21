@@ -210,6 +210,6 @@ public enum DuckDBTarget
     @Override
     public String toString()
     {
-        return "CatalogTargetEnum{catalogTargetName='" + name + "'}";
+        return "DuckDBTarget{catalogTargetName='" + name + "'}";
     }
 }

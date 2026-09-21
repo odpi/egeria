@@ -252,6 +252,6 @@ public enum TabularDataSetConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "TabularDataSetConfigurationProperty{ name=" + name + "}";
     }
 }

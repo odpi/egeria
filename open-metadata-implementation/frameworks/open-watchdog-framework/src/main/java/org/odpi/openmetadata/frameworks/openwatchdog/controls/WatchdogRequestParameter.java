@@ -147,6 +147,6 @@ public enum WatchdogRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "WatchdogRequestParameter{ name=" + name + "}";
     }
 }

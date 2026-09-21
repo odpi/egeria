@@ -231,6 +231,6 @@ public enum MSSQLTarget
     @Override
     public String toString()
     {
-        return "CatalogTargetEnum{catalogTargetName='" + name + "'}";
+        return "MSSQLTarget{catalogTargetName='" + name + "'}";
     }
 }

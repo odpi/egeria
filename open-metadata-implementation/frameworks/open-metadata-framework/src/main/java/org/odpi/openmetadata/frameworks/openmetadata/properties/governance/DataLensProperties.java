@@ -36,7 +36,6 @@ public class DataLensProperties extends GovernanceControlProperties
     private Date                dataCoverageStartTime   = null;
     private Date                dataCoverageEndTime     = null;
     private Map<String, String> scopeElements           = null;
-    private Map<String, String> additionalProperties    = null;
 
 
     /**
@@ -73,7 +72,6 @@ public class DataLensProperties extends GovernanceControlProperties
             dataCoverageStartTime   = template.getDataCoverageStartTime();
             dataCoverageEndTime     = template.getDataCoverageEndTime();
             scopeElements           = template.getScopeElements();
-            additionalProperties    = template.getAdditionalProperties();
         }
     }
 
@@ -366,28 +364,6 @@ public class DataLensProperties extends GovernanceControlProperties
 
 
     /**
-     * Return the additional properties associated with the encoding process.
-     *
-     * @return map of name-value pairs
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        return additionalProperties;
-    }
-
-
-    /**
-     * Set up the additional properties associated with the encoding process.
-     *
-     * @param additionalProperties map of name-value pairs
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -409,7 +385,6 @@ public class DataLensProperties extends GovernanceControlProperties
                 ", dataCoverageStartTime=" + dataCoverageStartTime +
                 ", dataCoverageEndTime=" + dataCoverageEndTime +
                 ", scopeElements=" + scopeElements +
-                ", additionalProperties=" + additionalProperties +
                 "} " + super.toString();
     }
 
@@ -440,8 +415,7 @@ public class DataLensProperties extends GovernanceControlProperties
                 Objects.equals(dataValidityEndTime, that.dataValidityEndTime) &&
                 Objects.equals(dataCoverageStartTime, that.dataCoverageStartTime) &&
                 Objects.equals(dataCoverageEndTime, that.dataCoverageEndTime) &&
-                Objects.equals(scopeElements, that.scopeElements) &&
-                Objects.equals(additionalProperties, that.additionalProperties);
+                Objects.equals(scopeElements, that.scopeElements);
     }
 
     /**
@@ -454,7 +428,6 @@ public class DataLensProperties extends GovernanceControlProperties
     {
         return Objects.hash(super.hashCode(), minLongitude, minLatitude, maxLongitude, maxLatitude, minHeight,
                             maxHeight, dataCollectionStartTime, dataCollectionEndTime, dataValidityStartTime,
-                            dataValidityEndTime, dataCoverageStartTime, dataCoverageEndTime, scopeElements,
-                            additionalProperties);
+                            dataValidityEndTime, dataCoverageStartTime, dataCoverageEndTime, scopeElements);
     }
 }

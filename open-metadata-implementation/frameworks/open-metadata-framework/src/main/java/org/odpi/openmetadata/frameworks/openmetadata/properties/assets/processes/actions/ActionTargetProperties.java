@@ -194,7 +194,7 @@ public class ActionTargetProperties extends RelationshipBeanProperties
     {
         return "ActionTargetProperties{" +
                 "actionTargetName='" + actionTargetName + '\'' +
-                ", status=" + activityStatus +
+                ", activityStatus=" + activityStatus +
                 ", startTime=" + startTime +
                 ", completionTime=" + completionTime +
                 ", completionMessage='" + completionMessage + '\'' +

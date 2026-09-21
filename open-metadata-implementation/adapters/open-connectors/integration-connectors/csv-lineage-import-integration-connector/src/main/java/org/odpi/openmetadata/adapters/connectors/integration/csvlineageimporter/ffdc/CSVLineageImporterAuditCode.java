@@ -134,7 +134,7 @@ public enum CSVLineageImporterAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "OIFAuditCode{" +
+        return "CSVLineageImporterAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +
                 ", logMessage='" + logMessage + '\'' +

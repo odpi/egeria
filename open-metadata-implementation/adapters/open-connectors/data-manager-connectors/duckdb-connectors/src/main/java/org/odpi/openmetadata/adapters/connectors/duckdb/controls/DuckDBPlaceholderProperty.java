@@ -170,6 +170,6 @@ public enum DuckDBPlaceholderProperty
     @Override
     public String toString()
     {
-        return "PlaceholderProperty{ name=" + name + "}";
+        return "DuckDBPlaceholderProperty{ name=" + name + "}";
     }
 }

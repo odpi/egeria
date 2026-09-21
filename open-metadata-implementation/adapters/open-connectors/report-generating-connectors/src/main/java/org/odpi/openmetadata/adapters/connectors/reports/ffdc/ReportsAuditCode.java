@@ -142,7 +142,7 @@ public enum ReportsAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "UCAuditCode{" +
+        return "ReportsAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +
                 ", logMessage='" + logMessage + '\'' +

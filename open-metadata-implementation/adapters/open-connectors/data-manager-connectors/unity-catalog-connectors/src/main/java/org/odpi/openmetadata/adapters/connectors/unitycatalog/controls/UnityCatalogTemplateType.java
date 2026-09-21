@@ -371,6 +371,6 @@ public enum UnityCatalogTemplateType implements TemplateDefinition
     @Override
     public String toString()
     {
-        return "TemplateType{templateName='" + templateName + "'}";
+        return "UnityCatalogTemplateType{templateName='" + templateName + "'}";
     }
 }

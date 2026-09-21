@@ -310,6 +310,6 @@ public enum PostgreSQLTemplateType implements TemplateDefinition
     @Override
     public String toString()
     {
-        return "TemplateType{templateName='" + templateName + "'}";
+        return "PostgreSQLTemplateType{templateName='" + templateName + "'}";
     }
 }

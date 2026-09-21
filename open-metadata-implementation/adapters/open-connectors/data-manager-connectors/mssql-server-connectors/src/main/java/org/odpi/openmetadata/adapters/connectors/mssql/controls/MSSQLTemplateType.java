@@ -301,6 +301,6 @@ public enum MSSQLTemplateType implements TemplateDefinition
     @Override
     public String toString()
     {
-        return "TemplateType{templateName='" + templateName + "'}";
+        return "MSSQLTemplateType{templateName='" + templateName + "'}";
     }
 }

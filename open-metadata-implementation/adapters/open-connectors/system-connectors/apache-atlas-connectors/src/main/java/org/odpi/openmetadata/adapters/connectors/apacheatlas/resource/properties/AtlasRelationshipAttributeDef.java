@@ -56,7 +56,7 @@ public class AtlasRelationshipAttributeDef extends AtlasAttributeDef
         return "AtlasRelationshipAttributeDef{" +
                        "relationshipTypeName='" + relationshipTypeName + '\'' +
                        ", isLegacyAttribute=" + isLegacyAttribute +
-                       ", legacyAttribute=" + isLegacyAttribute() +
+                       ", isLegacyAttribute=" + isLegacyAttribute() +
                        ", name='" + getName() + '\'' +
                        ", typeName='" + getTypeName() + '\'' +
                        ", optional=" + isOptional() +

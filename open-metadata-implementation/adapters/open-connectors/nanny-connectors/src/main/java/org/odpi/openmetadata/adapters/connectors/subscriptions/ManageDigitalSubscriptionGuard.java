@@ -126,6 +126,6 @@ public enum ManageDigitalSubscriptionGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "ManageDigitalSubscriptionGuard{ name='" + name + "}";
     }
 }

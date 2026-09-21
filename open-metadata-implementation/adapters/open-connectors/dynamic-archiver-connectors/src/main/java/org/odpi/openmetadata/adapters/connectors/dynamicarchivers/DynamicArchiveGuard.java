@@ -124,6 +124,6 @@ public enum DynamicArchiveGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "DynamicArchiveGuard{ name='" + name + "}";
     }
 }

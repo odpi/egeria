@@ -270,6 +270,6 @@ public enum HarvestSurveysView implements PostgreSQLView
     @Override
     public String toString()
     {
-        return "HarvestSurveysTable{" + viewName + "}";
+        return "HarvestSurveysView{" + viewName + "}";
     }
 }

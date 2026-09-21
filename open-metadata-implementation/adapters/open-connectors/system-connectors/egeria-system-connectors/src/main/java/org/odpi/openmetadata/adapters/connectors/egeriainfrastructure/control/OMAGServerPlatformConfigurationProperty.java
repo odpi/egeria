@@ -181,6 +181,6 @@ public enum OMAGServerPlatformConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "OMAGServerPlatformConfigurationProperty{ name=" + name + "}";
     }
 }

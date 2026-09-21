@@ -322,6 +322,6 @@ public enum OracleDeployedImplementationType implements DeployedImplementationTy
     @Override
     public String toString()
     {
-        return "DeployedImplementationType{" + deployedImplementationType + '}';
+        return "OracleDeployedImplementationType{" + deployedImplementationType + '}';
     }
 }

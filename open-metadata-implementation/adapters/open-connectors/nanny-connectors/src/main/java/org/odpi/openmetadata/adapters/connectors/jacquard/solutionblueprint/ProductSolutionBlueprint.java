@@ -166,6 +166,6 @@ public enum ProductSolutionBlueprint
     @Override
     public String toString()
     {
-        return "SolutionBlueprint{" + displayName + '}';
+        return "ProductSolutionBlueprint{" + displayName + '}';
     }
 }

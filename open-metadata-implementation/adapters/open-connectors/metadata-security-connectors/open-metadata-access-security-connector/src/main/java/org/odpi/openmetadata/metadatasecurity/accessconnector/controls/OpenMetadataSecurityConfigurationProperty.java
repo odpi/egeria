@@ -261,6 +261,6 @@ public enum OpenMetadataSecurityConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "OpenMetadataSecurityConfigurationProperty{ name=" + name + "}";
     }
 }

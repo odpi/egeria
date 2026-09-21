@@ -82,7 +82,7 @@ public class AttributeTypeDefCategoryRequest extends OMRSAPIRequest
     public String toString()
     {
         return "AttributeTypeDefCategoryRequest{" +
-                "attributeTypeDefCategory=" + category +
+                "category=" + category +
                 "} " + super.toString();
     }
 

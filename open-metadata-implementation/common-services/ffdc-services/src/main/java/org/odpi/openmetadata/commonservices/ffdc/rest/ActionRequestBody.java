@@ -205,7 +205,7 @@ public class ActionRequestBody extends AnchorOptions
     public String toString()
     {
         return "ActionRequestBody{" +
-                "newActionTargetProperties=" + newActionTargets +
+                "newActionTargets=" + newActionTargets +
                 ", initialClassifications=" + initialClassifications +
                 ", properties=" + properties +
                 ", originatorGUID='" + originatorGUID + '\'' +

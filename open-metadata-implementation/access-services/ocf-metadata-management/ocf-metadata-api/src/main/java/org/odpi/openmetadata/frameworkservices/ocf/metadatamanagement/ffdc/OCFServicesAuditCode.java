@@ -169,7 +169,7 @@ public enum OCFServicesAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "AuditCode{" +
+        return "OCFServicesAuditCode{" +
                        "logMessageId='" + logMessageId + '\'' +
                        ", severity=" + severity +
                        ", logMessage='" + logMessage + '\'' +

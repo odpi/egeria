@@ -126,10 +126,6 @@ public class ConnectorActivityReport
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         ConnectorActivityReport that = (ConnectorActivityReport) objectToCompare;
         return Objects.equals(properties, that.properties) &&
                 Objects.equals(elementHeader, that.elementHeader);
@@ -144,6 +140,6 @@ public class ConnectorActivityReport
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, elementHeader);
+        return Objects.hash(properties, elementHeader);
     }
 }

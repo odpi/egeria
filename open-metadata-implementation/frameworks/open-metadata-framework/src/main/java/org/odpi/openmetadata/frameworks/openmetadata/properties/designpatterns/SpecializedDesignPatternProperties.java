@@ -49,6 +49,6 @@ public class SpecializedDesignPatternProperties extends LabeledRelationshipPrope
     @Override
     public String toString()
     {
-        return "RelatedDesignPatternProperties{} " + super.toString();
+        return "SpecializedDesignPatternProperties{} " + super.toString();
     }
 }

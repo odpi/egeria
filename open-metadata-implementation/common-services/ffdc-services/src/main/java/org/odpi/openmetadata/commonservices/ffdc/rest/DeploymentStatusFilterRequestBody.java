@@ -99,7 +99,7 @@ public class DeploymentStatusFilterRequestBody extends FilterRequestBody
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DeploymentStatusFilterRequestBody that = (DeploymentStatusFilterRequestBody) objectToCompare;
-        return deploymentStatusList == that.deploymentStatusList;
+        return Objects.equals(deploymentStatusList, that.deploymentStatusList);
     }
 
 

@@ -1383,7 +1383,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                 ", actionControlClient=" + actionControlClient +
                 ", governanceActionProcessClient=" + governanceActionProcessClient +
                 ", governanceCompletionClient=" + governanceCompletionClient +
-                ", watchDogEventClient=" + watchdogEventClient +
+                ", watchdogEventClient=" + watchdogEventClient +
                 ", governanceConfiguration=" + governanceConfiguration +
                 ", propertyHelper=" + propertyHelper +
                 ", messageFormatter=" + messageFormatter +

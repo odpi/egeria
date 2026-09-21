@@ -123,7 +123,7 @@ public class OMRSEventV2RegistrySection
     @Override
     public String toString()
     {
-        return "OMRSEventV1RegistrySection{" +
+        return "OMRSEventV2RegistrySection{" +
                        "registryEventType=" + registryEventType +
                        ", registrationTimestamp=" + registrationTimestamp +
                        ", metadataCollectionName='" + metadataCollectionName + '\'' +

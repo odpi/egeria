@@ -348,6 +348,6 @@ public enum PostgresConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "PostgresConfigurationProperty{ name=" + name + "}";
     }
 }

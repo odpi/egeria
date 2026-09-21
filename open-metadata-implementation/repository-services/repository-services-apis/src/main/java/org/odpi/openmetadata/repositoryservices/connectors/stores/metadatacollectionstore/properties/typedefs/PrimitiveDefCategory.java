@@ -149,9 +149,9 @@ public enum PrimitiveDefCategory
     public String toString()
     {
         return "PrimitiveDefCategory{" +
-                "ordinal=" + code +
+                "code=" + code +
                 ", name='" + name + '\'' +
-                ", description='" + javaClassName + '\'' +
+                ", javaClassName='" + javaClassName + '\'' +
                 ", guid='" + guid + '\'' +
                 '}';
     }

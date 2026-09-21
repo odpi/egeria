@@ -42,6 +42,8 @@ public class NextGovernanceActionProcessStepProperties extends RelationshipBeanP
      */
     public NextGovernanceActionProcessStepProperties(NextGovernanceActionProcessStepProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             guard            = template.getGuard();

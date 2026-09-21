@@ -230,6 +230,6 @@ public enum PostgresTarget
     @Override
     public String toString()
     {
-        return "CatalogTargetEnum{catalogTargetName='" + name + "'}";
+        return "PostgresTarget{catalogTargetName='" + name + "'}";
     }
 }

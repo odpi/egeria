@@ -345,7 +345,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     {
         return "SchemaAttributeProperties{" +
                 "allowsDuplicateValues=" + allowsDuplicateValues +
-                ", namespace='" + namespacePath + '\'' +
+                ", namespacePath='" + namespacePath + '\'' +
                 ", orderedValues=" + orderedValues +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", sortOrder=" + sortOrder +

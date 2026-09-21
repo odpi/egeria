@@ -158,6 +158,6 @@ public enum PostgresConfigurationProperty
     @Override
     public String toString()
     {
-        return "MoveCopyFileRequestParameter{ name=" + name + "}";
+        return "PostgresConfigurationProperty{ name=" + name + "}";
     }
 }

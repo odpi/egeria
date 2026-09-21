@@ -249,6 +249,6 @@ public enum ActorRoleGroup
     @Override
     public String toString()
     {
-        return "ProjectHealth{" + name + '}';
+        return "ActorRoleGroup{" + name + '}';
     }
 }

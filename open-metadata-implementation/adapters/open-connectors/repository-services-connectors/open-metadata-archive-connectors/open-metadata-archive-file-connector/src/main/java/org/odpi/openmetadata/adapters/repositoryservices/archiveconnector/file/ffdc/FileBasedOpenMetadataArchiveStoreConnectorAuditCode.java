@@ -148,7 +148,7 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
     @Override
     public String toString()
     {
-        return "AuditCode{" +
+        return "FileBasedOpenMetadataArchiveStoreConnectorAuditCode{" +
                        "logMessageId='" + logMessageId + '\'' +
                        ", severity=" + severity +
                        ", logMessage='" + logMessage + '\'' +

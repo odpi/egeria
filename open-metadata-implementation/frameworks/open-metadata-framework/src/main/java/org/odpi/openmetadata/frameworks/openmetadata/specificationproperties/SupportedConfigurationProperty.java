@@ -49,7 +49,7 @@ public class SupportedConfigurationProperty extends ConfigurationPropertyType
     @Override
     public String toString()
     {
-        return "SupportedConfigurationPropertyType{" +
+        return "SupportedConfigurationProperty{" +
                 "} " + super.toString();
     }
 }

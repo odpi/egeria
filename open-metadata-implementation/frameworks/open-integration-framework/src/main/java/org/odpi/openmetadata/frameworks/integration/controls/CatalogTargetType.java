@@ -157,7 +157,7 @@ public class CatalogTargetType
     public String toString()
     {
         return "CatalogTargetType{" +
-                "catalogTargetName='" + name + '\'' +
+                "name='" + name + '\'' +
                 "typeName='" + typeName + '\'' +
                        "deployedImplementationType='" + deployedImplementationType + '\'' +
                        ", otherPropertyValues='" + otherPropertyValues + '\'' +

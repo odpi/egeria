@@ -50,6 +50,6 @@ public class DataValueDefinitionProperties extends LabeledRelationshipProperties
     @Override
     public String toString()
     {
-        return "DataClassDefinitionProperties{} " + super.toString();
+        return "DataValueDefinitionProperties{} " + super.toString();
     }
 }

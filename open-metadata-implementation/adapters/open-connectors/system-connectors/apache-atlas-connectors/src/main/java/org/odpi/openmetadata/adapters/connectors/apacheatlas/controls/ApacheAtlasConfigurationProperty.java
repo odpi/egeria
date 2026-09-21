@@ -171,6 +171,6 @@ public enum ApacheAtlasConfigurationProperty
     @Override
     public String toString()
     {
-        return "ConfigurationProperty{ name=" + name + "}";
+        return "ApacheAtlasConfigurationProperty{ name=" + name + "}";
     }
 }

@@ -46,8 +46,8 @@ public class GovernanceResultsProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            this.query = getQuery();
-            this.queryType = getQueryType();
+            this.query = template.getQuery();
+            this.queryType = template.getQueryType();
         }
     }
 

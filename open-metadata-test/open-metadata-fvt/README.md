@@ -132,15 +132,36 @@ against each suite below.
   Each of the four subscription types is taken out separately, and a product family is subscribed to as well
   as a single product, because a family subscription has to cover every product in the family.
 
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:subscription-fvt:test -PrunSubscriptionFvt
+  ```
+
 * **[openlineage-fvt](openlineage-fvt)** - tests the **Open Lineage integration connectors** by publishing Open
   Lineage run events for a small pipeline into an integration daemon - through its REST API and through a Kafka
   topic attached to the Kafka listener - and checking that the cataloguer builds the processes, data assets,
   lineage, schema, run metrics, data scope and data quality reports they describe, and that the file publisher
-  writes every event to its log store.  Run it with
-  `./gradlew :open-metadata-test:open-metadata-fvt:openlineage-fvt:test -PrunOpenLineageFvt`.
+  writes every event to its log store.
 
   ```
-  ./gradlew :open-metadata-test:open-metadata-fvt:subscription-fvt:test -PrunSubscriptionFvt
+  ./gradlew :open-metadata-test:open-metadata-fvt:openlineage-fvt:test -PrunOpenLineageFvt
+  ```
+
+* **[bitol-fvt](bitol-fvt)** - tests the **Bitol connectors** - the integration connectors that receive,
+  catalog, generate and store [Bitol](https://bitol.io) Open Data Contract Standard (ODCS) and Open Data
+  Product Standard (ODPS) documents - together with the **Bitol content pack** that defines them. Built the
+  same way as files-fvt: it stands up the metadata access store and integration daemon the connectors are
+  designed to run in and drives them through the integration daemon's REST API rather than calling any
+  connector directly. Its round trip is the point - a document received is catalogued, and the document
+  generated from the catalogue is compared against the one that went in.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:bitol-fvt:test -PrunBitolFvt
+  ```
+
+  A second mode carries the out topics over the in-memory topic connector, so that only PostgreSQL is needed:
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:bitol-fvt:test -PrunBitolFvtInMemory
   ```
 
 * **[auth-fvt](auth-fvt)** - exercises the platform's own **authentication**: logging on, the bearer token

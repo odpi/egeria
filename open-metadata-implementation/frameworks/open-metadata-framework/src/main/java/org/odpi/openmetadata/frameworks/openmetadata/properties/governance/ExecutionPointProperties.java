@@ -87,7 +87,7 @@ public class ExecutionPointProperties extends ClassificationBeanProperties
     @Override
     public String toString()
     {
-        return "EnforcementPointProperties{" +
+        return "ExecutionPointProperties{" +
                 "qualifiedName='" + qualifiedName + '\'' +
                 "} " + super.toString();
     }

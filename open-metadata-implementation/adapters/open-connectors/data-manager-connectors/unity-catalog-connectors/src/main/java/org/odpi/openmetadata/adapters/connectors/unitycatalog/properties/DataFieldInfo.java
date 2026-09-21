@@ -251,7 +251,7 @@ public class DataFieldInfo
                 ", type_text='" + type_text + '\'' +
                 ", type_json='" + type_json + '\'' +
                 ", type_name=" + type_name +
-                ", typePrecision=" + type_precision +
+                ", type_precision=" + type_precision +
                 ", type_scale=" + type_scale +
                 ", type_interval_type='" + type_interval_type + '\'' +
                 ", position=" + position +
@@ -271,7 +271,7 @@ public class DataFieldInfo
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         DataFieldInfo that = (DataFieldInfo) objectToCompare;
-        return type_precision == that.type_precision && type_scale == that.type_scale && position == that.position && Objects.equals(name, that.name) && Objects.equals(comment, that.comment) && Objects.equals(type_text, that.type_text) && Objects.equals(type_json, that.type_json) && type_name == that.type_name && Objects.equals(type_interval_type, that.type_interval_type);
+        return type_precision == that.type_precision && type_scale == that.type_scale && position == that.position && Objects.equals(name, that.name) && Objects.equals(comment, that.comment) && Objects.equals(type_text, that.type_text) && Objects.equals(type_json, that.type_json) && Objects.equals(type_name, that.type_name) && Objects.equals(type_interval_type, that.type_interval_type);
     }
 
 

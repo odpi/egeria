@@ -183,6 +183,6 @@ public enum GovernanceActionStatus
     @Override
     public String toString()
     {
-        return "ActivityStatus{" + statusName + "}";
+        return "GovernanceActionStatus{" + statusName + "}";
     }
 }

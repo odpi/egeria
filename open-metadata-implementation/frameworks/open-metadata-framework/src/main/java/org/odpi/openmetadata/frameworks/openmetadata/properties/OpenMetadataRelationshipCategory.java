@@ -105,7 +105,7 @@ public enum OpenMetadataRelationshipCategory
     @Override
     public String toString()
     {
-        return "OpenMetadataRelationshipEndCardinality{" +
+        return "OpenMetadataRelationshipCategory{" +
                 "ordinal=" + ordinal +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

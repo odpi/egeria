@@ -342,7 +342,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
     @Override
     public String toString()
     {
-        return "UserAccountProfile{" +
+        return "UserAccountProfileProperties{" +
                 "userAccountCount=" + userAccountCount +
                 ", employeeAccountCount=" + employeeAccountCount +
                 ", contractorAccountCount=" + contractorAccountCount +

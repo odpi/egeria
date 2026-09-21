@@ -127,6 +127,6 @@ public enum OriginSeekerGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "OriginSeekerGuard{ name='" + name + "}";
     }
 }

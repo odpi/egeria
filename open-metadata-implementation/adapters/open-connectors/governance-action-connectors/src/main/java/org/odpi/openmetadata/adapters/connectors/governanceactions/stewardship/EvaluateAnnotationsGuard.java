@@ -121,6 +121,6 @@ public enum EvaluateAnnotationsGuard
     @Override
     public String toString()
     {
-        return "Guard{ name='" + name + "}";
+        return "EvaluateAnnotationsGuard{ name='" + name + "}";
     }
 }

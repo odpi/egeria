@@ -224,7 +224,7 @@ public enum SolutionPortDirection implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "PortType{" +
+        return "SolutionPortDirection{" +
             "ordinal=" + ordinal +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
