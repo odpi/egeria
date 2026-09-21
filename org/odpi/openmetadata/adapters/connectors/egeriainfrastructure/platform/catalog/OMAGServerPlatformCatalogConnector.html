@@ -160,8 +160,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Refresh the connector's catalog targets.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </div>
 </div>
@@ -169,7 +174,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">DynamicIntegrationConnectorBase</a></h3>
-<code><a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">processEvent</a>, <a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html#refresh()">refresh</a></code></div>
+<code><a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">processEvent</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a></h3>
 <code><a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#disconnect()">disconnect</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#engage()">engage</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#getConnectorComponentDescription()">getConnectorComponentDescription</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#getNetworkAddress(org.odpi.openmetadata.frameworks.connectors.Connector)">getNetworkAddress</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#passEventToCatalogTargets(org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetEventProcessor,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">passEventToCatalogTargets</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#refreshCatalogTargets(org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator)">refreshCatalogTargets</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#setConnectorName(java.lang.String)">setConnectorName</a>, <a href="../../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#setContext(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext)">setContext</a></code></div>
@@ -226,6 +231,30 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the connector detected a problem.</dd>
 <dd><code><a href="../../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="refresh()">
+<h3>refresh</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
+             throws <span class="exceptions"><a href="../../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Refresh the connector's catalog targets.
+ <br>
+ Before the ordinary refresh, any local platform that could not be registered earlier is tried again.
+ Registering a platform means writing to the metadata access store, and a store that was restarting,
+ or had not finished loading, when this connector started would otherwise leave it with no catalog
+ target at all and no way of ever acquiring one: <code>start()</code> runs once, and its failures are
+ swallowed so as not to take the whole integration daemon down with them.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../../frameworks/integration/connectors/IntegrationConnector.html#refresh()">refresh</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>
+<dt>Overrides:</dt>
+<dd><code><a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html#refresh()">refresh</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">DynamicIntegrationConnectorBase</a></code></dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem with the connector</dd>
+<dd><code><a href="../../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected</dd>
 </dl>
 </section>
 </li>

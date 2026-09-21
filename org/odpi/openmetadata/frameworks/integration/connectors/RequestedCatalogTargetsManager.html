@@ -175,9 +175,16 @@ implements <a href="CatalogTargetChangeListener.html" title="interface in org.od
 <div class="block">Return a list of requested catalog targets for the connector.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatedCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget,org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)" class="member-name-link">updatedCatalogTarget</a><wbr>(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;oldCatalogTarget,
- <a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;newCatalogTarget)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalMetadataCollectionId(java.lang.String)" class="member-name-link">setLocalMetadataCollectionId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localMetadataCollectionId)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Tell this manager which metadata collection is the local one, so that catalog targets registered
+ through another metadata access store in the same cohort can be left to the daemons that registered
+ them.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatedCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget,org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)" class="member-name-link">updatedCatalogTarget</a><wbr>(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;oldCatalogTarget,
+ <a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;newCatalogTarget)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This catalog target has new properties.</div>
 </div>
 </div>
@@ -220,6 +227,24 @@ implements <a href="CatalogTargetChangeListener.html" title="interface in org.od
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="setLocalMetadataCollectionId(java.lang.String)">
+<h3>setLocalMetadataCollectionId</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLocalMetadataCollectionId</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localMetadataCollectionId)</span></div>
+<div class="block">Tell this manager which metadata collection is the local one, so that catalog targets registered
+ through another metadata access store in the same cohort can be left to the daemons that registered
+ them.
+ <br>
+ The value has to be one the caller <b>knows</b> rather than one it has worked out: the identifier of
+ the metadata collection that homes an instance this connector itself created.  Nothing about a
+ metadata collection's name can be relied on for this - a name is optional and can be set to anything -
+ and no API hands a connector the identifier of the store it writes through.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>localMetadataCollectionId</code> - identifier of the local metadata collection</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="retrieveKnownCatalogTargets(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext,org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetFactory)">
 <h3>retrieveKnownCatalogTargets</h3>

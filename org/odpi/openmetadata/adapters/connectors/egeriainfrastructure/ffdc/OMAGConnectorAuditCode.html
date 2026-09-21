@@ -139,7 +139,7 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 </div>
 <div class="col-first even-row-color"><code><a href="#EGERIA_TARGET_START" class="member-name-link">EGERIA_TARGET_START</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The monitoring of OMAG Server Platform '{0}' has started</div>
+<div class="block">Connector {0} has started monitoring OMAG Server Platform: {1}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#NEW_SERVER" class="member-name-link">NEW_SERVER</a></code></div>
 <div class="col-last odd-row-color">
@@ -148,6 +148,22 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-first even-row-color"><code><a href="#NULL_METADATA_COLLECTION_ID" class="member-name-link">NULL_METADATA_COLLECTION_ID</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">The {0} integration connector has detected that the {1} server of type {2} has no metadata collection id</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#PLATFORM_CATALOG_TARGET_ADDED" class="member-name-link">PLATFORM_CATALOG_TARGET_ADDED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The {0} integration connector is now monitoring the OMAG Server Platform at {1}, catalogued as {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#PLATFORM_NAME_MIGRATED" class="member-name-link">PLATFORM_NAME_MIGRATED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The {0} integration connector has renamed platform element {1} from {2} to {3} so that it can be recognised again</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#PLATFORM_REGISTRATION_DEFERRED" class="member-name-link">PLATFORM_REGISTRATION_DEFERRED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The {0} integration connector could not register the OMAG Server Platform at {1} yet; the {2} exception returned message {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SERVER_CATALOG_FAILED" class="member-name-link">SERVER_CATALOG_FAILED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The {0} integration connector was not able to catalog server {1} on platform {2}; the {3} exception returned message {4}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
@@ -245,7 +261,7 @@ the order they are declared.</div>
 <section class="detail" id="EGERIA_TARGET_START">
 <h3>EGERIA_TARGET_START</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">EGERIA_TARGET_START</span></div>
-<div class="block">The monitoring of OMAG Server Platform '{0}' has started</div>
+<div class="block">Connector {0} has started monitoring OMAG Server Platform: {1}</div>
 </section>
 </li>
 <li>
@@ -253,6 +269,34 @@ the order they are declared.</div>
 <h3>EGERIA_TARGET_REFRESH</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">EGERIA_TARGET_REFRESH</span></div>
 <div class="block">Connector {0} is synchronizing metadata for OMAG Server Platform: {1}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SERVER_CATALOG_FAILED">
+<h3>SERVER_CATALOG_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">SERVER_CATALOG_FAILED</span></div>
+<div class="block">The {0} integration connector was not able to catalog server {1} on platform {2}; the {3} exception returned message {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PLATFORM_NAME_MIGRATED">
+<h3>PLATFORM_NAME_MIGRATED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">PLATFORM_NAME_MIGRATED</span></div>
+<div class="block">The {0} integration connector has renamed platform element {1} from {2} to {3} so that it can be recognised again</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PLATFORM_CATALOG_TARGET_ADDED">
+<h3>PLATFORM_CATALOG_TARGET_ADDED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">PLATFORM_CATALOG_TARGET_ADDED</span></div>
+<div class="block">The {0} integration connector is now monitoring the OMAG Server Platform at {1}, catalogued as {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PLATFORM_REGISTRATION_DEFERRED">
+<h3>PLATFORM_REGISTRATION_DEFERRED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">PLATFORM_REGISTRATION_DEFERRED</span></div>
+<div class="block">The {0} integration connector could not register the OMAG Server Platform at {1} yet; the {2} exception returned message {3}</div>
 </section>
 </li>
 </ul>

@@ -129,41 +129,49 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#BAD_OM_PROPERTY_TYPE" class="member-name-link">BAD_OM_PROPERTY_TYPE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ALL_CATALOG_TARGETS_FOREIGN" class="member-name-link">ALL_CATALOG_TARGETS_FOREIGN</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">The {0} integration connector found that every one of its {1} catalog target(s) was registered through another metadata access store, so it is refreshing them all</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#BAD_OM_PROPERTY_TYPE" class="member-name-link">BAD_OM_PROPERTY_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0018 - The {0} connector has detected that element {1} which should be of type {2} has bean properties of {3} rather than {4} in method {5} - element is {6}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#BAD_OM_VALUE" class="member-name-link">BAD_OM_VALUE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#BAD_OM_VALUE" class="member-name-link">BAD_OM_VALUE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0018 - The {0} connector has detected a missing or invalid {1} property in method {2} - element is: {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#BITOL_FORMAT_ERROR" class="member-name-link">BITOL_FORMAT_ERROR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#BITOL_FORMAT_ERROR" class="member-name-link">BITOL_FORMAT_ERROR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0020 - A {0} exception with message {1} occurred when parsing Bitol document: {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#BITOL_PUBLISH_ERROR" class="member-name-link">BITOL_PUBLISH_ERROR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#BITOL_PUBLISH_ERROR" class="member-name-link">BITOL_PUBLISH_ERROR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0021 - A {0} exception with message {1} occurred when a listening integration connector tried to process a Bitol document</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#BITOL_UNEXPECTED_KIND" class="member-name-link">BITOL_UNEXPECTED_KIND</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#BITOL_UNEXPECTED_KIND" class="member-name-link">BITOL_UNEXPECTED_KIND</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0023 - The integration daemon received a Bitol document of kind {0} through the {1} method which expects {2}; the document begins: {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#BITOL_UNSUPPORTED_VERSION" class="member-name-link">BITOL_UNSUPPORTED_VERSION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#BITOL_UNSUPPORTED_VERSION" class="member-name-link">BITOL_UNSUPPORTED_VERSION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0022 - The integration daemon received a {0} document with identifier {1} and apiVersion {2} which is not supported by Egeria's beans</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0014 - The {0} integration connector has stopped its monitoring and is shutting down</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CONTEXT_INITIALIZING" class="member-name-link">CONTEXT_INITIALIZING</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#CONTEXT_INITIALIZING" class="member-name-link">CONTEXT_INITIALIZING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0001 - The integration connector context manager is being initialized for calls to server {0} on platform {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DISCONNECT_EXCEPTION" class="member-name-link">DISCONNECT_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#DISCONNECT_EXCEPTION" class="member-name-link">DISCONNECT_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0012 - The {0} integration connector received an unexpected exception {1} while trying to disconnect connector {2}; the error message was: {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#FOREIGN_CATALOG_TARGETS_SKIPPED" class="member-name-link">FOREIGN_CATALOG_TARGETS_SKIPPED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The {0} integration connector is leaving {1} catalog target(s) to the integration daemons that registered them: {2}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#GET_CATALOG_TARGET_EXCEPTION" class="member-name-link">GET_CATALOG_TARGET_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
@@ -407,6 +415,20 @@ the order they are declared.</div>
 <h3>BITOL_UNEXPECTED_KIND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">BITOL_UNEXPECTED_KIND</span></div>
 <div class="block">OIF-CONNECTOR-0023 - The integration daemon received a Bitol document of kind {0} through the {1} method which expects {2}; the document begins: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FOREIGN_CATALOG_TARGETS_SKIPPED">
+<h3>FOREIGN_CATALOG_TARGETS_SKIPPED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">FOREIGN_CATALOG_TARGETS_SKIPPED</span></div>
+<div class="block">The {0} integration connector is leaving {1} catalog target(s) to the integration daemons that registered them: {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ALL_CATALOG_TARGETS_FOREIGN">
+<h3>ALL_CATALOG_TARGETS_FOREIGN</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">ALL_CATALOG_TARGETS_FOREIGN</span></div>
+<div class="block">The {0} integration connector found that every one of its {1} catalog target(s) was registered through another metadata access store, so it is refreshing them all</div>
 </section>
 </li>
 </ul>
