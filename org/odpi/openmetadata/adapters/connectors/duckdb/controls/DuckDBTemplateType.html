@@ -101,7 +101,8 @@ loadScripts(document, 'script');</script>
 implements <a href="../../../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a></span></div>
 <div class="block">TemplateTypeEnum characterises the type of templates supported by an integration connector.  It should be copied
  by developers of an integration connector to help populate the supportedTemplates property of its provider.
- DuckDB has no server tier, so there is a single template describing the database asset.</div>
+ DuckDB has no server tier, so the templates start at the database asset: one for the database itself and
+ one for a schema within it.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -124,6 +125,8 @@ implements <a href="../../../../frameworks/openmetadata/controls/TemplateDefinit
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#DUCKDB_DATABASE_TEMPLATE" class="member-name-link">DUCKDB_DATABASE_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#DUCKDB_SCHEMA_TEMPLATE" class="member-name-link">DUCKDB_SCHEMA_TEMPLATE</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -243,6 +246,12 @@ the order they are declared.</div>
 <section class="detail" id="DUCKDB_DATABASE_TEMPLATE">
 <h3>DUCKDB_DATABASE_TEMPLATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DuckDBTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.controls">DuckDBTemplateType</a></span>&nbsp;<span class="element-name">DUCKDB_DATABASE_TEMPLATE</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="DUCKDB_SCHEMA_TEMPLATE">
+<h3>DUCKDB_SCHEMA_TEMPLATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DuckDBTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.controls">DuckDBTemplateType</a></span>&nbsp;<span class="element-name">DUCKDB_SCHEMA_TEMPLATE</span></div>
 </section>
 </li>
 </ul>

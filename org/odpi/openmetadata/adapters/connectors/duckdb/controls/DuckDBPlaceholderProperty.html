@@ -132,6 +132,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">The path to the DuckDB database file being catalogued - or the literal value ":memory:" for an in-memory session.</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="#SCHEMA_DESCRIPTION" class="member-name-link">SCHEMA_DESCRIPTION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The description of the database schema being catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SCHEMA_NAME" class="member-name-link">SCHEMA_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The name of the database schema being catalogued.</div>
+</div>
 </div>
 </section>
 </li>
@@ -185,39 +193,44 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Retrieve all the defined placeholder properties for the DuckDB database template.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExample()" class="member-name-link">getExample</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return an example of the placeholder property to help users understand how to set it up.</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDuckDBSchemaPlaceholderPropertyTypes()" class="member-name-link">getDuckDBSchemaPlaceholderPropertyTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve all the defined placeholder properties for the DuckDB database schema template.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExample()" class="member-name-link">getExample</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return an example of the placeholder property to help users understand how to set it up.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the placeholder property.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholder()" class="member-name-link">getPlaceholder</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholder()" class="member-name-link">getPlaceholder</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the placeholder to use when building templates.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworks/openmetadata/specificationproperties/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholderType()" class="member-name-link">getPlaceholderType</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworks/openmetadata/specificationproperties/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholderType()" class="member-name-link">getPlaceholderType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a summary of this enum to use in a service provider.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DuckDBPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.controls">DuckDBPlaceholderProperty</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DuckDBPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.controls">DuckDBPlaceholderProperty</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DuckDBPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.controls">DuckDBPlaceholderProperty</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DuckDBPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.controls">DuckDBPlaceholderProperty</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -260,6 +273,20 @@ the order they are declared.</div>
 <h3>DATABASE_DESCRIPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DuckDBPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.controls">DuckDBPlaceholderProperty</a></span>&nbsp;<span class="element-name">DATABASE_DESCRIPTION</span></div>
 <div class="block">The description of the database being catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SCHEMA_NAME">
+<h3>SCHEMA_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DuckDBPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.controls">DuckDBPlaceholderProperty</a></span>&nbsp;<span class="element-name">SCHEMA_NAME</span></div>
+<div class="block">The name of the database schema being catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SCHEMA_DESCRIPTION">
+<h3>SCHEMA_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DuckDBPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.controls">DuckDBPlaceholderProperty</a></span>&nbsp;<span class="element-name">SCHEMA_DESCRIPTION</span></div>
+<div class="block">The description of the database schema being catalogued.</div>
 </section>
 </li>
 </ul>
@@ -393,6 +420,20 @@ not permitted.)</div>
 <h3>getDuckDBDatabasePlaceholderPropertyTypes</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getDuckDBDatabasePlaceholderPropertyTypes</span>()</div>
 <div class="block">Retrieve all the defined placeholder properties for the DuckDB database template.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of placeholder property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDuckDBSchemaPlaceholderPropertyTypes()">
+<h3>getDuckDBSchemaPlaceholderPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getDuckDBSchemaPlaceholderPropertyTypes</span>()</div>
+<div class="block">Retrieve all the defined placeholder properties for the DuckDB database schema template.
+ <br><br>
+ The same properties as the database template, plus the schema's own name and description.  DuckDB has no
+ server tier, so the database is identified by its file path rather than by a host and port.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of placeholder property types</dd>

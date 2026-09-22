@@ -154,11 +154,19 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="col-last even-row-color">
 <div class="block">JDBC-INTEGRATION-CONNECTOR-0001 - Connector {0} is preparing to extract metadata from database {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TRANSFER_COMPLETE_FOR_DB_OBJECT" class="member-name-link">TRANSFER_COMPLETE_FOR_DB_OBJECT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#STARTING_SCHEMA_METADATA_TRANSFER" class="member-name-link">STARTING_SCHEMA_METADATA_TRANSFER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">JDBC-INTEGRATION-CONNECTOR-0017 - Connector {0} is preparing to extract metadata from schema {1} of database {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TRANSFER_COMPLETE_FOR_DB_OBJECT" class="member-name-link">TRANSFER_COMPLETE_FOR_DB_OBJECT</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JDBC-INTEGRATION-CONNECTOR-0016 - The JDBC Integration Connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_DATABASE_SCHEMA" class="member-name-link">UNKNOWN_DATABASE_SCHEMA</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">JDBC-INTEGRATION-CONNECTOR-0018 - Connector {0} cannot tell which database schema the catalog target {1} refers to</div>
 </div>
 </div>
 </section>
@@ -289,6 +297,20 @@ the order they are declared.</div>
 <h3>MULTIPLE_ELEMENTS_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc">JDBCIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">MULTIPLE_ELEMENTS_FOUND</span></div>
 <div class="block">JDBC-INTEGRATION-CONNECTOR-0015 - Connector {0} found {1} elements in the metadata access server with a qualified name of {2}; expecting to find at most one</div>
+</section>
+</li>
+<li>
+<section class="detail" id="STARTING_SCHEMA_METADATA_TRANSFER">
+<h3>STARTING_SCHEMA_METADATA_TRANSFER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc">JDBCIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">STARTING_SCHEMA_METADATA_TRANSFER</span></div>
+<div class="block">JDBC-INTEGRATION-CONNECTOR-0017 - Connector {0} is preparing to extract metadata from schema {1} of database {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNKNOWN_DATABASE_SCHEMA">
+<h3>UNKNOWN_DATABASE_SCHEMA</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc">JDBCIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">UNKNOWN_DATABASE_SCHEMA</span></div>
+<div class="block">JDBC-INTEGRATION-CONNECTOR-0018 - Connector {0} cannot tell which database schema the catalog target {1} refers to</div>
 </section>
 </li>
 </ul>
