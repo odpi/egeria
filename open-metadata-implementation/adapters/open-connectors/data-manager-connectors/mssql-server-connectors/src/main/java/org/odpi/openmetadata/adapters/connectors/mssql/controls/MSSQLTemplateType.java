@@ -38,6 +38,15 @@ public enum MSSQLTemplateType implements TemplateDefinition
                             MSSQLPlaceholderProperty.getMSSQLDatabasePlaceholderPropertyTypes(),
                             null),
 
+    MSSQL_SCHEMA_TEMPLATE(MSSQLDeployedImplementationType.MSSQL_DATABASE_SCHEMA.getDeployedImplementationType(),
+                          "Create a " + MSSQLDeployedImplementationType.MSSQL_DATABASE_SCHEMA.getAssociatedTypeName() + " asset.",
+                          MSSQLDeployedImplementationType.MSSQL_DATABASE_SCHEMA.getAssociatedTypeName(),
+                          false,
+                          "b4d9fa70-d47a-46a5-935c-19612a69255c",
+                          MSSQLDeployedImplementationType.MSSQL_DATABASE_SCHEMA,
+                          MSSQLPlaceholderProperty.getMSSQLSchemaPlaceholderPropertyTypes(),
+                          null),
+
     MSSQL_TABULAR_DATA_SET_TEMPLATE(MSSQLDeployedImplementationType.MSSQL_TABULAR_DATA_SET.getDeployedImplementationType(),
                                     "Create a " + MSSQLDeployedImplementationType.MSSQL_TABULAR_DATA_SET.getAssociatedTypeName() + " asset.",
                                     MSSQLDeployedImplementationType.MSSQL_TABULAR_DATA_SET.getAssociatedTypeName(),

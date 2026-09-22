@@ -17,7 +17,8 @@ import java.util.Map;
 /**
  * TemplateTypeEnum characterises the type of templates supported by an integration connector.  It should be copied
  * by developers of an integration connector to help populate the supportedTemplates property of its provider.
- * DuckDB has no server tier, so there is a single template describing the database asset.
+ * DuckDB has no server tier, so the templates start at the database asset: one for the database itself and
+ * one for a schema within it.
  */
 public enum DuckDBTemplateType implements TemplateDefinition
 {
@@ -29,6 +30,15 @@ public enum DuckDBTemplateType implements TemplateDefinition
                              DuckDBDeployedImplementationType.DUCKDB_DATABASE,
                              DuckDBPlaceholderProperty.getDuckDBDatabasePlaceholderPropertyTypes(),
                              null),
+
+    DUCKDB_SCHEMA_TEMPLATE(DuckDBDeployedImplementationType.DUCKDB_DATABASE_SCHEMA.getDeployedImplementationType(),
+                           "Create a " + DuckDBDeployedImplementationType.DUCKDB_DATABASE_SCHEMA.getAssociatedTypeName() + " asset.",
+                           DuckDBDeployedImplementationType.DUCKDB_DATABASE_SCHEMA.getAssociatedTypeName(),
+                           false,
+                           "99ca0d4b-5ba5-49c1-9dfc-2115b3ce2833",
+                           DuckDBDeployedImplementationType.DUCKDB_DATABASE_SCHEMA,
+                           DuckDBPlaceholderProperty.getDuckDBSchemaPlaceholderPropertyTypes(),
+                           null),
     ;
 
 

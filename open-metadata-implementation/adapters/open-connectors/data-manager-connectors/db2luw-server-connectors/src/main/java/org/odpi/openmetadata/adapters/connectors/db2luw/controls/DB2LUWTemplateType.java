@@ -38,6 +38,15 @@ public enum DB2LUWTemplateType implements TemplateDefinition
                              DB2LUWPlaceholderProperty.getDB2LUWDatabasePlaceholderPropertyTypes(),
                              null),
 
+    DB2LUW_SCHEMA_TEMPLATE(DB2LUWDeployedImplementationType.DB2LUW_DATABASE_SCHEMA.getDeployedImplementationType(),
+                           "Create a " + DB2LUWDeployedImplementationType.DB2LUW_DATABASE_SCHEMA.getAssociatedTypeName() + " asset.",
+                           DB2LUWDeployedImplementationType.DB2LUW_DATABASE_SCHEMA.getAssociatedTypeName(),
+                           false,
+                           "b1d90306-c7af-4e87-a154-48816f83b5c4",
+                           DB2LUWDeployedImplementationType.DB2LUW_DATABASE_SCHEMA,
+                           DB2LUWPlaceholderProperty.getDB2LUWSchemaPlaceholderPropertyTypes(),
+                           null),
+
     DB2LUW_TABULAR_DATA_SET_TEMPLATE(DB2LUWDeployedImplementationType.DB2LUW_TABULAR_DATA_SET.getDeployedImplementationType(),
                                      "Create a " + DB2LUWDeployedImplementationType.DB2LUW_TABULAR_DATA_SET.getAssociatedTypeName() + " asset.",
                                      DB2LUWDeployedImplementationType.DB2LUW_TABULAR_DATA_SET.getAssociatedTypeName(),

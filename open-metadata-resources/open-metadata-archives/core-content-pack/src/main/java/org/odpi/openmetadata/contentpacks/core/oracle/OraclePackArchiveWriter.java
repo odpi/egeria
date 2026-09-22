@@ -147,6 +147,21 @@ public class OraclePackArchiveWriter extends ContentPackBaseArchiveWriter
 
         additionalSolutionComponents.add(solutionComponentGUID);
 
+        solutionComponentGUID = this.createAndCatalogAssetGovernanceActionProcess("OracleDatabaseSchema",
+                                                                                  OracleDeployedImplementationType.ORACLE_DATABASE_SCHEMA,
+                                                                                  "https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/",
+                                                                                  RequestTypeDefinition.CREATE_ORACLE_SCHEMA,
+                                                                                  OracleTemplateType.ORACLE_SCHEMA_TEMPLATE,
+                                                                                  RequestTypeDefinition.CATALOG_ORACLE_SCHEMA);
+
+        additionalSolutionComponents.add(solutionComponentGUID);
+
+        solutionComponentGUID = this.deleteAsCatalogTargetGovernanceActionProcess("OracleDatabaseSchema",
+                                                                                  OracleDeployedImplementationType.ORACLE_DATABASE_SCHEMA,
+                                                                                  "https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/",
+                                                                                  RequestTypeDefinition.DELETE_ORACLE_SCHEMA);
+        additionalSolutionComponents.add(solutionComponentGUID);
+
         /*
          * Define the solution components for this solution.
          */

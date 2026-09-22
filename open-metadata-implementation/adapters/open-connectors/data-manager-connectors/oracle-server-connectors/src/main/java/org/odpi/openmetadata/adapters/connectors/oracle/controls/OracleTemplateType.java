@@ -38,6 +38,15 @@ public enum OracleTemplateType implements TemplateDefinition
                              OraclePlaceholderProperty.getOracleDatabasePlaceholderPropertyTypes(),
                              null),
 
+    ORACLE_SCHEMA_TEMPLATE(OracleDeployedImplementationType.ORACLE_DATABASE_SCHEMA.getDeployedImplementationType(),
+                           "Create a " + OracleDeployedImplementationType.ORACLE_DATABASE_SCHEMA.getAssociatedTypeName() + " asset.",
+                           OracleDeployedImplementationType.ORACLE_DATABASE_SCHEMA.getAssociatedTypeName(),
+                           false,
+                           "9452c02d-4950-493f-9e43-e978a081d28d",
+                           OracleDeployedImplementationType.ORACLE_DATABASE_SCHEMA,
+                           OraclePlaceholderProperty.getOracleSchemaPlaceholderPropertyTypes(),
+                           null),
+
     ORACLE_TABULAR_DATA_SET_TEMPLATE(OracleDeployedImplementationType.ORACLE_TABULAR_DATA_SET.getDeployedImplementationType(),
                                      "Create a " + OracleDeployedImplementationType.ORACLE_TABULAR_DATA_SET.getAssociatedTypeName() + " asset.",
                                      OracleDeployedImplementationType.ORACLE_TABULAR_DATA_SET.getAssociatedTypeName(),

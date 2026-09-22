@@ -28,7 +28,7 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
 | Exception messages | 68 | 624 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 106 | 1006 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Audit log messages | 106 | 1008 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -94,7 +94,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [User Security](user-security) | 1 | 1 | The user security services authenticate the callers of the OMAG Server Platform's REST APIs. |
 | [Data Manager Connectors](connectors/data-manager-connectors) | 12 | 73 | These connectors catalog and survey the contents of database servers and other data managers. |
 | [Data Store Connectors](connectors/data-store-connectors) | 5 | 27 | These connectors provide access to the contents of files, folders and databases. |
-| [Integration Connectors](connectors/integration-connectors) | 14 | 85 | Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor. |
+| [Integration Connectors](connectors/integration-connectors) | 14 | 87 | Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor. |
 | [System Connectors](connectors/system-connectors) | 13 | 77 | These connectors call the APIs of third party systems such as Apache Atlas, Apache Kafka and the Egeria runtime itself. |
 | [Repository Services Connectors](connectors/repository-services-connectors) | 8 | 32 | These connectors provide the pluggable implementations used by the repository services - the metadata repositories, the audit log destinations, the cohort registry stores and the open metadata archive stores. |
 | [Event Bus Connectors](connectors/event-bus-connectors) | 2 | 22 | These connectors send and receive events over the event bus - typically Apache Kafka. |
@@ -173,7 +173,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `JACQUARD-HARVESTER-` | Audit log messages | 23 | [JacquardAuditCode](connectors/nanny-connectors/JacquardAuditCode.md) |
 | `JACQUARD-HARVESTER-` | Exception messages | 2 | [JacquardErrorCode](connectors/nanny-connectors/JacquardErrorCode.md) |
 | `JDBC-AUDIT-LOG-500-` | Exception messages | 1 | [PostgreSQLAuditLogErrorCode](connectors/repository-services-connectors/PostgreSQLAuditLogErrorCode.md) |
-| `JDBC-INTEGRATION-CONNECTOR-` | Audit log messages | 11 | [JDBCIntegrationConnectorAuditCode](connectors/integration-connectors/JDBCIntegrationConnectorAuditCode.md) |
+| `JDBC-INTEGRATION-CONNECTOR-` | Audit log messages | 13 | [JDBCIntegrationConnectorAuditCode](connectors/integration-connectors/JDBCIntegrationConnectorAuditCode.md) |
 | `JDBC-RESOURCE-CONNECTOR-` | Audit log messages | 4 | [JDBCAuditCode](connectors/data-store-connectors/JDBCAuditCode.md) |
 | `JDBC-RESOURCE-CONNECTOR-` | Exception messages | 7 | [JDBCErrorCode](connectors/data-store-connectors/JDBCErrorCode.md) |
 | `LISKOV-DATA-HUB-MANAGER-` | Audit log messages | 13 | [LiskovAuditCode](connectors/nanny-connectors/LiskovAuditCode.md) |

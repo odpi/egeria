@@ -147,6 +147,21 @@ public class DB2LUWPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         additionalSolutionComponents.add(solutionComponentGUID);
 
+        solutionComponentGUID = this.createAndCatalogAssetGovernanceActionProcess("DB2LUWDatabaseSchema",
+                                                                                  DB2LUWDeployedImplementationType.DB2LUW_DATABASE_SCHEMA,
+                                                                                  "https://egeria-project.org/egeria-solutions/leveraging-db2luw/overview/",
+                                                                                  RequestTypeDefinition.CREATE_DB2LUW_SCHEMA,
+                                                                                  DB2LUWTemplateType.DB2LUW_SCHEMA_TEMPLATE,
+                                                                                  RequestTypeDefinition.CATALOG_DB2LUW_SCHEMA);
+
+        additionalSolutionComponents.add(solutionComponentGUID);
+
+        solutionComponentGUID = this.deleteAsCatalogTargetGovernanceActionProcess("DB2LUWDatabaseSchema",
+                                                                                  DB2LUWDeployedImplementationType.DB2LUW_DATABASE_SCHEMA,
+                                                                                  "https://egeria-project.org/egeria-solutions/leveraging-db2luw/overview/",
+                                                                                  RequestTypeDefinition.DELETE_DB2LUW_SCHEMA);
+        additionalSolutionComponents.add(solutionComponentGUID);
+
         /*
          * Define the solution components for this solution.
          */

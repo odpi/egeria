@@ -34,7 +34,6 @@ import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlace
 import org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.PostgresTabularDataSetCollectionProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.PostgresTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
-import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
@@ -119,7 +118,7 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                             PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                             PlaceholderProperty.PORT_NUMBER.getPlaceholder() + ";databaseName=" +
                                             MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
-                                    getMSSQLSchemaConfigurationProperties(),
+                                    DataAssetTemplateDefinition.getMSSQLSchemaConfigurationProperties(),
                                     PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                                     SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                                     new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
@@ -143,7 +142,7 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                                        PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                                        PlaceholderProperty.PORT_NUMBER.getPlaceholder() + ";databaseName=" +
                                                        MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
-                                               getMSSQLSchemaConfigurationProperties(),
+                                               DataAssetTemplateDefinition.getMSSQLSchemaConfigurationProperties(),
                                                PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                                                SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                                                new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
@@ -168,7 +167,7 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                              PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                              PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
                                              OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder(),
-                                     getOracleSchemaConfigurationProperties(),
+                                     DataAssetTemplateDefinition.getOracleSchemaConfigurationProperties(),
                                      PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                                      SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                                      new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
@@ -192,7 +191,7 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                                         PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                                         PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
                                                         OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder(),
-                                                getOracleSchemaConfigurationProperties(),
+                                                DataAssetTemplateDefinition.getOracleSchemaConfigurationProperties(),
                                                 PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                                                 SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                                                 new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
@@ -217,7 +216,7 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                              PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                              PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
                                              DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
-                                     getDB2LUWSchemaConfigurationProperties(),
+                                     DataAssetTemplateDefinition.getDB2LUWSchemaConfigurationProperties(),
                                      PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                                      SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                                      new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
@@ -241,7 +240,7 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                                         PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                                         PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
                                                         DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
-                                                getDB2LUWSchemaConfigurationProperties(),
+                                                DataAssetTemplateDefinition.getDB2LUWSchemaConfigurationProperties(),
                                                 PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
                                                 SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                                                 new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
@@ -295,7 +294,6 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                              ContentPackDefinition.CORE_CONTENT_PACK),
 
     ;
-
 
 
     /**
@@ -367,25 +365,6 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
 
 
     /**
-     * Build the connection configuration properties documenting the database/schema a Microsoft SQL Server
-     * tabular data set connection targets.  Microsoft SQL Server has no "currentSchema=" JDBC URL parameter, so -
-     * unlike PostgreSQL - these are not consumed by JDBCResourceConnector itself, but are still recorded on the
-     * connection for documentation, matching the PostgreSQL template's pattern.
-     *
-     * @return configuration properties
-     */
-    private static Map<String, Object> getMSSQLSchemaConfigurationProperties()
-    {
-        Map<String, Object> configurationProperties = new HashMap<>();
-
-        configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder());
-        configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
-
-        return configurationProperties;
-    }
-
-
-    /**
      * Build the configuration properties for an Oracle Database tabular data set collection.
      *
      * @return configuration properties
@@ -420,31 +399,6 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
 
 
     /**
-     * Build the connection configuration properties documenting the pluggable database (PDB)/schema an Oracle
-     * tabular data set connection targets, plus the additionalConnectionProperties Oracle's JDBC driver needs to
-     * retrieve table/column comments via DatabaseMetaData (remarksReporting=true) and to avoid timezone
-     * conversion errors (oracle.jdbc.timezoneAsRegion=false).  Oracle has no "currentSchema=" JDBC URL parameter
-     * either, so - like the Microsoft SQL Server template - the database/schema values are not consumed by
-     * JDBCResourceConnector itself from these properties, but are still recorded on the connection for
-     * documentation.
-     *
-     * @return configuration properties
-     */
-    private static Map<String, Object> getOracleSchemaConfigurationProperties()
-    {
-        Map<String, Object> configurationProperties = new HashMap<>();
-
-        configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder());
-        configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), OraclePlaceholderProperty.SCHEMA_NAME.getPlaceholder());
-        configurationProperties.put(JDBCConfigurationProperty.ADDITIONAL_CONNECTION_PROPERTIES.getName(),
-                                    Map.of("remarksReporting", "true",
-                                           "oracle.jdbc.timezoneAsRegion", "false"));
-
-        return configurationProperties;
-    }
-
-
-    /**
      * Build the configuration properties for a Db2 for Linux, UNIX and Windows tabular data set collection.
      *
      * @return configuration properties
@@ -473,23 +427,6 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
         configurationProperties.put(DB2LUWConfigurationProperty.SCHEMA_DESCRIPTION.getName(), DB2LUWPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder());
         configurationProperties.put(DB2LUWConfigurationProperty.TABLE_NAME.getName(), DB2LUWPlaceholderProperty.TABLE_NAME.getPlaceholder());
         configurationProperties.put(DB2LUWConfigurationProperty.TABLE_DESCRIPTION.getName(), DB2LUWPlaceholderProperty.TABLE_DESCRIPTION.getPlaceholder());
-
-        return configurationProperties;
-    }
-
-
-    /**
-     * Build the connection configuration properties documenting the database/schema a Db2 for Linux, UNIX and
-     * Windows tabular data set connection targets.
-     *
-     * @return configuration properties
-     */
-    private static Map<String, Object> getDB2LUWSchemaConfigurationProperties()
-    {
-        Map<String, Object> configurationProperties = new HashMap<>();
-
-        configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder());
-        configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), DB2LUWPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
 
         return configurationProperties;
     }

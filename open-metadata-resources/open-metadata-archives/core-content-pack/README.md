@@ -77,6 +77,66 @@ dangling end. Two things are worth knowing about that regeneration, because they
   kept the GUID it shipped with. A repository that had already loaded the old pack gains the missing
   connector type and the relationship it already held becomes valid, instead of acquiring a second one.
 
+## Checking the vendor packs against each other
+
+[`DatabaseVendorConsistencyTest`](src/test/java/org/odpi/openmetadata/contentpacks/core/DatabaseVendorConsistencyTest.java)
+compares the database vendor packs - PostgreSQL, Microsoft SQL Server, Oracle, Db2 LUW and DuckDB - with one
+another.
+
+A new vendor is added by cloning an existing connector set and content pack, and the recurring mistake in
+that work is not a broken connector: it is a step of the clone that was missed, so the new vendor arrives
+with most of what it needs and silently without one piece. The governance action processes are where that
+shows first, because they are what an operator runs - "catalog this server", "survey this database", "remove
+this asset" - so a vendor missing one is missing a capability, and nothing says so.
+
+Comparing the packs rather than driving a database is deliberate: it covers **every** vendor on every build,
+including the ones whose databases are hard to stand up. Db2 LUW's container does not run on Apple silicon
+at all, so a suite that needed a live database could never check it.
+
+Each recorded difference is keyed by the **vendor it was written about**, so an entry excuses only that
+vendor. An unqualified process name would excuse every vendor at once, which would defeat the point: this
+check exists to notice when one vendor is the odd one out.
+
+One difference is recorded:
+
+* **DuckDB has no server-level processes** - a genuine product difference. DuckDB is an embedded database
+  held in a file; there is no server to catalog or survey. It offers five top-level processes where the other
+  four offer eight, and those three are the difference.
+
+Nothing is currently recorded as **unexplained**, and that is worth keeping true.
+`theRecordedDifferencesAreStillReal` fails if an entry is left behind once the vendor it names is no longer
+missing anything, so a note cannot outlive its finding. That is not hypothetical - both notes this check has
+held were cleared by fixing what they described, and in each case it was this half of the check that refused
+to let the note stay.
+
+### What the first run found
+
+Every vendor except PostgreSQL was missing the database-schema-level `CreateAsCatalogTarget` and
+`DeleteAssetWithTemplate`, while offering the server-level and database-level equivalents. In each case the
+clone had run out partway rather than gone wrong:
+
+* **MSSQL, Oracle and Db2 LUW** had the schema placeholder properties already -
+  `getMSSQLSchemaPlaceholderPropertyTypes` and its siblings were present and never called - and stopped at
+  the template type.
+* **DuckDB** stopped one step earlier still: it had a `DUCKDB_DATABASE_SCHEMA` deployed implementation type
+  but no schema placeholder properties at all.
+
+Either way the consequence was the same. Without a `<V>_SCHEMA_TEMPLATE` there is nothing for a
+`create-<v>-schema` request type to populate, so no request types, so no process for the pack writer to
+build. All five vendors now offer the schema-level pair.
+
+### Where each vendor's schema lives in its connection
+
+Only PostgreSQL can scope a JDBC connection to a schema through its URL, with `?currentSchema=`. The other
+four carry the database and schema in the `databaseName`/`databaseSchema` configuration properties and leave
+the URL at database level - the same arrangement their tabular data set templates already used.
+
+For DuckDB this is not merely a missing convenience but a trap worth writing down. The driver treats
+everything after `jdbc:duckdb:` as a file path, so a URL ending `myDatabase.duckdb?schema=sales` neither
+fails nor scopes the connection: it **creates a new, empty database file** with that literal name, connects
+to it, and a cataloguer then reports success having catalogued nothing. A `schema` connection property is
+rejected outright, and `Connection.setSchema` is the one mechanism the driver honours.
+
 ----
 
 * Return to [Open Metadata Archives](..)
