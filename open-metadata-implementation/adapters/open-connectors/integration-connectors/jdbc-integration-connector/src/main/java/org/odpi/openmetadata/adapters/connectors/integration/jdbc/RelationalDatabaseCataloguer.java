@@ -71,6 +71,19 @@ class RelationalDatabaseCataloguer
     private final String                 connectorName;
     private final AuditLog               auditLog;
 
+    /**
+     * The qualified name every table and column name below is built from: the database's when a whole database
+     * is being catalogued, or the schema asset's own when a single schema is the catalog target.  A schema asset
+     * created from a content pack template does not have the database's qualified name as its prefix, so the two
+     * cases cannot share one formula.
+     */
+    private String rootQualifiedName;
+
+    /**
+     * The one schema being catalogued, as the database names it, or null when the whole database is.
+     */
+    private String scopedSchemaName;
+
     private final AssetClient           dataAssetClient;
     private final AssetClient           databaseSchemaClient;
     private final SchemaTypeClient      databaseSchemaTypeClient;
@@ -122,8 +135,11 @@ class RelationalDatabaseCataloguer
         String databaseGUID          = databaseElement.getElementHeader().getGUID();
         String databaseQualifiedName = dataAssetClient.getQualifiedName(databaseElement);
 
+        this.rootQualifiedName = databaseQualifiedName;
+        this.scopedSchemaName  = null;
+
         catalogTablesAndViews(databaseElement, databaseQualifiedName, databaseGUID, null);
-        catalogForeignKeysForTables(databaseElement, databaseQualifiedName, null);
+        catalogForeignKeysForTables(databaseElement, null);
 
         List<JdbcSchema>              jdbcSchemas = jdbcMetadata.getSchemas(catalogName, null);
         List<OpenMetadataRootElement> schemas     = catalogSchemas(jdbcSchemas, databaseQualifiedName, databaseGUID);
@@ -141,8 +157,37 @@ class RelationalDatabaseCataloguer
             String schemaQualifiedName = databaseSchemaClient.getQualifiedName(schema);
 
             catalogTablesAndViews(databaseElement, schemaQualifiedName, schemaGUID, schemaDisplayName);
-            catalogForeignKeysForTables(databaseElement, databaseQualifiedName, schemaDisplayName);
+            catalogForeignKeysForTables(databaseElement, schemaDisplayName);
         }
+    }
+
+
+    /**
+     * Catalog the tables, views and columns of a single schema, when that schema - rather than a whole database -
+     * is the catalog target.
+     * <br><br>
+     * The schema asset already exists: it is the catalog target, created by an operator running
+     * create-&lt;vendor&gt;-schema or discovered by an earlier database level refresh.  So this does not create it,
+     * and - unlike a database level refresh - it does not delete sibling schemas that JDBC no longer reports,
+     * because it was never asked to look at them and their absence from this run says nothing about them.
+     * <br><br>
+     * Everything catalogued anchors to the schema asset rather than to a database asset, since a schema attached
+     * on its own has no database asset above it to anchor to.
+     *
+     * @param schemaElement the database schema asset
+     * @param jdbcSchemaName the schema's name as the database knows it
+     */
+    void catalogSchemaContents(OpenMetadataRootElement schemaElement,
+                               String                  jdbcSchemaName) throws SQLException
+    {
+        String schemaGUID          = schemaElement.getElementHeader().getGUID();
+        String schemaQualifiedName = databaseSchemaClient.getQualifiedName(schemaElement);
+
+        this.rootQualifiedName = schemaQualifiedName;
+        this.scopedSchemaName  = jdbcSchemaName;
+
+        catalogTablesAndViews(schemaElement, schemaQualifiedName, schemaGUID, jdbcSchemaName);
+        catalogForeignKeysForTables(schemaElement, jdbcSchemaName);
     }
 
 
@@ -932,8 +977,7 @@ class RelationalDatabaseCataloguer
      * jdbcSchemaName is null). Foreign keys are handled at this level - rather than while cataloguing each table -
      * because a foreign key relationship can span tables in different schemas.
      */
-    private void catalogForeignKeysForTables(OpenMetadataRootElement databaseElement,
-                                             String                   databaseQualifiedName,
+    private void catalogForeignKeysForTables(OpenMetadataRootElement anchorAsset,
                                              String                   jdbcSchemaName) throws SQLException
     {
         if ((jdbcSchemaName != null) && (! transferCustomizations.shouldTransferSchema(jdbcSchemaName)))
@@ -956,21 +1000,90 @@ class RelationalDatabaseCataloguer
 
         for (JdbcForeignKey foreignKey : foreignKeys)
         {
-            setForeignKeyIfNeeded(foreignKey, databaseElement, databaseQualifiedName);
+            setForeignKeyIfNeeded(foreignKey, anchorAsset);
         }
     }
 
 
-    private void setForeignKeyIfNeeded(JdbcForeignKey jdbcForeignKey, OpenMetadataRootElement databaseElement, String databaseQualifiedName)
+    /**
+     * Build the qualified name a column was catalogued under, or null when this refresh did not catalogue it.
+     * <br><br>
+     * A foreign key's two ends can sit in different schemas, and each end is named from its own schema rather
+     * than from the schema being processed.  When a single schema is the catalog target, an end outside that
+     * schema has not been catalogued by this connector and cannot be named from the schema asset's qualified
+     * name, so it returns null and the caller skips the key rather than searching for a name that was never
+     * created.
+     *
+     * @param jdbcSchemaName the schema this end of the key lives in, as JDBC reports it
+     * @param tableName the table this end of the key lives in
+     * @param columnName the column
+     * @return qualified name, or null when this refresh did not catalogue that column
+     */
+    private String columnQualifiedName(String jdbcSchemaName,
+                                       String tableName,
+                                       String columnName)
+    {
+        return columnQualifiedName(rootQualifiedName, scopedSchemaName, jdbcSchemaName, tableName, columnName);
+    }
+
+
+    /**
+     * Build the qualified name a column was catalogued under, as a function of the refresh's scope alone.
+     * <br><br>
+     * Kept static and explicit because getting it wrong is silent: a name that does not match what
+     * {@link #catalogTablesAndViews} created means the column is not found, the foreign key is skipped, and the
+     * refresh still reports success.  The two cases have to differ because a schema asset's qualified name
+     * already contains the schema, whereas a database's does not.
+     *
+     * @param rootQualifiedName the database's qualified name, or the schema asset's own when a single schema is
+     *                          the catalog target
+     * @param scopedSchemaName the one schema being catalogued, or null when the whole database is
+     * @param jdbcSchemaName the schema this column's table lives in, as JDBC reports it
+     * @param tableName the table the column lives in
+     * @param columnName the column
+     * @return qualified name, or null when a refresh of this scope did not catalogue that column
+     */
+    static String columnQualifiedName(String rootQualifiedName,
+                                      String scopedSchemaName,
+                                      String jdbcSchemaName,
+                                      String tableName,
+                                      String columnName)
+    {
+        if (scopedSchemaName != null)
+        {
+            if (! scopedSchemaName.equals(jdbcSchemaName))
+            {
+                return null;
+            }
+
+            /*
+             * rootQualifiedName is the schema asset's own qualified name, so the schema is already in it and
+             * must not be added a second time.
+             */
+            return rootQualifiedName + "::" + tableName + "::" + columnName;
+        }
+
+        return rootQualifiedName
+                + (jdbcSchemaName == null ? "" : "::" + jdbcSchemaName)
+                + "::" + tableName + "::" + columnName;
+    }
+
+
+    private void setForeignKeyIfNeeded(JdbcForeignKey jdbcForeignKey, OpenMetadataRootElement anchorAsset)
     {
         final String methodName = "setForeignKeyIfNeeded";
 
-        String pkColumnQualifiedName = databaseQualifiedName
-                + (jdbcForeignKey.getPkTableSchem() == null ? "" : "::" + jdbcForeignKey.getPkTableSchem())
-                + "::" + jdbcForeignKey.getPkTableName() + "::" + jdbcForeignKey.getPkColumnName();
-        String fkColumnQualifiedName = databaseQualifiedName
-                + (jdbcForeignKey.getFkTableSchem() == null ? "" : "::" + jdbcForeignKey.getFkTableSchem())
-                + "::" + jdbcForeignKey.getFkTableName() + "::" + jdbcForeignKey.getFkColumnName();
+        String pkColumnQualifiedName = columnQualifiedName(jdbcForeignKey.getPkTableSchem(),
+                                                           jdbcForeignKey.getPkTableName(),
+                                                           jdbcForeignKey.getPkColumnName());
+        String fkColumnQualifiedName = columnQualifiedName(jdbcForeignKey.getFkTableSchem(),
+                                                           jdbcForeignKey.getFkTableName(),
+                                                           jdbcForeignKey.getFkColumnName());
+
+        if ((pkColumnQualifiedName == null) || (fkColumnQualifiedName == null))
+        {
+            return;
+        }
 
         OpenMetadataRootElement pkColumn = findSingleColumn(pkColumnQualifiedName);
         OpenMetadataRootElement fkColumn = findSingleColumn(fkColumnQualifiedName);
@@ -997,7 +1110,11 @@ class RelationalDatabaseCataloguer
         ForeignKeyProperties foreignKeyProperties = new ForeignKeyProperties();
         foreignKeyProperties.setDisplayName(jdbcForeignKey.getPkName() + " - " + jdbcForeignKey.getFkName());
 
-        if (databaseElement.getProperties() instanceof DatabaseProperties databaseProperties)
+        /*
+         * Only a database asset records where it was imported from; a schema attached on its own does not, so
+         * a schema scoped refresh leaves the source unset rather than inventing one.
+         */
+        if (anchorAsset.getProperties() instanceof DatabaseProperties databaseProperties)
         {
             foreignKeyProperties.setSource(databaseProperties.getImportedFrom());
         }

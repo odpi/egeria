@@ -110,6 +110,26 @@ public enum JDBCIntegrationConnectorAuditCode implements AuditLogMessageSet
                             "Investigate why more than one element has this qualified name and remove the duplicates.",
                             "https://egeria-project.org/concepts/integration-connector/"),
 
+    /**
+     * JDBC-INTEGRATION-CONNECTOR-0017 - Connector {0} is preparing to extract metadata from schema {1} of database {2}
+     */
+    STARTING_SCHEMA_METADATA_TRANSFER("JDBC-INTEGRATION-CONNECTOR-0017",
+                                      AuditLogRecordSeverityLevel.INFO,
+                                      "Connector {0} is preparing to extract metadata from schema {1} of database {2}",
+                                      "The catalog target is a single database schema rather than a whole database, so the connector is about to extract details of the tables and columns of that one schema.  The rest of the database is left alone.",
+                                      "Check that this is an appropriate schema for the connector to be accessing.",
+                                      "https://egeria-project.org/concepts/integration-connector/"),
+
+    /**
+     * JDBC-INTEGRATION-CONNECTOR-0018 - Connector {0} cannot tell which database schema the catalog target {1} refers to
+     */
+    UNKNOWN_DATABASE_SCHEMA("JDBC-INTEGRATION-CONNECTOR-0018",
+                            AuditLogRecordSeverityLevel.ERROR,
+                            "Connector {0} cannot tell which database schema the catalog target {1} ({2}) refers to, so it is skipping it",
+                            "The catalog target is a database schema asset, but nothing on it names the schema as the database knows it.  The connector stops rather than guess, because guessing wrong would catalog another schema's tables under this asset - which looks like success and is wrong.",
+                            "Set the databaseSchema configuration property to the schema's name, either on the catalog target or on the schema asset's connection.  The database vendors' content packs set it on the connection built from their schema template.",
+                            "https://egeria-project.org/concepts/integration-connector/"),
+
     ;
 
 

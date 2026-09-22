@@ -22,6 +22,14 @@ dependencies {
     testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'
+    /*
+     * The frameworks above are compileOnly for the main sources, which leaves them off the test classpath.
+     * SchemaCatalogTargetTest exercises the connector's own classes, so it needs the same view of them.
+     */
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-integration-framework')
 
     compileOnly 'org.apache.commons:commons-lang3'
     compileOnly 'org.apache.commons:commons-collections4'

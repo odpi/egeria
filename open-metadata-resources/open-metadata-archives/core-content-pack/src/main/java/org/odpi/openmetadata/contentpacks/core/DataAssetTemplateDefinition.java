@@ -117,6 +117,27 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                             MSSQLPlaceholderProperty.getMSSQLDatabasePlaceholderPropertyTypes(),
                             ContentPackDefinition.MSSQL_CONTENT_PACK),
 
+    MSSQL_SCHEMA_TEMPLATE(MSSQLTemplateType.MSSQL_SCHEMA_TEMPLATE.getTemplateGUID(),
+                          MSSQLDeployedImplementationType.MSSQL_DATABASE_SCHEMA,
+                          MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                          MSSQLPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder(),
+                          MSSQLDeployedImplementationType.MSSQL_DATABASE_SCHEMA.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                          null,
+                          null,
+                          null,
+                          new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                          "jdbc:sqlserver://" +
+                                  PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                  PlaceholderProperty.PORT_NUMBER.getPlaceholder() + ";databaseName=" + MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                          getMSSQLSchemaConfigurationProperties(),
+                          PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                          SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                          new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                          PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                          null,
+                          MSSQLPlaceholderProperty.getMSSQLSchemaPlaceholderPropertyTypes(),
+                          ContentPackDefinition.MSSQL_CONTENT_PACK),
+
     ORACLE_DATABASE_TEMPLATE(OracleTemplateType.ORACLE_DATABASE_TEMPLATE.getTemplateGUID(),
                              OracleDeployedImplementationType.ORACLE_DATABASE,
                              OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder(),
@@ -141,6 +162,27 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              OraclePlaceholderProperty.getOracleDatabasePlaceholderPropertyTypes(),
                              ContentPackDefinition.ORACLE_CONTENT_PACK),
 
+    ORACLE_SCHEMA_TEMPLATE(OracleTemplateType.ORACLE_SCHEMA_TEMPLATE.getTemplateGUID(),
+                           OracleDeployedImplementationType.ORACLE_DATABASE_SCHEMA,
+                           OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + OraclePlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                           OraclePlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder(),
+                           OracleDeployedImplementationType.ORACLE_DATABASE_SCHEMA.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + OraclePlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                           null,
+                           null,
+                           null,
+                           new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                           "jdbc:oracle:thin:@//" +
+                                   PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                   PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" + OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                           getOracleSchemaConfigurationProperties(),
+                           PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                           SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                           new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                           PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                           null,
+                           OraclePlaceholderProperty.getOracleSchemaPlaceholderPropertyTypes(),
+                           ContentPackDefinition.ORACLE_CONTENT_PACK),
+
     DB2LUW_DATABASE_TEMPLATE(DB2LUWTemplateType.DB2LUW_DATABASE_TEMPLATE.getTemplateGUID(),
                              DB2LUWDeployedImplementationType.DB2LUW_DATABASE,
                              DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
@@ -162,6 +204,27 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              DB2LUWPlaceholderProperty.getDB2LUWDatabasePlaceholderPropertyTypes(),
                              ContentPackDefinition.DB2LUW_CONTENT_PACK),
 
+    DB2LUW_SCHEMA_TEMPLATE(DB2LUWTemplateType.DB2LUW_SCHEMA_TEMPLATE.getTemplateGUID(),
+                           DB2LUWDeployedImplementationType.DB2LUW_DATABASE_SCHEMA,
+                           DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + DB2LUWPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                           DB2LUWPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder(),
+                           DB2LUWDeployedImplementationType.DB2LUW_DATABASE_SCHEMA.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + DB2LUWPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                           null,
+                           null,
+                           null,
+                           new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                           "jdbc:db2://" +
+                                   PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                   PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" + DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                           getDB2LUWSchemaConfigurationProperties(),
+                           PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                           SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                           new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                           PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                           null,
+                           DB2LUWPlaceholderProperty.getDB2LUWSchemaPlaceholderPropertyTypes(),
+                           ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
     DUCKDB_DATABASE_TEMPLATE(DuckDBTemplateType.DUCKDB_DATABASE_TEMPLATE.getTemplateGUID(),
                              DuckDBDeployedImplementationType.DUCKDB_DATABASE,
                              DuckDBPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
@@ -180,6 +243,25 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              null,
                              DuckDBPlaceholderProperty.getDuckDBDatabasePlaceholderPropertyTypes(),
                              ContentPackDefinition.DUCKDB_CONTENT_PACK),
+
+    DUCKDB_SCHEMA_TEMPLATE(DuckDBTemplateType.DUCKDB_SCHEMA_TEMPLATE.getTemplateGUID(),
+                           DuckDBDeployedImplementationType.DUCKDB_DATABASE_SCHEMA,
+                           DuckDBPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + DuckDBPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                           DuckDBPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder(),
+                           DuckDBDeployedImplementationType.DUCKDB_DATABASE_SCHEMA.getDeployedImplementationType() + "::" + DuckDBPlaceholderProperty.DATABASE_PATH.getPlaceholder() + "::" + DuckDBPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                           null,
+                           null,
+                           null,
+                           new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
+                           "jdbc:duckdb:" + DuckDBPlaceholderProperty.DATABASE_PATH.getPlaceholder(),
+                           getDuckDBSchemaConfigurationProperties(),
+                           PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholder(),
+                           SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                           new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                           PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                           null,
+                           DuckDBPlaceholderProperty.getDuckDBSchemaPlaceholderPropertyTypes(),
+                           ContentPackDefinition.DUCKDB_CONTENT_PACK),
 
     KAFKA_TOPIC_TEMPLATE(KafkaTemplateType.KAFKA_TOPIC_TEMPLATE.getTemplateGUID(),
                          DeployedImplementationType.APACHE_KAFKA_TOPIC,
@@ -673,6 +755,89 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
 
         configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder());
         configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+
+        return configurationProperties;
+    }
+
+    /**
+     * Build the connection configuration properties documenting the database/schema a Microsoft SQL Server
+     * tabular data set connection targets.  Microsoft SQL Server has no "currentSchema=" JDBC URL parameter, so -
+     * unlike PostgreSQL - these are not consumed by JDBCResourceConnector itself, but are still recorded on the
+     * connection for documentation, matching the PostgreSQL template's pattern.
+     *
+     * @return configuration properties
+     */
+    static Map<String, Object> getMSSQLSchemaConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), MSSQLPlaceholderProperty.DATABASE_NAME.getPlaceholder());
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), MSSQLPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+
+        return configurationProperties;
+    }
+
+    /**
+     * Build the connection configuration properties documenting the pluggable database (PDB)/schema an Oracle
+     * tabular data set connection targets, plus the additionalConnectionProperties Oracle's JDBC driver needs to
+     * retrieve table/column comments via DatabaseMetaData (remarksReporting=true) and to avoid timezone
+     * conversion errors (oracle.jdbc.timezoneAsRegion=false).  Oracle has no "currentSchema=" JDBC URL parameter
+     * either, so - like the Microsoft SQL Server template - the database/schema values are not consumed by
+     * JDBCResourceConnector itself from these properties, but are still recorded on the connection for
+     * documentation.
+     *
+     * @return configuration properties
+     */
+    static Map<String, Object> getOracleSchemaConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), OraclePlaceholderProperty.DATABASE_NAME.getPlaceholder());
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), OraclePlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+        configurationProperties.put(JDBCConfigurationProperty.ADDITIONAL_CONNECTION_PROPERTIES.getName(),
+                                    Map.of("remarksReporting", "true",
+                                           "oracle.jdbc.timezoneAsRegion", "false"));
+
+        return configurationProperties;
+    }
+
+    /**
+     * Build the connection configuration properties documenting the database/schema a Db2 for Linux, UNIX and
+     * Windows tabular data set connection targets.
+     *
+     * @return configuration properties
+     */
+    static Map<String, Object> getDB2LUWSchemaConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), DB2LUWPlaceholderProperty.DATABASE_NAME.getPlaceholder());
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), DB2LUWPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Build the connection configuration properties documenting the database/schema a DuckDB schema connection
+     * targets.
+     * <br><br>
+     * DuckDB must carry the schema here rather than in the JDBC URL, and unlike Microsoft SQL Server and Oracle -
+     * which simply have no "currentSchema=" URL parameter - putting it in the URL is actively harmful.  The
+     * DuckDB driver takes everything after "jdbc:duckdb:" as a file path, so "...myDatabase.duckdb?schema=sales"
+     * does not fail and does not scope the connection: it <b>creates a new, empty database file</b> whose name
+     * ends in "?schema=sales", connects to that instead, and a cataloguer then reports success having found
+     * nothing.  A connection needing schema context has to call Connection.setSchema, which is the only one of
+     * the three mechanisms the driver honours - a "schema" connection property is rejected outright.
+     *
+     * @return configuration properties
+     */
+    static Map<String, Object> getDuckDBSchemaConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), DuckDBPlaceholderProperty.DATABASE_NAME.getPlaceholder());
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), DuckDBPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
 
         return configurationProperties;
     }

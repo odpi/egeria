@@ -1447,7 +1447,7 @@ public class MermaidGraphBuilderBase
             if (label != null)
             {
                 mermaidGraph.append("-->|\"");
-                mermaidGraph.append(label);
+                mermaidGraph.append(removeTroublesomeCharacters(label));
                 mermaidGraph.append("\"|");
             }
             else
@@ -1497,7 +1497,7 @@ public class MermaidGraphBuilderBase
             {
 
                 mermaidGraph.append("-- \"");
-                mermaidGraph.append(label);
+                mermaidGraph.append(removeTroublesomeCharacters(label));
                 mermaidGraph.append("\" ------>");
             }
             else
@@ -1537,7 +1537,7 @@ public class MermaidGraphBuilderBase
             if (label != null)
             {
                 mermaidGraph.append("-- \"");
-                mermaidGraph.append(label);
+                mermaidGraph.append(removeTroublesomeCharacters(label));
                 mermaidGraph.append("\" ------>");
             }
             else
@@ -1576,7 +1576,7 @@ public class MermaidGraphBuilderBase
             if (label != null)
             {
                 mermaidGraph.append("-. \"");
-                mermaidGraph.append(label);
+                mermaidGraph.append(removeTroublesomeCharacters(label));
                 mermaidGraph.append("\" .->");
             }
             else
@@ -1614,7 +1614,7 @@ public class MermaidGraphBuilderBase
             if (label != null)
             {
                 mermaidGraph.append("==>|\"");
-                mermaidGraph.append(label);
+                mermaidGraph.append(removeTroublesomeCharacters(label));
                 mermaidGraph.append("\"|");
             }
             else

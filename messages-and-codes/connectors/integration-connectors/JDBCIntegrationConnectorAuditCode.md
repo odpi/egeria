@@ -9,7 +9,7 @@ The JDBCIntegrationConnectorAuditCode is used to define the message content for 
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 11 |
+| **Number of messages** | 13 |
 | **Message identifiers begin** | `JDBC-INTEGRATION-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JDBCIntegrationConnectorAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/integration-connectors/jdbc-integration-connector](../../../open-metadata-implementation/adapters/open-connectors/integration-connectors/jdbc-integration-connector) |
@@ -32,6 +32,8 @@ The JDBCIntegrationConnectorAuditCode is used to define the message content for 
 | [JDBC-INTEGRATION-CONNECTOR-0010](#jdbc-integration-connector-0010) | EXCEPTION | Unknown error when removing element from Metadata Access Server with guid {0} and qualified name {1}. |
 | [JDBC-INTEGRATION-CONNECTOR-0012](#jdbc-integration-connector-0012) | INFO | Transfer complete for {0} |
 | [JDBC-INTEGRATION-CONNECTOR-0015](#jdbc-integration-connector-0015) | ERROR | Connector {0} found {1} elements in the metadata access server with a qualified name of {2}; expecting to find at most one |
+| [JDBC-INTEGRATION-CONNECTOR-0017](#jdbc-integration-connector-0017) | INFO | Connector {0} is preparing to extract metadata from schema {1} of database {2} |
+| [JDBC-INTEGRATION-CONNECTOR-0018](#jdbc-integration-connector-0018) | ERROR | Connector {0} cannot tell which database schema the catalog target {1} ({2}) refers to, so it is skipping it |
 
 ----
 
@@ -262,6 +264,48 @@ The connector is unable to determine whether this element already exists, so it 
 **User action**
 
 Investigate why more than one element has this qualified name and remove the duplicates.
+
+
+----
+
+### JDBC-INTEGRATION-CONNECTOR-0017
+
+> Connector {0} is preparing to extract metadata from schema {1} of database {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `JDBCIntegrationConnectorAuditCode.STARTING_SCHEMA_METADATA_TRANSFER` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The catalog target is a single database schema rather than a whole database, so the connector is about to extract details of the tables and columns of that one schema.  The rest of the database is left alone.
+
+**User action**
+
+Check that this is an appropriate schema for the connector to be accessing.
+
+
+----
+
+### JDBC-INTEGRATION-CONNECTOR-0018
+
+> Connector {0} cannot tell which database schema the catalog target {1} ({2}) refers to, so it is skipping it
+
+|  |  |
+|---|---|
+| **Java constant** | `JDBCIntegrationConnectorAuditCode.UNKNOWN_DATABASE_SCHEMA` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The catalog target is a database schema asset, but nothing on it names the schema as the database knows it.  The connector stops rather than guess, because guessing wrong would catalog another schema's tables under this asset - which looks like success and is wrong.
+
+**User action**
+
+Set the databaseSchema configuration property to the schema's name, either on the catalog target or on the schema asset's connection.  The database vendors' content packs set it on the connection built from their schema template.
 
 
 ----

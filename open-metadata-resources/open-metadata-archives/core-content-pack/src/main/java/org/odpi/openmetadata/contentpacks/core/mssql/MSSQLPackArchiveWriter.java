@@ -147,6 +147,21 @@ public class MSSQLPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         additionalSolutionComponents.add(solutionComponentGUID);
 
+        solutionComponentGUID = this.createAndCatalogAssetGovernanceActionProcess("MSSQLDatabaseSchema",
+                                                                                  MSSQLDeployedImplementationType.MSSQL_DATABASE_SCHEMA,
+                                                                                  "https://egeria-project.org/egeria-solutions/leveraging-mssql/overview/",
+                                                                                  RequestTypeDefinition.CREATE_MSSQL_SCHEMA,
+                                                                                  MSSQLTemplateType.MSSQL_SCHEMA_TEMPLATE,
+                                                                                  RequestTypeDefinition.CATALOG_MSSQL_SCHEMA);
+
+        additionalSolutionComponents.add(solutionComponentGUID);
+
+        solutionComponentGUID = this.deleteAsCatalogTargetGovernanceActionProcess("MSSQLDatabaseSchema",
+                                                                                  MSSQLDeployedImplementationType.MSSQL_DATABASE_SCHEMA,
+                                                                                  "https://egeria-project.org/egeria-solutions/leveraging-mssql/overview/",
+                                                                                  RequestTypeDefinition.DELETE_MSSQL_SCHEMA);
+        additionalSolutionComponents.add(solutionComponentGUID);
+
         /*
          * Define the solution components for this solution.
          */

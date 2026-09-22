@@ -418,7 +418,6 @@ public class OpenMetadataTypesDataSetConnector extends OpenMetadataDataSetConnec
                     {
                         recordValues.add(openMetadataTypeDef.getCreateTime().toInstant().toString());
                     }
-                    recordValues.add(openMetadataTypeDef.getStatus().getName());
                 }
                 else if (ProductDataFieldDefinition.OPEN_METADATA_TYPE_STATUS.getDisplayName().equals(tabularColumnDescription.columnName()))
                 {

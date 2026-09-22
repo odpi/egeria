@@ -1991,6 +1991,233 @@ public enum RequestTypeDefinition
                             ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
                             ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
+    /**
+     * create-mssql-schema
+     */
+    CREATE_MSSQL_SCHEMA("create-mssql-schema",
+                        null,
+                        getManageAssetRequestParameters(DataAssetTemplateDefinition.MSSQL_SCHEMA_TEMPLATE.getTemplateGUID()),
+                        null,
+                        GovernanceEngineDefinition.MSSQL_GOVERNANCE_ENGINE,
+                        GovernanceServiceDefinition.CREATE_ASSET,
+                        "9648362d-4e6b-4da3-bda2-4228c84fa65c",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                        MSSQLDeployedImplementationType.MSSQL_DATABASE_SCHEMA.getQualifiedName(),
+                        "a2d0e658-5377-4af6-99aa-37efca742b08",
+                        "Create Microsoft SQL Server Schema in Open Metadata",
+                        "Create an open metadata element that represents a Microsoft SQL Server schema using the properties supplied on the request.  These properties are used to populate a standard template that includes the asset for the schema and the connection.  The tables and columns are not cataloged by this component.",
+                        ContentCollectionDefinition.CREATE_ACTIONS,
+                        ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
+     * delete-mssql-schema
+     */
+    DELETE_MSSQL_SCHEMA("delete-mssql-schema",
+                        null,
+                        getManageAssetRequestParameters(DataAssetTemplateDefinition.MSSQL_SCHEMA_TEMPLATE.getTemplateGUID()),
+                        null,
+                        GovernanceEngineDefinition.MSSQL_GOVERNANCE_ENGINE,
+                        GovernanceServiceDefinition.DELETE_ASSET,
+                        "24ecc391-6156-4f49-96bb-3e8350b93afb",
+                        GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                        MSSQLDeployedImplementationType.MSSQL_DATABASE_SCHEMA.getQualifiedName(),
+                        "66ff5955-121a-45d9-b5f3-e9e97ad162e6",
+                        "Delete Microsoft SQL Server Schema from Open Metadata",
+                        "Locate and delete the open metadata element that represents the Microsoft SQL Server schema described in the request.  The real schema on the Microsoft SQL Server (if any) is unaffected by this component.",
+                        ContentCollectionDefinition.DELETE_ACTIONS,
+                        ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
+     * catalog-mssql-schema
+     */
+    CATALOG_MSSQL_SCHEMA("catalog-mssql-schema",
+                         null,
+                         null,
+                         getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.JDBC_CATALOGUER.getGUID()),
+                         GovernanceEngineDefinition.MSSQL_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                         "426b7770-0213-428d-ad96-05851e8f17ef",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         MSSQLDeployedImplementationType.MSSQL_DATABASE_SCHEMA.getQualifiedName(),
+                         "3beebee0-213e-4b74-8cb8-18f9c7fd8460",
+                         "Configure Microsoft SQL Server Schema Cataloguer",
+                         "Link the Microsoft SQL Server schema asset to the Microsoft SQL Server Schema cataloguer.",
+                         null,
+                         IntegrationConnectorDefinition.JDBC_CATALOGUER.getSolutionComponentGUID(),
+                         false,
+                         ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
+                         ContentPackDefinition.MSSQL_CONTENT_PACK),
+
+    /**
+     * create-oracle-schema
+     */
+    CREATE_ORACLE_SCHEMA("create-oracle-schema",
+                         null,
+                         getManageAssetRequestParameters(DataAssetTemplateDefinition.ORACLE_SCHEMA_TEMPLATE.getTemplateGUID()),
+                         null,
+                         GovernanceEngineDefinition.ORACLE_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.CREATE_ASSET,
+                         "e240b82e-5595-4190-871e-e158c281772d",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         OracleDeployedImplementationType.ORACLE_DATABASE_SCHEMA.getQualifiedName(),
+                         "6193b0f0-e9a7-4d70-bc76-45611fd28542",
+                         "Create Oracle Schema in Open Metadata",
+                         "Create an open metadata element that represents a Oracle schema using the properties supplied on the request.  These properties are used to populate a standard template that includes the asset for the schema and the connection.  The tables and columns are not cataloged by this component.",
+                         ContentCollectionDefinition.CREATE_ACTIONS,
+                         ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * delete-oracle-schema
+     */
+    DELETE_ORACLE_SCHEMA("delete-oracle-schema",
+                         null,
+                         getManageAssetRequestParameters(DataAssetTemplateDefinition.ORACLE_SCHEMA_TEMPLATE.getTemplateGUID()),
+                         null,
+                         GovernanceEngineDefinition.ORACLE_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.DELETE_ASSET,
+                         "6a230e2d-86da-43ca-b76f-812b588f6523",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         OracleDeployedImplementationType.ORACLE_DATABASE_SCHEMA.getQualifiedName(),
+                         "5670dd4c-1f95-4fa1-8364-ee10d386b9b6",
+                         "Delete Oracle Schema from Open Metadata",
+                         "Locate and delete the open metadata element that represents the Oracle schema described in the request.  The real schema on the Oracle Database Server (if any) is unaffected by this component.",
+                         ContentCollectionDefinition.DELETE_ACTIONS,
+                         ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * catalog-oracle-schema
+     */
+    CATALOG_ORACLE_SCHEMA("catalog-oracle-schema",
+                          null,
+                          null,
+                          getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.JDBC_CATALOGUER.getGUID()),
+                          GovernanceEngineDefinition.ORACLE_GOVERNANCE_ENGINE,
+                          GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                          "0a258814-087a-4db0-9051-40828f4efc98",
+                          GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                          OracleDeployedImplementationType.ORACLE_DATABASE_SCHEMA.getQualifiedName(),
+                          "da528147-aa1c-4d4e-8877-f5d1688ae678",
+                          "Configure Oracle Schema Cataloguer",
+                          "Link the Oracle schema asset to the Oracle Schema cataloguer.",
+                          null,
+                          IntegrationConnectorDefinition.JDBC_CATALOGUER.getSolutionComponentGUID(),
+                          false,
+                          ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
+                          ContentPackDefinition.ORACLE_CONTENT_PACK),
+
+    /**
+     * create-db2luw-schema
+     */
+    CREATE_DB2LUW_SCHEMA("create-db2luw-schema",
+                         null,
+                         getManageAssetRequestParameters(DataAssetTemplateDefinition.DB2LUW_SCHEMA_TEMPLATE.getTemplateGUID()),
+                         null,
+                         GovernanceEngineDefinition.DB2LUW_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.CREATE_ASSET,
+                         "4d916989-4770-4e8d-97d6-7ad6ae980700",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         DB2LUWDeployedImplementationType.DB2LUW_DATABASE_SCHEMA.getQualifiedName(),
+                         "e206cfd3-0c19-46b4-9aa0-d26e3fffbc7e",
+                         "Create Db2 for Linux, UNIX and Windows Schema in Open Metadata",
+                         "Create an open metadata element that represents a Db2 for Linux, UNIX and Windows schema using the properties supplied on the request.  These properties are used to populate a standard template that includes the asset for the schema and the connection.  The tables and columns are not cataloged by this component.",
+                         ContentCollectionDefinition.CREATE_ACTIONS,
+                         ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * delete-db2luw-schema
+     */
+    DELETE_DB2LUW_SCHEMA("delete-db2luw-schema",
+                         null,
+                         getManageAssetRequestParameters(DataAssetTemplateDefinition.DB2LUW_SCHEMA_TEMPLATE.getTemplateGUID()),
+                         null,
+                         GovernanceEngineDefinition.DB2LUW_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.DELETE_ASSET,
+                         "5e4b7c17-f8d2-4c38-8579-87f386937412",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         DB2LUWDeployedImplementationType.DB2LUW_DATABASE_SCHEMA.getQualifiedName(),
+                         "fbffce07-00da-443d-8d3f-3c9c15d207e5",
+                         "Delete Db2 for Linux, UNIX and Windows Schema from Open Metadata",
+                         "Locate and delete the open metadata element that represents the Db2 for Linux, UNIX and Windows schema described in the request.  The real schema on the Db2 for Linux, UNIX and Windows Server (if any) is unaffected by this component.",
+                         ContentCollectionDefinition.DELETE_ACTIONS,
+                         ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * catalog-db2luw-schema
+     */
+    CATALOG_DB2LUW_SCHEMA("catalog-db2luw-schema",
+                          null,
+                          null,
+                          getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.JDBC_CATALOGUER.getGUID()),
+                          GovernanceEngineDefinition.DB2LUW_GOVERNANCE_ENGINE,
+                          GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                          "0a691e7f-12fe-4870-b801-6d3c4bd76b1f",
+                          GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                          DB2LUWDeployedImplementationType.DB2LUW_DATABASE_SCHEMA.getQualifiedName(),
+                          "2accb5dd-4f61-4f97-b43f-4e6522fd1a28",
+                          "Configure Db2 for Linux, UNIX and Windows Schema Cataloguer",
+                          "Link the Db2 for Linux, UNIX and Windows schema asset to the Db2 for Linux, UNIX and Windows Schema cataloguer.",
+                          null,
+                          IntegrationConnectorDefinition.JDBC_CATALOGUER.getSolutionComponentGUID(),
+                          false,
+                          ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
+                          ContentPackDefinition.DB2LUW_CONTENT_PACK),
+
+    /**
+     * create-duckdb-schema
+     */
+    CREATE_DUCKDB_SCHEMA("create-duckdb-schema",
+                         null,
+                         getManageAssetRequestParameters(DataAssetTemplateDefinition.DUCKDB_SCHEMA_TEMPLATE.getTemplateGUID()),
+                         null,
+                         GovernanceEngineDefinition.DUCKDB_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.CREATE_ASSET,
+                         "f59d0355-336b-4126-bd97-e3205b0f991a",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         DuckDBDeployedImplementationType.DUCKDB_DATABASE_SCHEMA.getQualifiedName(),
+                         "13f6099f-85c2-44e3-b930-e9dfe580a5d3",
+                         "Create DuckDB Schema in Open Metadata",
+                         "Create an open metadata element that represents a DuckDB schema using the properties supplied on the request.  These properties are used to populate a standard template that includes the asset for the schema and the connection.  The tables and columns are not cataloged by this component.",
+                         ContentCollectionDefinition.CREATE_ACTIONS,
+                         ContentPackDefinition.DUCKDB_CONTENT_PACK),
+
+    /**
+     * delete-duckdb-schema
+     */
+    DELETE_DUCKDB_SCHEMA("delete-duckdb-schema",
+                         null,
+                         getManageAssetRequestParameters(DataAssetTemplateDefinition.DUCKDB_SCHEMA_TEMPLATE.getTemplateGUID()),
+                         null,
+                         GovernanceEngineDefinition.DUCKDB_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.DELETE_ASSET,
+                         "366a10ae-2a62-421a-b349-8f7969cb832b",
+                         GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                         DuckDBDeployedImplementationType.DUCKDB_DATABASE_SCHEMA.getQualifiedName(),
+                         "66a00ba1-b654-4bce-8401-d6f0e06b6700",
+                         "Delete DuckDB Schema from Open Metadata",
+                         "Locate and delete the open metadata element that represents the DuckDB schema described in the request.  The real schema in the DuckDB database file (if any) is unaffected by this component.",
+                         ContentCollectionDefinition.DELETE_ACTIONS,
+                         ContentPackDefinition.DUCKDB_CONTENT_PACK),
+
+    /**
+     * catalog-duckdb-schema
+     */
+    CATALOG_DUCKDB_SCHEMA("catalog-duckdb-schema",
+                          null,
+                          null,
+                          getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.JDBC_CATALOGUER.getGUID()),
+                          GovernanceEngineDefinition.DUCKDB_GOVERNANCE_ENGINE,
+                          GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                          "ef4b46eb-da2f-4a21-8112-0176d74419bf",
+                          GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal(),
+                          DuckDBDeployedImplementationType.DUCKDB_DATABASE_SCHEMA.getQualifiedName(),
+                          "9ed46eed-23ee-46f7-92ab-d81c13394acc",
+                          "Configure DuckDB Schema Cataloguer",
+                          "Link the DuckDB schema asset to the DuckDB Schema cataloguer.",
+                          null,
+                          IntegrationConnectorDefinition.JDBC_CATALOGUER.getSolutionComponentGUID(),
+                          false,
+                          ContentCollectionDefinition.CATALOG_ASSET_CONTENTS,
+                          ContentPackDefinition.DUCKDB_CONTENT_PACK),
 
     ;
 

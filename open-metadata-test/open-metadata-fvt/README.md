@@ -164,6 +164,21 @@ against each suite below.
   ./gradlew :open-metadata-test:open-metadata-fvt:bitol-fvt:test -PrunBitolFvtInMemory
   ```
 
+* **[tabular-data-fvt](tabular-data-fvt)** - tests the **tabular data set connectors**, the connectors that
+  turn open metadata into rows and columns so it can be handed out as a digital product. Everything
+  downstream of them - the report generator, the provisioning governance action that copies a data set into a
+  file or a database table - works from the shape the connector describes rather than from anything it knows
+  about the data, so the suite asserts the shape: a table name, columns whose `getColumnNumber` agrees with
+  the position they occupy, no duplicate column names, rows the width of the column list, and a read past
+  the end that does not answer with a row. Coverage follows the product catalogue rather than a list -
+  every product definition that names a connector provider is driven - so a data set added tomorrow is
+  covered tomorrow. Its first run found rows one value too wide in the open metadata types data sets, and a
+  column declared twice in the location data set; [its README](tabular-data-fvt) records both.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:tabular-data-fvt:test -PrunTabularDataFvt
+  ```
+
 * **[auth-fvt](auth-fvt)** - exercises the platform's own **authentication**: logging on, the bearer token
   that results, changing a password, and managing user accounts. It is the only suite that runs with
   `user-authn` wired in and the real Spring Security filter chain active - every other suite here, and the

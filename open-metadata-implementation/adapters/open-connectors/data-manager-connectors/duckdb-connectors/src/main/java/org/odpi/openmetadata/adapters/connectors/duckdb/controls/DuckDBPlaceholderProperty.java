@@ -40,6 +40,22 @@ public enum DuckDBPlaceholderProperty
                           "string",
                           null),
 
+    /**
+     * The name of the database schema being catalogued.
+     */
+    SCHEMA_NAME ("schemaName",
+                 "The name of the database schema being catalogued.",
+                 "string",
+                 "sales"),
+
+    /**
+     * The description of the database schema being catalogued.
+     */
+    SCHEMA_DESCRIPTION ("schemaDescription",
+                        "The description of the database schema being catalogued.",
+                        "string",
+                        null),
+
     ;
 
     public final String name;
@@ -135,6 +151,30 @@ public enum DuckDBPlaceholderProperty
         placeholderPropertyTypes.add(DuckDBPlaceholderProperty.DATABASE_PATH.getPlaceholderType());
         placeholderPropertyTypes.add(DuckDBPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(DuckDBPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
+     * Retrieve all the defined placeholder properties for the DuckDB database schema template.
+     * <br><br>
+     * The same properties as the database template, plus the schema's own name and description.  DuckDB has no
+     * server tier, so the database is identified by its file path rather than by a host and port.
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getDuckDBSchemaPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(DuckDBPlaceholderProperty.DATABASE_PATH.getPlaceholderType());
+        placeholderPropertyTypes.add(DuckDBPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(DuckDBPlaceholderProperty.SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(DuckDBPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());

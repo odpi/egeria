@@ -509,7 +509,6 @@ public enum ProductDefinitionEnum implements ProductDefinition
                       ProductDataFieldDefinition.DISPLAY_NAME,
                       ProductDataFieldDefinition.DESCRIPTION,
                       ProductDataFieldDefinition.LOCATION_COORDINATES,
-                      ProductDataFieldDefinition.LOCATION_COORDINATES,
                       ProductDataFieldDefinition.LOCATION_MAP_PROJECTION,
                       ProductDataFieldDefinition.LOCATION_POSTAL_ADDRESS,
                       ProductDataFieldDefinition.NETWORK_ADDRESS,

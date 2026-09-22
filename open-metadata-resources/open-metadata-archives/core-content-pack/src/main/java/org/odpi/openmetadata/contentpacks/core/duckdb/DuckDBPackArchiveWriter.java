@@ -126,6 +126,21 @@ public class DuckDBPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         additionalSolutionComponents.add(solutionComponentGUID);
 
+        solutionComponentGUID = this.createAndCatalogAssetGovernanceActionProcess("DuckDBDatabaseSchema",
+                                                                                  DuckDBDeployedImplementationType.DUCKDB_DATABASE_SCHEMA,
+                                                                                  "https://egeria-project.org/egeria-solutions/leveraging-duckdb/overview/",
+                                                                                  RequestTypeDefinition.CREATE_DUCKDB_SCHEMA,
+                                                                                  DuckDBTemplateType.DUCKDB_SCHEMA_TEMPLATE,
+                                                                                  RequestTypeDefinition.CATALOG_DUCKDB_SCHEMA);
+
+        additionalSolutionComponents.add(solutionComponentGUID);
+
+        solutionComponentGUID = this.deleteAsCatalogTargetGovernanceActionProcess("DuckDBDatabaseSchema",
+                                                                                  DuckDBDeployedImplementationType.DUCKDB_DATABASE_SCHEMA,
+                                                                                  "https://egeria-project.org/egeria-solutions/leveraging-duckdb/overview/",
+                                                                                  RequestTypeDefinition.DELETE_DUCKDB_SCHEMA);
+        additionalSolutionComponents.add(solutionComponentGUID);
+
         /*
          * Define the solution components for this solution.
          */
