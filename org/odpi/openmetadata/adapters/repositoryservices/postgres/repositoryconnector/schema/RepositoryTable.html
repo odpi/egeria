@@ -146,6 +146,11 @@ implements <a href="../../../../connectors/resource/jdbc/ddl/postgres/PostgreSQL
 <div class="col-last even-row-color">
 <div class="block">Attributes for a relationship, or for relationship properties that are collections.</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="#TYPE_DEFINITION" class="member-name-link">TYPE_DEFINITION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The type definitions that were defined through the API in this repository, so they can be restored when
+ the server restarts.</div>
+</div>
 </div>
 </section>
 </li>
@@ -292,6 +297,18 @@ the order they are declared.</div>
 <h3>RELATIONSHIP_ATTRIBUTE_VALUE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryTable.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema">RepositoryTable</a></span>&nbsp;<span class="element-name">RELATIONSHIP_ATTRIBUTE_VALUE</span></div>
 <div class="block">Attributes for a relationship, or for relationship properties that are collections.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TYPE_DEFINITION">
+<h3>TYPE_DEFINITION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryTable.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema">RepositoryTable</a></span>&nbsp;<span class="element-name">TYPE_DEFINITION</span></div>
+<div class="block">The type definitions that were defined through the API in this repository, so they can be restored when
+ the server restarts.  Types from open metadata archives and other cohort members are not stored here
+ because their originators supply them at every start.
+ <br><br>
+ The table is created with "create table if not exists" like the others, which is how it reaches a
+ repository created before it was defined.</div>
 </section>
 </li>
 </ul>

@@ -240,124 +240,132 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0130 - The enterprise repository services are managing federated queries to the following list of servers: {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#IGNORING_DUPLICATE_CLASSIFICATION" class="member-name-link">IGNORING_DUPLICATE_CLASSIFICATION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#HOMED_TYPES_ANNOUNCED" class="member-name-link">HOMED_TYPES_ANNOUNCED</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OMRS-AUDIT-0326 - The local repository {0} has announced the {1} type definitions and {2} attribute type definitions that were defined through its API to the cohorts because a member has connected to cohort {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#IGNORING_DUPLICATE_CLASSIFICATION" class="member-name-link">IGNORING_DUPLICATE_CLASSIFICATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0039 - Ignoring duplicate request to classify entity {0} with classification {1} in the {2} repository</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INCOMING_BAD_CONNECTION" class="member-name-link">INCOMING_BAD_CONNECTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INCOMING_BAD_CONNECTION" class="member-name-link">INCOMING_BAD_CONNECTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0109 - Registration error occurred in cohort {0} because remote server {1} that hosts metadata collection {2} cannot use
  connection {3} to create a connector to this local server</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INCOMING_CONFLICTING_LOCAL_METADATA_COLLECTION_ID" class="member-name-link">INCOMING_CONFLICTING_LOCAL_METADATA_COLLECTION_ID</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INCOMING_CONFLICTING_LOCAL_METADATA_COLLECTION_ID" class="member-name-link">INCOMING_CONFLICTING_LOCAL_METADATA_COLLECTION_ID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0107 - Registration request for this server in cohort {0} was rejected by server {1} that hosts metadata collection {2} because
  the local metadata collection id {3} is not unique for this cohort</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INCOMING_CONFLICTING_METADATA_COLLECTION_ID" class="member-name-link">INCOMING_CONFLICTING_METADATA_COLLECTION_ID</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INCOMING_CONFLICTING_METADATA_COLLECTION_ID" class="member-name-link">INCOMING_CONFLICTING_METADATA_COLLECTION_ID</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0108 - Two servers in cohort {0} are using the same metadata collection identifier {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INITIALIZING_EVENT_MANAGER" class="member-name-link">INITIALIZING_EVENT_MANAGER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INITIALIZING_EVENT_MANAGER" class="member-name-link">INITIALIZING_EVENT_MANAGER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0029 - The {0} event manager is initializing</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INSTANCE_SUCCESSFULLY_REIDENTIFIED" class="member-name-link">INSTANCE_SUCCESSFULLY_REIDENTIFIED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INSTANCE_SUCCESSFULLY_REIDENTIFIED" class="member-name-link">INSTANCE_SUCCESSFULLY_REIDENTIFIED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0207 - Server {0} that hosts metadata collection {1} has changed the unique identifier (guid) of an instance of type {2} from {3} to {4}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INSTANCES_WITH_CONFLICTING_TYPES" class="member-name-link">INSTANCES_WITH_CONFLICTING_TYPES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INSTANCES_WITH_CONFLICTING_TYPES" class="member-name-link">INSTANCES_WITH_CONFLICTING_TYPES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0209 - Server {0} that hosts metadata collection {1} has detected that the version of the type being used by instance with the
  unique identifier (guid) of {2} has regressed; the type that this server is using locally is {3} and the type from the instance from
  metadata collection {4} is {5}; the two versions need to be reconciled.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INVALID_INSTANCES" class="member-name-link">INVALID_INSTANCES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INVALID_INSTANCES" class="member-name-link">INVALID_INSTANCES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-8007 - An invalid instance was found in a batch of reference instances send by a remote member of the cohort.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#LOCAL_INSTANCE_WITH_CONFLICTING_TYPES" class="member-name-link">LOCAL_INSTANCE_WITH_CONFLICTING_TYPES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#LOCAL_INSTANCE_WITH_CONFLICTING_TYPES" class="member-name-link">LOCAL_INSTANCE_WITH_CONFLICTING_TYPES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0210 - Server {0} that hosts metadata collection {1} has detected that the version of the type being used by the local instance
  with the unique identifier (guid) of {2} has regressed; the type that the reporting server is using locally is {3} and the type from the
  instance from this metadata collection {4} is {5}; the two versions need to be reconciled.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#LOCAL_REFERENCE_INSTANCE" class="member-name-link">LOCAL_REFERENCE_INSTANCE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#LOCAL_REFERENCE_INSTANCE" class="member-name-link">LOCAL_REFERENCE_INSTANCE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0028 - A reference instance has been passed to the local repository on the {0} parameter of the {1} method which has the local repository metadata collection id {2} as its home</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#LOCAL_REPOSITORY_FAILED_TO_START" class="member-name-link">LOCAL_REPOSITORY_FAILED_TO_START</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#LOCAL_REPOSITORY_FAILED_TO_START" class="member-name-link">LOCAL_REPOSITORY_FAILED_TO_START</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0013 - Unable to start processing in the local repository due to error {0}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#LOCAL_REPOSITORY_INITIALIZED" class="member-name-link">LOCAL_REPOSITORY_INITIALIZED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#LOCAL_REPOSITORY_INITIALIZED" class="member-name-link">LOCAL_REPOSITORY_INITIALIZED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0049 - The local repository has initialized the metadata collection named {0} with an id of {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#LOCAL_REPOSITORY_INITIALIZING" class="member-name-link">LOCAL_REPOSITORY_INITIALIZING</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#LOCAL_REPOSITORY_INITIALIZING" class="member-name-link">LOCAL_REPOSITORY_INITIALIZING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0003 - The local repository is initializing the metadata collection named {0} with an id of {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#LOCAL_REPOSITORY_INITIALIZING_NULL_ID" class="member-name-link">LOCAL_REPOSITORY_INITIALIZING_NULL_ID</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#LOCAL_REPOSITORY_INITIALIZING_NULL_ID" class="member-name-link">LOCAL_REPOSITORY_INITIALIZING_NULL_ID</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0048 - The local repository has initialized the metadata collection named {0} with an id of {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#MEMBER_LEFT_COHORT" class="member-name-link">MEMBER_LEFT_COHORT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#MEMBER_LEFT_COHORT" class="member-name-link">MEMBER_LEFT_COHORT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0111 - Server {0} hosting metadata collection {1} has left cohort {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#METADATA_HIGHWAY_INITIALIZING" class="member-name-link">METADATA_HIGHWAY_INITIALIZING</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#METADATA_HIGHWAY_INITIALIZING" class="member-name-link">METADATA_HIGHWAY_INITIALIZING</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0004 - Connecting to the metadata highway</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#MISSING_MEMBER_REGISTRATION" class="member-name-link">MISSING_MEMBER_REGISTRATION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#MISSING_MEMBER_REGISTRATION" class="member-name-link">MISSING_MEMBER_REGISTRATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0118 - Unable to process the {0} request for cohort {1} from cohort member {2} because there is no cohort registry store</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEW_ENTERPRISE_CONNECTOR" class="member-name-link">NEW_ENTERPRISE_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NEW_ENTERPRISE_CONNECTOR" class="member-name-link">NEW_ENTERPRISE_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0040 - An enterprise OMRS connector has been created for the {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NEW_HOME_INFORMATION" class="member-name-link">NEW_HOME_INFORMATION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NEW_HOME_INFORMATION" class="member-name-link">NEW_HOME_INFORMATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-8003 - Version {0} of the instance {1} from server {2} has a new metadata collection id of {3}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEW_MEMBER_IN_COHORT" class="member-name-link">NEW_MEMBER_IN_COHORT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NEW_MEMBER_IN_COHORT" class="member-name-link">NEW_MEMBER_IN_COHORT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0110 - A new registration request has been received for cohort {0} from server {1} that hosts metadata collection {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NEW_REAL_CONNECTOR" class="member-name-link">NEW_REAL_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NEW_REAL_CONNECTOR" class="member-name-link">NEW_REAL_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0045 - The connector for the local repository has been initialized</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEW_REMOTE_MEMBER" class="member-name-link">NEW_REMOTE_MEMBER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NEW_REMOTE_MEMBER" class="member-name-link">NEW_REMOTE_MEMBER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0127 - A new remote member from server {0} for cohort {1} is being configured into the enterprise connector manager.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NEW_REMOTE_MEMBER_DEPLOYED" class="member-name-link">NEW_REMOTE_MEMBER_DEPLOYED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NEW_REMOTE_MEMBER_DEPLOYED" class="member-name-link">NEW_REMOTE_MEMBER_DEPLOYED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0132 - A new remote connector from server {0} with metadata collection id {1} has been deployed to enterprise connector for {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEW_REMOTE_MEMBER_FAILURE" class="member-name-link">NEW_REMOTE_MEMBER_FAILURE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NEW_REMOTE_MEMBER_FAILURE" class="member-name-link">NEW_REMOTE_MEMBER_FAILURE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0129 - A exception occurred whilst adding a new remote member from server {0} for cohort {1} into the
  enterprise connector manager.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NEW_TYPE_ADDED" class="member-name-link">NEW_TYPE_ADDED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NEW_TYPE_ADDED" class="member-name-link">NEW_TYPE_ADDED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0301 - The local server has added a new type called {0} with a unique identifier of {1} and a version number of {2} from {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEW_TYPE_CACHED_FOR_ENTERPRISE" class="member-name-link">NEW_TYPE_CACHED_FOR_ENTERPRISE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NEW_TYPE_CACHED_FOR_ENTERPRISE" class="member-name-link">NEW_TYPE_CACHED_FOR_ENTERPRISE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0319 - The local server does not have a local repository and so a new type called {0} with a unique identifier of {1} and a version number of {2} from {3} is just cached for information</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NEW_TYPE_INFORMATION" class="member-name-link">NEW_TYPE_INFORMATION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NEW_TYPE_INFORMATION" class="member-name-link">NEW_TYPE_INFORMATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-8004 - Version {0} of the instance {1} from server {2} and metadata collection {3} has a new type of {4} ({5}).</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEW_TYPE_NOT_SUPPORTED" class="member-name-link">NEW_TYPE_NOT_SUPPORTED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NEW_TYPE_NOT_SUPPORTED" class="member-name-link">NEW_TYPE_NOT_SUPPORTED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0302 - The local server cannot add a new type called {0} with a unique identifier of {1} and a version number of {2} because the server does not support this feature</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NEWER_TYPE_VERSION_RECEIVED" class="member-name-link">NEWER_TYPE_VERSION_RECEIVED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMRS-AUDIT-0325 - The local server has received version {2} of the type called {0} with a unique identifier of {1} from {3} but holds version {4}; the type is being updated to the later version</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#NO_INSTANCE_PROCESSOR" class="member-name-link">NO_INSTANCE_PROCESSOR</a></code></div>
 <div class="col-last odd-row-color">
@@ -571,9 +579,17 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0046 - The connector for the local repository is about to be started</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TYPE_ALREADY_KNOWN" class="member-name-link">TYPE_ALREADY_KNOWN</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#STORED_TYPES_RESTORED" class="member-name-link">STORED_TYPES_RESTORED</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OMRS-AUDIT-0323 - The local repository {0} has restored {1} of its {2} stored type definitions and {3} of its {4} stored attribute type definitions</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TYPE_ALREADY_KNOWN" class="member-name-link">TYPE_ALREADY_KNOWN</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMRS-AUDIT-0318 - The local server has recognized a new type called {0} with a unique identifier of {1} and a version number of {2} from {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#TYPE_DELETE_IGNORED" class="member-name-link">TYPE_DELETE_IGNORED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMRS-AUDIT-0324 - The local server has ignored a request from {0} to delete the type called {1} with a unique identifier of {2} because the local repository still depends on it: {3}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#TYPE_IDENTIFIER_MISMATCH" class="member-name-link">TYPE_IDENTIFIER_MISMATCH</a></code></div>
 <div class="col-last even-row-color">
@@ -1466,6 +1482,34 @@ the order they are declared.</div>
 <h3>UPDATED_TYPE_CACHED_FOR_ENTERPRISE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSAuditCode</a></span>&nbsp;<span class="element-name">UPDATED_TYPE_CACHED_FOR_ENTERPRISE</span></div>
 <div class="block">OMRS-AUDIT-0322 - The local server does not have a local repository and so an update to the type called {0} with a unique identifier of {1} that applies to version number of {2} from {3} is just cached for information</div>
+</section>
+</li>
+<li>
+<section class="detail" id="STORED_TYPES_RESTORED">
+<h3>STORED_TYPES_RESTORED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSAuditCode</a></span>&nbsp;<span class="element-name">STORED_TYPES_RESTORED</span></div>
+<div class="block">OMRS-AUDIT-0323 - The local repository {0} has restored {1} of its {2} stored type definitions and {3} of its {4} stored attribute type definitions</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TYPE_DELETE_IGNORED">
+<h3>TYPE_DELETE_IGNORED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSAuditCode</a></span>&nbsp;<span class="element-name">TYPE_DELETE_IGNORED</span></div>
+<div class="block">OMRS-AUDIT-0324 - The local server has ignored a request from {0} to delete the type called {1} with a unique identifier of {2} because the local repository still depends on it: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NEWER_TYPE_VERSION_RECEIVED">
+<h3>NEWER_TYPE_VERSION_RECEIVED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSAuditCode</a></span>&nbsp;<span class="element-name">NEWER_TYPE_VERSION_RECEIVED</span></div>
+<div class="block">OMRS-AUDIT-0325 - The local server has received version {2} of the type called {0} with a unique identifier of {1} from {3} but holds version {4}; the type is being updated to the later version</div>
+</section>
+</li>
+<li>
+<section class="detail" id="HOMED_TYPES_ANNOUNCED">
+<h3>HOMED_TYPES_ANNOUNCED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSAuditCode</a></span>&nbsp;<span class="element-name">HOMED_TYPES_ANNOUNCED</span></div>
+<div class="block">OMRS-AUDIT-0326 - The local repository {0} has announced the {1} type definitions and {2} attribute type definitions that were defined through its API to the cohorts because a member has connected to cohort {3}</div>
 </section>
 </li>
 <li>

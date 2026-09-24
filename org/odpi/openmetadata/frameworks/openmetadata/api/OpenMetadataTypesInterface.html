@@ -92,7 +92,8 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">OpenMetadataTypesInterface</span></div>
-<div class="block">OpenMetadataTypesInterface enables callers to query the defined open metadata types.</div>
+<div class="block">OpenMetadataTypesInterface enables callers to query the defined open metadata types, and to maintain the
+ types that are defined through the API.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -107,6 +108,32 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addEnumDef(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataEnumDef)" class="member-name-link">addEnumDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../properties/OpenMetadataEnumDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataEnumDef</a>&nbsp;newEnumDef)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Add a new enum definition, which can then be used as the type of attributes in new type definitions.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addTypeDef(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef)" class="member-name-link">addTypeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a>&nbsp;newTypeDef)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Add a new type definition for an entity, relationship or classification.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#deleteEnumDef(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">deleteEnumDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;enumDefGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;enumDefName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Delete an enum definition that was added through the API.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#deleteTypeDef(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">deleteTypeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeDefGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeDefName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Delete a type definition that was added through the API.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findTypeDefsByCategory(java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)" class="member-name-link">findTypeDefsByCategory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  boolean&nbsp;getInheritedAttributes,
@@ -173,6 +200,12 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the TypeDef identified by the unique name.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateTypeDef(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefPatch)" class="member-name-link">updateTypeDef</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../properties/OpenMetadataTypeDefPatch.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefPatch</a>&nbsp;typeDefPatch)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Update a type definition that was added through the API.</div>
 </div>
 </div>
 </div>
@@ -419,6 +452,128 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the name is null.</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository where
                                   the metadata collection is stored.</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addTypeDef(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef)">
+<h3>addTypeDef</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addTypeDef</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a>&nbsp;newTypeDef)</span>
+           throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Add a new type definition for an entity, relationship or classification.  The type definition is homed in
+ the metadata access store's local repository: it is validated against the types already defined, stored
+ with the metadata so that it survives a restart, and announced to the other members of the cohort.
+ If no unique identifier is supplied, one is generated; if no version is supplied, it is version 1.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - unique identifier for requesting user.</dd>
+<dd><code>newTypeDef</code> - the new type definition.</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new type definition</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the type definition is invalid, already defined, or conflicts with the
+                                   types that are defined.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateTypeDef(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefPatch)">
+<h3>updateTypeDef</h3>
+<div class="member-signature"><span class="return-type"><a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></span>&nbsp;<span class="element-name">updateTypeDef</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../properties/OpenMetadataTypeDefPatch.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefPatch</a>&nbsp;typeDefPatch)</span>
+                           throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Update a type definition that was added through the API.  The types from the open metadata archives, and
+ from other members of the cohort, are maintained by their originators and cannot be updated this way.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - unique identifier for requesting user.</dd>
+<dd><code>typeDefPatch</code> - the changes to make and the version they apply to.</dd>
+<dt>Returns:</dt>
+<dd>the updated type definition</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the type definition is not known, was not added through the API, is at a
+                                   different version, or the patch is incompatible with it.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="deleteTypeDef(java.lang.String,java.lang.String,java.lang.String)">
+<h3>deleteTypeDef</h3>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">deleteTypeDef</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeDefGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeDefName)</span>
+            throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Delete a type definition that was added through the API.  This is only possible while nothing uses it:
+ there must be no instances of the type, including soft-deleted ones, and no other type definition may
+ refer to it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - unique identifier for requesting user.</dd>
+<dd><code>typeDefGUID</code> - unique identifier of the type definition.</dd>
+<dd><code>typeDefName</code> - unique name of the type definition.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the type definition is not known or was not added through the API.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository, or the type
+                                 definition is still in use.</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addEnumDef(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataEnumDef)">
+<h3>addEnumDef</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addEnumDef</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../properties/OpenMetadataEnumDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataEnumDef</a>&nbsp;newEnumDef)</span>
+           throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Add a new enum definition, which can then be used as the type of attributes in new type definitions.
+ As with addTypeDef(), the enum definition is homed in the metadata access store's local repository.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - unique identifier for requesting user.</dd>
+<dd><code>newEnumDef</code> - the new enum definition.</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new enum definition</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the enum definition is invalid or already defined.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="deleteEnumDef(java.lang.String,java.lang.String,java.lang.String)">
+<h3>deleteEnumDef</h3>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">deleteEnumDef</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;enumDefGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;enumDefName)</span>
+            throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Delete an enum definition that was added through the API.  This is only possible while no type definition
+ has an attribute of this type.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - unique identifier for requesting user.</dd>
+<dd><code>enumDefGUID</code> - unique identifier of the enum definition.</dd>
+<dd><code>enumDefName</code> - unique name of the enum definition.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the enum definition is not known or was not added through the API.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem communicating with the metadata repository, or the enum
+                                 definition is still in use.</dd>
 <dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
 </dl>
 </section>

@@ -163,9 +163,21 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="col-last even-row-color">
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-400-001 - The {0} postgreSQL repository connector is running in read-only mode; updates are not allowed</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#TYPE_STORE_READ_ONLY" class="member-name-link">TYPE_STORE_READ_ONLY</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-001 - The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-400-003 - The {0} postgreSQL repository connector is running in read-only mode and so it cannot change the stored copy of type definition {1} ({2})</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-001- The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNREADABLE_TYPE_DEFINITION" class="member-name-link">UNREADABLE_TYPE_DEFINITION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-009 - The {0} postgreSQL repository connector is unable to restore stored type definition {1} ({2}) from its JSON; the {3} exception was received with message: {4}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNSTORABLE_TYPE_DEFINITION" class="member-name-link">UNSTORABLE_TYPE_DEFINITION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-008 - The {0} postgreSQL repository connector is unable to convert type definition {1} ({2}) to JSON for storage; the {3} exception was received with message: {4}</div>
 </div>
 </div>
 </section>
@@ -242,10 +254,17 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="TYPE_STORE_READ_ONLY">
+<h3>TYPE_STORE_READ_ONLY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc">PostgresErrorCode</a></span>&nbsp;<span class="element-name">TYPE_STORE_READ_ONLY</span></div>
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-400-003 - The {0} postgreSQL repository connector is running in read-only mode and so it cannot change the stored copy of type definition {1} ({2})</div>
+</section>
+</li>
+<li>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc">PostgresErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
-<div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-001 - The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-001- The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </section>
 </li>
 <li>
@@ -281,6 +300,20 @@ the order they are declared.</div>
 <h3>CONTROL_SCHEMA_VERSION_MISMATCH</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc">PostgresErrorCode</a></span>&nbsp;<span class="element-name">CONTROL_SCHEMA_VERSION_MISMATCH</span></div>
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-007 - The {0} postgreSQL repository connector is not able to use the contents of database schema {1} because it does not support schema version {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNSTORABLE_TYPE_DEFINITION">
+<h3>UNSTORABLE_TYPE_DEFINITION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc">PostgresErrorCode</a></span>&nbsp;<span class="element-name">UNSTORABLE_TYPE_DEFINITION</span></div>
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-008 - The {0} postgreSQL repository connector is unable to convert type definition {1} ({2}) to JSON for storage; the {3} exception was received with message: {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNREADABLE_TYPE_DEFINITION">
+<h3>UNREADABLE_TYPE_DEFINITION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc">PostgresErrorCode</a></span>&nbsp;<span class="element-name">UNREADABLE_TYPE_DEFINITION</span></div>
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-009 - The {0} postgreSQL repository connector is unable to restore stored type definition {1} ({2}) from its JSON; the {3} exception was received with message: {4}</div>
 </section>
 </li>
 </ul>

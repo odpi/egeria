@@ -160,8 +160,20 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="col-last odd-row-color">
 <div class="block">OMF-SERVICES-500-008 - The Design Model OMAS has received an unexpected {0} exception during method {1}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_TYPE_REFERENCE" class="member-name-link">UNKNOWN_TYPE_REFERENCE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">OMF-SERVICES-400-001 - The {0} type {1} named in the {2} parameter of the {3} request is not a known type</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNMAPPABLE_TYPE_VALUE" class="member-name-link">UNMAPPABLE_TYPE_VALUE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMF-SERVICES-400-002 - The value {0} in the {1} parameter of the {2} request has no equivalent in the open metadata repository services</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNSUPPORTED_TYPE_DEF_CLASS" class="member-name-link">UNSUPPORTED_TYPE_DEF_CLASS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMF-SERVICES-400-003 - The type definition passed on the {0} request is of class {1}, which is not an entity, relationship or classification definition</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMF-SERVICES-500-007 The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2}
  at {3} is not of the required type.</div>
 </div>
@@ -225,6 +237,27 @@ the order they are declared.</div>
 <section class="constant-details" id="enum-constant-detail">
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="UNKNOWN_TYPE_REFERENCE">
+<h3>UNKNOWN_TYPE_REFERENCE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFServicesErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.omf.ffdc">OMFServicesErrorCode</a></span>&nbsp;<span class="element-name">UNKNOWN_TYPE_REFERENCE</span></div>
+<div class="block">OMF-SERVICES-400-001 - The {0} type {1} named in the {2} parameter of the {3} request is not a known type</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNMAPPABLE_TYPE_VALUE">
+<h3>UNMAPPABLE_TYPE_VALUE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFServicesErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.omf.ffdc">OMFServicesErrorCode</a></span>&nbsp;<span class="element-name">UNMAPPABLE_TYPE_VALUE</span></div>
+<div class="block">OMF-SERVICES-400-002 - The value {0} in the {1} parameter of the {2} request has no equivalent in the open metadata repository services</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNSUPPORTED_TYPE_DEF_CLASS">
+<h3>UNSUPPORTED_TYPE_DEF_CLASS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFServicesErrorCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.omf.ffdc">OMFServicesErrorCode</a></span>&nbsp;<span class="element-name">UNSUPPORTED_TYPE_DEF_CLASS</span></div>
+<div class="block">OMF-SERVICES-400-003 - The type definition passed on the {0} request is of class {1}, which is not an entity, relationship or classification definition</div>
+</section>
+</li>
 <li>
 <section class="detail" id="OMRS_NOT_INITIALIZED">
 <h3>OMRS_NOT_INITIALIZED</h3>
