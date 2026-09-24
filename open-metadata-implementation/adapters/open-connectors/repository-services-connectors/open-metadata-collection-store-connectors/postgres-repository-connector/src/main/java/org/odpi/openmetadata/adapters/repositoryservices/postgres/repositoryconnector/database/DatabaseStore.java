@@ -413,6 +413,233 @@ public class DatabaseStore implements AutoCloseable
 
 
     /**
+     * Retrieve the stored copy of a type definition.
+     *
+     * @param typeGUID unique identifier of the type definition
+     * @return mapper for the stored row, or null if the type definition is not stored
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    public TypeDefinitionMapper getTypeDefinition(String typeGUID) throws RepositoryErrorException
+    {
+        final String methodName = "getTypeDefinition";
+
+        try
+        {
+            Map<String, JDBCDataValue> typeDefinitionRow = jdbcResourceConnector.getMatchingRow(jdbcConnection,
+                                                                                                RepositoryTable.TYPE_DEFINITION.getTableName(),
+                                                                                                RepositoryColumn.TYPE_GUID.getColumnName() + " = " + getSQLStringLiteral(typeGUID),
+                                                                                                RepositoryTable.TYPE_DEFINITION.getColumnNameTypeMap());
+
+            if (typeDefinitionRow == null)
+            {
+                return null;
+            }
+
+            return new TypeDefinitionMapper(repositoryName, typeDefinitionRow);
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+    }
+
+
+    /**
+     * Retrieve all the stored type definitions in the order they were first stored.  The unique identifier
+     * breaks ties so that the order is the same on every call.
+     *
+     * @return list of mappers for the stored rows (empty if there are none)
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    public List<TypeDefinitionMapper> getTypeDefinitions() throws RepositoryErrorException
+    {
+        final String methodName = "getTypeDefinitions";
+
+        List<TypeDefinitionMapper> typeDefinitions = new ArrayList<>();
+
+        try
+        {
+            List<Map<String, JDBCDataValue>> typeDefinitionRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                        "select * from " + RepositoryTable.TYPE_DEFINITION.getTableName() +
+                                                                                                                " order by " + RepositoryColumn.FIRST_STORED_TIME.getColumnName() +
+                                                                                                                ", " + RepositoryColumn.TYPE_GUID.getColumnName() + ";",
+                                                                                                        RepositoryTable.TYPE_DEFINITION.getColumnNameTypeMap());
+
+            if (typeDefinitionRows != null)
+            {
+                for (Map<String, JDBCDataValue> typeDefinitionRow : typeDefinitionRows)
+                {
+                    typeDefinitions.add(new TypeDefinitionMapper(repositoryName, typeDefinitionRow));
+                }
+            }
+
+            return typeDefinitions;
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+    }
+
+
+    /**
+     * Store a type definition, replacing any row already held for it.  The insert used by the resource
+     * connector ignores a row whose key is already present ("on conflict do nothing"), so the old row is
+     * deleted first.  Both statements are in this unit of work, so the replacement is seen as a whole or not
+     * at all.
+     *
+     * @param typeDefinitionMapper mapper for the new row
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    public void saveTypeDefinition(TypeDefinitionMapper typeDefinitionMapper) throws RepositoryErrorException
+    {
+        final String methodName = "saveTypeDefinition";
+
+        try
+        {
+            this.deleteTypeDefinition(typeDefinitionMapper.getTypeGUID());
+
+            jdbcResourceConnector.insertRowIntoTable(jdbcConnection,
+                                                     RepositoryTable.TYPE_DEFINITION.getTableName(),
+                                                     typeDefinitionMapper.getTypeDefinitionRow());
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+    }
+
+
+    /**
+     * Remove the stored copy of a type definition.  Nothing happens if it is not stored.
+     *
+     * @param typeGUID unique identifier of the type definition
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    public void removeTypeDefinition(String typeGUID) throws RepositoryErrorException
+    {
+        final String methodName = "removeTypeDefinition";
+
+        try
+        {
+            this.deleteTypeDefinition(typeGUID);
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+    }
+
+
+    /**
+     * Issue the delete of a type definition's row.
+     *
+     * @param typeGUID unique identifier of the type definition
+     * @throws PropertyServerException problem communicating with the database
+     */
+    private void deleteTypeDefinition(String typeGUID) throws PropertyServerException
+    {
+        jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                              "delete from " + RepositoryTable.TYPE_DEFINITION.getTableName() +
+                                                      " where " + RepositoryColumn.TYPE_GUID.getColumnName() + " = " + getSQLStringLiteral(typeGUID) + ";");
+    }
+
+
+    /**
+     * Return whether any instance of a type is stored - an entity, entity proxy, relationship or classification,
+     * in any version and any status.  Soft-deleted instances are still rows in these tables, with a current_status
+     * of DELETED, so they count; only purged instances, whose rows are gone, do not.
+     * <br><br>
+     * Each table is asked only whether one matching row exists ("limit 1"), and the tables are asked in turn so
+     * that the search stops at the first table that holds one.  There is no index on type_guid, so a type with no
+     * instances costs a scan of each table.  That is accepted because this is only asked when a type definition
+     * is about to be deleted, which is rare, whereas an index would be paid for on every instance written.
+     *
+     * @param typeGUID unique identifier of the type definition
+     * @return boolean
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    public boolean isTypeInstantiated(String typeGUID) throws RepositoryErrorException
+    {
+        final String methodName = "isTypeInstantiated";
+
+        try
+        {
+            for (RepositoryTable repositoryTable : new RepositoryTable[]{RepositoryTable.ENTITY,
+                                                                         RepositoryTable.RELATIONSHIP,
+                                                                         RepositoryTable.CLASSIFICATION})
+            {
+                long instanceCount = jdbcResourceConnector.countMatchingRows(jdbcConnection,
+                                                                             "select count(*) from (select 1 from " + repositoryTable.getTableName() +
+                                                                                     " where " + RepositoryColumn.TYPE_GUID.getColumnName() + " = " + getSQLStringLiteral(typeGUID) +
+                                                                                     " limit 1) as instances;");
+
+                if (instanceCount > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+    }
+
+
+    /**
+     * Return a value as a SQL string literal.  The resource connector's query methods take SQL text rather than
+     * bound parameters, so a value from a caller is quoted here instead: each single quote inside it is doubled,
+     * which is all a PostgreSQL literal needs when standard_conforming_strings is on (the default since
+     * PostgreSQL 9.1), since a backslash is then an ordinary character.
+     *
+     * @param value value to quote
+     * @return quoted value, or "null" if the value is null
+     */
+    static String getSQLStringLiteral(String value)
+    {
+        if (value == null)
+        {
+            return "null";
+        }
+
+        return "'" + value.replace("'", "''") + "'";
+    }
+
+
+    /**
      * Retrieve details about an entity from the store.  The entity mapper is returned to allow the caller to choose
      * what style of entity to return.
      *

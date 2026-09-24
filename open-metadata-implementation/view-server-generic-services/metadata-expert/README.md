@@ -25,6 +25,7 @@ The service supports a wide range of operations across the metadata lifecycle:
     - **Graph Retrieval**: Retrieving a graph of anchored elements to visualize complex structures.
     - **Relationship Discovery**: Finding relationships between specific elements or groups of elements.
 - **Metadata Type Support**: Direct interaction with metadata based on their open metadata types, supporting the full richness of the Egeria type system.
+- **Type Maintenance**: Adding new entity, relationship and classification types (`addTypeDef`) and enum types (`addEnumDef`) to the type system, updating the types that were added this way (`updateTypeDef`), and deleting them once they are no longer used (`deleteTypeDef`, `deleteEnumDef`).  New types are validated against the existing types and stored in the metadata access store's repository, so they are restored when the server restarts.  The types from the open metadata archives cannot be changed through this API.
 
 ### Further information
 

@@ -10,6 +10,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataEnumDef;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefPatch;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.viewservices.metadataexpert.rest.MatchCriteriaListResponse;
 import org.odpi.openmetadata.viewservices.metadataexpert.rest.PropertyComparisonOperatorListResponse;
@@ -1341,5 +1344,159 @@ public class MetadataExpertResource
                                               urlMarker,
                                               relationshipGUID,
                                               requestBody);
+    }
+
+
+    /**
+     * Add a new type definition for an entity, relationship or classification.  The type definition is homed in
+     * the metadata access store's local repository: it is validated against the types already defined, stored
+     * with the metadata so that it survives a restart, and announced to the other members of the cohort.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody the new type definition
+     *
+     * @return unique identifier of the new type definition or
+     *  InvalidParameterException the type definition is invalid or refers to an unknown type
+     *  UserNotAuthorizedException the userId is not permitted to perform this operation
+     *  PropertyServerException a problem with the metadata store, or the type is already defined
+     */
+    @PostMapping(path = "/open-metadata-types")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="addTypeDef",
+            description="Add a new type definition for an entity, relationship or classification.  The type definition is validated against the types already defined, and stored in the metadata access store's local repository so that it survives a restart.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
+
+    public GUIDResponse addTypeDef(@PathVariable String              serverName,
+                                   @PathVariable String              urlMarker,
+                                   @RequestBody  OpenMetadataTypeDef requestBody)
+    {
+        return restAPI.addTypeDef(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Update a type definition that was added through the API.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody the changes to make and the version they apply to
+     *
+     * @return the updated type definition or
+     *  InvalidParameterException the type definition is not known, was not added through the API, is at a
+     *                            different version, or the patch is incompatible with it
+     *  UserNotAuthorizedException the userId is not permitted to perform this operation
+     *  PropertyServerException a problem with the metadata store
+     */
+    @PostMapping(path = "/open-metadata-types/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateTypeDef",
+            description="Update a type definition that was added through the API.  The types from the open metadata archives, and from other members of the cohort, are maintained by their originators and cannot be updated this way.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
+
+    public TypeDefResponse updateTypeDef(@PathVariable String                   serverName,
+                                         @PathVariable String                   urlMarker,
+                                         @RequestBody  OpenMetadataTypeDefPatch requestBody)
+    {
+        return restAPI.updateTypeDef(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Delete a type definition that was added through the API.  This is only possible while nothing uses it.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param typeDefGUID unique identifier of the type definition
+     * @param typeDefName unique name of the type definition
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException the type definition is not known or was not added through the API
+     *  UserNotAuthorizedException the userId is not permitted to perform this operation
+     *  PropertyServerException a problem with the metadata store, or the type is still in use
+     */
+    @PostMapping(path = "/open-metadata-types/guid/{typeDefGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteTypeDef",
+            description="Delete a type definition that was added through the API.  This is only possible while there are no instances of the type, including soft-deleted ones, and no other type definition refers to it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
+
+    public VoidResponse deleteTypeDef(@PathVariable String          serverName,
+                                      @PathVariable String          urlMarker,
+                                      @PathVariable String          typeDefGUID,
+                                      @RequestParam String          typeDefName,
+                                      @RequestBody (required=false)
+                                                    NullRequestBody requestBody)
+    {
+        return restAPI.deleteTypeDef(serverName, urlMarker, typeDefGUID, typeDefName, requestBody);
+    }
+
+
+    /**
+     * Add a new enum definition, which can then be used as the type of attributes in new type definitions.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody the new enum definition
+     *
+     * @return unique identifier of the new enum definition or
+     *  InvalidParameterException the enum definition is invalid
+     *  UserNotAuthorizedException the userId is not permitted to perform this operation
+     *  PropertyServerException a problem with the metadata store, or the enum is already defined
+     */
+    @PostMapping(path = "/open-metadata-attribute-types/enum-defs")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="addEnumDef",
+            description="Add a new enum definition, which can then be used as the type of attributes in new type definitions.  It is stored in the metadata access store's local repository so that it survives a restart.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
+
+    public GUIDResponse addEnumDef(@PathVariable String              serverName,
+                                   @PathVariable String              urlMarker,
+                                   @RequestBody  OpenMetadataEnumDef requestBody)
+    {
+        return restAPI.addEnumDef(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Delete an enum definition that was added through the API.  This is only possible while no type definition
+     * has an attribute of this type.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param enumDefGUID unique identifier of the enum definition
+     * @param enumDefName unique name of the enum definition
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException the enum definition is not known or was not added through the API
+     *  UserNotAuthorizedException the userId is not permitted to perform this operation
+     *  PropertyServerException a problem with the metadata store, or the enum is still in use
+     */
+    @PostMapping(path = "/open-metadata-attribute-types/enum-defs/guid/{enumDefGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteEnumDef",
+            description="Delete an enum definition that was added through the API.  This is only possible while no type definition has an attribute of this type.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
+
+    public VoidResponse deleteEnumDef(@PathVariable String          serverName,
+                                      @PathVariable String          urlMarker,
+                                      @PathVariable String          enumDefGUID,
+                                      @RequestParam String          enumDefName,
+                                      @RequestBody (required=false)
+                                                    NullRequestBody requestBody)
+    {
+        return restAPI.deleteEnumDef(serverName, urlMarker, enumDefGUID, enumDefName, requestBody);
     }
 }

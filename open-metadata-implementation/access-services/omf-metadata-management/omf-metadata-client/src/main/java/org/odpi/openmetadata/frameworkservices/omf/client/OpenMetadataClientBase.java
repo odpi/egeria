@@ -527,6 +527,197 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
+     * Add a new type definition for an entity, relationship or classification.  The type definition is homed in
+     * the metadata access store's local repository: it is validated against the types already defined, stored
+     * with the metadata so that it survives a restart, and announced to the other members of the cohort.
+     * If no unique identifier is supplied, one is generated; if no version is supplied, it is version 1.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newTypeDef the new type definition.
+     * @return unique identifier of the new type definition
+     * @throws InvalidParameterException the type definition is invalid, already defined, or conflicts with the
+     *                                   types that are defined.
+     * @throws PropertyServerException a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public String addTypeDef(String              userId,
+                             OpenMetadataTypeDef newTypeDef) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        final String methodName             = "addTypeDef";
+        final String typeDefParameterName   = "newTypeDef";
+        final String nameParameterName      = "newTypeDef.name";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(newTypeDef, typeDefParameterName, methodName);
+        invalidParameterHandler.validateName(newTypeDef.getName(), nameParameterName, methodName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  newTypeDef,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Update a type definition that was added through the API.  The types from the open metadata archives, and
+     * from other members of the cohort, are maintained by their originators and cannot be updated this way.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDefPatch the changes to make and the version they apply to.
+     * @return the updated type definition
+     * @throws InvalidParameterException the type definition is not known, was not added through the API, is at a
+     *                                   different version, or the patch is incompatible with it.
+     * @throws PropertyServerException a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public OpenMetadataTypeDef updateTypeDef(String                   userId,
+                                             OpenMetadataTypeDefPatch typeDefPatch) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName             = "updateTypeDef";
+        final String patchParameterName     = "typeDefPatch";
+        final String guidParameterName      = "typeDefPatch.typeDefGUID";
+        final String nameParameterName      = "typeDefPatch.typeDefName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/update";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(typeDefPatch, patchParameterName, methodName);
+        invalidParameterHandler.validateGUID(typeDefPatch.getTypeDefGUID(), guidParameterName, methodName);
+        invalidParameterHandler.validateName(typeDefPatch.getTypeDefName(), nameParameterName, methodName);
+
+        TypeDefResponse restResult = restClient.callTypeDefPostRESTCall(methodName,
+                                                                        urlTemplate,
+                                                                        typeDefPatch,
+                                                                        serverName,
+                                                                        userId);
+
+        return restResult.getTypeDef();
+    }
+
+
+    /**
+     * Delete a type definition that was added through the API.  This is only possible while nothing uses it:
+     * there must be no instances of the type, including soft-deleted ones, and no other type definition may
+     * refer to it.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDefGUID unique identifier of the type definition.
+     * @param typeDefName unique name of the type definition.
+     * @throws InvalidParameterException the type definition is not known or was not added through the API.
+     * @throws PropertyServerException a problem communicating with the metadata repository, or the type
+     *                                 definition is still in use.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void deleteTypeDef(String userId,
+                              String typeDefGUID,
+                              String typeDefName) throws InvalidParameterException,
+                                                         PropertyServerException,
+                                                         UserNotAuthorizedException
+    {
+        final String methodName         = "deleteTypeDef";
+        final String guidParameterName  = "typeDefGUID";
+        final String nameParameterName  = "typeDefName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-types/guid/{2}/delete?typeDefName={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(typeDefGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateName(typeDefName, nameParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new NullRequestBody(),
+                                        serverName,
+                                        userId,
+                                        typeDefGUID,
+                                        typeDefName);
+    }
+
+
+    /**
+     * Add a new enum definition, which can then be used as the type of attributes in new type definitions.
+     * As with addTypeDef(), the enum definition is homed in the metadata access store's local repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newEnumDef the new enum definition.
+     * @return unique identifier of the new enum definition
+     * @throws InvalidParameterException the enum definition is invalid or already defined.
+     * @throws PropertyServerException a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public String addEnumDef(String              userId,
+                             OpenMetadataEnumDef newEnumDef) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        final String methodName             = "addEnumDef";
+        final String enumDefParameterName   = "newEnumDef";
+        final String nameParameterName      = "newEnumDef.name";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-attribute-types/enum-defs";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(newEnumDef, enumDefParameterName, methodName);
+        invalidParameterHandler.validateName(newEnumDef.getName(), nameParameterName, methodName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  newEnumDef,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Delete an enum definition that was added through the API.  This is only possible while no type definition
+     * has an attribute of this type.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param enumDefGUID unique identifier of the enum definition.
+     * @param enumDefName unique name of the enum definition.
+     * @throws InvalidParameterException the enum definition is not known or was not added through the API.
+     * @throws PropertyServerException a problem communicating with the metadata repository, or the enum
+     *                                 definition is still in use.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void deleteEnumDef(String userId,
+                              String enumDefGUID,
+                              String enumDefName) throws InvalidParameterException,
+                                                         PropertyServerException,
+                                                         UserNotAuthorizedException
+    {
+        final String methodName         = "deleteEnumDef";
+        final String guidParameterName  = "enumDefGUID";
+        final String nameParameterName  = "enumDefName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/open-metadata-attribute-types/enum-defs/guid/{2}/delete?enumDefName={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(enumDefGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateName(enumDefName, nameParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new NullRequestBody(),
+                                        serverName,
+                                        userId,
+                                        enumDefGUID,
+                                        enumDefName);
+    }
+
+
+    /**
      * Retrieve the metadata element using its unique identifier.
      *
      * @param userId caller's userId

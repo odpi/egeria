@@ -1023,3 +1023,104 @@ Content-Type: application/json
 
 
 
+
+###
+# =====================================================================================================================
+# Maintain the open metadata types that are defined through the API.  These types are validated against the types
+# that are already defined, stored in the metadata access store's local repository (so they survive a restart when
+# the repository is persistent), and announced to the rest of the cohort.  The types from the open metadata archives
+# cannot be changed this way.  The requests below define an enum, use it in a new entity type, extend the entity
+# type, and then remove both again.
+
+@typeDefGUID=add guid returned by addTypeDef here
+@enumDefGUID=add guid returned by addEnumDef here
+
+###
+# @name addEnumDef
+# Add a new enum definition, which can then be used as the type of attributes in new type definitions.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/open-metadata-attribute-types/enum-defs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "OpenMetadataEnumDef",
+  "name" : "CuisineType",
+  "description" : "The style of cooking that a recipe belongs to.",
+  "elementDefs" : [
+    { "ordinal" : 0, "value" : "Unclassified", "description" : "The cuisine has not been recorded." },
+    { "ordinal" : 1, "value" : "Italian", "description" : "Italian cooking." },
+    { "ordinal" : 2, "value" : "Japanese", "description" : "Japanese cooking." },
+    { "ordinal" : 99, "value" : "Other", "description" : "Another cuisine." }
+  ],
+  "defaultValue" : { "ordinal" : 0, "value" : "Unclassified", "description" : "The cuisine has not been recorded." }
+}
+
+###
+# @name addTypeDef
+# Add a new type definition for an entity, relationship or classification.  Links to other types - the supertype,
+# attribute types, relationship ends - only need the name of the type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/open-metadata-types
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "OpenMetadataEntityDef",
+  "name" : "Recipe",
+  "description" : "A description of how to prepare a dish.",
+  "superType" : { "name" : "Referenceable" },
+  "attributeDefinitions" : [
+    {
+      "attributeName" : "cuisine",
+      "attributeType" : { "class" : "OpenMetadataEnumDef", "name" : "CuisineType" },
+      "attributeDescription" : "The style of cooking."
+    },
+    {
+      "attributeName" : "servings",
+      "attributeType" : { "class" : "OpenMetadataPrimitiveDef", "name" : "int" },
+      "attributeDescription" : "The number of people the recipe serves."
+    }
+  ]
+}
+
+###
+# @name getTypeDefByName (valid-metadata)
+# Check the new type - this request is from the Valid Metadata OMVS.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/name/Recipe
+Authorization: Bearer {{token}}
+
+###
+# @name updateTypeDef
+# Update a type definition that was added through the API.  The patch names the version it applies to and carries
+# only what changes: here, a new attribute.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/open-metadata-types/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "OpenMetadataTypeDefPatch",
+  "typeDefGUID" : "{{typeDefGUID}}",
+  "typeDefName" : "Recipe",
+  "applyToVersion" : 1,
+  "attributeDefinitions" : [
+    {
+      "attributeName" : "preparationTimeMinutes",
+      "attributeType" : { "class" : "OpenMetadataPrimitiveDef", "name" : "int" },
+      "attributeDescription" : "How long the recipe takes to prepare."
+    }
+  ]
+}
+
+###
+# @name deleteTypeDef
+# Delete a type definition that was added through the API.  This fails while there are any instances of the type,
+# including soft-deleted ones, or while another type definition refers to it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/open-metadata-types/guid/{{typeDefGUID}}/delete?typeDefName=Recipe
+Authorization: Bearer {{token}}
+
+###
+# @name deleteEnumDef
+# Delete an enum definition that was added through the API.  This fails while any type definition has an attribute
+# of this type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/open-metadata-attribute-types/enum-defs/guid/{{enumDefGUID}}/delete?enumDefName=CuisineType
+Authorization: Bearer {{token}}
+

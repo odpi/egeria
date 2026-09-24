@@ -44,7 +44,16 @@ public enum PostgresErrorCode implements ExceptionMessageSet
                    "https://egeria-project.org/concepts/repository-connector/"),
 
     /**
-     * POSTGRES-REPOSITORY-CONNECTOR-500-001 - The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}
+     * POSTGRES-REPOSITORY-CONNECTOR-400-003 - The {0} postgreSQL repository connector is running in read-only mode and so it cannot change the stored copy of type definition {1} ({2})
+     */
+    TYPE_STORE_READ_ONLY(400, "POSTGRES-REPOSITORY-CONNECTOR-400-003",
+                         "The {0} postgreSQL repository connector is running in read-only mode and so it cannot change the stored copy of type definition {1} ({2})",
+                         "The type definition is not stored or removed.  The types defined through the API in this repository are only kept by a repository that can be updated.",
+                         "Make type changes through a server whose repository is in read-write mode.  If read-only mode is set in error then change the repositoryMode configuration property for this repository and restart the server.",
+                         "https://egeria-project.org/concepts/repository-connector/"),
+
+    /**
+     * POSTGRES-REPOSITORY-CONNECTOR-500-001- The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "POSTGRES-REPOSITORY-CONNECTOR-500-001",
                          "The {0} postgreSQL repository connector received an unexpected exception {1} during method {2}; the error message was: {3}",
@@ -96,6 +105,24 @@ public enum PostgresErrorCode implements ExceptionMessageSet
                             "The connector is not able to understand the structure of the schema.  The server is shutdown.",
                             "This is caused by using an older version of Egeria than the one used to create the repository.  Upgrade your Egeria installation to the latest level.",
                             "https://egeria-project.org/concepts/repository-connector/"),
+
+    /**
+     * POSTGRES-REPOSITORY-CONNECTOR-500-008 - The {0} postgreSQL repository connector is unable to convert type definition {1} ({2}) to JSON for storage; the {3} exception was received with message: {4}
+     */
+    UNSTORABLE_TYPE_DEFINITION(500, "POSTGRES-REPOSITORY-CONNECTOR-500-008",
+                               "The {0} postgreSQL repository connector is unable to convert type definition {1} ({2}) to JSON for storage; the {3} exception was received with message: {4}",
+                               "The type definition is not stored, so it will not be restored when the server restarts.",
+                               "This is a logic error since type definitions are serializable beans.  Use the exception message to determine which part of the type definition could not be converted.",
+                               "https://egeria-project.org/concepts/repository-connector/"),
+
+    /**
+     * POSTGRES-REPOSITORY-CONNECTOR-500-009 - The {0} postgreSQL repository connector is unable to restore stored type definition {1} ({2}) from its JSON; the {3} exception was received with message: {4}
+     */
+    UNREADABLE_TYPE_DEFINITION(500, "POSTGRES-REPOSITORY-CONNECTOR-500-009",
+                               "The {0} postgreSQL repository connector is unable to restore stored type definition {1} ({2}) from its JSON; the {3} exception was received with message: {4}",
+                               "The stored type definitions cannot be returned, so the types defined through the API in this repository are not restored.",
+                               "Check the row for this type definition in the type_definition table of the repository's database schema.  It may have been written by a different version of Egeria, or altered outside of Egeria.",
+                               "https://egeria-project.org/concepts/repository-connector/"),
     ;
 
     private final int    httpErrorCode;

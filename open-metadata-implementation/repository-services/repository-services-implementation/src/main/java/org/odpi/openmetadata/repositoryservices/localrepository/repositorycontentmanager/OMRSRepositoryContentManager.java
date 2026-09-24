@@ -54,18 +54,40 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     private OMRSRepositoryEventManager      outboundRepositoryEventManager = null;
     private String                          openTypesOriginGUID            = null;
 
-    private final Map<String, TypeDef>            knownTypeDefGUIDs              = new HashMap<>();
-    private final Map<String, TypeDef>            knownTypeDefNames              = new HashMap<>();
-    private final Map<String, AttributeTypeDef>   knownAttributeTypeDefGUIDs     = new HashMap<>();
-    private final Map<String, AttributeTypeDef>   knownAttributeTypeDefNames     = new HashMap<>();
-    private final Map<String, TypeDef>            activeTypeDefGUIDs             = new HashMap<>();
-    private final Map<String, TypeDef>            activeTypeDefNames             = new HashMap<>();
-    private final Map<String, AttributeTypeDef>   activeAttributeTypeDefGUIDs    = new HashMap<>();
-    private final Map<String, AttributeTypeDef>   activeAttributeTypeDefNames    = new HashMap<>();
-    private final Map<String, List<TypeDefLink>>  typeDefSuperTypes              = new HashMap<>();
-    private final Map<String, InstanceType>       knownInstanceTypes             = new HashMap<>();
+    /*
+     * The type system can change while the server is running - types are added, updated and deleted through the
+     * API and by the cohort - so these maps are read and written by many threads at once.
+     *
+     *  - Each map is synchronized, so every single operation is atomic and a copy of its values
+     *    (new ArrayList<>(map.values())) is taken under its lock.  Synchronized maps are used rather than
+     *    ConcurrentHashMap because the lookups are passed null names by some callers and must return null
+     *    rather than throw.
+     *  - The methods that change the type system (cacheTypeDef(), uncacheTypeDef() and their attribute
+     *    type equivalents) are synchronized on this object so that one change to several maps is not
+     *    interleaved with another.  A reader may see a change part way through - a type known but not yet
+     *    active, say - as it always could; it never sees a map mid-update.
+     *  - The supertype chains and instance types are derived from the TypeDefs lazily, by readers.  A reader
+     *    that worked one out from the types as they were before a change must not store it after the change
+     *    has emptied the caches, so each is stored only if the generation it was worked out in is still
+     *    current (see cacheDerivedValue()).
+     */
+    private final Map<String, TypeDef>            knownTypeDefGUIDs              = Collections.synchronizedMap(new HashMap<>());
+    private final Map<String, TypeDef>            knownTypeDefNames              = Collections.synchronizedMap(new HashMap<>());
+    private final Map<String, AttributeTypeDef>   knownAttributeTypeDefGUIDs     = Collections.synchronizedMap(new HashMap<>());
+    private final Map<String, AttributeTypeDef>   knownAttributeTypeDefNames     = Collections.synchronizedMap(new HashMap<>());
+    private final Map<String, TypeDef>            activeTypeDefGUIDs             = Collections.synchronizedMap(new HashMap<>());
+    private final Map<String, TypeDef>            activeTypeDefNames             = Collections.synchronizedMap(new HashMap<>());
+    private final Map<String, AttributeTypeDef>   activeAttributeTypeDefGUIDs    = Collections.synchronizedMap(new HashMap<>());
+    private final Map<String, AttributeTypeDef>   activeAttributeTypeDefNames    = Collections.synchronizedMap(new HashMap<>());
+    private final Map<String, List<TypeDefLink>>  typeDefSuperTypes              = Collections.synchronizedMap(new HashMap<>());
+    private final Map<String, InstanceType>       knownInstanceTypes             = Collections.synchronizedMap(new HashMap<>());
     private final Map<String, String>             metadataCollectionNames        = new HashMap<>();
-    private final Map<String, Set<String>>        knownPropertyToTypeDefNames    = new HashMap<>();
+    private final Map<String, Set<String>>        knownPropertyToTypeDefNames    = Collections.synchronizedMap(new HashMap<>());
+
+    /*
+     * Incremented, under this object's lock, each time the derived caches are emptied.
+     */
+    private volatile long                         derivedTypeCacheGeneration     = 0L;
 
 
     /*
@@ -126,6 +148,196 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     }
 
 
+    /**
+     * Replay the types that the local repository originated and stored itself - the types defined through the
+     * API - so they rejoin the type system after a restart.  This is called once the open metadata archives have
+     * been processed, because the stored types build on the archive types.  They go through the same processing as
+     * a type arriving from an archive or the cohort, so they are validated, cached and announced in the same way.
+     * <br><br>
+     * The attribute types go first since the types may use them.  The types are then put in an order where each
+     * comes after the other stored types it depends on: the order they were first stored is not enough, because an
+     * update may since have given an earlier type a supertype that was stored after it.
+     *
+     * @param sourceName name of the local repository
+     * @param localMetadataCollectionId metadata collection id of the local repository
+     * @param localServerType type of the local server
+     * @param localOrganizationName organization that owns the local server
+     * @param storedTypes types returned by the local repository
+     */
+    public void restoreStoredTypes(String         sourceName,
+                                   String         localMetadataCollectionId,
+                                   String         localServerType,
+                                   String         localOrganizationName,
+                                   TypeDefGallery storedTypes)
+    {
+        final String actionDescription = "Restore stored types";
+
+        if (storedTypes == null)
+        {
+            return;
+        }
+
+        int attributeTypeDefCount    = 0;
+        int restoredAttributeTypeDefs = 0;
+
+        if (storedTypes.getAttributeTypeDefs() != null)
+        {
+            for (AttributeTypeDef attributeTypeDef : storedTypes.getAttributeTypeDefs())
+            {
+                if (attributeTypeDef != null)
+                {
+                    attributeTypeDefCount++;
+
+                    this.processNewAttributeTypeDefEvent(sourceName,
+                                                         localMetadataCollectionId,
+                                                         localServerName,
+                                                         localServerType,
+                                                         localOrganizationName,
+                                                         attributeTypeDef);
+
+                    if (activeAttributeTypeDefNames.containsKey(attributeTypeDef.getName()))
+                    {
+                        restoredAttributeTypeDefs++;
+                    }
+                }
+            }
+        }
+
+        int typeDefCount    = 0;
+        int restoredTypeDefs = 0;
+
+        for (TypeDef typeDef : this.orderByDependency(storedTypes.getTypeDefs()))
+        {
+            typeDefCount++;
+
+            this.processNewTypeDefEvent(sourceName,
+                                        localMetadataCollectionId,
+                                        localServerName,
+                                        localServerType,
+                                        localOrganizationName,
+                                        typeDef);
+
+            if (activeTypeDefNames.containsKey(typeDef.getName()))
+            {
+                restoredTypeDefs++;
+            }
+        }
+
+        auditLog.logMessage(actionDescription,
+                            OMRSAuditCode.STORED_TYPES_RESTORED.getMessageDefinition(sourceName,
+                                                                                     Integer.toString(restoredTypeDefs),
+                                                                                     Integer.toString(typeDefCount),
+                                                                                     Integer.toString(restoredAttributeTypeDefs),
+                                                                                     Integer.toString(attributeTypeDefCount)));
+    }
+
+
+    /**
+     * Put a list of TypeDefs in an order where each comes after any of the others that it depends on - its
+     * supertype, the entity types at the ends of a relationship and the entity types a classification can be
+     * attached to.  Dependencies on TypeDefs outside the list are ignored since they are already known.  The
+     * original order is kept wherever the dependencies allow.  Any TypeDefs caught in a cycle, which cannot be
+     * valid, are left at the end in their original order to fail validation.
+     *
+     * @param typeDefs list of TypeDefs - may be null
+     * @return ordered list
+     */
+    private List<TypeDef> orderByDependency(List<TypeDef> typeDefs)
+    {
+        List<TypeDef> orderedTypeDefs = new ArrayList<>();
+
+        if (typeDefs == null)
+        {
+            return orderedTypeDefs;
+        }
+
+        Map<String, TypeDef> pendingTypeDefs = new LinkedHashMap<>();
+
+        for (TypeDef typeDef : typeDefs)
+        {
+            if ((typeDef != null) && (typeDef.getName() != null))
+            {
+                pendingTypeDefs.put(typeDef.getName(), typeDef);
+            }
+        }
+
+        boolean progress = true;
+
+        while ((! pendingTypeDefs.isEmpty()) && (progress))
+        {
+            progress = false;
+
+            Iterator<TypeDef> iterator = pendingTypeDefs.values().iterator();
+
+            while (iterator.hasNext())
+            {
+                TypeDef typeDef   = iterator.next();
+                boolean isBlocked = false;
+
+                for (String dependencyName : this.getTypeDefDependencies(typeDef))
+                {
+                    if ((! typeDef.getName().equals(dependencyName)) && (pendingTypeDefs.containsKey(dependencyName)))
+                    {
+                        isBlocked = true;
+                        break;
+                    }
+                }
+
+                if (! isBlocked)
+                {
+                    orderedTypeDefs.add(typeDef);
+                    iterator.remove();
+                    progress = true;
+                }
+            }
+        }
+
+        orderedTypeDefs.addAll(pendingTypeDefs.values());
+
+        return orderedTypeDefs;
+    }
+
+
+    /**
+     * Return the names of the TypeDefs that a TypeDef refers to.
+     *
+     * @param typeDef TypeDef to examine
+     * @return list of type names
+     */
+    private List<String> getTypeDefDependencies(TypeDef typeDef)
+    {
+        List<String> dependencies = new ArrayList<>();
+
+        if (typeDef.getSuperType() != null)
+        {
+            dependencies.add(typeDef.getSuperType().getName());
+        }
+
+        if (typeDef instanceof RelationshipDef relationshipDef)
+        {
+            for (RelationshipEndDef endDef : Arrays.asList(relationshipDef.getEndDef1(), relationshipDef.getEndDef2()))
+            {
+                if ((endDef != null) && (endDef.getEntityType() != null))
+                {
+                    dependencies.add(endDef.getEntityType().getName());
+                }
+            }
+        }
+        else if ((typeDef instanceof ClassificationDef classificationDef) && (classificationDef.getValidEntityDefs() != null))
+        {
+            for (TypeDefLink validEntityDef : classificationDef.getValidEntityDefs())
+            {
+                if (validEntityDef != null)
+                {
+                    dependencies.add(validEntityDef.getName());
+                }
+            }
+        }
+
+        return dependencies;
+    }
+
+
     /*
      * ========================
      * OMRSTypeDefManager
@@ -152,7 +364,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param newTypeDef TypeDef structure describing the new TypeDef.
      * @param isLocallySupported indicates whether the TypeDef is supported by the local repository.
      */
-    private void cacheTypeDef(String  sourceName, TypeDef      newTypeDef, boolean isLocallySupported)
+    private synchronized void cacheTypeDef(String  sourceName, TypeDef      newTypeDef, boolean isLocallySupported)
     {
         knownTypeDefGUIDs.put(newTypeDef.getGUID(), newTypeDef);
         knownTypeDefNames.put(newTypeDef.getName(), newTypeDef);
@@ -169,6 +381,46 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             log.debug("New Known Type {} from {}. Full TypeDef: {}", newTypeDef.getName(), sourceName, newTypeDef);
         }
         cacheTypeDefPropertyLookup(sourceName, newTypeDef);
+        clearDerivedTypeCaches();
+    }
+
+
+    /**
+     * Forget the supertype chains and instance types worked out from the TypeDefs so far.  They are evaluated
+     * lazily and cached, and each one depends on the whole chain of supertypes above a type: a change to a
+     * TypeDef - a new attribute, a new supertype, a deletion - makes the cached answers wrong for that type and
+     * for every subtype of it.  Rather than work out which those are, the caches are emptied and fill up again
+     * as they are used.  This only happens when the type system changes, which is rare once the server is
+     * running.
+     */
+    private synchronized void clearDerivedTypeCaches()
+    {
+        derivedTypeCacheGeneration++;
+        typeDefSuperTypes.clear();
+        knownInstanceTypes.clear();
+    }
+
+
+    /**
+     * Store a supertype chain or instance type that a reader has worked out, as long as the type system has not
+     * changed since it started.  If it has, the value may be based on types that are no longer current, so it is
+     * dropped and will be worked out again next time.
+     *
+     * @param derivedTypeCache cache to store in
+     * @param typeName name of the type the value is for
+     * @param derivedValue value worked out
+     * @param generation value of derivedTypeCacheGeneration before the value was worked out
+     * @param <V> type of value
+     */
+    private synchronized <V> void cacheDerivedValue(Map<String, V> derivedTypeCache,
+                                                    String         typeName,
+                                                    V              derivedValue,
+                                                    long           generation)
+    {
+        if (generation == derivedTypeCacheGeneration)
+        {
+            derivedTypeCache.put(typeName, derivedValue);
+        }
     }
 
 
@@ -217,7 +469,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             for (TypeDefAttribute property : propertiesDefinition)
             {
                 String propertyName = property.getAttributeName();
-                knownPropertyToTypeDefNames.computeIfAbsent(propertyName, k -> new HashSet<>());
+                knownPropertyToTypeDefNames.computeIfAbsent(propertyName, k -> Collections.synchronizedSet(new HashSet<>()));
                 knownPropertyToTypeDefNames.get(propertyName).add(typeDefName);
                 log.debug("Cached property '{}' from {}, for lookup under TypeDef: {}", propertyName, sourceName, typeDefName);
             }
@@ -233,10 +485,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param obsoleteTypeDefName unique name for the type.
      * @param isLocallySupported indicates whether the TypeDef is supported by the local repository.
      */
-    private void uncacheTypeDef(String  sourceName,
-                                String  obsoleteTypeDefGUID,
-                                String  obsoleteTypeDefName,
-                                boolean isLocallySupported)
+    private synchronized void uncacheTypeDef(String  sourceName,
+                                             String  obsoleteTypeDefGUID,
+                                             String  obsoleteTypeDefName,
+                                             boolean isLocallySupported)
     {
         knownTypeDefGUIDs.remove(obsoleteTypeDefGUID);
         knownTypeDefNames.remove(obsoleteTypeDefName);
@@ -249,6 +501,33 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
         log.debug("Removed Type {} from {}", obsoleteTypeDefName, sourceName);
         uncacheTypeDefPropertyLookup(sourceName, obsoleteTypeDefName);
+        clearDerivedTypeCaches();
+    }
+
+
+    /**
+     * Remove a definition of an AttributeTypeDef.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param obsoleteAttributeTypeDefGUID unique identifier for the attribute type.
+     * @param obsoleteAttributeTypeDefName unique name for the attribute type.
+     * @param isLocallySupported indicates whether the AttributeTypeDef is supported by the local repository.
+     */
+    private synchronized void uncacheAttributeTypeDef(String  sourceName,
+                                                      String  obsoleteAttributeTypeDefGUID,
+                                                      String  obsoleteAttributeTypeDefName,
+                                                      boolean isLocallySupported)
+    {
+        knownAttributeTypeDefGUIDs.remove(obsoleteAttributeTypeDefGUID);
+        knownAttributeTypeDefNames.remove(obsoleteAttributeTypeDefName);
+
+        if (isLocallySupported)
+        {
+            activeAttributeTypeDefGUIDs.remove(obsoleteAttributeTypeDefGUID);
+            activeAttributeTypeDefNames.remove(obsoleteAttributeTypeDefName);
+        }
+
+        log.debug("Removed Attribute Type {} from {}", obsoleteAttributeTypeDefName, sourceName);
     }
 
 
@@ -260,14 +539,17 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      */
     private void uncacheTypeDefPropertyLookup(String sourceName, String typeDefName)
     {
-        // Not much choice but to iterate through the entire Map...
-        for (String propertyName : knownPropertyToTypeDefNames.keySet())
+        // Not much choice but to iterate through the entire Map - which, being synchronized, must be locked while iterated ...
+        synchronized (knownPropertyToTypeDefNames)
         {
-            // ... but the removal operation at least is idempotent (no need to first check it is present in the Set)
-            boolean removed = knownPropertyToTypeDefNames.get(propertyName).remove(typeDefName);
-            if (removed)
+            for (Map.Entry<String, Set<String>> propertyTypeDefNames : knownPropertyToTypeDefNames.entrySet())
             {
-                log.debug("Removed Type {} from {}, from reverse-lookup of property: {}", typeDefName, sourceName, propertyName);
+                // ... but the removal operation at least is idempotent (no need to first check it is present in the Set)
+                boolean removed = propertyTypeDefNames.getValue().remove(typeDefName);
+                if (removed)
+                {
+                    log.debug("Removed Type {} from {}, from reverse-lookup of property: {}", typeDefName, sourceName, propertyTypeDefNames.getKey());
+                }
             }
         }
     }
@@ -293,9 +575,9 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param newAttributeTypeDef AttributeTypeDef structure describing the new TypeDef.
      * @param isLocallySupported indicates whether the TypeDef is supported by the local repository.
      */
-    private void cacheAttributeTypeDef(String           sourceName,
-                                       AttributeTypeDef newAttributeTypeDef,
-                                       boolean          isLocallySupported)
+    private synchronized void cacheAttributeTypeDef(String           sourceName,
+                                                    AttributeTypeDef newAttributeTypeDef,
+                                                    boolean          isLocallySupported)
     {
         knownAttributeTypeDefGUIDs.put(newAttributeTypeDef.getGUID(), newAttributeTypeDef);
         knownAttributeTypeDefNames.put(newAttributeTypeDef.getName(), newAttributeTypeDef);
@@ -345,16 +627,11 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         if (this.validTypeId(sourceName, obsoleteTypeDefGUID, obsoleteTypeDefName))
         {
-            knownTypeDefGUIDs.remove(obsoleteTypeDefGUID);
-            knownTypeDefNames.remove(obsoleteTypeDefName);
-
-            if (localRepositoryConnector != null)
-            {
-                activeTypeDefGUIDs.remove(obsoleteTypeDefGUID);
-                activeTypeDefNames.remove(obsoleteTypeDefName);
-
-                log.debug("Deleted Active TypeDef " + obsoleteTypeDefName + " from " + sourceName);
-            }
+            /*
+             * Uncaching also removes the TypeDef from the property lookup and the derived caches, which matters
+             * now that a TypeDef can be deleted while the server is running.
+             */
+            this.uncacheTypeDef(sourceName, obsoleteTypeDefGUID, obsoleteTypeDefName, localRepositoryConnector != null);
         }
     }
 
@@ -373,19 +650,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         if (this.validTypeId(sourceName, obsoleteAttributeTypeDefGUID, obsoleteAttributeTypeDefName))
         {
-            knownAttributeTypeDefGUIDs.remove(obsoleteAttributeTypeDefGUID);
-            knownAttributeTypeDefNames.remove(obsoleteAttributeTypeDefName);
-
-            if (localRepositoryConnector != null)
-            {
-                activeAttributeTypeDefGUIDs.remove(obsoleteAttributeTypeDefGUID);
-                activeAttributeTypeDefNames.remove(obsoleteAttributeTypeDefName);
-
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Deleted Active AttributeTypeDef " + obsoleteAttributeTypeDefName + " from " + sourceName);
-                }
-            }
+            this.uncacheAttributeTypeDef(sourceName, obsoleteAttributeTypeDefGUID, obsoleteAttributeTypeDefName, localRepositoryConnector != null);
         }
     }
 
@@ -520,6 +785,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
         if (typeHierarchy == null)
         {
+            long generation = derivedTypeCacheGeneration;
+
             /*
              * The type hierarchy is not known at this time (it is evaluated lazily).
              */
@@ -569,7 +836,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 /*
                  * Cache the resulting superType list
                  */
-                typeDefSuperTypes.put(typeName, typeHierarchy);
+                this.cacheDerivedValue(typeDefSuperTypes, typeName, typeHierarchy, generation);
             }
             else
             {
@@ -772,7 +1039,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             /*
              * The instance type has not yet been created. (They are created lazily.)
              */
-            TypeDef typeDef = knownTypeDefNames.get(typeName);
+            long    generation = derivedTypeCacheGeneration;
+            TypeDef typeDef    = knownTypeDefNames.get(typeName);
 
             if (typeDef != null)
             {
@@ -853,7 +1121,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 /*
                  * Cache the instance type for next time
                  */
-                knownInstanceTypes.put(typeName, instanceType);
+                this.cacheDerivedValue(knownInstanceTypes, typeName, instanceType, generation);
 
                 return instanceType;
             }
@@ -1534,7 +1802,20 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             return null;
         }
 
-        return knownPropertyToTypeDefNames.getOrDefault(propertyName, null);
+        Set<String> typeDefNames = knownPropertyToTypeDefNames.get(propertyName);
+
+        if (typeDefNames == null)
+        {
+            return null;
+        }
+
+        /*
+         * The caller gets a copy, since the set can change while it is being used.
+         */
+        synchronized (typeDefNames)
+        {
+            return new HashSet<>(typeDefNames);
+        }
     }
 
 
@@ -2664,6 +2945,30 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                      */
                     this.cacheTypeDef(sourceName, typeDef, true);
                 }
+                else if ((currentTypeDef.getGUID() != null) &&
+                         (currentTypeDef.getGUID().equals(typeDef.getGUID())) &&
+                         (typeDef.getVersion() > currentTypeDef.getVersion()))
+                {
+                    /*
+                     * This is a later version of a type the local repository has - the update to it was missed.
+                     * Types defined through the API are announced again in full when a member joins the cohort and
+                     * when their home server restarts, so this is how a member that was away catches up.  The
+                     * differences are turned into a patch and applied like any other update.
+                     */
+                    auditLog.logMessage(actionDescription,
+                                        OMRSAuditCode.NEWER_TYPE_VERSION_RECEIVED.getMessageDefinition(typeDef.getName(),
+                                                                                                       typeDef.getGUID(),
+                                                                                                       Long.toString(typeDef.getVersion()),
+                                                                                                       sourceName,
+                                                                                                       Long.toString(currentTypeDef.getVersion())));
+
+                    this.processUpdatedTypeDefEvent(sourceName,
+                                                    originatorMetadataCollectionId,
+                                                    originatorServerName,
+                                                    originatorServerType,
+                                                    originatorOrganizationName,
+                                                    this.getCatchUpPatch(currentTypeDef, typeDef, originatorServerName));
+                }
             }
             else
             {
@@ -3297,6 +3602,21 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 log.debug("TypeDefNotKnownException: ", error);
             }
         }
+        catch (TypeDefInUseException error)
+        {
+            /*
+             * The local repository still has instances of the type, or other types that depend on it, so the
+             * delete is ignored.  Other members may have deleted it already - the member that asked for the
+             * delete certainly has - so the type is announced again for them to add it back.
+             */
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.TYPE_DELETE_IGNORED.getMessageDefinition(originatorServerName,
+                                                                                       typeDefName,
+                                                                                       typeDefGUID,
+                                                                                       error.getReportedErrorMessage()));
+
+            this.reannounceTypeDef(sourceName, typeDefGUID, typeDefName);
+        }
         catch (Exception error)
         {
             logUnexpectedException(error, actionDescription, sourceName, typeDefName + " (" + typeDefGUID + ")");
@@ -3307,6 +3627,188 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 log.debug("Exception: ", error);
             }
         }
+    }
+
+
+    /**
+     * Announce a TypeDef that the local repository has kept to the cohort, as if it were new.  A member that
+     * already has the TypeDef ignores the event; a member that has deleted it adds it back.
+     *
+     * @param sourceName name of the source of the delete request that is being refused
+     * @param typeDefGUID unique identifier of the TypeDef
+     * @param typeDefName unique name of the TypeDef
+     */
+    private void reannounceTypeDef(String sourceName,
+                                   String typeDefGUID,
+                                   String typeDefName)
+    {
+        TypeDef typeDef = knownTypeDefNames.get(typeDefName);
+
+        if ((typeDef != null) &&
+            (typeDefGUID != null) &&
+            (typeDefGUID.equals(typeDef.getGUID())) &&
+            (outboundRepositoryEventManager != null) &&
+            (localRepositoryConnector != null))
+        {
+            outboundRepositoryEventManager.processNewTypeDefEvent(sourceName,
+                                                                  localRepositoryConnector.getMetadataCollectionId(),
+                                                                  localRepositoryConnector.getLocalServerName(),
+                                                                  localRepositoryConnector.getLocalServerType(),
+                                                                  localRepositoryConnector.getOrganizationName(),
+                                                                  typeDef);
+        }
+    }
+
+
+    /**
+     * Announce an AttributeTypeDef that the local repository has kept to the cohort, as if it were new.
+     *
+     * @param sourceName name of the source of the delete request that is being refused
+     * @param attributeTypeDefGUID unique identifier of the AttributeTypeDef
+     * @param attributeTypeDefName unique name of the AttributeTypeDef
+     */
+    private void reannounceAttributeTypeDef(String sourceName,
+                                            String attributeTypeDefGUID,
+                                            String attributeTypeDefName)
+    {
+        AttributeTypeDef attributeTypeDef = knownAttributeTypeDefNames.get(attributeTypeDefName);
+
+        if ((attributeTypeDef != null) &&
+            (attributeTypeDefGUID != null) &&
+            (attributeTypeDefGUID.equals(attributeTypeDef.getGUID())) &&
+            (outboundRepositoryEventManager != null) &&
+            (localRepositoryConnector != null))
+        {
+            outboundRepositoryEventManager.processNewAttributeTypeDefEvent(sourceName,
+                                                                           localRepositoryConnector.getMetadataCollectionId(),
+                                                                           localRepositoryConnector.getLocalServerName(),
+                                                                           localRepositoryConnector.getLocalServerType(),
+                                                                           localRepositoryConnector.getOrganizationName(),
+                                                                           attributeTypeDef);
+        }
+    }
+
+
+    /**
+     * Announce the types that are homed in the local repository - the ones whose origin is its metadata collection
+     * id, which were defined through the API - to the cohorts, as if they were new.  This is called when a member
+     * connects to a cohort, since that member has not seen these types, or may have missed changes to them.
+     * Members that already have the current versions ignore the events; members that have an older version
+     * update to this one (see processNewTypeDefEvent()).  The attribute types go first, and the types are
+     * ordered so that each follows the types it depends on.
+     *
+     * @param sourceName name of the cohort that the member is connecting to
+     */
+    public void announceHomedTypes(String sourceName)
+    {
+        final String actionDescription = "Announce homed types";
+
+        if ((localRepositoryConnector == null) || (outboundRepositoryEventManager == null))
+        {
+            return;
+        }
+
+        String localMetadataCollectionId = localRepositoryConnector.getMetadataCollectionId();
+
+        if (localMetadataCollectionId == null)
+        {
+            return;
+        }
+
+        int announcedAttributeTypeDefs = 0;
+
+        for (AttributeTypeDef attributeTypeDef : new ArrayList<>(activeAttributeTypeDefNames.values()))
+        {
+            if ((attributeTypeDef != null) && (localMetadataCollectionId.equals(attributeTypeDef.getOrigin())))
+            {
+                outboundRepositoryEventManager.processNewAttributeTypeDefEvent(sourceName,
+                                                                               localMetadataCollectionId,
+                                                                               localRepositoryConnector.getLocalServerName(),
+                                                                               localRepositoryConnector.getLocalServerType(),
+                                                                               localRepositoryConnector.getOrganizationName(),
+                                                                               attributeTypeDef);
+                announcedAttributeTypeDefs++;
+            }
+        }
+
+        List<TypeDef> homedTypeDefs = new ArrayList<>();
+
+        for (TypeDef typeDef : new ArrayList<>(activeTypeDefNames.values()))
+        {
+            if ((typeDef != null) && (localMetadataCollectionId.equals(typeDef.getOrigin())))
+            {
+                homedTypeDefs.add(typeDef);
+            }
+        }
+
+        for (TypeDef typeDef : this.orderByDependency(homedTypeDefs))
+        {
+            outboundRepositoryEventManager.processNewTypeDefEvent(sourceName,
+                                                                  localMetadataCollectionId,
+                                                                  localRepositoryConnector.getLocalServerName(),
+                                                                  localRepositoryConnector.getLocalServerType(),
+                                                                  localRepositoryConnector.getOrganizationName(),
+                                                                  typeDef);
+        }
+
+        if ((announcedAttributeTypeDefs > 0) || (! homedTypeDefs.isEmpty()))
+        {
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.HOMED_TYPES_ANNOUNCED.getMessageDefinition(localServerName,
+                                                                                         Integer.toString(homedTypeDefs.size()),
+                                                                                         Integer.toString(announcedAttributeTypeDefs),
+                                                                                         sourceName));
+        }
+    }
+
+
+    /**
+     * Return a patch that turns the version of a TypeDef held locally into a later version received in full.
+     * Everything a patch can carry is taken from the later version.  A patch cannot remove an attribute, so an
+     * attribute missing from the later version stays; the type of an attribute cannot change, and a later
+     * version that tries to is rejected when the patch is applied.
+     *
+     * @param currentTypeDef version held locally
+     * @param laterTypeDef later version received
+     * @param originatorServerName server that sent the later version, used if it does not say who updated it
+     * @return patch
+     */
+    private TypeDefPatch getCatchUpPatch(TypeDef currentTypeDef,
+                                         TypeDef laterTypeDef,
+                                         String  originatorServerName)
+    {
+        TypeDefPatch typeDefPatch = new TypeDefPatch();
+
+        typeDefPatch.setTypeDefGUID(laterTypeDef.getGUID());
+        typeDefPatch.setTypeDefName(laterTypeDef.getName());
+        typeDefPatch.setApplyToVersion(currentTypeDef.getVersion());
+        typeDefPatch.setUpdateToVersion(laterTypeDef.getVersion());
+        typeDefPatch.setNewVersionName(laterTypeDef.getVersionName() == null ? Long.toString(laterTypeDef.getVersion()) : laterTypeDef.getVersionName());
+        typeDefPatch.setUpdatedBy(laterTypeDef.getUpdatedBy() == null ? originatorServerName : laterTypeDef.getUpdatedBy());
+        typeDefPatch.setUpdateTime(laterTypeDef.getUpdateTime() == null ? new Date() : laterTypeDef.getUpdateTime());
+        typeDefPatch.setTypeDefStatus(laterTypeDef.getStatus());
+        typeDefPatch.setDescription(laterTypeDef.getDescription());
+        typeDefPatch.setDescriptionGUID(laterTypeDef.getDescriptionGUID());
+        typeDefPatch.setSuperType(laterTypeDef.getSuperType());
+        typeDefPatch.setPropertyDefinitions(laterTypeDef.getPropertiesDefinition());
+        typeDefPatch.setTypeDefOptions(laterTypeDef.getOptions());
+        typeDefPatch.setExternalStandardMappings(laterTypeDef.getExternalStandardMappings());
+        typeDefPatch.setValidInstanceStatusList(laterTypeDef.getValidInstanceStatusList());
+        typeDefPatch.setInitialStatus(laterTypeDef.getInitialStatus());
+
+        if (laterTypeDef instanceof RelationshipDef relationshipDef)
+        {
+            typeDefPatch.setEndDef1(relationshipDef.getEndDef1());
+            typeDefPatch.setEndDef2(relationshipDef.getEndDef2());
+            typeDefPatch.setUpdateMultiLink(true);
+            typeDefPatch.setMultiLink(relationshipDef.getMultiLink());
+        }
+        else if (laterTypeDef instanceof ClassificationDef classificationDef)
+        {
+            typeDefPatch.setValidEntityDefs(classificationDef.getValidEntityDefs());
+        }
+
+        return typeDefPatch;
     }
 
 
@@ -3346,16 +3848,15 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
             if (metadataCollection != null)
             {
-                metadataCollection.deleteTypeDef(localServerUserId, attributeTypeDefGUID, attributeTypeDefName);
+                metadataCollection.deleteAttributeTypeDef(localServerUserId, attributeTypeDefGUID, attributeTypeDefName);
 
-                log.debug("type def successfully deleted: " + attributeTypeDefGUID);
+                log.debug("attribute type def successfully deleted: " + attributeTypeDefGUID);
 
-                this.uncacheTypeDef(sourceName, attributeTypeDefGUID, attributeTypeDefName, true);
+                this.uncacheAttributeTypeDef(sourceName, attributeTypeDefGUID, attributeTypeDefName, true);
             }
             else
             {
-                this.uncacheTypeDef(sourceName, attributeTypeDefGUID, attributeTypeDefName, false);
-
+                this.uncacheAttributeTypeDef(sourceName, attributeTypeDefGUID, attributeTypeDefName, false);
             }
         }
         catch (UserNotAuthorizedException  error)
@@ -3418,6 +3919,20 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 log.debug("Delete not applied because TypeDef does not exist: " + attributeTypeDefName);
                 log.debug("TypeDefNotKnownException: ", error);
             }
+        }
+        catch (TypeDefInUseException error)
+        {
+            /*
+             * A type in the local repository still has an attribute of this type, so the delete is ignored and
+             * the attribute type announced again for the members that have already deleted it.
+             */
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.TYPE_DELETE_IGNORED.getMessageDefinition(originatorServerName,
+                                                                                       attributeTypeDefName,
+                                                                                       attributeTypeDefGUID,
+                                                                                       error.getReportedErrorMessage()));
+
+            this.reannounceAttributeTypeDef(sourceName, attributeTypeDefGUID, attributeTypeDefName);
         }
         catch (Exception error)
         {

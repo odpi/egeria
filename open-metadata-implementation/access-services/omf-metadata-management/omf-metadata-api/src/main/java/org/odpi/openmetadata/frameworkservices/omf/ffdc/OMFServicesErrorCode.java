@@ -27,6 +27,33 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum OMFServicesErrorCode implements ExceptionMessageSet
 {
     /**
+     * OMF-SERVICES-400-001 - The {0} type {1} named in the {2} parameter of the {3} request is not a known type
+     */
+    UNKNOWN_TYPE_REFERENCE(400, "OMF-SERVICES-400-001",
+                           "The {0} type {1} named in the {2} parameter of the {3} request is not a known type",
+                           "A new or updated type definition may only refer to types that are already defined.  The request is rejected.",
+                           "Check the spelling of the type name.  If the type is new, define it first and then retry this request.  The known types can be retrieved with getAllTypes.",
+                           "https://egeria-project.org/services/framework-services/"),
+
+    /**
+     * OMF-SERVICES-400-002 - The value {0} in the {1} parameter of the {2} request has no equivalent in the open metadata repository services
+     */
+    UNMAPPABLE_TYPE_VALUE(400, "OMF-SERVICES-400-002",
+                          "The value {0} in the {1} parameter of the {2} request has no equivalent in the open metadata repository services",
+                          "The type definition cannot be stored because one of its values cannot be represented in the repository.",
+                          "Choose one of the other values for this property and retry the request.",
+                          "https://egeria-project.org/services/framework-services/"),
+
+    /**
+     * OMF-SERVICES-400-003 - The type definition passed on the {0} request is of class {1}, which is not an entity, relationship or classification definition
+     */
+    UNSUPPORTED_TYPE_DEF_CLASS(400, "OMF-SERVICES-400-003",
+                               "The type definition passed on the {0} request is of class {1}, which is not an entity, relationship or classification definition",
+                               "The request is rejected because only entity, relationship and classification definitions can be added this way.",
+                               "Pass an OpenMetadataEntityDef, OpenMetadataRelationshipDef or OpenMetadataClassificationDef and retry the request.",
+                               "https://egeria-project.org/services/framework-services/"),
+
+    /**
      * OMF-SERVICES-404-001 - The open metadata repository services are not initialized for the {0} operation
      */
     OMRS_NOT_INITIALIZED(404, "OMF-SERVICES-404-001",

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconn
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSDynamicTypeMetadataCollectionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSDynamicTypeStore;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -126,6 +127,20 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                       error);
             }
         }
+    }
+
+
+    /**
+     * Return the store that keeps the types defined through the API in this repository, and that knows which
+     * types have instances.  The type definitions are kept in the repository's own database schema, alongside
+     * the instances, in the type_definition table.
+     *
+     * @return type store
+     */
+    @Override
+    protected OMRSDynamicTypeStore getDynamicTypeStore()
+    {
+        return repositoryStore;
     }
 
 

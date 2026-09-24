@@ -45,6 +45,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      * and the incoming TypeDef Event Processor for the Archive Manager and EventListener
      */
     private final OMRSTypeDefManager                  typeDefManager;
+    private final OMRSRepositoryContentManager        repositoryContentManager;
     private final OMRSTypeDefEventProcessor           incomingTypeDefEventProcessor;
     private final OMRSRepositoryEventManager          outboundRepositoryEventManager;
     private final OMRSRepositoryEventExchangeRule     saveExchangeRule;
@@ -88,6 +89,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
          * and the incoming TypeDef Event Processor for the Archive Manager and EventListener
          */
         this.typeDefManager = repositoryContentManager;
+        this.repositoryContentManager = repositoryContentManager;
         this.incomingTypeDefEventProcessor = repositoryContentManager;
 
         /*
@@ -656,4 +658,19 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      */
     @Override
     public String getOrganizationName() { return super.organizationName; }
+
+
+    /**
+     * Announce the types that are homed in the local repository to the cohorts, as if they were new.
+     *
+     * @param sourceName name of the cohort that the member is joining
+     */
+    @Override
+    public void announceHomedTypes(String sourceName)
+    {
+        if (repositoryContentManager != null)
+        {
+            repositoryContentManager.announceHomedTypes(sourceName);
+        }
+    }
 }

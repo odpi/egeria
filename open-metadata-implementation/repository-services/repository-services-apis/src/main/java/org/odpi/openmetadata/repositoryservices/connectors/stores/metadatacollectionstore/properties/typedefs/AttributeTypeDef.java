@@ -40,6 +40,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
     protected String                   description     = null;
     protected String                   descriptionGUID = null;
     protected String                   descriptionWiki = null;
+    protected String                   origin          = null;
 
 
     /**
@@ -104,6 +105,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
             this.description = template.getDescription();
             this.descriptionGUID = template.getDescriptionGUID();
             this.descriptionWiki = template.getDescriptionWiki();
+            this.origin = template.getOrigin();
         }
     }
 
@@ -286,6 +288,32 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
 
 
     /**
+     * Return the unique identifier of the metadata collection or open metadata archive that originated this
+     * AttributeTypeDef.  It is null for the attribute types from the open metadata archives, which predate this
+     * property; it is set for the enum definitions added through the API, which are homed in the repository that
+     * the origin identifies.
+     *
+     * @return String guid
+     */
+    public String getOrigin()
+    {
+        return origin;
+    }
+
+
+    /**
+     * Set up the unique identifier of the metadata collection or open metadata archive that originated this
+     * AttributeTypeDef.
+     *
+     * @param origin String guid
+     */
+    public void setOrigin(String origin)
+    {
+        this.origin = origin;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -302,6 +330,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
                 ", descriptionWiki='" + descriptionWiki + '\'' +
+                ", origin='" + origin + '\'' +
                 '}';
     }
 
@@ -331,7 +360,8 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
                        Objects.equals(name, that.name) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(descriptionGUID, that.descriptionGUID) &&
-                       Objects.equals(descriptionWiki, that.descriptionWiki);
+                       Objects.equals(descriptionWiki, that.descriptionWiki) &&
+                       Objects.equals(origin, that.origin);
     }
 
 
@@ -343,7 +373,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(version, versionName, category, guid, name, description, descriptionGUID, descriptionWiki);
+        return Objects.hash(version, versionName, category, guid, name, description, descriptionGUID, descriptionWiki, origin);
     }
 }
 

@@ -14,6 +14,8 @@ import java.util.List;
 /**
  * OpenMetadataTypesClient provides access to the open metadata type definitions used in the metadata repositories.
  * It is possible to retrieve all types or search/retrieve types based on their name and/or unique identifier.
+ * It is also possible to maintain the types that are defined through the API: adding new type definitions and
+ * enum definitions, updating the type definitions, and deleting both once they are no longer used.
  */
 public class OpenMetadataTypesClient extends ConnectorContextClientBase
 {
@@ -253,5 +255,104 @@ public class OpenMetadataTypesClient extends ConnectorContextClientBase
                                                                                       UserNotAuthorizedException
     {
         return openMetadataClient.getAttributeTypeDefByName(connectorUserId, name);
+    }
+
+
+    /**
+     * Add a new type definition for an entity, relationship or classification.  The type definition is homed in
+     * the metadata access store's local repository: it is validated against the types already defined, stored
+     * with the metadata so that it survives a restart, and announced to the other members of the cohort.
+     * If no unique identifier is supplied, one is generated; if no version is supplied, it is version 1.
+     *
+     * @param newTypeDef the new type definition.
+     * @return unique identifier of the new type definition
+     * @throws InvalidParameterException the type definition is invalid, already defined, or conflicts with the
+     *                                   types that are defined.
+     * @throws PropertyServerException a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the connector is not permitted to perform this operation.
+     */
+    public String addTypeDef(OpenMetadataTypeDef newTypeDef) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        return openMetadataClient.addTypeDef(connectorUserId, newTypeDef);
+    }
+
+
+    /**
+     * Update a type definition that was added through the API.  The types from the open metadata archives, and
+     * from other members of the cohort, are maintained by their originators and cannot be updated this way.
+     *
+     * @param typeDefPatch the changes to make and the version they apply to.
+     * @return the updated type definition
+     * @throws InvalidParameterException the type definition is not known, was not added through the API, is at a
+     *                                   different version, or the patch is incompatible with it.
+     * @throws PropertyServerException a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the connector is not permitted to perform this operation.
+     */
+    public OpenMetadataTypeDef updateTypeDef(OpenMetadataTypeDefPatch typeDefPatch) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        return openMetadataClient.updateTypeDef(connectorUserId, typeDefPatch);
+    }
+
+
+    /**
+     * Delete a type definition that was added through the API.  This is only possible while nothing uses it:
+     * there must be no instances of the type, including soft-deleted ones, and no other type definition may
+     * refer to it.
+     *
+     * @param typeDefGUID unique identifier of the type definition.
+     * @param typeDefName unique name of the type definition.
+     * @throws InvalidParameterException the type definition is not known or was not added through the API.
+     * @throws PropertyServerException a problem communicating with the metadata repository, or the type
+     *                                 definition is still in use.
+     * @throws UserNotAuthorizedException the connector is not permitted to perform this operation.
+     */
+    public void deleteTypeDef(String typeDefGUID,
+                              String typeDefName) throws InvalidParameterException,
+                                                         PropertyServerException,
+                                                         UserNotAuthorizedException
+    {
+        openMetadataClient.deleteTypeDef(connectorUserId, typeDefGUID, typeDefName);
+    }
+
+
+    /**
+     * Add a new enum definition, which can then be used as the type of attributes in new type definitions.
+     * As with addTypeDef(), the enum definition is homed in the metadata access store's local repository.
+     *
+     * @param newEnumDef the new enum definition.
+     * @return unique identifier of the new enum definition
+     * @throws InvalidParameterException the enum definition is invalid or already defined.
+     * @throws PropertyServerException a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the connector is not permitted to perform this operation.
+     */
+    public String addEnumDef(OpenMetadataEnumDef newEnumDef) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        return openMetadataClient.addEnumDef(connectorUserId, newEnumDef);
+    }
+
+
+    /**
+     * Delete an enum definition that was added through the API.  This is only possible while no type definition
+     * has an attribute of this type.
+     *
+     * @param enumDefGUID unique identifier of the enum definition.
+     * @param enumDefName unique name of the enum definition.
+     * @throws InvalidParameterException the enum definition is not known or was not added through the API.
+     * @throws PropertyServerException a problem communicating with the metadata repository, or the enum
+     *                                 definition is still in use.
+     * @throws UserNotAuthorizedException the connector is not permitted to perform this operation.
+     */
+    public void deleteEnumDef(String enumDefGUID,
+                              String enumDefName) throws InvalidParameterException,
+                                                         PropertyServerException,
+                                                         UserNotAuthorizedException
+    {
+        openMetadataClient.deleteEnumDef(connectorUserId, enumDefGUID, enumDefName);
     }
 }

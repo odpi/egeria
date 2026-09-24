@@ -487,6 +487,28 @@ public class OMRSOperationalServices
                                               localRepositoryConnector.getIncomingInstanceEventProcessor());
 
             /*
+             * The types defined through the API build on the archive types, so they are restored now the
+             * archives are in place.  They are restored before the stored type hierarchy is checked below so
+             * that the check covers the instances of these types too.
+             */
+            try
+            {
+                localRepositoryContentManager.restoreStoredTypes(localMetadataCollectionName,
+                                                                 localMetadataCollectionId,
+                                                                 localServerType,
+                                                                 localOrganizationName,
+                                                                 localRepositoryConnector.getMetadataCollection().getStoredTypes(localServerUserId));
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(actionDescription,
+                                      OMRSAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                               actionDescription,
+                                                                                               error.getMessage()),
+                                      error);
+            }
+
+            /*
              * The types are now in place, and nothing has been served from the repository yet.  This is the
              * moment to let the repository check that what it has stored still agrees with them.
              *
