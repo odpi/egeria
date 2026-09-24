@@ -3927,6 +3927,7 @@ public class OpenMetadataStoreRESTServices
                                                                   externalSourceGUID,
                                                                   externalSourceName,
                                                                   metadataElementGUID,
+                                                                  cascadedDelete,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   effectiveTime,

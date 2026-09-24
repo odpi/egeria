@@ -3386,6 +3386,39 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                   String  methodName) throws UserNotAuthorizedException,
                                                                              PropertyServerException
     {
+        return this.getAnchoredMembers(userId, anchorGUID, false, forLineage, forDuplicateProcessing, startingFrom, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Return the elements anchored to the supplied element, optionally including those already soft-deleted.
+     * <br><br>
+     * A purge works on elements that are already soft-deleted, so its cascade has to be able to see them.  A
+     * delete works on live elements and asks for the default view, which is the behaviour every existing caller
+     * relies on.
+     *
+     * @param userId calling user
+     * @param anchorGUID the anchor whose members are wanted
+     * @param includeDeleted true to return soft-deleted members as well as live ones
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param startingFrom paging start point
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return list of anchored members
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem with the metadata store
+     */
+    private List<EntityDetail> getAnchoredMembers(String  userId,
+                                                  String  anchorGUID,
+                                                  boolean includeDeleted,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  int     startingFrom,
+                                                  Date    effectiveTime,
+                                                  String  methodName) throws UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
         PrimitivePropertyValue anchorGUIDValue = new PrimitivePropertyValue();
 
         anchorGUIDValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
@@ -3414,11 +3447,18 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         searchClassifications.setConditions(Collections.singletonList(classificationCondition));
         searchClassifications.setMatchCriteria(MatchCriteria.ALL);
 
+        List<InstanceStatus> limitResultsByStatus = null;
+
+        if (includeDeleted)
+        {
+            limitResultsByStatus = Arrays.asList(InstanceStatus.ACTIVE, InstanceStatus.DELETED);
+        }
+
         return repositoryHandler.findEntities(userId,
                                               null,
                                               null,
                                               null,
-                                              null,
+                                              limitResultsByStatus,
                                               searchClassifications,
                                               null,
                                               null,
@@ -3521,8 +3561,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         anchorsToProcess.add(anchorGUID);
 
-        List<EntityDetail> members = firstPage;
-
         while (! anchorsToProcess.isEmpty())
         {
             String currentAnchorGUID = anchorsToProcess.poll();
@@ -3532,114 +3570,61 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 continue;
             }
 
-            if (members == null)
-            {
-                members = this.getAnchoredMembers(userId, currentAnchorGUID, forLineage, forDuplicateProcessing, 0, effectiveTime, methodName);
-            }
+            /*
+             * Discovery pages by advancing an offset, because nothing is deleted while it runs.
+             *
+             * The traversal this replaced deleted each member as it claimed it, so its result set shrank as
+             * it went and the next page was correctly read from offset zero.  Deferring deletion to the
+             * reverse walk below - which is what allows an anchor to be deleted after its own members - takes
+             * that away: the query answers with the same first page however many times it is asked, so
+             * re-reading from zero discovers the first page and stops.  Anything beyond it is never found,
+             * and since the anchor itself is still deleted, those members are left anchored to an element
+             * that has gone.  A survey report with more annotations than one page is exactly that case.
+             */
+            int startingFrom = 0;
+
+            List<EntityDetail> members = (currentAnchorGUID.equals(anchorGUID))
+                                                 ? firstPage
+                                                 : this.getAnchoredMembers(userId, currentAnchorGUID, forLineage, forDuplicateProcessing, startingFrom, effectiveTime, methodName);
 
             while ((members != null) && (! members.isEmpty()))
             {
-                boolean anyProcessed = false;
-
                 /*
-                 * Claim the whole page before deleting any of it.
+                 * Claim the whole page before anything is done with it.
                  *
-                 * The members of one anchor are usually linked to each other, so removing the relationships of
-                 * the first one leads straight to its siblings.  Those siblings are anchored to the element
+                 * The members of one anchor are usually linked to each other, so removing the relationships
+                 * of the first one leads straight to its siblings.  Those siblings are anchored to the element
                  * being deleted, so the traversal would happily delete them there and then - recursively, and
                  * to whatever depth the graph happens to have, which is the behaviour this method exists to
-                 * replace.  Registering the page first means that traversal recognises them as already spoken
-                 * for and leaves them alone; each is then dealt with by the loop below, once, at this level.
+                 * replace.  Registering them first means that traversal recognises them as already spoken
+                 * for and leaves them alone; each is then dealt with once, by the reverse walk below.
                  */
-                List<EntityDetail> claimedMembers = new ArrayList<>();
-
                 for (EntityDetail member : members)
                 {
                     if ((member != null) && (! currentAnchorGUID.equals(member.getGUID())) && (deletedEntityGUIDs.add(member.getGUID())))
                     {
-                        claimedMembers.add(member);
-                    }
-                }
-
-                for (EntityDetail member : claimedMembers)
-                {
-                    anyProcessed = true;
-
-                    AnchorIdentifiers memberAnchor = this.getAnchorsFromAnchorsClassification(member, methodName);
-
-                    if ((memberAnchor != null) && (member.getGUID().equals(memberAnchor.anchorGUID)))
-                    {
                         /*
-                         * This member is its own anchor, so it has a subgraph of its own.  Queue it so that
-                         * subgraph is found, and leave the element itself until its members have gone.
+                         * Every member is queued as an anchor in its own right, and its own deletion deferred
+                         * until the reverse walk, so that anything anchored to it is found first.
+                         *
+                         * A member does not have to be its own anchor to own a subgraph.  A survey report is
+                         * anchored to the asset it describes, and the report's annotations are anchored to the
+                         * report - so deleting the asset has to reach the annotations through the report, two
+                         * anchors deep.  Queueing only self-anchored members stopped at the report and left
+                         * every annotation behind: orphaned, invisible to a marker sweep, and eventually the
+                         * reason a later survey of the same asset fails.  A member with nothing anchored to it
+                         * costs one query that returns nothing, and anchorsProcessed keeps the traversal
+                         * finite.
                          */
                         anchorsToProcess.add(member.getGUID());
                         nestedAnchorGUIDs.add(member.getGUID());
-                        continue;
-                    }
-
-                    /*
-                     * The member is removed through the standard single-element delete so that it keeps every
-                     * check and every event that a delete has always produced: the security verifier is called
-                     * for it, its own dependent relationships are validated, and its relationships are removed
-                     * individually before the entity itself.  What has changed is only how it was found.
-                     */
-                    this.deleteAnchoredBeanInRepository(userId,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        member.getGUID(),
-                                                        memberGUIDParameterName,
-                                                        member.getType().getTypeDefGUID(),
-                                                        member.getType().getTypeDefName(),
-                                                        cascadedDelete,
-                                                        null,
-                                                        null,
-                                                        currentAnchorGUID,
-                                                        deletedEntityGUIDs,
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        effectiveTime,
-                                                        methodName);
-                }
-
-                if (! anyProcessed)
-                {
-                    /*
-                     * Nothing on this page was this traversal's to deal with - every entry was either the
-                     * anchor itself or already claimed.  Re-querying would return the same page for ever.
-                     */
-                    break;
-                }
-
-                /*
-                 * Deleting shrinks the result set, so the next page is read from the start rather than by
-                 * advancing an offset over a set that is moving underneath the query.  Any nested anchor
-                 * claimed above is still there, which is why a page of nothing but nested anchors ends the
-                 * loop through anyProcessed rather than being read again.
-                 */
-                members = this.getAnchoredMembers(userId, currentAnchorGUID, forLineage, forDuplicateProcessing, 0, effectiveTime, methodName);
-
-                if ((members != null) && (! members.isEmpty()))
-                {
-                    boolean somethingLeftToClaim = false;
-
-                    for (EntityDetail member : members)
-                    {
-                        if ((member != null) && (! deletedEntityGUIDs.contains(member.getGUID())))
-                        {
-                            somethingLeftToClaim = true;
-                            break;
-                        }
-                    }
-
-                    if (! somethingLeftToClaim)
-                    {
-                        break;
                     }
                 }
+
+                startingFrom = startingFrom + members.size();
+
+                members = this.getAnchoredMembers(userId, currentAnchorGUID, forLineage, forDuplicateProcessing, startingFrom, effectiveTime, methodName);
             }
-
-            members = null;
         }
 
         /*
@@ -3649,14 +3634,31 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         {
             String nestedAnchorGUID = nestedAnchorGUIDs.get(nestedAnchor);
 
-            EntityDetail nestedAnchorEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                                nestedAnchorGUID,
-                                                                                memberGUIDParameterName,
-                                                                                OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                                forLineage,
-                                                                                forDuplicateProcessing,
-                                                                                effectiveTime,
-                                                                                methodName);
+            /*
+             * The member is re-read because the traversal may already have removed it: deleting one member
+             * removes its own relationships, and a member that was reached that way is gone before this walk
+             * reaches it.  An ordinary read of a soft-deleted entity does not answer with null - it refuses -
+             * so the refusal is caught here rather than allowed to abandon the rest of the walk, which would
+             * leave everything after it in place and fail the caller's delete outright.
+             */
+            EntityDetail nestedAnchorEntity = null;
+
+            try
+            {
+                nestedAnchorEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                       nestedAnchorGUID,
+                                                                       memberGUIDParameterName,
+                                                                       OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       effectiveTime,
+                                                                       methodName);
+            }
+            catch (Exception alreadyGone)
+            {
+                log.debug("Anchored member " + nestedAnchorGUID + " is no longer retrievable ("
+                                  + alreadyGone.getClass().getName() + "); the traversal has already removed it", alreadyGone);
+            }
 
             if (nestedAnchorEntity != null)
             {
@@ -3923,8 +3925,82 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
     {
+        this.purgeBeanInRepository(userId,
+                                   null,
+                                   null,
+                                   entityGUID,
+                                   entityGUIDParameterName,
+                                   entityTypeGUID,
+                                   entityTypeName,
+                                   false,
+                                   forLineage,
+                                   forDuplicateProcessing,
+                                   effectiveTime,
+                                   methodName);
+    }
+
+
+    /**
+     * Permanently remove an entity from the repository, optionally taking everything anchored to it as well.
+     * <br><br>
+     * A delete has always been able to cascade to anchored elements; a purge could not, and its
+     * cascadedDelete flag was silently ignored.  That left anchored content behind whenever an element was
+     * purged rather than deleted - orphaned, and unreachable by any search that goes through an anchor, so
+     * nothing could tidy it up afterwards either.
+     * <br><br>
+     * The traversal is the same shape as the delete cascade: anchors are discovered breadth-first and removed
+     * deepest-first, so a member always goes before the anchor it belongs to.  It differs in two ways that the
+     * purge lifecycle forces.  The members are searched for including those already soft-deleted, because that
+     * is the state a purge works on.  And each member is soft-deleted before it is purged, because the OMRS
+     * lifecycle the repository connectors enforce only allows a purge of an instance that is already deleted -
+     * the soft delete is therefore expected to fail harmlessly for anything already in that state.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability that owns the content - null for local
+     * @param externalSourceName name of the software capability that owns the content - null for local
+     * @param entityGUID unique identifier of the entity to purge
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param entityTypeGUID unique identifier of the entity's type
+     * @param entityTypeName unique name of the entity's type
+     * @param cascadedDelete purge the elements anchored to this one as well
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the unique identifier is null or invalid in some way
+     * @throws PropertyServerException a problem with the metadata store, or the entity has not already been deleted
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request
+     */
+    public void purgeBeanInRepository(String  userId,
+                                      String  externalSourceGUID,
+                                      String  externalSourceName,
+                                      String  entityGUID,
+                                      String  entityGUIDParameterName,
+                                      String  entityTypeGUID,
+                                      String  entityTypeName,
+                                      boolean cascadedDelete,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
+    {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
+
+        if (cascadedDelete)
+        {
+            this.purgeAnchoredBeansInRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                entityGUID,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
+        }
 
         /*
          * A purge removes an entity that has already been soft-deleted, so the entity it is about to
@@ -3941,6 +4017,154 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         }
 
         repositoryHandler.purgeEntity(userId, entityGUID, entityTypeGUID, entityTypeName, methodName);
+    }
+
+
+    /**
+     * Permanently remove everything anchored to the supplied element, deepest first.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability that owns the content - null for local
+     * @param externalSourceName name of the software capability that owns the content - null for local
+     * @param anchorGUID the element whose anchored content is to be purged
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws PropertyServerException a problem with the metadata store
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request
+     */
+    private void purgeAnchoredBeansInRepository(String  userId,
+                                                String  externalSourceGUID,
+                                                String  externalSourceName,
+                                                String  anchorGUID,
+                                                boolean forLineage,
+                                                boolean forDuplicateProcessing,
+                                                Date    effectiveTime,
+                                                String  methodName) throws PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        final String memberGUIDParameterName = "anchoredMemberGUID";
+
+        /*
+         * Discovery is breadth-first and every member is queued as an anchor in its own right, because a
+         * member does not have to be its own anchor to own a subgraph - a survey report is anchored to its
+         * asset and its annotations are anchored to the report, so the chain is two anchors deep.
+         *
+         * Nothing is removed during discovery, so - unlike the delete cascade, which relies on the result set
+         * shrinking - each anchor's members are paged through with an advancing offset.
+         */
+        Deque<String>      anchorsToProcess = new ArrayDeque<>();
+        Set<String>        anchorsProcessed = new HashSet<>();
+        Set<String>        claimed          = new HashSet<>();
+        List<EntityDetail> orderedMembers   = new ArrayList<>();
+
+        anchorsToProcess.add(anchorGUID);
+        claimed.add(anchorGUID);
+
+        while (! anchorsToProcess.isEmpty())
+        {
+            String currentAnchorGUID = anchorsToProcess.poll();
+
+            if (! anchorsProcessed.add(currentAnchorGUID))
+            {
+                continue;
+            }
+
+            int startingFrom = 0;
+
+            List<EntityDetail> members = this.getAnchoredMembers(userId, currentAnchorGUID, true, forLineage, forDuplicateProcessing, startingFrom, effectiveTime, methodName);
+
+            while ((members != null) && (! members.isEmpty()))
+            {
+                for (EntityDetail member : members)
+                {
+                    if ((member != null) && (claimed.add(member.getGUID())))
+                    {
+                        orderedMembers.add(member);
+                        anchorsToProcess.add(member.getGUID());
+                    }
+                }
+
+                startingFrom = startingFrom + members.size();
+
+                members = this.getAnchoredMembers(userId, currentAnchorGUID, true, forLineage, forDuplicateProcessing, startingFrom, effectiveTime, methodName);
+            }
+        }
+
+        /*
+         * Deepest first, so a member is always gone before the anchor it belongs to.
+         */
+        for (int member = orderedMembers.size() - 1; member >= 0; member--)
+        {
+            EntityDetail memberEntity = orderedMembers.get(member);
+
+            /*
+             * A purge only succeeds on an instance that is already soft-deleted.  The member is re-read rather
+             * than trusted from discovery, because the traversal may have removed it already - anything
+             * anchored to a member that has since gone is gone with it.
+             */
+            EntityDetail currentMember = repositoryHandler.getEntityIncludingDeleted(userId, memberEntity.getGUID(), methodName);
+
+            if (currentMember == null)
+            {
+                continue;
+            }
+
+            if (currentMember.getStatus() != InstanceStatus.DELETED)
+            {
+                try
+                {
+                    repositoryHandler.removeEntity(userId,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   currentMember.getGUID(),
+                                                   memberGUIDParameterName,
+                                                   currentMember.getType().getTypeDefGUID(),
+                                                   currentMember.getType().getTypeDefName(),
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
+                                                   methodName);
+                }
+                catch (Exception notRemoved)
+                {
+                    /*
+                     * Purging an instance that is not deleted is refused, and that refusal used to escape and
+                     * abandon the rest of the traversal - leaving every member after this one soft-deleted but
+                     * not purged, which is worse than leaving this one alone.  So the member is skipped and
+                     * recorded instead.
+                     */
+                    log.debug("Anchored member " + currentMember.getGUID() + " could not be soft-deleted, so it is left in"
+                                      + " place rather than purged (" + notRemoved.getClass().getName() + ")", notRemoved);
+                    continue;
+                }
+            }
+
+            /*
+             * One member failing must not abandon the others, for the same reason.
+             */
+            try
+            {
+                repositoryHandler.purgeEntity(userId,
+                                              currentMember.getGUID(),
+                                              currentMember.getType().getTypeDefGUID(),
+                                              currentMember.getType().getTypeDefName(),
+                                              methodName);
+            }
+            catch (Exception notPurged)
+            {
+                log.debug("Anchored member " + currentMember.getGUID() + " could not be purged ("
+                                  + notPurged.getClass().getName() + ")", notPurged);
+            }
+        }
     }
 
 

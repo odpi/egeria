@@ -600,7 +600,15 @@ public class AnnotationStore
 
         NewElementOptions newElementOptions = new NewElementOptions(this.getMakeAnchorOptions());
 
-        newElementOptions.setAnchorGUID(assetGUID);
+        /*
+         * The annotation is anchored to the survey report that reports it, and the report is anchored to the
+         * asset it describes.  That makes both deletes work: removing the report takes its annotations with
+         * it, and removing the asset takes the report and, through it, the annotations.  Anchoring the
+         * annotation to the asset directly gave only the second of those, so a report removed on its own left
+         * every annotation it reported behind - orphaned, and invisible to any search that goes through an
+         * anchor.
+         */
+        newElementOptions.setAnchorGUID(surveyReportGUID);
         newElementOptions.setIsOwnAnchor(false);
 
         newElementOptions.setParentGUID(surveyReportGUID);

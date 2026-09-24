@@ -1343,8 +1343,13 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
 
 
     /**
-     * Walk the graph to locate the anchor for an annotation.  Annotations are attached to each other through various levels of nesting
-     * and eventually anchored to an asset via an OpenDiscoveryAnalysisReport.   The asset is the anchor.
+     * Walk the graph to locate the anchor for an annotation.  An annotation is anchored to the survey report
+     * that reported it, and the report is in turn anchored to the asset it describes.
+     * <br>
+     * Anchoring an annotation to its report rather than straight to the asset is what makes both deletes work:
+     * deleting the report takes its annotations with it, and deleting the asset takes the report and - through
+     * it - the annotations.  Anchoring them to the asset directly gave only the second of those, so a report
+     * removed on its own left every annotation it reported behind.
      *
      * @param userId calling user
      * @param annotationGUID unique identifier of the comment (it is assumed that the anchorGUID property of this instance is null)
@@ -1398,7 +1403,17 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                     {
                         if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.SURVEY_REPORT.typeName))
                         {
-                            return this.getAnchorGUIDForSurveyReport(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                            /*
+                             * The report itself is the anchor - it is not followed on to the asset.  The report
+                             * carries its own Anchors classification naming the asset, so the chain from asset
+                             * to report to annotation is complete without repeating it here.
+                             */
+                            AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+                            anchorIdentifiers.anchorGUID     = proxy.getGUID();
+                            anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+                            return anchorIdentifiers;
                         }
                     }
                 }

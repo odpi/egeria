@@ -2667,7 +2667,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
         }
         else if (visibleConnections.size() == 1)
         {
-            return connectionEntities.get(0);
+            return visibleConnections.getFirst();
         }
 
         /*
