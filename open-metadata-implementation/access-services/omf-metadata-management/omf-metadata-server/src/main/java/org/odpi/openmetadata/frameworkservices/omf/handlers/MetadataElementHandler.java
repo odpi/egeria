@@ -3029,6 +3029,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
      * @param externalSourceName      unique name of the software capability that owns this element
      * @param metadataElementGUID unique identifier of the metadata element to purge
+     * @param cascadedDelete purge the elements anchored to this one as well
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -3042,6 +3043,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                              String       externalSourceGUID,
                                              String       externalSourceName,
                                              String       metadataElementGUID,
+                                             boolean      cascadedDelete,
                                              boolean      forLineage,
                                              boolean      forDuplicateProcessing,
                                              Date         effectiveTime,
@@ -3055,10 +3057,13 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
 
         super.purgeBeanInRepository(userId,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     metadataElementGUID,
                                     guidParameterName,
                                     OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                    cascadedDelete,
                                     forLineage,
                                     forDuplicateProcessing,
                                     effectiveTime,

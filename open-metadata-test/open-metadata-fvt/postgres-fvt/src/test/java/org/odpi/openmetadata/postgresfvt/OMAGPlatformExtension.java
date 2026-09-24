@@ -294,25 +294,27 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                 PlatformServicesClient platformServicesClient = getPlatformServicesClient();
 
                 /*
+                 * The repository is emptied before the metadata access store opens it, not afterwards.
+                 *
+                 * Doing it here rather than through the metadata APIs is what makes the run repeatable.  An
+                 * engine host sweeps the repository for unfinished engine actions when its engines load their
+                 * configuration, and it does that as it starts - so a store that still holds the previous
+                 * run's abandoned actions hands them to this run's engine host, which dutifully carries them
+                 * out, creating a previous run's assets moments after start-up.  And a survey's annotations
+                 * cannot be cleared through the APIs at all: they are named after the real tables they
+                 * measured and anchored to their survey report, so no marker or type sweep returns them.
+                 * Emptying the schema deals with both, and with anything else a run leaves that nobody has
+                 * thought of yet.
+                 */
+                PostgresFvtTestSupport.emptyRepository();
+
+                /*
                  * The metadata access store is configured and started first: it is where the other three
                  * servers read their configuration from, so none of them has anything to run until it is up
                  * and the content packs have been loaded into it.
                  */
                 configureMetadataStore();
                 startServer(platformServicesClient, METADATA_STORE_NAME);
-
-                /*
-                 * Clear away everything a previous run left behind BEFORE the governance servers start, and the
-                 * order here is not cosmetic.
-                 *
-                 * An engine host sweeps the repository for unfinished engine actions when its engines load their
-                 * configuration, and it does that as it starts.  So a run whose metadata store still holds the
-                 * previous run's abandoned actions hands them to this run's engine host, which dutifully carries
-                 * them out - creating a previous run's assets moments after start-up, and racing the clean-up
-                 * that is deleting those same elements.  Both produce failures that describe the previous run
-                 * rather than this one.  Cleaning first means the engine host starts against an empty slate.
-                 */
-                PostgresFvtTestSupport.cleanUpLeftoverTestElements();
 
                 /*
                  * Prepare the PostgreSQL server under test.  This needs only the metadata store, so it happens

@@ -256,6 +256,53 @@ final class PostgresFvtTestSupport
      * @return open connection - the caller closes it
      * @throws Exception the server is not reachable or the credentials do not work
      */
+    /**
+     * Empty the repository this suite's metadata access store runs on, by dropping and recreating its
+     * PostgreSQL schema.
+     * <br>
+     * This replaces clearing up through the metadata APIs, which cannot do the job.  A marker sweep finds only
+     * what this suite named, and a type sweep finds only what is not anchored: a survey's annotations are
+     * named after the real database table they measured and are anchored to their survey report, so neither
+     * sweep returns them - they are reachable only through their anchor, and once that anchor has gone they
+     * are reachable by nothing at all.  This suite surveys a whole PostgreSQL server, so one run mints an
+     * annotation per table across every database on it, and they accumulated to more than 17,000 spanning a
+     * month before anyone noticed.
+     * <br>
+     * That backlog is not merely untidy.  A soft-deleted leftover is what breaks the next run: a new survey
+     * report links it, the report printer walks it and fails on "is soft-deleted", and because that step is
+     * the survey step's successor the failure surfaces as "the survey produced no report" - on a different
+     * test, describing something that did not happen.  The runs got slower and less predictable as the backlog
+     * grew, which is exactly the shape of an intermittent failure nobody can reproduce.
+     * <br>
+     * {@code platform-catalog-fvt} empties its repository the same way and for a related reason.  A run of
+     * this suite is meaningful only against a repository holding nothing from an earlier one.
+     *
+     * @throws Exception the schema could not be recreated, which would make the run's results meaningless
+     */
+    static void emptyRepository() throws Exception
+    {
+        if (! OMAGPlatformExtension.getBooleanProperty("postgres.fvt.clear.down", true))
+        {
+            System.out.println("postgres-fvt: leaving the previous run's repository in place -"
+                                       + " postgres.fvt.clear.down is false.  Tests that assert on what this run created may"
+                                       + " see an earlier run's elements too.");
+            return;
+        }
+
+        String schemaName = OMAGPlatformExtension.getProperty("postgres.fvt.repository.schema",
+                                                              "repository_" + OMAGPlatformExtension.METADATA_STORE_NAME);
+
+        try (Connection connection = getServerUnderTestConnection(getDatabaseName());
+             Statement  statement  = connection.createStatement())
+        {
+            statement.execute("DROP SCHEMA IF EXISTS " + schemaName + " CASCADE");
+            statement.execute("CREATE SCHEMA " + schemaName);
+        }
+
+        System.out.println("postgres-fvt: repository schema " + schemaName + " recreated empty");
+    }
+
+
     static Connection getServerUnderTestConnection(String databaseName) throws Exception
     {
         String userId   = OMAGPlatformExtension.getServerUnderTestSecret("userId");
@@ -449,142 +496,6 @@ final class PostgresFvtTestSupport
         {
             // Best-effort clean-up - nothing further can be done if this fails.
         }
-    }
-
-
-    /**
-     * Find and permanently purge every element whose qualified name contains {@link #TEST_MARKER}, in any
-     * status.  Called once, after the servers are activated and before any test runs, so that debris from an
-     * earlier - possibly failed - run does not affect this run's assertions.
-     * <br>
-     * A contains match is used rather than a starts-with one because this suite does not choose most of these
-     * qualified names.  The catalog templates do, and they put the marker in the middle: a server asset is
-     * "PostgreSQL Server::postgres-fvt-catalog", and a database catalogued beneath it is "PostgreSQL
-     * Relational Database::postgres-fvt-catalog::postgres_fvt".
-     *
-     * @throws Exception problem communicating with the server - fatal, since a dirty repository would
-     * invalidate the whole run
-     */
-    static void cleanUpLeftoverTestElements() throws Exception
-    {
-        if (! OMAGPlatformExtension.getBooleanProperty("postgres.fvt.clear.down", true))
-        {
-            System.out.println("postgres-fvt: leaving previous runs' metadata in place - postgres.fvt.clear.down is false."
-                                       + "  Tests that assert on what this run created may see an earlier run's elements too.");
-            return;
-        }
-
-        ConnectorContextBase connectorContext  = ConnectorContextFactory.newContext(DeleteMethod.PURGE);
-        OpenMetadataStore    openMetadataStore = connectorContext.getOpenMetadataStore();
-        PropertyHelper       propertyHelper    = new PropertyHelper();
-
-        SearchProperties searchProperties = new SearchProperties();
-
-        searchProperties.setConditions(propertyHelper.addStringProperty(null,
-                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        TEST_MARKER,
-                                                                        PropertyComparisonOperator.LIKE));
-
-        QueryOptions queryOptions = new QueryOptions();
-
-        queryOptions.setLimitResultsByStatus(List.of(ElementStatus.ACTIVE, ElementStatus.DELETED));
-        queryOptions.setPageSize(MAX_PAGE_SIZE);
-        queryOptions.setForLineage(true);
-
-        /*
-         * Purging shrinks the result set, and a cascaded delete removes elements the current page has not
-         * reached yet, so it is simplest - and safest against paging through a set that is disappearing
-         * underneath the query - to keep re-querying from the start until nothing more comes back.
-         */
-        int purgedCount    = 0;
-        int emptyPassLimit = 50;
-
-        while (emptyPassLimit > 0)
-        {
-            List<OpenMetadataElement> found = openMetadataStore.findMetadataElements(searchProperties, null, queryOptions);
-
-            if ((found == null) || found.isEmpty())
-            {
-                break;
-            }
-
-            for (OpenMetadataElement element : found)
-            {
-                purgeElement(openMetadataStore, element.getElementGUID());
-                purgedCount++;
-            }
-
-            emptyPassLimit--;
-        }
-
-        purgedCount = purgedCount + purgeLeftoverGovernanceWork(openMetadataStore);
-
-        if (purgedCount > 0)
-        {
-            System.out.println("postgres-fvt: purged " + purgedCount + " leftover test element(s) from a previous run before starting");
-        }
-    }
-
-
-    /**
-     * Purge every engine action and governance action process instance in the repository.
-     * <br>
-     * These have to be removed by type rather than by qualified name, because they are the one thing this suite
-     * causes to be created that does <em>not</em> carry {@link #TEST_MARKER}: their names are built from the
-     * process step they run, not from the server name this suite chose.  The marker-based sweep above cannot
-     * see them.
-     * <br>
-     * Leaving them behind is not merely untidy - it changes what the next run does.  An engine action that was
-     * created but never claimed stays at REQUESTED or APPROVED for ever, and an engine host <em>sweeps for
-     * exactly those</em> when its engines load their configuration.  So a run that ends with unclaimed actions
-     * hands them to the next run's engine host, which dutifully carries them out: a previous run's assets get
-     * created moments after start-up, and a survey whose action target this run has just purged fails with
-     * "no asset action target supplied".  Both look like defects in the current run and are nothing of the
-     * kind.
-     * <br>
-     * Purging by type is safe here because this is a dedicated FVT repository: nothing but this suite creates
-     * engine actions in it.
-     *
-     * @param openMetadataStore store to purge through
-     * @return number of elements purged
-     * @throws Exception problem communicating with the server
-     */
-    private static int purgeLeftoverGovernanceWork(OpenMetadataStore openMetadataStore) throws Exception
-    {
-        int purgedCount = 0;
-
-        for (String typeName : List.of(OpenMetadataType.ENGINE_ACTION.typeName,
-                                       OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName))
-        {
-            QueryOptions queryOptions = new QueryOptions();
-
-            queryOptions.setMetadataElementTypeName(typeName);
-            queryOptions.setLimitResultsByStatus(List.of(ElementStatus.ACTIVE, ElementStatus.DELETED));
-            queryOptions.setPageSize(MAX_PAGE_SIZE);
-            queryOptions.setForLineage(true);
-
-            int emptyPassLimit = 50;
-
-            while (emptyPassLimit > 0)
-            {
-                List<OpenMetadataElement> found = openMetadataStore.findMetadataElements(null, null, queryOptions);
-
-                if ((found == null) || found.isEmpty())
-                {
-                    break;
-                }
-
-                for (OpenMetadataElement element : found)
-                {
-                    purgeElement(openMetadataStore, element.getElementGUID());
-                    purgedCount++;
-                }
-
-                emptyPassLimit--;
-            }
-        }
-
-        return purgedCount;
     }
 
 
