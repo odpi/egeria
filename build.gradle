@@ -13,6 +13,10 @@ plugins {
     // helps resolve log implementation clashes and the jakarta/javax capability splits
     id 'org.gradlex.jvm-dependency-conflict-resolution'
     id 'checkstyle'
+    // The aggregated codeCoverageReport task below lives on the root project, so the root project is where
+    // its jacocoClasspath and report output locations come from.  Without this the task cannot run at all:
+    // it fails configuration validation with "property 'jacocoClasspath' doesn't have a configured value".
+    id 'jacoco'
 }
 
 /*
@@ -417,7 +421,10 @@ task codeCoverageReport(type: JacocoReport) {
 }
 // always run the tests before generating the report
 codeCoverageReport.dependsOn {
-    subprojects*.test
+    // Only projects that apply the java plugin have a test task.  Asking the others - the bom platform,
+    // and the grouping projects that carry no source - for one fails the whole task at configuration time
+    // with "Could not get unknown property 'test'", which is why this report could not be generated at all.
+    subprojects.findAll { it.plugins.hasPlugin('java') }*.test
 }
 
 // Dependency checking - see https://github.com/autonomousapps/dependency-analysis-android-gradle-plugin

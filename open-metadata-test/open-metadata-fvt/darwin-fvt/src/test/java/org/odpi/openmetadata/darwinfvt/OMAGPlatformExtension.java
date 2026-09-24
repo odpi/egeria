@@ -323,9 +323,18 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
         for (String fixtureGUID : DarwinFvtTestSupport.FIXTURE_ELEMENT_GUIDS)
         {
+            /*
+             * The purge is attempted whether or not the element can be read.  A leftover that a previous run
+             * soft-deleted - which is what the tests that remove part of the fixture leave behind, and what a
+             * run interrupted between its soft delete and its purge leaves behind - cannot be retrieved at
+             * all: the repository answers "is soft-deleted" rather than returning it.  Skipping those was
+             * leaving them in place, and because their GUIDs were still taken the archive reload could not
+             * recreate them, so every later run started with a fixture missing its mapped columns and no way
+             * to recover.
+             */
             OpenMetadataElement leftover = this.getElementIfPresent(openMetadataStore, fixtureGUID);
 
-            if ((leftover != null) && (this.purgeElement(openMetadataStore, leftover)))
+            if (this.purgeElement(openMetadataStore, fixtureGUID, leftover))
             {
                 purged++;
             }
@@ -356,12 +365,13 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         catch (Exception notThere)
         {
             /*
-             * Reported rather than discarded: an element that cannot be retrieved is indistinguishable from
-             * one that is not there, and silently treating the first as the second leaves the fixture in
-             * place while claiming it was cleared.
+             * An element that cannot be retrieved is indistinguishable from one that is not there - a
+             * soft-deleted leftover answers "is soft-deleted" rather than returning itself.  The caller
+             * purges by GUID either way, so this is not a failure; it is noted because it says which
+             * elements a previous run left behind.
              */
-            System.err.println("darwin-fvt: could not retrieve fixture element " + elementGUID + " - "
-                                       + notThere.getClass().getSimpleName() + ": " + notThere.getMessage());
+            System.out.println("darwin-fvt: fixture element " + elementGUID + " could not be read ("
+                                       + notThere.getClass().getSimpleName() + ") - purging it by GUID");
 
             return null;
         }
@@ -373,10 +383,12 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      * and the archive would not lay it down again, so the fixture has to be purged outright.
      *
      * @param openMetadataStore store to delete through
-     * @param element element to remove
+     * @param elementGUID element to remove - supplied separately because the element may not be readable
+     * @param element the element if it could be read, otherwise null
      * @return true if it went
      */
     private boolean purgeElement(OpenMetadataStore   openMetadataStore,
+                                 String              elementGUID,
                                  OpenMetadataElement element)
     {
         DeleteOptions deleteOptions = new DeleteOptions();
@@ -387,9 +399,16 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
         /*
          * The fixture is owned by the content pack that supplied it, so it can only be removed on behalf of
-         * the repository replicating it - the same rule Darwin follows when it updates one.
+         * the repository replicating it - the same rule Darwin follows when it updates one.  A soft-deleted
+         * leftover cannot be read, so its origin is not available to copy; it came from this suite's own
+         * archive, which is the only thing that lays these GUIDs down, so that is what it is removed for.
          */
-        if ((element.getOrigin() != null) && (element.getOrigin().getOriginCategory() != ElementOriginCategory.LOCAL_COHORT))
+        if (element == null)
+        {
+            deleteOptions.setExternalSourceGUID(DarwinArchiveWriter.ARCHIVE_GUID);
+            deleteOptions.setExternalSourceName(DarwinArchiveWriter.ARCHIVE_NAME);
+        }
+        else if ((element.getOrigin() != null) && (element.getOrigin().getOriginCategory() != ElementOriginCategory.LOCAL_COHORT))
         {
             deleteOptions.setExternalSourceGUID(element.getOrigin().getHomeMetadataCollectionId());
             deleteOptions.setExternalSourceName(element.getOrigin().getHomeMetadataCollectionName());
@@ -408,21 +427,29 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
             try
             {
-                openMetadataStore.deleteMetadataElementInStore(element.getElementGUID(), softDeleteOptions);
+                openMetadataStore.deleteMetadataElementInStore(elementGUID, softDeleteOptions);
             }
             catch (Exception alreadyDeleted)
             {
-                // ordinary - the element may already be soft-deleted
+                // ordinary - the element may already be soft-deleted, or not be there at all
             }
 
-            openMetadataStore.deleteMetadataElementInStore(element.getElementGUID(), deleteOptions);
+            openMetadataStore.deleteMetadataElementInStore(elementGUID, deleteOptions);
 
             return true;
         }
         catch (Exception error)
         {
-            System.err.println("darwin-fvt: could not purge leftover element " + element.getElementGUID()
-                                       + " - " + error.getClass().getSimpleName() + ": " + error.getMessage());
+            /*
+             * An element that could not be read and cannot be purged is simply not there, which is the
+             * ordinary state on a first run against an empty repository.  One that was read and then failed
+             * to purge is a real problem: the fixture is about to be reloaded on top of it.
+             */
+            if (element != null)
+            {
+                System.err.println("darwin-fvt: could not purge leftover element " + elementGUID
+                                           + " - " + error.getClass().getSimpleName() + ": " + error.getMessage());
+            }
 
             return false;
         }
