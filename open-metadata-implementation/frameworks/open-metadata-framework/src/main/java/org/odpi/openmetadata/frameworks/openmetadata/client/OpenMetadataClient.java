@@ -315,6 +315,110 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                                                                UserNotAuthorizedException;
 
 
+    /* =============================================================================
+     * Maintaining the types defined through the API
+     */
+
+
+    /**
+     * Add a new type definition for an entity, relationship or classification.  The type definition is homed in
+     * the metadata access store's local repository: it is validated against the types already defined, stored
+     * with the metadata so that it survives a restart, and announced to the other members of the cohort.
+     * If no unique identifier is supplied, one is generated; if no version is supplied, it is version 1.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newTypeDef the new type definition.
+     * @return unique identifier of the new type definition
+     * @throws InvalidParameterException the type definition is invalid, already defined, or conflicts with the
+     *                                   types that are defined.
+     * @throws PropertyServerException a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract String addTypeDef(String              userId,
+                                      OpenMetadataTypeDef newTypeDef) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException;
+
+
+    /**
+     * Update a type definition that was added through the API.  The types from the open metadata archives, and
+     * from other members of the cohort, are maintained by their originators and cannot be updated this way.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDefPatch the changes to make and the version they apply to.
+     * @return the updated type definition
+     * @throws InvalidParameterException the type definition is not known, was not added through the API, is at a
+     *                                   different version, or the patch is incompatible with it.
+     * @throws PropertyServerException a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract OpenMetadataTypeDef updateTypeDef(String                   userId,
+                                                      OpenMetadataTypeDefPatch typeDefPatch) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException;
+
+
+    /**
+     * Delete a type definition that was added through the API.  This is only possible while nothing uses it:
+     * there must be no instances of the type, including soft-deleted ones, and no other type definition may
+     * refer to it.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDefGUID unique identifier of the type definition.
+     * @param typeDefName unique name of the type definition.
+     * @throws InvalidParameterException the type definition is not known or was not added through the API.
+     * @throws PropertyServerException a problem communicating with the metadata repository, or the type
+     *                                 definition is still in use.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract void deleteTypeDef(String userId,
+                                       String typeDefGUID,
+                                       String typeDefName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException;
+
+
+    /**
+     * Add a new enum definition, which can then be used as the type of attributes in new type definitions.
+     * As with addTypeDef(), the enum definition is homed in the metadata access store's local repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newEnumDef the new enum definition.
+     * @return unique identifier of the new enum definition
+     * @throws InvalidParameterException the enum definition is invalid or already defined.
+     * @throws PropertyServerException a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract String addEnumDef(String              userId,
+                                      OpenMetadataEnumDef newEnumDef) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException;
+
+
+    /**
+     * Delete an enum definition that was added through the API.  This is only possible while no type definition
+     * has an attribute of this type.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param enumDefGUID unique identifier of the enum definition.
+     * @param enumDefName unique name of the enum definition.
+     * @throws InvalidParameterException the enum definition is not known or was not added through the API.
+     * @throws PropertyServerException a problem communicating with the metadata repository, or the enum
+     *                                 definition is still in use.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract void deleteEnumDef(String userId,
+                                       String enumDefGUID,
+                                       String enumDefName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException;
+
+
     /**
      * Retrieve the metadata element using its unique identifier.
      *

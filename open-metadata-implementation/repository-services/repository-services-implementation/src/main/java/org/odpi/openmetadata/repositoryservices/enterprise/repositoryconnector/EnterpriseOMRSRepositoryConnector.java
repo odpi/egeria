@@ -267,6 +267,24 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
 
     /**
+     * Returns the metadata collection of the local repository.  This is the home of the types that are defined
+     * through the enterprise repository services.
+     *
+     * @return metadata collection, or null if this server has no local repository
+     * @throws RepositoryErrorException the local repository has no metadata collection
+     */
+    synchronized OMRSMetadataCollection getLocalMetadataCollection() throws RepositoryErrorException
+    {
+        if (localConnector != null)
+        {
+            return localConnector.getMetadataCollection();
+        }
+
+        return null;
+    }
+
+
+    /**
      * Returns the metadata collection of the cohort repository with this metadata collection identifier.
      *
      * @param metadataCollectionId identifier to look for - may be null

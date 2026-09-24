@@ -10,13 +10,18 @@ import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconn
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ClassificationMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.EntityMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.RelationshipMapper;
+import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.TypeDefinitionMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryTable;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSDynamicTypeStore;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -25,8 +30,11 @@ import java.util.*;
 
 /**
  * PostgresOMRSMetadataStore provides the PostgreSQL store for the PostgreSQL RepositoryConnector.
+ * <br><br>
+ * It is also the repository's dynamic type store: the type definitions defined through the API in this
+ * repository are kept in the type_definition table so they can be restored when the server restarts.
  */
-class PostgresOMRSMetadataStore
+class PostgresOMRSMetadataStore implements OMRSDynamicTypeStore
 {
     private final String                repositoryName;
     private final OMRSRepositoryHelper  repositoryHelper;
@@ -1568,6 +1576,264 @@ class PostgresOMRSMetadataStore
         {
             databaseStore.purgeRelationship(guid);
             databaseStore.commit();
+        }
+    }
+
+
+    /* =================================================
+     * The dynamic type store
+     */
+
+
+    /**
+     * Save a type definition, replacing any previous version of it.
+     * <br><br>
+     * The stored types are replayed through this method each time the server starts, so a type definition that
+     * is already stored at the same version is left as it is.  That check comes before the read-only check so
+     * that a read-only repository can still start with the types it holds.  The time the type definition was
+     * first stored is kept across updates because it is what orders the types when they are restored.
+     *
+     * @param typeDef type definition to store
+     * @throws RepositoryErrorException the repository is read-only, or there is a problem accessing the database
+     */
+    @Override
+    public void saveTypeDef(TypeDef typeDef) throws RepositoryErrorException
+    {
+        final String methodName = "saveTypeDef";
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            TypeDefinitionMapper storedTypeDefinition = databaseStore.getTypeDefinition(typeDef.getGUID());
+
+            if ((storedTypeDefinition != null) && (storedTypeDefinition.getTypeVersion() == typeDef.getVersion()))
+            {
+                return;
+            }
+
+            this.validateTypeStoreWritable(typeDef.getName(), typeDef.getGUID(), methodName);
+
+            Date storeTime = new Date();
+
+            databaseStore.saveTypeDefinition(new TypeDefinitionMapper(repositoryName,
+                                                                      typeDef,
+                                                                      this.getFirstStoredTime(storedTypeDefinition, storeTime),
+                                                                      storeTime));
+            databaseStore.commit();
+        }
+    }
+
+
+    /**
+     * Save an attribute type definition, replacing any previous version of it.  As for saveTypeDef(), an
+     * attribute type definition that is already stored at the same version is left as it is.
+     *
+     * @param attributeTypeDef attribute type definition to store
+     * @throws RepositoryErrorException the repository is read-only, or there is a problem accessing the database
+     */
+    @Override
+    public void saveAttributeTypeDef(AttributeTypeDef attributeTypeDef) throws RepositoryErrorException
+    {
+        final String methodName = "saveAttributeTypeDef";
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            TypeDefinitionMapper storedTypeDefinition = databaseStore.getTypeDefinition(attributeTypeDef.getGUID());
+
+            if ((storedTypeDefinition != null) && (storedTypeDefinition.getTypeVersion() == attributeTypeDef.getVersion()))
+            {
+                return;
+            }
+
+            this.validateTypeStoreWritable(attributeTypeDef.getName(), attributeTypeDef.getGUID(), methodName);
+
+            Date storeTime = new Date();
+
+            databaseStore.saveTypeDefinition(new TypeDefinitionMapper(repositoryName,
+                                                                      attributeTypeDef,
+                                                                      this.getFirstStoredTime(storedTypeDefinition, storeTime),
+                                                                      storeTime));
+            databaseStore.commit();
+        }
+    }
+
+
+    /**
+     * Remove a type definition.  Nothing happens if it is not stored.
+     *
+     * @param typeDefGUID unique identifier of the type definition
+     * @param typeDefName unique name of the type definition
+     * @throws RepositoryErrorException the repository is read-only, or there is a problem accessing the database
+     */
+    @Override
+    public void removeTypeDef(String typeDefGUID,
+                              String typeDefName) throws RepositoryErrorException
+    {
+        final String methodName = "removeTypeDef";
+
+        this.removeTypeDefinition(typeDefGUID, typeDefName, methodName);
+    }
+
+
+    /**
+     * Remove an attribute type definition.  Nothing happens if it is not stored.
+     *
+     * @param attributeTypeDefGUID unique identifier of the attribute type definition
+     * @param attributeTypeDefName unique name of the attribute type definition
+     * @throws RepositoryErrorException the repository is read-only, or there is a problem accessing the database
+     */
+    @Override
+    public void removeAttributeTypeDef(String attributeTypeDefGUID,
+                                       String attributeTypeDefName) throws RepositoryErrorException
+    {
+        final String methodName = "removeAttributeTypeDef";
+
+        this.removeTypeDefinition(attributeTypeDefGUID, attributeTypeDefName, methodName);
+    }
+
+
+    /**
+     * Remove the row for a type definition or attribute type definition - they share the table, and each has
+     * its own unique identifier.  The row is looked for before the read-only check so that removing a type that
+     * this repository never stored - one from an archive, say - is not an error in a read-only repository.
+     *
+     * @param typeGUID unique identifier of the type definition
+     * @param typeName unique name of the type definition
+     * @param methodName calling method
+     * @throws RepositoryErrorException the repository is read-only, or there is a problem accessing the database
+     */
+    private void removeTypeDefinition(String typeGUID,
+                                      String typeName,
+                                      String methodName) throws RepositoryErrorException
+    {
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            if (databaseStore.getTypeDefinition(typeGUID) == null)
+            {
+                return;
+            }
+
+            this.validateTypeStoreWritable(typeName, typeGUID, methodName);
+
+            databaseStore.removeTypeDefinition(typeGUID);
+            databaseStore.commit();
+        }
+    }
+
+
+    /**
+     * Return all the stored type definitions, in the order they were first stored.
+     *
+     * @return gallery of stored types, or null if there are none
+     * @throws RepositoryErrorException there is a problem accessing the database, or a stored type definition
+     *                                  cannot be restored from its JSON
+     */
+    @Override
+    public TypeDefGallery getStoredTypes() throws RepositoryErrorException
+    {
+        List<TypeDefinitionMapper> typeDefinitions;
+
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            typeDefinitions = databaseStore.getTypeDefinitions();
+        }
+
+        List<TypeDef>          typeDefs          = new ArrayList<>();
+        List<AttributeTypeDef> attributeTypeDefs = new ArrayList<>();
+
+        for (TypeDefinitionMapper typeDefinition : typeDefinitions)
+        {
+            if (typeDefinition.isAttributeTypeDef())
+            {
+                attributeTypeDefs.add(typeDefinition.getAttributeTypeDef());
+            }
+            else
+            {
+                typeDefs.add(typeDefinition.getTypeDef());
+            }
+        }
+
+        if (typeDefs.isEmpty() && attributeTypeDefs.isEmpty())
+        {
+            return null;
+        }
+
+        TypeDefGallery typeDefGallery = new TypeDefGallery();
+
+        if (! typeDefs.isEmpty())
+        {
+            typeDefGallery.setTypeDefs(typeDefs);
+        }
+
+        if (! attributeTypeDefs.isEmpty())
+        {
+            typeDefGallery.setAttributeTypeDefs(attributeTypeDefs);
+        }
+
+        return typeDefGallery;
+    }
+
+
+    /**
+     * Return whether the repository holds any instance of the type - an entity, entity proxy, relationship or
+     * classification - in any version and any status, including soft-deleted instances.  Only purged instances
+     * are ignored.  This only reads, so it is allowed in a read-only repository.
+     *
+     * @param typeDefGUID unique identifier of the type definition
+     * @param typeDefName unique name of the type definition
+     * @return boolean
+     * @throws RepositoryErrorException problem accessing the database
+     */
+    @Override
+    public boolean isTypeDefInstantiated(String typeDefGUID,
+                                         String typeDefName) throws RepositoryErrorException
+    {
+        try (DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper))
+        {
+            return databaseStore.isTypeInstantiated(typeDefGUID);
+        }
+    }
+
+
+    /**
+     * Return the time to record as when a type definition was first stored: the time already recorded if it
+     * is being replaced, otherwise now.
+     *
+     * @param storedTypeDefinition the row already stored for the type definition, or null
+     * @param storeTime the time of this save
+     * @return date
+     */
+    private Date getFirstStoredTime(TypeDefinitionMapper storedTypeDefinition,
+                                    Date                 storeTime)
+    {
+        if ((storedTypeDefinition != null) && (storedTypeDefinition.getFirstStoredTime() != null))
+        {
+            return storedTypeDefinition.getFirstStoredTime();
+        }
+
+        return storeTime;
+    }
+
+
+    /**
+     * Throw an exception if the repository is read-only, since the stored copy of a type definition is about
+     * to change.
+     *
+     * @param typeName unique name of the type definition
+     * @param typeGUID unique identifier of the type definition
+     * @param methodName calling method
+     * @throws RepositoryErrorException the repository is read-only
+     */
+    private void validateTypeStoreWritable(String typeName,
+                                           String typeGUID,
+                                           String methodName) throws RepositoryErrorException
+    {
+        if (isReadOnly)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.TYPE_STORE_READ_ONLY.getMessageDefinition(repositoryName,
+                                                                                                           typeName,
+                                                                                                           typeGUID),
+                                               this.getClass().getName(),
+                                               methodName);
         }
     }
 }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositorycon
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSDynamicTypeMetadataCollectionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSDynamicTypeStore;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -55,6 +56,19 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Set up the repository name in the repository store
          */
         this.repositoryStore = new InMemoryOMRSMetadataStore(repositoryName, repositoryHelper, metadataCollectionId);
+    }
+
+
+    /**
+     * The in-memory store keeps the types defined through the API alongside the instances, so they last as long
+     * as the instances do - until the server stops.
+     *
+     * @return type store
+     */
+    @Override
+    protected OMRSDynamicTypeStore getDynamicTypeStore()
+    {
+        return repositoryStore;
     }
 
 

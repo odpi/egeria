@@ -603,37 +603,104 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Create a definition of a new TypeDef.   This new TypeDef is pushed to each repository that will accept it.
-     * An exception is passed to the caller if the TypeDef is invalid, or if none of the repositories accept it.
+     * Create a definition of a new TypeDef.  The new TypeDef is homed in the local repository: its origin is set
+     * to the local repository's metadata collection id, and the local repository validates it against the known
+     * types, stores it, adds it to the repository content manager and announces it to the cohort.
      *
      * @param userId  unique identifier for requesting user.
      * @param newTypeDef  TypeDef structure describing the new TypeDef.
-     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws InvalidParameterException the new TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws FunctionNotSupportedException this server has no local repository to hold the TypeDef.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public void addTypeDef(String  userId,
-                           TypeDef newTypeDef) throws FunctionNotSupportedException
+                           TypeDef newTypeDef) throws InvalidParameterException,
+                                                      RepositoryErrorException,
+                                                      TypeDefNotSupportedException,
+                                                      TypeDefKnownException,
+                                                      TypeDefConflictException,
+                                                      InvalidTypeDefException,
+                                                      FunctionNotSupportedException,
+                                                      UserNotAuthorizedException
     {
         final String    methodName = "addTypeDef";
+        final String    typeDefParameterName = "newTypeDef";
 
-        throwNotEnterpriseFunction(methodName);
+        /*
+         * Validate parameters
+         */
+        super.newTypeDefParameterValidation(userId, newTypeDef, typeDefParameterName, methodName);
+
+        OMRSMetadataCollection localMetadataCollection = this.getLocalMetadataCollection(methodName);
+
+        /*
+         * The caller's object is left as it is.
+         */
+        TypeDef homedTypeDef = newTypeDef.cloneFromSubclass();
+
+        homedTypeDef.setOrigin(localMetadataCollectionId);
+
+        if (homedTypeDef.getCreatedBy() == null)
+        {
+            homedTypeDef.setCreatedBy(userId);
+        }
+
+        if (homedTypeDef.getCreateTime() == null)
+        {
+            homedTypeDef.setCreateTime(new Date());
+        }
+
+        localMetadataCollection.addTypeDef(userId, homedTypeDef);
     }
 
 
     /**
-     * Create a definition of a new AttributeTypeDef.
+     * Create a definition of a new AttributeTypeDef.  Only enum definitions can be added.  As with addTypeDef(),
+     * the new AttributeTypeDef is homed in the local repository.
      *
      * @param userId  unique identifier for requesting user.
      * @param newAttributeTypeDef  TypeDef structure describing the new TypeDef.
-     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws InvalidParameterException the new AttributeTypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws TypeDefNotSupportedException the repository is not able to support this AttributeTypeDef.
+     * @throws TypeDefKnownException the AttributeTypeDef is already stored in the repository.
+     * @throws TypeDefConflictException the new AttributeTypeDef conflicts with an existing one.
+     * @throws InvalidTypeDefException the new AttributeTypeDef has invalid contents.
+     * @throws FunctionNotSupportedException this server has no local repository to hold the AttributeTypeDef.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public  void addAttributeTypeDef(String           userId,
-                                     AttributeTypeDef newAttributeTypeDef) throws FunctionNotSupportedException
+                                     AttributeTypeDef newAttributeTypeDef) throws InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  TypeDefNotSupportedException,
+                                                                                  TypeDefKnownException,
+                                                                                  TypeDefConflictException,
+                                                                                  InvalidTypeDefException,
+                                                                                  FunctionNotSupportedException,
+                                                                                  UserNotAuthorizedException
     {
         final String    methodName = "addAttributeTypeDef";
+        final String    typeDefParameterName = "newAttributeTypeDef";
 
-        throwNotEnterpriseFunction(methodName);
+        /*
+         * Validate parameters
+         */
+        super.newAttributeTypeDefParameterValidation(userId, newAttributeTypeDef, typeDefParameterName, methodName);
+
+        OMRSMetadataCollection localMetadataCollection = this.getLocalMetadataCollection(methodName);
+
+        AttributeTypeDef homedAttributeTypeDef = newAttributeTypeDef.cloneFromSubclass();
+
+        homedAttributeTypeDef.setOrigin(localMetadataCollectionId);
+
+        localMetadataCollection.addAttributeTypeDef(userId, homedAttributeTypeDef);
     }
 
 
@@ -747,20 +814,52 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * Update one or more properties of the TypeDef.  The TypeDefPatch controls what types of updates
      * are safe to make to the TypeDef.
      *
+     * Only a TypeDef homed in the local repository - one that was added through the API - can be updated
+     * this way.  The others are maintained by the archive or cohort member that originated them.
+     *
      * @param userId  unique identifier for requesting user.
      * @param typeDefPatch  TypeDef patch describing change to TypeDef.
      * @return updated TypeDef
-     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws InvalidParameterException the TypeDefPatch is null, or the TypeDef is not homed in the local repository.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws TypeDefNotKnownException the requested TypeDef is not known.
+     * @throws PatchErrorException the TypeDef cannot be updated because the patch is incompatible with it.
+     * @throws FunctionNotSupportedException this server has no local repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public TypeDef updateTypeDef(String       userId,
-                                 TypeDefPatch typeDefPatch) throws FunctionNotSupportedException
+                                 TypeDefPatch typeDefPatch) throws InvalidParameterException,
+                                                                   RepositoryErrorException,
+                                                                   TypeDefNotKnownException,
+                                                                   PatchErrorException,
+                                                                   FunctionNotSupportedException,
+                                                                   UserNotAuthorizedException
     {
         final String                       methodName = "updateTypeDef";
 
-        throwNotEnterpriseFunction(methodName);
+        /*
+         * Validate parameters - this returns the existing TypeDef.
+         */
+        TypeDef existingTypeDef = super.updateTypeDefParameterValidation(userId, typeDefPatch, methodName);
 
-        return null;
+        OMRSMetadataCollection localMetadataCollection = this.getLocalMetadataCollection(methodName);
+
+        this.validateTypeIsHomed(existingTypeDef.getOrigin(), existingTypeDef.getName(), existingTypeDef.getGUID(), methodName);
+
+        TypeDefPatch homedTypeDefPatch = new TypeDefPatch(typeDefPatch);
+
+        if (homedTypeDefPatch.getUpdatedBy() == null)
+        {
+            homedTypeDefPatch.setUpdatedBy(userId);
+        }
+
+        if (homedTypeDefPatch.getUpdateTime() == null)
+        {
+            homedTypeDefPatch.setUpdateTime(new Date());
+        }
+
+        return localMetadataCollection.updateTypeDef(userId, homedTypeDefPatch);
     }
 
 
@@ -768,19 +867,57 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * Delete the TypeDef.  This is only possible if the TypeDef has never been used to create instances or any
      * instances of this TypeDef have been purged from the metadata collection.
      *
+     * Only a TypeDef homed in the local repository - one that was added through the API - can be deleted
+     * this way.
+     *
      * @param userId  unique identifier for requesting user.
      * @param obsoleteTypeDefGUID  String unique identifier for the TypeDef.
      * @param obsoleteTypeDefName  String unique name for the TypeDef.
-     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws InvalidParameterException one of the TypeDef identifiers is null, or the TypeDef is not homed in
+     *                                   the local repository.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws TypeDefNotKnownException the requested TypeDef is not known.
+     * @throws TypeDefInUseException the TypeDef has instances, or another type definition refers to it.
+     * @throws FunctionNotSupportedException this server has no local repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public void deleteTypeDef(String    userId,
                               String    obsoleteTypeDefGUID,
-                              String    obsoleteTypeDefName) throws FunctionNotSupportedException
+                              String    obsoleteTypeDefName) throws InvalidParameterException,
+                                                                    RepositoryErrorException,
+                                                                    TypeDefNotKnownException,
+                                                                    TypeDefInUseException,
+                                                                    FunctionNotSupportedException,
+                                                                    UserNotAuthorizedException
     {
-        final String methodName = "deleteTypeDef";
+        final String methodName        = "deleteTypeDef";
+        final String guidParameterName = "obsoleteTypeDefGUID";
+        final String nameParameterName = "obsoleteTypeDefName";
 
-        throwNotEnterpriseFunction(methodName);
+        /*
+         * Validate parameters
+         */
+        super.manageTypeDefParameterValidation(userId,
+                                               guidParameterName,
+                                               nameParameterName,
+                                               obsoleteTypeDefGUID,
+                                               obsoleteTypeDefName,
+                                               methodName);
+
+        OMRSMetadataCollection localMetadataCollection = this.getLocalMetadataCollection(methodName);
+
+        TypeDef existingTypeDef = repositoryHelper.getTypeDefByName(repositoryName, obsoleteTypeDefName);
+
+        if ((existingTypeDef == null) || (! obsoleteTypeDefGUID.equals(existingTypeDef.getGUID())))
+        {
+            super.reportUnknownTypeGUID(obsoleteTypeDefGUID, guidParameterName, methodName);
+            return;
+        }
+
+        this.validateTypeIsHomed(existingTypeDef.getOrigin(), obsoleteTypeDefName, obsoleteTypeDefGUID, methodName);
+
+        localMetadataCollection.deleteTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
     }
 
 
@@ -788,19 +925,57 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * Delete an AttributeTypeDef.  This is only possible if the AttributeTypeDef has never been used to create
      * instances or any instances of this AttributeTypeDef have been purged from the metadata collection.
      *
+     * Only an AttributeTypeDef homed in the local repository - an enum that was added through the API - can be
+     * deleted this way.
+     *
      * @param userId  unique identifier for requesting user.
      * @param obsoleteTypeDefGUID  String unique identifier for the AttributeTypeDef.
      * @param obsoleteTypeDefName  String unique name for the AttributeTypeDef.
-     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws InvalidParameterException one of the AttributeTypeDef identifiers is null, or the AttributeTypeDef is
+     *                                   not homed in the local repository.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws TypeDefNotKnownException the requested AttributeTypeDef is not known.
+     * @throws TypeDefInUseException a type definition has an attribute of this type.
+     * @throws FunctionNotSupportedException this server has no local repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public void deleteAttributeTypeDef(String    userId,
                                        String    obsoleteTypeDefGUID,
-                                       String    obsoleteTypeDefName) throws FunctionNotSupportedException
+                                       String    obsoleteTypeDefName) throws InvalidParameterException,
+                                                                             RepositoryErrorException,
+                                                                             TypeDefNotKnownException,
+                                                                             TypeDefInUseException,
+                                                                             FunctionNotSupportedException,
+                                                                             UserNotAuthorizedException
     {
-        final String methodName = "deleteAttributeTypeDef";
+        final String methodName        = "deleteAttributeTypeDef";
+        final String guidParameterName = "obsoleteTypeDefGUID";
+        final String nameParameterName = "obsoleteTypeDefName";
 
-        throwNotEnterpriseFunction(methodName);
+        /*
+         * Validate parameters
+         */
+        super.manageAttributeTypeDefParameterValidation(userId,
+                                                        guidParameterName,
+                                                        nameParameterName,
+                                                        obsoleteTypeDefGUID,
+                                                        obsoleteTypeDefName,
+                                                        methodName);
+
+        OMRSMetadataCollection localMetadataCollection = this.getLocalMetadataCollection(methodName);
+
+        AttributeTypeDef existingAttributeTypeDef = repositoryHelper.getAttributeTypeDefByName(repositoryName, obsoleteTypeDefName);
+
+        if ((existingAttributeTypeDef == null) || (! obsoleteTypeDefGUID.equals(existingAttributeTypeDef.getGUID())))
+        {
+            super.reportUnknownTypeGUID(obsoleteTypeDefGUID, guidParameterName, methodName);
+            return;
+        }
+
+        this.validateTypeIsHomed(existingAttributeTypeDef.getOrigin(), obsoleteTypeDefName, obsoleteTypeDefGUID, methodName);
+
+        localMetadataCollection.deleteAttributeTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
     }
 
 
@@ -4894,6 +5069,67 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * =================================================
      * Private validation and processing methods
      */
+
+
+    /**
+     * Return the metadata collection of the local repository, which is the home of the types that are defined
+     * through the enterprise repository services.
+     *
+     * @param methodName calling method
+     * @return local metadata collection
+     * @throws FunctionNotSupportedException this server has no local repository
+     * @throws RepositoryErrorException the local repository has no metadata collection
+     */
+    private OMRSMetadataCollection getLocalMetadataCollection(String methodName) throws FunctionNotSupportedException,
+                                                                                        RepositoryErrorException
+    {
+        OMRSMetadataCollection localMetadataCollection = enterpriseParentConnector.getLocalMetadataCollection();
+
+        if (localMetadataCollection == null)
+        {
+            throwNotEnterpriseFunction(methodName);
+        }
+
+        return localMetadataCollection;
+    }
+
+
+    /**
+     * Check that a type is homed in the local repository, since only those types can be changed through the
+     * enterprise repository services.
+     *
+     * @param origin origin of the type
+     * @param typeName name of the type
+     * @param typeGUID unique identifier of the type
+     * @param methodName calling method
+     * @throws InvalidParameterException the type is not homed in the local repository
+     */
+    private void validateTypeIsHomed(String origin,
+                                     String typeName,
+                                     String typeGUID,
+                                     String methodName) throws InvalidParameterException
+    {
+        final String typeParameterName = "typeName";
+
+        if ((origin == null) || (! origin.equals(localMetadataCollectionId)))
+        {
+            String originDescription = origin;
+
+            if (origin == null)
+            {
+                originDescription = "an open metadata archive";
+            }
+
+            throw new InvalidParameterException(OMRSErrorCode.TYPEDEF_NOT_HOMED.getMessageDefinition(typeName,
+                                                                                                     typeGUID,
+                                                                                                     methodName,
+                                                                                                     originDescription,
+                                                                                                     localMetadataCollectionId),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                typeParameterName);
+        }
+    }
 
 
     /**

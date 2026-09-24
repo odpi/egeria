@@ -877,14 +877,27 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                                                                                                            localMetadataCollectionId,
                                                                                                            originatorServerName));
 
-                return outboundRegistryEventProcessor.processReRegistrationEvent(cohortName,
-                                                                                 localRegistration.getMetadataCollectionId(),
-                                                                                 localRegistration.getMetadataCollectionName(),
-                                                                                 localRegistration.getServerName(),
-                                                                                 localRegistration.getServerType(),
-                                                                                 localRegistration.getOrganizationName(),
-                                                                                 localRegistration.getRegistrationTime(),
-                                                                                 localRegistration.getRepositoryConnection());
+                boolean reRegistered = outboundRegistryEventProcessor.processReRegistrationEvent(cohortName,
+                                                                                                 localRegistration.getMetadataCollectionId(),
+                                                                                                 localRegistration.getMetadataCollectionName(),
+                                                                                                 localRegistration.getServerName(),
+                                                                                                 localRegistration.getServerType(),
+                                                                                                 localRegistration.getOrganizationName(),
+                                                                                                 localRegistration.getRegistrationTime(),
+                                                                                                 localRegistration.getRepositoryConnection());
+
+                /*
+                 * Every member asks for a refresh when it connects to the cohort, whether it is new or restarting.
+                 * The types defined through the API in the local repository are announced again at this point
+                 * because otherwise that member would not see them - or the changes made to them while it was
+                 * away - until this server restarts.
+                 */
+                if (localRepository != null)
+                {
+                    localRepository.announceHomedTypes(cohortName);
+                }
+
+                return reRegistered;
             }
             else
             {

@@ -9,6 +9,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataEnumDef;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefPatch;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MatchCriteria;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
@@ -2398,6 +2401,268 @@ public class MetadataExpertRESTServices extends TokenController
             OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
             response.setRelationshipList(handler.getRelationshipHistory(userId, relationshipGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /* =============================================================================
+     * Maintaining the types defined through the API
+     */
+
+
+    /**
+     * Add a new type definition for an entity, relationship or classification.  The type definition is homed in
+     * the metadata access store's local repository: it is validated against the types already defined, stored
+     * with the metadata so that it survives a restart, and announced to the other members of the cohort.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody the new type definition
+     *
+     * @return unique identifier of the new type definition or
+     *  InvalidParameterException the type definition is invalid or refers to an unknown type
+     *  UserNotAuthorizedException the userId is not permitted to perform this operation
+     *  PropertyServerException a problem with the metadata store, or the type is already defined
+     */
+    public GUIDResponse addTypeDef(String              serverName,
+                                   String              urlMarker,
+                                   OpenMetadataTypeDef requestBody)
+    {
+        final String methodName = "addTypeDef";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setGUID(handler.addTypeDef(userId, requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update a type definition that was added through the API.  The types from the open metadata archives, and
+     * from other members of the cohort, are maintained by their originators and cannot be updated this way.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody the changes to make and the version they apply to
+     *
+     * @return the updated type definition or
+     *  InvalidParameterException the type definition is not known, was not added through the API, is at a
+     *                            different version, or the patch is incompatible with it
+     *  UserNotAuthorizedException the userId is not permitted to perform this operation
+     *  PropertyServerException a problem with the metadata store
+     */
+    public TypeDefResponse updateTypeDef(String                   serverName,
+                                         String                   urlMarker,
+                                         OpenMetadataTypeDefPatch requestBody)
+    {
+        final String methodName = "updateTypeDef";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        TypeDefResponse response = new TypeDefResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setTypeDef(handler.updateTypeDef(userId, requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Delete a type definition that was added through the API.  This is only possible while nothing uses it:
+     * there must be no instances of the type, including soft-deleted ones, and no other type definition may
+     * refer to it.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param typeDefGUID unique identifier of the type definition
+     * @param typeDefName unique name of the type definition
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException the type definition is not known or was not added through the API
+     *  UserNotAuthorizedException the userId is not permitted to perform this operation
+     *  PropertyServerException a problem with the metadata store, or the type is still in use
+     */
+    public VoidResponse deleteTypeDef(String          serverName,
+                                      String          urlMarker,
+                                      String          typeDefGUID,
+                                      String          typeDefName,
+                                      NullRequestBody requestBody)
+    {
+        final String methodName = "deleteTypeDef";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+            handler.deleteTypeDef(userId, typeDefGUID, typeDefName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Add a new enum definition, which can then be used as the type of attributes in new type definitions.
+     * As with addTypeDef(), the enum definition is homed in the metadata access store's local repository.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody the new enum definition
+     *
+     * @return unique identifier of the new enum definition or
+     *  InvalidParameterException the enum definition is invalid
+     *  UserNotAuthorizedException the userId is not permitted to perform this operation
+     *  PropertyServerException a problem with the metadata store, or the enum is already defined
+     */
+    public GUIDResponse addEnumDef(String              serverName,
+                                   String              urlMarker,
+                                   OpenMetadataEnumDef requestBody)
+    {
+        final String methodName = "addEnumDef";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setGUID(handler.addEnumDef(userId, requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Delete an enum definition that was added through the API.  This is only possible while no type definition
+     * has an attribute of this type.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param enumDefGUID unique identifier of the enum definition
+     * @param enumDefName unique name of the enum definition
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException the enum definition is not known or was not added through the API
+     *  UserNotAuthorizedException the userId is not permitted to perform this operation
+     *  PropertyServerException a problem with the metadata store, or the enum is still in use
+     */
+    public VoidResponse deleteEnumDef(String          serverName,
+                                      String          urlMarker,
+                                      String          enumDefGUID,
+                                      String          enumDefName,
+                                      NullRequestBody requestBody)
+    {
+        final String methodName = "deleteEnumDef";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+            handler.deleteEnumDef(userId, enumDefGUID, enumDefName);
         }
         catch (Throwable error)
         {

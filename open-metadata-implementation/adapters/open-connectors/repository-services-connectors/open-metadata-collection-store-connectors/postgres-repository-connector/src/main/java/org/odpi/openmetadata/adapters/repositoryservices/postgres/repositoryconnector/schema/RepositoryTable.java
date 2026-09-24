@@ -185,6 +185,28 @@ public enum RepositoryTable implements PostgreSQLTable
                                  null
     ),
 
+    /**
+     * The type definitions that were defined through the API in this repository, so they can be restored when
+     * the server restarts.  Types from open metadata archives and other cohort members are not stored here
+     * because their originators supply them at every start.
+     * <br><br>
+     * The table is created with "create table if not exists" like the others, which is how it reaches a
+     * repository created before it was defined.
+     */
+    TYPE_DEFINITION("type_definition",
+                    "The type definitions that were defined through the API in this repository, so they can be restored when the server restarts.",
+                    new RepositoryColumn[]{
+                            RepositoryColumn.TYPE_GUID},
+                    new RepositoryColumn[]{
+                            RepositoryColumn.TYPE_NAME,
+                            RepositoryColumn.TYPE_CATEGORY,
+                            RepositoryColumn.TYPE_VERSION,
+                            RepositoryColumn.TYPE_DEFINITION,
+                            RepositoryColumn.FIRST_STORED_TIME,
+                            RepositoryColumn.LAST_STORED_TIME},
+                    null
+    ),
+
     ;
 
     private final String                 tableName;

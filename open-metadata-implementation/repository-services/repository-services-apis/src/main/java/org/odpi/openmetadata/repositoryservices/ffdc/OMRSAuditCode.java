@@ -1317,6 +1317,46 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                          "https://egeria-project.org/services/omrs/"),
 
     /**
+     * OMRS-AUDIT-0323 - The local repository {0} has restored {1} of its {2} stored type definitions and {3} of its {4} stored attribute type definitions
+     */
+    STORED_TYPES_RESTORED("OMRS-AUDIT-0323",
+                          AuditLogRecordSeverityLevel.TYPES,
+                          "The local repository {0} has restored {1} of its {2} stored type definitions and {3} of its {4} stored attribute type definitions",
+                          "The local repository keeps the types that were defined through the API.  These have been added to the type system after the types from the open metadata archives, in the same way as a new type.  Any that could not be restored are described in earlier messages.",
+                          "If any type could not be restored, look at the earlier messages to find out why.  A stored type fails to restore if an open metadata archive now conflicts with it - for example, a new version of a supertype has added an attribute of the same name.",
+                          "https://egeria-project.org/services/omrs/"),
+
+    /**
+     * OMRS-AUDIT-0324 - The local server has ignored a request from {0} to delete the type called {1} with a unique identifier of {2} because the local repository still depends on it: {3}
+     */
+    TYPE_DELETE_IGNORED("OMRS-AUDIT-0324",
+                        AuditLogRecordSeverityLevel.TYPES,
+                        "The local server has ignored a request from {0} to delete the type called {1} with a unique identifier of {2} because the local repository still depends on it: {3}",
+                        "The local repository keeps the type because it still depends on it - it holds instances of the type (soft-deleted instances count), it has other types that refer to it, or, for a repository that cannot check its instances, it cannot show that the type is unused.  The message detail says which.  Deleting the type would leave these without a definition.  The type is announced to the cohort again so that the members that have already deleted it - including the member that asked for the delete - add it back, and the cohort stays consistent.",
+                        "If the type really is no longer needed, remove what is using it from this repository - purge its instances, or delete the types that refer to it - and then delete the type again.",
+                        "https://egeria-project.org/services/omrs/"),
+
+    /**
+     * OMRS-AUDIT-0325 - The local server has received version {2} of the type called {0} with a unique identifier of {1} from {3} but holds version {4}; the type is being updated to the later version
+     */
+    NEWER_TYPE_VERSION_RECEIVED("OMRS-AUDIT-0325",
+                                AuditLogRecordSeverityLevel.TYPES,
+                                "The local server has received version {2} of the type called {0} with a unique identifier of {1} from {3} but holds version {4}; the type is being updated to the later version",
+                                "The local server missed the update to this type - typically because it was not running when the update was announced.  The type is announced again, in full, when a member joins or rejoins the cohort and when its home server restarts.  The local server works out the changes between its version and the later one and applies them in the same way as an update to the type.",
+                                "No action is required unless the update fails, in which case the following messages describe why.",
+                                "https://egeria-project.org/services/omrs/"),
+
+    /**
+     * OMRS-AUDIT-0326 - The local repository {0} has announced the {1} type definitions and {2} attribute type definitions that were defined through its API to the cohorts because a member has connected to cohort {3}
+     */
+    HOMED_TYPES_ANNOUNCED("OMRS-AUDIT-0326",
+                          AuditLogRecordSeverityLevel.TYPES,
+                          "The local repository {0} has announced the {1} type definitions and {2} attribute type definitions that were defined through its API to the cohorts because a member has connected to cohort {3}",
+                          "A member that has just joined or rejoined a cohort has not seen the types defined through the API, or may have missed changes to them.  They are announced again so that the member can add them or bring them up to date.  Members that already have the current versions ignore them.",
+                          "No action is required.  If the connecting member does not pick up these types, check its audit log for messages about the types named in this server's announcement.",
+                          "https://egeria-project.org/services/omrs/"),
+
+    /**
      * OMRS-AUDIT-0401 - Skipping call to repository {0} since it is not responding correctly.  Error received was {1} with message {2}
      */
     SKIPPING_METADATA_COLLECTION("OMRS-AUDIT-0401",

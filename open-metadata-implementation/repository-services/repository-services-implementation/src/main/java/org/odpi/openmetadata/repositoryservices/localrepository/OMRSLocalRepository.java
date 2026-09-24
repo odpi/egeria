@@ -119,4 +119,15 @@ public interface OMRSLocalRepository extends OMRSMetadataCollectionManager
      * @return boolean flag meaning that the metadata collection is recognized
      */
     boolean isActiveCohortMember(String metadataCollectionId);
+
+
+    /**
+     * Announce the types that are homed in the local repository - the types defined through the API - to the
+     * cohorts, as if they were new.  This is called when a member joins or rejoins a cohort, since that member has
+     * not seen these types, or has missed changes to them, unless they are announced again.  Members that already
+     * have the types ignore the events.
+     *
+     * @param sourceName name of the cohort that the member is joining
+     */
+    void announceHomedTypes(String sourceName);
 }

@@ -23,6 +23,13 @@ public enum RepositoryColumn implements PostgreSQLColumn
     ATTRIBUTE_TYPE_NAME("attribute_type_name", ColumnType.STRING, "Unique name of an open metadata type.", false),
 
 
+    TYPE_CATEGORY("type_category", ColumnType.STRING, "Kind of type definition held in the row: TypeDef or AttributeTypeDef.", true),
+    TYPE_VERSION("type_version", ColumnType.LONG, "Version number of the stored type definition.", true),
+    TYPE_DEFINITION("type_definition", ColumnType.STRING, "The type definition serialized as JSON.", true),
+    FIRST_STORED_TIME("first_stored_time", ColumnType.DATE, "Time when the type definition was first stored.  It is kept when the type definition is updated, so the stored types can be returned in the order they were defined.", true),
+    LAST_STORED_TIME("last_stored_time", ColumnType.DATE, "Time when this version of the type definition was stored.", true),
+
+
     METADATA_COLLECTION_GUID("metadata_collection_guid", ColumnType.STRING, "Unique identifier of a metadata collection.", true),
     METADATA_COLLECTION_NAME("metadata_collection_name", ColumnType.STRING, "Unique name of a metadata collection.", false),
     INSTANCE_PROVENANCE_TYPE("instance_provenance_type", ColumnType.STRING, "Category of metadata collection.", true),

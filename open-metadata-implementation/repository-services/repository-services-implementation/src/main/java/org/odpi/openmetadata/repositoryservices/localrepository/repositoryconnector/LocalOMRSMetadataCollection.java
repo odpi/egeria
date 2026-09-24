@@ -947,6 +947,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
+     * Return the types that the real repository originated and has stored itself.  As with
+     * verifyStoredTypeHierarchy(), the local repository stores nothing of its own.
+     *
+     * @param userId unique identifier for requesting server
+     * @return gallery of stored types, or null if there are none
+     * @throws RepositoryErrorException there is a problem reading the stored types
+     */
+    @Override
+    public TypeDefGallery getStoredTypes(String userId) throws RepositoryErrorException
+    {
+        return realMetadataCollection.getStoredTypes(userId);
+    }
+
+
+    /**
      * Update one or more properties of the TypeDef.  The TypeDefPatch controls what types of updates
      * are safe to make to the TypeDef.
      *

@@ -27,10 +27,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworkservices.omf.converters.OMRSTypeDefConverter;
 import org.odpi.openmetadata.frameworkservices.omf.converters.OpenMetadataRelationshipConverter;
 import org.odpi.openmetadata.frameworkservices.omf.ffdc.OMFServicesAuditCode;
 import org.odpi.openmetadata.frameworkservices.omf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -670,6 +672,259 @@ public class OpenMetadataStoreRESTServices
 
             AttributeTypeDef attributeTypeDef = repositoryHelper.getAttributeTypeDefByName(instanceHandler.getServiceName(), name);
             response.setAttributeTypeDef(this.getAttributeTypeDef(attributeTypeDef));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Add a new type definition for an entity, relationship or classification.  The type definition is homed in
+     * the local repository: it is validated against the types already defined, stored with the metadata so that it
+     * survives a restart, and announced to the other members of the cohort.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param requestBody the new type definition.
+     * @return unique identifier of the new type definition or
+     * InvalidParameterException the type definition is invalid or refers to an unknown type or
+     * PropertyServerException a problem communicating with the metadata repository, or the type is already defined or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public GUIDResponse addTypeDef(String              serverName,
+                                   String              userId,
+                                   OpenMetadataTypeDef requestBody)
+    {
+        final String methodName = "addTypeDef";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OMRSRepositoryHelper   repositoryHelper   = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+                OMRSMetadataCollection metadataCollection = instanceHandler.getMetadataCollection(userId, serverName, methodName);
+                OMRSTypeDefConverter   converter          = new OMRSTypeDefConverter(repositoryHelper, instanceHandler.getServiceName());
+
+                TypeDef typeDef = converter.getNewTypeDef(requestBody, methodName);
+
+                metadataCollection.addTypeDef(userId, typeDef);
+
+                response.setGUID(typeDef.getGUID());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update a type definition that was added through the API.  The types from the open metadata archives, and
+     * from other members of the cohort, are maintained by their originators and cannot be updated this way.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param requestBody the changes to make and the version they apply to.
+     * @return the updated type definition or
+     * InvalidParameterException the type definition is not known, was not added through the API, is at a
+     *                           different version, or the patch is incompatible with it or
+     * PropertyServerException a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public TypeDefResponse updateTypeDef(String                   serverName,
+                                         String                   userId,
+                                         OpenMetadataTypeDefPatch requestBody)
+    {
+        final String methodName = "updateTypeDef";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        TypeDefResponse response = new TypeDefResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OMRSRepositoryHelper   repositoryHelper   = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+                OMRSMetadataCollection metadataCollection = instanceHandler.getMetadataCollection(userId, serverName, methodName);
+                OMRSTypeDefConverter   converter          = new OMRSTypeDefConverter(repositoryHelper, instanceHandler.getServiceName());
+
+                TypeDef updatedTypeDef = metadataCollection.updateTypeDef(userId, converter.getTypeDefPatch(requestBody, methodName));
+
+                response.setTypeDef(this.getOpenMetadataTypeDef(updatedTypeDef, false, false, repositoryHelper));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Delete a type definition that was added through the API.  This is only possible while nothing uses it:
+     * there must be no instances of the type, including soft-deleted ones, and no other type definition may
+     * refer to it.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param typeDefGUID unique identifier of the type definition.
+     * @param typeDefName unique name of the type definition.
+     * @param requestBody null request body
+     * @return void or
+     * InvalidParameterException the type definition is not known or was not added through the API or
+     * PropertyServerException a problem communicating with the metadata repository, or the type is still in use or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public VoidResponse deleteTypeDef(String          serverName,
+                                      String          userId,
+                                      String          typeDefGUID,
+                                      String          typeDefName,
+                                      NullRequestBody requestBody)
+    {
+        final String methodName = "deleteTypeDef";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OMRSMetadataCollection metadataCollection = instanceHandler.getMetadataCollection(userId, serverName, methodName);
+
+            metadataCollection.deleteTypeDef(userId, typeDefGUID, typeDefName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Add a new enum definition, which can then be used as the type of attributes in new type definitions.
+     * As with addTypeDef(), the enum definition is homed in the local repository.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param requestBody the new enum definition.
+     * @return unique identifier of the new enum definition or
+     * InvalidParameterException the enum definition is invalid or
+     * PropertyServerException a problem communicating with the metadata repository, or the enum is already defined or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public GUIDResponse addEnumDef(String              serverName,
+                                   String              userId,
+                                   OpenMetadataEnumDef requestBody)
+    {
+        final String methodName = "addEnumDef";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OMRSRepositoryHelper   repositoryHelper   = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+                OMRSMetadataCollection metadataCollection = instanceHandler.getMetadataCollection(userId, serverName, methodName);
+                OMRSTypeDefConverter   converter          = new OMRSTypeDefConverter(repositoryHelper, instanceHandler.getServiceName());
+
+                EnumDef enumDef = converter.getNewEnumDef(requestBody);
+
+                metadataCollection.addAttributeTypeDef(userId, enumDef);
+
+                response.setGUID(enumDef.getGUID());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Delete an enum definition that was added through the API.  This is only possible while no type definition
+     * has an attribute of this type.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param enumDefGUID unique identifier of the enum definition.
+     * @param enumDefName unique name of the enum definition.
+     * @param requestBody null request body
+     * @return void or
+     * InvalidParameterException the enum definition is not known or was not added through the API or
+     * PropertyServerException a problem communicating with the metadata repository, or the enum is still in use or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public VoidResponse deleteEnumDef(String          serverName,
+                                      String          userId,
+                                      String          enumDefGUID,
+                                      String          enumDefName,
+                                      NullRequestBody requestBody)
+    {
+        final String methodName = "deleteEnumDef";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OMRSMetadataCollection metadataCollection = instanceHandler.getMetadataCollection(userId, serverName, methodName);
+
+            metadataCollection.deleteAttributeTypeDef(userId, enumDefGUID, enumDefName);
         }
         catch (Throwable error)
         {

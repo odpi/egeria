@@ -3,7 +3,11 @@
 package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector;
 
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSDynamicTypeStore;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
@@ -12,9 +16,10 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 /**
- * InMemoryOMRSMetadataStore provides the in memory store for the InMemoryRepositoryConnector.
+ * InMemoryOMRSMetadataStore provides the in memory store for the InMemoryRepositoryConnector.  As well as the
+ * instances, it holds the types defined through the API, which, like the instances, last only as long as the server.
  */
-class InMemoryOMRSMetadataStore
+class InMemoryOMRSMetadataStore implements OMRSDynamicTypeStore
 {
     private final String               repositoryName;
     private final OMRSRepositoryHelper repositoryHelper;
@@ -22,6 +27,12 @@ class InMemoryOMRSMetadataStore
 
     private volatile Map<String, StoredEntity>       entityStore       = new HashMap<>();
     private volatile Map<String, StoredRelationship> relationshipStore = new HashMap<>();
+
+    /*
+     * Linked maps keep the types in the order they were first stored, and a replacement keeps its place.
+     */
+    private final Map<String, TypeDef>          typeDefStore          = new LinkedHashMap<>();
+    private final Map<String, AttributeTypeDef> attributeTypeDefStore = new LinkedHashMap<>();
 
     private static final Logger log = LoggerFactory.getLogger(InMemoryOMRSMetadataStore.class);
 
@@ -709,6 +720,183 @@ class InMemoryOMRSMetadataStore
 
 
     /**
+     * Save a type definition, replacing any previous version of it.
+     *
+     * @param typeDef type definition to store
+     */
+    @Override
+    public synchronized void saveTypeDef(TypeDef typeDef)
+    {
+        typeDefStore.put(typeDef.getGUID(), typeDef.cloneFromSubclass());
+    }
+
+
+    /**
+     * Save an attribute type definition, replacing any previous version of it.
+     *
+     * @param attributeTypeDef attribute type definition to store
+     */
+    @Override
+    public synchronized void saveAttributeTypeDef(AttributeTypeDef attributeTypeDef)
+    {
+        attributeTypeDefStore.put(attributeTypeDef.getGUID(), attributeTypeDef.cloneFromSubclass());
+    }
+
+
+    /**
+     * Remove a type definition.  Nothing happens if it is not stored.
+     *
+     * @param typeDefGUID unique identifier of the type definition
+     * @param typeDefName unique name of the type definition
+     */
+    @Override
+    public synchronized void removeTypeDef(String typeDefGUID,
+                                           String typeDefName)
+    {
+        typeDefStore.remove(typeDefGUID);
+    }
+
+
+    /**
+     * Remove an attribute type definition.  Nothing happens if it is not stored.
+     *
+     * @param attributeTypeDefGUID unique identifier of the attribute type definition
+     * @param attributeTypeDefName unique name of the attribute type definition
+     */
+    @Override
+    public synchronized void removeAttributeTypeDef(String attributeTypeDefGUID,
+                                                    String attributeTypeDefName)
+    {
+        attributeTypeDefStore.remove(attributeTypeDefGUID);
+    }
+
+
+    /**
+     * Return all the stored type definitions in the order they were first stored.
+     *
+     * @return gallery of stored types, or null if there are none
+     */
+    @Override
+    public synchronized TypeDefGallery getStoredTypes()
+    {
+        if (typeDefStore.isEmpty() && attributeTypeDefStore.isEmpty())
+        {
+            return null;
+        }
+
+        TypeDefGallery typeDefGallery = new TypeDefGallery();
+
+        if (! typeDefStore.isEmpty())
+        {
+            List<TypeDef> typeDefs = new ArrayList<>();
+
+            for (TypeDef typeDef : typeDefStore.values())
+            {
+                typeDefs.add(typeDef.cloneFromSubclass());
+            }
+
+            typeDefGallery.setTypeDefs(typeDefs);
+        }
+
+        if (! attributeTypeDefStore.isEmpty())
+        {
+            List<AttributeTypeDef> attributeTypeDefs = new ArrayList<>();
+
+            for (AttributeTypeDef attributeTypeDef : attributeTypeDefStore.values())
+            {
+                attributeTypeDefs.add(attributeTypeDef.cloneFromSubclass());
+            }
+
+            typeDefGallery.setAttributeTypeDefs(attributeTypeDefs);
+        }
+
+        return typeDefGallery;
+    }
+
+
+    /**
+     * Return whether the store holds any instance of the type, in any version and any status.  The history of
+     * each instance is searched as well as its current version, so a type that an instance was retyped from
+     * still counts, as does a classification that has since been removed from an entity that is still stored.
+     *
+     * @param typeDefGUID unique identifier of the type definition
+     * @param typeDefName unique name of the type definition
+     * @return boolean
+     */
+    @Override
+    public synchronized boolean isTypeDefInstantiated(String typeDefGUID,
+                                                      String typeDefName)
+    {
+        for (StoredEntity storedEntity : entityStore.values())
+        {
+            if ((storedEntity != null) && (storedEntity.usesType(typeDefGUID)))
+            {
+                return true;
+            }
+        }
+
+        for (StoredRelationship storedRelationship : relationshipStore.values())
+        {
+            if ((storedRelationship != null) && (storedRelationship.usesType(typeDefGUID)))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Return whether an instance header is of the type.
+     *
+     * @param instanceHeader instance to test - may be null
+     * @param typeDefGUID unique identifier of the type definition
+     * @return boolean
+     */
+    private static boolean isOfType(InstanceAuditHeader instanceHeader,
+                                    String              typeDefGUID)
+    {
+        return (instanceHeader != null) &&
+               (instanceHeader.getType() != null) &&
+               (typeDefGUID.equals(instanceHeader.getType().getTypeDefGUID()));
+    }
+
+
+    /**
+     * Return whether an entity, or any of its classifications, is of the type.
+     *
+     * @param entitySummary entity or proxy to test - may be null
+     * @param typeDefGUID unique identifier of the type definition
+     * @return boolean
+     */
+    private static boolean isEntityOrClassificationOfType(EntitySummary entitySummary,
+                                                          String        typeDefGUID)
+    {
+        if (entitySummary != null)
+        {
+            if (isOfType(entitySummary, typeDefGUID))
+            {
+                return true;
+            }
+
+            if (entitySummary.getClassifications() != null)
+            {
+                for (Classification classification : entitySummary.getClassifications())
+                {
+                    if (isOfType(classification, typeDefGUID))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * Provides storage for an entity, its proxy and classifications.  It is proactively keeping the stored entity
      * and entity proxy up-to-date with the latest known classifications.
      */
@@ -739,6 +927,39 @@ class InMemoryOMRSMetadataStore
         StoredEntity(EntityProxy entityProxy)
         {
             saveEntityProxy(entityProxy);
+        }
+
+
+        /**
+         * Return whether any version of the entity, its proxy or any of their classifications is of the type.
+         *
+         * @param typeDefGUID unique identifier of the type definition
+         * @return boolean
+         */
+        synchronized boolean usesType(String typeDefGUID)
+        {
+            if (isEntityOrClassificationOfType(entity, typeDefGUID) || isEntityOrClassificationOfType(entityProxy, typeDefGUID))
+            {
+                return true;
+            }
+
+            for (EntityDetail entityVersion : entityHistory)
+            {
+                if (isEntityOrClassificationOfType(entityVersion, typeDefGUID))
+                {
+                    return true;
+                }
+            }
+
+            for (HomeClassification homeClassification : homeClassifications.values())
+            {
+                if ((homeClassification != null) && (isOfType(homeClassification.getHomeClassification(), typeDefGUID)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
 
@@ -1464,6 +1685,31 @@ class InMemoryOMRSMetadataStore
         StoredRelationship(Relationship relationship)
         {
             saveRelationship(relationship);
+        }
+
+
+        /**
+         * Return whether any version of the relationship is of the type.
+         *
+         * @param typeDefGUID unique identifier of the type definition
+         * @return boolean
+         */
+        synchronized boolean usesType(String typeDefGUID)
+        {
+            if (isOfType(relationship, typeDefGUID))
+            {
+                return true;
+            }
+
+            for (Relationship relationshipVersion : relationshipHistory)
+            {
+                if (isOfType(relationshipVersion, typeDefGUID))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
 

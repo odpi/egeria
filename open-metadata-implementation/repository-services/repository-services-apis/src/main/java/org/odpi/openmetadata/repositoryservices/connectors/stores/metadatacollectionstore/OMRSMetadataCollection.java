@@ -296,6 +296,25 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
     }
 
 
+    /**
+     * Return the type definitions that this repository originated and has stored itself - the types that were
+     * added through the API rather than loaded from an open metadata archive or received from the cohort.
+     * This is called once at server start-up, after the open metadata archives have been processed, so the
+     * stored types can be replayed into the repository content manager in the same way as the archive types.
+     * <br><br>
+     * A repository that does not keep its own types - including one whose types are lost when the server
+     * stops - returns null, which is the default.
+     *
+     * @param userId unique identifier for requesting server
+     * @return gallery of stored types, or null if there are none
+     * @throws RepositoryErrorException there is a problem reading the stored types
+     */
+    public TypeDefGallery getStoredTypes(String userId) throws RepositoryErrorException
+    {
+        return null;
+    }
+
+
     /* ==============================
      * Group 2: Working with typedefs
      */

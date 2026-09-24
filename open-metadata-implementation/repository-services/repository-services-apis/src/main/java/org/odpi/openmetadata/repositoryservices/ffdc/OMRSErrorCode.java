@@ -757,6 +757,51 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "https://egeria-project.org/services/omrs/"),
 
     /**
+     * OMRS-REPOSITORY-400-085 - The type definition {0} (guid = {1}) passed on a {2} request to open metadata repository {3} is not valid: {4}
+     */
+    INVALID_DYNAMIC_TYPEDEF(400, "OMRS-REPOSITORY-400-085",
+            "The type definition {0} (guid = {1}) passed on a {2} request to open metadata repository {3} is not valid: {4}",
+            "The repository rejects the type definition because it does not fit with the types it already knows.  A type added through the API must build on types that are already defined, and must be consistent with them, because the repository stores it and replays it each time the server starts.",
+            "Correct the type definition as described in the message and retry the request.  The types that are already defined can be retrieved with getAllTypes.",
+            "https://egeria-project.org/services/omrs/"),
+
+    /**
+     * OMRS-REPOSITORY-400-086 - Unable to delete the TypeDef {0} (guid = {1}) from open metadata repository {2} because type definition {3} refers to it as its {4}
+     */
+    TYPEDEF_REFERENCED(400, "OMRS-REPOSITORY-400-086",
+            "Unable to delete the TypeDef {0} (guid = {1}) from open metadata repository {2} because type definition {3} refers to it as its {4}",
+            "The system cannot delete the TypeDef because another type definition depends on it.  Deleting it would leave that type definition incomplete.",
+            "Delete the type definition that refers to this TypeDef first, or update it so that it no longer does, and then retry the delete.",
+            "https://egeria-project.org/services/omrs/"),
+
+    /**
+     * OMRS-REPOSITORY-400-087 - Unable to delete the AttributeTypeDef {0} (guid = {1}) from open metadata repository {2} because it is the type of attribute {3} in type definition {4}
+     */
+    ATTRIBUTE_TYPEDEF_IN_USE(400, "OMRS-REPOSITORY-400-087",
+            "Unable to delete the AttributeTypeDef {0} (guid = {1}) from open metadata repository {2} because it is the type of attribute {3} in type definition {4}",
+            "The system cannot delete the AttributeTypeDef because a type definition uses it for one of its attributes.",
+            "Delete the type definition that uses this AttributeTypeDef first, and then retry the delete.",
+            "https://egeria-project.org/services/omrs/"),
+
+    /**
+     * OMRS-REPOSITORY-400-088 - The type definition {0} (guid = {1}) cannot be changed by the {2} request because it originated from {3} rather than from the local repository {4}
+     */
+    TYPEDEF_NOT_HOMED(400, "OMRS-REPOSITORY-400-088",
+            "The type definition {0} (guid = {1}) cannot be changed by the {2} request because it originated from {3} rather than from the local repository {4}",
+            "Only the types that were added through the API are maintained by the local repository.  The types from open metadata archives and from other members of the cohort are maintained by their originators and are supplied again each time the server starts, so a change made here would be lost.",
+            "Make the change to the archive or cohort member that originated the type definition.",
+            "https://egeria-project.org/services/omrs/"),
+
+    /**
+     * OMRS-REPOSITORY-400-089 - The type definition {0} (guid = {1}) passed on a {2} request is of category {3}; only enum definitions can be added or deleted through this request
+     */
+    UNSUPPORTED_DYNAMIC_ATTRIBUTE_TYPEDEF(400, "OMRS-REPOSITORY-400-089",
+            "The type definition {0} (guid = {1}) passed on a {2} request is of category {3}; only enum definitions can be added or deleted through this request",
+            "The primitive and collection attribute types are fixed by the open metadata type system.  The only attribute types that can be defined through the API are enum definitions.",
+            "Use one of the existing primitive or collection types, or define an enum definition, and retry the request.",
+            "https://egeria-project.org/services/omrs/"),
+
+    /**
      * OMRS-PROPERTIES-400-002 - No name provided for entity classification
      */
     NULL_CLASSIFICATION_PROPERTY_NAME(400, "OMRS-PROPERTIES-400-002",
