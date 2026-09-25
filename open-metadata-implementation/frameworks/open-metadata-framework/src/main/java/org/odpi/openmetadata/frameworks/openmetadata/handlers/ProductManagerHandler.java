@@ -30,6 +30,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.Gover
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.MonitoredResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationSubscriberProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceDomain;
@@ -298,6 +299,17 @@ public class ProductManagerHandler extends CollectionHandler
             collectionMembershipProperties.setMembershipType("product data set");
 
             super.addToCollection(userId, productGUID, productAssetGUID, makeAnchorOptions, collectionMembershipProperties);
+
+            ImplementedByProperties implementedByProperties = new ImplementedByProperties();
+
+            implementedByProperties.setRole("product data set");
+
+            openMetadataClient.createRelatedElementsInStore(userId,
+                                                            OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                            productGUID,
+                                                            productAssetGUID,
+                                                            makeAnchorOptions,
+                                                            relationshipBuilder.getNewElementProperties(implementedByProperties));
         }
 
         if (governanceDefinitionGUIDs != null)
