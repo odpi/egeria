@@ -260,6 +260,14 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0019 - The {0} governance action service has publishZones set to null</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="#PROVISIONING_LINEAGE_CREATED" class="member-name-link">PROVISIONING_LINEAGE_CREATED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0045 - The {0} governance action service has recorded the lineage of its delivery from {1} through process {2} to {3}, with {4} column mapping(s)</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#PROVISIONING_LINEAGE_FAILED" class="member-name-link">PROVISIONING_LINEAGE_FAILED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0046 - The {0} governance action service delivered the data from {1} to {2} but was unable to record its lineage: {3} exception with message {4}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#QUALIFIED_NAME_PATH_NAME" class="member-name-link">QUALIFIED_NAME_PATH_NAME</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0009 - The {0} governance action service is using the qualified name from the Folder asset as the path name: {1}</div>
@@ -687,6 +695,20 @@ the order they are declared.</div>
 <h3>COLLECTION_PARTIALLY_PROVISIONED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">COLLECTION_PARTIALLY_PROVISIONED</span></div>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0044 - The {0} governance action service delivered {1} of the {2} table(s) of collection {3} to {4}; the table(s) it could not deliver are: {5}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PROVISIONING_LINEAGE_CREATED">
+<h3>PROVISIONING_LINEAGE_CREATED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">PROVISIONING_LINEAGE_CREATED</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0045 - The {0} governance action service has recorded the lineage of its delivery from {1} through process {2} to {3}, with {4} column mapping(s)</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PROVISIONING_LINEAGE_FAILED">
+<h3>PROVISIONING_LINEAGE_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">PROVISIONING_LINEAGE_FAILED</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0046 - The {0} governance action service delivered the data from {1} to {2} but was unable to record its lineage: {3} exception with message {4}</div>
 </section>
 </li>
 </ul>

@@ -11969,11 +11969,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSetCollectionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource">PostgresTabularDataSetCollectionConnector</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">PostgresTabularDataSourceConnector works with structured files to retrieve simple tables of data.</div>
+<div class="block">PostgresTabularDataSetCollectionConnector presents the tables of one PostgreSQL schema as a collection of simple
+ tables of data.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSetCollectionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource">PostgresTabularDataSetCollectionProvider</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
-<div class="block">PostgresTabularDataSourceProvider is the OCF connector provider for the PostgreSQL Tabular Data Source resource connector.</div>
+<div class="block">PostgresTabularDataSetCollectionProvider is the OCF connector provider for the PostgreSQL Tabular Data Set Collection resource connector.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource">PostgresTabularDataSetConnector</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
@@ -12455,7 +12456,8 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">ProvisionTabularDataSetGovernanceActionConnector</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">ProvisionTabularDataSetGovernanceActionConnector copies data from one tabular data set to another.</div>
+<div class="block">ProvisionTabularDataSetGovernanceActionConnector copies data from one tabular data set to another and records
+ the lineage of the copy - see <a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/TabularDataSetProvisioningLineage.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning"><code>TabularDataSetProvisioningLineage</code></a> for the lineage pattern.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">ProvisionTabularDataSetGovernanceActionProvider</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
@@ -14921,6 +14923,17 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/TabularDataSetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">TabularDataSetProperties</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">DataSetProperties is a class for representing a generic data set.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/TabularDataSetProvisioningLineage.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">TabularDataSetProvisioningLineage</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">TabularDataSetProvisioningLineage records the lineage of a copy made by a tabular data set provisioning service:
+ the data flows from the source data set, through the process that did the copying, into the destination data
+ set, and - where both data sets have their columns catalogued - the data mappings from each source column to the
+ destination column it was copied into.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab4"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/TabularDataSetProvisioningLineage.LineageSummary.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">TabularDataSetProvisioningLineage.LineageSummary</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab4">
+<div class="block">The outcome of recording the lineage of one delivery.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/connectors/tabulardatasets/TabularDataSetReport.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularDataSetReport</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">

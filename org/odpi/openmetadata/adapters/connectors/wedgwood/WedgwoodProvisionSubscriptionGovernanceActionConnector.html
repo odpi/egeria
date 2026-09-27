@@ -111,7 +111,11 @@ loadScripts(document, 'script');</script>
  the destination, which for a family is a collection too: a schema that receives one table per product.  The
  service asks the source collection for its table names, brings each into focus and copies it.  A table that
  cannot be copied is logged and skipped so that the rest of the family is still delivered; the service then
- completes with a failed status and says which tables were missed.</div>
+ completes with a failed status and says which tables were missed.
+ <br><br>
+ The lineage of the tables delivered is recorded once the copying is done - see
+ <a href="../governanceactions/provisioning/TabularDataSetProvisioningLineage.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning"><code>TabularDataSetProvisioningLineage</code></a> for the pattern.  When the service is run by the provisioning pipeline
+ that a digital subscription sets up, the lineage passes through that pipeline's process.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
