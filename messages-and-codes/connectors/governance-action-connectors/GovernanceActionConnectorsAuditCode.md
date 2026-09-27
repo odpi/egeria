@@ -9,12 +9,11 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 43 |
+| **Number of messages** | 45 |
 | **Message identifiers begin** | `GOVERNANCE-ACTION-CONNECTORS-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/governance-action-connectors](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors) |
 | **Source** | [GovernanceActionConnectorsAuditCode.java](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors/src/main/java/org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.java) |
-| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 
 ## Messages
@@ -64,6 +63,8 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 | [GOVERNANCE-ACTION-CONNECTORS-0042](#governance-action-connectors-0042) | EXCEPTION | The {0} governance action service was unable to deliver table {1} from {2} to {3}: {4} exception with message {5} |
 | [GOVERNANCE-ACTION-CONNECTORS-0043](#governance-action-connectors-0043) | INFO | The {0} governance action service has delivered all {1} table(s) of collection {2} to {3} |
 | [GOVERNANCE-ACTION-CONNECTORS-0044](#governance-action-connectors-0044) | ERROR | The {0} governance action service delivered {1} of the {2} table(s) of collection {3} to {4}; the table(s) it could not deliver are: {5} |
+| [GOVERNANCE-ACTION-CONNECTORS-0045](#governance-action-connectors-0045) | INFO | The {0} governance action service has recorded the lineage of its delivery from {1} through process {2} to {3}, with {4} column mapping(s) |
+| [GOVERNANCE-ACTION-CONNECTORS-0046](#governance-action-connectors-0046) | EXCEPTION | The {0} governance action service delivered the data from {1} to {2} but was unable to record its lineage: {3} exception with message {4} |
 
 ----
 
@@ -76,6 +77,7 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 | **Java constant** | `GovernanceActionConnectorsAuditCode.COPY_FILE` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -97,6 +99,7 @@ No specific action is required.  This message is to log that a copy provisioning
 | **Java constant** | `GovernanceActionConnectorsAuditCode.MOVE_FILE` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -118,6 +121,7 @@ No specific action is required.  This message is to log that a move provisioning
 | **Java constant** | `GovernanceActionConnectorsAuditCode.CREATED_LINEAGE` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -139,6 +143,7 @@ Validate that the lineage is being created between the correct metadata elements
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NO_SOURCE_FILE_NAME` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -160,6 +165,7 @@ The source file is passed to the governance action service through the request p
 | **Java constant** | `GovernanceActionConnectorsAuditCode.FILE_PATTERN_FULL` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -181,6 +187,7 @@ Since no exception occurred it means that there are currently files already occu
 | **Java constant** | `GovernanceActionConnectorsAuditCode.FILE_PROVISIONING_EXCEPTION` |
 | **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -202,6 +209,7 @@ This message contains the exception that was the original cause of the problem. 
 | **Java constant** | `GovernanceActionConnectorsAuditCode.ENDPOINT_EXCEPTION` |
 | **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
 | **Message inserts** | `{0}`, `{1}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -223,6 +231,7 @@ This message contains the exception that was the original cause of the problem. 
 | **Java constant** | `GovernanceActionConnectorsAuditCode.QUALIFIED_NAME_PATH_NAME` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -244,6 +253,7 @@ Validate that the qualified name is a good choice for the path name.  If it is n
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NO_LINKED_CONNECTION` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -265,6 +275,7 @@ The governance action service will next produce the GOVERNANCE-ACTION-CONNECTORS
 | **Java constant** | `GovernanceActionConnectorsAuditCode.TOO_MANY_CONNECTIONS` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -286,6 +297,7 @@ The governance action service will next produce the GOVERNANCE-ACTION-CONNECTORS
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NO_RELATED_ASSET` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -307,6 +319,7 @@ The governance action service will write the GOVERNANCE-ACTION-CONNECTORS-0006 m
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NO_LINKED_ENDPOINT` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -328,6 +341,7 @@ The governance action service will next write out the GOVERNANCE-ACTION-CONNECTO
 | **Java constant** | `GovernanceActionConnectorsAuditCode.TOO_MANY_ENDPOINTS` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -349,6 +363,7 @@ The governance action service will search for additional connections.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NO_NETWORK_ADDRESS` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -370,6 +385,7 @@ The governance action service will log the GOVERNANCE-ACTION-CONNECTORS-0006 mes
 | **Java constant** | `GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -391,6 +407,7 @@ Review the exception messages that are logged about the same time as one of them
 | **Java constant** | `GovernanceActionConnectorsAuditCode.UNABLE_TO_REGISTER_LISTENER` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -412,6 +429,7 @@ This is likely to be a configuration error.  Review the description of the excep
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NO_TARGETS` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -433,6 +451,7 @@ This is an error in the way that the governance action service has been called.I
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NO_ZONES` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -454,6 +473,7 @@ Verify that this is the intended behaviour.  If zones are needed, the zone names
 | **Java constant** | `GovernanceActionConnectorsAuditCode.SETTING_ZONES` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -475,6 +495,7 @@ Validate that these are the intended zones.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.INITIATE_PROCESS` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -496,6 +517,7 @@ Validate that the call to the process has the expected parameters and executes s
 | **Java constant** | `GovernanceActionConnectorsAuditCode.INITIATE_PROCESS_EXCEPTION` |
 | **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -517,6 +539,7 @@ This message contains the exception that was the original cause of the problem. 
 | **Java constant** | `GovernanceActionConnectorsAuditCode.MISSING_TEMPLATE` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -538,6 +561,7 @@ Determine whether the template name is specified incorrectly, or if the name is 
 | **Java constant** | `GovernanceActionConnectorsAuditCode.BLANK_INFO_LOG_MESSAGE` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -559,6 +583,7 @@ Look at the message text to understand any actions.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.SETTING_RETENTION` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -580,6 +605,7 @@ Validate that these are the intended retention dates.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NO_STEWARD` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -601,6 +627,7 @@ Rerun the request, but this time add a steward action target.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NO_SURVEY_REPORT` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -622,6 +649,7 @@ Rerun the request, but this time add a survey report action target.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NO_RFAS` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -643,6 +671,7 @@ No action is required since the survey completed successfully.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.RFAS_DETECTED` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -664,6 +693,7 @@ Instructions for the action to take are in the Todos and the attached requests f
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NO_TEMPLATE_GUID` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -685,6 +715,7 @@ Rerun the request, but this time add a templateGUID request parameter.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NO_CONNECTOR` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -706,6 +737,7 @@ Rerun the request, but this time add an integrationConnector action target.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.CONNECTOR_CONFIGURED` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -727,6 +759,7 @@ Check that the integration connector is able to contact the server and the catal
 | **Java constant** | `GovernanceActionConnectorsAuditCode.MISSING_ACTION_TARGET` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -748,6 +781,7 @@ This is an error in the way that the governance action service has been called s
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NEW_ASSET_CREATED` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -769,6 +803,7 @@ Ensure follow-on uses of the asset are successful.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NEW_ASSET_DELETED` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -790,6 +825,7 @@ Ensure follow-on uses of the asset GUID are successful.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.DAY_OF_THE_WEEK` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -811,6 +847,7 @@ Ensure follow-on uses of the day of the week are successful.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.UNEXPECTED_EXCEPTION` |
 | **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -832,6 +869,7 @@ Use the details from the error message to determine the cause of the error and r
 | **Java constant** | `GovernanceActionConnectorsAuditCode.SERVICE_COMPLETED_SUCCESSFULLY` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -853,6 +891,7 @@ No action is required except to validate that the shutdown is occurring at an ap
 | **Java constant** | `GovernanceActionConnectorsAuditCode.MISSING_REQUEST_PARAMETER` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -874,6 +913,7 @@ This is an error in the way that the governance action service has been called s
 | **Java constant** | `GovernanceActionConnectorsAuditCode.NEW_SUBSCRIPTION_CREATED` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}`, `{6}`, `{7}`, `{8}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -895,6 +935,7 @@ Ensure follow-on uses of the subscription are successful.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.TABLE_PROVISIONED` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -916,6 +957,7 @@ No action is required.  This message records what was delivered.
 | **Java constant** | `GovernanceActionConnectorsAuditCode.TABLE_PROVISIONING_FAILED` |
 | **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -937,6 +979,7 @@ Use the details from the error message to determine why the table could not be d
 | **Java constant** | `GovernanceActionConnectorsAuditCode.COLLECTION_PROVISIONED` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -958,6 +1001,7 @@ No action is required.  This message records that the whole collection was deliv
 | **Java constant** | `GovernanceActionConnectorsAuditCode.COLLECTION_PARTIALLY_PROVISIONED` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
@@ -966,6 +1010,50 @@ The tables that could be delivered have been.  The service completes with a fail
 **User action**
 
 Each table that could not be delivered has its own exception message in the audit log.  Correct the problems and the next delivery will try again.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0045
+
+> The {0} governance action service has recorded the lineage of its delivery from {1} through process {2} to {3}, with {4} column mapping(s)
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.PROVISIONING_LINEAGE_CREATED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/features/lineage-management/overview/> |
+
+**System action**
+
+The data flows from the source through the process to the destination are in place, along with a data mapping for each delivered column that is catalogued in both the source and the destination.  Relationships left by earlier deliveries are reused rather than repeated.
+
+**User action**
+
+No action is required.  If column mappings were expected and there are none, check that the schemas of both data sets are catalogued.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0046
+
+> The {0} governance action service delivered the data from {1} to {2} but was unable to record its lineage: {3} exception with message {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.PROVISIONING_LINEAGE_FAILED` |
+| **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/features/lineage-management/overview/> |
+
+**System action**
+
+The delivery stands and the service completes with the status of the delivery.  The lineage for this delivery is missing or incomplete.
+
+**User action**
+
+Use the details from the error message to determine why the lineage could not be recorded and correct the problem.  The next delivery records the lineage again.
 
 
 ----

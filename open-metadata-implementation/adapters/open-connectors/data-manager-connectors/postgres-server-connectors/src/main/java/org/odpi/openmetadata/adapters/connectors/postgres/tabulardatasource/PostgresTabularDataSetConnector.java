@@ -633,6 +633,81 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
 
 
     /**
+     * Bring a different table into focus.  The columns of the previous table are forgotten so that they are read
+     * afresh - or supplied afresh through {@link #setColumnDescriptions} - for the new one.
+     *
+     * @param tableName name of the table in snake case
+     * @param tableDescription description of the table (may be null)
+     */
+    protected synchronized void focusOnTable(String tableName,
+                                             String tableDescription)
+    {
+        this.tableName                  = tableName;
+        this.tableDescription           = tableDescription;
+        this.databaseColumnDescriptions = null;
+    }
+
+
+    /**
+     * Return the names of the tables in the connection's current schema - the schema that every unqualified
+     * table name used by this connector resolves to - in snake case, sorted by name.  Views are not included
+     * since they cannot be written to.
+     *
+     * @return list of table names (may be empty)
+     * @throws ConnectorCheckedException problem accessing the database
+     */
+    protected List<String> getSchemaTableNames() throws ConnectorCheckedException
+    {
+        final String methodName = "getSchemaTableNames";
+
+        try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+        {
+            String currentSchemaName = databaseConnection.getSchema();
+
+            if ((currentSchemaName == null) || (currentSchemaName.isEmpty()))
+            {
+                currentSchemaName = schemaName;
+            }
+
+            List<String> tableNames = new ArrayList<>();
+
+            DatabaseMetaData databaseMetaData = databaseConnection.getMetaData();
+            String           schemaPattern    = jdbcResourceConnector.escapeSearchPattern(currentSchemaName,
+                                                                                         databaseMetaData.getSearchStringEscape());
+
+            try (ResultSet tables = databaseMetaData.getTables(null, schemaPattern, "%", new String[]{"TABLE"}))
+            {
+                while (tables.next())
+                {
+                    tableNames.add(tables.getString("TABLE_NAME"));
+                }
+            }
+
+            Collections.sort(tableNames);
+
+            return tableNames;
+        }
+        catch (Exception exception)
+        {
+            super.logExceptionRecord(methodName,
+                                  PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                              exception.getClass().getName(),
+                                                                                              methodName,
+                                                                                              exception.getMessage()),
+                                  exception);
+
+            throw new ConnectorCheckedException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                                            exception.getClass().getName(),
+                                                                                                            methodName,
+                                                                                                            exception.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                exception);
+        }
+    }
+
+
+    /**
      * Return the data type that describes a column of the given SQL type.  The mapping is the inverse of the one
      * {@link PostgresTabularColumn} uses to create the table, widened to the other types a table that this
      * connector did not create may have; anything else is presented as text, which is how the values are read.

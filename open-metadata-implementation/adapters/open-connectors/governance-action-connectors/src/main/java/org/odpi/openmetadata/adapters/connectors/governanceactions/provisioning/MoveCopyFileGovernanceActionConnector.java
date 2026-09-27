@@ -731,7 +731,17 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
          */
         if (topLevelProcessGUID == null)
         {
-            if (topLevelProcessTemplateQualifiedName == null)
+            /*
+             * The template is named by its qualified name, but it is copied by its unique identifier.
+             */
+            String topLevelProcessTemplateGUID = null;
+
+            if (topLevelProcessTemplateQualifiedName != null)
+            {
+                topLevelProcessTemplateGUID = metadataStore.getMetadataElementGUIDByUniqueName(topLevelProcessTemplateQualifiedName, null);
+            }
+
+            if (topLevelProcessTemplateGUID == null)
             {
                 topLevelProcessGUID = governanceContext.createProcess(topLevelProcessTypeName,
                                                                       topLevelProcessName,
@@ -740,7 +750,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
             }
             else
             {
-                topLevelProcessGUID = governanceContext.createProcessFromTemplate(topLevelProcessTemplateQualifiedName,
+                topLevelProcessGUID = governanceContext.createProcessFromTemplate(topLevelProcessTemplateGUID,
                                                                                   topLevelProcessName,
                                                                                   topLevelProcessName,
                                                                                   null);

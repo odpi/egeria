@@ -9,7 +9,7 @@ The OMFServicesErrorCode is used to define first failure data capture (FFDC) for
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 7 |
+| **Number of messages** | 10 |
 | **Message identifiers begin** | `OMF-SERVICES-` |
 | **Java class** | `org.odpi.openmetadata.frameworkservices.omf.ffdc.OMFServicesErrorCode` |
 | **Module** | [open-metadata-implementation/access-services/omf-metadata-management/omf-metadata-api](../../open-metadata-implementation/access-services/omf-metadata-management/omf-metadata-api) |
@@ -21,6 +21,9 @@ The OMFServicesErrorCode is used to define first failure data capture (FFDC) for
 
 | Message Id | HTTP Code | Message |
 |---|---|---|
+| [OMF-SERVICES-400-001](#omf-services-400-001) | 400 | The {0} type {1} named in the {2} parameter of the {3} request is not a known type |
+| [OMF-SERVICES-400-002](#omf-services-400-002) | 400 | The value {0} in the {1} parameter of the {2} request has no equivalent in the open metadata repository services |
+| [OMF-SERVICES-400-003](#omf-services-400-003) | 400 | The type definition passed on the {0} request is of class {1}, which is not an entity, relationship or classification definition |
 | [OMF-SERVICES-404-001](#omf-services-404-001) | 404 | The open metadata repository services are not initialized for the {0} operation |
 | [OMF-SERVICES-409-001](#omf-services-409-001) | 404 | Multiple {0} relationships are attached to metadata element {1} |
 | [OMF-SERVICES-500-001](#omf-services-500-001) | 500 | A null topic listener has been passed by user {0} on method {1} |
@@ -28,6 +31,69 @@ The OMFServicesErrorCode is used to define first failure data capture (FFDC) for
 | [OMF-SERVICES-500-006](#omf-services-500-006) | 500 | The requested connector for connection named {0} has not been created.  The connection was provided by the {1} service running in OMAG Server {2} at {3} |
 | [OMF-SERVICES-500-007](#omf-services-500-007) | 500 | The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2} at {3} is not of the required type. It should be an instance of {4} |
 | [OMF-SERVICES-500-008](#omf-services-500-008) | 500 | The OMF Services has received an unexpected {0} exception during method {1} for service {2}.  The message was: {3} |
+
+----
+
+### OMF-SERVICES-400-001
+
+> The {0} type {1} named in the {2} parameter of the {3} request is not a known type
+
+|  |  |
+|---|---|
+| **Java constant** | `OMFServicesErrorCode.UNKNOWN_TYPE_REFERENCE` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+A new or updated type definition may only refer to types that are already defined.  The request is rejected.
+
+**User action**
+
+Check the spelling of the type name.  If the type is new, define it first and then retry this request.  The known types can be retrieved with getAllTypes.
+
+
+----
+
+### OMF-SERVICES-400-002
+
+> The value {0} in the {1} parameter of the {2} request has no equivalent in the open metadata repository services
+
+|  |  |
+|---|---|
+| **Java constant** | `OMFServicesErrorCode.UNMAPPABLE_TYPE_VALUE` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The type definition cannot be stored because one of its values cannot be represented in the repository.
+
+**User action**
+
+Choose one of the other values for this property and retry the request.
+
+
+----
+
+### OMF-SERVICES-400-003
+
+> The type definition passed on the {0} request is of class {1}, which is not an entity, relationship or classification definition
+
+|  |  |
+|---|---|
+| **Java constant** | `OMFServicesErrorCode.UNSUPPORTED_TYPE_DEF_CLASS` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+The request is rejected because only entity, relationship and classification definitions can be added this way.
+
+**User action**
+
+Pass an OpenMetadataEntityDef, OpenMetadataRelationshipDef or OpenMetadataClassificationDef and retry the request.
+
 
 ----
 

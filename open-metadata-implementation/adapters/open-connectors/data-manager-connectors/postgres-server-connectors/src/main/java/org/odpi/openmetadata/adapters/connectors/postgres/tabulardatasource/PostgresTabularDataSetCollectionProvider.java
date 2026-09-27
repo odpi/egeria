@@ -8,7 +8,9 @@ import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfi
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.connectors.OpenConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataCollection;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularDataCollection;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition;
 
@@ -16,7 +18,7 @@ import java.util.List;
 
 
 /**
- * PostgresTabularDataSourceProvider is the OCF connector provider for the PostgreSQL Tabular Data Source resource connector.
+ * PostgresTabularDataSetCollectionProvider is the OCF connector provider for the PostgreSQL Tabular Data Set Collection resource connector.
  */
 public class PostgresTabularDataSetCollectionProvider extends OpenConnectorProviderBase
 {
@@ -34,7 +36,9 @@ public class PostgresTabularDataSetCollectionProvider extends OpenConnectorProvi
               connectorClass,
               PostgresConfigurationProperty.getPostgresTabularDataSourceConfigPropertyNames(),
               List.of(ReadableTabularDataSource.class.getName(),
-                      WritableTabularDataSource.class.getName()),
+                      WritableTabularDataSource.class.getName(),
+                      TabularDataCollection.class.getName(),
+                      ReadableTabularDataCollection.class.getName()),
               expectedDataFormat);
 
         super.supportedConfigurationProperties = PostgresConfigurationProperty.getPostgresTabularDataSourceConfigurationPropertyTypes();

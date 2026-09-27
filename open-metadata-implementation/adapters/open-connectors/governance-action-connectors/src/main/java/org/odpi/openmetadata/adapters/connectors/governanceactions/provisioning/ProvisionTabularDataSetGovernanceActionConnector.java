@@ -17,24 +17,27 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * ProvisionTabularDataSetGovernanceActionConnector copies data from one tabular data set to another.
+ * ProvisionTabularDataSetGovernanceActionConnector copies data from one tabular data set to another and records
+ * the lineage of the copy - see {@link TabularDataSetProvisioningLineage} for the lineage pattern.
  */
 public class ProvisionTabularDataSetGovernanceActionConnector extends GeneralGovernanceActionService
 {
     /*
-     * TODO What additional lineage support is necessary beyond the relationships supported by the engine action?
+     * The top-level process name is null unless the caller supplies one, so that the lineage can pass through
+     * the governance action process that started this service when there is one.
      */
-    private String  topLevelProcessName                  = this.getClass().getName();
+    private String  topLevelProcessName                  = null;
     private String  informationSupplyChainQualifiedName  = null;
     private String  topLevelProcessTemplateQualifiedName = null;
 
-
     /*
-     * TODO This describes the default lineage pattern
+     * The default lineage pattern: a child process per run beneath the top-level process, with column-level
+     * lineage wherever the schemas of both data sets are catalogued.
      */
     private boolean createLineage = true;
     private boolean childProcessLineage = true;
@@ -195,6 +198,32 @@ public class ProvisionTabularDataSetGovernanceActionConnector extends GeneralGov
                 }
 
 
+                if (createLineage)
+                {
+                    /*
+                     * The destination table is named after the source table when the destination is a
+                     * collection; otherwise it is the destination's own table.
+                     */
+                    Map<String, String> deliveredTables = new HashMap<>();
+
+                    if (destinationConnector instanceof TabularDataCollection)
+                    {
+                        deliveredTables.put(sourceConnector.getTableName(), sourceConnector.getTableName());
+                    }
+                    else if (destinationConnector instanceof ReadableTabularDataSource readableDestination)
+                    {
+                        deliveredTables.put(sourceConnector.getTableName(), readableDestination.getTableName());
+                    }
+                    else
+                    {
+                        deliveredTables.put(sourceConnector.getTableName(), null);
+                    }
+
+                    this.recordLineage(sourceMetadataElement.getElementGUID(),
+                                       destinationMetadataElement.getElementGUID(),
+                                       deliveredTables);
+                }
+
                 outputGuards.add(ProvisionTabularDataSetGuard.PROVISIONING_COMPLETE.getName());
                 completionStatus = ProvisionTabularDataSetGuard.PROVISIONING_COMPLETE.getCompletionStatus();
             }
@@ -218,6 +247,56 @@ public class ProvisionTabularDataSetGovernanceActionConnector extends GeneralGov
         catch (OMFCheckedExceptionBase error)
         {
             throw new ConnectorCheckedException(error.getReportedErrorMessage(), error);
+        }
+    }
+
+
+    /**
+     * Record the lineage of the copy.  The copy has been made by the time this is called, so a failure here is
+     * logged and does not change the outcome of the delivery.
+     *
+     * @param sourceAssetGUID source data set
+     * @param destinationAssetGUID destination data set
+     * @param deliveredTables source table name mapped to destination table name
+     */
+    private void recordLineage(String              sourceAssetGUID,
+                               String              destinationAssetGUID,
+                               Map<String, String> deliveredTables)
+    {
+        final String methodName = "recordLineage";
+
+        try
+        {
+            TabularDataSetProvisioningLineage lineage = new TabularDataSetProvisioningLineage(governanceContext,
+                                                                                              this.getClass().getName());
+
+            lineage.setTopLevelProcessName(topLevelProcessName);
+            lineage.setTopLevelProcessTemplateQualifiedName(topLevelProcessTemplateQualifiedName);
+            lineage.setInformationSupplyChainQualifiedName(informationSupplyChainQualifiedName);
+            lineage.setChildProcessLineage(childProcessLineage);
+            lineage.setColumnLevelLineage(columnLevelLineage);
+
+            TabularDataSetProvisioningLineage.LineageSummary summary = lineage.createLineage(sourceAssetGUID,
+                                                                                             destinationAssetGUID,
+                                                                                             connectorInstanceId,
+                                                                                             deliveredTables);
+
+            super.logRecord(methodName,
+                            GovernanceActionConnectorsAuditCode.PROVISIONING_LINEAGE_CREATED.getMessageDefinition(governanceServiceName,
+                                                                                                                   sourceAssetGUID,
+                                                                                                                   summary.processGUID(),
+                                                                                                                   destinationAssetGUID,
+                                                                                                                   Integer.toString(summary.columnMappingCount())));
+        }
+        catch (Exception error)
+        {
+            super.logExceptionRecord(methodName,
+                                     GovernanceActionConnectorsAuditCode.PROVISIONING_LINEAGE_FAILED.getMessageDefinition(governanceServiceName,
+                                                                                                                           sourceAssetGUID,
+                                                                                                                           destinationAssetGUID,
+                                                                                                                           error.getClass().getName(),
+                                                                                                                           error.getMessage()),
+                                     error);
         }
     }
 }
