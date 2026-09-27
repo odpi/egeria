@@ -51,6 +51,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLog
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
@@ -1549,7 +1550,6 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         if (productDefinition.getConnectorProvider() != null)
         {
-            // todo support updates to the asset
             AssetClient                  assetClient                  = integrationContext.getAssetClient(productDefinition.getAssetTypeName());
             ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
@@ -1559,20 +1559,20 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
             String assetGUID;
 
+            TabularDataSetProperties dataSetProperties = new TabularDataSetProperties();
+
+            if (productDefinition.getAssetTypeName() != null)
+            {
+                dataSetProperties.setTypeName(productDefinition.getAssetTypeName());
+            }
+
+            dataSetProperties.setQualifiedName(qualifiedName);
+            dataSetProperties.setDisplayName(productDefinition.getAssetIdentifier() + " for " + productDefinition.getDisplayName());
+            dataSetProperties.setDescription("This asset represents the source of data for the digital product.");
+            dataSetProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+
             if (assetElement == null)
             {
-                TabularDataSetProperties dataSetProperties = new TabularDataSetProperties();
-
-                if (productDefinition.getAssetTypeName() != null)
-                {
-                    dataSetProperties.setTypeName(productDefinition.getAssetTypeName());
-                }
-
-                dataSetProperties.setQualifiedName(qualifiedName);
-                dataSetProperties.setDisplayName(productDefinition.getAssetIdentifier() + " for " + productDefinition.getDisplayName());
-                dataSetProperties.setDescription("This asset represents the source of data for the digital product.");
-                dataSetProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
-
                 NewElementOptions newElementOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
 
                 newElementOptions.setIsOwnAnchor(false);
@@ -1612,7 +1612,17 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             else
             {
                 assetGUID = assetElement.getElementHeader().getGUID();
+
+                assetClient.updateAsset(assetGUID, assetClient.getUpdateOptions(true), dataSetProperties);
             }
+
+            ImplementedByProperties implementedByProperties = new ImplementedByProperties();
+            implementedByProperties.setRole("product data set");
+
+            integrationContext.getGovernanceDefinitionClient().linkDesignToImplementation(productGUID,
+                                                                                          assetGUID,
+                                                                                          assetClient.getMakeAnchorOptions(false),
+                                                                                          implementedByProperties);
 
             /*
              * The connection is dealt with whether the asset was just created or was already there.  The
