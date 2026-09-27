@@ -913,9 +913,16 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
     /**
      * Return whether a table exists or not.
+     * <br>
+     * The table is looked for where the name resolves to when it is used in a query: in the schema it is
+     * qualified with ({@code schema.table}), or, for an unqualified name, in the connection's current schema.
+     * Looking in every schema would find a table of the same name in some other schema and report a table that
+     * the queries that follow cannot see.  The names are passed to the catalog as search patterns, so any
+     * pattern characters in them - such as the underscore of a snake-case name - are escaped to match only
+     * themselves.
      *
      * @param jdbcConnection connection to use
-     * @param tableName name of the table to query
+     * @param tableName name of the table to query, optionally qualified by its schema
      * @return boolean
      * @throws PropertyServerException there was a problem calling the database
      */
@@ -924,17 +931,32 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
     {
         final String methodName = "doesTableExist";
 
-        boolean exists;
+        boolean exists = false;
 
         try
         {
+            String schemaName           = jdbcConnection.getSchema();
+            String unqualifiedTableName = tableName;
+            int    separator            = tableName.lastIndexOf('.');
+
+            if (separator > 0)
+            {
+                schemaName           = tableName.substring(0, separator);
+                unqualifiedTableName = tableName.substring(separator + 1);
+            }
+
             DatabaseMetaData metaData = jdbcConnection.getMetaData();
+            String           escape   = metaData.getSearchStringEscape();
+
             try (ResultSet resultSet = metaData.getTables(null,
-                                                          null,
-                                                          tableName,
+                                                          this.escapeSearchPattern(schemaName, escape),
+                                                          this.escapeSearchPattern(unqualifiedTableName, escape),
                                                           new String[]{"TABLE"}))
             {
-                exists = resultSet.next();
+                while ((! exists) && (resultSet.next()))
+                {
+                    exists = unqualifiedTableName.equals(resultSet.getString("TABLE_NAME"));
+                }
             }
         }
         catch (SQLException sqlException)
@@ -950,6 +972,28 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         }
 
         return exists;
+    }
+
+
+    /**
+     * Escape the pattern characters in a name so that, used as a catalog search pattern, it matches only
+     * itself.
+     *
+     * @param name name to escape (may be null, which matches everything)
+     * @param escape the driver's search string escape (may be null or empty if it has none)
+     * @return escaped name
+     */
+    public String escapeSearchPattern(String name,
+                                      String escape)
+    {
+        if ((name == null) || (escape == null) || (escape.isEmpty()))
+        {
+            return name;
+        }
+
+        return name.replace(escape, escape + escape)
+                   .replace("_", escape + "_")
+                   .replace("%", escape + "%");
     }
 
 

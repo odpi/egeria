@@ -507,6 +507,26 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                      "Each table that could not be delivered has its own exception message in the audit log.  Correct the problems and the next delivery will try again.",
                                      "https://egeria-project.org/concepts/governance-action-service/"),
 
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0045 - The {0} governance action service has recorded the lineage of its delivery from {1} through process {2} to {3}, with {4} column mapping(s)
+     */
+    PROVISIONING_LINEAGE_CREATED("GOVERNANCE-ACTION-CONNECTORS-0045",
+                                 AuditLogRecordSeverityLevel.INFO,
+                                 "The {0} governance action service has recorded the lineage of its delivery from {1} through process {2} to {3}, with {4} column mapping(s)",
+                                 "The data flows from the source through the process to the destination are in place, along with a data mapping for each delivered column that is catalogued in both the source and the destination.  Relationships left by earlier deliveries are reused rather than repeated.",
+                                 "No action is required.  If column mappings were expected and there are none, check that the schemas of both data sets are catalogued.",
+                                 "https://egeria-project.org/features/lineage-management/overview/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0046 - The {0} governance action service delivered the data from {1} to {2} but was unable to record its lineage: {3} exception with message {4}
+     */
+    PROVISIONING_LINEAGE_FAILED("GOVERNANCE-ACTION-CONNECTORS-0046",
+                                AuditLogRecordSeverityLevel.EXCEPTION,
+                                "The {0} governance action service delivered the data from {1} to {2} but was unable to record its lineage: {3} exception with message {4}",
+                                "The delivery stands and the service completes with the status of the delivery.  The lineage for this delivery is missing or incomplete.",
+                                "Use the details from the error message to determine why the lineage could not be recorded and correct the problem.  The next delivery records the lineage again.",
+                                "https://egeria-project.org/features/lineage-management/overview/"),
+
     ;
 
     private final String                      logMessageId;
