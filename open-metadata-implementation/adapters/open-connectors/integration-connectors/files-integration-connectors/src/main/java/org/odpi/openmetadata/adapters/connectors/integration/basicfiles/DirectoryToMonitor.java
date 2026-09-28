@@ -193,7 +193,7 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
             }
             if (templates.get(OpenMetadataType.INCIDENT_REPORT.typeName) != null)
             {
-                incidentReportTemplateQualifiedName = templates.get(OpenMetadataType.DATA_FILE.typeName);
+                incidentReportTemplateQualifiedName = templates.get(OpenMetadataType.INCIDENT_REPORT.typeName);
             }
 
             this.templates.putAll(templates);

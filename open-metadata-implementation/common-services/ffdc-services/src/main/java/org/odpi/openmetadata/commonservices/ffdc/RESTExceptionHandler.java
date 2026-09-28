@@ -559,7 +559,7 @@ public class RESTExceptionHandler
                                    String       methodName,
                                    AuditLog     auditLog)
     {
-        log.error("Exception from " + methodName + " being packaged for return on REST call", error);
+        log.error("Exception from {} being packaged for return on REST call", methodName, error);
 
         if (error instanceof PropertyServerException propertyServerException)
         {

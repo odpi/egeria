@@ -10606,7 +10606,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                     newRelationship = repositoryHandler.updateRelationshipProperties(userId,
                                                                                      externalSourceGUID,
                                                                                      externalSourceName,
-                                                                                     existingRelationships.get(0),
+                                                                                     existingRelationships.getFirst(),
                                                                                      relationshipProperties,
                                                                                      methodName);
                 }

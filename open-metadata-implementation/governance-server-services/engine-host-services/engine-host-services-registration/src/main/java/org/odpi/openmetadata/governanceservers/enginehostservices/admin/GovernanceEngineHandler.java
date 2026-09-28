@@ -559,12 +559,11 @@ public abstract class GovernanceEngineHandler
                         }
                         catch (Exception error)
                         {
-                            auditLog.logException(methodName,
-                                                  EngineHostServicesAuditCode.ENGINE_ACTION_FAILED.getMessageDefinition(engineActionElement.getGovernanceEngineName(),
-                                                                                                                        error.getClass().getName(),
-                                                                                                                        error.getMessage()),
-                                                  engineActionElement.toString(),
-                                                  error);
+                            auditLog.logMessage(methodName,
+                                                EngineHostServicesAuditCode.ENGINE_ACTION_FAILED.getMessageDefinition(engineActionElement.getGovernanceEngineName(),
+                                                                                                                      error.getClass().getName(),
+                                                                                                                      error.getMessage()),
+                                                engineActionElement.toString());
                         }
                     }
                 }
