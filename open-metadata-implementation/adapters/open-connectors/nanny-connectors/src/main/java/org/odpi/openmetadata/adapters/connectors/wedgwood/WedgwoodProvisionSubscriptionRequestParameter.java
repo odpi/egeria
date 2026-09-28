@@ -18,11 +18,11 @@ import java.util.List;
 public enum WedgwoodProvisionSubscriptionRequestParameter
 {
     NO_LINEAGE( "noLineage", "If this property is set to any value, do not produce lineage as part of the provisioning process.", "string", ""),
-    TOP_LEVEL_PROCESS_NAME( "topLevelProcessQualifiedName", "Qualified name to use for the top level process that represents this governance action service.  It overrides the default value of 'Egeria:MoveCopyDeleteFileGovernanceActionService'.", "string", ""),
+    TOP_LEVEL_PROCESS_NAME( "topLevelProcessQualifiedName", "Qualified name to use for the top level process that the lineage of each delivery passes through.  If it is not set, the lineage passes through the governance action process that started this service (such as the provisioning pipeline of a digital subscription) or, if there is none, a process named after the service's implementation class.", "string", ""),
     TOP_LEVEL_PROCESS_TEMPLATE_NAME("topLevelProcessTemplateQualifiedName", "Qualified name of the template to use for the top level process that represents this governance action service.  If it is not specified, no template is used.", "", ""),
-    TOP_LEVEL_PROCESS_ONLY_LINEAGE("topLevelProcessLineageOnly", "If this property is set, lineage mappings are connected to the top level process representing this governance action service.", "", ""),
+    TOP_LEVEL_PROCESS_ONLY_LINEAGE("topLevelProcessLineageOnly", "If this property is set, lineage is connected to the top level process rather than to a child process created beneath it for each run.", "", ""),
     IGNORE_COLUMN_LEVEL_LINEAGE("ignoreColumnLevelLineage", "If this property is set, the lineage relationships between schema elements are not created.", "", ""),
-    INFORMATION_SUPPLY_CHAIN_QUALIFIED_NAME("informationSupplyChain", "If this property is set, the value it is set to is the qualified name of the information supply chain that this provisioning process belongs to.  It is used to set the iscQualifiedName in the lineage relationships.", DataType.STRING.getDisplayName(), "InformationSupplyChain:Onboard My Data"),
+    INFORMATION_SUPPLY_CHAIN_QUALIFIED_NAME("informationSupplyChain", "If this property is set, the value it is set to is the qualified name of the information supply chain that this provisioning process belongs to.  It is used to set the iscQualifiedName in the lineage relationships.  If it is not set, the information supply chain recorded on the engine action is used.", DataType.STRING.getDisplayName(), "InformationSupplyChain:Onboard My Data"),
 
     ;
 

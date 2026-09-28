@@ -28,7 +28,7 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
 | Exception messages | 68 | 635 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 106 | 1012 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Audit log messages | 106 | 1014 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -98,7 +98,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [System Connectors](connectors/system-connectors) | 13 | 77 | These connectors call the APIs of third party systems such as Apache Atlas, Apache Kafka and the Egeria runtime itself. |
 | [Repository Services Connectors](connectors/repository-services-connectors) | 8 | 35 | These connectors provide the pluggable implementations used by the repository services - the metadata repositories, the audit log destinations, the cohort registry stores and the open metadata archive stores. |
 | [Event Bus Connectors](connectors/event-bus-connectors) | 2 | 22 | These connectors send and receive events over the event bus - typically Apache Kafka. |
-| [Governance Action Connectors](connectors/governance-action-connectors) | 2 | 47 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
+| [Governance Action Connectors](connectors/governance-action-connectors) | 2 | 49 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
 | [File Survey Connectors](connectors/file-survey-connectors) | 1 | 5 | These survey action services analyse the content of files and folders and record what they find in a survey report. |
 | [Nanny Connectors](connectors/nanny-connectors) | 18 | 113 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
 | [Lovelace Insights](connectors/lovelace-insights) | 2 | 15 | These are the analytical governance services orchestrated by the Babbage Analytical Engine.  Each analyses the open metadata ecosystem, or a store of observations about it such as an OpenLineage log store, and records what it finds as classifications or survey reports on the appropriate open metadata elements. |
@@ -160,7 +160,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `FILE-DOC-STORE-400-` | Exception messages | 2 | [DocStoreErrorCode](connectors/configuration-store-connectors/DocStoreErrorCode.md) |
 | `FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-` | Audit log messages | 2 | [FileBasedOpenMetadataArchiveStoreConnectorAuditCode](connectors/repository-services-connectors/FileBasedOpenMetadataArchiveStoreConnectorAuditCode.md) |
 | `FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-400-` | Exception messages | 1 | [FileBasedOpenMetadataArchiveStoreConnectorErrorCode](connectors/repository-services-connectors/FileBasedOpenMetadataArchiveStoreConnectorErrorCode.md) |
-| `GOVERNANCE-ACTION-CONNECTORS-` | Audit log messages | 43 | [GovernanceActionConnectorsAuditCode](connectors/governance-action-connectors/GovernanceActionConnectorsAuditCode.md) |
+| `GOVERNANCE-ACTION-CONNECTORS-` | Audit log messages | 45 | [GovernanceActionConnectorsAuditCode](connectors/governance-action-connectors/GovernanceActionConnectorsAuditCode.md) |
 | `GOVERNANCE-ACTION-CONNECTORS-` | Exception messages | 4 | [GovernanceActionConnectorsErrorCode](connectors/governance-action-connectors/GovernanceActionConnectorsErrorCode.md) |
 | `GOVERNANCE-ACTION-SAMPLES-` | Audit log messages | 5 | [GovernanceActionSamplesAuditCode](samples/GovernanceActionSamplesAuditCode.md) |
 | `GOVERNANCE-ACTION-SAMPLES-` | Exception messages | 4 | [GovernanceActionSamplesErrorCode](samples/GovernanceActionSamplesErrorCode.md) |

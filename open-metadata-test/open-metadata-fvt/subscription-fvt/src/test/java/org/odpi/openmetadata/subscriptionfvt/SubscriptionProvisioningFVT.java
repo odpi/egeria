@@ -179,6 +179,142 @@ public class SubscriptionProvisioningFVT
 
 
     /**
+     * The delivery records its lineage: the data flows from the product's asset into a process, and from that
+     * process into the subscriber's destination - and the process leads back to the provisioning pipeline.
+     * <br>
+     * By default the process is the instance Egeria created for this run of the pipeline, which is governed by
+     * the pipeline; with lineage restricted to the top-level process it is the pipeline itself.  Either way a
+     * lineage graph leads back to the subscription rather than to some generic process.  The lineage is
+     * recorded after the data is written, so it is waited for in the same way.
+     *
+     * @throws Exception problem taking out the subscription or reading the repository
+     */
+    @Test
+    @DisplayName("The delivery's lineage flows through a run of the provisioning pipeline")
+    void deliveryLineageFlowsThroughThePipeline() throws Exception
+    {
+        String subscriptionGUID = subscription();
+
+        OpenMetadataElement pipeline = provisioningPipeline(subscriptionGUID);
+
+        assertNotNull(pipeline, "The subscription has no provisioning pipeline");
+
+        String pipelineGUID    = pipeline.getElementGUID();
+        String sourceGUID      = pipelineActionTarget(pipeline, WedgwoodProvisionSubscriptionActionTarget.SOURCE_DATA_SET.getName());
+        String destinationGUID = pipelineActionTarget(pipeline, WedgwoodProvisionSubscriptionActionTarget.DESTINATION_DATA_SET.getName());
+
+        assertNotNull(sourceGUID, "The provisioning pipeline names no source.");
+        assertNotNull(destinationGUID, "The provisioning pipeline names no destination.");
+
+        String[] processGUID = new String[]{null};
+
+        SubscriptionFvtTestSupport.waitFor("the lineage of the " + SUBSCRIPTION_TYPE.getIdentifier() + " subscription to "
+                                                   + productDefinition.getProductName() + " to be recorded",
+                                           "subscription.fvt.provisioning.timeout.seconds",
+                                           300,
+                                           () ->
+                                           {
+                                               processGUID[0] = deliveringProcess(sourceGUID, destinationGUID, pipelineGUID);
+
+                                               return processGUID[0] != null;
+                                           });
+
+        assertNotNull(processGUID[0],
+                      "No lineage from the product's asset through the provisioning pipeline (or a run of it) into the"
+                              + " subscriber's destination was recorded for the " + SUBSCRIPTION_TYPE.getIdentifier()
+                              + " subscription to " + productDefinition.getProductName() + ".");
+    }
+
+
+    /**
+     * Return the process that data flows through from the source to the destination, provided it is the
+     * pipeline or a run of the pipeline.
+     *
+     * @param sourceGUID element the data comes from
+     * @param destinationGUID element the data goes to
+     * @param pipelineGUID provisioning pipeline
+     * @return unique identifier of the process, or null if there is no such lineage
+     * @throws Exception problem reading the repository
+     */
+    private static String deliveringProcess(String sourceGUID,
+                                            String destinationGUID,
+                                            String pipelineGUID) throws Exception
+    {
+        for (RelatedMetadataElement dataFlow : SubscriptionFvtTestSupport.getRelatedElements(openMetadataStore,
+                                                                                              sourceGUID,
+                                                                                              OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                                                              1))
+        {
+            String candidateGUID = dataFlow.getElement().getElementGUID();
+
+            if ((dataFlowsTo(candidateGUID, destinationGUID)) && (isPipelineOrRunOf(candidateGUID, pipelineGUID)))
+            {
+                return candidateGUID;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Is this process the pipeline, or an instance Egeria created for a run of it?
+     *
+     * @param processGUID process to check
+     * @param pipelineGUID provisioning pipeline
+     * @return flag
+     * @throws Exception problem reading the repository
+     */
+    private static boolean isPipelineOrRunOf(String processGUID,
+                                             String pipelineGUID) throws Exception
+    {
+        if (pipelineGUID.equals(processGUID))
+        {
+            return true;
+        }
+
+        for (RelatedMetadataElement governedBy : SubscriptionFvtTestSupport.getRelatedElements(openMetadataStore,
+                                                                                                processGUID,
+                                                                                                OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                                                                                0))
+        {
+            if (pipelineGUID.equals(governedBy.getElement().getElementGUID()))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Is there a data flow from one element to another?
+     *
+     * @param fromGUID element the data comes from
+     * @param toGUID element the data goes to
+     * @return true if a DataFlow relationship links them in that direction
+     * @throws Exception problem reading the repository
+     */
+    private static boolean dataFlowsTo(String fromGUID,
+                                       String toGUID) throws Exception
+    {
+        for (RelatedMetadataElement dataFlow : SubscriptionFvtTestSupport.getRelatedElements(openMetadataStore,
+                                                                                              fromGUID,
+                                                                                              OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                                                              1))
+        {
+            if (toGUID.equals(dataFlow.getElement().getElementGUID()))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * Take out - or reuse - the subscription these tests deliver into.
      *
      * @return unique identifier of the subscription

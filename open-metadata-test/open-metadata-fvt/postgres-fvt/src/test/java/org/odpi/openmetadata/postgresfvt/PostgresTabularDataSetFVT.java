@@ -21,6 +21,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataCollection;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumnDescription;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularDataCollection;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
@@ -32,8 +34,11 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Exercises the PostgreSQL tabular data set resource connectors directly, against a real PostgreSQL database.
@@ -69,6 +74,11 @@ public class PostgresTabularDataSetFVT
      * as part of {@code setColumnDescriptions} - and that is one of the things being tested.
      */
     private static final String TABULAR_SCHEMA_NAME = "postgres_fvt_tabular";
+
+    /**
+     * A second schema, holding a table the connector must not mistake for one of its own.
+     */
+    private static final String OTHER_SCHEMA_NAME = "postgres_fvt_tabular_other";
 
     private static final String FIRST_TABLE_NAME  = "postgres_fvt_data_set";
     private static final String SECOND_TABLE_NAME = "Second Data Set";
@@ -199,6 +209,140 @@ public class PostgresTabularDataSetFVT
 
 
     /**
+     * List the tables of a schema through the collection connector, and read each in turn.
+     * <br>
+     * This is how a collection is delivered as a source: the provisioning service asks for the table names,
+     * brings each into focus with {@code setTableName} and copies it.  Two tables with different columns are
+     * used so that the test fails if the connector carries the first table's columns over to the second, and a
+     * view is added alongside them because a view is not a table that can be delivered into.  The primary keys
+     * are checked because they are what the destination uses to replace records on a repeat delivery.
+     *
+     * @throws Exception the connector could not be built, or did not do what it was asked
+     */
+    @Test
+    @DisplayName("The tabular data set collection connector lists its tables and reads each with its own columns")
+    public void testTabularDataSetCollectionListsTables() throws Exception
+    {
+        try (java.sql.Connection databaseConnection = PostgresFvtTestSupport.getServerUnderTestConnection(PostgresFvtTestSupport.getDatabaseName());
+             Statement statement = databaseConnection.createStatement())
+        {
+            statement.execute("create schema if not exists " + TABULAR_SCHEMA_NAME);
+            statement.execute("drop view if exists " + TABULAR_SCHEMA_NAME + ".listed_orders_view");
+            statement.execute("drop table if exists " + TABULAR_SCHEMA_NAME + ".listed_order_lines");
+            statement.execute("drop table if exists " + TABULAR_SCHEMA_NAME + ".listed_orders");
+            statement.execute("create table " + TABULAR_SCHEMA_NAME + ".listed_orders (order_id integer primary key, order_label text)");
+            statement.execute("create table " + TABULAR_SCHEMA_NAME + ".listed_order_lines (order_id integer not null, line_number integer not null,"
+                                      + " line_quantity integer, primary key (order_id, line_number))");
+            statement.execute("create view " + TABULAR_SCHEMA_NAME + ".listed_orders_view as select * from " + TABULAR_SCHEMA_NAME + ".listed_orders");
+            statement.execute("insert into " + TABULAR_SCHEMA_NAME + ".listed_orders values (1, 'first'), (2, 'second')");
+            statement.execute("insert into " + TABULAR_SCHEMA_NAME + ".listed_order_lines values (1, 1, 5), (1, 2, 7), (2, 1, 3)");
+
+            if (! databaseConnection.getAutoCommit())
+            {
+                databaseConnection.commit();
+            }
+        }
+
+        Connector connector = getConnector(new PostgresTabularDataSetCollectionProvider().getConnectorType(), "listed_orders");
+
+        assertInstanceOf(ReadableTabularDataCollection.class,
+                         connector,
+                         "The connector broker returned a " + connector.getClass().getName() + " for the PostgreSQL tabular data"
+                                 + " set collection connector type, which cannot list its tables - so a provisioning service"
+                                 + " would deliver only one table of the schema.");
+
+        ReadableTabularDataCollection collection = (ReadableTabularDataCollection) connector;
+
+        connector.start();
+
+        try
+        {
+            List<String> tableNames = collection.getTableNames();
+
+            assertTrue(tableNames.contains("Listed Orders") && tableNames.contains("Listed Order Lines"),
+                       "The collection connector did not list both tables of the schema, in canonical form: " + tableNames);
+            assertFalse(tableNames.contains("Listed Orders View"),
+                        "The collection connector listed a view as one of its tables: " + tableNames);
+
+            collection.setTableName("Listed Orders", null);
+
+            assertEquals(List.of("Order Id", "Order Label"),
+                         collection.getColumnDescriptions().stream().map(TabularColumnDescription::columnName).toList(),
+                         "The columns of Listed Orders were not read from the table.");
+            assertEquals(List.of("Order Id"),
+                         collection.getColumnDescriptions().stream().filter(TabularColumnDescription::isIdentifier).map(TabularColumnDescription::columnName).toList(),
+                         "The primary key of Listed Orders was not reported.");
+            assertEquals(2, collection.getRecordCount(), "Listed Orders did not report its two records.");
+
+            collection.setTableName("Listed Order Lines", null);
+
+            assertEquals(List.of("Order Id", "Line Number", "Line Quantity"),
+                         collection.getColumnDescriptions().stream().map(TabularColumnDescription::columnName).toList(),
+                         "After switching to Listed Order Lines the connector still described the columns of the previous table.");
+            assertEquals(List.of("Order Id", "Line Number"),
+                         collection.getColumnDescriptions().stream().filter(TabularColumnDescription::isIdentifier).map(TabularColumnDescription::columnName).toList(),
+                         "The two-column primary key of Listed Order Lines was not reported.");
+            assertEquals(3, collection.getRecordCount(), "Listed Order Lines did not report its three records.");
+            assertEquals(3, collection.readRecord(0).size(), "A record of Listed Order Lines did not have its three values.");
+        }
+        finally
+        {
+            connector.disconnect();
+        }
+    }
+
+
+    /**
+     * A table of the requested name in some other schema is not the connector's table.
+     * <br>
+     * The connector's queries name the table without a schema, so they resolve through the connection's current
+     * schema.  Asking the catalog whether the table exists must look in the same place: a table found in another
+     * schema would be reported as present and the first query against it would then fail.  The name also
+     * contains underscores, which the catalog treats as wildcards unless they are escaped, so a near-miss name
+     * in the connector's own schema is created as well.
+     *
+     * @throws Exception the connector could not be built, or did not do what it was asked
+     */
+    @Test
+    @DisplayName("The tabular data set connector does not see a table of the same name in another schema")
+    public void testTableInAnotherSchemaIsNotSeen() throws Exception
+    {
+        try (java.sql.Connection databaseConnection = PostgresFvtTestSupport.getServerUnderTestConnection(PostgresFvtTestSupport.getDatabaseName());
+             Statement statement = databaseConnection.createStatement())
+        {
+            statement.execute("create schema if not exists " + TABULAR_SCHEMA_NAME);
+            statement.execute("create schema if not exists " + OTHER_SCHEMA_NAME);
+            statement.execute("drop table if exists " + OTHER_SCHEMA_NAME + ".held_elsewhere");
+            statement.execute("drop table if exists " + TABULAR_SCHEMA_NAME + ".heldXelsewhere");
+            statement.execute("create table " + OTHER_SCHEMA_NAME + ".held_elsewhere (row_id integer primary key)");
+            statement.execute("create table " + TABULAR_SCHEMA_NAME + ".heldXelsewhere (row_id integer primary key)");
+
+            if (! databaseConnection.getAutoCommit())
+            {
+                databaseConnection.commit();
+            }
+        }
+
+        Connector connector = getConnector(new PostgresTabularDataSetProvider().getConnectorType(), "held_elsewhere");
+
+        ReadableTabularDataSource dataSet = (ReadableTabularDataSource) connector;
+
+        connector.start();
+
+        try
+        {
+            assertNull(dataSet.getColumnDescriptions(),
+                       "The connector described held_elsewhere as a table in " + TABULAR_SCHEMA_NAME + " although it exists only in "
+                               + OTHER_SCHEMA_NAME + " (or matched heldXelsewhere through an unescaped underscore).");
+        }
+        finally
+        {
+            connector.disconnect();
+        }
+    }
+
+
+    /**
      * Remove the schema the connectors created, so that the tests can be run repeatedly.  Best-effort: a
      * failure here should not turn a passing run into a failing one.
      */
@@ -214,6 +358,7 @@ public class PostgresTabularDataSetFVT
              Statement statement = databaseConnection.createStatement())
         {
             statement.execute("drop schema if exists " + TABULAR_SCHEMA_NAME + " cascade");
+            statement.execute("drop schema if exists " + OTHER_SCHEMA_NAME + " cascade");
         }
         catch (Exception error)
         {

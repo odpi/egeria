@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.wedgwood;
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.TabularDataSetProvisioningLineage;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -19,6 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,19 +33,25 @@ import java.util.Map;
  * service asks the source collection for its table names, brings each into focus and copies it.  A table that
  * cannot be copied is logged and skipped so that the rest of the family is still delivered; the service then
  * completes with a failed status and says which tables were missed.
+ * <br><br>
+ * The lineage of the tables delivered is recorded once the copying is done - see
+ * {@link TabularDataSetProvisioningLineage} for the pattern.  When the service is run by the provisioning pipeline
+ * that a digital subscription sets up, the lineage passes through that pipeline's process.
  */
 public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends GeneralGovernanceActionService
 {
     /*
-     * TODO What additional lineage support is necessary beyond the relationships supported by the engine action?
+     * The top-level process name is null unless the caller supplies one, so that the lineage can pass through
+     * the provisioning pipeline that started this service when there is one.
      */
-    private String  topLevelProcessName                  = this.getClass().getName();
+    private String  topLevelProcessName                  = null;
     private String  informationSupplyChainQualifiedName  = null;
     private String  topLevelProcessTemplateQualifiedName = null;
 
-
     /*
-     * TODO This describes the default lineage pattern
+     * The default lineage pattern: a child process per run beneath the top-level process (not used when the
+     * lineage passes through a provisioning pipeline), with column-level lineage wherever the schemas of both
+     * data sets are catalogued.
      */
     private boolean createLineage = true;
     private boolean childProcessLineage = true;
@@ -143,6 +151,11 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
             Connector sourceAssetConnector      = null;
             Connector destinationAssetConnector = null;
 
+            /*
+             * The tables delivered, for the lineage: source table name to destination table name.
+             */
+            Map<String, String> deliveredTables = new LinkedHashMap<>();
+
             try
             {
                 sourceAssetConnector      = governanceContext.getConnectorForAsset(sourceMetadataElement.getElementGUID());
@@ -172,7 +185,7 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
                         {
                             sourceCollection.setTableName(tableName, null);
 
-                            this.copyTable(sourceConnector, destinationConnector, sourceName, destinationName);
+                            deliveredTables.put(tableName, this.copyTable(sourceConnector, destinationConnector, sourceName, destinationName));
                         }
                         catch (Exception error)
                         {
@@ -218,7 +231,8 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
                 }
                 else
                 {
-                    this.copyTable(sourceConnector, destinationConnector, sourceName, destinationName);
+                    deliveredTables.put(sourceConnector.getTableName(),
+                                        this.copyTable(sourceConnector, destinationConnector, sourceName, destinationName));
 
                     outputGuards.add(WedgwoodProvisionSubscriptionGuard.PROVISIONING_COMPLETE.getName());
                     completionStatus = WedgwoodProvisionSubscriptionGuard.PROVISIONING_COMPLETE.getCompletionStatus();
@@ -244,6 +258,13 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
                 this.disconnectQuietly(sourceAssetConnector);
                 this.disconnectQuietly(destinationAssetConnector);
             }
+
+            if ((createLineage) && (! deliveredTables.isEmpty()))
+            {
+                this.recordLineage(sourceMetadataElement.getElementGUID(),
+                                   destinationMetadataElement.getElementGUID(),
+                                   deliveredTables);
+            }
         }
 
         try
@@ -265,9 +286,10 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
      * @param destinationConnector where they go
      * @param sourceName name of the source, for the log
      * @param destinationName name of the destination, for the log
+     * @return canonical name of the destination table the records were written to
      * @throws ConnectorCheckedException problem reading or writing
      */
-    private void copyTable(ReadableTabularDataSource sourceConnector,
+    private String copyTable(ReadableTabularDataSource sourceConnector,
                            WritableTabularDataSource destinationConnector,
                            String                    sourceName,
                            String                    destinationName) throws ConnectorCheckedException
@@ -327,6 +349,67 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
                                                                                                                 tableName,
                                                                                                                 sourceName,
                                                                                                                 destinationName));
+
+        /*
+         * A collection destination was given the source's table name above; any other destination holds the
+         * one table it was configured with.
+         */
+        if ((! (destinationConnector instanceof TabularDataCollection)) && (destinationConnector instanceof ReadableTabularDataSource readableDestination))
+        {
+            return readableDestination.getTableName();
+        }
+
+        return tableName;
+    }
+
+
+    /**
+     * Record the lineage of the tables delivered.  The data has been delivered by the time this is called, so a
+     * failure here is logged and does not change the outcome of the delivery.
+     *
+     * @param sourceAssetGUID source data set
+     * @param destinationAssetGUID destination data set
+     * @param deliveredTables source table name mapped to destination table name
+     */
+    private void recordLineage(String              sourceAssetGUID,
+                               String              destinationAssetGUID,
+                               Map<String, String> deliveredTables)
+    {
+        final String methodName = "recordLineage";
+
+        try
+        {
+            TabularDataSetProvisioningLineage lineage = new TabularDataSetProvisioningLineage(governanceContext,
+                                                                                              this.getClass().getName());
+
+            lineage.setTopLevelProcessName(topLevelProcessName);
+            lineage.setTopLevelProcessTemplateQualifiedName(topLevelProcessTemplateQualifiedName);
+            lineage.setInformationSupplyChainQualifiedName(informationSupplyChainQualifiedName);
+            lineage.setChildProcessLineage(childProcessLineage);
+            lineage.setColumnLevelLineage(columnLevelLineage);
+
+            TabularDataSetProvisioningLineage.LineageSummary summary = lineage.createLineage(sourceAssetGUID,
+                                                                                             destinationAssetGUID,
+                                                                                             connectorInstanceId,
+                                                                                             deliveredTables);
+
+            super.logRecord(methodName,
+                            GovernanceActionConnectorsAuditCode.PROVISIONING_LINEAGE_CREATED.getMessageDefinition(governanceServiceName,
+                                                                                                                   sourceAssetGUID,
+                                                                                                                   summary.processGUID(),
+                                                                                                                   destinationAssetGUID,
+                                                                                                                   Integer.toString(summary.columnMappingCount())));
+        }
+        catch (Exception error)
+        {
+            super.logExceptionRecord(methodName,
+                                     GovernanceActionConnectorsAuditCode.PROVISIONING_LINEAGE_FAILED.getMessageDefinition(governanceServiceName,
+                                                                                                                           sourceAssetGUID,
+                                                                                                                           destinationAssetGUID,
+                                                                                                                           error.getClass().getName(),
+                                                                                                                           error.getMessage()),
+                                     error);
+        }
     }
 
 
