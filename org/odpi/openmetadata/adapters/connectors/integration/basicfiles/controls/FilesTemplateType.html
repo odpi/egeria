@@ -183,7 +183,7 @@ implements <a href="../../../../../frameworks/openmetadata/controls/TemplateDefi
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDefaultFileTemplates()" class="member-name-link">getDefaultFileTemplates</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Return a map of asset type name to default template guid.</div>
+<div class="block">Return a map of deployed implementation type (the template name) to default template guid.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDefaultTemplateGUID(java.lang.String)" class="member-name-link">getDefaultTemplateGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetTypeName)</code></div>
@@ -633,7 +633,10 @@ not permitted.)</div>
 <section class="detail" id="getDefaultFileTemplates()">
 <h3>getDefaultFileTemplates</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getDefaultFileTemplates</span>()</div>
-<div class="block">Return a map of asset type name to default template guid.</div>
+<div class="block">Return a map of deployed implementation type (the template name) to default template guid.  The file
+ classifier describes each file by its deployed implementation type, and this is the key the file
+ cataloguers use to look up the template.  The asset type name cannot be used as the key because
+ several deployed implementation types share the same asset type.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>map</dd>
