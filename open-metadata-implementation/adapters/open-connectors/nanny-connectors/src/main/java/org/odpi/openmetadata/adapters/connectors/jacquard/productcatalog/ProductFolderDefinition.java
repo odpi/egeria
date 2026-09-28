@@ -17,6 +17,7 @@ public enum ProductFolderDefinition
               null,
               null,
               "Open Metadata Digital Product Catalog",
+              "Open Metadata Digital Product Catalog",
               "Extracts of open metadata organized into useful data sets.  These digital products support a variety of subscription choices.  Data can be delivered either as a CSV file, or as a PostgreSQL table.  Updates to the subscriber's copy typically occur within 1 hour of receiving the metadata update.",
               null),
 
@@ -27,6 +28,7 @@ public enum ProductFolderDefinition
              null,
              TOP_LEVEL,
              "Open Metadata Digital Product Glossary",
+             "Product Glossary",
              "Terminology used in the Open Metadata Digital Product Catalog.",
              null),
 
@@ -36,6 +38,7 @@ public enum ProductFolderDefinition
     GLOSSARY_BASICS(OpenMetadataType.COLLECTION_FOLDER.typeName,
                     null,
                     GLOSSARY,
+                    "Digital Product Basics",
                     "Digital Product Basics",
                     "Basic terminology relating to digital products in general, and the open metadata digital products in particular.",
                     null),
@@ -47,6 +50,7 @@ public enum ProductFolderDefinition
                            null,
                            GLOSSARY,
                            "Digital Subscriptions",
+                           "Digital Subscriptions",
                            "Terminology relating to digital subscriptions.",
                            null),
 
@@ -57,6 +61,7 @@ public enum ProductFolderDefinition
                         null,
                         GLOSSARY,
                         "Data Item Semantics",
+                        "Data Item Semantics",
                         "Descriptions of the data found in data items of the digital products.",
                         null),
 
@@ -66,7 +71,8 @@ public enum ProductFolderDefinition
     GLOSSARY_QUESTIONS(OpenMetadataType.COLLECTION_FOLDER.typeName,
                       null,
                       GLOSSARY,
-                      "Glossary Questions",
+                       "Glossary Questions",
+                       "Glossary Questions",
                       "Questions that can be answered using the digital products.",
                        null),
 
@@ -77,6 +83,7 @@ public enum ProductFolderDefinition
                  null,
                  TOP_LEVEL,
                  "Open Metadata Digital Product Perspectives",
+                 "Product Perspectives",
                  "Details of the perspectives supported by the open metadata digital products.",
                  null),
 
@@ -87,6 +94,7 @@ public enum ProductFolderDefinition
                     null,
                     TOP_LEVEL,
                     "Open Metadata Digital Product Data Dictionary",
+                    "Data Dictionary",
                     "Details of the types of data fields used in the open metadata digital products.",
                     null),
 
@@ -97,6 +105,7 @@ public enum ProductFolderDefinition
              null,
              TOP_LEVEL,
              "Open Metadata Digital Products",
+             "Digital Products",
              "Extracts of open metadata organized into useful data sets.  These digital products support a variety of subscription choices.  Data can be delivered either as a CSV file, or as a PostGreSQL table.  Updates to the subscriber's copy typically occur within 1 hour of receiving the metadata update.",
              null),
 
@@ -106,6 +115,7 @@ public enum ProductFolderDefinition
     private final String                  typeName;
     private final String                  classificationName;
     private final ProductFolderDefinition parent;
+    private final String                  fullName;
     private final String                  displayName;
     private final String                  description;
     private final String                  category;
@@ -117,6 +127,7 @@ public enum ProductFolderDefinition
      * @param typeName type of folder
      * @param classificationName optional classification
      * @param parent optional parent folder
+     * @param fullName full name
      * @param displayName display name
      * @param description description
      * @param category category
@@ -124,6 +135,7 @@ public enum ProductFolderDefinition
     ProductFolderDefinition(String                  typeName,
                             String                  classificationName,
                             ProductFolderDefinition parent,
+                            String                  fullName,
                             String                  displayName,
                             String                  description,
                             String                  category)
@@ -131,6 +143,7 @@ public enum ProductFolderDefinition
         this.typeName           = typeName;
         this.classificationName = classificationName;
         this.parent             = parent;
+        this.fullName           = fullName;
         this.displayName        = displayName;
         this.description        = description;
         this.category           = category;
@@ -144,7 +157,7 @@ public enum ProductFolderDefinition
      */
     public String getQualifiedName()
     {
-        return typeName + "::Jacquard::" + displayName;
+        return typeName + "::Jacquard::" + fullName;
     }
 
 

@@ -112,11 +112,11 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                    "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data sharing hub {4} ({5})
+     * LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} CSV File {2} ({3}) for data sharing hub {4} ({5})
      */
     REFRESHING_CSV_FILE("LISKOV-DATA-HUB-MANAGER-0019",
                         AuditLogRecordSeverityLevel.INFO,
-                        "The {0} integration connector is refreshing data fields from CSV File {2} ({3}) for data sharing hub {4} ({5})",
+                        "The {0} integration connector is refreshing data fields from {1} CSV File {2} ({3}) for data sharing hub {4} ({5})",
                         "The connector is reading the data fields from a CSV file so that it can refresh a data sharing hub.",
                         "No action is required.  This message identifies the CSV file that the data fields are being read from.",
                         "https://egeria-project.org/concepts/data-sharing-hub/"),

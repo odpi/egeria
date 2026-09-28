@@ -2963,7 +2963,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                     {
                         processes.add(openMetadataRootElement);
                     }
-                    else if (activityStatusList.contains(processProperties.getActivityStatus()))
+                    else if ((processProperties.getActivityStatus() != null) && (activityStatusList.contains(processProperties.getActivityStatus())))
                     {
                         processes.add(openMetadataRootElement);
                     }
@@ -2999,7 +2999,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                     {
                         rootElements.add(openMetadataRootElement);
                     }
-                    else if (activityStatusList.contains(actionTargetProperties.getActivityStatus()))
+                    else if ((actionTargetProperties.getActivityStatus() != null) && (activityStatusList.contains(actionTargetProperties.getActivityStatus())))
                     {
                         rootElements.add(openMetadataRootElement);
                     }
@@ -3111,7 +3111,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                     {
                         rootElements.add(openMetadataRootElement);
                     }
-                    else if (contentStatusList.contains(dataAssetProperties.getContentStatus()))
+                    else if ((dataAssetProperties.getContentStatus() != null) && (contentStatusList.contains(dataAssetProperties.getContentStatus())))
                     {
                         rootElements.add(openMetadataRootElement);
                     }
@@ -3223,7 +3223,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                     {
                         rootElements.add(openMetadataRootElement);
                     }
-                    else if (deploymentStatusList.contains(infrastructureProperties.getDeploymentStatus()))
+                    else if ((infrastructureProperties.getDeploymentStatus() != null) && (deploymentStatusList.contains(infrastructureProperties.getDeploymentStatus())))
                     {
                         rootElements.add(openMetadataRootElement);
                     }

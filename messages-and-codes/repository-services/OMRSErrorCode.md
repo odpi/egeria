@@ -9,7 +9,7 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 188 |
+| **Number of messages** | 193 |
 | **Message identifiers begin** | `OMRS-` |
 | **Java class** | `org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode` |
 | **Module** | [open-metadata-implementation/repository-services/repository-services-apis](../../open-metadata-implementation/repository-services/repository-services-apis) |
@@ -98,6 +98,11 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 | [OMRS-REPOSITORY-400-082](#omrs-repository-400-082) | 400 | The OMRS repository connector operation {0} from the OMRS Enterprise Repository Services can not locate the home repository connector for classification {1} located in metadata collection {2} |
 | [OMRS-REPOSITORY-400-083](#omrs-repository-400-083) | 400 | The OMRS repository connector operation {0} does not allow a time range from {1} to {2} |
 | [OMRS-REPOSITORY-400-084](#omrs-repository-400-084) | 400 | The value supplied for property {0} of type {1} contains a null (U+0000) character at position {2}; it was passed to method {3} on the {4} parameter |
+| [OMRS-REPOSITORY-400-085](#omrs-repository-400-085) | 400 | The type definition {0} (guid = {1}) passed on a {2} request to open metadata repository {3} is not valid: {4} |
+| [OMRS-REPOSITORY-400-086](#omrs-repository-400-086) | 400 | Unable to delete the TypeDef {0} (guid = {1}) from open metadata repository {2} because type definition {3} refers to it as its {4} |
+| [OMRS-REPOSITORY-400-087](#omrs-repository-400-087) | 400 | Unable to delete the AttributeTypeDef {0} (guid = {1}) from open metadata repository {2} because it is the type of attribute {3} in type definition {4} |
+| [OMRS-REPOSITORY-400-088](#omrs-repository-400-088) | 400 | The type definition {0} (guid = {1}) cannot be changed by the {2} request because it originated from {3} rather than from the local repository {4} |
+| [OMRS-REPOSITORY-400-089](#omrs-repository-400-089) | 400 | The type definition {0} (guid = {1}) passed on a {2} request is of category {3}; only enum definitions can be added or deleted through this request |
 | [OMRS-PROPERTIES-400-002](#omrs-properties-400-002) | 400 | No name provided for entity classification |
 | [OMRS-PROPERTIES-400-003](#omrs-properties-400-003) | 400 | Null property name passed to properties object |
 | [OMRS-PROPERTIES-400-004](#omrs-properties-400-004) | 400 | {0} cannot add a new element to location {1} of an array of size {2} value |
@@ -1825,6 +1830,111 @@ The repository rejects the request rather than storing the value.  A null charac
 **User action**
 
 Remove the null character from the offending property value and retry the request.  A null character in a name, description or other text property is almost always a symptom of a fault further upstream - a C-style null-terminated string copied byte-for-byte, a fixed-width field padded with zero bytes, or binary content mislabelled as text - so it is worth correcting whatever produced the value rather than only the single property.
+
+
+----
+
+### OMRS-REPOSITORY-400-085
+
+> The type definition {0} (guid = {1}) passed on a {2} request to open metadata repository {3} is not valid: {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMRSErrorCode.INVALID_DYNAMIC_TYPEDEF` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The repository rejects the type definition because it does not fit with the types it already knows.  A type added through the API must build on types that are already defined, and must be consistent with them, because the repository stores it and replays it each time the server starts.
+
+**User action**
+
+Correct the type definition as described in the message and retry the request.  The types that are already defined can be retrieved with getAllTypes.
+
+
+----
+
+### OMRS-REPOSITORY-400-086
+
+> Unable to delete the TypeDef {0} (guid = {1}) from open metadata repository {2} because type definition {3} refers to it as its {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMRSErrorCode.TYPEDEF_REFERENCED` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The system cannot delete the TypeDef because another type definition depends on it.  Deleting it would leave that type definition incomplete.
+
+**User action**
+
+Delete the type definition that refers to this TypeDef first, or update it so that it no longer does, and then retry the delete.
+
+
+----
+
+### OMRS-REPOSITORY-400-087
+
+> Unable to delete the AttributeTypeDef {0} (guid = {1}) from open metadata repository {2} because it is the type of attribute {3} in type definition {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMRSErrorCode.ATTRIBUTE_TYPEDEF_IN_USE` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The system cannot delete the AttributeTypeDef because a type definition uses it for one of its attributes.
+
+**User action**
+
+Delete the type definition that uses this AttributeTypeDef first, and then retry the delete.
+
+
+----
+
+### OMRS-REPOSITORY-400-088
+
+> The type definition {0} (guid = {1}) cannot be changed by the {2} request because it originated from {3} rather than from the local repository {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMRSErrorCode.TYPEDEF_NOT_HOMED` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+Only the types that were added through the API are maintained by the local repository.  The types from open metadata archives and from other members of the cohort are maintained by their originators and are supplied again each time the server starts, so a change made here would be lost.
+
+**User action**
+
+Make the change to the archive or cohort member that originated the type definition.
+
+
+----
+
+### OMRS-REPOSITORY-400-089
+
+> The type definition {0} (guid = {1}) passed on a {2} request is of category {3}; only enum definitions can be added or deleted through this request
+
+|  |  |
+|---|---|
+| **Java constant** | `OMRSErrorCode.UNSUPPORTED_DYNAMIC_ATTRIBUTE_TYPEDEF` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The primitive and collection attribute types are fixed by the open metadata type system.  The only attribute types that can be defined through the API are enum definitions.
+
+**User action**
+
+Use one of the existing primitive or collection types, or define an enum definition, and retry the request.
 
 
 ----

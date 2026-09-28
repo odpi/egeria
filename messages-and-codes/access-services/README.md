@@ -6,7 +6,7 @@
 
 The access services provide the domain-specific APIs and events that run in a metadata access server.
 
-This directory documents 38 messages in 6 message sets.  Return to the [messages and codes index](../README.md).
+This directory documents 41 messages in 6 message sets.  Return to the [messages and codes index](../README.md).
 
 
 ## Message sets
@@ -16,7 +16,7 @@ This directory documents 38 messages in 6 message sets.  Return to the [messages
 | [OCFServicesAuditCode](OCFServicesAuditCode.md) | Audit log messages | `CONNECTED-ASSET-SERVICES-` | 4 | <https://egeria-project.org/services/ocf-metadata-management/> |
 | [OCFServicesErrorCode](OCFServicesErrorCode.md) | Exception messages | `CONNECTED-ASSET-SERVICES-` | 2 | <https://egeria-project.org/services/ocf-metadata-management/> |
 | [OMFServicesAuditCode](OMFServicesAuditCode.md) | Audit log messages | `OMF-SERVICES-` | 11 | <https://egeria-project.org/services/framework-services/> |
-| [OMFServicesErrorCode](OMFServicesErrorCode.md) | Exception messages | `OMF-SERVICES-` | 7 | <https://egeria-project.org/services/framework-services/> |
+| [OMFServicesErrorCode](OMFServicesErrorCode.md) | Exception messages | `OMF-SERVICES-` | 10 | <https://egeria-project.org/services/framework-services/> |
 | [OpenGovernanceAuditCode](OpenGovernanceAuditCode.md) | Audit log messages | `OPEN-GOVERNANCE-` | 9 | <https://egeria-project.org/services/gaf-metadata-management/> |
 | [OpenGovernanceErrorCode](OpenGovernanceErrorCode.md) | Exception messages | `OPEN-GOVERNANCE-` | 5 | <https://egeria-project.org/services/gaf-metadata-management/> |
 

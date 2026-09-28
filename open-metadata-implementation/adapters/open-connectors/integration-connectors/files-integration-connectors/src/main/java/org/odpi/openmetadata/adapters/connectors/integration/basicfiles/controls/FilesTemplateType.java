@@ -467,7 +467,10 @@ public enum FilesTemplateType implements TemplateDefinition
 
 
     /**
-     * Return a map of asset type name to default template guid.
+     * Return a map of deployed implementation type (the template name) to default template guid.  The file
+     * classifier describes each file by its deployed implementation type, and this is the key the file
+     * cataloguers use to look up the template.  The asset type name cannot be used as the key because
+     * several deployed implementation types share the same asset type.
      *
      * @return map
      */
@@ -477,7 +480,7 @@ public enum FilesTemplateType implements TemplateDefinition
 
         for (FilesTemplateType filesTemplateType : FilesTemplateType.values())
         {
-            defaultFileTemplates.put(filesTemplateType.typeName, filesTemplateType.defaultTemplateGUID);
+            defaultFileTemplates.put(filesTemplateType.templateName, filesTemplateType.defaultTemplateGUID);
         }
 
         return defaultFileTemplates;

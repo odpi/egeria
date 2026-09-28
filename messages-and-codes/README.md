@@ -27,8 +27,8 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
-| Exception messages | 68 | 624 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 106 | 1008 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Exception messages | 68 | 635 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
+| Audit log messages | 106 | 1012 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -83,12 +83,12 @@ The message sets are grouped to match the part of Egeria that defines them.
 |---|---|---|---|
 | [Frameworks](frameworks) | 11 | 127 | The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely. |
 | [Common Services](common-services) | 11 | 183 | The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time. |
-| [Access Services](access-services) | 6 | 38 | The access services provide the domain-specific APIs and events that run in a metadata access server. |
+| [Access Services](access-services) | 6 | 41 | The access services provide the domain-specific APIs and events that run in a metadata access server. |
 | [Generic View Services](view-server-generic-services) | 15 | 75 | The generic view services provide the REST APIs used by user interfaces to work with any type of open metadata element. |
 | [View Services](view-services) | 25 | 122 | The view services provide the REST APIs used by user interfaces such as Egeria UI.  Each view service supports a particular type of user or task. |
 | [Engine Services](engine-services) | 8 | 59 | The engine services run the governance services of a particular governance service type in an Engine Host server. |
 | [Governance Server Services](governance-server-services) | 4 | 87 | The governance server services host the connectors and governance services that run outside of a metadata access server - such as the integration daemon and the engine host. |
-| [Repository Services](repository-services) | 2 | 315 | The Open Metadata Repository Services (OMRS) manage the exchange of metadata between the repositories of an open metadata repository cohort.  This is the oldest and largest set of messages in Egeria. |
+| [Repository Services](repository-services) | 2 | 324 | The Open Metadata Repository Services (OMRS) manage the exchange of metadata between the repositories of an open metadata repository cohort.  This is the oldest and largest set of messages in Egeria. |
 | [Administration Services](admin-services) | 2 | 53 | The administration services configure and control the servers running on the OMAG Server Platform. |
 | [Server Operations](server-operations) | 2 | 31 | The server operations services report on the servers that are running on an OMAG Server Platform. |
 | [User Security](user-security) | 1 | 1 | The user security services authenticate the callers of the OMAG Server Platform's REST APIs. |
@@ -96,7 +96,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [Data Store Connectors](connectors/data-store-connectors) | 5 | 27 | These connectors provide access to the contents of files, folders and databases. |
 | [Integration Connectors](connectors/integration-connectors) | 14 | 87 | Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor. |
 | [System Connectors](connectors/system-connectors) | 13 | 77 | These connectors call the APIs of third party systems such as Apache Atlas, Apache Kafka and the Egeria runtime itself. |
-| [Repository Services Connectors](connectors/repository-services-connectors) | 8 | 32 | These connectors provide the pluggable implementations used by the repository services - the metadata repositories, the audit log destinations, the cohort registry stores and the open metadata archive stores. |
+| [Repository Services Connectors](connectors/repository-services-connectors) | 8 | 35 | These connectors provide the pluggable implementations used by the repository services - the metadata repositories, the audit log destinations, the cohort registry stores and the open metadata archive stores. |
 | [Event Bus Connectors](connectors/event-bus-connectors) | 2 | 22 | These connectors send and receive events over the event bus - typically Apache Kafka. |
 | [Governance Action Connectors](connectors/governance-action-connectors) | 2 | 47 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
 | [File Survey Connectors](connectors/file-survey-connectors) | 1 | 5 | These survey action services analyse the content of files and folders and record what they find in a survey report. |
@@ -214,9 +214,9 @@ Every message identifier begins with a prefix that names the component that rais
 | `OMES-WATCHDOG-ACTION-` | Audit log messages | 11 | [WatchdogActionAuditCode](engine-services/WatchdogActionAuditCode.md) |
 | `OMES-WATCHDOG-ACTION-400-` | Exception messages | 3 | [WatchdogActionErrorCode](engine-services/WatchdogActionErrorCode.md) |
 | `OMF-SERVICES-` | Audit log messages | 11 | [OMFServicesAuditCode](access-services/OMFServicesAuditCode.md) |
-| `OMF-SERVICES-` | Exception messages | 7 | [OMFServicesErrorCode](access-services/OMFServicesErrorCode.md) |
-| `OMRS-` | Exception messages | 188 | [OMRSErrorCode](repository-services/OMRSErrorCode.md) |
-| `OMRS-AUDIT-` | Audit log messages | 127 | [OMRSAuditCode](repository-services/OMRSAuditCode.md) |
+| `OMF-SERVICES-` | Exception messages | 10 | [OMFServicesErrorCode](access-services/OMFServicesErrorCode.md) |
+| `OMRS-` | Exception messages | 193 | [OMRSErrorCode](repository-services/OMRSErrorCode.md) |
+| `OMRS-AUDIT-` | Audit log messages | 131 | [OMRSAuditCode](repository-services/OMRSAuditCode.md) |
 | `OMVS-ACTION-AUTHOR-` | Audit log messages | 5 | [ActionAuthorAuditCode](view-services/ActionAuthorAuditCode.md) |
 | `OMVS-ACTOR-MANAGER-` | Audit log messages | 5 | [ActorManagerAuditCode](view-server-generic-services/ActorManagerAuditCode.md) |
 | `OMVS-ASSET-CATALOG-` | Audit log messages | 5 | [AssetCatalogAuditCode](view-services/AssetCatalogAuditCode.md) |
@@ -279,7 +279,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `POSTGRES-CONNECTOR-` | Audit log messages | 6 | [PostgresAuditCode](connectors/data-manager-connectors/PostgresAuditCode.md) |
 | `POSTGRES-CONNECTOR-` | Exception messages | 3 | [PostgresErrorCode](connectors/data-manager-connectors/PostgresErrorCode.md) |
 | `POSTGRES-REPOSITORY-CONNECTOR-` | Audit log messages | 7 | [PostgresAuditCode](connectors/repository-services-connectors/PostgresAuditCode.md) |
-| `POSTGRES-REPOSITORY-CONNECTOR-` | Exception messages | 8 | [PostgresErrorCode](connectors/repository-services-connectors/PostgresErrorCode.md) |
+| `POSTGRES-REPOSITORY-CONNECTOR-` | Exception messages | 11 | [PostgresErrorCode](connectors/repository-services-connectors/PostgresErrorCode.md) |
 | `REFERENCE-DATA-CONNECTORS-` | Exception messages | 10 | [TabularDataErrorCode](connectors/nanny-connectors/TabularDataErrorCode.md) |
 | `REPORT-GENERATORS-` | Audit log messages | 2 | [ReportsAuditCode](connectors/report-generating-connectors/ReportsAuditCode.md) |
 | `SERVER-OPS-` | Audit log messages | 24 | [ServerOpsAuditCode](server-operations/ServerOpsAuditCode.md) |

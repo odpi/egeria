@@ -990,6 +990,7 @@ public class OpenMetadataTypesArchive
     private void update0610Annotations()
     {
         this.archiveBuilder.addTypeDefPatch(updateReportedAnnotationRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateAssociatedAnnotationRelationship());
     }
 
 
@@ -1016,6 +1017,42 @@ public class OpenMetadataTypesArchive
     }
 
 
+    /**
+     * The annotation end of AssociatedAnnotation was declared AT_MOST_ONE, meaning an element could have only one
+     * associated annotation.  An element gains a new annotation from every survey (and several of different kinds
+     * from one survey), so the repository handler's read path discarded all but the latest - reporting it as
+     * deduplication (OMAG-REPOSITORY-HANDLER-0014).
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateAssociatedAnnotationRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "associatedAnnotations";
+        final String                     end2AttributeDescription     = "The annotations describing the element or its real-world counterpart.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION.typeName),
+                                                                                    end2AttributeName,
+                                                                                    end2AttributeDescription,
+                                                                                    end2AttributeDescriptionGUID,
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
     /*
      * -------------------------------------------------------------------------------------------------------
      */
@@ -1031,6 +1068,9 @@ public class OpenMetadataTypesArchive
      * DigitalProductDependency is a subtype of LineageRelationship and so inherits iscQualifiedName.  The same
      * dependency between two digital products may be used by more than one information supply chain, and each
      * needs its own relationship.  multiLink is not inherited from the super type, so it is set explicitly here.
+     * <br>
+     * End 1 (the products that depend on a product) was declared AT_MOST_ONE, so a product could only be used by
+     * one other product, and reads discarded all but one of its consumers.  A product can support many others.
      *
      * @return patch
      */
@@ -1045,6 +1085,20 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setUpdateMultiLink(true);
         typeDefPatch.setMultiLink(true);
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "usedByDigitalProducts";
+        final String                     end1AttributeDescription     = "The digital services dependent on the others.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_PRODUCT.typeName),
+                                                                                    end1AttributeName,
+                                                                                    end1AttributeDescription,
+                                                                                    end1AttributeDescriptionGUID,
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
+        typeDefPatch.setEndDef1(relationshipEndDef);
 
         return typeDefPatch;
     }
