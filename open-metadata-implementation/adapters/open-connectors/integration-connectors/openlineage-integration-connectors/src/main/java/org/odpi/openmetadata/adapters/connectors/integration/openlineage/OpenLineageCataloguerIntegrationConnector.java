@@ -2,6 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
+import org.odpi.openmetadata.adapters.connectors.controls.*;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataFeedProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DocumentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.VirtualRelationalTableProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls.OpenLineageCataloguerConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
@@ -25,10 +34,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.PartOfRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
@@ -42,7 +53,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.Owner
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.PeerDuplicateLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ControlFlowProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageMappingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataMappingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.NestedSchemaAttributeProperties;
@@ -57,6 +68,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.StatusIdentifier;
 import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -72,6 +84,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
 
@@ -152,18 +165,52 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
     private final Set<String> knownRelationships = Collections.synchronizedSet(new HashSet<>());
 
+    /**
+     * Finds the elements in open metadata that describe the datasets.
+     */
+    private OpenLineageDataSetResolver resolver = null;
 
     /**
-     * Details of a process or data asset that is catalogued for an OpenLineage element.
+     * Finds the governance action process, step and instance behind a run from the governance action publisher.
+     */
+    private OpenLineageGovernanceActionResolver governanceActionResolver = null;
+
+    /**
+     * Which catalog templates are loaded (template GUID to flag).
+     */
+    private final Map<String, Boolean> loadedTemplates = new ConcurrentHashMap<>();
+
+
+    /**
+     * Details of a process, data asset or schema attribute (such as a relational table) that is catalogued for an
+     * OpenLineage element.
      *
      * @param guid unique identifier of the element
      * @param qualifiedName qualified name of the element
-     * @param element full element (null if it has just been created)
+     * @param element full element (null if it has just been created, or is a schema attribute)
+     * @param schemaAttribute the element is a schema attribute (for example a RelationalTable) rather than an asset
+     * @param parentAsset for a schema attribute, the asset it belongs to (for example its DeployedDatabaseSchema);
+     *                    lineage is recorded at this asset level as well as on the schema attribute
      */
     private record CataloguedElement(String                  guid,
                                      String                  qualifiedName,
-                                     OpenMetadataRootElement element)
+                                     OpenMetadataRootElement element,
+                                     boolean                 schemaAttribute,
+                                     CataloguedElement       parentAsset)
     {
+        /**
+         * Constructor for an asset or process.
+         *
+         * @param guid unique identifier of the element
+         * @param qualifiedName qualified name of the element
+         * @param element full element (null if it has just been created)
+         */
+        CataloguedElement(String                  guid,
+                          String                  qualifiedName,
+                          OpenMetadataRootElement element)
+        {
+            this(guid, qualifiedName, element, false, null);
+        }
     }
 
 
@@ -214,6 +261,9 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
         if (myContext != null)
         {
+            resolver                 = new OpenLineageDataSetResolver(myContext, connectorName);
+            governanceActionResolver = new OpenLineageGovernanceActionResolver(myContext, connectorName);
+
             myContext.registerOpenLineageListener(this);
         }
     }
@@ -280,33 +330,66 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             /*
              * The job's process is the hub of the lineage - nothing else can be catalogued without it.
              */
-            CataloguedElement parentProcess = syncParentJobs(event.getRun(), eventDescription);
-            CataloguedElement jobProcess    = syncJob(event.getJob(), parentProcess, eventDescription);
+            CataloguedElement jobProcess;
+            CataloguedElement metricsElement;
+            CataloguedElement runProcess = null;
+
+            OpenLineageGovernanceActionResolver.GovernanceActionElements governanceAction = resolveGovernanceAction(event.getRun(), eventDescription);
+
+            if (governanceAction != null)
+            {
+                /*
+                 * A run of a governance action process: the lineage is attached to the governance action process,
+                 * the run metrics are kept on the process step (each step runs separately), and the process
+                 * instance already represents this run.
+                 */
+                jobProcess = new CataloguedElement(governanceAction.processGUID(), governanceAction.processQualifiedName(), null);
+                runProcess = new CataloguedElement(governanceAction.processInstanceGUID(), governanceAction.processInstanceQualifiedName(), null);
+
+                if (governanceAction.processStepGUID() == null)
+                {
+                    metricsElement = null;
+                }
+                else
+                {
+                    metricsElement = new CataloguedElement(governanceAction.processStepGUID(), governanceAction.processStepQualifiedName(), null);
+                }
+            }
+            else
+            {
+                CataloguedElement parentProcess = syncParentJobs(event.getRun(), event.getJob(), eventDescription);
+
+                jobProcess     = syncJob(event.getJob(), parentProcess, eventDescription);
+                metricsElement = jobProcess;
+            }
 
             if (jobProcess == null)
             {
                 return;
             }
 
-            List<CataloguedElement> inputAssets  = syncInputDataSets(event.getInputs(), jobProcess, eventDescription);
-            List<CataloguedElement> outputAssets = syncOutputDataSets(event.getOutputs(), jobProcess, eventDescription);
+            String iscQualifiedName = getISCQualifiedName(event.getRun());
 
-            syncJobDependencies(event.getRun(), jobProcess, eventDescription);
-            syncExplicitLineage(event.getJob(), jobProcess, eventDescription);
-            syncColumnLineage(event.getOutputs(), outputAssets, eventDescription);
+            List<CataloguedElement> inputAssets  = syncInputDataSets(event.getInputs(), jobProcess, iscQualifiedName, eventDescription);
+            List<CataloguedElement> outputAssets = syncOutputDataSets(event.getOutputs(), jobProcess, iscQualifiedName, eventDescription);
+
+            syncJobDependencies(event.getRun(), jobProcess, iscQualifiedName, eventDescription);
+            syncExplicitLineage(event.getJob(), jobProcess, iscQualifiedName, eventDescription);
+            syncColumnLineage(event.getOutputs(), outputAssets, iscQualifiedName, eventDescription);
 
             /*
              * The remaining metadata is optional and does not affect the lineage so a failure in one part
              * should not stop the others.
              */
-            CataloguedElement runProcess = null;
-
-            if (catalogRuns)
+            if ((catalogRuns) && (governanceAction == null))
             {
                 runProcess = syncRun(event, jobProcess, eventDescription);
             }
 
-            updateProcessMetrics(event, jobProcess, eventDescription);
+            if (metricsElement != null)
+            {
+                updateProcessMetrics(event, metricsElement, eventDescription);
+            }
 
             if ((captureStatistics) || (captureDataQuality))
             {
@@ -351,11 +434,11 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             if (jobProcess != null)
             {
-                List<CataloguedElement> outputAssets = syncOutputDataSets(event.getOutputs(), jobProcess, eventDescription);
+                List<CataloguedElement> outputAssets = syncOutputDataSets(event.getOutputs(), jobProcess, null, eventDescription);
 
-                syncInputDataSets(event.getInputs(), jobProcess, eventDescription);
-                syncExplicitLineage(event.getJob(), jobProcess, eventDescription);
-                syncColumnLineage(event.getOutputs(), outputAssets, eventDescription);
+                syncInputDataSets(event.getInputs(), jobProcess, null, eventDescription);
+                syncExplicitLineage(event.getJob(), jobProcess, null, eventDescription);
+                syncColumnLineage(event.getOutputs(), outputAssets, null, eventDescription);
             }
         }
         catch (Exception error)
@@ -387,7 +470,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
         try
         {
-            syncDataSet(event.getDataset().getNamespace(), event.getDataset().getName(), event.getDataset().getFacets(), eventDescription);
+            syncDataSet(event.getDataset().getNamespace(), event.getDataset().getName(), event.getDataset().getFacets(), null, eventDescription);
         }
         catch (Exception error)
         {
@@ -444,6 +527,35 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     private CataloguedElement syncJob(String               namespace,
                                       String               name,
                                       OpenLineageJobFacets facets,
+                                      CataloguedElement    parentProcess,
+                                      String               eventDescription) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        return syncJob(namespace, name, facets, getJobTemplate(facets), parentProcess, eventDescription);
+    }
+
+
+    /**
+     * Find or create the process that represents an OpenLineage job.
+     *
+     * @param namespace job namespace
+     * @param name job name
+     * @param facets job facets (may be null)
+     * @param template catalog template for a new process (null for a generic DeployedSoftwareComponent)
+     * @param parentProcess process that owns this job (from the parent run facet) or null.  A new process is anchored
+     *                      to its parent and linked with an OWNED ProcessHierarchy relationship; an existing process
+     *                      keeps its anchor and is linked with the same relationship.
+     * @param eventDescription description of the event for logging
+     * @return catalogued process or null if the job is not identifiable (or is ambiguous)
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private CataloguedElement syncJob(String               namespace,
+                                      String               name,
+                                      OpenLineageJobFacets facets,
+                                      TemplateDefinition   template,
                                       CataloguedElement    parentProcess,
                                       String               eventDescription) throws InvalidParameterException,
                                                                                     PropertyServerException,
@@ -527,7 +639,12 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             fillJobProperties(processProperties, facets, new HashMap<>());
 
-            NewElementOptions          newElementOptions   = new NewElementOptions(processClient.getMetadataSourceOptions());
+            if (template != null)
+            {
+                processProperties.setDeployedImplementationType(template.getDeployedImplementationType().getDeployedImplementationType());
+            }
+
+            TemplateOptions            newElementOptions   = new TemplateOptions(processClient.getMetadataSourceOptions());
             ProcessHierarchyProperties hierarchyProperties = null;
 
             if (parentProcess != null)
@@ -550,7 +667,12 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                 newElementOptions.setIsOwnAnchor(true);
             }
 
-            String processGUID = processClient.createAsset(newElementOptions, null, processProperties, hierarchyProperties);
+            String processGUID = createAsset(processClient,
+                                             newElementOptions,
+                                             template,
+                                             processProperties,
+                                             getPlaceholderProperties(template, namespace, name, processProperties.getDescription()),
+                                             hierarchyProperties);
 
             processClient.publishElement(processGUID);
 
@@ -773,6 +895,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * @throws UserNotAuthorizedException security problem
      */
     private CataloguedElement syncParentJobs(OpenLineageRun run,
+                                             OpenLineageJob job,
                                              String         eventDescription) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
@@ -784,12 +907,22 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
         OpenLineageParentRunFacet parent = run.getFacets().getParent();
 
+        /*
+         * The parent of an Apache Airflow task is its DAG.
+         */
+        TemplateDefinition parentTemplate = null;
+
+        if ((job != null) && (getJobTemplate(job.getFacets()) == DataPipelineTemplateType.APACHE_AIRFLOW_TASK_TEMPLATE))
+        {
+            parentTemplate = DataPipelineTemplateType.APACHE_AIRFLOW_DAG_TEMPLATE;
+        }
+
         CataloguedElement rootProcess   = null;
         CataloguedElement parentProcess = null;
 
         if ((parent.getRoot() != null) && (parent.getRoot().getJob() != null) && (parent.getRoot().getJob().getName() != null))
         {
-            rootProcess = syncJob(parent.getRoot().getJob().getNamespace(), parent.getRoot().getJob().getName(), null, null, eventDescription);
+            rootProcess = syncJob(parent.getRoot().getJob().getNamespace(), parent.getRoot().getJob().getName(), null, parentTemplate, null, eventDescription);
         }
 
         if ((parent.getJob() != null) && (parent.getJob().getName() != null))
@@ -802,7 +935,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             }
             else
             {
-                parentProcess = syncJob(parent.getJob().getNamespace(), parent.getJob().getName(), null, rootProcess, eventDescription);
+                parentProcess = syncJob(parent.getJob().getNamespace(), parent.getJob().getName(), null, parentTemplate, rootProcess, eventDescription);
             }
         }
 
@@ -855,6 +988,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *
      * @param run run from the event
      * @param jobProcess catalogued process for the job
+     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
      * @param eventDescription description of the event for logging
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
@@ -862,6 +996,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
     private void syncJobDependencies(OpenLineageRun    run,
                                      CataloguedElement jobProcess,
+                                     String            iscQualifiedName,
                                      String            eventDescription) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
@@ -883,7 +1018,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
                     if (upstreamProcess != null)
                     {
-                        ensureControlFlow(upstreamProcess, jobProcess, dependency);
+                        ensureControlFlow(upstreamProcess, jobProcess, dependency, iscQualifiedName);
                     }
                 }
             }
@@ -899,7 +1034,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
                     if (downstreamProcess != null)
                     {
-                        ensureControlFlow(jobProcess, downstreamProcess, dependency);
+                        ensureControlFlow(jobProcess, downstreamProcess, dependency, iscQualifiedName);
                     }
                 }
             }
@@ -913,13 +1048,15 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * @param fromProcess upstream process
      * @param toProcess downstream process
      * @param dependency details of the dependency (may be null)
+     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
      * @throws UserNotAuthorizedException security problem
      */
     private void ensureControlFlow(CataloguedElement                           fromProcess,
                                    CataloguedElement                           toProcess,
-                                   OpenLineageJobDependenciesRunFacetDependency dependency) throws InvalidParameterException,
+                                   OpenLineageJobDependenciesRunFacetDependency dependency,
+                                   String                                      iscQualifiedName) throws InvalidParameterException,
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException
     {
@@ -932,7 +1069,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             properties.setDescription(dependency.getSequenceTriggerRule());
         }
 
-        ensureLineage(fromProcess, toProcess, OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName, properties);
+        ensureLineage(fromProcess, toProcess, OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName, properties, iscQualifiedName);
     }
 
 
@@ -1114,11 +1251,12 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
 
     /**
-     * Maintain the RunMetrics classification on the job's process.  This is always maintained (whether or not runs
-     * are catalogued as elements) so that the process records how often it runs and how much data it handles.
+     * Maintain the RunMetrics classification on the job's process (or, for a governance action process, on the
+     * process step).  This is always maintained (whether or not runs are catalogued as elements) so that the process
+     * records how often it runs and how much data it handles.
      *
      * @param event run event
-     * @param jobProcess catalogued process for the job
+     * @param jobProcess catalogued process (or process step) that holds the run metrics
      * @param eventDescription description of the event for logging
      */
     private void updateProcessMetrics(OpenLineageRunEvent event,
@@ -1129,13 +1267,13 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
         try
         {
-            AssetClient                  processClient        = myContext.getAssetClient(OpenMetadataType.PROCESS.typeName);
             ClassificationExplorerClient classificationClient = myContext.getClassificationExplorerClient();
 
             /*
-             * Always re-read the process so that the metrics are built on the latest classification.
+             * Always re-read the process so that the metrics are built on the latest classification.  A process step
+             * is not an asset, so the element is retrieved generically.
              */
-            OpenMetadataRootElement process = processClient.getAssetByGUID(jobProcess.guid(), processClient.getGetOptions());
+            OpenMetadataRootElement process = classificationClient.getRootElementByGUID(jobProcess.guid(), classificationClient.getGetOptions());
 
             RunMetricsProperties runMetrics        = null;
             boolean              classified        = false;
@@ -1304,6 +1442,70 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     }
 
 
+    /**
+     * Return the elements behind a run from the governance action publisher - the governance action process, the
+     * process step and the process instance - using the process instance and process step named in the run's
+     * egeria_governanceAction facet (see OpenLineageGovernanceActionResolver).  A failure is logged and treated as
+     * a run that is not from a governance action process, so the run is still catalogued as a job.
+     *
+     * @param run run from the event
+     * @param eventDescription description of the event for logging
+     * @return governance action elements, or null if the run is not from a governance action process
+     */
+    private OpenLineageGovernanceActionResolver.GovernanceActionElements resolveGovernanceAction(OpenLineageRun run,
+                                                                                                 String         eventDescription)
+    {
+        final String methodName = "resolveGovernanceAction";
+
+        if ((run == null) || (run.getFacets() == null) || (run.getFacets().getEgeriaGovernanceAction() == null))
+        {
+            return null;
+        }
+
+        try
+        {
+            return governanceActionResolver.resolve(run.getFacets().getEgeriaGovernanceAction());
+        }
+        catch (Exception error)
+        {
+            logOptionalMetadataFailed(methodName, "governance action process", eventDescription, error);
+
+            return null;
+        }
+    }
+
+
+    /**
+     * Return the information supply chain that the run is part of.  It is named by Egeria's
+     * egeria_informationSupplyChain run facet (which any producer, such as an Apache Airflow DAG, can add), or else by
+     * the egeria_governanceAction facet that the governance action publisher adds.  The lineage relationships
+     * created from the event are tagged with it.
+     *
+     * @param run run from the event
+     * @return qualified name of the information supply chain or null
+     */
+    private String getISCQualifiedName(OpenLineageRun run)
+    {
+        if ((run == null) || (run.getFacets() == null))
+        {
+            return null;
+        }
+
+        if ((run.getFacets().getEgeriaInformationSupplyChain() != null) &&
+            (run.getFacets().getEgeriaInformationSupplyChain().getIscQualifiedName() != null))
+        {
+            return run.getFacets().getEgeriaInformationSupplyChain().getIscQualifiedName();
+        }
+
+        if (run.getFacets().getEgeriaGovernanceAction() != null)
+        {
+            return run.getFacets().getEgeriaGovernanceAction().getIscQualifiedName();
+        }
+
+        return null;
+    }
+
+
     /* =======================================================================================
      * Datasets
      */
@@ -1313,6 +1515,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *
      * @param inputs input datasets from the event
      * @param jobProcess catalogued process for the job
+     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
      * @param eventDescription description of the event for logging
      * @return catalogued assets in the same order as the inputs (null entries for inputs that could not be catalogued)
      * @throws InvalidParameterException invalid parameter
@@ -1321,6 +1524,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
     private List<CataloguedElement> syncInputDataSets(List<OpenLineageInputDataSet> inputs,
                                                       CataloguedElement             jobProcess,
+                                                      String                        iscQualifiedName,
                                                       String                        eventDescription) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException
@@ -1335,12 +1539,9 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
                 if (input != null)
                 {
-                    asset = syncDataSet(input.getNamespace(), input.getName(), input.getFacets(), eventDescription);
+                    asset = syncDataSet(input.getNamespace(), input.getName(), input.getFacets(), iscQualifiedName, eventDescription);
 
-                    if (asset != null)
-                    {
-                        ensureLineage(asset, jobProcess, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, new DataFlowProperties());
-                    }
+                    ensureDataFlow(asset, jobProcess, iscQualifiedName);
                 }
 
                 assets.add(asset);
@@ -1356,6 +1557,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *
      * @param outputs output datasets from the event
      * @param jobProcess catalogued process for the job
+     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
      * @param eventDescription description of the event for logging
      * @return catalogued assets in the same order as the outputs (null entries for outputs that could not be catalogued)
      * @throws InvalidParameterException invalid parameter
@@ -1364,6 +1566,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
     private List<CataloguedElement> syncOutputDataSets(List<OpenLineageOutputDataSet> outputs,
                                                        CataloguedElement              jobProcess,
+                                                       String                         iscQualifiedName,
                                                        String                         eventDescription) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException
@@ -1378,12 +1581,9 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
                 if (output != null)
                 {
-                    asset = syncDataSet(output.getNamespace(), output.getName(), output.getFacets(), eventDescription);
+                    asset = syncDataSet(output.getNamespace(), output.getName(), output.getFacets(), iscQualifiedName, eventDescription);
 
-                    if (asset != null)
-                    {
-                        ensureLineage(jobProcess, asset, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, new DataFlowProperties());
-                    }
+                    ensureDataFlow(jobProcess, asset, iscQualifiedName);
                 }
 
                 assets.add(asset);
@@ -1395,24 +1595,35 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
 
     /**
-     * Find or create the data asset that represents an OpenLineage dataset.  The dataset's namespace and name are
-     * the values extracted from the technology, so they are matched against the namespacePath and resourceName of
-     * the assets already in the catalog (which may have been created by other connectors).
+     * Find or create the element that represents an OpenLineage dataset.  The lineage from OpenLineage events is
+     * attached to the elements that describe the physical landscape, and the abstractions over them (tabular data
+     * sets and tabular data set collections, such as the data sets of digital products) are linked above them with
+     * DataSetContent.  See OpenLineageDataSetResolver for how the matching elements are found.
      * <ul>
-     *     <li>If the asset that this connector created for the dataset already exists, it is used - and any other
-     *     matching assets are linked to it as peer duplicates.</li>
-     *     <li>If there is exactly one matching asset and its type is compatible with the type expected for the dataset
-     *     (the expected type or a subtype), it is used.</li>
-     *     <li>Otherwise (no match, multiple matches or an incompatible type) a new asset is created with the qualified
-     *     name {typeName}::{namespace}::{name} and the matching assets are linked to it with DISCOVERED PeerDuplicateLink
+     *     <li>The first of the matching physical elements is used for the dataset.  Elements catalogued by technology
+     *     connectors come before elements created from OpenLineage events, and within each group the oldest comes
+     *     first.  The other matching physical elements are linked to it with DISCOVERED PeerDuplicateLink
      *     relationships so that the duplicate management process can resolve them.</li>
+     *     <li>A relational table is a schema attribute rather than an asset.  The lineage is attached to the table and
+     *     to the asset that the table belongs to (see CataloguedElement.parentAsset).</li>
+     *     <li>If there is no physical element but the dataset is itself an abstraction (for example a tabular data set
+     *     collection named in the egeria namespace), the abstraction is used rather than creating a new asset.</li>
+     *     <li>Otherwise a new asset is created with the qualified name {typeName}::{namespace}::{name}, from the
+     *     catalog template for the technology in the namespace (see getDataSetTemplate), or as a generic DataStore
+     *     if the technology is not known.</li>
+     *     <li>Each abstraction is linked to the element it is a view over with a DataSetContent relationship for the
+     *     event's information supply chain, if there is not one already.</li>
      * </ul>
+     * The dataset facets update the element only when this connector owns it (it created it from OpenLineage events);
+     * elements catalogued by technology connectors only gain an ownership classification (if they have none) and the
+     * OpenLineage identity (resourceName/namespacePath) if they have none.
      *
      * @param namespace dataset namespace
      * @param name dataset name
      * @param facets dataset facets (may be null)
+     * @param iscQualifiedName qualified name of the information supply chain for the relationships (may be null)
      * @param eventDescription description of the event for logging
-     * @return catalogued asset or null if the dataset is not identifiable
+     * @return catalogued element or null if the dataset is not identifiable
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
      * @throws UserNotAuthorizedException security problem
@@ -1420,6 +1631,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     private CataloguedElement syncDataSet(String                   namespace,
                                           String                   name,
                                           OpenLineageDataSetFacets facets,
+                                          String                   iscQualifiedName,
                                           String                   eventDescription) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
@@ -1431,13 +1643,15 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         }
 
         AssetClient         assetClient      = myContext.getAssetClient();
-        DataAssetProperties assetProperties  = getDataAssetProperties(namespace, name, facets);
+        TemplateDefinition  template         = getDataSetTemplate(namespace, name);
+        DataAssetProperties assetProperties  = getDataSetProperties(template, namespace, name, facets);
         String              expectedTypeName = assetProperties.getTypeName();
-        String              qualifiedName    = getDataSetQualifiedName(expectedTypeName, namespace, name);
+        String              qualifiedName    = assetProperties.getQualifiedName();
 
         /*
-         * A renamed dataset is identified by its previous name - rename the existing asset before looking it up
-         * under its new identity.
+         * A renamed dataset is identified by its previous name - rename the asset created for it from OpenLineage
+         * events before looking it up under its new identity.  Elements catalogued by technology connectors are
+         * renamed by those connectors.
          */
         OpenLineageLifecycleStateChangeDataSetFacet lifecycleStateChange = (facets == null) ? null : facets.getLifecycleStateChange();
 
@@ -1451,164 +1665,214 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                           expectedTypeName,
                           qualifiedName,
                           eventDescription);
+
+            /*
+             * The asset has moved from the previous identity to the new one, so neither cached resolution is valid.
+             */
+            resolver.forget(lifecycleStateChange.getPreviousIdentifier().getNamespace(), lifecycleStateChange.getPreviousIdentifier().getName());
+            resolver.forget(namespace, name);
         }
+
+        OpenLineageDataSetResolver.ResolvedDataSet resolvedDataSet = resolveDataSet(namespace, name, eventDescription);
+        OpenLineageDataSetResolver.MatchedElement  primary         = resolvedDataSet.primary();
 
         /*
-         * Look for the asset this connector would have created, then for assets created by other connectors.
+         * With no physical element, an abstraction that is the dataset itself is used rather than a new asset.
          */
-        OpenMetadataRootElement       existingAsset = assetClient.getAssetByUniqueName(qualifiedName,
-                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                       assetClient.getGetOptions());
-        List<OpenMetadataRootElement> matchingAssets = findMatchingAssets(namespace, name);
-        List<OpenMetadataRootElement> peerDuplicates = new ArrayList<>();
-
-        if (existingAsset == null)
+        if (primary == null)
         {
-            OpenMetadataRootElement compatibleMatch = null;
-            int                     compatibleMatches = 0;
-
-            for (OpenMetadataRootElement matchingAsset : matchingAssets)
+            for (OpenLineageDataSetResolver.MatchedElement abstraction : resolvedDataSet.abstractions())
             {
-                if (propertyHelper.isTypeOf(matchingAsset.getElementHeader(), expectedTypeName))
+                if (! abstraction.coversParent())
                 {
-                    compatibleMatch = matchingAsset;
-                    compatibleMatches++;
-                }
-            }
-
-            if ((compatibleMatches == 1) && (matchingAssets.size() == 1))
-            {
-                existingAsset = compatibleMatch;
-            }
-            else
-            {
-                peerDuplicates.addAll(matchingAssets);
-            }
-        }
-        else
-        {
-            for (OpenMetadataRootElement matchingAsset : matchingAssets)
-            {
-                if (! existingAsset.getElementHeader().getGUID().equals(matchingAsset.getElementHeader().getGUID()))
-                {
-                    peerDuplicates.add(matchingAsset);
+                    primary = abstraction;
+                    break;
                 }
             }
         }
 
         CataloguedElement asset;
+        boolean           ownedByThisConnector;
 
-        if (existingAsset == null)
+        if (primary == null)
         {
-            assetProperties.setQualifiedName(qualifiedName);
-            assetProperties.setDisplayName(name);
-            assetProperties.setResourceName(name);
-            assetProperties.setNamespacePath(namespace);
+            /*
+             * A new asset: from the catalog template for the dataset's technology, or a generic DataStore (that can
+             * be retyped later) if the technology is not known.
+             */
+            TemplateOptions templateOptions = new TemplateOptions(assetClient.getMetadataSourceOptions());
+            templateOptions.setIsOwnAnchor(true);
 
-            fillDataSetProperties(assetProperties, facets, new HashMap<>());
-
-            NewElementOptions newElementOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
-            newElementOptions.setIsOwnAnchor(true);
-
-            String assetGUID = assetClient.createAsset(newElementOptions, null, assetProperties, null);
+            String assetGUID = createAsset(assetClient,
+                                           templateOptions,
+                                           template,
+                                           assetProperties,
+                                           getPlaceholderProperties(template, namespace, name, assetProperties.getDescription()),
+                                           null);
 
             assetClient.publishElement(assetGUID);
+
+            resolver.forget(namespace, name);
 
             addOwnership(assetGUID, null, (facets == null) ? null : facets.getOwnership());
 
             logElementCatalogued(expectedTypeName, qualifiedName, assetGUID, "dataset", namespace + "/" + name);
 
-            asset = new CataloguedElement(assetGUID, qualifiedName, null);
+            asset                = new CataloguedElement(assetGUID, qualifiedName, null);
+            ownedByThisConnector = true;
 
             if ((catalogSchemas) && (facets != null) && (facets.getSchema() != null))
             {
                 createSchema(assetGUID, qualifiedName, facets.getSchema(), eventDescription);
             }
         }
+        else if (primary.schemaAttribute())
+        {
+            CataloguedElement parentAsset = null;
+
+            if (primary.parentAssetGUID() != null)
+            {
+                parentAsset = new CataloguedElement(primary.parentAssetGUID(), primary.parentAssetQualifiedName(), null);
+            }
+
+            SchemaAttributeClient   schemaAttributeClient = myContext.getSchemaAttributeClient();
+            OpenMetadataRootElement table                 = schemaAttributeClient.getSchemaAttributeByGUID(primary.guid(), schemaAttributeClient.getGetOptions());
+
+            asset                = new CataloguedElement(primary.guid(), primary.qualifiedName(), table, true, parentAsset);
+            ownedByThisConnector = false;
+
+            if ((facets != null) && (table != null) && (table.getElementHeader().getOwnership() == null))
+            {
+                addOwnership(primary.guid(), null, facets.getOwnership());
+            }
+        }
         else
         {
-            String assetGUID = existingAsset.getElementHeader().getGUID();
+            OpenMetadataRootElement existingAsset = assetClient.getAssetByGUID(primary.guid(), assetClient.getGetOptions());
 
-            asset = new CataloguedElement(assetGUID, getQualifiedName(existingAsset), existingAsset);
+            asset                = new CataloguedElement(primary.guid(), primary.qualifiedName(), existingAsset);
+            ownedByThisConnector = primary.createdFromOpenLineage();
 
-            if ((facets != null) && (existingAsset.getProperties() instanceof AssetProperties existingProperties))
+            if ((facets != null) && (existingAsset != null))
             {
-                DataAssetProperties updateProperties     = new DataAssetProperties();
-                Map<String, String> additionalProperties = new HashMap<>();
-
-                if (existingProperties.getAdditionalProperties() != null)
+                if (ownedByThisConnector)
                 {
-                    additionalProperties.putAll(existingProperties.getAdditionalProperties());
-                }
-
-                fillDataSetProperties(updateProperties, facets, additionalProperties);
-
-                boolean changed = false;
-
-                if ((existingProperties.getDescription() == null) && (updateProperties.getDescription() != null))
-                {
-                    changed = true;
-                }
-                else
-                {
-                    updateProperties.setDescription(null);
-                }
-
-                if ((updateProperties.getVersionIdentifier() != null) && (! updateProperties.getVersionIdentifier().equals(existingProperties.getVersionIdentifier())))
-                {
-                    changed = true;
-                }
-                else
-                {
-                    updateProperties.setVersionIdentifier(null);
-                }
-
-                if (! additionalProperties.equals(existingProperties.getAdditionalProperties()))
-                {
-                    updateProperties.setAdditionalProperties(additionalProperties);
-                    changed = true;
-                }
-                else
-                {
-                    updateProperties.setAdditionalProperties(null);
-                }
-
-                if (changed)
-                {
-                    assetClient.updateAsset(assetGUID, assetClient.getUpdateOptions(true), updateProperties);
+                    updateDataSetProperties(existingAsset, facets, eventDescription);
                 }
 
                 if (existingAsset.getElementHeader().getOwnership() == null)
                 {
-                    addOwnership(assetGUID, null, facets.getOwnership());
+                    addOwnership(primary.guid(), null, facets.getOwnership());
                 }
+            }
 
-                if ((catalogSchemas) && (facets.getSchema() != null))
-                {
-                    SchemaTypeClient schemaTypeClient = myContext.getSchemaTypeClient();
-
-                    if (schemaTypeClient.getSchemaTypeForAsset(assetGUID, schemaTypeClient.getGetOptions()) == null)
-                    {
-                        createSchema(assetGUID, asset.qualifiedName(), facets.getSchema(), eventDescription);
-                    }
-                }
+            if (existingAsset != null)
+            {
+                recordOpenLineageIdentity(existingAsset, namespace, name);
             }
         }
 
-        linkPeerDuplicates(asset, peerDuplicates, namespace, name, eventDescription);
+        linkPeerDuplicateElements(asset, resolvedDataSet.physical(), namespace, name, eventDescription);
+        linkAbstractions(asset, resolvedDataSet.abstractions(), iscQualifiedName, eventDescription);
 
         /*
          * A dropped dataset is archived or deleted according to the connector's delete method, and takes no
-         * further part in the lineage of this event.
+         * further part in the lineage of this event.  Only elements this connector owns are dropped - elements
+         * catalogued by technology connectors are removed by those connectors.
          */
         if ((lifecycleStateChange != null) && ("DROP".equalsIgnoreCase(lifecycleStateChange.getLifecycleStateChange())))
         {
-            dropDataSet(asset, eventDescription);
+            if (ownedByThisConnector)
+            {
+                dropDataSet(asset, eventDescription);
+                resolver.forget(namespace, name);
+            }
 
             return null;
         }
 
         return asset;
+    }
+
+
+    /**
+     * Update an asset that this connector created from OpenLineage events with the latest dataset facets.  The
+     * description is only set if the asset has none (stewards' edits are preserved).
+     *
+     * @param existingAsset asset
+     * @param facets dataset facets
+     * @param eventDescription description of the event for logging
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void updateDataSetProperties(OpenMetadataRootElement  existingAsset,
+                                         OpenLineageDataSetFacets facets,
+                                         String                   eventDescription) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        if (! (existingAsset.getProperties() instanceof AssetProperties existingProperties))
+        {
+            return;
+        }
+
+        AssetClient         assetClient          = myContext.getAssetClient();
+        String              assetGUID            = existingAsset.getElementHeader().getGUID();
+        DataAssetProperties updateProperties     = new DataAssetProperties();
+        Map<String, String> additionalProperties = new HashMap<>();
+
+        if (existingProperties.getAdditionalProperties() != null)
+        {
+            additionalProperties.putAll(existingProperties.getAdditionalProperties());
+        }
+
+        fillDataSetProperties(updateProperties, facets, additionalProperties);
+
+        boolean changed = false;
+
+        if ((existingProperties.getDescription() == null) && (updateProperties.getDescription() != null))
+        {
+            changed = true;
+        }
+        else
+        {
+            updateProperties.setDescription(null);
+        }
+
+        if ((updateProperties.getVersionIdentifier() != null) && (! updateProperties.getVersionIdentifier().equals(existingProperties.getVersionIdentifier())))
+        {
+            changed = true;
+        }
+        else
+        {
+            updateProperties.setVersionIdentifier(null);
+        }
+
+        if (! additionalProperties.equals(existingProperties.getAdditionalProperties()))
+        {
+            updateProperties.setAdditionalProperties(additionalProperties);
+            changed = true;
+        }
+        else
+        {
+            updateProperties.setAdditionalProperties(null);
+        }
+
+        if (changed)
+        {
+            assetClient.updateAsset(assetGUID, assetClient.getUpdateOptions(true), updateProperties);
+        }
+
+        if ((catalogSchemas) && (facets.getSchema() != null))
+        {
+            SchemaTypeClient schemaTypeClient = myContext.getSchemaTypeClient();
+
+            if (schemaTypeClient.getSchemaTypeForAsset(assetGUID, schemaTypeClient.getGetOptions()) == null)
+            {
+                createSchema(assetGUID, getQualifiedName(existingAsset), facets.getSchema(), eventDescription);
+            }
+        }
     }
 
 
@@ -1757,6 +2021,131 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
 
     /**
+     * Find the elements in open metadata that describe a dataset.  A failure to resolve is logged and treated as no
+     * match so that the lineage is still catalogued.
+     *
+     * @param namespace dataset namespace
+     * @param name dataset name
+     * @param eventDescription description of the event for logging
+     * @return resolved dataset (the lists are empty if nothing matches)
+     */
+    private OpenLineageDataSetResolver.ResolvedDataSet resolveDataSet(String namespace,
+                                                                      String name,
+                                                                      String eventDescription)
+    {
+        final String methodName = "resolveDataSet";
+
+        try
+        {
+            return resolver.resolve(namespace, name);
+        }
+        catch (Exception error)
+        {
+            logOptionalMetadataFailed(methodName, "resolution of dataset " + namespace + "/" + name, eventDescription, error);
+
+            return new OpenLineageDataSetResolver.ResolvedDataSet(new ArrayList<>(), new ArrayList<>());
+        }
+    }
+
+
+    /**
+     * Record the OpenLineage namespace and name of a dataset in an existing asset that has neither, so that the
+     * asset is recognized by its OpenLineage identity from now on (for example, by the governance action publisher
+     * when the asset is an action target).
+     *
+     * @param existingAsset asset used for the dataset
+     * @param namespace dataset namespace
+     * @param name dataset name
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void recordOpenLineageIdentity(OpenMetadataRootElement existingAsset,
+                                           String                  namespace,
+                                           String                  name) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        if ((namespace == null) || (GovernanceActionOpenLineageIntegrationConnector.EGERIA_NAMESPACE.equals(namespace)))
+        {
+            return;
+        }
+
+        if ((existingAsset.getProperties() instanceof AssetProperties existingProperties) &&
+            (existingProperties.getResourceName() == null) && (existingProperties.getNamespacePath() == null))
+        {
+            AssetClient     assetClient      = myContext.getAssetClient();
+            AssetProperties updateProperties = new AssetProperties();
+
+            updateProperties.setTypeName(existingProperties.getTypeName());
+            updateProperties.setResourceName(name);
+            updateProperties.setNamespacePath(namespace);
+
+            assetClient.updateAsset(existingAsset.getElementHeader().getGUID(), assetClient.getUpdateOptions(true), updateProperties);
+        }
+    }
+
+
+    /**
+     * Link each abstraction over a dataset (a tabular data set or tabular data set collection) to the element it is a
+     * view over with a DataSetContent relationship - the data set is at end 1 and its content at end 2.  An
+     * abstraction over the dataset's parent (for example a collection over the schema that holds a table) is linked
+     * to the parent.  DataSetContent is multi-link: there is one relationship for each information supply chain.
+     *
+     * @param asset element used for the dataset
+     * @param abstractions abstractions over the dataset
+     * @param iscQualifiedName qualified name of the information supply chain (may be null)
+     * @param eventDescription description of the event for logging
+     */
+    private void linkAbstractions(CataloguedElement                               asset,
+                                  List<OpenLineageDataSetResolver.MatchedElement> abstractions,
+                                  String                                          iscQualifiedName,
+                                  String                                          eventDescription)
+    {
+        final String methodName = "linkAbstractions";
+
+        for (OpenLineageDataSetResolver.MatchedElement abstraction : abstractions)
+        {
+            CataloguedElement content = asset;
+
+            if ((abstraction.coversParent()) && (asset.parentAsset() != null))
+            {
+                content = asset.parentAsset();
+            }
+
+            if (abstraction.guid().equals(content.guid()))
+            {
+                continue;
+            }
+
+            try
+            {
+                if (! isRelationshipKnown(abstraction.guid(), content.guid(), OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, iscQualifiedName))
+                {
+                    AssetClient              assetClient = myContext.getAssetClient();
+                    DataSetContentProperties properties  = new DataSetContentProperties();
+
+                    properties.setISCQualifiedName(iscQualifiedName);
+
+                    assetClient.linkDataSetContent(abstraction.guid(),
+                                                   content.guid(),
+                                                   new MakeAnchorOptions(assetClient.getMetadataSourceOptions()),
+                                                   properties);
+
+                    rememberRelationship(abstraction.guid(), content.guid(), OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, iscQualifiedName);
+
+                    logLineageCatalogued(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, abstraction.qualifiedName(), content.qualifiedName());
+                }
+            }
+            catch (Exception error)
+            {
+                logOptionalMetadataFailed(methodName, "link from " + abstraction.qualifiedName() + " to " + content.qualifiedName(), eventDescription, error);
+            }
+        }
+    }
+
+
+    /**
      * Find the assets whose resourceName and namespacePath match an OpenLineage dataset's name and namespace.
      * These are the values extracted from the technology by whichever connector catalogued the asset, so they
      * are the most reliable way to recognise the same resource.  Other naming conventions used by technologies
@@ -1809,14 +2198,14 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
 
     /**
-     * Link the assets that match an OpenLineage dataset, but could not be used directly, to the asset that is being
-     * used for the dataset with DISCOVERED PeerDuplicateLink relationships.  The duplicate management process
-     * (stewards, or the automated duplicate manager) decides whether they are the same resource.
+     * Link the assets that match an OpenLineage job or dataset, but could not be used directly, to the element that
+     * is being used with DISCOVERED PeerDuplicateLink relationships.  The duplicate management process (stewards, or
+     * the automated duplicate manager) decides whether they are the same resource.
      *
-     * @param asset asset used for the dataset
+     * @param asset element used for the job or dataset
      * @param peerDuplicates matching assets
-     * @param namespace dataset namespace
-     * @param name dataset name
+     * @param namespace OpenLineage namespace
+     * @param name OpenLineage name
      * @param eventDescription description of the event for logging
      */
     private void linkPeerDuplicates(CataloguedElement             asset,
@@ -1825,173 +2214,391 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                                     String                        name,
                                     String                        eventDescription)
     {
-        final String methodName = "linkPeerDuplicates";
-
-        try
+        for (OpenMetadataRootElement peerDuplicate : peerDuplicates)
         {
-            for (OpenMetadataRootElement peerDuplicate : peerDuplicates)
-            {
-                String peerGUID = peerDuplicate.getElementHeader().getGUID();
-
-                if ((! isRelationshipKnown(asset.guid(), peerGUID, OpenMetadataType.PEER_DUPLICATE_LINK.typeName)) &&
-                    (! isRelationshipKnown(peerGUID, asset.guid(), OpenMetadataType.PEER_DUPLICATE_LINK.typeName)))
-                {
-                    ClassificationExplorerClient classificationClient = myContext.getClassificationExplorerClient();
-
-                    PeerDuplicateLinkProperties properties = new PeerDuplicateLinkProperties();
-
-                    properties.setStatusIdentifier(StatusIdentifier.DISCOVERED.getOrdinal());
-                    properties.setSource(connectorName);
-                    properties.setNotes("Both assets have resourceName " + name + " and namespacePath " + namespace +
-                                                ", which is the identity of a dataset or job in OpenLineage events (" + eventDescription + ").");
-
-                    classificationClient.linkElementsAsPeerDuplicates(asset.guid(),
-                                                                      peerGUID,
-                                                                      properties,
-                                                                      new MakeAnchorOptions(classificationClient.getMetadataSourceOptions()));
-
-                    rememberRelationship(asset.guid(), peerGUID, OpenMetadataType.PEER_DUPLICATE_LINK.typeName);
-
-                    logLineageCatalogued(OpenMetadataType.PEER_DUPLICATE_LINK.typeName, asset.qualifiedName(), getQualifiedName(peerDuplicate));
-                }
-            }
-        }
-        catch (Exception error)
-        {
-            logOptionalMetadataFailed(methodName, "peer duplicate links for " + asset.qualifiedName(), eventDescription, error);
+            linkPeerDuplicate(asset,
+                              peerDuplicate.getElementHeader().getGUID(),
+                              getQualifiedName(peerDuplicate),
+                              "Both assets have resourceName " + name + " and namespacePath " + namespace +
+                                      ", which is the identity of a dataset or job in OpenLineage events (" + eventDescription + ").",
+                              eventDescription);
         }
     }
 
 
     /**
-     * Choose the open metadata type (and matching properties bean) for a dataset based on its namespace and facets.
-     * The OpenLineage naming conventions (https://openlineage.io/docs/spec/naming) put the technology in the namespace's
-     * URI scheme, and the datasetType facet (when present) says whether the dataset is a TABLE, VIEW, FILE, TOPIC, STREAM
-     * or MODEL.
+     * Link the other physical elements that describe an OpenLineage dataset to the element that is being used for
+     * it with DISCOVERED PeerDuplicateLink relationships.
+     *
+     * @param asset element used for the dataset
+     * @param physicalElements all the physical elements that describe the dataset
+     * @param namespace OpenLineage namespace
+     * @param name OpenLineage name
+     * @param eventDescription description of the event for logging
+     */
+    private void linkPeerDuplicateElements(CataloguedElement                               asset,
+                                           List<OpenLineageDataSetResolver.MatchedElement> physicalElements,
+                                           String                                          namespace,
+                                           String                                          name,
+                                           String                                          eventDescription)
+    {
+        for (OpenLineageDataSetResolver.MatchedElement physicalElement : physicalElements)
+        {
+            if (! physicalElement.guid().equals(asset.guid()))
+            {
+                linkPeerDuplicate(asset,
+                                  physicalElement.guid(),
+                                  physicalElement.qualifiedName(),
+                                  "Both elements describe the OpenLineage dataset " + namespace + "/" + name + " (" + eventDescription + ").",
+                                  eventDescription);
+            }
+        }
+    }
+
+
+    /**
+     * Link a peer duplicate to the element being used, unless they are already linked.
+     *
+     * @param asset element being used
+     * @param peerGUID unique identifier of the peer duplicate
+     * @param peerQualifiedName qualified name of the peer duplicate
+     * @param notes why they are thought to be duplicates
+     * @param eventDescription description of the event for logging
+     */
+    private void linkPeerDuplicate(CataloguedElement asset,
+                                   String            peerGUID,
+                                   String            peerQualifiedName,
+                                   String            notes,
+                                   String            eventDescription)
+    {
+        final String methodName = "linkPeerDuplicate";
+
+        try
+        {
+            if ((! isRelationshipKnown(asset.guid(), peerGUID, OpenMetadataType.PEER_DUPLICATE_LINK.typeName)) &&
+                (! isRelationshipKnown(peerGUID, asset.guid(), OpenMetadataType.PEER_DUPLICATE_LINK.typeName)))
+            {
+                ClassificationExplorerClient classificationClient = myContext.getClassificationExplorerClient();
+
+                PeerDuplicateLinkProperties properties = new PeerDuplicateLinkProperties();
+
+                properties.setStatusIdentifier(StatusIdentifier.DISCOVERED.getOrdinal());
+                properties.setSource(connectorName);
+                properties.setNotes(notes);
+
+                classificationClient.linkElementsAsPeerDuplicates(asset.guid(),
+                                                                  peerGUID,
+                                                                  properties,
+                                                                  new MakeAnchorOptions(classificationClient.getMetadataSourceOptions()));
+
+                rememberRelationship(asset.guid(), peerGUID, OpenMetadataType.PEER_DUPLICATE_LINK.typeName);
+
+                logLineageCatalogued(OpenMetadataType.PEER_DUPLICATE_LINK.typeName, asset.qualifiedName(), peerQualifiedName);
+            }
+        }
+        catch (Exception error)
+        {
+            logOptionalMetadataFailed(methodName, "peer duplicate link for " + asset.qualifiedName(), eventDescription, error);
+        }
+    }
+
+
+    /**
+     * Create an asset from its catalog template, or directly from its properties if there is no template or the
+     * template is not loaded (the templates for some technologies are in optional content packs - for example the
+     * PostgreSQL Table template is in the Postgres content pack).  The properties set the asset's type, names,
+     * technology type and OpenLineage identity either way.
+     *
+     * @param assetClient client
+     * @param options anchor and parent options
+     * @param template catalog template (may be null)
+     * @param properties properties of the new asset
+     * @param placeholderProperties values for the template's placeholders
+     * @param parentRelationshipProperties properties of the relationship to the parent (may be null)
+     * @return unique identifier of the new asset
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private String createAsset(AssetClient                   assetClient,
+                               TemplateOptions               options,
+                               TemplateDefinition            template,
+                               AssetProperties               properties,
+                               Map<String, String>           placeholderProperties,
+                               ProcessHierarchyProperties    parentRelationshipProperties) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        if ((template != null) && (isTemplateLoaded(assetClient, template)))
+        {
+            return assetClient.createAssetFromTemplate(options,
+                                                       template.getTemplateGUID(),
+                                                       properties,
+                                                       null,
+                                                       placeholderProperties,
+                                                       parentRelationshipProperties);
+        }
+
+        return assetClient.createAsset(options, null, properties, parentRelationshipProperties);
+    }
+
+
+    /**
+     * Is the template loaded into the open metadata repositories?  The answer is remembered, since content packs are
+     * not loaded while the connector is running.
+     *
+     * @param assetClient client
+     * @param template catalog template
+     * @return boolean
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private boolean isTemplateLoaded(AssetClient        assetClient,
+                                     TemplateDefinition template) throws PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        Boolean loaded = loadedTemplates.get(template.getTemplateGUID());
+
+        if (loaded == null)
+        {
+            try
+            {
+                loaded = (assetClient.getAssetByGUID(template.getTemplateGUID(), assetClient.getGetOptions()) != null);
+            }
+            catch (InvalidParameterException unknownTemplate)
+            {
+                loaded = false;
+            }
+
+            loadedTemplates.put(template.getTemplateGUID(), loaded);
+        }
+
+        return loaded;
+    }
+
+
+    /**
+     * Choose the catalog template for a job that is not catalogued yet, from its jobType facet (the integration
+     * that ran it and the type of job).
+     *
+     * @param facets job facets (may be null)
+     * @return template, or null for a generic DeployedSoftwareComponent
+     */
+    private TemplateDefinition getJobTemplate(OpenLineageJobFacets facets)
+    {
+        if ((facets == null) || (facets.getJobType() == null) || (facets.getJobType().getIntegration() == null))
+        {
+            return null;
+        }
+
+        String integration = facets.getJobType().getIntegration().toUpperCase();
+        String jobType     = (facets.getJobType().getJobType() == null) ? "" : facets.getJobType().getJobType().toUpperCase();
+
+        switch (integration)
+        {
+            case "AIRFLOW" -> { return ("DAG".equals(jobType)) ? DataPipelineTemplateType.APACHE_AIRFLOW_DAG_TEMPLATE : DataPipelineTemplateType.APACHE_AIRFLOW_TASK_TEMPLATE; }
+            case "SPARK" -> { return DataPipelineTemplateType.APACHE_SPARK_JOB_TEMPLATE; }
+            case "DEBEZIUM" -> { return DataPipelineTemplateType.DEBEZIUM_TASK_TEMPLATE; }
+            case "SQL" -> { return DataPipelineTemplateType.SQL_JOB_TEMPLATE; }
+            default -> { return ("QUERY".equals(jobType)) ? DataPipelineTemplateType.SQL_JOB_TEMPLATE : null; }
+        }
+    }
+
+
+    /**
+     * Choose the catalog template for a dataset that is not catalogued yet, from the technology in its namespace's
+     * URI scheme (see https://openlineage.io/docs/spec/naming).  The templates create just the asset (see the
+     * DatabaseTable, NoSQL, FileStore, DocumentManagement, EventStream and DataPipeline template types), apart from
+     * the Apache Kafka topic template, which also creates the topic's connection.
      *
      * @param namespace dataset namespace
      * @param name dataset name
-     * @param facets dataset facets (may be null)
-     * @return properties bean with the type name and deployed implementation type set
+     * @return template, or null if the technology is not known (the dataset becomes a generic DataStore)
      */
-    private DataAssetProperties getDataAssetProperties(String                   namespace,
-                                                       String                   name,
-                                                       OpenLineageDataSetFacets facets)
+    private TemplateDefinition getDataSetTemplate(String namespace,
+                                                  String name)
     {
-        String scheme      = getNamespaceScheme(namespace);
-        String datasetType = null;
-        String storageLayer = null;
-        String fileFormat  = null;
+        String  rawScheme = getRawNamespaceScheme(namespace);
+        String  scheme    = getNamespaceScheme(namespace);
+        boolean isFolder  = name.endsWith("/");
 
-        if (facets != null)
+        if (scheme == null)
         {
-            if (facets.getDatasetType() != null)
-            {
-                datasetType = facets.getDatasetType().getDatasetType();
-            }
-            if (facets.getStorage() != null)
-            {
-                storageLayer = facets.getStorage().getStorageLayer();
-                fileFormat   = facets.getStorage().getFileFormat();
-            }
+            return null;
         }
 
-        boolean isTopic = ("TOPIC".equalsIgnoreCase(datasetType)) || ("STREAM".equalsIgnoreCase(datasetType)) ||
-                          ("kafka".equals(scheme)) || ("pulsar".equals(scheme)) || ("kinesis".equals(scheme)) || ("pubsub".equals(scheme));
-
-        boolean isFileStore = ("file".equals(scheme)) || ("s3".equals(scheme)) || ("s3a".equals(scheme)) || ("gs".equals(scheme)) ||
-                              ("gcs".equals(scheme)) || ("hdfs".equals(scheme)) || ("abfs".equals(scheme)) || ("abfss".equals(scheme)) ||
-                              ("wasb".equals(scheme)) || ("wasbs".equals(scheme)) || ("dbfs".equals(scheme)) || ("oss".equals(scheme));
-
-        boolean isTable = ("TABLE".equalsIgnoreCase(datasetType)) || ("VIEW".equalsIgnoreCase(datasetType)) ||
-                          (storageLayer != null) ||
-                          ("postgres".equals(scheme)) || ("postgresql".equals(scheme)) || ("mysql".equals(scheme)) || ("mssql".equals(scheme)) ||
-                          ("sqlserver".equals(scheme)) || ("oracle".equals(scheme)) || ("snowflake".equals(scheme)) || ("bigquery".equals(scheme)) ||
-                          ("redshift".equals(scheme)) || ("trino".equals(scheme)) || ("presto".equals(scheme)) || ("hive".equals(scheme)) ||
-                          ("athena".equals(scheme)) || ("db2".equals(scheme)) || ("teradata".equals(scheme)) || ("clickhouse".equals(scheme)) ||
-                          ("databricks".equals(scheme)) || ("jdbc".equals(scheme)) || ("duckdb".equals(scheme)) || ("sqlite".equals(scheme)) ||
-                          ("iceberg".equals(scheme)) || ("delta".equals(scheme)) || ("cassandra".equals(scheme)) || ("mongodb".equals(scheme));
-
-        if (isTopic)
+        switch (scheme)
         {
-            TopicProperties properties = new TopicProperties();
-
-            properties.setTypeName(OpenMetadataType.TOPIC.typeName);
-
-            if ("kafka".equals(scheme))
-            {
-                properties.setDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType());
-            }
-            else
-            {
-                properties.setDeployedImplementationType(DeployedImplementationType.TOPIC.getDeployedImplementationType());
-            }
-
-            return properties;
+            case "postgres" -> { return DatabaseTableTemplateType.POSTGRESQL_TABLE_TEMPLATE; }
+            case "mssql" -> { return ("sqlserver".equals(rawScheme)) ? DatabaseTableTemplateType.AZURE_SYNAPSE_TABLE_TEMPLATE : DatabaseTableTemplateType.MSSQL_TABLE_TEMPLATE; }
+            case "oracle" -> { return DatabaseTableTemplateType.ORACLE_TABLE_TEMPLATE; }
+            case "db2" -> { return DatabaseTableTemplateType.DB2LUW_TABLE_TEMPLATE; }
+            case "awsathena" -> { return DatabaseTableTemplateType.AMAZON_ATHENA_TABLE_TEMPLATE; }
+            case "arn" -> { return DatabaseTableTemplateType.AWS_GLUE_TABLE_TEMPLATE; }
+            case "azurekusto" -> { return DatabaseTableTemplateType.AZURE_DATA_EXPLORER_TABLE_TEMPLATE; }
+            case "bigquery" -> { return DatabaseTableTemplateType.GOOGLE_BIGQUERY_TABLE_TEMPLATE; }
+            case "fabric-warehouse" -> { return DatabaseTableTemplateType.MICROSOFT_FABRIC_WAREHOUSE_TABLE_TEMPLATE; }
+            case "mysql" -> { return DatabaseTableTemplateType.MYSQL_TABLE_TEMPLATE; }
+            case "crate" -> { return DatabaseTableTemplateType.CRATEDB_TABLE_TEMPLATE; }
+            case "hive" -> { return DatabaseTableTemplateType.APACHE_HIVE_TABLE_TEMPLATE; }
+            case "oceanbase" -> { return DatabaseTableTemplateType.OCEANBASE_TABLE_TEMPLATE; }
+            case "teradata" -> { return DatabaseTableTemplateType.TERADATA_TABLE_TEMPLATE; }
+            case "redshift" -> { return DatabaseTableTemplateType.AMAZON_REDSHIFT_TABLE_TEMPLATE; }
+            case "snowflake" -> { return DatabaseTableTemplateType.SNOWFLAKE_TABLE_TEMPLATE; }
+            case "spanner" -> { return DatabaseTableTemplateType.GOOGLE_SPANNER_TABLE_TEMPLATE; }
+            case "trino" -> { return DatabaseTableTemplateType.TRINO_TABLE_TEMPLATE; }
+            case "unitycatalog" -> { return DatabaseTableTemplateType.UNITY_CATALOG_TABLE_TEMPLATE; }
+            case "cassandra" -> { return NoSQLTemplateType.APACHE_CASSANDRA_TABLE_TEMPLATE; }
+            case "azurecosmos" -> { return NoSQLTemplateType.AZURE_COSMOS_DB_COLLECTION_TEMPLATE; }
+            case "milvus" -> { return NoSQLTemplateType.MILVUS_COLLECTION_TEMPLATE; }
+            case "s3" -> { return isFolder ? FileStoreTemplateType.AMAZON_S3_FOLDER_TEMPLATE : FileStoreTemplateType.AMAZON_S3_OBJECT_TEMPLATE; }
+            case "gs" -> { return isFolder ? FileStoreTemplateType.GOOGLE_CLOUD_STORAGE_FOLDER_TEMPLATE : FileStoreTemplateType.GOOGLE_CLOUD_STORAGE_OBJECT_TEMPLATE; }
+            case "wasb", "wasbs" -> { return isFolder ? FileStoreTemplateType.AZURE_BLOB_STORAGE_FOLDER_TEMPLATE : FileStoreTemplateType.AZURE_BLOB_STORAGE_OBJECT_TEMPLATE; }
+            case "abfs", "abfss" -> { return isFolder ? FileStoreTemplateType.AZURE_DATA_LAKE_STORAGE_DIRECTORY_TEMPLATE : FileStoreTemplateType.AZURE_DATA_LAKE_STORAGE_FILE_TEMPLATE; }
+            case "hdfs" -> { return isFolder ? FileStoreTemplateType.HDFS_DIRECTORY_TEMPLATE : FileStoreTemplateType.HDFS_FILE_TEMPLATE; }
+            case "dbfs" -> { return isFolder ? FileStoreTemplateType.DATABRICKS_FILE_SYSTEM_DIRECTORY_TEMPLATE : FileStoreTemplateType.DATABRICKS_FILE_SYSTEM_FILE_TEMPLATE; }
+            case "file" -> { return isFolder ? FileStoreTemplateType.LOCAL_FOLDER_TEMPLATE : FileStoreTemplateType.LOCAL_FILE_TEMPLATE; }
+            case "box" -> { return DocumentManagementTemplateType.BOX_FILE_TEMPLATE; }
+            case "filenet" -> { return DocumentManagementTemplateType.IBM_FILENET_DOCUMENT_TEMPLATE; }
+            case "mssharepoint" -> { return DocumentManagementTemplateType.MICROSOFT_SHAREPOINT_DOCUMENT_TEMPLATE; }
+            case "pubsub" -> { return (name.startsWith("subscription:")) ? EventStreamTemplateType.GOOGLE_PUBSUB_SUBSCRIPTION_TEMPLATE : EventStreamTemplateType.GOOGLE_PUBSUB_TOPIC_TEMPLATE; }
+            case "kafka" -> { return KafkaTemplateType.KAFKA_TOPIC_TEMPLATE; }
+            case "inmemory" -> { return DataPipelineTemplateType.IN_MEMORY_DATA_SET_TEMPLATE; }
+            default -> { return null; }
         }
-        else if ((isTable) || ((! isFileStore) && (datasetType == null)))
+    }
+
+
+    /**
+     * Return the properties for a new dataset asset: a bean of the template's open metadata type (or DataStore if
+     * there is no template), named with this connector's convention and carrying the OpenLineage identity.  The
+     * properties replace the template's values.
+     *
+     * @param template catalog template (may be null)
+     * @param namespace dataset namespace
+     * @param name dataset name
+     * @param facets dataset facets (may be null)
+     * @return properties bean
+     */
+    private DataAssetProperties getDataSetProperties(TemplateDefinition       template,
+                                                     String                   namespace,
+                                                     String                   name,
+                                                     OpenLineageDataSetFacets facets)
+    {
+        String              typeName   = (template == null) ? OpenMetadataType.DATA_STORE.typeName : template.getDeployedImplementationType().getAssociatedTypeName();
+        DataAssetProperties properties;
+
+        if (OpenMetadataType.DATA_FOLDER.typeName.equals(typeName))
         {
-            DataSetProperties properties = new DataSetProperties();
+            DataFolderProperties folderProperties = new DataFolderProperties();
 
-            if ((isTable) || (facets != null && facets.getSchema() != null))
-            {
-                properties.setTypeName(OpenMetadataType.TABULAR_DATA_SET.typeName);
-                properties.setDeployedImplementationType(DeployedImplementationType.TABULAR_DATA_SET.getDeployedImplementationType());
-
-                if (storageLayer != null)
-                {
-                    properties.setDeployedImplementationType(capitalize(storageLayer) + " Table");
-                }
-                else if ("VIEW".equalsIgnoreCase(datasetType))
-                {
-                    properties.setDeployedImplementationType(capitalize(scheme) + " View");
-                }
-                else if (scheme != null)
-                {
-                    properties.setDeployedImplementationType(capitalize(scheme) + " Table");
-                }
-            }
-            else
-            {
-                properties.setTypeName(OpenMetadataType.DATA_SET.typeName);
-                properties.setDeployedImplementationType(DeployedImplementationType.DATA_SET.getDeployedImplementationType());
-            }
-
-            return properties;
+            folderProperties.setPathName(name);
+            properties = folderProperties;
         }
-        else if ((isFileStore) || ("FILE".equalsIgnoreCase(datasetType)))
+        else if (OpenMetadataType.DOCUMENT.typeName.equals(typeName))
         {
-            DataStoreProperties properties = new DataStoreProperties();
+            DocumentProperties documentProperties = new DocumentProperties();
 
-            properties.setPathName(name);
+            documentProperties.setPathName(name);
+            properties = documentProperties;
+        }
+        else if (OpenMetadataType.DATA_FILE.typeName.equals(typeName))
+        {
+            DataFileProperties fileProperties = new DataFileProperties();
 
-            if (name.endsWith("/"))
-            {
-                properties.setTypeName(OpenMetadataType.DATA_FOLDER.typeName);
-                properties.setDeployedImplementationType(DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType());
-            }
-            else
-            {
-                properties.setTypeName(OpenMetadataType.DATA_FILE.typeName);
-                properties.setDeployedImplementationType(getFileDeployedImplementationType(fileFormat, name));
-            }
-
-            return properties;
+            fileProperties.setPathName(name);
+            properties = fileProperties;
+        }
+        else if (OpenMetadataType.TOPIC.typeName.equals(typeName))
+        {
+            properties = new TopicProperties();
+        }
+        else if (OpenMetadataType.DATA_FEED.typeName.equals(typeName))
+        {
+            properties = new DataFeedProperties();
+        }
+        else if (OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeName.equals(typeName))
+        {
+            properties = new VirtualRelationalTableProperties();
+        }
+        else if (OpenMetadataType.DATA_SET.typeName.equals(typeName))
+        {
+            properties = new DataSetProperties();
         }
         else
         {
-            DataSetProperties properties = new DataSetProperties();
+            DataStoreProperties storeProperties = new DataStoreProperties();
 
-            properties.setTypeName(OpenMetadataType.DATA_SET.typeName);
-            properties.setDeployedImplementationType(DeployedImplementationType.DATA_SET.getDeployedImplementationType());
-
-            if (datasetType != null)
-            {
-                properties.setDeployedImplementationType(capitalize(datasetType.toLowerCase()));
-            }
-
-            return properties;
+            storeProperties.setPathName(name);
+            properties = storeProperties;
         }
+
+        properties.setTypeName(typeName);
+        properties.setQualifiedName(getDataSetQualifiedName(typeName, namespace, name));
+        properties.setDisplayName(name);
+        properties.setResourceName(name);
+        properties.setNamespacePath(namespace);
+
+        if (template != null)
+        {
+            properties.setDeployedImplementationType(template.getDeployedImplementationType().getDeployedImplementationType());
+
+            /*
+             * A local file's format says more than the generic data file technology type.
+             */
+            if (template == FileStoreTemplateType.LOCAL_FILE_TEMPLATE)
+            {
+                String fileFormat = ((facets != null) && (facets.getStorage() != null)) ? facets.getStorage().getFileFormat() : null;
+
+                properties.setDeployedImplementationType(getFileDeployedImplementationType(fileFormat, name));
+            }
+        }
+
+        fillDataSetProperties(properties, facets, new HashMap<>());
+
+        return properties;
+    }
+
+
+    /**
+     * Return the values for the placeholders in a template.  The properties that the connector sets replace most
+     * of the template's values; the placeholders fill the rest (for example the connection and endpoint that the
+     * Apache Kafka topic template creates).
+     *
+     * @param template catalog template
+     * @param namespace dataset or job namespace
+     * @param name dataset or job name
+     * @param description description (may be null)
+     * @return map of placeholder name to value
+     */
+    private Map<String, String> getPlaceholderProperties(TemplateDefinition template,
+                                                         String             namespace,
+                                                         String             name,
+                                                         String             description)
+    {
+        Map<String, String> placeholderProperties = new HashMap<>();
+
+        placeholderProperties.put(PlaceholderProperty.DISPLAY_NAME.getName(), name);
+        placeholderProperties.put(PlaceholderProperty.RESOURCE_NAME.getName(), name);
+        placeholderProperties.put(PlaceholderProperty.NAMESPACE_PATH.getName(), namespace);
+        placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), description);
+        placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), null);
+        placeholderProperties.put(PlaceholderProperty.FILE_PATH_NAME.getName(), name);
+        placeholderProperties.put(PlaceholderProperty.DIRECTORY_PATH_NAME.getName(), name);
+
+        if (template == KafkaTemplateType.KAFKA_TOPIC_TEMPLATE)
+        {
+            OpenLineageNamespace location = OpenLineageNamespace.fromNamespace(namespace);
+
+            placeholderProperties.put(PlaceholderProperty.HOST_IDENTIFIER.getName(), location.host());
+            placeholderProperties.put(PlaceholderProperty.PORT_NUMBER.getName(), location.port());
+            placeholderProperties.put(PlaceholderProperty.SERVER_NAME.getName(), (location.port() == null) ? location.host() : location.host() + ":" + location.port());
+            placeholderProperties.put(KafkaPlaceholderProperty.FULL_TOPIC_NAME.getName(), name);
+            placeholderProperties.put(KafkaPlaceholderProperty.SHORT_TOPIC_NAME.getName(), name);
+            placeholderProperties.put(KafkaPlaceholderProperty.EVENT_DIRECTION.getName(), "inOut");
+        }
+
+        return placeholderProperties;
     }
 
 
@@ -2298,6 +2905,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *
      * @param job job from the event
      * @param jobProcess catalogued process for the job
+     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
      * @param eventDescription description of the event for logging
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
@@ -2305,6 +2913,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
     private void syncExplicitLineage(OpenLineageJob    job,
                                      CataloguedElement jobProcess,
+                                     String            iscQualifiedName,
                                      String            eventDescription) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
@@ -2325,15 +2934,12 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             if ("DATASET".equalsIgnoreCase(entry.getType()))
             {
-                target = syncDataSet(entry.getNamespace(), entry.getName(), null, eventDescription);
+                target = syncDataSet(entry.getNamespace(), entry.getName(), null, iscQualifiedName, eventDescription);
 
-                if (target != null)
-                {
-                    /*
-                     * The event's job writes the target dataset unless the inputs say otherwise.
-                     */
-                    ensureLineage(jobProcess, target, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, new DataFlowProperties());
-                }
+                /*
+                 * The event's job writes the target dataset unless the inputs say otherwise.
+                 */
+                ensureDataFlow(jobProcess, target, iscQualifiedName);
             }
             else if (entry.getName() == null)
             {
@@ -2353,17 +2959,19 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             {
                 for (OpenLineageLineageInput input : entry.getInputs())
                 {
-                    CataloguedElement source = syncLineageInput(input, jobProcess, eventDescription);
+                    CataloguedElement source = syncLineageInput(input, jobProcess, iscQualifiedName, eventDescription);
 
                     if (source != null)
                     {
                         if (("JOB".equalsIgnoreCase(input.getType())) && ("JOB".equalsIgnoreCase(entry.getType())))
                         {
-                            ensureLineage(source, target, OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName, getLineageProperties(new ControlFlowProperties(), input.getTransformations()));
+                            ensureLineage(source, target, OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName, getLineageProperties(new ControlFlowProperties(), input.getTransformations()), iscQualifiedName);
                         }
                         else
                         {
-                            ensureLineage(source, target, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, getLineageProperties(new DataFlowProperties(), input.getTransformations()));
+                            ensureLineage(source, target, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, getLineageProperties(new DataFlowProperties(), input.getTransformations()), iscQualifiedName);
+                            ensureAssetLevelDataFlow(source, target, iscQualifiedName);
+                            ensureTableMapping(source, target, iscQualifiedName);
                         }
                     }
                 }
@@ -2371,7 +2979,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             if (("DATASET".equalsIgnoreCase(entry.getType())) && (entry.getFields() != null))
             {
-                syncFieldLineage(target, entry.getFields(), eventDescription);
+                syncFieldLineage(target, entry.getFields(), iscQualifiedName, eventDescription);
             }
         }
     }
@@ -2382,6 +2990,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *
      * @param input source
      * @param jobProcess the event's job process (used when the source is the event's own job)
+     * @param iscQualifiedName qualified name of the information supply chain for the relationships (may be null)
      * @param eventDescription description of the event for logging
      * @return catalogued element or null
      * @throws InvalidParameterException invalid parameter
@@ -2390,6 +2999,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
     private CataloguedElement syncLineageInput(OpenLineageLineageInput input,
                                                CataloguedElement       jobProcess,
+                                               String                  iscQualifiedName,
                                                String                  eventDescription) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException
@@ -2409,7 +3019,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             return syncJob(input.getNamespace(), input.getName(), null, null, eventDescription);
         }
 
-        return syncDataSet(input.getNamespace(), input.getName(), null, eventDescription);
+        return syncDataSet(input.getNamespace(), input.getName(), null, iscQualifiedName, eventDescription);
     }
 
 
@@ -2418,10 +3028,12 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *
      * @param targetAsset asset that owns the target fields
      * @param fields map of target field name to its source inputs
+     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
      * @param eventDescription description of the event for logging
      */
     private void syncFieldLineage(CataloguedElement                        targetAsset,
                                   Map<String, OpenLineageLineageFieldEntry> fields,
+                                  String                                    iscQualifiedName,
                                   String                                    eventDescription)
     {
         final String methodName = "syncFieldLineage";
@@ -2448,12 +3060,13 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                 {
                     if ((input != null) && ("DATASET".equalsIgnoreCase(input.getType())) && (input.getField() != null))
                     {
-                        CataloguedElement sourceAsset  = syncDataSet(input.getNamespace(), input.getName(), null, eventDescription);
+                        CataloguedElement sourceAsset  = syncDataSet(input.getNamespace(), input.getName(), null, iscQualifiedName, eventDescription);
                         CataloguedElement sourceColumn = findColumn(sourceAsset, input.getField());
 
                         if (sourceColumn != null)
                         {
-                            ensureLineage(sourceColumn, targetColumn, OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName, getLineageProperties(new LineageMappingProperties(), input.getTransformations()));
+                            ensureLineage(sourceColumn, targetColumn, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, getLineageProperties(new DataMappingProperties(), input.getTransformations()), iscQualifiedName);
+                            ensureTableMapping(sourceAsset, targetAsset, iscQualifiedName);
                         }
                     }
                 }
@@ -2471,10 +3084,12 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *
      * @param outputs output datasets from the event
      * @param outputAssets catalogued assets for the outputs (same order)
+     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
      * @param eventDescription description of the event for logging
      */
     private void syncColumnLineage(List<OpenLineageOutputDataSet> outputs,
                                    List<CataloguedElement>        outputAssets,
+                                   String                         iscQualifiedName,
                                    String                         eventDescription)
     {
         final String methodName = "syncColumnLineage";
@@ -2520,12 +3135,12 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                         {
                             if ((inputField != null) && (inputField.getField() != null))
                             {
-                                CataloguedElement sourceAsset  = syncDataSet(inputField.getNamespace(), inputField.getName(), null, eventDescription);
+                                CataloguedElement sourceAsset  = syncDataSet(inputField.getNamespace(), inputField.getName(), null, iscQualifiedName, eventDescription);
                                 CataloguedElement sourceColumn = findColumn(sourceAsset, inputField.getField());
 
                                 if (sourceColumn != null)
                                 {
-                                    LineageMappingProperties properties = new LineageMappingProperties();
+                                    DataMappingProperties properties = new DataMappingProperties();
 
                                     if (inputField.getTransformations() != null)
                                     {
@@ -2548,7 +3163,8 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                                         properties.setDescription(outputField.getTransformationDescription());
                                     }
 
-                                    ensureLineage(sourceColumn, targetColumn, OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName, properties);
+                                    ensureLineage(sourceColumn, targetColumn, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, properties, iscQualifiedName);
+                                    ensureTableMapping(sourceAsset, outputAsset, iscQualifiedName);
                                 }
                             }
                         }
@@ -2563,18 +3179,20 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                     {
                         for (OpenLineageLineageInput input : lineage.getInputs())
                         {
-                            CataloguedElement source = syncLineageInput(input, null, eventDescription);
+                            CataloguedElement source = syncLineageInput(input, null, iscQualifiedName, eventDescription);
 
                             if (source != null)
                             {
-                                ensureLineage(source, outputAsset, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, getLineageProperties(new DataFlowProperties(), input.getTransformations()));
+                                ensureLineage(source, outputAsset, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, getLineageProperties(new DataFlowProperties(), input.getTransformations()), iscQualifiedName);
+                                ensureAssetLevelDataFlow(source, outputAsset, iscQualifiedName);
+                                ensureTableMapping(source, outputAsset, iscQualifiedName);
                             }
                         }
                     }
 
                     if (lineage.getFields() != null)
                     {
-                        syncFieldLineage(outputAsset, lineage.getFields(), eventDescription);
+                        syncFieldLineage(outputAsset, lineage.getFields(), iscQualifiedName, eventDescription);
                     }
                 }
             }
@@ -2692,9 +3310,10 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     /**
      * Find a column (schema attribute) of a data asset by name, by walking the asset's schema.  This works for
      * schemas created by this connector and for schemas created by other connectors.  Nested fields are named
-     * with dots (for example customer.email) and are followed through the nested schema attributes.
+     * with dots (for example customer.email) and are followed through the nested schema attributes.  When the
+     * dataset is a table (a schema attribute, such as a RelationalTable), its columns are its nested attributes.
      *
-     * @param asset catalogued asset
+     * @param asset catalogued asset or table
      * @param fieldName name of the field
      * @return catalogued column or null if not found
      * @throws InvalidParameterException invalid parameter
@@ -2714,11 +3333,16 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         SchemaTypeClient      schemaTypeClient      = myContext.getSchemaTypeClient();
         SchemaAttributeClient schemaAttributeClient = myContext.getSchemaAttributeClient();
 
-        OpenMetadataRootElement schemaType = schemaTypeClient.getSchemaTypeForAsset(asset.guid(), schemaTypeClient.getGetOptions());
+        OpenMetadataRootElement schemaType = null;
 
-        if (schemaType == null)
+        if (! asset.schemaAttribute())
         {
-            return null;
+            schemaType = schemaTypeClient.getSchemaTypeForAsset(asset.guid(), schemaTypeClient.getGetOptions());
+
+            if (schemaType == null)
+            {
+                return null;
+            }
         }
 
         String[]                parts   = fieldName.split("\\.");
@@ -2732,13 +3356,13 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             int                           startFrom = 0;
             List<OpenMetadataRootElement> attributes;
 
-            if (level == 0)
+            if ((level == 0) && (schemaType != null))
             {
                 attributes = schemaAttributeClient.getAttributesForSchemaType(schemaType.getElementHeader().getGUID(), schemaAttributeClient.getQueryOptions(startFrom, pageSize));
             }
             else
             {
-                attributes = schemaAttributeClient.getNestedSchemaAttributes(current.getElementHeader().getGUID(), schemaAttributeClient.getQueryOptions(startFrom, pageSize));
+                attributes = schemaAttributeClient.getNestedSchemaAttributes((level == 0) ? asset.guid() : current.getElementHeader().getGUID(), schemaAttributeClient.getQueryOptions(startFrom, pageSize));
             }
 
             while ((attributes != null) && (! attributes.isEmpty()) && (found == null))
@@ -2764,13 +3388,13 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
                 startFrom  = startFrom + pageSize;
 
-                if (level == 0)
+                if ((level == 0) && (schemaType != null))
                 {
                     attributes = schemaAttributeClient.getAttributesForSchemaType(schemaType.getElementHeader().getGUID(), schemaAttributeClient.getQueryOptions(startFrom, pageSize));
                 }
                 else
                 {
-                    attributes = schemaAttributeClient.getNestedSchemaAttributes(current.getElementHeader().getGUID(), schemaAttributeClient.getQueryOptions(startFrom, pageSize));
+                    attributes = schemaAttributeClient.getNestedSchemaAttributes((level == 0) ? asset.guid() : current.getElementHeader().getGUID(), schemaAttributeClient.getQueryOptions(startFrom, pageSize));
                 }
             }
 
@@ -2801,12 +3425,118 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
 
     /**
+     * Create the DataFlow between a dataset and a process (or the reverse), and between the asset that a table
+     * belongs to and the process, so that the lineage is visible at the asset level as well as in detail.
+     *
+     * @param end1 source of the data
+     * @param end2 destination of the data
+     * @param iscQualifiedName qualified name of the information supply chain (may be null)
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void ensureDataFlow(CataloguedElement end1,
+                                CataloguedElement end2,
+                                String            iscQualifiedName) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        if ((end1 == null) || (end2 == null))
+        {
+            return;
+        }
+
+        ensureLineage(end1, end2, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, new DataFlowProperties(), iscQualifiedName);
+        ensureAssetLevelDataFlow(end1, end2, iscQualifiedName);
+    }
+
+
+    /**
+     * When either end of a data flow is a table, repeat the data flow between the assets the tables belong to.
+     *
+     * @param end1 source of the data
+     * @param end2 destination of the data
+     * @param iscQualifiedName qualified name of the information supply chain (may be null)
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void ensureAssetLevelDataFlow(CataloguedElement end1,
+                                          CataloguedElement end2,
+                                          String            iscQualifiedName) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        if ((end1 == null) || (end2 == null) || ((end1.parentAsset() == null) && (end2.parentAsset() == null)))
+        {
+            return;
+        }
+
+        CataloguedElement assetLevelEnd1 = (end1.parentAsset() == null) ? end1 : end1.parentAsset();
+        CataloguedElement assetLevelEnd2 = (end2.parentAsset() == null) ? end2 : end2.parentAsset();
+
+        ensureLineage(assetLevelEnd1, assetLevelEnd2, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, new DataFlowProperties(), iscQualifiedName);
+    }
+
+
+    /**
+     * When data flows from one table to another, link the tables with a DataMapping (the columns are linked with
+     * DataMapping too, where the column lineage is known).
+     *
+     * @param source source table
+     * @param target target table
+     * @param iscQualifiedName qualified name of the information supply chain (may be null)
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void ensureTableMapping(CataloguedElement source,
+                                    CataloguedElement target,
+                                    String            iscQualifiedName) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        if ((source != null) && (target != null) && (source.schemaAttribute()) && (target.schemaAttribute()))
+        {
+            ensureLineage(source, target, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, new DataMappingProperties(), iscQualifiedName);
+        }
+    }
+
+
+    /**
+     * Retrieve the full element for a catalogued dataset - an asset, or a schema attribute such as a table.
+     *
+     * @param asset catalogued dataset
+     * @return element or null
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private OpenMetadataRootElement retrieveElement(CataloguedElement asset) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        if (asset.schemaAttribute())
+        {
+            SchemaAttributeClient schemaAttributeClient = myContext.getSchemaAttributeClient();
+
+            return schemaAttributeClient.getSchemaAttributeByGUID(asset.guid(), schemaAttributeClient.getGetOptions());
+        }
+
+        AssetClient assetClient = myContext.getAssetClient();
+
+        return assetClient.getAssetByGUID(asset.guid(), assetClient.getGetOptions());
+    }
+
+
+    /**
      * Create a lineage relationship between two elements if it does not already exist.
      *
      * @param end1 element at end 1
      * @param end2 element at end 2
      * @param relationshipTypeName type of lineage relationship
      * @param properties properties for the relationship
+     * @param iscQualifiedName qualified name of the information supply chain that the lineage belongs to (may be null)
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
      * @throws UserNotAuthorizedException security problem
@@ -2814,16 +3544,19 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     private void ensureLineage(CataloguedElement             end1,
                                CataloguedElement             end2,
                                String                        relationshipTypeName,
-                               LineageRelationshipProperties properties) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+                               LineageRelationshipProperties properties,
+                               String                        iscQualifiedName) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         if ((end1 == null) || (end2 == null) || (end1.guid().equals(end2.guid())))
         {
             return;
         }
 
-        if (! isRelationshipKnown(end1.guid(), end2.guid(), relationshipTypeName))
+        properties.setISCQualifiedName(iscQualifiedName);
+
+        if (! isRelationshipKnown(end1.guid(), end2.guid(), relationshipTypeName, iscQualifiedName))
         {
             LineageClient lineageClient = myContext.getLineageClient();
 
@@ -2833,7 +3566,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                                       new MakeAnchorOptions(lineageClient.getMetadataSourceOptions()),
                                       properties);
 
-            rememberRelationship(end1.guid(), end2.guid(), relationshipTypeName);
+            rememberRelationship(end1.guid(), end2.guid(), relationshipTypeName, iscQualifiedName);
 
             logLineageCatalogued(relationshipTypeName, end1.qualifiedName(), end2.qualifiedName());
         }
@@ -2858,7 +3591,35 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
-        String key = end1GUID + "|" + end2GUID + "|" + relationshipTypeName;
+        return isRelationshipKnown(end1GUID, end2GUID, relationshipTypeName, null);
+    }
+
+
+    /**
+     * Determine whether a relationship already exists between two elements - first from the connector's cache and
+     * then from the repository.  When an information supply chain is supplied, only a relationship for that
+     * information supply chain counts: the same data flow can be part of several information supply chains, and
+     * each has its own relationship.
+     *
+     * @param end1GUID element at end 1
+     * @param end2GUID element at end 2
+     * @param relationshipTypeName type of relationship
+     * @param iscQualifiedName qualified name of the information supply chain (may be null)
+     * @return boolean
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private boolean isRelationshipKnown(String end1GUID,
+                                        String end2GUID,
+                                        String relationshipTypeName,
+                                        String iscQualifiedName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        final String methodName = "isRelationshipKnown";
+
+        String key = getRelationshipKey(end1GUID, end2GUID, relationshipTypeName, iscQualifiedName);
 
         if (knownRelationships.contains(key))
         {
@@ -2867,12 +3628,63 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
         OpenMetadataStore openMetadataStore = myContext.getOpenMetadataStore();
 
-        OpenMetadataRelationshipList relationships = openMetadataStore.getMetadataElementRelationships(end1GUID, end2GUID, relationshipTypeName, 0, 1);
-
-        if ((relationships != null) && (relationships.getRelationships() != null) && (! relationships.getRelationships().isEmpty()))
+        if (OpenMetadataType.PEER_DUPLICATE_LINK.typeName.equals(relationshipTypeName))
         {
-            knownRelationships.add(key);
-            return true;
+            /*
+             * Peer duplicate links are only returned to queries made for duplicate processing.
+             */
+            QueryOptions queryOptions = openMetadataStore.getQueryOptions(0, myContext.getMaxPageSize());
+
+            queryOptions.setForDuplicateProcessing(true);
+
+            OpenMetadataRelationshipList peerLinks = openMetadataStore.findRelationshipsBetweenMetadataElements(relationshipTypeName,
+                                                                                                                null,
+                                                                                                                List.of(end1GUID),
+                                                                                                                List.of(end2GUID),
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                queryOptions);
+
+            if ((peerLinks != null) && (peerLinks.getRelationships() != null) && (! peerLinks.getRelationships().isEmpty()))
+            {
+                knownRelationships.add(key);
+                return true;
+            }
+
+            return false;
+        }
+
+        int                          pageSize      = myContext.getMaxPageSize();
+        int                          startFrom     = 0;
+        OpenMetadataRelationshipList relationships = openMetadataStore.getMetadataElementRelationships(end1GUID, end2GUID, relationshipTypeName, startFrom, pageSize);
+
+        while ((relationships != null) && (relationships.getRelationships() != null) && (! relationships.getRelationships().isEmpty()))
+        {
+            for (OpenMetadataRelationship relationship : relationships.getRelationships())
+            {
+                /*
+                 * The relationships between the two elements are returned whichever way round they are, so a data
+                 * flow from the process to a schema is not mistaken for one from the schema to the process.
+                 */
+                if ((relationship != null) && (end1GUID.equals(relationship.getElementGUIDAtEnd1())) &&
+                    ((iscQualifiedName == null) ||
+                     (iscQualifiedName.equals(propertyHelper.getStringProperty(connectorName,
+                                                                               OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                               relationship.getRelationshipProperties(),
+                                                                               methodName)))))
+                {
+                    knownRelationships.add(key);
+                    return true;
+                }
+            }
+
+            if (relationships.getRelationships().size() < pageSize)
+            {
+                break;
+            }
+
+            startFrom     = startFrom + pageSize;
+            relationships = openMetadataStore.getMetadataElementRelationships(end1GUID, end2GUID, relationshipTypeName, startFrom, pageSize);
         }
 
         return false;
@@ -2890,7 +3702,49 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                                       String end2GUID,
                                       String relationshipTypeName)
     {
-        knownRelationships.add(end1GUID + "|" + end2GUID + "|" + relationshipTypeName);
+        rememberRelationship(end1GUID, end2GUID, relationshipTypeName, null);
+    }
+
+
+    /**
+     * Record that a relationship exists.
+     *
+     * @param end1GUID element at end 1
+     * @param end2GUID element at end 2
+     * @param relationshipTypeName type of relationship
+     * @param iscQualifiedName qualified name of the information supply chain (may be null)
+     */
+    private void rememberRelationship(String end1GUID,
+                                      String end2GUID,
+                                      String relationshipTypeName,
+                                      String iscQualifiedName)
+    {
+        knownRelationships.add(getRelationshipKey(end1GUID, end2GUID, relationshipTypeName, iscQualifiedName));
+    }
+
+
+    /**
+     * Return the key used to cache a relationship.
+     *
+     * @param end1GUID element at end 1
+     * @param end2GUID element at end 2
+     * @param relationshipTypeName type of relationship
+     * @param iscQualifiedName qualified name of the information supply chain (may be null)
+     * @return key
+     */
+    private String getRelationshipKey(String end1GUID,
+                                      String end2GUID,
+                                      String relationshipTypeName,
+                                      String iscQualifiedName)
+    {
+        String key = end1GUID + "|" + end2GUID + "|" + relationshipTypeName;
+
+        if (iscQualifiedName != null)
+        {
+            key = key + "|" + iscQualifiedName;
+        }
+
+        return key;
     }
 
 
@@ -3592,7 +4446,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     {
         AssetClient assetClient = myContext.getAssetClient();
 
-        OpenMetadataRootElement element = assetClient.getAssetByGUID(asset.guid(), assetClient.getGetOptions());
+        OpenMetadataRootElement element = retrieveElement(asset);
 
         if ((element != null) && (element.getElementHeader() != null) && (element.getElementHeader().getDataScope() != null))
         {
@@ -3625,7 +4479,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         AssetClient                  assetClient          = myContext.getAssetClient();
         ClassificationExplorerClient classificationClient = myContext.getClassificationExplorerClient();
 
-        OpenMetadataRootElement element = assetClient.getAssetByGUID(asset.guid(), assetClient.getGetOptions());
+        OpenMetadataRootElement element = retrieveElement(asset);
 
         if ((element != null) && (element.getElementHeader() != null) && (element.getElementHeader().getDataScope() != null))
         {
@@ -3842,11 +4696,37 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
 
     /**
-     * Extract the URI scheme (technology) from a dataset namespace, for example "postgres" from "postgres://host:5432".
-     * Namespaces without a scheme separator (for example "bigquery" or "file") are returned as is.
+     * Extract the URI scheme from a dataset namespace as it is written (in lower case), before alternative
+     * spellings are reduced - for example sqlserver (used for Azure Synapse) rather than mssql.
      *
      * @param namespace namespace
      * @return scheme in lower case or null
+     */
+    private String getRawNamespaceScheme(String namespace)
+    {
+        if (namespace == null)
+        {
+            return null;
+        }
+
+        int separator = namespace.indexOf("://");
+
+        if (separator <= 0)
+        {
+            separator = namespace.indexOf(':');
+        }
+
+        return ((separator > 0) ? namespace.substring(0, separator) : namespace).toLowerCase();
+    }
+
+
+    /**
+     * Extract the URI scheme (technology) from a dataset namespace, for example "postgres" from "postgres://host:5432".
+     * Namespaces without a scheme separator (for example "bigquery" or "file") are returned as is.  Alternative
+     * spellings are reduced to the one in the OpenLineage naming conventions (for example postgresql to postgres).
+     *
+     * @param namespace namespace
+     * @return canonical scheme in lower case or null
      */
     private String getNamespaceScheme(String namespace)
     {
@@ -3859,17 +4739,17 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
         if (separator > 0)
         {
-            return namespace.substring(0, separator).toLowerCase();
+            return OpenLineageNamespace.getCanonicalScheme(namespace.substring(0, separator));
         }
 
         separator = namespace.indexOf(':');
 
         if (separator > 0)
         {
-            return namespace.substring(0, separator).toLowerCase();
+            return OpenLineageNamespace.getCanonicalScheme(namespace.substring(0, separator));
         }
 
-        return namespace.toLowerCase();
+        return OpenLineageNamespace.getCanonicalScheme(namespace);
     }
 
 
@@ -4001,23 +4881,6 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         {
             return map.toString();
         }
-    }
-
-
-    /**
-     * Capitalize the first letter of a string.
-     *
-     * @param value string
-     * @return capitalized string
-     */
-    private String capitalize(String value)
-    {
-        if ((value == null) || (value.isEmpty()))
-        {
-            return value;
-        }
-
-        return value.substring(0, 1).toUpperCase() + value.substring(1);
     }
 
 

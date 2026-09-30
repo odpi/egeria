@@ -23,7 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class TopicProperties extends DataFeedProperties
 {
     private String topicType = null;
-    private String topicName = null;
 
     /**
      * Default constructor
@@ -47,7 +46,6 @@ public class TopicProperties extends DataFeedProperties
         if (template != null)
         {
             topicType = template.getTopicType();
-            topicName = template.getTopicName();
         }
     }
 
@@ -75,28 +73,6 @@ public class TopicProperties extends DataFeedProperties
 
 
     /**
-     * Return the name of topic.
-     *
-     * @return  name
-     */
-    public String getTopicName()
-    {
-        return topicName;
-    }
-
-
-    /**
-     * Set up the name of topic.
-     *
-     * @param topicName  name
-     */
-    public void setTopicName(String topicName)
-    {
-        this.topicName = topicName;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -106,7 +82,6 @@ public class TopicProperties extends DataFeedProperties
     {
         return "TopicProperties{" +
                 "topicType='" + topicType + '\'' +
-                ", topicName='" + topicName + '\'' +
                 "} " + super.toString();
     }
 
@@ -124,7 +99,7 @@ public class TopicProperties extends DataFeedProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         TopicProperties that = (TopicProperties) objectToCompare;
-        return Objects.equals(topicType, that.topicType) && Objects.equals(topicName, that.topicName);
+        return Objects.equals(topicType, that.topicType);
     }
 
     /**
@@ -135,6 +110,6 @@ public class TopicProperties extends DataFeedProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), topicType, topicName);
+        return Objects.hash(super.hashCode(), topicType);
     }
 }

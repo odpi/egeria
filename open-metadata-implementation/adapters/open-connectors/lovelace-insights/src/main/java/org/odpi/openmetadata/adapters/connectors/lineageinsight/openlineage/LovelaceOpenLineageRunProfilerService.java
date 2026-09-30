@@ -76,7 +76,7 @@ public class LovelaceOpenLineageRunProfilerService extends LovelaceOpenLineageAn
                 continue;
             }
 
-            OpenMetadataRootElement process = findProcess(jobHistory.job);
+            OpenMetadataRootElement process = findProcess(jobHistory);
 
             if (process == null)
             {

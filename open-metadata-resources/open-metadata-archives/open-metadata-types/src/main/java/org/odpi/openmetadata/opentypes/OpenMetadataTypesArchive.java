@@ -374,7 +374,9 @@ public class OpenMetadataTypesArchive
 
 
     /**
-     * Add the RunMetrics classification to record statistics about the runs of a process.
+     * Add the RunMetrics classification to record statistics about the runs of a process.  It is valid on a
+     * Process and on a GovernanceActionProcessStep, since each step of a governance action process runs separately
+     * and its runs are profiled separately.
      *
      * @return classification def
      */
@@ -384,6 +386,12 @@ public class OpenMetadataTypesArchive
                                                                                  null,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName),
                                                                                  false);
+
+        List<TypeDefLink> validEntityDefs = new ArrayList<>(classificationDef.getValidEntityDefs());
+
+        validEntityDefs.add(new TypeDefLink(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName)));
+
+        classificationDef.setValidEntityDefs(validEntityDefs);
 
         /*
          * Build the attributes
@@ -423,6 +431,29 @@ public class OpenMetadataTypesArchive
     private void update0210DataStores()
     {
         this.archiveBuilder.addTypeDefPatch(updateDataScopeClassification());
+        this.archiveBuilder.addTypeDefPatch(updateDataSetContentRelationship());
+    }
+
+
+    /**
+     * DataSetContent carries an iscQualifiedName.  The same data set may be built over the same content for more
+     * than one information supply chain, and each needs its own relationship, so DataSetContent becomes multi-link.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDataSetContentRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
     }
 
 

@@ -1352,10 +1352,13 @@ Content-Type: application/json
 
 @dataSetGUID=add guid here
 @dataContentAssetGUID=get guid here
+@dataSetContentGUID=add guid here
 
 ###
 # @name linkDataSetContent
-# Attach a data set to another asset (typically a data store) that is supplying the data.
+# Attach a data set to another asset (typically a data store) that is supplying the data.  DataSetContent is
+# multi-link, so the same pair of elements may be linked more than once (for example, once for each information
+# supply chain).  The unique identifier of the new relationship is returned.
 #
 # @param serverName name of the server to route the request to
 # @param urlMarker  view service URL marker
@@ -1363,7 +1366,7 @@ Content-Type: application/json
 # @param dataContentAssetGUID          unique identifier of the data asset supplying the data
 # @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
 #
-# @return  void or
+# @return  unique identifier of the new relationship or
 # InvalidParameterException  one of the parameters is invalid
 # UserNotAuthorizedException the user is not authorized to issue this request
 # PropertyServerException    a problem reported in the open metadata server(s)
@@ -1404,6 +1407,59 @@ Content-Type: application/json
 # UserNotAuthorizedException the user is not authorized to issue this request
 # PropertyServerException    a problem reported in the open metadata server(s)
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-sets/{{dataSetGUID}}/data-set-content/{{dataContentAssetGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateDataSetContent
+# Update the properties of one DataSetContent relationship.  DataSetContent is multi-link, so the same data set and
+# content may be linked more than once (for example, once for each information supply chain).
+#
+# Returns:
+# void or
+# InvalidParameterException  one of the parameters is invalid
+# UserNotAuthorizedException the user is not authorized to issue this request
+# PropertyServerException    a problem reported in the open metadata server(s)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-set-content/{{dataSetContentGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "DataSetContentProperties",
+    "queryId": "add id that is used on overall formula",
+    "query": "add query",
+    "queryType": "add query type",
+    "iscQualifiedName": "add qualified name"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachDataSetContentRelationship
+# Remove one DataSetContent relationship, leaving any others between the same elements in place.
+#
+# Returns:
+# void or
+# InvalidParameterException  one of the parameters is invalid
+# UserNotAuthorizedException the user is not authorized to issue this request
+# PropertyServerException    a problem reported in the open metadata server(s)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/data-set-content/{{dataSetContentGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

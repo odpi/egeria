@@ -622,28 +622,6 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
-     * Extract and delete the topicName property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string text or null
-     */
-    protected String removeTopicName(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeTopicName";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.TOPIC_NAME.name,
-                                                       elementProperties,
-                                                       methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Extract and delete the property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -17690,7 +17668,6 @@ public class OpenMetadataPropertyConverterBase
                             {
                                 beanProperties = new TopicProperties();
 
-                                ((TopicProperties)beanProperties).setTopicName(removeTopicName(elementProperties));
                                 ((TopicProperties)beanProperties).setTopicType(removeTopicType(elementProperties));
                             }
                             else

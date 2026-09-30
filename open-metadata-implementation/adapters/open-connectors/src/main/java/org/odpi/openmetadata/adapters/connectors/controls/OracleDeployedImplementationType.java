@@ -15,6 +15,20 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages
 public enum OracleDeployedImplementationType implements DeployedImplementationTypeDefinition
 {
     /**
+     * A table in an Oracle database.  OpenLineage names it oracle://{host}:{port} + {serviceName or sid}.{schema}.{table}.
+     */
+    ORACLE_TABLE("f853d001-bdac-4c8e-b989-b6edfedde0ea",
+                 "Oracle Table",
+                 DeployedImplementationType.DATA_SET,
+                 OpenMetadataType.DATA_SET.typeName,
+                 null,
+                 "A table in an Oracle database.  OpenLineage names it oracle://{host}:{port} + {serviceName or sid}.{schema}.{table}.",
+                 "https://www.oracle.com/database/",
+                 null,
+                 null,
+                 null),
+
+    /**
      * A pluggable database hosted on an Oracle Database Server.
      */
     ORACLE_DATABASE("301bd39f-8b41-46d5-a769-25162145c235",

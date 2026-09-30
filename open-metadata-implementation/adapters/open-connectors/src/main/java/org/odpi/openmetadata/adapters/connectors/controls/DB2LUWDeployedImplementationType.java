@@ -16,6 +16,20 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages
 public enum DB2LUWDeployedImplementationType implements DeployedImplementationTypeDefinition
 {
     /**
+     * A table in an IBM Db2 database.  OpenLineage names it db2://{host}:{port} + {database}.{schema}.{table}.
+     */
+    DB2LUW_TABLE("cb1bf834-209a-4055-a840-5679043d08c1",
+                 "Db2 Table",
+                 DeployedImplementationType.DATA_SET,
+                 OpenMetadataType.DATA_SET.typeName,
+                 null,
+                 "A table in an IBM Db2 database.  OpenLineage names it db2://{host}:{port} + {database}.{schema}.{table}.",
+                 "https://www.ibm.com/db2",
+                 null,
+                 null,
+                 null),
+
+    /**
      * A database hosted on an IBM Db2 for Linux, UNIX and Windows Server.
      */
     DB2LUW_DATABASE("5c664f10-5c6e-4787-b140-19b9a192596c",

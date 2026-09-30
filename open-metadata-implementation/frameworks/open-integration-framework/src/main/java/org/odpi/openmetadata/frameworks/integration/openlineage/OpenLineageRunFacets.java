@@ -40,6 +40,8 @@ public class OpenLineageRunFacets
     private OpenLineageTestRunFacet                 test = null;
     private OpenLineageGcpComposerRunFacet          gcpComposerRun = null;
     private OpenLineageGcpDataprocRunFacet          gcpDataproc = null;
+    private OpenLineageEgeriaGovernanceActionRunFacet egeriaGovernanceAction = null;
+    private OpenLineageEgeriaInformationSupplyChainRunFacet egeriaInformationSupplyChain = null;
     private Map<String, OpenLineageRunFacet>        additionalProperties = new LinkedHashMap<>();
 
 
@@ -344,6 +346,54 @@ public class OpenLineageRunFacets
 
 
     /**
+     * Return Egeria's egeria_governanceAction facet.
+     *
+     * @return facet bean
+     */
+    @JsonProperty(OpenLineageEgeriaGovernanceActionRunFacet.FACET_NAME)
+    public OpenLineageEgeriaGovernanceActionRunFacet getEgeriaGovernanceAction()
+    {
+        return egeriaGovernanceAction;
+    }
+
+
+    /**
+     * Set up Egeria's egeria_governanceAction facet.
+     *
+     * @param egeriaGovernanceAction facet bean
+     */
+    @JsonProperty(OpenLineageEgeriaGovernanceActionRunFacet.FACET_NAME)
+    public void setEgeriaGovernanceAction(OpenLineageEgeriaGovernanceActionRunFacet egeriaGovernanceAction)
+    {
+        this.egeriaGovernanceAction = egeriaGovernanceAction;
+    }
+
+
+    /**
+     * Return Egeria's egeria_informationSupplyChain facet.
+     *
+     * @return facet bean
+     */
+    @JsonProperty(OpenLineageEgeriaInformationSupplyChainRunFacet.FACET_NAME)
+    public OpenLineageEgeriaInformationSupplyChainRunFacet getEgeriaInformationSupplyChain()
+    {
+        return egeriaInformationSupplyChain;
+    }
+
+
+    /**
+     * Set up Egeria's egeria_informationSupplyChain facet.
+     *
+     * @param egeriaInformationSupplyChain facet bean
+     */
+    @JsonProperty(OpenLineageEgeriaInformationSupplyChainRunFacet.FACET_NAME)
+    public void setEgeriaInformationSupplyChain(OpenLineageEgeriaInformationSupplyChainRunFacet egeriaInformationSupplyChain)
+    {
+        this.egeriaInformationSupplyChain = egeriaInformationSupplyChain;
+    }
+
+
+    /**
      * Return any additional facets that are not modelled as named properties.  They are serialized as
      * top-level facet entries alongside the named facets.
      *
@@ -407,6 +457,8 @@ public class OpenLineageRunFacets
                        ", test=" + test +
                        ", gcpComposerRun=" + gcpComposerRun +
                        ", gcpDataproc=" + gcpDataproc +
+                       ", egeriaGovernanceAction=" + egeriaGovernanceAction +
+                       ", egeriaInformationSupplyChain=" + egeriaInformationSupplyChain +
                        ", additionalProperties=" + additionalProperties +
                        '}';
     }
@@ -443,6 +495,8 @@ public class OpenLineageRunFacets
                        Objects.equals(test, that.test) &&
                        Objects.equals(gcpComposerRun, that.gcpComposerRun) &&
                        Objects.equals(gcpDataproc, that.gcpDataproc) &&
+                       Objects.equals(egeriaGovernanceAction, that.egeriaGovernanceAction) &&
+                       Objects.equals(egeriaInformationSupplyChain, that.egeriaInformationSupplyChain) &&
                        Objects.equals(additionalProperties, that.additionalProperties);
     }
 
@@ -455,6 +509,6 @@ public class OpenLineageRunFacets
     @Override
     public int hashCode()
     {
-        return Objects.hash(parent, nominalTime, environmentVariables, errorMessage, executionParameters, externalQuery, extractionError, jobDependencies, processingEngine, tags, test, gcpComposerRun, gcpDataproc, additionalProperties);
+        return Objects.hash(parent, nominalTime, environmentVariables, errorMessage, executionParameters, externalQuery, extractionError, jobDependencies, processingEngine, tags, test, gcpComposerRun, gcpDataproc, egeriaGovernanceAction, egeriaInformationSupplyChain, additionalProperties);
     }
 }

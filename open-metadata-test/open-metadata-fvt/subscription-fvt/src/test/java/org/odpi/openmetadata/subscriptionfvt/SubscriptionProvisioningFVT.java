@@ -12,6 +12,7 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.Product
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -182,15 +183,15 @@ public class SubscriptionProvisioningFVT
      * The delivery records its lineage: the data flows from the product's asset into a process, and from that
      * process into the subscriber's destination - and the process leads back to the provisioning pipeline.
      * <br>
-     * By default the process is the instance Egeria created for this run of the pipeline, which is governed by
-     * the pipeline; with lineage restricted to the top-level process it is the pipeline itself.  Either way a
-     * lineage graph leads back to the subscription rather than to some generic process.  The lineage is
-     * recorded after the data is written, so it is waited for in the same way.
+     * The subscription pipeline restricts the lineage to the top-level process, so the process is the pipeline
+     * itself rather than a new instance for each delivery, and the lineage carries the information supply chain
+     * that the subscription was taken out for.  The lineage is recorded after the data is written, so it is waited
+     * for in the same way.
      *
      * @throws Exception problem taking out the subscription or reading the repository
      */
     @Test
-    @DisplayName("The delivery's lineage flows through a run of the provisioning pipeline")
+    @DisplayName("The delivery's lineage flows through the provisioning pipeline for the subscription's information supply chain")
     void deliveryLineageFlowsThroughThePipeline() throws Exception
     {
         String subscriptionGUID = subscription();
@@ -223,6 +224,30 @@ public class SubscriptionProvisioningFVT
                       "No lineage from the product's asset through the provisioning pipeline (or a run of it) into the"
                               + " subscriber's destination was recorded for the " + SUBSCRIPTION_TYPE.getIdentifier()
                               + " subscription to " + productDefinition.getProductName() + ".");
+
+        assertEquals(pipelineGUID, processGUID[0],
+                     "The subscription pipeline restricts lineage to the top-level process, so the delivery should flow"
+                             + " through the pipeline itself rather than a run of it.");
+
+        boolean taggedWithISC = false;
+
+        for (RelatedMetadataElement dataFlow : SubscriptionFvtTestSupport.getRelatedElements(openMetadataStore,
+                                                                                              sourceGUID,
+                                                                                              OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                                                              1))
+        {
+            if ((pipelineGUID.equals(dataFlow.getElement().getElementGUID())) &&
+                (SubscriptionDriver.ISC_QUALIFIED_NAME.equals(new PropertyHelper().getStringProperty("subscription-fvt",
+                                                                                                      OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                                                                      dataFlow.getRelationshipProperties(),
+                                                                                                      "deliveryLineageFlowsThroughThePipeline"))))
+            {
+                taggedWithISC = true;
+            }
+        }
+
+        assertTrue(taggedWithISC, "The delivery's lineage should carry the information supply chain the subscription was taken out for ("
+                + SubscriptionDriver.ISC_QUALIFIED_NAME + ").");
     }
 
 

@@ -582,7 +582,7 @@ public class AssetMakerResource
      * @param dataContentAssetGUID          unique identifier of the data asset supplying the data
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
-     * @return  void or
+     * @return  unique identifier of the new relationship or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    a problem reported in the open metadata server(s)
@@ -591,11 +591,11 @@ public class AssetMakerResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="linkDataSetContent",
-            description="Attach a data set to another asset (typically a data store) that is supplying the data.",
+            description="Attach a data set to another asset (typically a data store) that is supplying the data.  The relationship is multi-link, so the same pair of elements may be linked more than once (for example, once for each information supply chain).  The unique identifier of the new relationship is returned.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/asset"))
 
-    public VoidResponse linkDataSetContent(@PathVariable String                  serverName,
+    public GUIDResponse linkDataSetContent(@PathVariable String                  serverName,
                                            @PathVariable String                  urlMarker,
                                            @PathVariable String dataSetGUID,
                                            @PathVariable String dataContentAssetGUID,
@@ -624,7 +624,7 @@ public class AssetMakerResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="detachDataSetContent",
-            description="Detach a data set from another asset that was supplying the data and is no more.",
+            description="Detach a data set from another asset that was supplying the data and is no more.  Every DataSetContent relationship between the two elements is removed.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/asset"))
 
@@ -636,6 +636,67 @@ public class AssetMakerResource
                                              DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachDataSetContent(serverName, urlMarker, dataSetGUID, dataContentAssetGUID, requestBody);
+    }
+
+
+    /**
+     * Update the properties of one DataSetContent relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier of the relationship
+     * @param requestBody properties of the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/data-set-content/{relationshipGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateDataSetContent",
+            description="Update the properties of one DataSetContent relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse updateDataSetContent(@PathVariable String                        serverName,
+                                             @PathVariable String                        urlMarker,
+                                             @PathVariable String                        relationshipGUID,
+                                             @RequestBody  UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateDataSetContent(serverName, urlMarker, relationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Remove one DataSetContent relationship, leaving any others between the same elements in place.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier of the relationship
+     * @param requestBody optional effective time
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping("/data-set-content/{relationshipGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachDataSetContentRelationship",
+            description="Remove one DataSetContent relationship, leaving any others between the same elements in place.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/asset"))
+
+    public VoidResponse detachDataSetContentRelationship(@PathVariable String                        serverName,
+                                                         @PathVariable String                        urlMarker,
+                                                         @PathVariable String                        relationshipGUID,
+                                                         @RequestBody  (required = false)
+                                                         DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachDataSetContentRelationship(serverName, urlMarker, relationshipGUID, requestBody);
     }
 
 

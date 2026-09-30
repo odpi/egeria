@@ -11,7 +11,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetResolver;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageGovernanceActionResolver;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -58,6 +62,8 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
 
     private final Map<OpenLineageRunHistory.Key, OpenMetadataRootElement> processCache = new HashMap<>();
     private final Map<OpenLineageRunHistory.Key, OpenMetadataRootElement> assetCache   = new HashMap<>();
+    private       OpenLineageDataSetResolver                              dataSetResolver = null;
+    private       OpenLineageGovernanceActionResolver                     governanceActionResolver = null;
 
 
     /**
@@ -222,23 +228,56 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
      */
 
     /**
-     * Find the process that represents an OpenLineage job, using the cataloguer's naming and matching rules.
+     * Find the element that holds the run metrics of an OpenLineage job, using the same rules as the cataloguer.
+     * For a step of a governance action process (reported by the governance action publisher) this is the
+     * GovernanceActionProcessStep, since each step runs separately (see OpenLineageGovernanceActionResolver).
+     * Otherwise it is the job's process: the DeployedSoftwareComponent the cataloguer created, the process named by
+     * the legacy job naming, or the single process whose resourceName and namespacePath are the job's name and
+     * namespace.
      *
-     * @param job job identity
-     * @return process or null if there is no unique process for the job
+     * @param jobHistory history of the job
+     * @return element or null if there is no unique element for the job
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
      * @throws UserNotAuthorizedException security problem
      */
-    protected OpenMetadataRootElement findProcess(OpenLineageRunHistory.Key job) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+    protected OpenMetadataRootElement findProcess(OpenLineageRunHistory.JobHistory jobHistory) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
     {
         final String methodName = "findProcess";
+
+        OpenLineageRunHistory.Key job = jobHistory.job;
 
         if (processCache.containsKey(job))
         {
             return processCache.get(job);
+        }
+
+        if (jobHistory.governanceAction != null)
+        {
+            if (governanceActionResolver == null)
+            {
+                governanceActionResolver = new OpenLineageGovernanceActionResolver(governanceContext, governanceServiceName);
+            }
+
+            OpenLineageGovernanceActionResolver.GovernanceActionElements governanceAction = governanceActionResolver.resolve(jobHistory.governanceAction);
+
+            if (governanceAction != null)
+            {
+                OpenMetadataRootElement processStep = null;
+
+                if (governanceAction.processStepGUID() != null)
+                {
+                    ClassificationExplorerClient classificationClient = governanceContext.getClassificationExplorerClient();
+
+                    processStep = classificationClient.getRootElementByGUID(governanceAction.processStepGUID(), classificationClient.getGetOptions());
+                }
+
+                processCache.put(job, processStep);
+
+                return processStep;
+            }
         }
 
         AssetClient processClient = governanceContext.getAssetClient(OpenMetadataType.PROCESS.typeName);
@@ -265,10 +304,13 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
 
 
     /**
-     * Find the data asset that represents an OpenLineage dataset, using the cataloguer's matching rules.
+     * Find the element that represents an OpenLineage dataset, using the same rules as the cataloguer (see
+     * OpenLineageDataSetResolver): the first of the physical elements that describe the dataset - an asset, or a
+     * schema attribute such as a relational table - or, if there are none, an abstraction (tabular data set or
+     * collection) that is the dataset itself.
      *
      * @param dataset dataset identity
-     * @return asset or null if there is no unique asset for the dataset
+     * @return element or null if there is no element for the dataset
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
      * @throws UserNotAuthorizedException security problem
@@ -277,14 +319,45 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
     {
-        final String methodName = "findDataAsset";
-
         if (assetCache.containsKey(dataset))
         {
             return assetCache.get(dataset);
         }
 
-        OpenMetadataRootElement asset = findUniqueMatch(dataset, OpenMetadataType.DATA_ASSET.typeName, methodName);
+        if (dataSetResolver == null)
+        {
+            dataSetResolver = new OpenLineageDataSetResolver(governanceContext, governanceServiceName);
+        }
+
+        OpenLineageDataSetResolver.ResolvedDataSet resolvedDataSet = dataSetResolver.resolve(dataset.namespace(), dataset.name());
+        OpenLineageDataSetResolver.MatchedElement  primary         = resolvedDataSet.primary();
+
+        if (primary == null)
+        {
+            for (OpenLineageDataSetResolver.MatchedElement abstraction : resolvedDataSet.abstractions())
+            {
+                if (! abstraction.coversParent())
+                {
+                    primary = abstraction;
+                    break;
+                }
+            }
+        }
+
+        OpenMetadataRootElement asset = null;
+
+        if ((primary != null) && (primary.schemaAttribute()))
+        {
+            SchemaAttributeClient schemaAttributeClient = governanceContext.getSchemaAttributeClient();
+
+            asset = schemaAttributeClient.getSchemaAttributeByGUID(primary.guid(), schemaAttributeClient.getGetOptions());
+        }
+        else if (primary != null)
+        {
+            AssetClient assetClient = governanceContext.getAssetClient();
+
+            asset = assetClient.getAssetByGUID(primary.guid(), assetClient.getGetOptions());
+        }
 
         assetCache.put(dataset, asset);
 

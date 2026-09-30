@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
@@ -44,9 +45,9 @@ public class OpenLineageCataloguerFVT
 {
     private static final String PROCESS_QN        = OpenLineageFvtTestSupport.processQualifiedName(OpenLineageEventFactory.JOB_NAMESPACE, OpenLineageEventFactory.JOB_NAME);
     private static final String PARENT_PROCESS_QN = OpenLineageFvtTestSupport.processQualifiedName(OpenLineageEventFactory.JOB_NAMESPACE, OpenLineageEventFactory.PARENT_JOB_NAME);
-    private static final String ORDERS_QN         = OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.TABULAR_DATA_SET.typeName, OpenLineageEventFactory.TABLE_NAMESPACE, OpenLineageEventFactory.ORDERS_TABLE);
-    private static final String COUNTS_QN         = OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.TABULAR_DATA_SET.typeName, OpenLineageEventFactory.TABLE_NAMESPACE, OpenLineageEventFactory.COUNTS_TABLE);
-    private static final String RENAMED_COUNTS_QN = OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.TABULAR_DATA_SET.typeName, OpenLineageEventFactory.TABLE_NAMESPACE, OpenLineageEventFactory.RENAMED_COUNTS_TABLE);
+    private static final String ORDERS_QN         = OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.DATA_SET.typeName, OpenLineageEventFactory.TABLE_NAMESPACE, OpenLineageEventFactory.ORDERS_TABLE);
+    private static final String COUNTS_QN         = OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.DATA_SET.typeName, OpenLineageEventFactory.TABLE_NAMESPACE, OpenLineageEventFactory.COUNTS_TABLE);
+    private static final String RENAMED_COUNTS_QN = OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.DATA_SET.typeName, OpenLineageEventFactory.TABLE_NAMESPACE, OpenLineageEventFactory.RENAMED_COUNTS_TABLE);
     private static final String LANDING_FILE_QN   = OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.DATA_FILE.typeName, OpenLineageEventFactory.FILE_NAMESPACE, OpenLineageEventFactory.LANDING_FILE);
 
     private static final UUID FIRST_RUN  = UUID.randomUUID();
@@ -112,7 +113,9 @@ public class OpenLineageCataloguerFVT
         OpenMetadataRootElement landing = OpenLineageFvtTestSupport.waitForAsset(LANDING_FILE_QN, "the landing file to be catalogued");
         OpenMetadataRootElement counts  = OpenLineageFvtTestSupport.waitForAsset(COUNTS_QN, "the order counts table to be catalogued");
 
-        assertEquals(OpenMetadataType.TABULAR_DATA_SET.typeName, orders.getElementHeader().getType().getTypeName(), "A postgres:// dataset should be a TabularDataSet");
+        assertEquals(OpenMetadataType.DATA_SET.typeName, orders.getElementHeader().getType().getTypeName(), "A postgres:// dataset should be a DataSet");
+        assertEquals(PostgresDeployedImplementationType.POSTGRESQL_TABLE.getDeployedImplementationType(), ((AssetProperties) orders.getProperties()).getDeployedImplementationType(),
+                     "A postgres:// dataset should be created from the PostgreSQL Table template");
         assertEquals(OpenMetadataType.DATA_FILE.typeName, landing.getElementHeader().getType().getTypeName(), "A file dataset should be a DataFile");
         assertEquals(OpenLineageEventFactory.ORDERS_DESCRIPTION, ((AssetProperties) orders.getProperties()).getDescription(), "The documentation facet should become the asset description");
         assertEquals(OpenLineageEventFactory.ORDERS_TABLE, ((AssetProperties) orders.getProperties()).getResourceName(), "The dataset name should be the asset's resourceName");
