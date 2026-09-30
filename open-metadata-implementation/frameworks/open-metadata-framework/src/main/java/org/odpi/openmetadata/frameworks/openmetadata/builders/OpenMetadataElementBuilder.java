@@ -1536,6 +1536,18 @@ public class OpenMetadataElementBuilder
                                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                      OpenMetadataProperty.PLANNED_DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                                      solutionComponentProperties.getPlannedDeployedImplementationType());
+
+                                if (solutionComponentProperties.getDeploymentStatus() != null)
+                                {
+                                    elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                                       OpenMetadataProperty.DEPLOYMENT_STATUS.name,
+                                                                                       DeploymentStatus.getOpenTypeName(),
+                                                                                       solutionComponentProperties.getDeploymentStatus().name());
+                                }
+
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.USER_DEFINED_DEPLOYMENT_STATUS.name,
+                                                                                     solutionComponentProperties.getUserDefinedDeploymentStatus());
                             }
                             else if (properties instanceof SolutionPortProperties solutionPortProperties)
                             {

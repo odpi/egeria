@@ -16722,6 +16722,8 @@ public class OpenMetadataPropertyConverterBase
 
                             ((SolutionComponentProperties) beanProperties).setSolutionComponentType(this.removeSolutionComponentType(elementProperties));
                             ((SolutionComponentProperties) beanProperties).setPlannedDeployedImplementationType(this.removePlannedDeployedImplementationType(elementProperties));
+                            ((SolutionComponentProperties) beanProperties).setDeploymentStatus(this.removeDeploymentStatus(elementProperties));
+                            ((SolutionComponentProperties) beanProperties).setUserDefinedDeploymentStatus(this.removeUserDefinedDeploymentStatus(elementProperties));
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SOLUTION_PORT.typeName))
                         {

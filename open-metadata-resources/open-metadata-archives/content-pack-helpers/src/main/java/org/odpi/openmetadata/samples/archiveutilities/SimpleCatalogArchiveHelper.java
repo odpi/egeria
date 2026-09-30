@@ -5772,6 +5772,29 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
+     * Return a Promise classification, to show that an element's real-world counterpart has not yet been delivered.
+     * It needs to be supplied when the element is created because a classification added to an existing element
+     * through an archive is not applied when the archive is loaded.
+     *
+     * @param deploymentStatus status of the promised element (may be null)
+     * @return classification
+     */
+    public Classification getPromiseClassification(DeploymentStatus deploymentStatus)
+    {
+        final String methodName = "getPromiseClassification";
+
+        InstanceProperties properties = null;
+
+        if (deploymentStatus != null)
+        {
+            properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DEPLOYMENT_STATUS.name, DeploymentStatus.getOpenTypeGUID(), DeploymentStatus.getOpenTypeName(), deploymentStatus.getOrdinal(), deploymentStatus.name(), deploymentStatus.getDescription(), methodName);
+        }
+
+        return archiveHelper.getClassification(OpenMetadataType.PROMISE_CLASSIFICATION.typeName, properties, InstanceStatus.ACTIVE);
+    }
+
+
+    /**
      * Add a Template classification to an entity.
      *
      * @param elementGUID guid to attach it to
@@ -7784,6 +7807,57 @@ public class SimpleCatalogArchiveHelper
                                         Map<String, String> additionalProperties,
                                         Map<String, Object> extendedProperties)
     {
+        return this.addSolutionComponent(suppliedTypeName,
+                                         qualifiedName,
+                                         identifier,
+                                         displayName,
+                                         description,
+                                         versionIdentifier,
+                                         componentType,
+                                         implementationType,
+                                         null,
+                                         null,
+                                         url,
+                                         additionalProperties,
+                                         extendedProperties,
+                                         null);
+    }
+
+
+    /**
+     * Create a solution component entity.
+     *
+     * @param suppliedTypeName type of component
+     * @param qualifiedName unique name
+     * @param identifier identifier
+     * @param displayName display name
+     * @param description description
+     * @param versionIdentifier versionIdentifier
+     * @param componentType type of component
+     * @param implementationType planned deployed implementation type
+     * @param deploymentStatus how far the implementation of the component has progressed (may be null)
+     * @param userDefinedDeploymentStatus locally defined status used when the deployment status is OTHER (may be null)
+     * @param url url to a description to the component
+     * @param additionalProperties are there any additional properties to add
+     * @param extendedProperties any additional properties associated with a subtype
+     * @param otherClassification an additional classification for the component such as Promise (may be null)
+     * @return unique identifier of the new solution component
+     */
+    public  String addSolutionComponent(String              suppliedTypeName,
+                                        String              qualifiedName,
+                                        String              identifier,
+                                        String              displayName,
+                                        String              description,
+                                        String              versionIdentifier,
+                                        String              componentType,
+                                        String              implementationType,
+                                        DeploymentStatus    deploymentStatus,
+                                        String              userDefinedDeploymentStatus,
+                                        String              url,
+                                        Map<String, String> additionalProperties,
+                                        Map<String, Object> extendedProperties,
+                                        Classification      otherClassification)
+    {
         final String methodName = "addSolutionComponent";
 
         String typeName = suppliedTypeName;
@@ -7800,6 +7874,11 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name, componentType, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PLANNED_DEPLOYED_IMPLEMENTATION_TYPE.name, implementationType, methodName);
+        if (deploymentStatus != null)
+        {
+            properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYMENT_STATUS.name, DeploymentStatus.getOpenTypeGUID(), DeploymentStatus.getOpenTypeName(), deploymentStatus.getOrdinal(), deploymentStatus.name(), deploymentStatus.getDescription(), methodName);
+        }
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.USER_DEFINED_DEPLOYMENT_STATUS.name, userDefinedDeploymentStatus, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.URL.name, url, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
@@ -7807,6 +7886,11 @@ public class SimpleCatalogArchiveHelper
         List<Classification> classifications = new ArrayList<>();
 
         classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.AUTHORED_REFERENCEABLE.typeName, null, methodName));
+
+        if (otherClassification != null)
+        {
+            classifications.add(otherClassification);
+        }
 
         EntityDetail entity = archiveHelper.getEntityDetail(typeName,
                                                             idToGUIDMap.getGUID(qualifiedName),

@@ -1143,6 +1143,39 @@ public class OpenMetadataTypesArchive
     private void update0735SolutionPortsAndWires()
     {
         this.archiveBuilder.addTypeDefPatch(updateSolutionLinkingWireRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateSolutionComponentEntity());
+    }
+
+
+    /**
+     * SolutionComponent gains deploymentStatus, which shows how far the implementation of the component has progressed,
+     * and userDefinedDeploymentStatus, which holds a locally defined status when deploymentStatus is OTHER.  Together with the
+     * Promise classification, they allow an information supply chain to show which of its solution components are
+     * still planned, in development or live.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateSolutionComponentEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOLUTION_COMPONENT.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DEPLOYMENT_STATUS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_DEPLOYMENT_STATUS));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
 
