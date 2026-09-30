@@ -206,12 +206,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findDataAsset(org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.OpenLineageRunHistory.Key)" class="member-name-link">findDataAsset</a><wbr>(<a href="OpenLineageRunHistory.Key.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.Key</a>&nbsp;dataset)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Find the data asset that represents an OpenLineage dataset, using the cataloguer's matching rules.</div>
+<div class="block">Find the element that represents an OpenLineage dataset, using the same rules as the cataloguer (see
+ OpenLineageDataSetResolver): the first of the physical elements that describe the dataset - an asset, or a
+ schema attribute such as a relational table - or, if there are none, an abstraction (tabular data set or
+ collection) that is the dataset itself.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findProcess(org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.OpenLineageRunHistory.Key)" class="member-name-link">findProcess</a><wbr>(<a href="OpenLineageRunHistory.Key.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.Key</a>&nbsp;job)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findProcess(org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.OpenLineageRunHistory.JobHistory)" class="member-name-link">findProcess</a><wbr>(<a href="OpenLineageRunHistory.JobHistory.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.JobHistory</a>&nbsp;jobHistory)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Find the process that represents an OpenLineage job, using the cataloguer's naming and matching rules.</div>
+<div class="block">Find the element that holds the run metrics of an OpenLineage job, using the same rules as the cataloguer.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#formatDate(java.util.Date)" class="member-name-link">formatDate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;date)</code></div>
@@ -425,18 +428,23 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findProcess(org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.OpenLineageRunHistory.Key)">
+<section class="detail" id="findProcess(org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.OpenLineageRunHistory.JobHistory)">
 <h3>findProcess</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></span>&nbsp;<span class="element-name">findProcess</span><wbr><span class="parameters">(<a href="OpenLineageRunHistory.Key.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.Key</a>&nbsp;job)</span>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></span>&nbsp;<span class="element-name">findProcess</span><wbr><span class="parameters">(<a href="OpenLineageRunHistory.JobHistory.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.JobHistory</a>&nbsp;jobHistory)</span>
                                        throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Find the process that represents an OpenLineage job, using the cataloguer's naming and matching rules.</div>
+<div class="block">Find the element that holds the run metrics of an OpenLineage job, using the same rules as the cataloguer.
+ For a step of a governance action process (reported by the governance action publisher) this is the
+ GovernanceActionProcessStep, since each step runs separately (see OpenLineageGovernanceActionResolver).
+ Otherwise it is the job's process: the DeployedSoftwareComponent the cataloguer created, the process named by
+ the legacy job naming, or the single process whose resourceName and namespacePath are the job's name and
+ namespace.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>job</code> - job identity</dd>
+<dd><code>jobHistory</code> - history of the job</dd>
 <dt>Returns:</dt>
-<dd>process or null if there is no unique process for the job</dd>
+<dd>element or null if there is no unique element for the job</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - invalid parameter</dd>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - repository problem</dd>
@@ -451,12 +459,15 @@ loadScripts(document, 'script');</script>
                                          throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Find the data asset that represents an OpenLineage dataset, using the cataloguer's matching rules.</div>
+<div class="block">Find the element that represents an OpenLineage dataset, using the same rules as the cataloguer (see
+ OpenLineageDataSetResolver): the first of the physical elements that describe the dataset - an asset, or a
+ schema attribute such as a relational table - or, if there are none, an abstraction (tabular data set or
+ collection) that is the dataset itself.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>dataset</code> - dataset identity</dd>
 <dt>Returns:</dt>
-<dd>asset or null if there is no unique asset for the dataset</dd>
+<dd>element or null if there is no element for the dataset</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - invalid parameter</dd>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - repository problem</dd>

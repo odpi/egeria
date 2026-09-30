@@ -137,12 +137,16 @@ implements <a href="../../../frameworks/openmetadata/definitions/DeployedImpleme
 <div class="col-last odd-row-color">
 <div class="block">A database server running the PostgreSQL software.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#POSTGRESQL_TABULAR_DATA_SET" class="member-name-link">POSTGRESQL_TABULAR_DATA_SET</a></code></div>
+<div class="col-first even-row-color"><code><a href="#POSTGRESQL_TABLE" class="member-name-link">POSTGRESQL_TABLE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">A table in a PostgreSQL database.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#POSTGRESQL_TABULAR_DATA_SET" class="member-name-link">POSTGRESQL_TABULAR_DATA_SET</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A database table hosted on a PostgreSQL relational database server that has the tabular data set interface.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#POSTGRESQL_TABULAR_DATA_SET_COLLECTION" class="member-name-link">POSTGRESQL_TABULAR_DATA_SET_COLLECTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#POSTGRESQL_TABULAR_DATA_SET_COLLECTION" class="member-name-link">POSTGRESQL_TABULAR_DATA_SET_COLLECTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A database schema hosted on a PostgreSQL relational database server that has the tabular data set collection interface.</div>
 </div>
 </div>
@@ -258,6 +262,13 @@ the order they are declared.</div>
 <section class="constant-details" id="enum-constant-detail">
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="POSTGRESQL_TABLE">
+<h3>POSTGRESQL_TABLE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresDeployedImplementationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.controls">PostgresDeployedImplementationType</a></span>&nbsp;<span class="element-name">POSTGRESQL_TABLE</span></div>
+<div class="block">A table in a PostgreSQL database.  OpenLineage names it postgres://{host}:{port} + {database}.{schema}.{table}.</div>
+</section>
+</li>
 <li>
 <section class="detail" id="POSTGRESQL_DATABASE">
 <h3>POSTGRESQL_DATABASE</h3>

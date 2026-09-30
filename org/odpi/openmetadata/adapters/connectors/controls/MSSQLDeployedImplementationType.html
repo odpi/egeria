@@ -137,12 +137,16 @@ implements <a href="../../../frameworks/openmetadata/definitions/DeployedImpleme
 <div class="col-last odd-row-color">
 <div class="block">A database server running the Microsoft SQL Server software.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#MSSQL_TABULAR_DATA_SET" class="member-name-link">MSSQL_TABULAR_DATA_SET</a></code></div>
+<div class="col-first even-row-color"><code><a href="#MSSQL_TABLE" class="member-name-link">MSSQL_TABLE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">A table in a Microsoft SQL Server database.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MSSQL_TABULAR_DATA_SET" class="member-name-link">MSSQL_TABULAR_DATA_SET</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A database table hosted on a Microsoft SQL Server that has the tabular data set interface.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#MSSQL_TABULAR_DATA_SET_COLLECTION" class="member-name-link">MSSQL_TABULAR_DATA_SET_COLLECTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#MSSQL_TABULAR_DATA_SET_COLLECTION" class="member-name-link">MSSQL_TABULAR_DATA_SET_COLLECTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A database schema hosted on a Microsoft SQL Server that has the tabular data set collection interface.</div>
 </div>
 </div>
@@ -258,6 +262,13 @@ the order they are declared.</div>
 <section class="constant-details" id="enum-constant-detail">
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="MSSQL_TABLE">
+<h3>MSSQL_TABLE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MSSQLDeployedImplementationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.controls">MSSQLDeployedImplementationType</a></span>&nbsp;<span class="element-name">MSSQL_TABLE</span></div>
+<div class="block">A table in a Microsoft SQL Server database.  OpenLineage names it mssql://{host}:{port} + {database}.{schema}.{table}.</div>
+</section>
+</li>
 <li>
 <section class="detail" id="MSSQL_DATABASE">
 <h3>MSSQL_DATABASE</h3>

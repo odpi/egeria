@@ -109,15 +109,21 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>final <a href="OpenLineageRunHistory.Key.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.Key</a></code></div>
-<div class="col-second even-row-color"><code><a href="#job" class="member-name-link">job</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageRunHistory.RunRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.RunRecord</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#runs" class="member-name-link">runs</a></code></div>
+<div class="col-first even-row-color"><code><a href="../../../../frameworks/integration/openlineage/OpenLineageEgeriaGovernanceActionRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEgeriaGovernanceActionRunFacet</a></code></div>
+<div class="col-second even-row-color"><code><a href="#governanceAction" class="member-name-link">governanceAction</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The egeria_governanceAction facet of the latest run of the job, if the job is a step of a governance
+ action process reported by the governance action publisher (null otherwise).</div>
+</div>
+<div class="col-first odd-row-color"><code>final <a href="OpenLineageRunHistory.Key.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.Key</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#job" class="member-name-link">job</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="OpenLineageRunHistory.TestRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.TestRecord</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#tests" class="member-name-link">tests</a></code></div>
+<div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="OpenLineageRunHistory.RunRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.RunRecord</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#runs" class="member-name-link">runs</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="OpenLineageRunHistory.TestRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.TestRecord</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#tests" class="member-name-link">tests</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -170,6 +176,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="tests">
 <h3>tests</h3>
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="OpenLineageRunHistory.TestRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.TestRecord</a>&gt;</span>&nbsp;<span class="element-name">tests</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="governanceAction">
+<h3>governanceAction</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/integration/openlineage/OpenLineageEgeriaGovernanceActionRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEgeriaGovernanceActionRunFacet</a></span>&nbsp;<span class="element-name">governanceAction</span></div>
+<div class="block">The egeria_governanceAction facet of the latest run of the job, if the job is a step of a governance
+ action process reported by the governance action publisher (null otherwise).</div>
 </section>
 </li>
 </ul>

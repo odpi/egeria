@@ -135,6 +135,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return any additional facets that are not modelled as named properties.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageEgeriaGovernanceActionRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEgeriaGovernanceActionRunFacet</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEgeriaGovernanceAction()" class="member-name-link">getEgeriaGovernanceAction</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return Egeria's egeria_governanceAction facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageEgeriaInformationSupplyChainRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEgeriaInformationSupplyChainRunFacet</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEgeriaInformationSupplyChain()" class="member-name-link">getEgeriaInformationSupplyChain</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return Egeria's egeria_informationSupplyChain facet.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageEnvironmentVariablesRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEnvironmentVariablesRunFacet</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnvironmentVariables()" class="member-name-link">getEnvironmentVariables</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -215,6 +225,16 @@ loadScripts(document, 'script');</script>
  <a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a>&nbsp;facet)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a facet that is not modelled as a named property.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEgeriaGovernanceAction(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEgeriaGovernanceActionRunFacet)" class="member-name-link">setEgeriaGovernanceAction</a><wbr>(<a href="OpenLineageEgeriaGovernanceActionRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEgeriaGovernanceActionRunFacet</a>&nbsp;egeriaGovernanceAction)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up Egeria's egeria_governanceAction facet.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEgeriaInformationSupplyChain(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEgeriaInformationSupplyChainRunFacet)" class="member-name-link">setEgeriaInformationSupplyChain</a><wbr>(<a href="OpenLineageEgeriaInformationSupplyChainRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEgeriaInformationSupplyChainRunFacet</a>&nbsp;egeriaInformationSupplyChain)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up Egeria's egeria_informationSupplyChain facet.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnvironmentVariables(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEnvironmentVariablesRunFacet)" class="member-name-link">setEnvironmentVariables</a><wbr>(<a href="OpenLineageEnvironmentVariablesRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEnvironmentVariablesRunFacet</a>&nbsp;environmentVariables)</code></div>
@@ -601,6 +621,50 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>gcpDataproc</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getEgeriaGovernanceAction()">
+<h3>getEgeriaGovernanceAction</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageEgeriaGovernanceActionRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEgeriaGovernanceActionRunFacet</a></span>&nbsp;<span class="element-name">getEgeriaGovernanceAction</span>()</div>
+<div class="block">Return Egeria's egeria_governanceAction facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setEgeriaGovernanceAction(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEgeriaGovernanceActionRunFacet)">
+<h3>setEgeriaGovernanceAction</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEgeriaGovernanceAction</span><wbr><span class="parameters">(<a href="OpenLineageEgeriaGovernanceActionRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEgeriaGovernanceActionRunFacet</a>&nbsp;egeriaGovernanceAction)</span></div>
+<div class="block">Set up Egeria's egeria_governanceAction facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>egeriaGovernanceAction</code> - facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getEgeriaInformationSupplyChain()">
+<h3>getEgeriaInformationSupplyChain</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageEgeriaInformationSupplyChainRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEgeriaInformationSupplyChainRunFacet</a></span>&nbsp;<span class="element-name">getEgeriaInformationSupplyChain</span>()</div>
+<div class="block">Return Egeria's egeria_informationSupplyChain facet.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>facet bean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setEgeriaInformationSupplyChain(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEgeriaInformationSupplyChainRunFacet)">
+<h3>setEgeriaInformationSupplyChain</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEgeriaInformationSupplyChain</span><wbr><span class="parameters">(<a href="OpenLineageEgeriaInformationSupplyChainRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEgeriaInformationSupplyChainRunFacet</a>&nbsp;egeriaInformationSupplyChain)</span></div>
+<div class="block">Set up Egeria's egeria_informationSupplyChain facet.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>egeriaInformationSupplyChain</code> - facet bean</dd>
 </dl>
 </section>
 </li>
