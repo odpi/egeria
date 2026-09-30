@@ -10,10 +10,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsuppl
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -21,6 +21,8 @@ import java.util.Set;
  */
 public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuilderBase
 {
+    private static final String STATUS_NODE_SUFFIX = "~status";
+
     /**
      * Construct a mermaid markdown graph.
      *
@@ -43,6 +45,8 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
             String designAreaName         = "Design";
             String productAreaName        = "Data Mesh";
             String implementationAreaName = "Data Fabric";
+            String systemAreaName         = "System Fabric";
+            String statusAreaName         = "Status";
 
             super.startSubgraph(iscAreaName, VisualStyle.WHITE_SUBGRAPH);
 
@@ -69,14 +73,12 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
             if (informationSupplyChainElement.getCollectionMembers() != null)
             {
                 int         solutionComponentCount = 0;
-                Set<String> designTypeNames        = new HashSet<>();
                 for (RelatedMetadataElementSummary collectionMember : informationSupplyChainElement.getCollectionMembers())
                 {
                     if ((collectionMember != null) &&
                             (! propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
                     {
                         solutionComponentCount++;
-                        designTypeNames.add(collectionMember.getRelatedElement().getElementHeader().getType().getTypeName());
                     }
                 }
 
@@ -87,69 +89,19 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                     /*
                      * Add the solution components that are explicit members of the information supply chains
                      */
-                    for (String designTypeName : designTypeNames)
-                    {
-                        super.addUnlinkedRelatedElementSummaries(informationSupplyChainElement.getCollectionMembers(), designTypeName, VisualStyle.DEFAULT_SOLUTION_COMPONENT, informationSupplyChainElement.getElementHeader().getGUID());
-                    }
-
-                    /*
-                     * Only add the links between the solution components that are part of this informaito nsupply chain.
-                     */
                     for (RelatedMetadataElementSummary collectionMember : informationSupplyChainElement.getCollectionMembers())
                     {
                         if ((collectionMember != null) &&
                                 (! propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
                         {
-                            if (collectionMember instanceof RelatedMetadataHierarchySummary hierarchySummary)
-                            {
-                                if (hierarchySummary.getSideLinks() != null)
-                                {
-                                    for (RelatedMetadataElementSummary sideLink : hierarchySummary.getSideLinks())
-                                    {
-                                        if ((sideLink != null) &&
-                                                (sideLink.getRelationshipProperties() instanceof SolutionLinkingWireProperties solutionLinkingWireProperties) &&
-                                                (solutionLinkingWireProperties.getISCQualifiedNames() != null) && (solutionLinkingWireProperties.getISCQualifiedNames().contains(informationSupplyChainProperties.getQualifiedName())))
-                                        {
-                                            String label = null;
-
-                                            if (sideLink.getRelationshipProperties() instanceof LabeledRelationshipProperties labeledRelationshipProperties)
-                                            {
-                                                label = labeledRelationshipProperties.getLabel();
-                                            }
-                                            else if (sideLink.getRelationshipProperties() instanceof RoledRelationshipProperties roledRelationshipProperties)
-                                            {
-                                                label = roledRelationshipProperties.getRole();
-                                            }
-
-                                            if (label != null)
-                                            {
-                                                label = label + " [" + super.addSpacesToTypeName(sideLink.getRelationshipHeader().getType().getTypeName()) + "]";
-                                            }
-                                            else
-                                            {
-                                                label = super.addSpacesToTypeName(sideLink.getRelationshipHeader().getType().getTypeName());
-                                            }
-
-                                            if (sideLink.getRelatedElementAtEnd1())
-                                            {
-                                                appendMermaidDottedLine(sideLink.getRelationshipHeader().getGUID(),
-                                                                        sideLink.getRelatedElement().getElementHeader().getGUID(),
-                                                                        label,
-                                                                        collectionMember.getRelatedElement().getElementHeader().getGUID());
-                                            }
-                                            else
-                                            {
-                                                appendMermaidDottedLine(sideLink.getRelationshipHeader().getGUID(),
-                                                                        collectionMember.getRelatedElement().getElementHeader().getGUID(),
-                                                                        label,
-                                                                        sideLink.getRelatedElement().getElementHeader().getGUID());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            super.appendNewMermaidNode(collectionMember.getRelatedElement(), VisualStyle.DEFAULT_SOLUTION_COMPONENT);
                         }
                     }
+
+                    /*
+                     * Only add the links between the solution components that are part of this information supply chain.
+                     */
+                    addSolutionLinkingWires(informationSupplyChainElement, informationSupplyChainProperties.getQualifiedName(), "");
 
                     super.endSubgraph(); // design
                 }
@@ -164,12 +116,54 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
             }
 
             /*
+             * The status area shows the same solution components, styled by how far their implementation has progressed.
+             * They need their own node identifiers because the design area already uses the element's guid.
+             */
+            if (informationSupplyChainElement.getCollectionMembers() != null)
+            {
+                boolean startedStatusArea = false;
+
+                for (RelatedMetadataElementSummary collectionMember : informationSupplyChainElement.getCollectionMembers())
+                {
+                    if ((collectionMember != null) &&
+                            (! propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
+                    {
+                        if (! startedStatusArea)
+                        {
+                            super.startSubgraph(statusAreaName, VisualStyle.SOLUTION_SUBGRAPH);
+                            startedStatusArea = true;
+                        }
+
+                        super.appendNewSolutionComponentNode(collectionMember.getRelatedElement(),
+                                                             collectionMember.getRelatedElement().getElementHeader().getGUID() + STATUS_NODE_SUFFIX,
+                                                             VisualStyle.DEFAULT_SOLUTION_COMPONENT);
+                    }
+                }
+
+                if (startedStatusArea)
+                {
+                    addSolutionLinkingWires(informationSupplyChainElement, informationSupplyChainProperties.getQualifiedName(), STATUS_NODE_SUFFIX);
+
+                    super.endSubgraph(); // status
+                }
+                else
+                {
+                    statusAreaName = null;
+                }
+            }
+            else
+            {
+                statusAreaName = null;
+            }
+
+            /*
              * Two graphs are made from the implementation relationships.  One for the product dependencies and one for the implementation (typically assets).
              */
             if ((informationSupplyChainElement.getImplementation() != null) && (! informationSupplyChainElement.getImplementation().isEmpty()))
             {
                 Map<String, ElementStub> productMap = new HashMap<>();
                 Map<String, ElementStub> implementationMap = new HashMap<>();
+                Map<String, ElementStub> systemMap = new HashMap<>();
 
                 /*
                  * Work out how many nodes in each subgraph
@@ -185,6 +179,10 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                         {
                             productMap.put(lineageRelationship.getEnd1().getGUID(), lineageRelationship.getEnd1());
                         }
+                        else if (isSystemElement(lineageRelationship.getEnd1()))
+                        {
+                            systemMap.put(lineageRelationship.getEnd1().getGUID(), lineageRelationship.getEnd1());
+                        }
                         else
                         {
                             implementationMap.put(lineageRelationship.getEnd1().getGUID(), lineageRelationship.getEnd1());
@@ -193,6 +191,10 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                         if (propertyHelper.isTypeOf(lineageRelationship.getEnd2(), OpenMetadataType.DIGITAL_PRODUCT.typeName))
                         {
                             productMap.put(lineageRelationship.getEnd2().getGUID(), lineageRelationship.getEnd2());
+                        }
+                        else if (isSystemElement(lineageRelationship.getEnd2()))
+                        {
+                            systemMap.put(lineageRelationship.getEnd2().getGUID(), lineageRelationship.getEnd2());
                         }
                         else
                         {
@@ -239,7 +241,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
 
 
                 /*
-                 * If there are no implementations, then the implementation area is not needed.
+                 * If there are no data or process implementations, then the data fabric area is not needed.
                  * Otherwise, populate it with the extracted nodes.
                  */
                 if (implementationMap.isEmpty())
@@ -248,43 +250,34 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                 }
                 else
                 {
-                    super.startSubgraph(implementationAreaName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
+                    addFabricArea(implementationAreaName, implementationMap);
+                }
 
-                    for (ElementStub elementStub : implementationMap.values())
-                    {
-                        if (elementStub != null)
-                        {
-                            if (elementStub.getUniqueName() != null)
-                            {
-                                appendNewMermaidNode(elementStub.getGUID(),
-                                                     elementStub.getUniqueName(),
-                                                     elementStub.getType().getTypeName(),
-                                                     getVisualStyleForEntity(elementStub, VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
-                            }
-                            else
-                            {
-                                appendNewMermaidNode(elementStub.getGUID(),
-                                                     elementStub.getGUID(),
-                                                     elementStub.getType().getTypeName(),
-                                                     getVisualStyleForEntity(elementStub, VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
-                            }
-
-                        }
-                    }
-
-                    super.endSubgraph(); // implementation
+                /*
+                 * The IT infrastructure and software capabilities go in the system fabric area, if there are any.
+                 */
+                if (systemMap.isEmpty())
+                {
+                    systemAreaName = null;
+                }
+                else
+                {
+                    addFabricArea(systemAreaName, systemMap);
                 }
             }
             else // Neither graph is needed
             {
                 productAreaName = null;
                 implementationAreaName = null;
+                systemAreaName = null;
             }
 
             /*
              * Add the relationships
              */
-            for (MetadataRelationshipSummary lineageRelationship : informationSupplyChainElement.getImplementation())
+            List<MetadataRelationshipSummary> implementation = informationSupplyChainElement.getImplementation();
+
+            for (MetadataRelationshipSummary lineageRelationship : implementation == null ? new ArrayList<MetadataRelationshipSummary>() : implementation)
             {
                 if (lineageRelationship != null)
                 {
@@ -336,6 +329,12 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                 currentAreaName = designAreaName;
             }
 
+            if (statusAreaName != null)
+            {
+                super.appendInvisibleMermaidLine(currentAreaName, statusAreaName);
+                currentAreaName = statusAreaName;
+            }
+
             if (productAreaName != null)
             {
                 super.appendInvisibleMermaidLine(currentAreaName, productAreaName);
@@ -345,7 +344,128 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
             if (implementationAreaName != null)
             {
                 super.appendInvisibleMermaidLine(currentAreaName, implementationAreaName);
+                currentAreaName = implementationAreaName;
+            }
+
+            if (systemAreaName != null)
+            {
+                super.appendInvisibleMermaidLine(currentAreaName, systemAreaName);
             }
         }
+    }
+
+
+    /**
+     * Add the solution linking wires that belong to this information supply chain.  The same wires are drawn in
+     * both the design and the status areas, so the suffix is used to keep the node identifiers of the areas apart.
+     *
+     * @param informationSupplyChainElement element containing the solution components
+     * @param iscQualifiedName qualified name of the information supply chain
+     * @param nodeSuffix suffix appended to the identifiers of the nodes and lines (empty for the design area)
+     */
+    private void addSolutionLinkingWires(InformationSupplyChainElement informationSupplyChainElement,
+                                         String                        iscQualifiedName,
+                                         String                        nodeSuffix)
+    {
+        for (RelatedMetadataElementSummary collectionMember : informationSupplyChainElement.getCollectionMembers())
+        {
+            if ((collectionMember != null) &&
+                    (! propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
+            {
+                if (collectionMember instanceof RelatedMetadataHierarchySummary hierarchySummary)
+                {
+                    if (hierarchySummary.getSideLinks() != null)
+                    {
+                        for (RelatedMetadataElementSummary sideLink : hierarchySummary.getSideLinks())
+                        {
+                            if ((sideLink != null) &&
+                                    (sideLink.getRelationshipProperties() instanceof SolutionLinkingWireProperties solutionLinkingWireProperties) &&
+                                    (solutionLinkingWireProperties.getISCQualifiedNames() != null) && (solutionLinkingWireProperties.getISCQualifiedNames().contains(iscQualifiedName)))
+                            {
+                                String label = null;
+
+                                if (sideLink.getRelationshipProperties() instanceof LabeledRelationshipProperties labeledRelationshipProperties)
+                                {
+                                    label = labeledRelationshipProperties.getLabel();
+                                }
+                                else if (sideLink.getRelationshipProperties() instanceof RoledRelationshipProperties roledRelationshipProperties)
+                                {
+                                    label = roledRelationshipProperties.getRole();
+                                }
+
+                                if (label != null)
+                                {
+                                    label = label + " [" + super.addSpacesToTypeName(sideLink.getRelationshipHeader().getType().getTypeName()) + "]";
+                                }
+                                else
+                                {
+                                    label = super.addSpacesToTypeName(sideLink.getRelationshipHeader().getType().getTypeName());
+                                }
+
+                                if (sideLink.getRelatedElementAtEnd1())
+                                {
+                                    appendMermaidDottedLine(sideLink.getRelationshipHeader().getGUID() + nodeSuffix,
+                                                            sideLink.getRelatedElement().getElementHeader().getGUID() + nodeSuffix,
+                                                            label,
+                                                            collectionMember.getRelatedElement().getElementHeader().getGUID() + nodeSuffix);
+                                }
+                                else
+                                {
+                                    appendMermaidDottedLine(sideLink.getRelationshipHeader().getGUID() + nodeSuffix,
+                                                            collectionMember.getRelatedElement().getElementHeader().getGUID() + nodeSuffix,
+                                                            label,
+                                                            sideLink.getRelatedElement().getElementHeader().getGUID() + nodeSuffix);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * IT infrastructure and software capabilities are the systems that the data and processes run on.
+     *
+     * @param elementStub element to test
+     * @return boolean flag
+     */
+    private boolean isSystemElement(ElementStub elementStub)
+    {
+        return (propertyHelper.isTypeOf(elementStub, OpenMetadataType.IT_INFRASTRUCTURE.typeName)) ||
+                (propertyHelper.isTypeOf(elementStub, OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
+    }
+
+
+    /**
+     * Add a subgraph containing the supplied implementation elements.
+     *
+     * @param areaName name of the subgraph
+     * @param elementMap elements to add
+     */
+    private void addFabricArea(String                   areaName,
+                               Map<String, ElementStub> elementMap)
+    {
+        super.startSubgraph(areaName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
+
+        for (ElementStub elementStub : elementMap.values())
+        {
+            if (elementStub != null)
+            {
+                String displayName = elementStub.getUniqueName();
+
+                if (displayName == null)
+                {
+                    displayName = elementStub.getGUID();
+                }
+
+                appendNewMermaidNode(elementStub.getGUID(),
+                                     displayName,
+                                     elementStub.getType().getTypeName(),
+                                     getVisualStyleForEntity(elementStub, VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
+            }
+        }
+
+        super.endSubgraph();
     }
 }
