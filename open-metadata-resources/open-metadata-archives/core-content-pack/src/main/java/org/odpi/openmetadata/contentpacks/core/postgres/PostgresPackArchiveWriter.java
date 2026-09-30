@@ -70,6 +70,7 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Add catalog templates
          */
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.POSTGRES_CONTENT_PACK);
+        this.addResourceCatalogTemplates(ContentPackDefinition.POSTGRES_CONTENT_PACK);
         this.addDataAssetCatalogTemplates(ContentPackDefinition.POSTGRES_CONTENT_PACK);
         this.addTabularDataSetCatalogTemplates(ContentPackDefinition.POSTGRES_CONTENT_PACK);
 

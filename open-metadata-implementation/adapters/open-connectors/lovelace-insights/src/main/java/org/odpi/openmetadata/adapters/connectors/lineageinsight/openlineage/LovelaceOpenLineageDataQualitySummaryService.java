@@ -169,7 +169,7 @@ public class LovelaceOpenLineageDataQualitySummaryService extends LovelaceOpenLi
                 continue;
             }
 
-            OpenMetadataRootElement process = findProcess(jobHistory.job);
+            OpenMetadataRootElement process = findProcess(jobHistory);
 
             if (process == null)
             {

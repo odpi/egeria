@@ -145,7 +145,7 @@ The connection definition to use on the [administration commands that configure 
 
 ## Open Lineage Cataloguer Integration Connector
 
-The Open Lineage Cataloguer integration connector registers an OpenLineage listener with the integration daemon context and catalogues what the OpenLineage events describe: jobs become processes, datasets become data assets (with their schemas), and the inputs and outputs of each run are linked to the process with lineage relationships (DataFlow, plus LineageMapping for column-level lineage and ControlFlow/ProcessHierarchy for job dependencies and parent jobs).  It always keeps run metrics (counts, timings, data volumes) in the `RunMetrics` classification of the processes.  Optionally it also catalogues each run as an element, captures the statistics and data quality results carried in the events as annotations in a survey report, and maintains the DataScope classification on the data assets written by the runs.  The mapping, and an assessment of what is better derived from a historical log store, is described in [docs/open-lineage-cataloguing.md](docs/open-lineage-cataloguing.md).
+The Open Lineage Cataloguer integration connector registers an OpenLineage listener with the integration daemon context and catalogues what the OpenLineage events describe: jobs become processes, and the inputs and outputs of each run are linked to the process with lineage relationships (DataFlow, plus DataMapping for table- and column-level lineage and ControlFlow/ProcessHierarchy for job dependencies and parent jobs).  The lineage is attached to the elements that describe the physical landscape - the tables, topics and files catalogued by Egeria's technology connectors - and a new data asset (with its schema) is only created for a dataset that nothing else describes.  Tabular data sets and tabular data set collections (such as the data sets of digital products) are linked above the physical elements with DataSetContent.  Lineage is tagged with the information supply chain named in the run's `egeria_informationSupplyChain` or `egeria_governanceAction` facet.  It always keeps run metrics (counts, timings, data volumes) in the `RunMetrics` classification of the processes.  Optionally it also catalogues each run as an element, captures the statistics and data quality results carried in the events as annotations in a survey report, and maintains the DataScope classification on the data assets written by the runs.  The mapping, and an assessment of what is better derived from a historical log store, is described in [docs/open-lineage-cataloguing.md](docs/open-lineage-cataloguing.md).
 
 The beans used to parse the events (in the Open Integration Framework) follow OpenLineage spec 2-0-2 and the current versions of all the standard facets; custom facets are retained as generic facets.
 
@@ -202,6 +202,29 @@ The Governance Action Open Lineage integration connector listens for governance 
 
 ![Figure 3](docs/governance-action-open-lineage-integration-connector.svg)
 > **Figure 3:** Operation of the File-based Open Lineage log store integration connector
+
+### Contents of the events
+
+An event is published each time an engine action starts (`START`), completes (`COMPLETE`), fails (`FAIL`) or is found to be invalid (`ABORT`).
+The names follow the [OpenLineage naming conventions](https://openlineage.io/docs/spec/naming/):
+
+| OpenLineage | Value |
+|-------------|-------|
+| `job.namespace` | the `namespace` configuration property (default `GovernanceActions`) |
+| `job.name` | the process step name, or `{governance engine name}::{request type}` |
+| `run.runId` | the engine action's unique identifier |
+| `inputs` | one dataset for each action target that is a data asset (see below), except the destinations; other action targets are not datasets |
+| `outputs` | one dataset for each data asset action target whose name starts with `destination` or `output` (for example the provisioning services' `destinationFolder` and `destinationDataSet`) |
+| `executionParameters` run facet | the request parameters (keyed by name), each action target (`actionTarget:{action target name}` = its qualified name), `receivedGuards` and, on completion, `completionGuards` |
+| `egeria_governanceAction` run facet | Egeria's custom facet: the information supply chain (`iscQualifiedName`), engine action GUID, governance engine, request type, governance action type, process and process step.  Its schema is [EgeriaGovernanceActionRunFacet.json](../../../../frameworks/open-integration-framework/src/main/resources/openlineage/facets/1-0-0/EgeriaGovernanceActionRunFacet.json). |
+
+Governance services that write to an action target should name it with a `destination` or `output` prefix so that it is reported as an output.
+
+An action target's dataset namespace and name are taken from, in order of preference:
+
+1. the asset's `namespacePath` and `resourceName`, which hold the OpenLineage namespace and name when the asset was catalogued from OpenLineage events or by a connector that follows the naming conventions (a `namespacePath` that is not shaped like an OpenLineage namespace, such as a Unity Catalog `catalog.schema` prefix, is ignored);
+2. the data store's `pathName`: `s3://bucket/key` becomes namespace `s3://bucket` and name `key`, and a plain path becomes namespace `file` and the path as the name;
+3. otherwise the namespace `egeria` and the asset's qualified name.  The OpenLineage cataloguer resolves these datasets back to the asset.
 
 
 ### Configuration

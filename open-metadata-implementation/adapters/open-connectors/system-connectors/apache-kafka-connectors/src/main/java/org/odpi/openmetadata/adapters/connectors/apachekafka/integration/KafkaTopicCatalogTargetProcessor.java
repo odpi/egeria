@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.apachekafka.integration;
 
 
 import org.apache.kafka.clients.admin.Admin;
+import org.odpi.openmetadata.adapters.connectors.controls.KafkaPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaTemplateConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaTemplateType;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.integration.ffdc.KafkaIntegrationConnectorAuditCode;
@@ -230,7 +231,9 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
                         {
                             if ((consumedAsset != null) && (consumedAsset.getRelatedElement().getProperties() instanceof TopicProperties topicProperties))
                             {
-                                if (! activeTopicNames.contains(topicProperties.getTopicName()))
+                                String cataloguedTopicName = getCataloguedTopicName(topicProperties);
+
+                                if (! activeTopicNames.contains(cataloguedTopicName))
                                 {
                                     /*
                                      * The topic no longer exists so unlink it from the broker.
@@ -241,12 +244,12 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
 
                                     auditLog.logMessage(methodName,
                                                         KafkaIntegrationConnectorAuditCode.TOPIC_DELETED.getMessageDefinition(connectorName,
-                                                                                                                              topicProperties.getTopicName(),
+                                                                                                                              cataloguedTopicName,
                                                                                                                               consumedAsset.getRelatedElement().getElementHeader().getGUID()));
                                 }
                                 else
                                 {
-                                    activeTopicNames.remove(topicProperties.getTopicName());
+                                    activeTopicNames.remove(cataloguedTopicName);
                                 }
                             }
                         }
@@ -272,6 +275,9 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
                     placeholderProperties.put(PlaceholderProperty.SERVER_NAME.getName(), serverName);
                     placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), null);
                     placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), PlaceholderProperty.VERSION_IDENTIFIER.getExample());
+                    placeholderProperties.put(KafkaPlaceholderProperty.FULL_TOPIC_NAME.getName(), topicName);
+                    placeholderProperties.put(KafkaPlaceholderProperty.SHORT_TOPIC_NAME.getName(), topicName);
+                    placeholderProperties.put(KafkaPlaceholderProperty.EVENT_DIRECTION.getName(), "inOut");
 
                     CapabilityAssetUseProperties capabilityAssetUseProperties = new CapabilityAssetUseProperties();
 
@@ -286,6 +292,16 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
 
                     if (topicGUID != null)
                     {
+                        /*
+                         * The template does not set the topic's full name (its resourceName), and it is how the topic
+                         * is recognized on the next refresh.
+                         */
+                        TopicProperties topicProperties = new TopicProperties();
+
+                        topicProperties.setResourceName(topicName);
+
+                        assetClient.updateAsset(topicGUID, assetClient.getUpdateOptions(true), topicProperties);
+
                         auditLog.logMessage(methodName,
                                             KafkaIntegrationConnectorAuditCode.TOPIC_CREATED.getMessageDefinition(connectorName,
                                                                                                                   topicName,
@@ -303,5 +319,24 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
                                                                                                                     error.getMessage()),
                                   error);
         }
+    }
+
+
+    /**
+     * Return the name of the Kafka topic that a catalogued topic represents: its full name, held in resourceName.
+     * Topics catalogued before the resourceName was recorded (or by other connectors) are recognized by their
+     * display name.
+     *
+     * @param topicProperties properties of the catalogued topic
+     * @return topic name or null
+     */
+    private String getCataloguedTopicName(TopicProperties topicProperties)
+    {
+        if (topicProperties.getResourceName() != null)
+        {
+            return topicProperties.getResourceName();
+        }
+
+        return topicProperties.getDisplayName();
     }
 }

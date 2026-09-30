@@ -5,7 +5,7 @@ package org.odpi.openmetadata.contentpacks.core.core;
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.EgeriaRoleDefinition;
 import org.odpi.openmetadata.adapters.connectors.ExceptionTypeDefinition;
-import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.*;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.DaysOfWeekGuard;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.WriteAuditLogRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductPerspectiveDefinition;
@@ -32,6 +32,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.users.AccessOperat
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
@@ -690,6 +691,24 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.addDeployedImplementationType(deployedImplementationType);
         }
 
+        /*
+         * Technology types for resources from many technologies that are identified by their resource name within
+         * a namespace (for example by OpenLineage).
+         */
+        List<DeployedImplementationTypeDefinition> resourceTechnologyTypes = new ArrayList<>();
+
+        resourceTechnologyTypes.addAll(Arrays.asList(DataWarehouseDeployedImplementationType.values()));
+        resourceTechnologyTypes.addAll(Arrays.asList(NoSQLDeployedImplementationType.values()));
+        resourceTechnologyTypes.addAll(Arrays.asList(FileStoreDeployedImplementationType.values()));
+        resourceTechnologyTypes.addAll(Arrays.asList(DocumentManagementDeployedImplementationType.values()));
+        resourceTechnologyTypes.addAll(Arrays.asList(EventStreamDeployedImplementationType.values()));
+        resourceTechnologyTypes.addAll(Arrays.asList(DataPipelineDeployedImplementationType.values()));
+
+        for (DeployedImplementationTypeDefinition deployedImplementationType : resourceTechnologyTypes)
+        {
+            this.addDeployedImplementationType(deployedImplementationType);
+        }
+
 
         /*
          * Add the valid values for the assignmentType property.
@@ -744,6 +763,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.addDataAssetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
         this.addDataSetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
         this.addTabularDataSetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
+        this.addResourceCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
 
         this.addMacBookProCatalogTemplate();
         this.addFileSystemTemplate();

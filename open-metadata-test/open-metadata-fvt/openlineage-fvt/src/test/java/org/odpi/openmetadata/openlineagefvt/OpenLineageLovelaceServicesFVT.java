@@ -60,8 +60,8 @@ public class OpenLineageLovelaceServicesFVT
     void lovelaceServicesAnalyseTheLogStore() throws Exception
     {
         String processQN = OpenLineageFvtTestSupport.processQualifiedName(OpenLineageEventFactory.JOB_NAMESPACE, JOB_NAME);
-        String inputQN   = OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.TABULAR_DATA_SET.typeName, OpenLineageEventFactory.TABLE_NAMESPACE, INPUT_TABLE);
-        String outputQN  = OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.TABULAR_DATA_SET.typeName, OpenLineageEventFactory.TABLE_NAMESPACE, OUTPUT_TABLE);
+        String inputQN   = OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.DATA_SET.typeName, OpenLineageEventFactory.TABLE_NAMESPACE, INPUT_TABLE);
+        String outputQN  = OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.DATA_SET.typeName, OpenLineageEventFactory.TABLE_NAMESPACE, OUTPUT_TABLE);
 
         /*
          * Three completed runs, an hour apart, the last one finishing a few minutes ago.

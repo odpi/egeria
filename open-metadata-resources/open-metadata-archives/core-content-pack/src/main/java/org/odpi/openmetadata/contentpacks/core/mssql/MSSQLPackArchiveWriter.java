@@ -68,6 +68,7 @@ public class MSSQLPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Add catalog templates
          */
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.MSSQL_CONTENT_PACK);
+        this.addResourceCatalogTemplates(ContentPackDefinition.MSSQL_CONTENT_PACK);
         this.addDataAssetCatalogTemplates(ContentPackDefinition.MSSQL_CONTENT_PACK);
         this.addTabularDataSetCatalogTemplates(ContentPackDefinition.MSSQL_CONTENT_PACK);
 

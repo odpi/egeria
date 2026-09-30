@@ -5,7 +5,7 @@ package org.odpi.openmetadata.contentpacks.core.base;
 import org.odpi.openmetadata.adapters.connectors.EgeriaInformationSupplyChainDefinition;
 import org.odpi.openmetadata.adapters.connectors.EgeriaRoleDefinition;
 import org.odpi.openmetadata.contentpacks.core.*;
-import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.*;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.ManageAssetGuard;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition;
@@ -447,6 +447,151 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                templateDefinition.getPlaceholders());
             }
         }
+    }
+
+
+    /**
+     * Create the catalog templates for resources that are identified by their resource name within a namespace -
+     * tables, files, folders, documents, topics and jobs from many technologies (see the DatabaseTable, NoSQL,
+     * FileStore, DocumentManagement, EventStream and DataPipeline template types).  Each template creates just the
+     * asset.  A template belongs to the content pack that defines its technology type.
+     *
+     * @param contentPackDefinition which content pack are these templates for?
+     */
+    protected void addResourceCatalogTemplates(ContentPackDefinition contentPackDefinition)
+    {
+        List<TemplateDefinition> templateDefinitions = new ArrayList<>();
+
+        templateDefinitions.addAll(Arrays.asList(DatabaseTableTemplateType.values()));
+        templateDefinitions.addAll(Arrays.asList(NoSQLTemplateType.values()));
+        templateDefinitions.addAll(Arrays.asList(FileStoreTemplateType.values()));
+        templateDefinitions.addAll(Arrays.asList(DocumentManagementTemplateType.values()));
+        templateDefinitions.addAll(Arrays.asList(EventStreamTemplateType.values()));
+        templateDefinitions.addAll(Arrays.asList(DataPipelineTemplateType.values()));
+
+        for (TemplateDefinition templateDefinition : templateDefinitions)
+        {
+            if (getResourceTemplateContentPack(templateDefinition.getDeployedImplementationType()) == contentPackDefinition)
+            {
+                createResourceCatalogTemplate(templateDefinition);
+            }
+        }
+    }
+
+
+    /**
+     * Return the content pack that defines a technology type, since a catalog template must be in the same
+     * content pack as its technology type.
+     *
+     * @param deployedImplementationType technology type
+     * @return content pack
+     */
+    private ContentPackDefinition getResourceTemplateContentPack(DeployedImplementationTypeDefinition deployedImplementationType)
+    {
+        if (deployedImplementationType instanceof PostgresDeployedImplementationType)
+        {
+            return ContentPackDefinition.POSTGRES_CONTENT_PACK;
+        }
+        else if (deployedImplementationType instanceof MSSQLDeployedImplementationType)
+        {
+            return ContentPackDefinition.MSSQL_CONTENT_PACK;
+        }
+        else if (deployedImplementationType instanceof OracleDeployedImplementationType)
+        {
+            return ContentPackDefinition.ORACLE_CONTENT_PACK;
+        }
+        else if (deployedImplementationType instanceof DB2LUWDeployedImplementationType)
+        {
+            return ContentPackDefinition.DB2LUW_CONTENT_PACK;
+        }
+        else if (deployedImplementationType instanceof UnityCatalogDeployedImplementationType)
+        {
+            return ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK;
+        }
+
+        return ContentPackDefinition.CORE_CONTENT_PACK;
+    }
+
+
+    /**
+     * Create a catalog template that creates just an asset for a resource identified by its resource name within
+     * a namespace.  The asset is named {technology type}::{namespacePath}::{resourceName}; files and folders also
+     * have their path name.
+     *
+     * @param templateDefinition template to create
+     */
+    protected void createResourceCatalogTemplate(TemplateDefinition templateDefinition)
+    {
+        final String methodName = "createResourceCatalogTemplate";
+
+        DeployedImplementationTypeDefinition deployedImplementationType = templateDefinition.getDeployedImplementationType();
+
+        String qualifiedName = deployedImplementationType.getDeployedImplementationType() + "::" +
+                PlaceholderProperty.NAMESPACE_PATH.getPlaceholder() + "::" + PlaceholderProperty.RESOURCE_NAME.getPlaceholder();
+
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(archiveHelper.getTemplateClassification(templateDefinition.getTemplateName() + " template",
+                                                                    templateDefinition.getTemplateDescription(),
+                                                                    templateDefinition.getTemplateVersionIdentifier(),
+                                                                    null,
+                                                                    methodName));
+
+        /*
+         * Files and folders also record where they are.
+         */
+        Map<String, Object> extendedProperties = null;
+
+        if (templateDefinition.getPlaceholders().contains(PlaceholderProperty.FILE_PATH_NAME.getPlaceholderType()))
+        {
+            extendedProperties = new HashMap<>();
+            extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
+        }
+        else if (templateDefinition.getPlaceholders().contains(PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholderType()))
+        {
+            extendedProperties = new HashMap<>();
+            extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder());
+        }
+
+        /*
+         * contentStatus is a property of data assets - the job templates (processes) do not have it.
+         */
+        ContentStatus contentStatus = ContentStatus.ACTIVE;
+
+        if (OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName.equals(deployedImplementationType.getAssociatedTypeName()))
+        {
+            contentStatus = null;
+        }
+
+        archiveHelper.setGUID(qualifiedName, templateDefinition.getTemplateGUID());
+
+        String assetGUID = archiveHelper.addDataAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                      qualifiedName,
+                                                      PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                                                      PlaceholderProperty.RESOURCE_NAME.getPlaceholder(),
+                                                      PlaceholderProperty.NAMESPACE_PATH.getPlaceholder(),
+                                                      null,
+                                                      deployedImplementationType.getDeployedImplementationType(),
+                                                      templateDefinition.getElementVersionIdentifier(),
+                                                      PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                      contentStatus,
+                                                      null,
+                                                      extendedProperties,
+                                                      classifications);
+
+        assert(assetGUID.equals(templateDefinition.getTemplateGUID()));
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               null,
+                                               templateDefinition.getPlaceholders());
     }
 
 

@@ -1391,12 +1391,12 @@ public class AssetMakerRESTServices extends TokenController
      * @param urlMarker  view service URL marker
      * @param requestBody optional effective time
      *
-     * @return  void or
+     * @return  unique identifier of the new relationship or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    a problem reported in the open metadata server(s)
      */
-    public VoidResponse linkDataSetContent(String                     serverName,
+    public GUIDResponse linkDataSetContent(String                     serverName,
                                            String                     urlMarker,
                                            String                     dataSetGUID,
                                            String                     dataContentAssetGUID,
@@ -1406,7 +1406,7 @@ public class AssetMakerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
 
-        VoidResponse response = new VoidResponse();
+        GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
 
         try
@@ -1421,15 +1421,15 @@ public class AssetMakerRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                handler.linkDataSetContent(userId, dataSetGUID, dataContentAssetGUID, null, null);
+                response.setGUID(handler.linkDataSetContent(userId, dataSetGUID, dataContentAssetGUID, null, null));
             }
             else if (requestBody.getProperties() instanceof DataSetContentProperties dataSetContentProperties)
             {
-                handler.linkDataSetContent(userId, dataSetGUID, dataContentAssetGUID, requestBody, dataSetContentProperties);
+                response.setGUID(handler.linkDataSetContent(userId, dataSetGUID, dataContentAssetGUID, requestBody, dataSetContentProperties));
             }
             else if (requestBody.getProperties() == null)
             {
-                handler.linkDataSetContent(userId, dataSetGUID, dataContentAssetGUID, requestBody, null);
+                response.setGUID(handler.linkDataSetContent(userId, dataSetGUID, dataContentAssetGUID, requestBody, null));
             }
             else
             {
@@ -1448,7 +1448,8 @@ public class AssetMakerRESTServices extends TokenController
 
 
     /**
-     * Detach a data set from another asset that was supplying the data and is no more.
+     * Detach a data set from another asset that was supplying the data and is no more.  Every DataSetContent
+     * relationship between the two elements is removed.
      *
      * @param serverName name of the server to route the request to
      * @param dataSetGUID          unique identifier of the data set
@@ -1485,6 +1486,116 @@ public class AssetMakerRESTServices extends TokenController
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachDataSetContent(userId, dataSetGUID, dataContentAssetGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Update the properties of one DataSetContent relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier of the relationship
+     * @param requestBody properties of the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateDataSetContent(String                        serverName,
+                                             String                        urlMarker,
+                                             String                        relationshipGUID,
+                                             UpdateRelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateDataSetContent";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+                if (requestBody.getProperties() instanceof DataSetContentProperties dataSetContentProperties)
+                {
+                    handler.updateDataSetContent(userId, relationshipGUID, requestBody, dataSetContentProperties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DataSetContentProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+
+        return response;
+    }
+
+
+    /**
+     * Remove one DataSetContent relationship, leaving any others between the same elements in place.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier of the relationship
+     * @param requestBody optional effective time
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachDataSetContentRelationship(String                        serverName,
+                                                         String                        urlMarker,
+                                                         String                        relationshipGUID,
+                                                         DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachDataSetContentRelationship";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachDataSetContentRelationship(userId, relationshipGUID, requestBody);
         }
         catch (Throwable error)
         {

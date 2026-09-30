@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.subscriptions;
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
+import org.odpi.openmetadata.adapters.connectors.wedgwood.WedgwoodProvisionSubscriptionRequestParameter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
@@ -19,6 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementItemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSubscriberProperties;
@@ -39,7 +41,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CreateSubscriptionGovernanceActionConnector creates a digital subscription to a product - or to a product
@@ -590,9 +594,15 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                                                                                  ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.description,
                                                                                                  GovernanceDomain.DATA_SHARING.getOrdinal(),
                                                                                                  provisioningActionTypeGUID,
-                                                                                                 null,
+                                                                                                 getProvisioningRequestParameters(),
                                                                                                  subscriptionGUID, // anchorGUID
                                                                                                  null);
+
+        /*
+         * The information supply chain that this subscription was requested for is passed to the pipeline so that it
+         * appears on the provisioning engine actions, and hence on the lineage and OpenLineage events they create.
+         */
+        String iscQualifiedName = getInformationSupplyChain();
 
         /*
          * The source and destination assets are connected to the governance action process so it knows which assets to work with.
@@ -621,6 +631,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
         notificationSubscriberProperties.setActivityStatus(ActivityStatus.IN_PROGRESS);
         notificationSubscriberProperties.setLabel("provisioning-process");
         notificationSubscriberProperties.setDescription("This process will pass any changes to the product data on to the subscriber.");
+        notificationSubscriberProperties.setISCQualifiedName(iscQualifiedName);
 
         governanceDefinitionClient.linkNotificationSubscriber(notificationTypeGUID,
                                                               provisioningProcessGUID,
@@ -636,6 +647,7 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
 
         implementedByProperties.setRole("provisioning-process");
         implementedByProperties.setDescription("This process will pass any changes to the product data on to the subscriber.");
+        implementedByProperties.setISCQualifiedName(iscQualifiedName);
 
         governanceDefinitionClient.linkDesignToImplementation(subscriptionGUID,
                                                               provisioningProcessGUID,
@@ -657,8 +669,6 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                         makeAnchorOptions,
                                         digitalSubscriberProperties);
 
-        collectionClient.linkSubscriber(targetAssetGUID, subscriptionGUID, makeAnchorOptions, null);
-
         /*
          * Add the license to the destination data asset.
          */
@@ -674,5 +684,53 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
                                                       new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()),
                                                       licenseProperties);
         }
+    }
+
+
+    /**
+     * Return the request parameters for the provisioning pipeline.  The pipeline's lineage is connected to the
+     * provisioning process itself rather than to a new process instance for each delivery, so that there is one
+     * stable process for the subscription.
+     *
+     * @return request parameters
+     */
+    private Map<String, String> getProvisioningRequestParameters()
+    {
+        Map<String, String> requestParameters = new HashMap<>();
+
+        requestParameters.put(WedgwoodProvisionSubscriptionRequestParameter.TOP_LEVEL_PROCESS_ONLY_LINEAGE.getName(), "true");
+
+        return requestParameters;
+    }
+
+
+    /**
+     * Return the information supply chain that the engine action running this service was started for.
+     *
+     * @return qualified name of the information supply chain or null
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private String getInformationSupplyChain() throws InvalidParameterException,
+                                                      PropertyServerException,
+                                                      UserNotAuthorizedException
+    {
+        final String methodName = "getInformationSupplyChain";
+
+        if (governanceContext.getEngineActionGUID() != null)
+        {
+            OpenMetadataElement engineAction = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(governanceContext.getEngineActionGUID());
+
+            if (engineAction != null)
+            {
+                return propertyHelper.getStringProperty(governanceServiceName,
+                                                        OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                        engineAction.getElementProperties(),
+                                                        methodName);
+            }
+        }
+
+        return null;
     }
 }

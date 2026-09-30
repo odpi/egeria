@@ -5239,6 +5239,7 @@ public enum OpenMetadataType
                               "75494963-67b7-4288-a430-b71c9c40ef6e",
                               "A link between a relational database schema list for a relational database schema's schema type.",
                               RelationalDBSchemaProperties.class),
+
     /**
      * A schema type for a relational database schema.
      */

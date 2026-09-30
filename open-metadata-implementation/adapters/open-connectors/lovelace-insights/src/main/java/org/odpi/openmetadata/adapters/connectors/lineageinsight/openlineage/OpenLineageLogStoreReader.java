@@ -136,6 +136,11 @@ public class OpenLineageLogStoreReader
 
         OpenLineageRunHistory.Key        jobKey     = new OpenLineageRunHistory.Key(event.getJob().getNamespace(), event.getJob().getName());
         OpenLineageRunHistory.JobHistory jobHistory = history.getJob(jobKey);
+
+        if ((event.getRun().getFacets() != null) && (event.getRun().getFacets().getEgeriaGovernanceAction() != null))
+        {
+            jobHistory.governanceAction = event.getRun().getFacets().getEgeriaGovernanceAction();
+        }
         String                           runId      = event.getRun().getRunId().toString();
         String                           eventType  = event.getEventType();
 

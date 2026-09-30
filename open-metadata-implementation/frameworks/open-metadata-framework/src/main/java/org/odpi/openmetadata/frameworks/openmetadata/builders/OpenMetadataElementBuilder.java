@@ -515,9 +515,6 @@ public class OpenMetadataElementBuilder
                                 if (properties instanceof TopicProperties topicProperties)
                                 {
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                                         OpenMetadataProperty.TOPIC_NAME.name,
-                                                                                         topicProperties.getTopicName());
-                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                          OpenMetadataProperty.TOPIC_TYPE.name,
                                                                                          topicProperties.getTopicType());
                                 }

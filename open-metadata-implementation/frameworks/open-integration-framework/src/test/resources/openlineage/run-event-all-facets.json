@@ -86,6 +86,22 @@
         "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/GcpDataprocRunFacet.json#/$defs/GcpDataprocRunFacet",
         "appId": "application_1", "appName": "orders", "projectId": "my-project", "clusterName": "cluster-1", "jobType": "job"
       },
+      "egeria_informationSupplyChain": {
+        "_producer": "https://example.com/producer",
+        "_schemaURL": "https://egeria-project.org/openlineage/facets/1-0-0/EgeriaInformationSupplyChainRunFacet.json#/$defs/EgeriaInformationSupplyChainRunFacet",
+        "iscQualifiedName": "InformationSupplyChain::Orders"
+      },
+      "egeria_governanceAction": {
+        "_producer": "https://egeria-project.org/",
+        "_schemaURL": "https://egeria-project.org/openlineage/facets/1-0-0/EgeriaGovernanceActionRunFacet.json#/$defs/EgeriaGovernanceActionRunFacet",
+        "iscQualifiedName": "InformationSupplyChain::Orders",
+        "engineActionGUID": "d46e465b-d358-4d32-83d4-df660ff614dd",
+        "governanceEngineName": "EgeriaGovernance",
+        "requestType": "provision-tabular-data-set",
+        "governanceActionTypeName": "Egeria:GovernanceActionType:provision-tabular-data-set",
+        "processName": "Orders provisioning",
+        "processStepName": "Copy orders"
+      },
       "airflow": {
         "_producer": "https://example.com/producer",
         "_schemaURL": "https://example.com/airflow-facet.json",
