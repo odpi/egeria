@@ -1848,7 +1848,11 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                  null);
 
         archiveHelper.addLineageRelationship(targetDataSetGUID, providerProductGUID, OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName, "sample packaged as", iscQName);
-        archiveHelper.addLineageRelationship(providerProductGUID, consumerProductGUID, OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName, "sample supplies", iscQName);
+        /*
+         * A DigitalProductDependency has the dependent (consuming) product at end 1 and the product it depends on at end 2,
+         * so, unlike the data lineage relationships, it points against the flow of data.
+         */
+        archiveHelper.addLineageRelationship(consumerProductGUID, providerProductGUID, OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName, "sample depends on", iscQName);
 
         archiveHelper.addLineageRelationship(sourceFileGUID, processGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, "sample extract", iscQName);
         archiveHelper.addLineageRelationship(processGUID, targetDataSetGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, "sample load", iscQName);
