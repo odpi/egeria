@@ -37,7 +37,7 @@ ext {
     junitVersion = '4.13.2'
     opentest4jVersion = '1.3.0'
     // JUnit Platform ships on its own version line - 1.x tracks jupiter 5.x
-    jwtVersion = '10.9.1'
+    jwtVersion = '10.10'
     kafkaVersion = '4.3.1'
     lang3Version = '3.20.0'
     logbackVersion = '1.6.3'
