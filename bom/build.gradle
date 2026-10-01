@@ -57,7 +57,7 @@ ext {
     log4jVersion = '2.26.1'
     jacksonjdk8Version = '2.22.2'
     springdocStarterVersion = '2.8.17'
-    snakeYamlVersion = '2.6'
+    snakeYamlVersion = '2.7'
 }
 
 dependencies {
