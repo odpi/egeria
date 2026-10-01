@@ -74,7 +74,7 @@ jobs:
           cp -f container.application.properties ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform/application.properties
       - name: Build and push(egeria) to quay.io and docker.io (tag latest only for main!)
         if: ${{ github.ref == 'refs/heads/main'}}
-        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # tag=v5.4.0
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # tag=v7.4.0
         with:
           push: true
           tags: odpi/egeria-platform:${{ env.VERSION }}, odpi/egeria-platform:latest, quay.io/odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:latest
@@ -82,7 +82,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
       - name: Build and push(egeria-platform) to quay.io and docker.io (no tag latest)
         if: ${{ github.ref != 'refs/heads/main'}}
-        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # tag=v5.4.0
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # tag=v7.4.0
         with:
           push: true
           tags: odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:${{ env.VERSION }}
