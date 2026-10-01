@@ -18,7 +18,7 @@
 # Pinned by digest for a reproducible build; Dependabot's docker ecosystem is configured
 # for this directory and raises the digest bump monthly.  This is the multi-arch manifest
 # list digest, so the linux/amd64 + linux/arm64 build in merge-v6.yml still resolves both.
-FROM registry.access.redhat.com/ubi9/openjdk-21@sha256:26fea73c6d66b0c8191bd2a9b8bba67c22d650a60fcd365be30ed56d8c631a8d
+FROM registry.access.redhat.com/ubi9/openjdk-21@sha256:c1ace6c4a54563bc2912d753b898fcacb9b1c30010cd153419ddd3aa5bbf3b56
 
 ARG version=6.2-SNAPSHOT
 ARG VCS_REF=unknown
