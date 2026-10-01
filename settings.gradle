@@ -16,7 +16,7 @@ pluginManagement {
     }
     plugins {
         // Checks for unnecessary dependencies
-        id("com.autonomousapps.dependency-analysis") version "3.19.1"
+        id("com.autonomousapps.dependency-analysis") version "3.19.2"
         // Declares capabilities for well-known JVM libraries so that Gradle can detect when two
         // artifacts provide the same classes - the jakarta/javax splits, and the competing SLF4J
         // implementations - and resolves those conflicts.  Version 2 of this plugin replaced both
