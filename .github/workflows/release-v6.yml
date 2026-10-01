@@ -56,7 +56,7 @@ jobs:
         run: ./gradlew build
       # egeria-configure needs to install utilities
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # tag=v3.7.0
+        uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # tag=v4.4.0
       - name: Set Release version env variable
         run: |
           echo "VERSION=$(./gradlew properties --no-daemon --console=plain -q | grep '^version:' | awk '{printf $2}')" >> $GITHUB_ENV
