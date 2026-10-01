@@ -3,10 +3,12 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RoledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -54,7 +56,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                  super.getNodeDisplayName(informationSupplyChainElement.getElementHeader(), informationSupplyChainElement.getProperties()),
                                  informationSupplyChainElement.getElementHeader().getType().getTypeName(),
                                  informationSupplyChainElement.getProperties(),
-                                 super.getVisualStyleForClassifications(informationSupplyChainElement.getElementHeader(), VisualStyle.PRINCIPLE_INFORMATION_SUPPLY_CHAIN));
+                                 VisualStyle.PRINCIPLE_INFORMATION_SUPPLY_CHAIN);
 
             /*
              * Add the segments to the graph.
@@ -70,9 +72,12 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
             /*
              * Fill out the design area if there is one.
              */
+            int solutionComponentStatusCount = 0;
+
             if (informationSupplyChainElement.getCollectionMembers() != null)
             {
-                int         solutionComponentCount = 0;
+                int solutionComponentCount = 0;
+
                 for (RelatedMetadataElementSummary collectionMember : informationSupplyChainElement.getCollectionMembers())
                 {
                     if ((collectionMember != null) &&
@@ -94,7 +99,27 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                         if ((collectionMember != null) &&
                                 (! propertyHelper.isTypeOf(collectionMember.getRelatedElement().getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
                         {
-                            super.appendNewMermaidNode(collectionMember.getRelatedElement(), VisualStyle.DEFAULT_SOLUTION_COMPONENT);
+                            this.appendNewMermaidNode(collectionMember.getRelatedElement().getElementHeader().getGUID(),
+                                                      super.getNodeDisplayName(collectionMember.getRelatedElement()),
+                                                      super.getTypeNameForEntity(collectionMember.getRelatedElement().getElementHeader()),
+                                                      collectionMember.getRelatedElement().getProperties(),
+                                                      VisualStyle.DEFAULT_SOLUTION_COMPONENT);
+
+
+                            if ((collectionMember.getRelatedElement().getElementHeader().getPromise() != null) ||
+                                (collectionMember.getRelatedElement().getElementHeader().getMemento() != null))
+                            {
+                                solutionComponentStatusCount++;
+                            }
+                            else if (collectionMember.getRelatedElement().getProperties() instanceof SolutionComponentProperties solutionComponentProperties)
+                            {
+                                DeploymentStatus deploymentStatus = solutionComponentProperties.getDeploymentStatus();
+
+                                if ((deploymentStatus != null) && (deploymentStatus != DeploymentStatus.ACTIVE))
+                                {
+                                    solutionComponentStatusCount++;
+                                }
+                            }
                         }
                     }
 
@@ -119,7 +144,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
              * The status area shows the same solution components, styled by how far their implementation has progressed.
              * They need their own node identifiers because the design area already uses the element's guid.
              */
-            if (informationSupplyChainElement.getCollectionMembers() != null)
+            if (solutionComponentStatusCount > 0)
             {
                 boolean startedStatusArea = false;
 
