@@ -1279,12 +1279,12 @@ class InMemoryOMRSMetadataStore implements OMRSDynamicTypeStore
 
                 if (this.entity != null)
                 {
-                    repositoryHelper.addClassificationToEntity(repositoryName, this.entity, new Classification(classification), methodName);
+                    this.entity = repositoryHelper.addClassificationToEntity(repositoryName, this.entity, new Classification(classification), methodName);
                 }
 
                 if (this.entityProxy != null)
                 {
-                    repositoryHelper.addClassificationToEntity(repositoryName, this.entityProxy, new Classification(classification), methodName);
+                    this.entityProxy = repositoryHelper.addClassificationToEntity(repositoryName, this.entityProxy, new Classification(classification), methodName);
                 }
             }
         }
